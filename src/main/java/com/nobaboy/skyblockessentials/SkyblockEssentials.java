@@ -17,11 +17,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 
-@Mod(modid = "skyblockessentials", name = "SkyblockEssentials", version = "0.7.0", acceptedMinecraftVersions = "[1.8.9]")
+@Mod(modid = "skyblockessentials", name = "SkyblockEssentials", version = "0.7.1", acceptedMinecraftVersions = "[1.8.9]")
 public class SkyblockEssentials {
     public static final String MOD_ID = "skyblockessentials";
     public static final String MOD_NAME = "SkyblockEssentials";
-    public static final String MOD_VERSION = "0.7.0";
+    public static final String MOD_VERSION = "0.7.1";
     public static final String MOD_PREFIX = GRAY + "[SBES] " + RESET;
     public static final String PLAYER_IGN = Minecraft.getMinecraft().getSession().getUsername();
 
