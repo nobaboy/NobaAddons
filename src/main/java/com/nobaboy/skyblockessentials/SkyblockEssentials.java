@@ -24,7 +24,6 @@ public class SkyblockEssentials {
     public static final String MOD_VERSION = "0.7.0";
     public static final String MOD_PREFIX = GRAY + "[SBES] " + RESET;
     public static final String PLAYER_IGN = Minecraft.getMinecraft().getSession().getUsername();
-    private static final boolean IS_DEV = false;
 
     @Mod.Instance("skyblockessentials")
     public static SkyblockEssentials instance;
@@ -48,7 +47,7 @@ public class SkyblockEssentials {
     }
 
     public static void sendCommand(String command) {
-        if(!IS_DEV) command = "/" + command;
+        command = (!SkyblockEssentialsConfig.debugMode ? "/" : "") + command;
         Minecraft.getMinecraft().thePlayer.sendChatMessage(command);
     }
 }

@@ -34,6 +34,14 @@ public class SkyblockEssentialsConfig extends Vigilant {
     )
     public static boolean cakesEatenNotifier = true;
 
+    @Property(
+        type = PropertyType.SWITCH,
+        name = "Debug Mode",
+        description = "*Currently only removes the slash from commands when turned on*",
+        category = "Dev"
+    )
+    public static boolean debugMode = false;
+
     public static SkyblockEssentialsConfig INSTANCE = new SkyblockEssentialsConfig();
 
     public SkyblockEssentialsConfig() {

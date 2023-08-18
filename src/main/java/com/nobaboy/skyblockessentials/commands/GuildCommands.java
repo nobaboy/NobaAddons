@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GuildCommands {
-    boolean isWarpingOut = false;
+    static boolean isWarpingOut = false;
     static boolean playedJoined = false;
     static String player;
 
@@ -35,11 +35,11 @@ public class GuildCommands {
 
         switch (command.toLowerCase()) {
             case "help":
-                if (SkyblockEssentials.PLAYER_IGN.equals(sender)) return; // Guild members command
+                if(SkyblockEssentials.PLAYER_IGN.equals(sender)) return; // Guild members command
                 SkyblockEssentials.sendCommand("gc SkyblockEssentials > !help, !warpout");
                 break;
             case "warpout":
-                if (SkyblockEssentials.PLAYER_IGN.equals(sender)) return; // Guild members command
+                if(SkyblockEssentials.PLAYER_IGN.equals(sender)) return; // Guild members command
                 warpOutCommand(argument);
                 break;
             default:
@@ -50,16 +50,14 @@ public class GuildCommands {
     public void warpOutCommand(String username) {
         if(isWarpingOut) {
             SkyblockEssentials.sendCommand("gc Warp out is on cooldown, try again later!");
-            return;
-        }
-        if(username == null) {
+        } else if(username == null) {
             SkyblockEssentials.sendCommand("gc Please provide a username.");
-            return;
+        } else {
+            SkyblockEssentials.sendCommand("p " + username);
+            player = username;
+            isWarpingOut = true;
+            check();
         }
-        SkyblockEssentials.sendCommand("p " + username);
-        player = username;
-        isWarpingOut = true;
-        check();
     }
 
     @SubscribeEvent
@@ -84,6 +82,7 @@ public class GuildCommands {
                 if(secondsPassed++ >= 60) {
                     if(!playedJoined) {
                         SkyblockEssentials.sendCommand("gc Warp out failed, " + player + " did not join party.");
+                        isWarpingOut = false;
                     }
                     break;
                 }
@@ -98,6 +97,7 @@ public class GuildCommands {
                     } catch (InterruptedException ignored) {}
                     SkyblockEssentials.sendCommand("gc Warp out successful.");
                     playedJoined = false;
+                    isWarpingOut = false;
                     break;
                 }
                 try {
