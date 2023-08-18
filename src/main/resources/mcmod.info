@@ -1,0 +1,18 @@
+[
+  {
+	"modid": "skyblockessentials",
+	"name": "SkyblockEssentials",
+	"description": "Some skyblock features made for convenience.",
+	"version": "0.7.0",
+	"mcversion": "1.8.9",
+	"url": "",
+	"updateUrl": "",
+	"authorList": [
+		"nobaboy"
+	],
+	"credits": "",
+	"logoFile": "",
+	"screenshots": [],
+	"dependencies": []
+  }
+]
