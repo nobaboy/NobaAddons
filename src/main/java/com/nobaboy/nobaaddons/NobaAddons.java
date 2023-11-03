@@ -8,6 +8,7 @@ import com.nobaboy.nobaaddons.features.chatcommands.GuildCommands;
 import com.nobaboy.nobaaddons.features.chatcommands.PartyCommands;
 import com.nobaboy.nobaaddons.features.dungeons.DungeonFeatures;
 import com.nobaboy.nobaaddons.features.misc.DisableMouse;
+import com.nobaboy.nobaaddons.features.misc.PrimalFearPrompt;
 import com.nobaboy.nobaaddons.features.notifiers.QOLNotifiers;
 import com.nobaboy.nobaaddons.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -33,7 +34,7 @@ import static net.minecraft.util.EnumChatFormatting.*;
 public class NobaAddons {
     public static final String MOD_ID = "nobaaddons";
     public static final String MOD_NAME = "NobaAddons";
-    public static final String MOD_VERSION = "0.8.4";
+    public static final String MOD_VERSION = "0.8.5";
     public static final String MOD_PREFIX = BLUE + "NobaAddons " + DARK_BLUE + "> " + AQUA;
     public static final String PLAYER_IGN = Minecraft.getMinecraft().getSession().getUsername();
 
@@ -66,6 +67,7 @@ public class NobaAddons {
         // Dungeons
         MinecraftForge.EVENT_BUS.register(new DungeonFeatures());
         // Misc
+        MinecraftForge.EVENT_BUS.register(new PrimalFearPrompt());
         MinecraftForge.EVENT_BUS.register(new QOLNotifiers());
         keyBinds.forEach(ClientRegistry::registerKeyBinding);
     }
@@ -85,16 +87,22 @@ public class NobaAddons {
         if(keyBinds.get(3).isPressed()) NobaAddons.sendCommand("enderchest");
         if(keyBinds.get(4).isPressed()) NobaAddons.sendCommand("storage");
         if(keyBinds.get(5).isPressed()) DisableMouse.onDisableMouse();
+        if(keyBinds.get(6).isPressed()) PrimalFearPrompt.onKey();
     }
 
-    List<KeyBinding> keyBinds = Arrays.asList(
+    public static List<KeyBinding> keyBinds = Arrays.asList(
             new KeyBinding("Pets Menu", Keyboard.KEY_V, MOD_NAME),
             new KeyBinding("Wardrobe", Keyboard.KEY_LMENU, MOD_NAME),
             new KeyBinding("Equipment Menu", Keyboard.KEY_H, MOD_NAME),
             new KeyBinding("Enderchest", Keyboard.KEY_NONE, MOD_NAME),
             new KeyBinding("Storage Menu", Keyboard.KEY_NONE, MOD_NAME),
-            new KeyBinding("Disable Mouse", Keyboard.KEY_J, MOD_NAME)
+            new KeyBinding("Disable Mouse", Keyboard.KEY_J, MOD_NAME),
+            new KeyBinding("Accept Phobia Contract", Keyboard.KEY_NONE, MOD_NAME)
     );
+
+    public static List<KeyBinding> getKeyBinds() {
+        return keyBinds;
+    }
 
     public static void sendCommand(String command) {
         command = (!NobaAddons.config.debugMode ? "/" : "") + command;

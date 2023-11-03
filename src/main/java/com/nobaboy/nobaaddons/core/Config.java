@@ -4,8 +4,11 @@ import com.nobaboy.nobaaddons.NobaAddons;
 import gg.essential.vigilance.Vigilant;
 import gg.essential.vigilance.data.Property;
 import gg.essential.vigilance.data.PropertyType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 
 import java.io.File;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class Config extends Vigilant {
@@ -173,6 +176,18 @@ public class Config extends Vigilant {
     )
     public int timeTilBloodCamp = 30;
 
+    // Misc
+
+    List<KeyBinding> keyBinds = NobaAddons.getKeyBinds();
+
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Press to accept Phobia Contract",
+            description = "Press the key bind you have set to accept the contract given by Commitment Phobia",
+            category = "Misc"
+    )
+    public boolean pressToAccept = false;
+
     // Dev
 
     @Property(
@@ -182,6 +197,8 @@ public class Config extends Vigilant {
             category = "Dev"
     )
     public boolean debugMode = false;
+
+
 
     public Config() {
         super(new File("./config/" + NobaAddons.MOD_ID + ".toml"),  NobaAddons.MOD_NAME + " (" + NobaAddons.MOD_VERSION + ")");

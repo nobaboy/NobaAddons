@@ -1,6 +1,7 @@
 package com.nobaboy.nobaaddons.features.notifiers;
 
 import com.nobaboy.nobaaddons.NobaAddons;
+import com.nobaboy.nobaaddons.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ public class QOLNotifiers {
 
     @SubscribeEvent
     public void onChatReceived(final ClientChatReceivedEvent e) {
+        if(!Utils.inSkyblock) return;
         String message = e.message.getUnformattedText().toLowerCase();
         if(message.startsWith("yum! you gain")) {
             if(!NobaAddons.config.cakesEatenNotifier) return;
@@ -31,7 +33,7 @@ public class QOLNotifiers {
 
     @SubscribeEvent
     public void onItemRightClick(PlayerInteractEvent event) {
-        if(!NobaAddons.config.corruptionTotemNotifier) return;
+        if(!NobaAddons.config.corruptionTotemNotifier || !Utils.inSkyblock) return;
         if(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.entityPlayer == Minecraft.getMinecraft().thePlayer) {
             ItemStack heldItem = event.entityPlayer.getHeldItem();
             if(heldItem != null && heldItem.getItem() == Items.banner) {

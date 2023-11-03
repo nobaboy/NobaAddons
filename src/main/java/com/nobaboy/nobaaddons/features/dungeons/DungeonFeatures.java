@@ -33,7 +33,8 @@ public class DungeonFeatures {
         @SuppressWarnings("BusyWait")
         @Override
         public void run() {
-            do {
+            while(announcing) {
+                announcing = false;
                 try {
                     sleep(1000L * NobaAddons.config.timeTilBloodCamp);
                 } catch(InterruptedException ignored) { break; }
@@ -44,8 +45,7 @@ public class DungeonFeatures {
                         sleep(100);
                     } catch(InterruptedException ignored) { break; }
                 }
-                announcing = false;
-            } while (true);
+            }
         }
     }
 
