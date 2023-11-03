@@ -1,18 +1,34 @@
-## Getting Started
+# Architectury Loom based template for 1.8.9 forge mods
 
-<u>**Installing Forge:**</u>
+**For other templates, do check out the [other branches of this repository](https://github.com/romangraef/Forge1.8.9Template/branches/all)**
 
-1. Run normal Minecraft 1.8.9 and once it reaches the title screen wait about 5 seconds and close it.
-2. Install Minecraft **1.8.9** forge from the [forge website](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.8.9.html)
-   - Once you click on the installer you'd like to download, a window will pop up. **Do not click on anything in the middle of your screen**; instead, click on the `skip ad` button towards the top right
-3. Open the installer, select install client, and click install
-4. When forge is installed, open the Minecraft launcher, go under the `installations tab`, click `new installation`, select the version release `1.8.9-forge1.8.9-11.15.1.xxxx`.
-5. Run this new installation that you just created. Once it reaches the title screen, wait about 5 seconds and close it.
+To get started, clone this repository.
+In `build.gradle.kts`, replace the values of `baseGroup` and `group` with your own names.
+In `settings.gradle.kts` change `rootProject.name` to your desired mod id.
 
-<u>**Installing SkyblockEssentials mod:**</u>
+The `com.example` package needs to be renamed to match the value of `baseGroup`.
 
-1. Download the latest mod [N/A]. If it says `this file may harm your computer`, click `allow anyways` as all java files will be flagged by Chrome.
-2. Add SkyblockEssentials mod:
-   - If you have java installed, double click the file, click `install`
-   - If not, press the windows key + R; type `%appdata%`; click on the folder named `.minecraft`; click on the folder named `mods` and drag the mods file in there.
-3. Open the Minecraft launcher and run your forge installation you set up earlier.
+If you don't want mixins (which allow for modifying vanilla code), then you can remove the references to mixins from
+the `build.gradle.kts` at the lines specified with comments and the `com.example.mixin` package.
+
+This project uses [DevAuth](https://github.com/DJtheRedstoner/DevAuth) per default, so you can log in using your real
+minecraft account. If you don't need that, you can remove it from the buildscript.
+
+To run the mod you will need two JDKs, one Java 17 jdk and one Java 1.8 jdk. You can download those
+from [here](https://adoptium.net/temurin/releases) (or use your own downloads).
+
+When you import your project into IntelliJ, you need to set the gradle jvm to the Java 17 JDK in the gradle tab, and the
+Project SDK to the Java 1.8 JDK. Then click on the sync button in IntelliJ, and it should create a run task
+called `Minecraft Client`. If it doesn't then try relaunching your IntelliJ. **Warning for Mac users**: You might have to remove the `-XStartOnFirstThread` vm argument from your run configuration. In the future, that should be handled by the plugin, but for now you'll probably have to do that manually.
+
+To export your project, run the `gradle build` task, and give other people the
+file `build/libs/<modid>-<version>.jar`. Ignore the jars in the `build/badjars` folder. Those are intermediary jars that
+are used by the build system but *do not work* in a normal forge installation.
+
+### For those who have not an attention span
+
+[![Youtube Tutorial](https://i.ytimg.com/vi/nWzHlomdCgc/maxresdefault.jpg)](https://www.youtube.com/watch?v=nWzHlomdCgc)
+
+## Licensing
+
+This template is licensed under the Unlicense (license copy present in this repository), or alternatively under [Creative Commons 1.0 Universal (CC0 1.0)](https://creativecommons.org/publicdomain/zero/1.0/), and all contributions and PR to this template are expected to follow this. This means your mod, based on this template can be licensed whatever way you want, and does not need to reference back to this template in any way.

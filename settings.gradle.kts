@@ -23,4 +23,4 @@ plugins {
 }
 
 
-rootProject.name = "SkyblockEssentials"
+rootProject.name = "NobaAddons"

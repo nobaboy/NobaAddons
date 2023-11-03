@@ -1,10 +1,6 @@
-import dev.architectury.pack200.java.Pack200Adapter
-import net.fabricmc.loom.task.RemapJarTask
-
 plugins {
     idea
     java
-    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.8.0"
     id("gg.essential.loom") version "0.10.0.+"
     id("dev.architectury.architectury-pack200") version "0.1.3"
     id("com.github.johnrengelman.shadow") version "8.1.1"
@@ -31,12 +27,12 @@ loom {
         }
     }
     forge {
-        pack200Provider.set(Pack200Adapter())
+        pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())
     }
 }
 
 sourceSets.main {
-    output.resourcesDir = file("$buildDir/classes/java/main")
+    output.setResourcesDir(sourceSets.main.flatMap { it.java.classesDirectory })
 }
 
 // Dependencies:
@@ -57,6 +53,7 @@ dependencies {
     minecraft("com.mojang:minecraft:1.8.9")
     mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
     forge("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9")
+
     shadowImpl("gg.essential:loader-launchwrapper:1.2.1")
     implementation("gg.essential:essential-1.8.9-forge:12132+g6e2bf4dc5") {
         exclude(module = "asm")
@@ -98,7 +95,7 @@ tasks.processResources {
 }
 
 
-val remapJar by tasks.named<RemapJarTask>("remapJar") {
+val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
     archiveClassifier.set("")
     from(tasks.shadowJar)
     input.set(tasks.shadowJar.get().archiveFile)

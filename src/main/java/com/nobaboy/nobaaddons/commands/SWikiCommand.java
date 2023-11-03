@@ -1,11 +1,9 @@
-package com.nobaboy.skyblockessentials.commands;
+package com.nobaboy.nobaaddons.commands;
 
-import com.nobaboy.skyblockessentials.SkyblockEssentials;
+import com.nobaboy.nobaaddons.NobaAddons;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
-import static net.minecraft.util.EnumChatFormatting.*;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.awt.*;
@@ -13,6 +11,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+
+import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
 
 public class SWikiCommand extends CommandBase {
     private boolean getWebsiteResponseCode(URL site) {
@@ -37,18 +37,17 @@ public class SWikiCommand extends CommandBase {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: /swiki <search query>";
+        return "/swiki <search query> - Allows you to search the Official Hypixel Wiki with any search query (if it exists)";
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         if(args.length < 1) {
-            sender.addChatMessage(new ChatComponentText(SkyblockEssentials.MOD_PREFIX + RED + "Missing search query."));
+            NobaAddons.addMessage(true, DARK_AQUA + "Missing search query.");
             return;
         }
         String instantWiki = WordUtils.capitalizeFully(String.join("_", args), '_');
-
-        sender.addChatMessage(new ChatComponentText(SkyblockEssentials.MOD_PREFIX + GREEN + "Opening wiki.hypixel.net with search query '" + String.join(" ", args) + "'."));
+        NobaAddons.addMessage(true, "Opening wiki.hypixel.net with search query '" + String.join(" ", args) + "'.");
         try {
             if(getWebsiteResponseCode(new URL("https://wiki.hypixel.net/" + instantWiki))) {
                 Desktop.getDesktop().browse(URI.create("https://wiki.hypixel.net/" + instantWiki));

@@ -1,15 +1,19 @@
-package com.nobaboy.skyblockessentials.commands;
+package com.nobaboy.nobaaddons.features.chatcommands;
 
-import com.nobaboy.skyblockessentials.SkyblockEssentials;
-import com.nobaboy.skyblockessentials.config.SkyblockEssentialsConfig;
+import com.google.common.collect.Lists;
+import com.nobaboy.nobaaddons.NobaAddons;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GuildCommands {
+    List<String> commands = Lists.newArrayList("help", "warpout");
+    static int cooldown = 0;
+
     static boolean isWarpingOut = false;
     static boolean playedJoined = false;
     static String player;
@@ -18,11 +22,11 @@ public class GuildCommands {
 
     @SubscribeEvent
     public void onChatReceived(final ClientChatReceivedEvent event) {
-        if (!SkyblockEssentialsConfig.guildCommands) return;
+        if (!NobaAddons.config.guildCommands) return;
         String receivedMessage = EnumChatFormatting.getTextWithoutFormattingCodes(event.message.getUnformattedText());
 
         if(isWarpingOut) {
-            if (receivedMessage.toLowerCase().contains(player + " joined the party")) {
+            if(receivedMessage.toLowerCase().contains(player + " joined the party")) {
                 playedJoined = true;
             }
         }
@@ -33,13 +37,16 @@ public class GuildCommands {
         String argument = chatMatcher.group("argument");
         String sender = chatMatcher.group("username");
 
+        if(!commands.contains(command.toLowerCase()) || cooldown > 0) return;
+        cooldown = 5;
+        startGuildCooldown();
         switch (command.toLowerCase()) {
             case "help":
-                if(SkyblockEssentials.PLAYER_IGN.equals(sender)) return; // Guild members command
-                SkyblockEssentials.sendCommand("gc SkyblockEssentials > !help, !warpout");
+                if(NobaAddons.PLAYER_IGN.equals(sender) || !NobaAddons.config.guildHelpCommand) return; // Guild members command
+                NobaAddons.sendCommand("gc NobaAddons > !help, !warpout");
                 break;
             case "warpout":
-                if(SkyblockEssentials.PLAYER_IGN.equals(sender)) return; // Guild members command
+                if(NobaAddons.PLAYER_IGN.equals(sender) || !NobaAddons.config.warpOutCommand) return; // Guild members command
                 warpOutCommand(argument);
                 break;
             default:
@@ -49,27 +56,14 @@ public class GuildCommands {
 
     public void warpOutCommand(String username) {
         if(isWarpingOut) {
-            SkyblockEssentials.sendCommand("gc Warp out is on cooldown, try again later!");
+            NobaAddons.sendCommand("gc Warp out is on cooldown, try again later!");
         } else if(username == null) {
-            SkyblockEssentials.sendCommand("gc Please provide a username.");
+            NobaAddons.sendCommand("gc Please provide a username.");
         } else {
-            SkyblockEssentials.sendCommand("p " + username);
+            NobaAddons.sendCommand("p " + username);
             player = username;
             isWarpingOut = true;
-            check();
-        }
-    }
-
-    @SubscribeEvent
-    public void onPlayerJoinParty(final ClientChatReceivedEvent event) {
-        if(!SkyblockEssentialsConfig.guildCommands) return;
-
-        String receivedMessage = EnumChatFormatting.getTextWithoutFormattingCodes(event.message.getUnformattedText());
-
-        if(isWarpingOut) {
-            if (receivedMessage.toLowerCase().contains(player + " joined the party")) {
-                playedJoined = true;
-            }
+            warpOutPlayer();
         }
     }
 
@@ -81,21 +75,21 @@ public class GuildCommands {
             while(true) {
                 if(secondsPassed++ >= 60) {
                     if(!playedJoined) {
-                        SkyblockEssentials.sendCommand("gc Warp out failed, " + player + " did not join party.");
+                        NobaAddons.sendCommand("gc Warp out failed, " + player + " did not join party.");
                         isWarpingOut = false;
                     }
                     break;
                 }
                 if(playedJoined) {
-                    SkyblockEssentials.sendCommand("p warp");
+                    NobaAddons.sendCommand("p warp");
                     try {
                         sleep(1000);
                     } catch (InterruptedException ignored) {}
-                    SkyblockEssentials.sendCommand("p disband");
+                    NobaAddons.sendCommand("p disband");
                     try {
                         sleep(1000);
                     } catch (InterruptedException ignored) {}
-                    SkyblockEssentials.sendCommand("gc Warp out successful.");
+                    NobaAddons.sendCommand("gc Warp out successful.");
                     playedJoined = false;
                     isWarpingOut = false;
                     break;
@@ -107,9 +101,28 @@ public class GuildCommands {
         }
     }
 
-    public void check() {
+    public void warpOutPlayer() {
         CheckIntervalThread thread = new CheckIntervalThread();
         thread.setName("warp-out-" + player);
+        thread.start();
+    }
+
+    private static class GuildCommandsCooldown extends Thread {
+        @SuppressWarnings("BusyWait")
+        @Override
+        public void run() {
+            do {
+                try {
+                    sleep(1000);
+                } catch (InterruptedException ignored) {
+                }
+            } while (--cooldown != 0);
+        }
+    }
+
+    public void startGuildCooldown() {
+        GuildCommandsCooldown thread = new GuildCommandsCooldown();
+        thread.setName("guild-command-cooldown");
         thread.start();
     }
 }
