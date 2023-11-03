@@ -3,7 +3,7 @@ package com.nobaboy.nobaaddons.features.dungeons;
 import com.nobaboy.nobaaddons.NobaAddons;
 import com.nobaboy.nobaaddons.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -14,8 +14,8 @@ public class DungeonFeatures {
 
     @SubscribeEvent
     public void onChatReceived(final ClientChatReceivedEvent event) {
-        if(!Utils.isOnHypixel() || !NobaAddons.config.bloodCampAfterTime || !Utils.inDungeons) return;
-        String receivedMessage = EnumChatFormatting.getTextWithoutFormattingCodes(event.message.getUnformattedText());
+        if(!NobaAddons.config.bloodCampAfterTime || !Utils.inDungeons) return;
+        String receivedMessage = StringUtils.stripControlCodes(event.message.getUnformattedText());
 
         if(announcing) return;
         if(receivedMessage.startsWith("A shiver runs down your spine...") || receivedMessage.startsWith("The BLOOD DOOR has been opened!")) {

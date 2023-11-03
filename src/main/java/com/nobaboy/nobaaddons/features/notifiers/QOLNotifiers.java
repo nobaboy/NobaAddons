@@ -5,7 +5,7 @@ import com.nobaboy.nobaaddons.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -37,7 +37,7 @@ public class QOLNotifiers {
         if(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.entityPlayer == Minecraft.getMinecraft().thePlayer) {
             ItemStack heldItem = event.entityPlayer.getHeldItem();
             if(heldItem != null && heldItem.getItem() == Items.banner) {
-                String heldItemName = EnumChatFormatting.getTextWithoutFormattingCodes(heldItem.getDisplayName());
+                String heldItemName = StringUtils.stripControlCodes(heldItem.getDisplayName());
                 if(heldItemName.equals("Totem of Corruption")) startTotemTimer();
             }
         }

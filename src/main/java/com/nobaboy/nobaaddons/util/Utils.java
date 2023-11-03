@@ -1,5 +1,6 @@
 package com.nobaboy.nobaaddons.util;
 
+import com.nobaboy.nobaaddons.NobaAddons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.scoreboard.ScoreObjective;
 
@@ -11,6 +12,7 @@ public class Utils {
     public static boolean inDungeons;
 
     public static boolean isOnHypixel() {
+        if(NobaAddons.config.debugMode) return true;
         try {
             if(mc != null && mc.theWorld != null && !mc.isSingleplayer()) {
                 if(mc.thePlayer != null && mc.thePlayer.getClientBrand() != null) {
@@ -31,6 +33,7 @@ public class Utils {
      * @author bowser0000
      */
     public static void checkForSkyblock() {
+        if(NobaAddons.config.debugMode) { inSkyblock = true; return; }
         if(isOnHypixel()) {
             ScoreObjective scoreboardObj = mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
             if(scoreboardObj != null) {
@@ -50,6 +53,7 @@ public class Utils {
      * @author bowser0000
      */
     public static void checkForDungeons() {
+        if(NobaAddons.config.debugMode) { inDungeons = true; return; }
         if(inSkyblock) {
             List<String> scoreboard = ScoreboardUtil.getSidebarLines();
             for(String s : scoreboard) {

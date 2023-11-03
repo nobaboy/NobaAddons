@@ -4,10 +4,9 @@ import com.google.common.collect.Lists;
 import com.nobaboy.nobaaddons.NobaAddons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -34,7 +33,7 @@ public class PartyCommands {
     @SubscribeEvent
     public void onChatReceived(final ClientChatReceivedEvent event) {
         if(!NobaAddons.config.partyCommands) return;
-        String receivedMessage = EnumChatFormatting.getTextWithoutFormattingCodes(event.message.getUnformattedText());
+        String receivedMessage = StringUtils.stripControlCodes(event.message.getUnformattedText());
 
         if(isWarpingUser) {
             if(receivedMessage.toLowerCase().contains(player + " is already in the party.")) {
@@ -90,7 +89,7 @@ public class PartyCommands {
     public void warpCommand(String time) {
         if(time == null) {
             NobaAddons.sendCommand("p warp");
-        } else if(!StringUtils.isNumeric(time)) {
+        } else if(!org.apache.commons.lang3.StringUtils.isNumeric(time)) {
             NobaAddons.sendCommand("pc First argument can either be empty or numbers.");
         } else if(parseInt(time) > 15 || parseInt(time) < 3) {
             NobaAddons.sendCommand("pc Warp delay has a max limit of 15 seconds and a lowest of 3.");

@@ -2,8 +2,7 @@ package com.nobaboy.nobaaddons.features.chatcommands;
 
 import com.google.common.collect.Lists;
 import com.nobaboy.nobaaddons.NobaAddons;
-import com.nobaboy.nobaaddons.util.Utils;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -24,7 +23,7 @@ public class GuildCommands {
     @SubscribeEvent
     public void onChatReceived(final ClientChatReceivedEvent event) {
         if (!NobaAddons.config.guildCommands) return;
-        String receivedMessage = EnumChatFormatting.getTextWithoutFormattingCodes(event.message.getUnformattedText());
+        String receivedMessage = StringUtils.stripControlCodes(event.message.getUnformattedText());
 
         if(isWarpingOut) {
             if(receivedMessage.toLowerCase().contains(player + " joined the party")) {

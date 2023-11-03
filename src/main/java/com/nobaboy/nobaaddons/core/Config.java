@@ -4,11 +4,8 @@ import com.nobaboy.nobaaddons.NobaAddons;
 import gg.essential.vigilance.Vigilant;
 import gg.essential.vigilance.data.Property;
 import gg.essential.vigilance.data.PropertyType;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 
 import java.io.File;
-import java.util.List;
 
 @SuppressWarnings("unused")
 public class Config extends Vigilant {
@@ -191,7 +188,7 @@ public class Config extends Vigilant {
     @Property(
             type = PropertyType.SWITCH,
             name = "Debug Mode",
-            description = "*Currently only removes the slash from commands when turned on*",
+            description = "Only turn this on if you're testing something while editing code.",
             category = "Dev"
     )
     public boolean debugMode = false;

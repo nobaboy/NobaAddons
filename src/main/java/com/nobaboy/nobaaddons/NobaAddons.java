@@ -100,10 +100,6 @@ public class NobaAddons {
             new KeyBinding("Accept Phobia Contract", Keyboard.KEY_NONE, MOD_NAME)
     );
 
-    public static List<KeyBinding> getKeyBinds() {
-        return keyBinds;
-    }
-
     public static void sendCommand(String command) {
         command = (!NobaAddons.config.debugMode ? "/" : "") + command;
         mc.thePlayer.sendChatMessage(command);
