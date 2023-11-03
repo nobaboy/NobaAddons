@@ -178,8 +178,6 @@ public class Config extends Vigilant {
 
     // Misc
 
-    List<KeyBinding> keyBinds = NobaAddons.getKeyBinds();
-
     @Property(
             type = PropertyType.SWITCH,
             name = "Press to accept Phobia Contract",
