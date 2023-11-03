@@ -57,7 +57,7 @@ public class PrimalFearPrompt {
     }
 
     public static void onKey() {
-        if(!NobaAddons.config.pressToAccept || !Utils.inSkyblock || System.currentTimeMillis() / 1000 - lastPhobiaTime > 10) return;
+        if(!canOpen || !NobaAddons.config.pressToAccept || !Utils.inSkyblock || System.currentTimeMillis() / 1000 - lastPhobiaTime > 10) return;
         NobaAddons.sendCommand(lastPhobiaCommand);
         canOpen = false;
     }
