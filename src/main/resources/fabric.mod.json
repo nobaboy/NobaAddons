@@ -1,28 +1,28 @@
 {
   "schemaVersion": 1,
-  "id": "fabricmodtemplate",
+  "id": "nobaaddons",
   "version": "${version}",
-  "name": "FabricModTemplate",
+  "name": "NobaAddons",
   "description": "",
   "authors": [
     "nobaboy"
   ],
   "contact": {
-    "sources": "https://github.com/nobaboy/FabricModTemplate",
-    "issues": "https://github.com/nobaboy/FabricModTemplate/issues"
+    "sources": "https://github.com/nobaboy/NobaAddons",
+    "issues": "https://github.com/nobaboy/NobaAddons/issues"
   },
   "license": "",
   "environment": "client",
   "entrypoints": {
     "client": [
       {
-        "value": "me.nobaboy.fabricmodtemplate.FabricModTemplate",
+        "value": "me.nobaboy.nobaaddons.NobaAddons",
         "adapter": "kotlin"
       }
     ]
   },
   "mixins": [
-    "fabricmodtemplate.mixins.json"
+    "nobaaddons.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.5",

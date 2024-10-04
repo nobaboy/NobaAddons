@@ -23,4 +23,4 @@ extensions.configure<StonecutterSettings> {
     create(rootProject)
 }
 
-rootProject.name = "FabricModTemplate"
+rootProject.name = "nobaaddons"

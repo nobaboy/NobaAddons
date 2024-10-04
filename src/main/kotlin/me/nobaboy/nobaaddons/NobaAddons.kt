@@ -1,4 +1,4 @@
-package me.nobaboy.fabricmodtemplate
+package me.nobaboy.nobaaddons
 
 import com.mojang.logging.LogUtils
 import kotlinx.coroutines.*
@@ -7,13 +7,13 @@ import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import org.slf4j.Logger
 
-object FabricModTemplate : ClientModInitializer {
+object NobaAddons : ClientModInitializer {
     @JvmField val LOGGER: Logger = LogUtils.getLogger()
     val PREFIX: MutableText = Text.literal("")
 
     private val supervisorJob = SupervisorJob()
     private val coroutineScope = CoroutineScope(
-        CoroutineName("FabricModTemplate") + supervisorJob
+        CoroutineName("NobaAddons") + supervisorJob
     )
 
     override fun onInitializeClient() {
