@@ -1,0 +1,44 @@
+name: Initialize Template Repository
+on:
+  - push
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    name: Initialize Repository
+    runs-on: ubuntu-latest
+    if: github.event.repository.name != 'FabricModTemplate'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Make make-my-own.sh Executable
+        run: chmod +x make-my-own.sh
+
+      - name: Initialize Repository
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          owner=$(echo $GITHUB_REPOSITORY | cut -d/ -f1 | tr '[:upper:]' '[:lower:]')
+          name=$(echo $GITHUB_REPOSITORY | cut -d/ -f2 | tr '[:upper:]' '[:lower:]' | tr -d "-" | tr -d ".")
+          pack_name="me.${owner,,}.${name,,}"
+          proj_name="$(echo $GITHUB_REPOSITORY | cut -d/ -f2)"
+          modid="$(echo $name | sed 's/[^a-z]//g')"
+          ./make-my-own.sh "$owner" "$pack_name" "$proj_name" "$modid"
+          git add .
+          git commit -F- <<EOF
+          Initialize Repository
+
+          Set project owner to $project_owner
+          Set package name to $pack_name
+          Set project name to $proj_name
+          Set modid to $modid
+          EOF
+
+      - name: Push Changes
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+          branch: ${{ github.ref }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
