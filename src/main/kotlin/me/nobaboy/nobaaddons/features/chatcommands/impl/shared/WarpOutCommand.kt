@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.chatcommands.impl.shared
 
 import me.nobaboy.nobaaddons.features.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chatcommands.IChatCommand
-import me.nobaboy.nobaaddons.utils.ChatUtils
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 
 class WarpOutCommand(private var command: String, private val enabled: () -> Boolean) : IChatCommand {
     override val name: String = "warpout"

@@ -19,7 +19,7 @@ class NobaMainScreen : Screen(TITLE) {
         private const val BUTTON_WIDTH = 200
         private const val BUTTON_WIDTH_HALF = 96
 
-        private const val GITHUB_ROOT = "https://github.com/nobaboy/NobaAddons/tree/1.21"
+        private const val GITHUB_ROOT = "https://github.com/nobaboy/NobaAddons"
 
         private val TITLE = Text.translatable("nobaaddons.name")
         private val VERSION = "v${NobaAddons.VERSION}"

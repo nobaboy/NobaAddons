@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chatcommands.IChatCommand
-import me.nobaboy.nobaaddons.utils.HypixelCommands
+import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import org.apache.commons.lang3.StringUtils
 import kotlin.time.Duration.Companion.seconds
 

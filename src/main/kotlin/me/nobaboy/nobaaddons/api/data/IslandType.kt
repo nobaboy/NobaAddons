@@ -1,12 +1,13 @@
-package me.nobaboy.nobaaddons.utils.data
+package me.nobaboy.nobaaddons.api.data
 
 enum class IslandType(val apiName: String?) {
     PRIVATE_ISLAND("dynamic"),
     GARDEN("garden"),
     HUB("hub"),
 
-    DUNGEON_HUB("dungeon_hub"),
-    DUNGEONS("dungeons"),
+    FARMING_ISLANDS("farming_1"),
+
+    THE_PARK("foraging_1"),
 
     SPIDERS_DEN("combat_1"),
     THE_END("combat_3"),
@@ -19,9 +20,8 @@ enum class IslandType(val apiName: String?) {
     MINESHAFT("mineshaft"),
     CRYSTAL_HOLLOWS("crystal_hollows"),
 
-    FARMING_ISLANDS("farming_1"),
-
-    THE_PARK("foraging_1"),
+    DUNGEON_HUB("dungeon_hub"),
+    DUNGEONS("dungeons"),
 
     JERRYS_WORKSHOP("winter"),
     DARK_AUCTION("dark_action"),

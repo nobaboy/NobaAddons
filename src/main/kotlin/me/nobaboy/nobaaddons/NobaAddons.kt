@@ -2,17 +2,18 @@ package me.nobaboy.nobaaddons
 
 import com.mojang.logging.LogUtils
 import kotlinx.coroutines.*
+import me.nobaboy.nobaaddons.api.DungeonAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
-import me.nobaboy.nobaaddons.utils.ChatUtils
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.SkyblockUtils
+import me.nobaboy.nobaaddons.api.SkyblockAPI
+import me.nobaboy.nobaaddons.features.chat.filter.dungeon.PickupObtainFilter
 import net.fabricmc.api.ClientModInitializer
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.loader.api.FabricLoader
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
@@ -57,6 +58,7 @@ class NobaAddons : ClientModInitializer {
 
         // Apis/Utils
         PartyAPI.init()
+        DungeonAPI.init()
         Scheduler.schedule(20, repeat = true, ChatUtils::tickCommandQueue)
 
         // Commands
@@ -67,7 +69,10 @@ class NobaAddons : ClientModInitializer {
         PartyCommands.init()
         GuildCommands.init()
 
+        // Chat Filters
+        PickupObtainFilter.init()
+
         HypixelModAPI.getInstance().subscribeToEventPacket(ClientboundLocationPacket::class.java)
-        HypixelModAPI.getInstance().createHandler(ClientboundLocationPacket::class.java, SkyblockUtils::onLocationPacket)
+        HypixelModAPI.getInstance().createHandler(ClientboundLocationPacket::class.java, SkyblockAPI::onLocationPacket)
     }
 }

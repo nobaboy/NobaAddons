@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.config.impl
+package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
 

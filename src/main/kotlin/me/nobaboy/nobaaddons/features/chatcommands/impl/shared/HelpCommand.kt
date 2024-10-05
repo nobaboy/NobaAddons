@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.chatcommands.impl.shared
 import me.nobaboy.nobaaddons.features.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chatcommands.IChatCommand
-import me.nobaboy.nobaaddons.utils.ChatUtils
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 
 class HelpCommand(
     private val manager: ChatCommandManager,

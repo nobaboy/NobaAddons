@@ -15,10 +15,10 @@ object Scheduler {
         tasks.add(ScheduledTask(task, delay, repeat))
     }
 
-    fun tick() {
-        tasks.asSequence()
-            .filter { it.ticksRemaining-- <= 0 }
-            .forEach { it.run() }
+    private fun tick() {
+        tasks.filter {
+            it.ticksRemaining-- <= 0
+        }.forEach { it.run() }
     }
 
     private class ScheduledTask(val task: Runnable, val ticks: Int, val repeat: Boolean = false): Runnable {

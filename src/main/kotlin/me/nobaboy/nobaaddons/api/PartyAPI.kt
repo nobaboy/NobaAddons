@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.api
 
 import com.mojang.brigadier.Command
-import me.nobaboy.nobaaddons.utils.ChatUtils
-import me.nobaboy.nobaaddons.utils.HypixelCommands
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.StringUtils.clean
@@ -87,7 +87,6 @@ object PartyAPI {
 
     fun listMembers(): Int {
         val partySize = partyMembers.size
-        println(partySize)
         if (partySize == 0) {
             ChatUtils.addMessage("Party seems to empty...")
         } else {

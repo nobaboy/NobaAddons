@@ -5,6 +5,7 @@ import dev.isxander.yacl3.api.YetAnotherConfigLib
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.config.categories.ChatCategory
 import me.nobaboy.nobaaddons.config.categories.ChatCommandsCategory
 import me.nobaboy.nobaaddons.config.categories.GeneralCategory
 import net.fabricmc.loader.api.FabricLoader
@@ -24,7 +25,8 @@ object NobaConfigManager {
                 .setPath(CONFIG_DIR)
                 .setJson5(false)
                 .appendGsonBuilder { builder ->
-                    builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                    builder
+                        .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                         .registerTypeHierarchyAdapter(Identifier::class.java, Identifier.Serializer())
                 }
                 .build()
@@ -33,26 +35,26 @@ object NobaConfigManager {
 
     fun get() = HANDLER.instance()
 
-    fun getConfigScreen(parent: Screen?): Screen {
-        return YetAnotherConfigLib.create(HANDLER) { defaults, config, builder -> builder
-            .title(Text.translatable("nobaaddons.name"))
-            .category(GeneralCategory.create(defaults, config))
-//            .category(VisualsCategory.create(defaults, config))
-            .category(ChatCommandsCategory.create(defaults, config))
-//            .category(FiltersCategory.create(defaults, config))
-//            .category(MiscCategory.create(defaults, config))
-        }.generateScreen(parent)
-    }
-
-    fun save() {
-        HANDLER.save()
-    }
-
     fun init() {
         if (StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE).callerClass != NobaAddons::class.java) {
             throw RuntimeException("NobaAddons: Config initialized from an illegal place!")
         }
 
         HANDLER.load()
+    }
+
+    fun save() {
+        HANDLER.save()
+    }
+
+    fun getConfigScreen(parent: Screen?): Screen {
+        return YetAnotherConfigLib.create(HANDLER) { defaults, config, builder -> builder
+            .title(Text.translatable("nobaaddons.name"))
+            .category(GeneralCategory.create(defaults, config))
+//            .category(VisualsCategory.create(defaults, config))
+            .category(ChatCategory.create(defaults, config))
+            .category(ChatCommandsCategory.create(defaults, config))
+//            .category(MiscCategory.create(defaults, config))
+        }.generateScreen(parent)
     }
 }
