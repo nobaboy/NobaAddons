@@ -53,12 +53,11 @@ class NobaAddons : ClientModInitializer {
     }
 
     override fun onInitializeClient() {
-        ClientTickEvents.END_CLIENT_TICK.register(this::tick)
         NobaConfigManager.init()
 
         // Apis/Utils
         PartyAPI.init()
-        Scheduler.INSTANCE.scheduleRecurring(ChatUtils::tickCommandQueue, 20)
+        Scheduler.schedule(20, repeat = true, ChatUtils::tickCommandQueue)
 
         // Commands
         NobaCommand.init()
@@ -70,9 +69,5 @@ class NobaAddons : ClientModInitializer {
 
         HypixelModAPI.getInstance().subscribeToEventPacket(ClientboundLocationPacket::class.java)
         HypixelModAPI.getInstance().createHandler(ClientboundLocationPacket::class.java, SkyblockUtils::onLocationPacket)
-    }
-
-    fun tick(client: MinecraftClient) {
-        Scheduler.INSTANCE.tick()
     }
 }
