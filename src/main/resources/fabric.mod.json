@@ -8,8 +8,8 @@
     "nobaboy"
   ],
   "contact": {
-    "sources": "https://github.com/nobaboy/NobaAddons",
-    "issues": "https://github.com/nobaboy/NobaAddons/issues"
+    "sources": "https://github.com/nobaboy/NobaAddons/tree/1.21",
+    "issues": "https://github.com/nobaboy/NobaAddons/tree/1.21/issues"
   },
   "license": "",
   "environment": "client",
@@ -19,15 +19,20 @@
         "value": "me.nobaboy.nobaaddons.NobaAddons",
         "adapter": "kotlin"
       }
+    ],
+    "modmenu": [
+      "me.nobaboy.nobaaddons.config.ModMenuImpl"
     ]
   },
-  "mixins": [
-    "nobaaddons.mixins.json"
-  ],
   "depends": {
+    "minecraft": "$mcdep",
     "fabricloader": ">=0.16.5",
     "fabric-api": "*",
     "fabric-language-kotlin": "*",
-    "minecraft": "$mcdep"
+    "hypixel-mod-api": ">=1.0.1"
+  },
+  "recommends": {
+    "yet_another_config_lib_v3": "*",
+    "modmenu": "*"
   }
 }

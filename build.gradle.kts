@@ -24,8 +24,18 @@ group = mod.group
 base { archivesName.set(mod.id) }
 
 repositories {
-    // If you don't want DevAuth remove this line
-    maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+    maven("https://maven.isxander.dev/releases") // YACL
+    maven("https://maven.terraformersmc.com/") // ModMenu
+    maven("https://repo.hypixel.net/repository/Hypixel/") // Hypixel Mod API
+    maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
+    exclusiveContent {
+        forRepository {
+            maven("https://api.modrinth.com/maven")
+        }
+        filter {
+            includeGroup("maven.modrinth")
+        }
+    }
 }
 
 dependencies {
@@ -35,22 +45,20 @@ dependencies {
 
     modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+${mcVersion}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${deps["kotlin"]}")
-    vineflowerDecompilerClasspath("org.vineflower:vineflower:1.10.1")
 
-    // If you don't want DevAuth remove this line
-    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}")
+    modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}+${mcVersion}-fabric") // YACL
+    modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
+
+    // Hypixel Mod API
+    implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
+    modRuntimeOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}+mc${mcVersion}")
+
+    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
 }
 
 loom {
-    decompilers {
-        get("vineflower").apply { // Adds names to lambdas - useful for mixins
-            options.put("mark-corresponding-synthetics", "1")
-        }
-    }
-
     runConfigs.all {
         ideConfigGenerated(stonecutter.current.isActive)
-        vmArgs("-Dmixin.debug.export=true")
         runDir = "../../run"
     }
 }
