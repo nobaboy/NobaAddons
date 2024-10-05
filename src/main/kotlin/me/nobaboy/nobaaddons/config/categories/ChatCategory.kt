@@ -25,26 +25,19 @@ object ChatCategory {
 
                 .option(Option.createBuilder<ChatFilterOption>()
                     .name(Text.translatable("config.chat.filter.blessingMessage"))
-                    .description(OptionDescription.of(Text.translatable("config.chat.filter.blessingMessage.tooltip")))
                     .binding(defaults.chat.filter.blessingMessage, config.chat.filter::blessingMessage) { config.chat.filter.blessingMessage = it }
                     .controller(NobaConfigUtils::createCyclingController)
                     .build())
 
                 .option(Option.createBuilder<ChatFilterOption>()
                     .name(Text.translatable("config.chat.filter.healerOrbMessage"))
-                    .description(OptionDescription.of(Text.translatable("config.chat.filter.healerOrbMessage.tooltip")))
                     .binding(defaults.chat.filter.healerOrbMessage, config.chat.filter::healerOrbMessage) { config.chat.filter.healerOrbMessage = it }
                     .controller(NobaConfigUtils::createCyclingController)
                     .build())
 
                 .option(Option.createBuilder<Boolean>()
                     .name(Text.translatable("config.chat.filter.pickupObtainMessage"))
-                    .description(OptionDescription.of(Text.translatable("config.chat.filter.pickupObtainMessage.tooltip")))
-                    .binding(
-                        defaults.chat.filter.pickupObtainMessage,
-                        { config.chat.filter.pickupObtainMessage },
-                        { newValue -> config.chat.filter.pickupObtainMessage = newValue }
-                    )
+                    .binding(defaults.chat.filter.pickupObtainMessage, config.chat.filter::pickupObtainMessage) { config.chat.filter.pickupObtainMessage = it }
                     .controller(NobaConfigUtils::createBooleanController)
                     .build())
 

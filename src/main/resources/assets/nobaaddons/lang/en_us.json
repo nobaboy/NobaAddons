@@ -11,6 +11,16 @@
   "config.general.open": "Open",
   "config.general.main": "NobaAddons Main Screen",
 
+  "config.chat": "Chat",
+  "config.chat.filter": "Filters",
+  "config.chat.filter.tipMessage": "Tip Message",
+  "config.chat.filter.tipMessage.tooltip": "Toggles the messages sent when you tip a player or are tipped by someone else",
+  "config.chat.filter.blessingMessage": "Blessing Message",
+  "config.chat.filter.healerOrbMessage": "Healer Orb Message",
+  "config.chat.filter.pickupObtainMessage": "Pickup/Obtain Message",
+  "config.chat.filter.allow5050ItemMessage": "Allow 50/50 Item Message",
+  "config.chat.filter.allow5050ItemMessage.tooltip": "Allow obtain messages to get sent if you have the Pickup/Obtain messages turned off",
+
   "config.chatCommands": "Chat Commands",
   "config.chatCommands.dm": "DM Commands",
   "config.chatCommands.dm.enabled": "Enabled",
