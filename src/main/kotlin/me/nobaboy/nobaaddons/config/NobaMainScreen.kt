@@ -35,7 +35,7 @@ class NobaMainScreen : Screen(TITLE) {
         layout = ThreePartsLayoutWidget(this, 150, 100)
 
         val gridWidget = layout!!.addBody(GridWidget()).setSpacing(SPACING)
-        gridWidget.mainPositioner.alignHorizontalCenter().relativeX(100.0f)
+        gridWidget.mainPositioner.alignHorizontalCenter()
         val adder = gridWidget.createAdder(2)
 
         adder.add(ButtonWidget.builder(CONFIGURATION_TEXT) { openConfig() }.width(BUTTON_WIDTH).build(), 2)
