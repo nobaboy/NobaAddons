@@ -216,11 +216,11 @@ object PartyAPI {
     }
 
     private fun getPartyList() {
-        Scheduler.INSTANCE.schedule({
+        Scheduler.schedule(5 * 20) {
             if (!Utils.onHypixel) return@schedule
             HypixelCommands.partyList()
             gotList = true
-        }, 5 * 20)
+        }
     }
 
     private fun addPlayersToList(isPartyLeader: Boolean, names: String) {
