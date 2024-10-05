@@ -1,4 +1,4 @@
 package me.nobaboy.nobaaddons.config.configs
 
-object GeneralConfig {
+class GeneralConfig {
 }

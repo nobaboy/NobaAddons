@@ -21,7 +21,7 @@ enum class IslandType(val apiName: String?) {
     CRYSTAL_HOLLOWS("crystal_hollows"),
 
     DUNGEON_HUB("dungeon_hub"),
-    DUNGEONS("dungeons"),
+    DUNGEONS("dungeon"),
 
     JERRYS_WORKSHOP("winter"),
     DARK_AUCTION("dark_action"),

@@ -14,17 +14,16 @@ object PickupObtainFilter {
     private val itemPickupPattern: Pattern = Pattern.compile("A (?<item>[A-z ]+) was picked up!")
     private val playerObtainPattern: Pattern = Pattern.compile("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!")
 
-    private val ignoredItems = listOf("Superboom TNT", "Revive Stone", "Beating Heart", "Vitamin Death", "Optical Lens")
+    private val ignoredItems = listOf("Superboom TNT", "Revive Stone", "Premium Flesh", "Beating Heart", "Vitamin Death", "Optical Lens")
     private val allowedItems = listOf("Wither Key", "Blood Key")
 
     fun init() {
         ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ ->
-            return@register this.processMessage(message.string.clean())
+            return@register processMessage(message.string.clean())
         }
     }
 
     private fun processMessage(message: String): Boolean {
-        print(isEnabled())
         if (!isEnabled()) return true
 
         itemPickupPattern.matchMatcher(message) {
@@ -44,5 +43,7 @@ object PickupObtainFilter {
         return true
     }
 
-    private fun isEnabled() = IslandType.DUNGEONS.inIsland() && config.pickupObtainMessage
+    private fun isEnabled(): Boolean {
+        return IslandType.DUNGEONS.inIsland() && config.pickupObtainMessage
+    }
 }

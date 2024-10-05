@@ -4,15 +4,17 @@ import com.mojang.logging.LogUtils
 import kotlinx.coroutines.*
 import me.nobaboy.nobaaddons.api.DungeonAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
+import me.nobaboy.nobaaddons.api.SkyblockAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.features.chat.filter.dungeon.BlessingFilter
+import me.nobaboy.nobaaddons.features.chat.filter.dungeon.HealerOrbFilter
+import me.nobaboy.nobaaddons.features.chat.filter.dungeon.PickupObtainFilter
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.api.SkyblockAPI
-import me.nobaboy.nobaaddons.features.chat.filter.dungeon.PickupObtainFilter
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.hypixel.modapi.HypixelModAPI
@@ -70,6 +72,8 @@ class NobaAddons : ClientModInitializer {
         GuildCommands.init()
 
         // Chat Filters
+        BlessingFilter.init()
+        HealerOrbFilter.init()
         PickupObtainFilter.init()
 
         HypixelModAPI.getInstance().subscribeToEventPacket(ClientboundLocationPacket::class.java)

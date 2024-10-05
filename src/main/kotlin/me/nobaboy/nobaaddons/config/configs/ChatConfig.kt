@@ -3,8 +3,7 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.isxander.yacl3.config.v2.api.SerialEntry
 import me.nobaboy.nobaaddons.config.impl.ChatFilterOption
 
-object ChatConfig {
-
+class ChatConfig {
     @SerialEntry
     val filter: Filter = Filter()
 

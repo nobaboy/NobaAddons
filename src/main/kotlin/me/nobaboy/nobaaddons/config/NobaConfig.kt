@@ -8,14 +8,14 @@ class NobaConfig {
     val version: Int = NobaConfigManager.CONFIG_VERSION
 
     @SerialEntry
-    val general: GeneralConfig = GeneralConfig
+    val general: GeneralConfig = GeneralConfig()
 
 //    @SerialEntry
 //    val visuals: visualsConfig = VisualsConfig
 
     @SerialEntry
-    val chat: ChatConfig = ChatConfig
+    val chat: ChatConfig = ChatConfig()
 
     @SerialEntry
-    val chatCommands: ChatCommandsConfig = ChatCommandsConfig
+    val chatCommands: ChatCommandsConfig = ChatCommandsConfig()
 }
