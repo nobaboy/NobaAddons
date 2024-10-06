@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.api.DungeonAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.SkyblockAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
+import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chat.filter.dungeon.BlessingFilter
 import me.nobaboy.nobaaddons.features.chat.filter.dungeon.HealerOrbFilter
@@ -60,6 +61,7 @@ object NobaAddons : ClientModInitializer {
 
 		// Commands
 		NobaCommand.init()
+		SWikiCommand.init()
 
 		// Chat Commands
 		DMCommands.init()

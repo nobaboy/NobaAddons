@@ -68,6 +68,7 @@ object BlessingFilter : IFilter {
 	private fun compileBlessingMessage() = buildText {
 		var previousValue: String? = null
 
+		formatted(Formatting.GRAY)
 		append(blessingType.toText())
 		append(" ")
 		stats.forEachIndexed { i, stat ->
@@ -84,7 +85,7 @@ object BlessingFilter : IFilter {
 				else -> ", "
 			})
 		}
-	}.formatted(Formatting.GRAY)
+	}
 
 	private class Stat(val stat: StatType, val value: String)
 

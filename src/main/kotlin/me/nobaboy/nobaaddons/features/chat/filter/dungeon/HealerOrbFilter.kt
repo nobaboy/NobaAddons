@@ -60,7 +60,7 @@ object HealerOrbFilter : IFilter {
 		duration: String
 	) = buildText {
 		formatted(Formatting.GRAY)
-		append("HEALER ORB! ".toText().formatted(Formatting.YELLOW).formatted(Formatting.BOLD))
+		append("HEALER ORB! ".toText().formatted(Formatting.YELLOW, Formatting.BOLD))
 		if (health.formatDouble() > 0.0) {
 			append("+$health ")
 			append("❤ Health".toText().formatted(Formatting.RED))
