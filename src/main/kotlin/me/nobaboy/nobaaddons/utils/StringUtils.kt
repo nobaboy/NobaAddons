@@ -9,7 +9,7 @@ object StringUtils {
 	fun String.startsWith(list: List<String>): Boolean = list.any { this.startsWith(it) }
 
 	fun String.capitalizeFirstLetters(): String {
-		return this.split(" ").joinToString("") {
+		return this.split(" ").joinToString(" ") {
 			if(it.contains("/")) {
 				it.split("/").joinToString("/") { word ->
 					word.replaceFirstChar { firstChar -> firstChar.uppercase() }
