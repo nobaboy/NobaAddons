@@ -26,34 +26,23 @@ import net.minecraft.text.Text
 import org.slf4j.Logger
 import java.nio.file.Path
 
-class NobaAddons : ClientModInitializer {
-    companion object {
-        const val MOD_ID = "nobaaddons"
-        val NOBAADDONS_MOD = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow()
-        val VERSION = NOBAADDONS_MOD.metadata.version.friendlyString
+object NobaAddons : ClientModInitializer {
+    const val MOD_ID = "nobaaddons"
+    val VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
 
-        val PREFIX: MutableText
-            get() = Text.empty()
-                .append(Text.translatable("nobaaddons.name")
-                .append(Text.literal(" > ")).setStyle(
-                    Style.EMPTY.withColor(0x007AFF).withBold(true))
-                )
+    val PREFIX: MutableText
+        get() = Text.empty()
+            .append(Text.translatable("nobaaddons.name")
+            .append(Text.literal(" > ")).setStyle(
+                Style.EMPTY.withColor(0x007AFF).withBold(true))
+            )
 
-        val LOGGER: Logger = LogUtils.getLogger()
+    val LOGGER: Logger = LogUtils.getLogger()
+    val mc: MinecraftClient get() = MinecraftClient.getInstance()
+    val modDir: Path get() = FabricLoader.getInstance().configDir
 
-        val mc: MinecraftClient by lazy {
-            MinecraftClient.getInstance()
-        }
-
-        val modDir: Path by lazy {
-            FabricLoader.getInstance().configDir
-        }
-
-        val supervisorJob = SupervisorJob()
-        val coroutineScope = CoroutineScope(
-            CoroutineName(MOD_ID) + supervisorJob
-        )
-    }
+    val supervisorJob = SupervisorJob()
+    val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
 
     override fun onInitializeClient() {
         NobaConfigManager.init()
