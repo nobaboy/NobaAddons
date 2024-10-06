@@ -1,5 +1,13 @@
 {
   "nobaaddons.name": "NobaAddons",
+
+  "nobaaddons.key.pets": "Pets Menu",
+  "nobaaddons.key.wardrobe": "Wardrobe Menu",
+  "nobaaddons.key.equipment": "Equipment",
+  "nobaaddons.key.enderchest": "Ender Chest",
+  "nobaaddons.key.storage": "Storage Menu",
+  "nobaaddons.key.refillPearls": "Refill Pearls",
+
   "nobaaddons.config.open": "Open Config",
   "nobaaddons.config.edit": "HUD Editor",
   "nobaaddons.config.github": "GitHub",

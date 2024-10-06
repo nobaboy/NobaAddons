@@ -10,15 +10,13 @@ object ChatUtils {
 	private var lastSendTimestamp = Timestamp.distantPast()
 	private val commandQueue: Queue<String> = LinkedList()
 
+	// FIXME: I feel like it's waiting 1 second before it actually sends a command rather than adding it to a queue
 	fun tickCommandQueue() {
 		NobaAddons.mc.player ?: return commandQueue.clear()
 		sendCommand(commandQueue.poll() ?: return)
 		lastSendTimestamp = Timestamp.currentTime()
 	}
 
-	private fun sendCommand(command: String) {
-		NobaAddons.mc.networkHandler?.sendCommand(command)
-	}
 	private fun send(message: String) {
 		NobaAddons.mc.networkHandler?.sendChatMessage(message)
 	}
@@ -26,6 +24,14 @@ object ChatUtils {
 		NobaAddons.mc.player?.sendMessage(message, overlay)
 	}
 
+	/**
+	 * Ideally use the command queuing system over sending the command instantly but if
+	 * you must then no one's stopping you.
+	 * @see queueCommand
+	 */
+	fun sendCommand(command: String) {
+		NobaAddons.mc.networkHandler?.sendCommand(command)
+	}
 	fun queueCommand(message: String) {
 		commandQueue.add(message)
 	}
