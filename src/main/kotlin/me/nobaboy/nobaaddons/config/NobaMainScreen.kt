@@ -23,12 +23,12 @@ class NobaMainScreen : Screen(TITLE) {
 
 		private val TITLE = Text.translatable("nobaaddons.name")
 		private val VERSION = "v${NobaAddons.VERSION}"
-		private val CONFIGURATION_TEXT = Text.translatable("config.open")
-		private val EDIT_LOCATIONS_TEXT = Text.translatable("config.edit")
-		private val SOURCE_TEXT = Text.translatable("config.github")
-		private val ISSUES_TEXT = Text.translatable("config.issues")
-		private val MODRINTH_TEXT = Text.translatable("config.modrinth")
-		private val LEGAL_TEXT = Text.translatable("config.legal")
+		private val CONFIGURATION_TEXT = Text.translatable("nobaaddons.config.open")
+		private val EDIT_LOCATIONS_TEXT = Text.translatable("nobaaddons.config.edit")
+		private val SOURCE_TEXT = Text.translatable("nobaaddons.config.github")
+		private val ISSUES_TEXT = Text.translatable("nobaaddons.config.issues")
+		private val MODRINTH_TEXT = Text.translatable("nobaaddons.config.modrinth")
+		private val LEGAL_TEXT = Text.translatable("nobaaddons.config.legal")
 	}
 
 	override fun init() {

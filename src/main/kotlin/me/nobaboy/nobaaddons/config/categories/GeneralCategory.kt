@@ -13,18 +13,18 @@ import net.minecraft.text.Text
 object GeneralCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
 		return ConfigCategory.createBuilder()
-			.name(Text.translatable("config.general"))
+			.name(Text.translatable("nobaaddons.config.general"))
 			.option(ButtonOption.createBuilder()
-				.name(Text.translatable("config.general.main"))
-				.text(Text.translatable("config.general.open"))
+				.name(Text.translatable("nobaaddons.config.general.main"))
+				.text(Text.translatable("nobaaddons.config.general.open"))
 				.action { screen, option ->
 					MinecraftClient.getInstance().setScreen(NobaMainScreen())
 				}
 				.build())
 
 			.option(Option.createBuilder<Boolean>()
-				.name(Text.translatable("config.general.wikiCommandAutoOpen"))
-				.description(OptionDescription.of(Text.translatable("config.general.wikiCommandAutoOpen.tooltip")))
+				.name(Text.translatable("nobaaddons.config.general.wikiCommandAutoOpen"))
+				.description(OptionDescription.of(Text.translatable("nobaaddons.config.general.wikiCommandAutoOpen.tooltip")))
 				.binding(defaults.general.wikiCommandAutoOpen, config.general::wikiCommandAutoOpen) { config.general.wikiCommandAutoOpen = it }
 				.controller(NobaConfigUtils::createBooleanController)
 				.build())

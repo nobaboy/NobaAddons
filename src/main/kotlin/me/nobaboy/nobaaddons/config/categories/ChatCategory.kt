@@ -12,45 +12,45 @@ import net.minecraft.text.Text
 object ChatCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
 		return ConfigCategory.createBuilder()
-			.name(Text.translatable("config.chat"))
+			.name(Text.translatable("nobaaddons.config.chat"))
 
 			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("config.chat.filter"))
+				.name(Text.translatable("nobaaddons.config.chat.filter"))
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("config.chat.filter.hideTipMessages"))
-					.description(OptionDescription.of(Text.translatable("config.chat.filter.hideTipMessages.tooltip")))
+					.name(Text.translatable("nobaaddons.config.chat.filter.hideTipMessages"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filter.hideTipMessages.tooltip")))
 					.binding(defaults.chat.filter.hideTipMessages, config.chat.filter::hideTipMessages) { config.chat.filter.hideTipMessages = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("config.chat.filter.hideProfileInfo"))
-					.description(OptionDescription.of(Text.translatable("config.chat.filter.hideProfileInfo.tooltip")))
+					.name(Text.translatable("nobaaddons.config.chat.filter.hideProfileInfo"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filter.hideProfileInfo.tooltip")))
 					.binding(defaults.chat.filter.hideProfileInfo, config.chat.filter::hideProfileInfo) { config.chat.filter.hideProfileInfo = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
 				.option(Option.createBuilder<ChatFilterOption>()
-					.name(Text.translatable("config.chat.filter.blessingMessage"))
+					.name(Text.translatable("nobaaddons.config.chat.filter.blessingMessage"))
 					.binding(defaults.chat.filter.blessingMessage, config.chat.filter::blessingMessage) { config.chat.filter.blessingMessage = it }
 					.controller(NobaConfigUtils::createCyclingController)
 					.build())
 
 				.option(Option.createBuilder<ChatFilterOption>()
-					.name(Text.translatable("config.chat.filter.healerOrbMessage"))
+					.name(Text.translatable("nobaaddons.config.chat.filter.healerOrbMessage"))
 					.binding(defaults.chat.filter.healerOrbMessage, config.chat.filter::healerOrbMessage) { config.chat.filter.healerOrbMessage = it }
 					.controller(NobaConfigUtils::createCyclingController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("config.chat.filter.pickupObtainMessage"))
+					.name(Text.translatable("nobaaddons.config.chat.filter.pickupObtainMessage"))
 					.binding(defaults.chat.filter.pickupObtainMessage, config.chat.filter::pickupObtainMessage) { config.chat.filter.pickupObtainMessage = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("config.chat.filter.allow5050ItemMessage"))
-					.description(OptionDescription.of(Text.translatable("config.chat.filter.allow5050ItemMessage.tooltip")))
+					.name(Text.translatable("nobaaddons.config.chat.filter.allow5050ItemMessage"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filter.allow5050ItemMessage.tooltip")))
 					.binding(defaults.chat.filter.allow5050ItemMessage, config.chat.filter::allow5050ItemMessage) { config.chat.filter.allow5050ItemMessage = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
