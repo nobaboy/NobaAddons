@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.features.chatcommands.impl.party
 
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chatcommands.ChatContext
@@ -46,7 +45,7 @@ class WarpCommand : IChatCommand {
 
     private fun startTimedWarp() {
         HypixelCommands.partyChat("Warping in $delay (To cancel type '!cancel')")
-        NobaAddons.coroutineScope.launch {
+        NobaAddons.runAsync {
             while (delay -- >= 0) {
                 delay(1.seconds)
 

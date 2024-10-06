@@ -8,6 +8,7 @@ import net.hypixel.data.type.GameType
 import net.hypixel.data.type.ServerType
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import kotlin.jvm.optionals.getOrNull
+
 object SkyblockAPI {
     val inSkyblock: Boolean
         get() = Utils.onHypixel && currentGame == GameType.SKYBLOCK

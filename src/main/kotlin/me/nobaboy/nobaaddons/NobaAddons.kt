@@ -13,6 +13,8 @@ import me.nobaboy.nobaaddons.features.chat.filter.dungeon.PickupObtainFilter
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
+import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
+import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.api.ClientModInitializer
@@ -41,8 +43,10 @@ object NobaAddons : ClientModInitializer {
     val mc: MinecraftClient get() = MinecraftClient.getInstance()
     val modDir: Path get() = FabricLoader.getInstance().configDir
 
-    val supervisorJob = SupervisorJob()
-    val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
+    private val supervisorJob = SupervisorJob()
+    private val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
+
+    fun runAsync(runnable: suspend CoroutineScope.() -> Unit) = coroutineScope.launch(block = runnable)
 
     override fun onInitializeClient() {
         NobaConfigManager.init()
@@ -65,7 +69,7 @@ object NobaAddons : ClientModInitializer {
         HealerOrbFilter.init()
         PickupObtainFilter.init()
 
-        HypixelModAPI.getInstance().subscribeToEventPacket(ClientboundLocationPacket::class.java)
-        HypixelModAPI.getInstance().createHandler(ClientboundLocationPacket::class.java, SkyblockAPI::onLocationPacket)
+        HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
+        HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyblockAPI::onLocationPacket)
     }
 }
