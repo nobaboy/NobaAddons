@@ -25,7 +25,7 @@ object WarpPlayerHandler {
             if (partyStatus.isLeader()) partyStatus.partyMembers.toMutableList()
             else mutableListOf()
 
-        task = NobaAddons.coroutineScope.launch {
+        task = NobaAddons.runAsync {
             var secondsPassed = 0
             val timeoutSeconds = if (isWarpingOut) 20 else 15
             val timeoutMessage =

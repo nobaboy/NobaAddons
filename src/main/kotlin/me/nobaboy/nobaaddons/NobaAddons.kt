@@ -13,6 +13,8 @@ import me.nobaboy.nobaaddons.features.chat.filter.dungeon.PickupObtainFilter
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
+import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
+import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.api.ClientModInitializer
@@ -26,34 +28,25 @@ import net.minecraft.text.Text
 import org.slf4j.Logger
 import java.nio.file.Path
 
-class NobaAddons : ClientModInitializer {
-    companion object {
-        const val MOD_ID = "nobaaddons"
-        val NOBAADDONS_MOD = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow()
-        val VERSION = NOBAADDONS_MOD.metadata.version.friendlyString
+object NobaAddons : ClientModInitializer {
+    const val MOD_ID = "nobaaddons"
+    val VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
 
-        val PREFIX: MutableText
-            get() = Text.empty()
-                .append(Text.translatable("nobaaddons.name")
-                .append(Text.literal(" > ")).setStyle(
-                    Style.EMPTY.withColor(0x007AFF).withBold(true))
-                )
+    val PREFIX: MutableText
+        get() = Text.empty()
+            .append(Text.translatable("nobaaddons.name")
+            .append(Text.literal(" > ")).setStyle(
+                Style.EMPTY.withColor(0x007AFF).withBold(true))
+            )
 
-        val LOGGER: Logger = LogUtils.getLogger()
+    val LOGGER: Logger = LogUtils.getLogger()
+    val mc: MinecraftClient get() = MinecraftClient.getInstance()
+    val modDir: Path get() = FabricLoader.getInstance().configDir
 
-        val mc: MinecraftClient by lazy {
-            MinecraftClient.getInstance()
-        }
+    private val supervisorJob = SupervisorJob()
+    private val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
 
-        val modDir: Path by lazy {
-            FabricLoader.getInstance().configDir
-        }
-
-        val supervisorJob = SupervisorJob()
-        val coroutineScope = CoroutineScope(
-            CoroutineName(MOD_ID) + supervisorJob
-        )
-    }
+    fun runAsync(runnable: suspend CoroutineScope.() -> Unit) = coroutineScope.launch(block = runnable)
 
     override fun onInitializeClient() {
         NobaConfigManager.init()
@@ -76,7 +69,7 @@ class NobaAddons : ClientModInitializer {
         HealerOrbFilter.init()
         PickupObtainFilter.init()
 
-        HypixelModAPI.getInstance().subscribeToEventPacket(ClientboundLocationPacket::class.java)
-        HypixelModAPI.getInstance().createHandler(ClientboundLocationPacket::class.java, SkyblockAPI::onLocationPacket)
+        HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
+        HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyblockAPI::onLocationPacket)
     }
 }

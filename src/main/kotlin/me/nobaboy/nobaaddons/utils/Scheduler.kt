@@ -16,15 +16,13 @@ object Scheduler {
     }
 
     private fun tick() {
-        tasks.filter {
-            it.ticksRemaining-- <= 0
-        }.forEach { it.run() }
+        tasks.filter { it.ticksRemaining-- <= 0 }.forEach { it.run() }
     }
 
-    private class ScheduledTask(val task: Runnable, val ticks: Int, val repeat: Boolean = false): Runnable {
+    private class ScheduledTask(val task: Runnable, val ticks: Int, val repeat: Boolean = false) {
         var ticksRemaining = ticks
 
-        override fun run() {
+        fun run() {
             runCatching { task.run() }.onFailure { NobaAddons.LOGGER.error("Failed to run scheduled method", it) }
             if(repeat) {
                 ticksRemaining = ticks
