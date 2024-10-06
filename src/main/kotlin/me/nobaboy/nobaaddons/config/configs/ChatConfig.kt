@@ -9,7 +9,10 @@ class ChatConfig {
 
 	class Filter {
 		@SerialEntry
-		var tipMessage: Boolean = false
+		var hideTipMessages: Boolean = false
+
+		@SerialEntry
+		var hideProfileInfo: Boolean = false
 
 		@SerialEntry
 		var blessingMessage: ChatFilterOption = ChatFilterOption.SHOWN

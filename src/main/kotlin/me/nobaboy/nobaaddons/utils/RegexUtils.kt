@@ -17,10 +17,5 @@ object RegexUtils {
 		}
 	}
 
-	inline fun <T> List<String>.matchFirst(pattern: Pattern, consumer: Matcher.() -> T): T? {
-		this.forEach { line ->
-			pattern.matcher(line).let { if(it.matches()) return consumer(it) }
-		}
-		return null
-	}
+	fun List<Pattern>.anyMatches(string: String): Boolean = any { it.matches(string) }
 }
