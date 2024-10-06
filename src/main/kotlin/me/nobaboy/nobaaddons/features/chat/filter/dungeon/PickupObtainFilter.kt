@@ -11,8 +11,8 @@ import java.util.regex.Pattern
 object PickupObtainFilter {
 	private val config get() = NobaConfigManager.get().chat.filter
 
-	private val itemPickupPattern: Pattern = Pattern.compile("A (?<item>[A-z ]+) was picked up!")
-	private val playerObtainPattern: Pattern =
+	private val itemPickupPattern = Pattern.compile("A (?<item>[A-z ]+) was picked up!")
+	private val playerObtainPattern =
 		Pattern.compile("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!")
 
 	private val ignoredItems =

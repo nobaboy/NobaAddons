@@ -11,48 +11,42 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import java.util.regex.Pattern
 
+// NOTE: The mod API isn't being used here as it returns UUIDs, while we want usernames
 object PartyAPI {
 	// User Patterns
-	private val userPartyJoinPattern: Pattern =
-		Pattern.compile("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!")
-	private val userKickedPattern: Pattern =
-		Pattern.compile("^You have been kicked from the party by (?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+)")
+	private val userPartyJoinPattern = Pattern.compile("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!")
+	private val userKickedPattern = Pattern.compile("^You have been kicked from the party by (?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+)")
 
 	// Others Patterns
-	private val otherPartyJoinPattern: Pattern =
-		Pattern.compile("^(?:\\[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\.")
-	private val othersInPartyPattern: Pattern = Pattern.compile("^You'll be partying with: (?<names>.*)")
-	private val otherLeftPartyPattern: Pattern =
-		Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) left the party\\.")
-	private val otherKickedPattern: Pattern =
-		Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has been removed from the party\\.")
-	private val otherKickedOfflinePattern: Pattern =
-		Pattern.compile("^Kicked (?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) because they were offline\\.")
-	private val otherDisconnectPattern: Pattern =
-		Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) was removed from your party because they disconnected\\.")
+	private val otherPartyJoinPattern = Pattern.compile("^(?:\\[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\.")
+	private val othersInPartyPattern = Pattern.compile("^You'll be partying with: (?<names>.*)")
+	private val otherLeftPartyPattern = Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) left the party\\.")
+	private val otherKickedPattern = Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has been removed from the party\\.")
+	private val otherKickedOfflinePattern = Pattern.compile("^Kicked (?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) because they were offline\\.")
+	private val otherDisconnectPattern = Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) was removed from your party because they disconnected\\.")
 
 	// Party Finder
-	private val kuudraQueuePattern: Pattern =
-		Pattern.compile("^Party Finder > (?<name>[A-z0-9_]+) joined the group! \\([A-z0-9 ]+\\)")
-	private val dungeonQueuePattern: Pattern =
-		Pattern.compile("^Party Finder > (?<name>[A-z0-9_]+) joined the dungeon group! \\([A-z0-9 ]+\\)")
+	private val kuudraQueuePattern = Pattern.compile("^Party Finder > (?<name>[A-z0-9_]+) joined the group! \\([A-z0-9 ]+\\)")
+	private val dungeonQueuePattern = Pattern.compile("^Party Finder > (?<name>[A-z0-9_]+) joined the dungeon group! \\([A-z0-9 ]+\\)")
 
 	// Party General
-	private val partyMembersListPattern: Pattern =
-		Pattern.compile("^Party (?<type>Leader|Moderators|Members): (?<names>.*)")
-	private val transferByPlayerPattern: Pattern =
-		Pattern.compile("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)")
-	private val transferOnLeavePattern: Pattern =
-		Pattern.compile("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left")
-	private val partyInvitePattern: Pattern =
-		Pattern.compile("^(?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+) invited (?:\\[[A-Z+]+] )?[A-z0-9_]+ to the party! They have 60 seconds to accept.")
-	private val partyDisbandPattern: Pattern =
-		Pattern.compile("^(?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+) has disbanded the party!")
+	private val partyMembersListPattern = Pattern.compile("^Party (?<type>Leader|Moderators|Members): (?<names>.*)")
+	private val partyDisbandPattern = Pattern.compile("^(?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+) has disbanded the party!")
+	private val transferByPlayerPattern = Pattern.compile(
+		"^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)"
+	)
+	private val transferOnLeavePattern = Pattern.compile(
+		"^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left"
+	)
+	private val partyInvitePattern = Pattern.compile(
+		"^(?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+) invited (?:\\[[A-Z+]+] )?[A-z0-9_]+ to the party! They have 60 seconds to accept."
+	)
 
 	// Party Misc
-	private val partyListPattern: Pattern =
-		Pattern.compile("^-{53}|^Party Members \\([0-9]+\\)|^Party (?<type>Leader|Moderators|Members): (?<names>.*)|^You are not currently in a party\\.")
-	private val partyChatPattern: Pattern = Pattern.compile("^Party > (?:\\[[A-Z+]+ )?(?<name>[A-z0-9_]+): .*")
+	private val partyChatPattern = Pattern.compile("^Party > (?:\\[[A-Z+]+ )?(?<name>[A-z0-9_]+): .*")
+	private val partyListPattern = Pattern.compile(
+		"^-{53}|^Party Members \\([0-9]+\\)|^Party (?<type>Leader|Moderators|Members): (?<names>.*)|^You are not currently in a party\\."
+	)
 
 	private var storedPartyList = mutableListOf<String>()
 	private var gotList = false
@@ -67,9 +61,7 @@ object PartyAPI {
 		}
 
 		ClientPlayConnectionEvents.JOIN.register(ClientPlayConnectionEvents.Join { _, _, _ ->
-			if(!gotList) {
-				onConnect()
-			}
+			if(!gotList) onConnect()
 		})
 		ClientPlayConnectionEvents.DISCONNECT.register(ClientPlayConnectionEvents.Disconnect { _, _ ->
 			onDisconnect()

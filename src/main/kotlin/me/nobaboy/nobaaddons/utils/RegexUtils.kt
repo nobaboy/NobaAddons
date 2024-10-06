@@ -8,6 +8,14 @@ object RegexUtils {
 
 	inline fun <T> Pattern.matchMatcher(text: String, consumer: Matcher.() -> T) =
 		matcher(text).let { if(it.matches()) consumer(it) else null }
+	inline fun <T> Pattern.findMatcher(text: String, consumer: Matcher.() -> T) =
+		matcher(text).let { if(it.find()) consumer(it) else null }
+	inline fun <T> Pattern.findAllMatcher(text: String, consumer: Matcher.() -> T) {
+		val matcher = matcher(text)
+		while (matcher.find()) {
+			consumer(matcher)
+		}
+	}
 
 	inline fun <T> List<String>.matchFirst(pattern: Pattern, consumer: Matcher.() -> T): T? {
 		this.forEach { line ->
