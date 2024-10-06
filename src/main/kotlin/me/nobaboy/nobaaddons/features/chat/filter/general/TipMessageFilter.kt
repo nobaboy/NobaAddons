@@ -1,14 +1,11 @@
 package me.nobaboy.nobaaddons.features.chat.filter.general
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.features.chat.filter.IFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
-import me.nobaboy.nobaaddons.utils.StringUtils.clean
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
+import net.minecraft.text.Text
 import java.util.regex.Pattern
 
-object TipMessageFilter {
-	private val config get() = NobaConfigManager.get().chat.filter
-
+object TipMessageFilter : IFilter {
 	private val alreadyTippedPattern: Pattern = Pattern.compile("You've already tipped someone in the past hour in [A-z ]+! Wait a bit and try again!")
 	private val tipMessages = listOf(
 		"That player is not online, try another user!",
@@ -17,21 +14,10 @@ object TipMessageFilter {
 		"Slow down! You can only use /tip every few seconds."
 	)
 
-	fun init() {
-		ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ -> processMessage(message.string.clean()) }
-	}
+	override fun shouldFilter(message: Text, text: String): Boolean = alreadyTippedPattern.matches(text) ||
+		text.startsWith("You tipped") ||
+		text.startsWith("You were tipped") ||
+		text in tipMessages
 
-	private fun processMessage(message: String): Boolean {
-		if(!isEnabled()) return true
-
-		val shouldFilter = alreadyTippedPattern.matches(message) ||
-			message.startsWith("You tipped") ||
-			message.startsWith("You were tipped") ||
-			message in tipMessages
-
-		// Inverted because false actually hides the message
-		return !shouldFilter
-	}
-
-	private fun isEnabled() = config.hideTipMessages
+	override fun isEnabled() = config.hideTipMessages
 }
