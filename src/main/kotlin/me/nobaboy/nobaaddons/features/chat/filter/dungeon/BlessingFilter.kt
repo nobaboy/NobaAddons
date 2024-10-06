@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.impl.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filter.IFilter
+import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.clean
 import me.nobaboy.nobaaddons.utils.StringUtils.startsWith
@@ -24,7 +25,7 @@ object BlessingFilter : IFilter {
 		"^DUNGEON BUFF! ([A-z0-9_]+ found a|A) Blessing of (?<blessing>[A-z]+) [IV]+( was found)?!( \\([A-z0-9 ]+\\))?"
 	)
 	private val blessingStatsPattern = Pattern.compile(
-		"(?<one>\\+[\\d.]+x?)( & )?(?<two>\\+[\\d.]+x?)? (?<stat>❁ Strength|☠ Crit Damage|❈ Defense|❁ Damage|HP|❣ Health Regen|✦ Speed|✎ Intelligence)"
+		"(?<value>\\+[\\d.]+x?(?: & \\+[\\d.]+x?)?) (?<stat>❁ Strength|☠ Crit Damage|❈ Defense|❁ Damage|HP|❣ Health Regen|✦ Speed|✎ Intelligence)"
 	)
 	private val statMessages = listOf("     Granted you", "     Also granted you")
 
@@ -49,12 +50,12 @@ object BlessingFilter : IFilter {
 
 		if(message.startsWith(statMessages) && this::blessingType.isInitialized) {
 			if(filterMode != ChatFilterOption.HIDDEN) {
-				blessingStatsPattern.matchMatcher(message) {
-					val stat = StatType.entries.firstOrNull { it.text == group("stat") } ?: return@matchMatcher
-					stats.add(Stat(stat, group("one")!!, group("two")))
+				blessingStatsPattern.findAllMatcher(message) {
+					val stat = StatType.entries.firstOrNull { it.text == group("stat") } ?: return@findAllMatcher
+					stats.add(Stat(stat, group("value")))
 				}
 				if(blessingType.expectedStats == stats.size) {
-					ChatUtils.addMessage(compileBlessingMessage(), false, overlay = filterMode == ChatFilterOption.ACTION_BAR)
+					ChatUtils.addMessage(compileBlessingMessage(), false)
 				}
 			}
 			return false
@@ -64,11 +65,16 @@ object BlessingFilter : IFilter {
 	}
 
 	private fun compileBlessingMessage() = buildText {
+		var previousValue: String? = null
+
+		formatted(Formatting.GRAY)
 		append(blessingType.toText())
 		append(" ")
 		stats.forEachIndexed { i, stat ->
-			append(stat.one)
-			stat.two?.let { append(" & $it") }
+			if (previousValue != stat.value) {
+				previousValue = stat.value
+				append(stat.value)
+			}
 			append(" ")
 			append(stat.stat.toText())
 
@@ -80,7 +86,7 @@ object BlessingFilter : IFilter {
 		}
 	}
 
-	private class Stat(val stat: StatType, val one: String, val two: String?)
+	private class Stat(val stat: StatType, val value: String)
 
 	private enum class StatType(val text: String, val color: Formatting) {
 		STRENGTH("❁ Strength", Formatting.RED),
@@ -95,12 +101,12 @@ object BlessingFilter : IFilter {
 		fun toText(): Text = text.toText().formatted(color)
 	}
 
-	private enum class BlessingType(val text: String, val color: Formatting, val expectedStats: Int = 1) {
-		POWER("POWER BUFF!", Formatting.RED, expectedStats = 2),
-		WISDOM("WISDOM BUFF!", Formatting.BLUE),
-		STONE("STONE BUFF!", Formatting.DARK_GRAY),
-		LIFE("LIFE BUFF!", Formatting.LIGHT_PURPLE),
-		TIME("TIME BUFF!", Formatting.DARK_GREEN);
+	private enum class BlessingType(val text: String, val color: Formatting, val expectedStats: Int) {
+		POWER("POWER BUFF!", Formatting.RED, 2),
+		WISDOM("WISDOM BUFF!", Formatting.BLUE, 2),
+		STONE("STONE BUFF!", Formatting.DARK_GRAY, 2),
+		LIFE("LIFE BUFF!", Formatting.LIGHT_PURPLE, 2),
+		TIME("TIME BUFF!", Formatting.DARK_GREEN, 4);
 
 		fun toText(): Text = text.toText().setStyle(color.bold())
 	}
