@@ -6,7 +6,7 @@ interface IFilter {
 	fun shouldFilter(option: ChatFilterOption): Boolean {
 		return when(option) {
 			ChatFilterOption.SHOWN -> false
-			ChatFilterOption.COMPACT, ChatFilterOption.ACTION_BAR -> true
+			ChatFilterOption.COMPACT -> true
 			ChatFilterOption.HIDDEN -> true
 		}
 	}

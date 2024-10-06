@@ -15,7 +15,6 @@
   "config.chat.filter": "Filters",
   "config.chat.filter.chatFilterOption.SHOWN": "Shown",
   "config.chat.filter.chatFilterOption.COMPACT": "Compact",
-  "config.chat.filter.chatFilterOption.ACTION_BAR": "Action Bar",
   "config.chat.filter.chatFilterOption.HIDDEN": "Hidden",
   "config.chat.filter.tipMessage": "Hide Tip Message",
   "config.chat.filter.tipMessage.tooltip": "Toggles the messages sent when you tip a player or are tipped by someone else",

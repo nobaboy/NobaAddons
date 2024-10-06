@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.impl.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filter.IFilter
+import me.nobaboy.nobaaddons.features.chat.filter.StatType
 import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.clean
@@ -51,7 +52,7 @@ object BlessingFilter : IFilter {
 		if(message.startsWith(statMessages) && this::blessingType.isInitialized) {
 			if(filterMode != ChatFilterOption.HIDDEN) {
 				blessingStatsPattern.findAllMatcher(message) {
-					val stat = StatType.entries.firstOrNull { it.text == group("stat") } ?: return@findAllMatcher
+					val stat = StatType.entries.firstOrNull { group("stat") in it.identifiers } ?: return@findAllMatcher
 					stats.add(Stat(stat, group("value")))
 				}
 				if(blessingType.expectedStats == stats.size) {
@@ -67,7 +68,6 @@ object BlessingFilter : IFilter {
 	private fun compileBlessingMessage() = buildText {
 		var previousValue: String? = null
 
-		formatted(Formatting.GRAY)
 		append(blessingType.toText())
 		append(" ")
 		stats.forEachIndexed { i, stat ->
@@ -84,22 +84,9 @@ object BlessingFilter : IFilter {
 				else -> ", "
 			})
 		}
-	}
+	}.formatted(Formatting.GRAY)
 
 	private class Stat(val stat: StatType, val value: String)
-
-	private enum class StatType(val text: String, val color: Formatting) {
-		STRENGTH("❁ Strength", Formatting.RED),
-		CRIT_DAMAGE("☠ Crit Damage", Formatting.BLUE),
-		DEFENSE("❈ Defense", Formatting.GREEN),
-		DAMAGE("❁ Damage", Formatting.RED),
-		HEALTH("HP", Formatting.RED),
-		HEALTH_REGEN("❣ Health Regen", Formatting.RED),
-		SPEED("✦ Speed", Formatting.WHITE),
-		INTELLIGENCE("✎ Intelligence", Formatting.AQUA);
-
-		fun toText(): Text = text.toText().formatted(color)
-	}
 
 	private enum class BlessingType(val text: String, val color: Formatting, val expectedStats: Int) {
 		POWER("POWER BUFF!", Formatting.RED, 2),

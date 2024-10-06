@@ -5,7 +5,6 @@ import net.minecraft.client.resource.language.I18n
 enum class ChatFilterOption {
 	SHOWN,
 	COMPACT,
-	ACTION_BAR,
 	HIDDEN;
 
 	override fun toString(): String {
