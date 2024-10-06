@@ -15,31 +15,31 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 object PartyCommands : ChatCommandManager() {
-    private val config get() = NobaConfigManager.get().chatCommands.party
-    private val chatPattern: Pattern =
-        Pattern.compile("^Party > .*?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+).*?: [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_]+)?")
+	private val config get() = NobaConfigManager.get().chatCommands.party
+	private val chatPattern: Pattern =
+		Pattern.compile("^Party > .*?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+).*?: [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_]+)?")
 
-    init {
-        register(HelpCommand(this, "pc", config::help))
-        register(TransferCommand())
-        register(AllInviteCommand())
-        register(WarpCommand())
-        register(CancelCommand())
-        register(CoordsCommand())
-    }
+	init {
+		register(HelpCommand(this, "pc", config::help))
+		register(TransferCommand())
+		register(AllInviteCommand())
+		register(WarpCommand())
+		register(CancelCommand())
+		register(CoordsCommand())
+	}
 
-    override fun matchMessage(message: String): Matcher? {
-        chatPattern.matchMatcher(message) {
-            return this
-        }
-        return null
-    }
+	override fun matchMessage(message: String): Matcher? {
+		chatPattern.matchMatcher(message) {
+			return this
+		}
+		return null
+	}
 
-    fun init() {
-        ClientReceiveMessageEvents.GAME.register { message, _ ->
-            processMessage(message.string.clean(), isEnabled())
-        }
-    }
+	fun init() {
+		ClientReceiveMessageEvents.GAME.register { message, _ ->
+			processMessage(message.string.clean(), isEnabled())
+		}
+	}
 
-    private fun isEnabled() = config.enabled
+	private fun isEnabled() = config.enabled
 }

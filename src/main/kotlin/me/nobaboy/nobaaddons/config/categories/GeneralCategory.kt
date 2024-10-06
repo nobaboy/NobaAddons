@@ -8,18 +8,18 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
 
 object GeneralCategory {
-    fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
-        return ConfigCategory.createBuilder()
-            .name(Text.translatable("config.general"))
+	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
+		return ConfigCategory.createBuilder()
+			.name(Text.translatable("config.general"))
 
-            .option(ButtonOption.createBuilder()
-                .name(Text.translatable("config.general.main"))
-                .text(Text.translatable("config.general.open"))
-                .action { screen, option ->
-                    MinecraftClient.getInstance().setScreen(NobaMainScreen())
-                }
-                .build())
+			.option(ButtonOption.createBuilder()
+				.name(Text.translatable("config.general.main"))
+				.text(Text.translatable("config.general.open"))
+				.action { screen, option ->
+					MinecraftClient.getInstance().setScreen(NobaMainScreen())
+				}
+				.build())
 
-            .build()
-    }
+			.build()
+	}
 }

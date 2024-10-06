@@ -7,14 +7,14 @@ import me.nobaboy.nobaaddons.features.chatcommands.IChatCommand
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class CoordsCommand : IChatCommand {
-    override val name: String = "coords"
+	override val name: String = "coords"
 
-    override val isEnabled: Boolean
-        get() = NobaConfigManager.get().chatCommands.party.coords
+	override val isEnabled: Boolean
+		get() = NobaConfigManager.get().chatCommands.party.coords
 
-    override fun run(ctx: ChatContext) {
-        val player = NobaAddons.mc.player ?: return
-        val (x, y, z) = listOf(player.x, player.y, player.z).map { it.toInt() }
-        HypixelCommands.partyChat("x: $x, y: $y, z: $z")
-    }
+	override fun run(ctx: ChatContext) {
+		val player = NobaAddons.mc.player ?: return
+		val (x, y, z) = listOf(player.x, player.y, player.z).map { it.toInt() }
+		HypixelCommands.partyChat("x: $x, y: $y, z: $z")
+	}
 }

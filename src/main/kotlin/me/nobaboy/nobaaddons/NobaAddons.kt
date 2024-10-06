@@ -29,47 +29,47 @@ import org.slf4j.Logger
 import java.nio.file.Path
 
 object NobaAddons : ClientModInitializer {
-    const val MOD_ID = "nobaaddons"
-    val VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
+	const val MOD_ID = "nobaaddons"
+	val VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
 
-    val PREFIX: MutableText
-        get() = Text.empty()
-            .append(Text.translatable("nobaaddons.name")
-            .append(Text.literal(" > ")).setStyle(
-                Style.EMPTY.withColor(0x007AFF).withBold(true))
-            )
+	val PREFIX: MutableText
+		get() = Text.empty()
+			.append(Text.translatable("nobaaddons.name")
+				.append(Text.literal(" > ")).setStyle(
+					Style.EMPTY.withColor(0x007AFF).withBold(true))
+			)
 
-    val LOGGER: Logger = LogUtils.getLogger()
-    val mc: MinecraftClient get() = MinecraftClient.getInstance()
-    val modDir: Path get() = FabricLoader.getInstance().configDir
+	val LOGGER: Logger = LogUtils.getLogger()
+	val mc: MinecraftClient get() = MinecraftClient.getInstance()
+	val modDir: Path get() = FabricLoader.getInstance().configDir
 
-    private val supervisorJob = SupervisorJob()
-    private val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
+	private val supervisorJob = SupervisorJob()
+	private val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
 
-    fun runAsync(runnable: suspend CoroutineScope.() -> Unit) = coroutineScope.launch(block = runnable)
+	fun runAsync(runnable: suspend CoroutineScope.() -> Unit) = coroutineScope.launch(block = runnable)
 
-    override fun onInitializeClient() {
-        NobaConfigManager.init()
+	override fun onInitializeClient() {
+		NobaConfigManager.init()
 
-        // Apis/Utils
-        PartyAPI.init()
-        DungeonAPI.init()
-        Scheduler.schedule(20, repeat = true, ChatUtils::tickCommandQueue)
+		// Apis/Utils
+		PartyAPI.init()
+		DungeonAPI.init()
+		Scheduler.schedule(20, repeat = true, ChatUtils::tickCommandQueue)
 
-        // Commands
-        NobaCommand.init()
+		// Commands
+		NobaCommand.init()
 
-        // Chat Commands
-        DMCommands.init()
-        PartyCommands.init()
-        GuildCommands.init()
+		// Chat Commands
+		DMCommands.init()
+		PartyCommands.init()
+		GuildCommands.init()
 
-        // Chat Filters
-        BlessingFilter.init()
-        HealerOrbFilter.init()
-        PickupObtainFilter.init()
+		// Chat Filters
+		BlessingFilter.init()
+		HealerOrbFilter.init()
+		PickupObtainFilter.init()
 
-        HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
-        HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyblockAPI::onLocationPacket)
-    }
+		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
+		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyblockAPI::onLocationPacket)
+	}
 }

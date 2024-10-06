@@ -14,79 +14,79 @@ import me.nobaboy.nobaaddons.utils.Utils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object DungeonAPI {
-    private var currentFloor: FloorType = FloorType.NONE
-    private var currentClass: ClassType = ClassType.EMPTY
-    private var currentBoss: BossType = BossType.UNKNOWN
+	private var currentFloor: FloorType = FloorType.NONE
+	private var currentClass: ClassType = ClassType.EMPTY
+	private var currentBoss: BossType = BossType.UNKNOWN
 
-    fun getFloor(): FloorType = currentFloor
-    fun inFloor(floor: Int): Boolean = currentFloor.floor == floor
-    fun inFloor(floor: FloorType): Boolean = currentFloor == floor
+	fun getFloor(): FloorType = currentFloor
+	fun inFloor(floor: Int): Boolean = currentFloor.floor == floor
+	fun inFloor(floor: FloorType): Boolean = currentFloor == floor
 
-    fun getClass(): ClassType = currentClass
-    fun isClass(classType: ClassType): Boolean = currentClass == classType
+	fun getClass(): ClassType = currentClass
+	fun isClass(classType: ClassType): Boolean = currentClass == classType
 
-    fun getBoss(): BossType = currentBoss
-    fun isBoss(boss: BossType): Boolean = currentBoss == boss
+	fun getBoss(): BossType = currentBoss
+	fun isBoss(boss: BossType): Boolean = currentBoss == boss
 
-    fun init() {
-        ClientReceiveMessageEvents.GAME.register { message, _ ->
-            getBossType(message.string.clean())
-        }
+	fun init() {
+		ClientReceiveMessageEvents.GAME.register { message, _ ->
+			getBossType(message.string.clean())
+		}
 
-        Scheduler.schedule(20, repeat = true, this::getFloorType)
-        Scheduler.schedule(20, repeat = true, this::getClassType)
-    }
+		Scheduler.schedule(20, repeat = true, this::getFloorType)
+		Scheduler.schedule(20, repeat = true, this::getClassType)
+	}
 
-    private fun getFloorType() {
-        if (!IslandType.DUNGEONS.inIsland()) {
-            currentFloor = FloorType.NONE
-            return
-        }
+	private fun getFloorType() {
+		if(!IslandType.DUNGEONS.inIsland()) {
+			currentFloor = FloorType.NONE
+			return
+		}
 
-        val scoreboard = ScoreboardUtils.getSidebarLines()
-        for (line in scoreboard) {
-            val cleanedLine = line.cleanScoreboard()
-            if (!cleanedLine.contains("The Catacombs (")) continue
+		val scoreboard = ScoreboardUtils.getSidebarLines()
+		for(line in scoreboard) {
+			val cleanedLine = line.cleanScoreboard()
+			if(!cleanedLine.contains("The Catacombs (")) continue
 
-            val floor = cleanedLine.substring(cleanedLine.indexOf("(") + 1, cleanedLine.lastIndexOf(")"))
-            try {
-                currentFloor = FloorType.valueOf(floor)
-            } catch (ex: IllegalArgumentException) {
-                NobaAddons.LOGGER.error("Unexpected floor type value '$floor'", ex)
-                currentFloor = FloorType.NONE
-            }
+			val floor = cleanedLine.substring(cleanedLine.indexOf("(") + 1, cleanedLine.lastIndexOf(")"))
+			try {
+				currentFloor = FloorType.valueOf(floor)
+			} catch(ex: IllegalArgumentException) {
+				NobaAddons.LOGGER.error("Unexpected floor type value '$floor'", ex)
+				currentFloor = FloorType.NONE
+			}
 
-            break
-        }
-    }
+			break
+		}
+	}
 
-    private fun getClassType() {
-        if (!IslandType.DUNGEONS.inIsland()) {
-            currentClass = ClassType.EMPTY
-            return
-        }
+	private fun getClassType() {
+		if(!IslandType.DUNGEONS.inIsland()) {
+			currentClass = ClassType.EMPTY
+			return
+		}
 
-        val playerName = Utils.getPlayerName()!!
-        val players = NobaAddons.mc.networkHandler!!.playerList
-        for (player in players) {
-            if (player == null || player.displayName == null) continue
-            val text = player.displayName!!.string.clean()
+		val playerName = Utils.getPlayerName()!!
+		val players = NobaAddons.mc.networkHandler!!.playerList
+		for(player in players) {
+			if(player == null || player.displayName == null) continue
+			val text = player.displayName!!.string.clean()
 
-            if (text.contains(playerName) && text.indexOf("(") != -1) {
-                if (text.contains("($playerName)")) continue // Puzzle fail text
-                val dungeonClass = text.substring(text.indexOf("(") + 1, text.lastIndexOf(")"))
-                currentClass = ClassType.valueOf(dungeonClass.split(" ")[0].uppercase())
-            }
-        }
-    }
+			if(text.contains(playerName) && text.indexOf("(") != -1) {
+				if(text.contains("($playerName)")) continue // Puzzle fail text
+				val dungeonClass = text.substring(text.indexOf("(") + 1, text.lastIndexOf(")"))
+				currentClass = ClassType.valueOf(dungeonClass.split(" ")[0].uppercase())
+			}
+		}
+	}
 
-    private fun getBossType(message: String) {
-        if (!IslandType.DUNGEONS.inIsland()) {
-            currentBoss = BossType.UNKNOWN
-            return
-        }
+	private fun getBossType(message: String) {
+		if(!IslandType.DUNGEONS.inIsland()) {
+			currentBoss = BossType.UNKNOWN
+			return
+		}
 
-        if (!message.startsWith("[BOSS]")) return
-        currentBoss = BossType.fromChat(message)
-    }
+		if(!message.startsWith("[BOSS]")) return
+		currentBoss = BossType.fromChat(message)
+	}
 }

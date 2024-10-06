@@ -7,17 +7,17 @@ import me.nobaboy.nobaaddons.utils.Utils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class PartyMeCommand : IChatCommand {
-    override val name: String = "partyme"
+	override val name: String = "partyme"
 
-    override val aliases: MutableList<String> = mutableListOf("pme")
+	override val aliases: MutableList<String> = mutableListOf("pme")
 
-    override val isEnabled: Boolean
-        get() = NobaConfigManager.get().chatCommands.dm.partyMe
+	override val isEnabled: Boolean
+		get() = NobaConfigManager.get().chatCommands.dm.partyMe
 
-    override fun run(ctx: ChatContext) {
-        val playerName = Utils.getPlayerName() ?: return
-        if (ctx.user() == playerName) return
+	override fun run(ctx: ChatContext) {
+		val playerName = Utils.getPlayerName() ?: return
+		if(ctx.user() == playerName) return
 
-        HypixelCommands.partyInvite(ctx.user())
-    }
+		HypixelCommands.partyInvite(ctx.user())
+	}
 }

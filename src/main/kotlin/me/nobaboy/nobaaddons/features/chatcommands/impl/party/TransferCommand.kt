@@ -9,25 +9,25 @@ import me.nobaboy.nobaaddons.utils.Utils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class TransferCommand : IChatCommand {
-    override val name: String = "transfer"
+	override val name: String = "transfer"
 
-    override val aliases: MutableList<String> = mutableListOf("ptme", "pt")
+	override val aliases: MutableList<String> = mutableListOf("ptme", "pt")
 
-    override val usage: String = "(transfer|pt) [optional: username], ptme"
+	override val usage: String = "(transfer|pt) [optional: username], ptme"
 
-    override val isEnabled: Boolean
-        get() = NobaConfigManager.get().chatCommands.party.transfer
+	override val isEnabled: Boolean
+		get() = NobaConfigManager.get().chatCommands.party.transfer
 
-    override fun run(ctx: ChatContext) {
-        if (!PartyAPI.isLeader()) return
+	override fun run(ctx: ChatContext) {
+		if(!PartyAPI.isLeader()) return
 
-        if (!ctx.command().lowercaseEquals("ptme")) {
-            val player = if (ctx.args().isEmpty()) ctx.user() else ctx.args()[0]
-            HypixelCommands.partyTransfer(player)
-            return
-        }
+		if(!ctx.command().lowercaseEquals("ptme")) {
+			val player = if(ctx.args().isEmpty()) ctx.user() else ctx.args()[0]
+			HypixelCommands.partyTransfer(player)
+			return
+		}
 
-        if (ctx.user() == Utils.getPlayerName()) return
-        HypixelCommands.partyTransfer(ctx.user())
-    }
+		if(ctx.user() == Utils.getPlayerName()) return
+		HypixelCommands.partyTransfer(ctx.user())
+	}
 }

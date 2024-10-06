@@ -8,20 +8,20 @@ import me.nobaboy.nobaaddons.utils.Utils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class WarpUserCommand : IChatCommand {
-    override val name: String = "warpme"
+	override val name: String = "warpme"
 
-    override val isEnabled: Boolean
-        get() = NobaConfigManager.get().chatCommands.dm.warpMe
+	override val isEnabled: Boolean
+		get() = NobaConfigManager.get().chatCommands.dm.warpMe
 
-    override fun run(ctx: ChatContext) {
-        val playerName = Utils.getPlayerName() ?: return
-        if (ctx.user() == playerName) return
+	override fun run(ctx: ChatContext) {
+		val playerName = Utils.getPlayerName() ?: return
+		if(ctx.user() == playerName) return
 
-        if (WarpPlayerHandler.isWarping) {
-            HypixelCommands.privateChat(ctx.user(), "Warp-in is on cooldown, try again later!")
-            return
-        }
+		if(WarpPlayerHandler.isWarping) {
+			HypixelCommands.privateChat(ctx.user(), "Warp-in is on cooldown, try again later!")
+			return
+		}
 
-        WarpPlayerHandler.warpPlayer(ctx.user(), false, "msg ${ctx.user()}")
-    }
+		WarpPlayerHandler.warpPlayer(ctx.user(), false, "msg ${ctx.user()}")
+	}
 }

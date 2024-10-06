@@ -12,25 +12,25 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandRegistryAccess
 
 object NobaCommand {
-    fun init() {
-        ClientCommandRegistrationCallback.EVENT.register(this::register)
-    }
+	fun init() {
+		ClientCommandRegistrationCallback.EVENT.register(this::register)
+	}
 
-    private fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>, ignored: CommandRegistryAccess) {
-        val main: CommandNode<FabricClientCommandSource> =
-            dispatcher.register(ClientCommandManager.literal("nobaaddons")
-                .then(ClientCommandManager.literal("config")
-                    .executes { getConfigScreen(null).queueOpen() })
+	private fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>, ignored: CommandRegistryAccess) {
+		val main: CommandNode<FabricClientCommandSource> =
+			dispatcher.register(ClientCommandManager.literal("nobaaddons")
+				.then(ClientCommandManager.literal("config")
+					.executes { getConfigScreen(null).queueOpen() })
 
-                .then(ClientCommandManager.literal("debugParty")
-                    .executes { PartyAPI.listMembers() })
+				.then(ClientCommandManager.literal("debugParty")
+					.executes { PartyAPI.listMembers() })
 
 
-                .executes { NobaMainScreen().queueOpen() }
-            )
+				.executes { NobaMainScreen().queueOpen() }
+			)
 
-        dispatcher.register(ClientCommandManager.literal("noba")
-            .executes { NobaMainScreen().queueOpen() }
-            .redirect(main))
-    }
+		dispatcher.register(ClientCommandManager.literal("noba")
+			.executes { NobaMainScreen().queueOpen() }
+			.redirect(main))
+	}
 }
