@@ -11,7 +11,7 @@ object ProfileInfoFilter {
 	private val config get() = NobaConfigManager.get().chat.filter
 
 	private val profileInfoPatterns = listOf(
-		Pattern.compile("^You are playing on profile: [A-z]+"),
+		Pattern.compile("^You are playing on profile: [A-z-() ]+"),
 		Pattern.compile("^Profile ID: [A-z0-9-]+")
 	)
 

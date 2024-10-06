@@ -55,9 +55,7 @@ object WarpPlayerHandler {
 				if(playerJoined) {
 					HypixelCommands.partyWarp()
 					HypixelCommands.partyDisband()
-					if(isWarpingOut) {
-						HypixelCommands.guildChat("Successfully warped out $player.")
-					}
+					if(isWarpingOut) ChatUtils.queueCommand("$command Successfully warped out $player.")
 					reset(false)
 					break
 				}
