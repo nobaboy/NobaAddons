@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandRegistryAccess
 import net.minecraft.text.ClickEvent
+import net.minecraft.text.HoverEvent
 import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -44,7 +45,11 @@ object SWikiCommand {
 		}
 
 		val message = compileClickWikiMessage(query, wikiName)
-		message.style = Style.EMPTY.withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, link))
+		val hoverText = Text.literal("View '$query' on the Official SkyBlock Wiki").formatted(Formatting.GRAY)
+		message.style = Style.EMPTY
+			.withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, link))
+			.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
+
 		ChatUtils.addMessage(message)
 		return Command.SINGLE_SUCCESS
 	}
@@ -62,5 +67,6 @@ object SWikiCommand {
 		append("HERE".toText().formatted(Formatting.DARK_AQUA, Formatting.BOLD))
 		append(" to find '$query' on the ")
 		append(wikiName)
+		append(".")
 	}
 }

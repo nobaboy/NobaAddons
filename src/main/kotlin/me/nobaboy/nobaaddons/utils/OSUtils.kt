@@ -6,6 +6,7 @@ import java.io.IOException
 import java.net.URI
 
 object OSUtils {
+	// FIXME: Somehow this doesn't work, avoid turning on auto open swiki
 	fun openBrowser(url: String) {
 		val isSupported = Desktop.isDesktopSupported()
 		val canBrowse = Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)

@@ -17,9 +17,16 @@ object ChatCategory {
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("config.chat.filter"))
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("config.chat.filter.tipMessage"))
-					.description(OptionDescription.of(Text.translatable("config.chat.filter.tipMessage.tooltip")))
+					.name(Text.translatable("config.chat.filter.hideTipMessages"))
+					.description(OptionDescription.of(Text.translatable("config.chat.filter.hideTipMessages.tooltip")))
 					.binding(defaults.chat.filter.hideTipMessages, config.chat.filter::hideTipMessages) { config.chat.filter.hideTipMessages = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("config.chat.filter.hideProfileInfo"))
+					.description(OptionDescription.of(Text.translatable("config.chat.filter.hideProfileInfo.tooltip")))
+					.binding(defaults.chat.filter.hideProfileInfo, config.chat.filter::hideProfileInfo) { config.chat.filter.hideProfileInfo = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
