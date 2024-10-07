@@ -38,10 +38,10 @@ object SWikiCommand {
 		val wikiName = Text.literal("Official SkyBlock Wiki").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
 		val link = "https://wiki.hypixel.net/index.php?search=${query.replace(" ", "+")}&scope=internal"
 
-		if (config.wikiCommandAutoOpen) {
+		if(config.wikiCommandAutoOpen) {
 			val message = compileAutoOpenMessage(query, wikiName)
 			ChatUtils.addMessage(message)
-			OSUtils.openBrowser(link)
+			OSUtils.browse(link)
 			return Command.SINGLE_SUCCESS
 		}
 

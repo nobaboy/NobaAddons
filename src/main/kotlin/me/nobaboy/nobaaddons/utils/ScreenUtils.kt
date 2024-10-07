@@ -11,8 +11,10 @@ object ScreenUtils {
 	}
 
 	fun Screen.queueOpen(): Int {
-		NobaAddons.mc.send {
-			NobaAddons.mc.setScreen(this)
+		NobaAddons.mc.let {
+			it.send {
+				it.setScreen(this)
+			}
 		}
 		return Command.SINGLE_SUCCESS
 	}

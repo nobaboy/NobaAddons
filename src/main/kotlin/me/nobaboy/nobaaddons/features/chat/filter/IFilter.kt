@@ -38,7 +38,9 @@ interface IFilter {
 				val text = message.string.clean()
 				filters.asSequence().filter { it.isEnabled() }.none {
 					runCatching { it.shouldFilter(message, text) }
-						.onFailure { NobaAddons.LOGGER.error("Filter {} threw an error while processing a chat message", it, it) }
+						.onFailure { error ->
+							NobaAddons.LOGGER.error("Filter {} threw an error while processing a chat message", it, error)
+						}
 						.getOrDefault(false)
 				}
 			}

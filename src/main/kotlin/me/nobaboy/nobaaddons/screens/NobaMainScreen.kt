@@ -41,7 +41,7 @@ class NobaMainScreen : Screen(TITLE) {
 		val adder = gridWidget.createAdder(2)
 
 		adder.add(ButtonWidget.builder(CONFIGURATION_TEXT) { openConfig() }.width(BUTTON_WIDTH).build(), 2)
-		if(NobaAddons.mc.world != null) adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { null }.width(BUTTON_WIDTH).build(), 2)
+		if(NobaAddons.mc.world != null) adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openHudEditor() }.width(BUTTON_WIDTH).build(), 2)
 		adder.add(ButtonWidget.builder(SOURCE_TEXT, ConfirmLinkScreen.opening(this, GITHUB_ROOT)).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ISSUES_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/issues")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(MODRINTH_TEXT, ConfirmLinkScreen.opening(this, "https://modrinth.com/mod/nobaaddons")).width(BUTTON_WIDTH_HALF).build())
@@ -69,5 +69,9 @@ class NobaMainScreen : Screen(TITLE) {
 
 	private fun openConfig() {
 		client?.setScreen(NobaConfigManager.getConfigScreen(this))
+	}
+
+	private fun openHudEditor() {
+		client?.setScreen(NobaHudScreen(this))
 	}
 }

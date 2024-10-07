@@ -21,6 +21,9 @@
   "nobaaddons.config.general.wikiCommandAutoOpen": "Auto Open /swiki Search",
   "nobaaddons.config.general.wikiCommandAutoOpen.tooltip": "Automatically opens the Official SkyBlock Wiki with the given search query when using §3/swiki§r",
 
+  "nobaaddons.config.userInterface": "User Interface",
+  "nobaaddons.config.userInterface.infoBoxes": "Info Boxes",
+
   "nobaaddons.config.chat": "Chat",
   "nobaaddons.config.chat.filter": "Filters",
   "nobaaddons.config.chat.filter.chatFilterOption.SHOWN": "Shown",

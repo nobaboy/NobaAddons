@@ -1,23 +1,9 @@
 package me.nobaboy.nobaaddons.utils
 
-import me.nobaboy.nobaaddons.NobaAddons
-import java.awt.Desktop
-import java.io.IOException
-import java.net.URI
+import net.minecraft.util.Util
 
 object OSUtils {
-	// FIXME: Somehow this doesn't work, avoid turning on auto open swiki
-	fun openBrowser(url: String) {
-		val isSupported = Desktop.isDesktopSupported()
-		val canBrowse = Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)
-		if (isSupported && canBrowse) {
-			try {
-				Desktop.getDesktop().browse(URI.create(url))
-			} catch (ex: IOException) {
-				NobaAddons.LOGGER.error("Failed to browse link: $url", ex)
-			}
-		} else {
-			NobaAddons.LOGGER.error("This device does not support browsing.")
-		}
+	fun browse(url: String) {
+		Util.getOperatingSystem().open(url)
 	}
 }

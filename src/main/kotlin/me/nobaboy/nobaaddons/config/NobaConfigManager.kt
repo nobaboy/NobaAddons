@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.categories.ChatCategory
 import me.nobaboy.nobaaddons.config.categories.ChatCommandsCategory
 import me.nobaboy.nobaaddons.config.categories.GeneralCategory
+import me.nobaboy.nobaaddons.config.categories.UserInterfaceCategory
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
@@ -51,10 +52,10 @@ object NobaConfigManager {
 		return YetAnotherConfigLib.create(HANDLER) { defaults, config, builder ->
 			builder.title(Text.translatable("nobaaddons.name"))
 				.category(GeneralCategory.create(defaults, config))
-//            .category(VisualsCategory.create(defaults, config))
+				.category(UserInterfaceCategory.create(defaults, config))
 				.category(ChatCategory.create(defaults, config))
 				.category(ChatCommandsCategory.create(defaults, config))
-//            .category(MiscCategory.create(defaults, config))
+//				.category(MiscCategory.create(defaults, config))
 		}.generateScreen(parent)
 	}
 }
