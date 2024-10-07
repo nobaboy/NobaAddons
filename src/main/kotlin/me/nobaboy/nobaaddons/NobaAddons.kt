@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.api.SkyblockAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.features.chat.filter.IFilter
 import me.nobaboy.nobaaddons.features.chat.filter.dungeon.BlessingFilter
 import me.nobaboy.nobaaddons.features.chat.filter.dungeon.HealerOrbFilter
 import me.nobaboy.nobaaddons.features.chat.filter.dungeon.PickupObtainFilter
@@ -73,11 +74,7 @@ object NobaAddons : ClientModInitializer {
 		GuildCommands.init()
 
 		// Chat Filters
-		TipMessageFilter.init()
-		ProfileInfoFilter.init()
-		BlessingFilter.init()
-		HealerOrbFilter.init()
-		PickupObtainFilter.init()
+		IFilter.init()
 
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyblockAPI::onLocationPacket)

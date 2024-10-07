@@ -1,27 +1,23 @@
 package me.nobaboy.nobaaddons.features.chat.filter.dungeon
 
+import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.SkyblockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.impl.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filter.IFilter
 import me.nobaboy.nobaaddons.features.chat.filter.StatType
 import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
-import me.nobaboy.nobaaddons.utils.StringUtils.clean
 import me.nobaboy.nobaaddons.utils.StringUtils.startsWith
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import java.util.regex.Pattern
 
 object BlessingFilter : IFilter {
-	private val config get() = NobaConfigManager.get().chat.filter
-
 	private val blessingFindPattern = Pattern.compile(
 		"^DUNGEON BUFF! ([A-z0-9_]+ found a|A) Blessing of (?<blessing>[A-z]+) [IV]+( was found)?!( \\([A-z0-9 ]+\\))?"
 	)
@@ -33,36 +29,36 @@ object BlessingFilter : IFilter {
 	private lateinit var blessingType: BlessingType
 	private val stats: MutableList<Stat> = mutableListOf()
 
-	fun init() {
-		ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ -> processMessage(message.string.clean()) }
-	}
-
-	fun processMessage(message: String): Boolean {
-		if(!isEnabled()) return true
+	override fun shouldFilter(message: Text, text: String): Boolean {
 		val filterMode = config.blessingMessage
 
-		blessingFindPattern.matchMatcher(message) {
-			if(filterMode != ChatFilterOption.HIDDEN) {
+		blessingFindPattern.matchMatcher(text) {
+			if(filterMode == ChatFilterOption.COMPACT) {
 				blessingType = BlessingType.valueOf(group("blessing").uppercase())
 				stats.clear()
 			}
-			return false
+			return true
 		}
 
-		if(message.startsWith(statMessages) && this::blessingType.isInitialized) {
-			if(filterMode != ChatFilterOption.HIDDEN) {
-				blessingStatsPattern.findAllMatcher(message) {
+		if(text.startsWith(statMessages)) {
+			check(this::blessingType.isInitialized) { "Blessing type is not set!" }
+			if(filterMode == ChatFilterOption.COMPACT) {
+				blessingStatsPattern.findAllMatcher(text) {
 					val stat = StatType.entries.firstOrNull { group("stat") in it.identifiers } ?: return@findAllMatcher
 					stats.add(Stat(stat, group("value")))
 				}
 				if(blessingType.expectedStats == stats.size) {
 					ChatUtils.addMessage(compileBlessingMessage(), false)
+				} else if(blessingType.expectedStats < stats.size) {
+					NobaAddons.LOGGER.warn(
+						"Found more stats than expected from {} blessing! Expected {}, but instead got {}",
+						blessingType, blessingType.expectedStats, stats.size)
 				}
 			}
-			return false
+			return true
 		}
 
-		return true
+		return false
 	}
 
 	private fun compileBlessingMessage() = buildText {
@@ -99,5 +95,5 @@ object BlessingFilter : IFilter {
 		fun toText(): Text = text.toText().setStyle(color.bold())
 	}
 
-	private fun isEnabled() = IslandType.DUNGEONS.inIsland() && shouldFilter(config.blessingMessage)
+	override fun isEnabled() = IslandType.DUNGEONS.inIsland() && isEnabled(config.blessingMessage)
 }
