@@ -6,7 +6,7 @@ import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionDescription
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaMainScreen
+import me.nobaboy.nobaaddons.screens.NobaMainScreen
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
 

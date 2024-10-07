@@ -52,7 +52,8 @@ object BlessingFilter : IFilter {
 				} else if(blessingType.expectedStats < stats.size) {
 					NobaAddons.LOGGER.warn(
 						"Found more stats than expected from {} blessing! Expected {}, but instead got {}",
-						blessingType, blessingType.expectedStats, stats.size)
+						blessingType, blessingType.expectedStats, stats.size
+					)
 				}
 			}
 			return true
@@ -68,7 +69,7 @@ object BlessingFilter : IFilter {
 		append(blessingType.toText())
 		append(" ")
 		stats.forEachIndexed { i, stat ->
-			if (previousValue != stat.value) {
+			if(previousValue != stat.value) {
 				previousValue = stat.value
 				append(stat.value)
 			}

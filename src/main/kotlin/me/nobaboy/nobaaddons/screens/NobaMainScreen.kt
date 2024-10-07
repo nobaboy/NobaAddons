@@ -1,6 +1,7 @@
-package me.nobaboy.nobaaddons.config
+package me.nobaboy.nobaaddons.screens
 
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.RenderUtils.drawCentered
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ConfirmLinkScreen
@@ -15,13 +16,14 @@ class NobaMainScreen : Screen(TITLE) {
 	private var layout: ThreePartsLayoutWidget? = null
 
 	companion object {
+		private val TITLE = Text.translatable("nobaaddons.name")
+
 		private const val SPACING = 8
 		private const val BUTTON_WIDTH = 200
 		private const val BUTTON_WIDTH_HALF = 96
 
 		private const val GITHUB_ROOT = "https://github.com/nobaboy/NobaAddons"
 
-		private val TITLE = Text.translatable("nobaaddons.name")
 		private val VERSION = "v${NobaAddons.VERSION}"
 		private val CONFIGURATION_TEXT = Text.translatable("nobaaddons.config.open")
 		private val EDIT_LOCATIONS_TEXT = Text.translatable("nobaaddons.config.edit")
@@ -39,7 +41,7 @@ class NobaMainScreen : Screen(TITLE) {
 		val adder = gridWidget.createAdder(2)
 
 		adder.add(ButtonWidget.builder(CONFIGURATION_TEXT) { openConfig() }.width(BUTTON_WIDTH).build(), 2)
-		if(NobaAddons.mc.world != null) adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openConfig() }.width(BUTTON_WIDTH).build(), 2)
+		if(NobaAddons.mc.world != null) adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { null }.width(BUTTON_WIDTH).build(), 2)
 		adder.add(ButtonWidget.builder(SOURCE_TEXT, ConfirmLinkScreen.opening(this, GITHUB_ROOT)).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ISSUES_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/issues")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(MODRINTH_TEXT, ConfirmLinkScreen.opening(this, "https://modrinth.com/mod/nobaaddons")).width(BUTTON_WIDTH_HALF).build())

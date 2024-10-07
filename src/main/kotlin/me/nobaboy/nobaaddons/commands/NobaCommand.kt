@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.tree.CommandNode
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager.getConfigScreen
-import me.nobaboy.nobaaddons.config.NobaMainScreen
+import me.nobaboy.nobaaddons.screens.NobaMainScreen
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback

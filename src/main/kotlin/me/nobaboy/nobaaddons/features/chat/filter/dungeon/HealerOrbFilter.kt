@@ -49,7 +49,7 @@ object HealerOrbFilter : IFilter {
 	) = buildText {
 		formatted(Formatting.GRAY)
 		append("HEALER ORB! ".toText().formatted(Formatting.YELLOW, Formatting.BOLD))
-		if (health.formatDouble() > 0.0) {
+		if(health.formatDouble() > 0.0) {
 			append("+$health ")
 			append("❤ Health".toText().formatted(Formatting.RED))
 			append(" and ")

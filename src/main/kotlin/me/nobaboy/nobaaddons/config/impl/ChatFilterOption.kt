@@ -8,6 +8,6 @@ enum class ChatFilterOption {
 	HIDDEN;
 
 	override fun toString(): String {
-		return I18n.translate("config.chat.filter.chatFilterOption.$name")
+		return I18n.translate("nobaaddons.config.chat.filter.chatFilterOption.$name")
 	}
 }

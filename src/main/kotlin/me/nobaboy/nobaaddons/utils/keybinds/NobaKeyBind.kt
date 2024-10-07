@@ -15,10 +15,16 @@ open class NobaKeyBind(
 ) : KeyBinding(name, inputType, key, category) {
 	private val cooldownManager = CooldownManager()
 
-	constructor(name: String, onPress: () -> Unit) : this(name, "nobaaddons.name", GLFW.GLFW_KEY_UNKNOWN, InputUtil.Type.KEYSYM, onPress)
+	constructor(name: String, onPress: () -> Unit) : this(
+		name,
+		"nobaaddons.name",
+		GLFW.GLFW_KEY_UNKNOWN,
+		InputUtil.Type.KEYSYM,
+		onPress
+	)
 
 	fun maybePress() {
-		if (cooldownManager.isOnCooldown()) return
+		if(cooldownManager.isOnCooldown()) return
 		cooldownManager.startCooldown(1.seconds)
 		onPress()
 	}

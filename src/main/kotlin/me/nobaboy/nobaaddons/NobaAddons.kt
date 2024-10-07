@@ -9,11 +9,6 @@ import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chat.filter.IFilter
-import me.nobaboy.nobaaddons.features.chat.filter.dungeon.BlessingFilter
-import me.nobaboy.nobaaddons.features.chat.filter.dungeon.HealerOrbFilter
-import me.nobaboy.nobaaddons.features.chat.filter.dungeon.PickupObtainFilter
-import me.nobaboy.nobaaddons.features.chat.filter.general.ProfileInfoFilter
-import me.nobaboy.nobaaddons.features.chat.filter.general.TipMessageFilter
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands

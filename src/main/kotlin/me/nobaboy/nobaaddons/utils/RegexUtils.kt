@@ -12,7 +12,7 @@ object RegexUtils {
 		matcher(text).let { if(it.find()) consumer(it) else null }
 	inline fun <T> Pattern.findAllMatcher(text: String, consumer: Matcher.() -> T) {
 		val matcher = matcher(text)
-		while (matcher.find()) {
+		while(matcher.find()) {
 			consumer(matcher)
 		}
 	}

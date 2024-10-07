@@ -26,7 +26,7 @@ class WarpCommand : IChatCommand {
 		get() = NobaConfigManager.get().chatCommands.party.warp
 
 	override fun run(ctx: ChatContext) {
-        if (!PartyAPI.isLeader()) return
+		if(!PartyAPI.isLeader()) return
 
 		val time = if(ctx.args().isEmpty()) null else ctx.args()[0]
 		warpParty(time)
