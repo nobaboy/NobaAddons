@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 
 object KeyBindListener {
-	private val keybinds: MutableList<NobaKeyBind> = mutableListOf(
+	private val keybinds = mutableListOf<NobaKeyBind>(
 		CommandKeyBind("nobaaddons.key.pets", "pets"),
 		CommandKeyBind("nobaaddons.key.wardrobe", "wardrobe"),
 		CommandKeyBind("nobaaddons.key.equipment", "equipment"),

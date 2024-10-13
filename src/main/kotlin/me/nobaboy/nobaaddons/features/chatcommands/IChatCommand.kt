@@ -11,8 +11,7 @@ interface IChatCommand {
 	val isEnabled: Boolean
 		get() = true
 
-	val aliases: MutableList<String>
-		get() = mutableListOf()
+	val aliases get() = mutableListOf<String>()
 
 	val bypassCooldown: Boolean
 		get() = false

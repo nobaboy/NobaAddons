@@ -2,13 +2,12 @@ package me.nobaboy.nobaaddons.features.chat.filter
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.config.impl.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filter.dungeon.BlessingFilter
 import me.nobaboy.nobaaddons.features.chat.filter.dungeon.HealerOrbFilter
 import me.nobaboy.nobaaddons.features.chat.filter.dungeon.PickupObtainFilter
 import me.nobaboy.nobaaddons.features.chat.filter.general.ProfileInfoFilter
 import me.nobaboy.nobaaddons.features.chat.filter.general.TipMessageFilter
-import me.nobaboy.nobaaddons.utils.StringUtils.clean
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
 
@@ -35,7 +34,7 @@ interface IFilter {
 			init = true
 
 			ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ ->
-				val text = message.string.clean()
+				val text = message.string.cleanFormatting()
 				filters.asSequence().filter { it.isEnabled() }.none {
 					runCatching { it.shouldFilter(message, text) }
 						.onFailure { error ->

@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 
 object Scheduler {
-	private val tasks: MutableList<ScheduledTask> = mutableListOf()
+	private val tasks = mutableListOf<ScheduledTask>()
 
 	init {
 		ClientTickEvents.END_CLIENT_TICK.register { tick() }

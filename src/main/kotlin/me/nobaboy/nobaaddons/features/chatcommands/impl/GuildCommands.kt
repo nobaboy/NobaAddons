@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.features.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.features.chatcommands.impl.shared.WarpPlayerHandler
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
-import me.nobaboy.nobaaddons.utils.StringUtils.clean
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseContains
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import java.util.regex.Matcher
@@ -31,7 +31,7 @@ object GuildCommands : ChatCommandManager() {
 
 	fun init() {
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
-			val cleanMessage = message.string.clean()
+			val cleanMessage = message.string.cleanFormatting()
 
 			if(WarpPlayerHandler.isWarping) {
 				val playerName = WarpPlayerHandler.player

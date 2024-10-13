@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.screens
+package me.nobaboy.nobaaddons.config.ui
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
@@ -62,9 +62,8 @@ class NobaMainScreen : Screen(TITLE) {
 		super.render(context, mouseX, mouseY, delta)
 
 		val centerX = NobaAddons.mc.window.scaledWidth / 2
-
-		TITLE.drawCentered(context, centerX, 75, 0x007AFF, true, 4.0f)
-		VERSION.drawCentered(context, centerX, 107.toInt(), 0xFFFFFF, true, 1.5f)
+		TITLE.drawCentered(context, centerX, 75, 4.0f, 0x007AFF, true)
+		VERSION.drawCentered(context, centerX, 107, 1.5f, 0xFFFFFF, true)
 	}
 
 	private fun openConfig() {

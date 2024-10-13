@@ -9,7 +9,7 @@ import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils.cleanScoreboard
-import me.nobaboy.nobaaddons.utils.StringUtils.clean
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Utils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
@@ -30,7 +30,7 @@ object DungeonAPI {
 
 	fun init() {
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
-			getBossType(message.string.clean())
+			getBossType(message.string.cleanFormatting())
 		}
 
 		Scheduler.schedule(20, repeat = true, this::getFloorType)
@@ -70,7 +70,7 @@ object DungeonAPI {
 		val players = NobaAddons.mc.networkHandler!!.playerList
 		for(player in players) {
 			if(player == null || player.displayName == null) continue
-			val text = player.displayName!!.string.clean()
+			val text = player.displayName!!.string.cleanFormatting()
 
 			if(text.contains(playerName) && text.indexOf("(") != -1) {
 				if(text.contains("($playerName)")) continue // Puzzle fail text

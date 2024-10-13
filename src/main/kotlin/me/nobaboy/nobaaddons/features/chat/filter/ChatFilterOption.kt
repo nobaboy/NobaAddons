@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.config.impl
+package me.nobaboy.nobaaddons.features.chat.filter
 
 import net.minecraft.client.resource.language.I18n
 

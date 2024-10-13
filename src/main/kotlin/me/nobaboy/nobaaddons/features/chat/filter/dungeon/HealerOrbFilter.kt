@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.chat.filter.dungeon
 
 import me.nobaboy.nobaaddons.api.SkyblockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.config.impl.ChatFilterOption
+import me.nobaboy.nobaaddons.features.chat.filter.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filter.IFilter
 import me.nobaboy.nobaaddons.features.chat.filter.StatType
 import me.nobaboy.nobaaddons.utils.NumberUtils.formatDouble

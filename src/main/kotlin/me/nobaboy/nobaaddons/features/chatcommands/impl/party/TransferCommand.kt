@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 class TransferCommand : IChatCommand {
 	override val name: String = "transfer"
 
-	override val aliases: MutableList<String> = mutableListOf("ptme", "pt")
+	override val aliases = mutableListOf("ptme", "pt")
 
 	override val usage: String = "(transfer|pt) [optional: username], ptme"
 

@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.api.SkyblockAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.ui.ElementManager
 import me.nobaboy.nobaaddons.features.chat.filter.IFilter
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
@@ -70,6 +71,9 @@ object NobaAddons : ClientModInitializer {
 
 		// Chat Filters
 		IFilter.init()
+
+		// Test
+		ElementManager.init()
 
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyblockAPI::onLocationPacket)

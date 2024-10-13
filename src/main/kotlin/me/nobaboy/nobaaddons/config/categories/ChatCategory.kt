@@ -6,7 +6,7 @@ import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.impl.ChatFilterOption
+import me.nobaboy.nobaaddons.features.chat.filter.ChatFilterOption
 import net.minecraft.text.Text
 
 object ChatCategory {

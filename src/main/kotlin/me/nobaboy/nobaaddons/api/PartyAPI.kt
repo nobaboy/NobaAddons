@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.api
 import com.mojang.brigadier.Command
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.StringUtils.clean
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Utils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
@@ -57,7 +57,7 @@ object PartyAPI {
 
 	fun init() {
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
-			handleChatEvent(message.string.clean())
+			handleChatEvent(message.string.cleanFormatting())
 		}
 
 		ClientPlayConnectionEvents.JOIN.register(ClientPlayConnectionEvents.Join { _, _, _ ->

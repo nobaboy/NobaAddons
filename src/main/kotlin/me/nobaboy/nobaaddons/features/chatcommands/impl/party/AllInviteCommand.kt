@@ -9,7 +9,7 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 class AllInviteCommand : IChatCommand {
 	override val name: String = "allinvite"
 
-	override val aliases: MutableList<String> = mutableListOf("allinv")
+	override val aliases = mutableListOf("allinv")
 
 	override val usage: String = "(allinvite|allinv)"
 

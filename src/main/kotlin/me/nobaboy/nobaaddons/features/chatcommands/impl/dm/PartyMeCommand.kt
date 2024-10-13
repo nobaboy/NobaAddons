@@ -9,7 +9,7 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 class PartyMeCommand : IChatCommand {
 	override val name: String = "partyme"
 
-	override val aliases: MutableList<String> = mutableListOf("pme")
+	override val aliases = mutableListOf("pme")
 
 	override val isEnabled: Boolean
 		get() = NobaConfigManager.get().chatCommands.dm.partyMe

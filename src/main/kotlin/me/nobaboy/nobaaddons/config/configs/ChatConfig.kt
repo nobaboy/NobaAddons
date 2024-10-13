@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.config.impl.ChatFilterOption
+import me.nobaboy.nobaaddons.features.chat.filter.ChatFilterOption
 
 class ChatConfig {
 	@SerialEntry

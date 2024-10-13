@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.chat.filter.dungeon
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.SkyblockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.config.impl.ChatFilterOption
+import me.nobaboy.nobaaddons.features.chat.filter.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filter.IFilter
 import me.nobaboy.nobaaddons.features.chat.filter.StatType
 import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
@@ -27,7 +27,7 @@ object BlessingFilter : IFilter {
 	private val statMessages = listOf("     Granted you", "     Also granted you")
 
 	private lateinit var blessingType: BlessingType
-	private val stats: MutableList<Stat> = mutableListOf()
+	private val stats = mutableListOf<Stat>()
 
 	override fun shouldFilter(message: Text, text: String): Boolean {
 		val filterMode = config.blessingMessage

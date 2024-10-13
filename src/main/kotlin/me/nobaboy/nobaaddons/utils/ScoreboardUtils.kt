@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.utils.StringUtils.clean
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.scoreboard.ScoreboardDisplaySlot
 
 object ScoreboardUtils {
@@ -23,7 +23,7 @@ object ScoreboardUtils {
 		"\uD83D\uDD2B",
 	)
 
-	fun String.cleanScoreboard() = this.clean().filter { it.code in (21 until 127) }
+	fun String.cleanScoreboard() = this.cleanFormatting().filter { it.code in (21 until 127) }
 
 	fun getSidebarLines(): List<String> {
 		val lines = mutableListOf<String>()
@@ -38,7 +38,7 @@ object ScoreboardUtils {
 
 				if(team != null) {
 					val line = team.prefix.string + team.suffix.string
-					if(!line.trim().isEmpty()) lines.add(line.clean())
+					if(!line.trim().isEmpty()) lines.add(line.cleanFormatting())
 				}
 			}
 		}

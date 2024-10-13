@@ -10,7 +10,7 @@ object RegexUtils {
 		matcher(text).let { if(it.matches()) consumer(it) else null }
 	inline fun <T> Pattern.findMatcher(text: String, consumer: Matcher.() -> T) =
 		matcher(text).let { if(it.find()) consumer(it) else null }
-	inline fun <T> Pattern.findAllMatcher(text: String, consumer: Matcher.() -> T) {
+	inline fun Pattern.findAllMatcher(text: String, consumer: Matcher.() -> Unit) {
 		val matcher = matcher(text)
 		while(matcher.find()) {
 			consumer(matcher)

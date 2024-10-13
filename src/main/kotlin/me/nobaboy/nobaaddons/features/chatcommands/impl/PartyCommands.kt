@@ -9,7 +9,7 @@ import me.nobaboy.nobaaddons.features.chatcommands.impl.party.TransferCommand
 import me.nobaboy.nobaaddons.features.chatcommands.impl.party.WarpCommand
 import me.nobaboy.nobaaddons.features.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
-import me.nobaboy.nobaaddons.utils.StringUtils.clean
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -37,7 +37,7 @@ object PartyCommands : ChatCommandManager() {
 
 	fun init() {
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
-			processMessage(message.string.clean(), isEnabled())
+			processMessage(message.string.cleanFormatting(), isEnabled())
 		}
 	}
 
