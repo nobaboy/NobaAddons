@@ -18,7 +18,7 @@ object RenderUtils {
 		x: Int,
 		y: Int,
 		scale: Float = 1.0f,
-		color: Int,
+		color: Int = 0xFFFFFF,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
 	) {
@@ -32,7 +32,7 @@ object RenderUtils {
 		x: Int,
 		y: Int,
 		scale: Float = 1.0f,
-		color: Int,
+		color: Int = 0xFFFFFF,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
 	) {
@@ -112,7 +112,6 @@ object RenderUtils {
 	) {
 		drawText(context, this, x, y, scale, color, shadow, applyScaling)
 	}
-
 	fun Text.drawCentered(
 		context: DrawContext,
 		x: Int,
@@ -136,7 +135,6 @@ object RenderUtils {
 	) {
 		drawText(context, this.toText(), x, y, scale, color, shadow, applyScaling)
 	}
-
 	fun String.drawCentered(
 		context: DrawContext,
 		x: Int,

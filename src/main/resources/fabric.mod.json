@@ -21,9 +21,13 @@
       }
     ],
     "modmenu": [
-      "me.nobaboy.nobaaddons.config.ModMenuImpl"
+      {
+        "value": "me.nobaboy.nobaaddons.config.ModMenuImpl",
+        "adapter": "kotlin"
+      }
     ]
   },
+  "mixins": ["nobaaddons.mixins.json"],
   "depends": {
     "minecraft": "$mcdep",
     "fabricloader": ">=0.16.5",

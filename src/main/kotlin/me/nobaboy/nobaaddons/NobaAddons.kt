@@ -55,6 +55,7 @@ object NobaAddons : ClientModInitializer {
 		// Apis
 		PartyAPI.init()
 		DungeonAPI.init()
+		Scheduler.schedule(20, repeat = true, SkyblockAPI::update)
 
 		// Utils
 		KeyBindListener.init()
