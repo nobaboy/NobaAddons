@@ -66,6 +66,11 @@ class NobaMainScreen : Screen(TITLE) {
 		VERSION.drawCentered(context, centerX, 107, 1.5f, 0xFFFFFF, true)
 	}
 
+	override fun close() {
+		ElementManager.loadElements()
+		super.close()
+	}
+
 	private fun openConfig() {
 		client?.setScreen(NobaConfigManager.getConfigScreen(this))
 	}

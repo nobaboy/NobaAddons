@@ -1,0 +1,10 @@
+package me.nobaboy.nobaaddons.config.ui.controllers
+
+import me.nobaboy.nobaaddons.config.ui.elements.Element
+import me.nobaboy.nobaaddons.config.ui.elements.TextElement
+
+data class InfoBox(
+	val text: String,
+	var mode: TextElement.TextMode = TextElement.TextMode.SHADOW,
+	val element: Element
+)

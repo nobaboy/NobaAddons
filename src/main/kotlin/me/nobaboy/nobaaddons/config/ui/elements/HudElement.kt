@@ -2,23 +2,24 @@ package me.nobaboy.nobaaddons.config.ui.elements
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.ui.NobaHudScreen
+import me.nobaboy.nobaaddons.utils.NumberUtils.round
 import net.minecraft.client.gui.DrawContext
-import kotlin.math.roundToInt
 
-abstract class HudElement(
-	val identifier: String,
-	var x: Int,
-	var y: Int,
-	var scale: Double = 1.0,
-	var color: Int = 0xFFFFFF
-) {
-	abstract fun render(context: DrawContext, withBackground: Boolean, hovered: Boolean)
-	abstract fun getName(): String
+abstract class HudElement(element: Element) {
+	val identifier: String by element::identifier
+	var x: Int by element::x
+	var y: Int by element::y
+	var scale: Double by element::scale
+	var color: Int by element::color
+
+	abstract fun render(context: DrawContext, forced: Boolean, hovered: Boolean)
 	abstract fun getBounds(): ElementBounds
 
-	fun shouldRender(force: Boolean): Boolean {
+	fun shouldRender(forced: Boolean): Boolean {
 		val client = NobaAddons.mc
-		return force || (client.currentScreen !is NobaHudScreen && !client.options.hudHidden)
+		if(!forced && client.currentScreen is NobaHudScreen) return false
+		if(!forced && client.options.hudHidden) return false
+		return true
 	}
 
 	fun drawBackground(context: DrawContext, color: Int) {
@@ -35,16 +36,18 @@ abstract class HudElement(
 
 	fun modifyPosition(newX: Int, newY: Int) {
 		val client = NobaAddons.mc
+		val (width, height) = client.window.let { it.scaledWidth to it.scaledHeight }
 		val bounds = getBounds()
-		val maxX = (client.window.scaledWidth - bounds.width)
-		val maxY = (client.window.scaledHeight - bounds.height)
 
-		if(bounds.width < maxX) x = newX.coerceIn(1, maxX)
-		if(bounds.height < maxY) y = newY.coerceIn(1, maxY)
+		val maxX = (width - bounds.width).coerceAtLeast(1)
+		val maxY = (height - bounds.height).coerceAtLeast(1)
+
+		x = newX.coerceIn(1, maxX)
+		y = newY.coerceIn(1, maxY)
 	}
 
 	fun modifyScale(newScale: Double) {
-		scale = ((scale + newScale).coerceIn(MIN_SCALE, MAX_SCALE) * 10).roundToInt() / 10.0
+		scale = (scale + newScale).round(1).coerceIn(MIN_SCALE, MAX_SCALE)
 	}
 
 	// Figure out a better way for default x and y

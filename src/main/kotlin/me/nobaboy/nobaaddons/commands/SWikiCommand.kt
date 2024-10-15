@@ -6,7 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.OSUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.capitalizeFirstLetters
+import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -34,7 +34,7 @@ object SWikiCommand {
 	}
 
 	private fun searchWiki(ctx: CommandContext<FabricClientCommandSource>): Int {
-		val query = StringArgumentType.getString(ctx, "query").capitalizeFirstLetters()
+		val query = StringArgumentType.getString(ctx, "query").title()
 		val wikiName = Text.literal("Official SkyBlock Wiki").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
 		val link = "https://wiki.hypixel.net/index.php?search=${query.replace(" ", "+")}&scope=internal"
 
