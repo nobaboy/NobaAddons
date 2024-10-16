@@ -6,11 +6,11 @@ import me.nobaboy.nobaaddons.api.data.BossType
 import me.nobaboy.nobaaddons.api.data.ClassType
 import me.nobaboy.nobaaddons.api.data.FloorType
 import me.nobaboy.nobaaddons.api.data.IslandType
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils.cleanScoreboard
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.Utils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object DungeonAPI {
@@ -66,8 +66,8 @@ object DungeonAPI {
 			return
 		}
 
-		val playerName = Utils.getPlayerName()!!
-		val players = NobaAddons.mc.networkHandler!!.playerList
+		val playerName = MCUtils.playerName!!
+		val players = MCUtils.networkHandler!!.playerList
 		for(player in players) {
 			if(player == null || player.displayName == null) continue
 			val text = player.displayName!!.string.cleanFormatting()

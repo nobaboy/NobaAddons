@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.utils.chat
 
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.minecraft.text.Text
 import java.util.LinkedList
@@ -12,16 +13,16 @@ object ChatUtils {
 
 	// FIXME: I feel like it's waiting 1 second before it actually sends a command rather than adding it to a queue
 	fun tickCommandQueue() {
-		NobaAddons.mc.player ?: return commandQueue.clear()
+		MCUtils.player ?: return commandQueue.clear()
 		sendCommand(commandQueue.poll() ?: return)
 		lastSendTimestamp = Timestamp.currentTime()
 	}
 
 	private fun send(message: String) {
-		NobaAddons.mc.networkHandler?.sendChatMessage(message)
+		MCUtils.networkHandler?.sendChatMessage(message)
 	}
 	private fun add(message: Text, overlay: Boolean) {
-		NobaAddons.mc.player?.sendMessage(message, overlay)
+		MCUtils.player?.sendMessage(message, overlay)
 	}
 
 	/**
@@ -30,7 +31,7 @@ object ChatUtils {
 	 * @see queueCommand
 	 */
 	fun sendCommand(command: String) {
-		NobaAddons.mc.networkHandler?.sendCommand(command)
+		MCUtils.networkHandler?.sendCommand(command)
 	}
 	fun queueCommand(message: String) {
 		commandQueue.add(message)

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.SkyblockAPI
+import me.nobaboy.nobaaddons.utils.MCUtils
 import kotlin.math.sqrt
 
 enum class InfoBoxFunctions(val aliases: List<String>, val runnable: () -> String) {
@@ -23,7 +23,7 @@ enum class InfoBoxFunctions(val aliases: List<String>, val runnable: () -> Strin
 	BITS(listOf("{bits}"), { getBits() });
 
 	companion object {
-		val client = NobaAddons.mc
+		val client = MCUtils.client
 
 		fun getPosX(): String = String.format("%.1f", client.player?.x ?: 0.0)
 		fun getPosY(): String = String.format("%.1f", client.player?.y ?: 0.0)

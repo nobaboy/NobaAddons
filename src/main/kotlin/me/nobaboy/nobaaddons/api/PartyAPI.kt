@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
 import com.mojang.brigadier.Command
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -78,7 +79,7 @@ object PartyAPI {
 		gotList = false
 	}
 
-	fun isLeader() = partyLeader == Utils.getPlayerName()
+	fun isLeader() = partyLeader == MCUtils.playerName
 
 	fun listMembers(): Int {
 		val partySize = partyMembers.size
@@ -135,7 +136,7 @@ object PartyAPI {
 		otherPartyJoinPattern.matchMatcher(message) {
 			val name = group("name")
 			if(partyMembers.size == 1) {
-				partyLeader = Utils.getPlayerName()
+				partyLeader = MCUtils.playerName
 			}
 			addPlayer(name)
 		}

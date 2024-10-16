@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.ui.elements
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.ui.NobaHudScreen
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.round
 import net.minecraft.client.gui.DrawContext
 
@@ -16,7 +16,7 @@ abstract class HudElement(element: Element) {
 	abstract fun getBounds(): ElementBounds
 
 	fun shouldRender(forced: Boolean): Boolean {
-		val client = NobaAddons.mc
+		val client = MCUtils.client
 		if(!forced && client.currentScreen is NobaHudScreen) return false
 		if(!forced && client.options.hudHidden) return false
 		return true
@@ -35,8 +35,7 @@ abstract class HudElement(element: Element) {
 	}
 
 	fun modifyPosition(newX: Int, newY: Int) {
-		val client = NobaAddons.mc
-		val (width, height) = client.window.let { it.scaledWidth to it.scaledHeight }
+		val (width, height) = MCUtils.window.let { it.scaledWidth to it.scaledHeight }
 		val bounds = getBounds()
 
 		val maxX = (width - bounds.width).coerceAtLeast(1)

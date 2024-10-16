@@ -23,7 +23,6 @@ import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
-import net.minecraft.client.MinecraftClient
 import net.minecraft.text.MutableText
 import net.minecraft.text.Style
 import net.minecraft.text.Text
@@ -42,7 +41,6 @@ object NobaAddons : ClientModInitializer {
 			)
 
 	val LOGGER: Logger = LogUtils.getLogger()
-	val mc: MinecraftClient get() = MinecraftClient.getInstance()
 	val modDir: Path get() = FabricLoader.getInstance().configDir
 
 	private val supervisorJob = SupervisorJob()

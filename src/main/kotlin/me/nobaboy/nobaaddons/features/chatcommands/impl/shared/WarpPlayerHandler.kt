@@ -4,7 +4,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.utils.Utils
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import kotlin.time.Duration.Companion.seconds
@@ -65,7 +65,7 @@ object WarpPlayerHandler {
 
 			if(partyStatus.isLeader() && membersToInvite.isNotEmpty()) {
 				membersToInvite.forEach {
-					if(it != Utils.getPlayerName()) HypixelCommands.partyInvite(it)
+					if(it != MCUtils.playerName) HypixelCommands.partyInvite(it)
 				}
 			} else if(!partyStatus.isLeader() && partyStatus.inParty) {
 				HypixelCommands.partyJoin(partyStatus.partyLeader!!)

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.ui.elements
 
 import dev.isxander.yacl3.api.NameableEnum
-import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RenderUtils
 import me.nobaboy.nobaaddons.utils.RenderUtils.getWidth
 import me.nobaboy.nobaaddons.utils.StringUtils.title
@@ -26,7 +26,7 @@ abstract class TextElement(element: Element) : HudElement(element) {
 
 	override fun getBounds(): ElementBounds {
 		val width = text().getWidth().takeIf { it > 0 } ?: identifier.getWidth()
-		return ElementBounds(x, y, (width * scale).toInt(), (NobaAddons.mc.textRenderer.fontHeight * scale).toInt(), scale)
+		return ElementBounds(x, y, (width * scale).toInt(), (MCUtils.textRenderer.fontHeight * scale).toInt(), scale)
 	}
 
 	private fun renderLine(context: DrawContext, x: Int, y: Int, scale: Float, color: Int) {

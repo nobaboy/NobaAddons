@@ -4,8 +4,8 @@ import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chatcommands.IChatCommand
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
-import me.nobaboy.nobaaddons.utils.Utils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class TransferCommand : IChatCommand {
@@ -27,7 +27,7 @@ class TransferCommand : IChatCommand {
 			return
 		}
 
-		if(ctx.user() == Utils.getPlayerName()) return
+		if(ctx.user() == MCUtils.playerName) return
 		HypixelCommands.partyTransfer(ctx.user())
 	}
 }

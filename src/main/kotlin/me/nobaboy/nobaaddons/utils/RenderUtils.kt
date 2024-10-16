@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.utils
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
+
 object RenderUtils {
 	fun startScale(context: DrawContext, scale: Float) {
 		context.matrices.push()
@@ -23,7 +23,7 @@ object RenderUtils {
 		applyScaling: Boolean = true
 	) {
 		if(applyScaling) startScale(context, scale)
-		context.drawText(NobaAddons.mc.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color, shadow)
+		context.drawText(MCUtils.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color, shadow)
 		if(applyScaling) endScale(context)
 	}
 	fun drawText(
@@ -50,7 +50,7 @@ object RenderUtils {
 		applyScaling: Boolean = true
 	) {
 		if(applyScaling) startScale(context, scale)
-		NobaAddons.mc.textRenderer.drawWithOutline(
+		MCUtils.textRenderer.drawWithOutline(
 			text.asOrderedText(),
 			(x / scale).toFloat(),
 			(y / scale).toFloat(),
@@ -156,7 +156,7 @@ object RenderUtils {
 		rightY: Double
 	): Boolean = pointX in leftX..rightX && pointY in leftY..rightY
 
-	fun Text.getWidth(): Int = NobaAddons.mc.textRenderer.getWidth(this)
-	fun String.getWidth(): Int = NobaAddons.mc.textRenderer.getWidth(this)
+	fun Text.getWidth(): Int = MCUtils.textRenderer.getWidth(this)
+	fun String.getWidth(): Int = MCUtils.textRenderer.getWidth(this)
 }
 

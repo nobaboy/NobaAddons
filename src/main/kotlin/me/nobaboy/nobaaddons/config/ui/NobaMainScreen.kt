@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.config.ui
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RenderUtils.drawCentered
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ConfirmLinkScreen
@@ -41,7 +42,7 @@ class NobaMainScreen : Screen(TITLE) {
 		val adder = gridWidget.createAdder(2)
 
 		adder.add(ButtonWidget.builder(CONFIGURATION_TEXT) { openConfig() }.width(BUTTON_WIDTH).build(), 2)
-		if(NobaAddons.mc.world != null) adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openHudEditor() }.width(BUTTON_WIDTH).build(), 2)
+		if(MCUtils.world != null) adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openHudEditor() }.width(BUTTON_WIDTH).build(), 2)
 		adder.add(ButtonWidget.builder(SOURCE_TEXT, ConfirmLinkScreen.opening(this, GITHUB_ROOT)).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ISSUES_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/issues")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(MODRINTH_TEXT, ConfirmLinkScreen.opening(this, "https://modrinth.com/mod/nobaaddons")).width(BUTTON_WIDTH_HALF).build())
@@ -61,7 +62,7 @@ class NobaMainScreen : Screen(TITLE) {
 		renderBackground(context, mouseX, mouseY, delta)
 		super.render(context, mouseX, mouseY, delta)
 
-		val centerX = NobaAddons.mc.window.scaledWidth / 2
+		val centerX = MCUtils.window.scaledWidth / 2
 		TITLE.drawCentered(context, centerX, 75, 4.0f, 0x007AFF, true)
 		VERSION.drawCentered(context, centerX, 107, 1.5f, 0xFFFFFF, true)
 	}

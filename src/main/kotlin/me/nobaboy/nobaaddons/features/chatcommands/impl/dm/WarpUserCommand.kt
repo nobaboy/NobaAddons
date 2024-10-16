@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chatcommands.IChatCommand
 import me.nobaboy.nobaaddons.features.chatcommands.impl.shared.WarpPlayerHandler
-import me.nobaboy.nobaaddons.utils.Utils
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class WarpUserCommand : IChatCommand {
@@ -14,7 +14,7 @@ class WarpUserCommand : IChatCommand {
 		get() = NobaConfigManager.get().chatCommands.dm.warpMe
 
 	override fun run(ctx: ChatContext) {
-		val playerName = Utils.getPlayerName() ?: return
+		val playerName = MCUtils.playerName ?: return
 		if(ctx.user() == playerName) return
 
 		if(WarpPlayerHandler.isWarping) {

@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.utils
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.scoreboard.ScoreboardDisplaySlot
 
@@ -27,7 +26,7 @@ object ScoreboardUtils {
 
 	fun getSidebarLines(): List<String> {
 		val lines = mutableListOf<String>()
-		val player = NobaAddons.mc.player ?: return lines
+		val player = MCUtils.player ?: return lines
 
 		val scoreboard = player.scoreboard ?: return lines
 		val objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.FROM_ID.apply(1))

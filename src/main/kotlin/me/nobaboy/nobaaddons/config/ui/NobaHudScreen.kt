@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.config.ui
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.ui.elements.HudElement
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RenderUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import net.minecraft.client.gui.DrawContext
@@ -50,7 +50,7 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 	}
 
 	override fun init() {
-		val client = NobaAddons.mc
+		val client = MCUtils.client
 		val centerX = client.window.scaledWidth / 2
 		val scaledHeight = client.window.scaledHeight
 
@@ -91,9 +91,9 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
 		super.render(context, mouseX, mouseY, delta)
 
-		val client = NobaAddons.mc
-		val centerX = client.window.scaledWidth / 2
-		val scaledHeight = client.window.scaledHeight
+		val window = MCUtils.window
+		val centerX = window.scaledWidth / 2
+		val scaledHeight = window.scaledHeight
 
 		when(editingMode) {
 			EditingMode.IDLE -> {
