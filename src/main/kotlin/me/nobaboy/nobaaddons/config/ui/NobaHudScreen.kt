@@ -26,7 +26,6 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 	private var parent: Screen? = null
 
 	private lateinit var elements: LinkedHashMap<String, HudElement>
-//	private var contextMenu: ContextMenu? = null
 
 	private lateinit var doneButtonWidget: ButtonWidget
 	private lateinit var setButtonWidget: ButtonWidget
@@ -96,8 +95,6 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 		val centerX = client.window.scaledWidth / 2
 		val scaledHeight = client.window.scaledHeight
 
-//		contextMenu?.render(context, mouseX, mouseY, delta)
-
 		when(editingMode) {
 			EditingMode.IDLE -> {
 				RenderUtils.drawCenteredText(context, "Left Alt » Toggles usage text", centerX, scaledHeight - 40)
@@ -144,13 +141,6 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 					setEditingMode(mode)
 				}
 
-//				GLFW.GLFW_MOUSE_BUTTON_2 -> {
-//					contextMenu = ContextMenu(mouseX.toInt() - 1, mouseY.toInt() - 1, this, element)
-//					val x = min(mouseX.toInt() - 1, width - contextMenu!!.width)
-//					val y = min(mouseY.toInt() - 1, height - contextMenu!!.height)
-//					contextMenu!!.x = x
-//					contextMenu!!.y = y
-//				}
 				GLFW.GLFW_MOUSE_BUTTON_3 -> element.reset()
 			}
 		}
