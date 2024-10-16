@@ -1,10 +1,10 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.data.IslandType
+import me.nobaboy.nobaaddons.utils.RegexUtils.matchAll
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils.cleanScoreboard
-import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseContains
 import me.nobaboy.nobaaddons.utils.Utils
 import net.hypixel.data.type.GameType
 import net.hypixel.data.type.ServerType
@@ -13,47 +13,50 @@ import java.util.regex.Pattern
 import kotlin.jvm.optionals.getOrNull
 
 object SkyblockAPI {
-	private val currencyPattern = Pattern.compile("^[A-z]+: (?<currency>[\\d,]+).*")
+	private val currencyPattern = Pattern.compile("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*")
+
+	var currentGame: ServerType? = null
+		private set
 
 	val inSkyblock: Boolean
 		get() = Utils.onHypixel && currentGame == GameType.SKYBLOCK
 	var currentIsland: IslandType = IslandType.UNKNOWN
 		private set
-
-	var currentGame: ServerType? = null
+	var currentZone: String? = null
 		private set
 
 	var purse: Long? = null
 	var bits: Long? = null
+//	var copper: Long? = null
+//	var motes: Long? = null
 
-	fun isIn(island: IslandType): Boolean = inSkyblock && currentIsland == island
 	fun IslandType.inIsland(): Boolean = inSkyblock && currentIsland == this
+	fun inZone(zone: String): Boolean = inSkyblock && currentZone == zone
 
-	// I originally planned to make an enum including all the zones but after realising that Skyblock has more than
-	// 227 zones, which is what I counted, yea maybe not.
-	fun inZone(zone: String): Boolean {
-		if(!inSkyblock) return false
-
-		val scoreboard = ScoreboardUtils.getSidebarLines()
-		for(line in scoreboard) {
-			val cleanedLine = line.cleanScoreboard()
-			if(!cleanedLine.contains("⏣")) continue
-
-			return cleanedLine.contains(zone)
-		}
-		return false
-	}
-
-	fun getPurse() {
+	// I originally planned to make an enum including all the zones but after realising
+	// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
+	fun getZone() {
 		if(!inSkyblock) return
 
 		val scoreboard = ScoreboardUtils.getSidebarLines()
-		for(line in scoreboard) {
-			val cleanedLine = line.cleanScoreboard()
-			if(!cleanedLine.lowercaseContains(listOf("Purse:", "Piggy:"))) continue
+		val line = scoreboard.firstOrNull { it.contains("⏣")}
+		currentZone = line?.replace("⏣", "")?.trim() ?: return
+	}
 
-			currencyPattern.matchMatcher(cleanedLine) {
-				purse = group("currency").replace(",", "").toLongOrNull()
+	// This can be further expanded to include other types like Pelts, North Stars, etc.
+	fun getCurrencies() {
+		if(!inSkyblock) return
+
+		val scoreboard = ScoreboardUtils.getSidebarLines()
+		currencyPattern.matchAll(scoreboard) {
+			val currency = group("currency")
+			val amount = group("amount").replace(",", "").toLongOrNull()
+
+			when (currency) {
+				"Bits" -> bits = amount
+				"Purse", "Piggy" -> purse = amount
+//				"Copper" -> copper = amount
+//				"Motes" -> motes = amount
 			}
 		}
 	}
@@ -73,8 +76,10 @@ object SkyblockAPI {
 	}
 
 	fun update() {
-		getPurse()
-		getBits()
+		if(!inSkyblock) return
+
+		getZone()
+		getCurrencies()
 	}
 
 	fun onLocationPacket(packet: ClientboundLocationPacket) {

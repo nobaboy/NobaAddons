@@ -17,5 +17,23 @@ object RegexUtils {
 		}
 	}
 
+	inline fun <T> Pattern.matchAll(list: List<String>, consumer: Matcher.() -> T): T? {
+		for (line in list) {
+			matcher(line).let { if (it.find()) consumer(it) }
+		}
+		return null
+	}
+
+	inline fun <T> List<Pattern>.matchMatchers(text: String, consumer: Matcher.() -> T): T? {
+		for (pattern in iterator()) {
+			pattern.matchMatcher<T>(text) {
+				return consumer()
+			}
+		}
+		return null
+	}
+
+	fun List<Pattern>.allMatches(list: List<String>): List<String> = list.filter { line -> any { it.matches(line) } }
+	fun List<Pattern>.anyMatches(list: List<String>?): Boolean = list?.any { line -> any { it.matches(line) } } == true
 	fun List<Pattern>.anyMatches(string: String): Boolean = any { it.matches(string) }
 }

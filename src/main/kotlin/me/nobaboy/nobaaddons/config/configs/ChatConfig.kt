@@ -7,6 +7,9 @@ class ChatConfig {
 	@SerialEntry
 	val filter: Filter = Filter()
 
+	@SerialEntry
+	val alerts: Alerts = Alerts()
+
 	class Filter {
 		@SerialEntry
 		var hideTipMessages: Boolean = false
@@ -25,5 +28,13 @@ class ChatConfig {
 
 		@SerialEntry
 		var allow5050ItemMessage: Boolean = false
+	}
+
+	class Alerts {
+		@SerialEntry
+		var mythicSeaCreatureSpawn: Boolean = false
+
+		@SerialEntry
+		var vanquisherSpawn: Boolean = false
 	}
 }

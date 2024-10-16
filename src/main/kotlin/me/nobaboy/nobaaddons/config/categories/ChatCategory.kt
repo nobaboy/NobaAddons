@@ -15,6 +15,25 @@ object ChatCategory {
 			.name(Text.translatable("nobaaddons.config.chat"))
 
 			.group(OptionGroup.createBuilder()
+				.name(Text.translatable("nobaaddons.config.chat.alerts"))
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip")))
+					.binding(defaults.chat.alerts.mythicSeaCreatureSpawn, config.chat.alerts::mythicSeaCreatureSpawn) { config.chat.alerts.mythicSeaCreatureSpawn = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.chat.alerts.vanquisherSpawn"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.alerts.vanquisherSpawn.tooltip")))
+					.binding(defaults.chat.alerts.vanquisherSpawn, config.chat.alerts::vanquisherSpawn) { config.chat.alerts.vanquisherSpawn = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.build()
+			)
+
+			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.chat.filter"))
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.chat.filter.hideTipMessages"))

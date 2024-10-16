@@ -2,24 +2,32 @@ package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.NobaAddons
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.font.TextRenderer
+import net.minecraft.client.network.ClientPlayNetworkHandler
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.client.util.Window
+import net.minecraft.client.world.ClientWorld
 import net.minecraft.network.packet.Packet
 
 object MCUtils {
-	fun client(): MinecraftClient = MinecraftClient.getInstance()
+	val client: MinecraftClient get() = MinecraftClient.getInstance()
 
-	fun player(): ClientPlayerEntity? = client().player
-	fun playerName(): String = player()?.name.toString()
+	val world: ClientWorld? get() = client.world
 
-	fun window(): Window = client().window
+	val player: ClientPlayerEntity? get() = client.player
+	val playerName: String? get() = player?.name.toString()
+
+	val networkHandler: ClientPlayNetworkHandler? get() = client.networkHandler
+
+	val window: Window get() = client.window
+	val textRenderer: TextRenderer get() = client.textRenderer
 
 	fun sendPacket(packet: Packet<*>) {
-		if(client().networkHandler?.connection == null) {
+		if(client.networkHandler?.connection == null) {
 			NobaAddons.LOGGER.error("Tried to send a packet {} but connection was null", packet::class.java.simpleName)
 			return
 		}
 
-		client().networkHandler!!.sendPacket(packet)
+		client.networkHandler!!.sendPacket(packet)
 	}
 }

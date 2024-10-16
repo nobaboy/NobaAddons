@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.ui.ElementManager
+import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.filter.IFilter
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
@@ -70,7 +71,8 @@ object NobaAddons : ClientModInitializer {
 		PartyCommands.init()
 		GuildCommands.init()
 
-		// Chat Filters
+		// Chat
+		IAlert.init()
 		IFilter.init()
 
 		// Test

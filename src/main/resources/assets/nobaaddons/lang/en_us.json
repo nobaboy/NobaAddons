@@ -25,6 +25,11 @@
   "nobaaddons.config.userInterface.infoBoxes": "Info Boxes",
 
   "nobaaddons.config.chat": "Chat",
+  "nobaaddons.config.chat.alerts": "Alerts",
+  "nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn": "Alert Mythic Sea Creature Spawn",
+  "nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip": "Sends your current location when a Mythic Sea Creature spawns.",
+  "nobaaddons.config.chat.alerts.vanquisherSpawn": "Alert Vanquisher Spawn",
+  "nobaaddons.config.chat.alerts.vanquisherSpawn.tooltip": "Sends your current location when a Vanquisher spawns.",
   "nobaaddons.config.chat.filter": "Filters",
   "nobaaddons.config.chat.filter.chatFilterOption.SHOWN": "Shown",
   "nobaaddons.config.chat.filter.chatFilterOption.COMPACT": "Compact",
