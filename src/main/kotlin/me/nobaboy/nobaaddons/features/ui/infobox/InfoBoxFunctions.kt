@@ -2,8 +2,10 @@ package me.nobaboy.nobaaddons.features.ui.infobox
 
 import me.nobaboy.nobaaddons.api.SkyblockAPI
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.Utils
 import kotlin.math.sqrt
 
+// TODO: Make it a function system rather than using an enum
 enum class InfoBoxFunctions(val aliases: List<String>, val runnable: () -> String) {
 	// Player Info Functions
 	POS_X(listOf("{posX}", "{locX}"), { getPosX() }),
@@ -15,11 +17,11 @@ enum class InfoBoxFunctions(val aliases: List<String>, val runnable: () -> Strin
 	// Info Functions
 	FPS(listOf("{fps}"), { getFPS() }),
 	BPS(listOf("{bps}"), { getBPS() }),
-//	PING(listOf("{ping}"), { getPing() }),
+	PING(listOf("{ping}"), { getPing() }),
 //	TPS(listOf("{tps}"), { getTPS() }),
 
 	// Scoreboard Functions
-	PURSE(listOf("{purse}", "{money}"), { getPurse() }),
+	PURSE(listOf("{purse}"), { getPurse() }),
 	BITS(listOf("{bits}"), { getBits() });
 
 	companion object {
@@ -47,7 +49,7 @@ enum class InfoBoxFunctions(val aliases: List<String>, val runnable: () -> Strin
 		fun getFPS(): String = client.currentFps.toString()
 
 //		fun getTPS(): String =
-//		fun getPing(): String =
+		fun getPing(): String = Utils.ping.toString()
 
 		fun getPurse(): String = String.format("%,d", SkyblockAPI.purse)
 		fun getBits(): String = String.format("%,d", SkyblockAPI.bits)

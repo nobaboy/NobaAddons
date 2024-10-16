@@ -1,14 +1,12 @@
 package me.nobaboy.nobaaddons.features.chatcommands.impl.party
 
-import kotlinx.coroutines.delay
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chatcommands.IChatCommand
+import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import org.apache.commons.lang3.StringUtils
-import kotlin.time.Duration.Companion.seconds
 
 class WarpCommand : IChatCommand {
 	companion object {
@@ -26,7 +24,7 @@ class WarpCommand : IChatCommand {
 		get() = NobaConfigManager.get().chatCommands.party.warp
 
 	override fun run(ctx: ChatContext) {
-		if(!PartyAPI.isLeader()) return
+		if(!PartyAPI.isLeader) return
 
 		val time = if(ctx.args().isEmpty()) null else ctx.args()[0]
 		warpParty(time)
@@ -46,24 +44,20 @@ class WarpCommand : IChatCommand {
 
 	private fun startTimedWarp() {
 		HypixelCommands.partyChat("Warping in $delay (To cancel type '!cancel')")
-		NobaAddons.runAsync {
-			while(delay-- >= 0) {
-				delay(1.seconds)
+		Scheduler.schedule(20, repeat = true) {
+			if(cancel) {
+				HypixelCommands.partyChat("Warp cancelled...")
+				isWarping = false
+				cancel = false
+				return@schedule cancel()
+			}
 
-				if(cancel) {
-					HypixelCommands.partyChat("Warp cancelled...")
-					isWarping = false
-					cancel = false
-					break
-				}
-
-				if(delay == 0) {
-					HypixelCommands.partyWarp()
-					isWarping = false
-					break
-				}
-
+			if(--delay > 0) {
 				HypixelCommands.partyChat(delay.toString())
+			} else {
+				HypixelCommands.partyWarp()
+				isWarping = false
+				return@schedule cancel()
 			}
 		}
 	}

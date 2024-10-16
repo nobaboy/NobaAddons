@@ -17,9 +17,7 @@ abstract class HudElement(element: Element) {
 
 	fun shouldRender(forced: Boolean): Boolean {
 		val client = MCUtils.client
-		if(!forced && client.currentScreen is NobaHudScreen) return false
-		if(!forced && client.options.hudHidden) return false
-		return true
+		return forced || (client.currentScreen !is NobaHudScreen && !client.options.hudHidden)
 	}
 
 	fun drawBackground(context: DrawContext, color: Int) {

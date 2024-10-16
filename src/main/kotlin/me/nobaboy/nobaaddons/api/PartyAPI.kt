@@ -1,6 +1,8 @@
 package me.nobaboy.nobaaddons.api
 
 import com.mojang.brigadier.Command
+import me.nobaboy.nobaaddons.api.party.IParty
+import me.nobaboy.nobaaddons.api.party.PartySnapshot
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -13,7 +15,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import java.util.regex.Pattern
 
 // NOTE: The mod API isn't being used here as it returns UUIDs, while we want usernames
-object PartyAPI {
+object PartyAPI : IParty {
 	// User Patterns
 	private val userPartyJoinPattern = Pattern.compile("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!")
 	private val userKickedPattern = Pattern.compile("^You have been kicked from the party by (?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+)")
@@ -52,21 +54,17 @@ object PartyAPI {
 	private var storedPartyList = mutableListOf<String>()
 	private var gotList = false
 
-	var inParty: Boolean = false
-	var partyMembers = mutableListOf<String>()
-	var partyLeader: String? = null
+	override var inParty: Boolean = false
+	override var partyLeader: String? = null
+	override var partyMembers = mutableListOf<String>()
 
 	fun init() {
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
 			handleChatEvent(message.string.cleanFormatting())
 		}
 
-		ClientPlayConnectionEvents.JOIN.register(ClientPlayConnectionEvents.Join { _, _, _ ->
-			if(!gotList) onConnect()
-		})
-		ClientPlayConnectionEvents.DISCONNECT.register(ClientPlayConnectionEvents.Disconnect { _, _ ->
-			onDisconnect()
-		})
+		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> if(!gotList) onConnect() }
+		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> onDisconnect() }
 	}
 
 	fun onConnect() {
@@ -79,12 +77,12 @@ object PartyAPI {
 		gotList = false
 	}
 
-	fun isLeader() = partyLeader == MCUtils.playerName
+	override val isLeader get() = partyLeader == MCUtils.playerName
 
 	fun listMembers(): Int {
 		val partySize = partyMembers.size
 		if(partySize == 0) {
-			ChatUtils.addMessage("Party seems to empty...")
+			ChatUtils.addMessage("Party seems to be empty...")
 		} else {
 			ChatUtils.addMessage("Party Members ($partySize):")
 			for(member in partyMembers) {
@@ -252,4 +250,6 @@ object PartyAPI {
 		partyLeader = null
 		inParty = false
 	}
+
+	fun snapshot(): PartySnapshot = PartySnapshot(inParty, partyLeader, partyMembers.toMutableList(), isLeader)
 }

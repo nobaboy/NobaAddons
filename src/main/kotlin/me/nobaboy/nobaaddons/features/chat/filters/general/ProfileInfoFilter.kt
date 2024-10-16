@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.features.chat.filter.general
+package me.nobaboy.nobaaddons.features.chat.filters.general
 
 import me.nobaboy.nobaaddons.api.SkyblockAPI
-import me.nobaboy.nobaaddons.features.chat.filter.IFilter
+import me.nobaboy.nobaaddons.features.chat.filters.IFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.anyMatches
 import net.minecraft.text.Text
 import java.util.regex.Pattern

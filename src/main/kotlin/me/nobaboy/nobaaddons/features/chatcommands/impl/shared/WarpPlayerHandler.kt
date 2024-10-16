@@ -1,80 +1,91 @@
 package me.nobaboy.nobaaddons.features.chatcommands.impl.shared
 
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.Scheduler
+import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
-import kotlin.time.Duration.Companion.seconds
 
 object WarpPlayerHandler {
 	var isWarping: Boolean = false
 	var playerJoined: Boolean = false
 	var player: String? = null
-	private var task: Job? = null
+	private var task: Scheduler.ScheduledTask? = null
+
+	val e = listOf("Couldn't find a player with that name!", "You cannot invite that player since they're not online.")
+
+	fun handleMessage(message: String) {
+		when {
+			message.lowercaseEquals(e) -> cancel()
+			message.lowercaseEquals("$player is already in the party") -> cancel()
+			message.lowercaseEquals("$player joined the party") -> playerJoined = true
+		}
+	}
 
 	fun warpPlayer(playerName: String, isWarpingOut: Boolean, command: String) {
+		check(!isWarping) { "Already warping another player!" }
+
 		isWarping = true
 		player = playerName
 
-		val partyStatus = PartyAPI
-		val membersToInvite: MutableList<String> =
-			if(partyStatus.isLeader()) partyStatus.partyMembers.toMutableList()
-			else mutableListOf()
+		var warped = false
 
-		task = NobaAddons.runAsync {
-			var secondsPassed = 0
-			val timeoutSeconds = if(isWarpingOut) 20 else 15
-			val timeoutMessage =
-				if(isWarpingOut) "Warp out failed, $player did not join the party." else
-					"Warp in timed out since you did not join the party."
+		val party = PartyAPI.snapshot()
+		val membersToInvite: List<String> = if(party.isLeader) party.partyMembers else listOf()
 
-			if(partyStatus.inParty) {
-				val chatMessage = if(isWarpingOut) "warp out" else "warp in"
-				val message =
-					if(partyStatus.isLeader()) "Someone requested a $chatMessage, will re-invite everyone after $timeoutSeconds seconds." else
-						"Someone requested a $chatMessage, re-invite me and I'll join once done."
+		var secondsPassed = 0
+		val timeoutSeconds = if(isWarpingOut) 20 else 15
+		val timeoutMessage =
+			if(isWarpingOut) "Warp out failed, $player did not join the party."
+			else "Warp in timed out since you did not join the party."
 
-				HypixelCommands.partyChat(message)
-				if(partyStatus.isLeader()) HypixelCommands.partyDisband() else
-					HypixelCommands.partyLeave()
+		if(party.inParty) {
+			val warpType = if(isWarpingOut) "warp out" else "warp in"
+			val message =
+				if(party.isLeader) "Someone requested a $warpType, will re-invite everyone after $timeoutSeconds seconds."
+				else "Someone requested a $warpType, re-invite me and I'll join once done."
+
+			HypixelCommands.partyChat(message)
+			if(party.isLeader) HypixelCommands.partyDisband() else HypixelCommands.partyLeave()
+		}
+
+		HypixelCommands.partyInvite(player!!)
+
+		Scheduler.schedule(20, repeat = true) {
+			if(!isWarping) return@schedule cancel()
+
+			if(secondsPassed++ >= timeoutSeconds) {
+				ChatUtils.queueCommand("$command $timeoutMessage")
+				HypixelCommands.partyDisband()
+				reset()
+				return@schedule cancel()
 			}
 
-			HypixelCommands.partyInvite(player!!)
-
-			while(isWarping) {
-				if(secondsPassed++ >= timeoutSeconds) {
-					ChatUtils.queueCommand("$command $timeoutMessage")
-					HypixelCommands.partyDisband()
-					reset(false)
-					break
-				}
-
-				if(playerJoined) {
-					HypixelCommands.partyWarp()
-					HypixelCommands.partyDisband()
-					if(isWarpingOut) ChatUtils.queueCommand("$command Successfully warped out $player.")
-					reset(false)
-					break
-				}
-
-				delay(1.seconds)
+			if(playerJoined) {
+				HypixelCommands.partyWarp()
+				HypixelCommands.partyDisband()
+				if(isWarpingOut) ChatUtils.queueCommand("$command Successfully warped out $player.")
+				warped = true
 			}
 
-			if(partyStatus.isLeader() && membersToInvite.isNotEmpty()) {
-				membersToInvite.forEach {
-					if(it != MCUtils.playerName) HypixelCommands.partyInvite(it)
+			if(warped) {
+				if(party.isLeader && membersToInvite.isNotEmpty()) {
+					membersToInvite.filter { it != MCUtils.playerName }.forEach(HypixelCommands::partyInvite)
+				} else if(!party.isLeader && party.inParty) {
+					HypixelCommands.partyJoin(party.partyLeader!!)
 				}
-			} else if(!partyStatus.isLeader() && partyStatus.inParty) {
-				HypixelCommands.partyJoin(partyStatus.partyLeader!!)
+				cancel()
 			}
 		}
 	}
 
-	fun reset(cancel: Boolean) {
-		if(cancel) task?.cancel()
+	fun cancel() {
+		reset()
+		task?.cancel()
+	}
+
+	fun reset() {
 		isWarping = false
 		playerJoined = false
 		player = null

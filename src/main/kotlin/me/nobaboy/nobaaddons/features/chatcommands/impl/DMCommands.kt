@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.features.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.features.chatcommands.impl.shared.WarpPlayerHandler
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseContains
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -17,7 +16,7 @@ import java.util.regex.Pattern
 object DMCommands : ChatCommandManager() {
 	private val config get() = NobaConfigManager.get().chatCommands.dm
 	private val chatPattern =
-		Pattern.compile("^From (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_]+)?")
+		Pattern.compile("^From (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?")
 
 	init {
 		register(HelpCommand(this, "msg", config::help))
@@ -38,14 +37,8 @@ object DMCommands : ChatCommandManager() {
 			val cleanMessage = message.string.cleanFormatting()
 
 			if(WarpPlayerHandler.isWarping) {
-				val playerName = WarpPlayerHandler.player
-				if(cleanMessage.lowercaseContains("$playerName is already in the party")) {
-					WarpPlayerHandler.reset(true)
-					return@register
-				} else if(cleanMessage.lowercaseContains("$playerName joined the party")) {
-					WarpPlayerHandler.playerJoined = true
-					return@register
-				}
+				WarpPlayerHandler.handleMessage(cleanMessage)
+				return@register
 			}
 
 			processMessage(cleanMessage, isEnabled())

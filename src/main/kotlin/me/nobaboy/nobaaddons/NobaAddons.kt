@@ -10,22 +10,25 @@ import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.ui.ElementManager
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
-import me.nobaboy.nobaaddons.features.chat.filter.IFilter
+import me.nobaboy.nobaaddons.features.chat.filters.IFilter
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.Scheduler
+import me.nobaboy.nobaaddons.utils.Utils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.keybinds.KeyBindListener
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.hypixel.modapi.HypixelModAPI
+import net.hypixel.modapi.packet.impl.clientbound.ClientboundPingPacket
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import net.minecraft.text.MutableText
 import net.minecraft.text.Style
 import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import org.slf4j.Logger
 import java.nio.file.Path
 
@@ -36,8 +39,8 @@ object NobaAddons : ClientModInitializer {
 	val PREFIX: MutableText
 		get() = Text.empty()
 			.append(Text.translatable("nobaaddons.name")
-				.append(Text.literal(" > ")).setStyle(
-					Style.EMPTY.withColor(0x007AFF).withBold(true))
+			.append(Text.literal(" > ")).setStyle(
+				Style.EMPTY.withColor(Formatting.BLUE).withBold(true))
 			)
 
 	val LOGGER: Logger = LogUtils.getLogger()
@@ -54,11 +57,11 @@ object NobaAddons : ClientModInitializer {
 		// Apis
 		PartyAPI.init()
 		DungeonAPI.init()
-		Scheduler.schedule(20, repeat = true, SkyblockAPI::update)
+		Scheduler.schedule(20, repeat = true) { SkyblockAPI.update() }
 
 		// Utils
 		KeyBindListener.init()
-		Scheduler.schedule(20, repeat = true, ChatUtils::tickCommandQueue)
+		Scheduler.schedule(20, repeat = true) { ChatUtils.tickCommandQueue() }
 
 		// Commands
 		NobaCommand.init()
@@ -78,5 +81,8 @@ object NobaAddons : ClientModInitializer {
 
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyblockAPI::onLocationPacket)
+
+		Scheduler.schedule(60 * 20, repeat = true) { Utils.sendPingPacket() }
+		HypixelModAPI.getInstance().listen<ClientboundPingPacket>(Utils::onPingPacket)
 	}
 }

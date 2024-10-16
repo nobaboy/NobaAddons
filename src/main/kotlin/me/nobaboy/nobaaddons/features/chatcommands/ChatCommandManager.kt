@@ -22,7 +22,7 @@ abstract class ChatCommandManager : CooldownManager() {
 		val match = matchMessage(message) ?: return null
 		val user = match.group("username")
 		val command = match.group("command")
-		val args = match.group("argument")?.split(" ")?.toList() ?: emptyList()
+		val args = match.group("argument")?.split(" ") ?: emptyList()
 		return ChatContext(user, command, args, message)
 	}
 

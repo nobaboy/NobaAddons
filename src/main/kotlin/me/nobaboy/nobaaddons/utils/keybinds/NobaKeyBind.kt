@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.utils.CooldownManager
 import net.minecraft.client.option.KeyBinding
 import net.minecraft.client.util.InputUtil
 import org.lwjgl.glfw.GLFW
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Duration.Companion.milliseconds
 
 open class NobaKeyBind(
 	name: String,
@@ -25,7 +25,7 @@ open class NobaKeyBind(
 
 	fun maybePress() {
 		if(cooldownManager.isOnCooldown()) return
-		cooldownManager.startCooldown(1.seconds)
+		cooldownManager.startCooldown(250.milliseconds)
 		onPress()
 	}
 }

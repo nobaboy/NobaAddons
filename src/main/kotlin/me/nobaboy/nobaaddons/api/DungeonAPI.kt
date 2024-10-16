@@ -33,8 +33,8 @@ object DungeonAPI {
 			getBossType(message.string.cleanFormatting())
 		}
 
-		Scheduler.schedule(20, repeat = true, this::getFloorType)
-		Scheduler.schedule(20, repeat = true, this::getClassType)
+		Scheduler.schedule(20, repeat = true) { getFloorType() }
+		Scheduler.schedule(20, repeat = true) { getClassType() }
 	}
 
 	private fun getFloorType() {

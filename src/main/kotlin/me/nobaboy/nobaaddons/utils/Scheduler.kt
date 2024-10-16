@@ -10,21 +10,26 @@ object Scheduler {
 		ClientTickEvents.END_CLIENT_TICK.register { tick() }
 	}
 
-	fun schedule(delay: Int, repeat: Boolean = false, task: Runnable) {
+	fun schedule(delay: Int, repeat: Boolean = false, task: ScheduledTask.() -> Unit): ScheduledTask {
 		require(delay >= 0) { "Delay must be a positive number of ticks" }
-		tasks.add(ScheduledTask(task, delay, repeat))
+		return ScheduledTask(task, delay, repeat).also(tasks::add)
 	}
 
 	private fun tick() {
 		tasks.filter { it.ticksRemaining-- <= 0 }.forEach { it.run() }
 	}
 
-	private class ScheduledTask(val task: Runnable, val ticks: Int, val repeat: Boolean = false) {
-		var ticksRemaining = ticks
+	class ScheduledTask(val task: ScheduledTask.() -> Unit, val ticks: Int, val repeat: Boolean = false): Runnable {
+		private var cancelled = false
+		internal var ticksRemaining = ticks
 
-		fun run() {
-			runCatching { task.run() }.onFailure { NobaAddons.LOGGER.error("Failed to run scheduled method", it) }
-			if(repeat) {
+		fun cancel() {
+			cancelled = true
+		}
+
+		override fun run() {
+			runCatching { task() }.onFailure { NobaAddons.LOGGER.error("Failed to run scheduled method", it) }
+			if(repeat && !cancelled) {
 				ticksRemaining = ticks
 			} else {
 				tasks.remove(this)

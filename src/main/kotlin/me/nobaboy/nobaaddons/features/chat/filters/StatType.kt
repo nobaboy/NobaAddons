@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.chat.filter
+package me.nobaboy.nobaaddons.features.chat.filters
 
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import net.minecraft.text.Text

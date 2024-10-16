@@ -1,21 +1,21 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.features.chat.filter.ChatFilterOption
+import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 
 class ChatConfig {
 	@SerialEntry
-	val filter: Filter = Filter()
+	val filters: Filters = Filters()
 
 	@SerialEntry
 	val alerts: Alerts = Alerts()
 
-	class Filter {
-		@SerialEntry
-		var hideTipMessages: Boolean = false
-
+	class Filters {
 		@SerialEntry
 		var hideProfileInfo: Boolean = false
+
+		@SerialEntry
+		var hideTipMessages: Boolean = false
 
 		@SerialEntry
 		var blessingMessage: ChatFilterOption = ChatFilterOption.SHOWN

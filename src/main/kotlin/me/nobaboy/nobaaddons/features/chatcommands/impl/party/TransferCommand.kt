@@ -19,7 +19,7 @@ class TransferCommand : IChatCommand {
 		get() = NobaConfigManager.get().chatCommands.party.transfer
 
 	override fun run(ctx: ChatContext) {
-		if(!PartyAPI.isLeader()) return
+		if(!PartyAPI.isLeader) return
 
 		if(!ctx.command().lowercaseEquals("ptme")) {
 			val player = if(ctx.args().isEmpty()) ctx.user() else ctx.args()[0]

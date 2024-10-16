@@ -15,7 +15,7 @@ object MCUtils {
 	val world: ClientWorld? get() = client.world
 
 	val player: ClientPlayerEntity? get() = client.player
-	val playerName: String? get() = player?.name.toString()
+	val playerName: String? get() = player?.name?.string
 
 	val networkHandler: ClientPlayNetworkHandler? get() = client.networkHandler
 
