@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.config.ui
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.ui.elements.HudElement
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.RenderUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
+import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner

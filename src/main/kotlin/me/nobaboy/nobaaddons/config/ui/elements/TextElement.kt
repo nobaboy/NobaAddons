@@ -2,10 +2,10 @@ package me.nobaboy.nobaaddons.config.ui.elements
 
 import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.RenderUtils
-import me.nobaboy.nobaaddons.utils.RenderUtils.getWidth
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.getWidth
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 

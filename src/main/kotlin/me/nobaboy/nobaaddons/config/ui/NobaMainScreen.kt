@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.config.ui
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.RenderUtils.drawCentered
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCentered
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ConfirmLinkScreen
 import net.minecraft.client.gui.screen.Screen

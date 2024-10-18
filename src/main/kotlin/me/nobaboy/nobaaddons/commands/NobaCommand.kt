@@ -25,7 +25,6 @@ object NobaCommand {
 				.then(ClientCommandManager.literal("debugParty")
 					.executes { PartyAPI.listMembers() })
 
-
 				.executes { NobaMainScreen().queueOpen() }
 			)
 

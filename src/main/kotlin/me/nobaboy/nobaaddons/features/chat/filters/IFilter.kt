@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chat.filters.dungeon.BlessingFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeon.HealerOrbFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeon.PickupObtainFilter
+import me.nobaboy.nobaaddons.features.chat.filters.general.AbilityDamageFilter
 import me.nobaboy.nobaaddons.features.chat.filters.general.ProfileInfoFilter
 import me.nobaboy.nobaaddons.features.chat.filters.general.TipMessageFilter
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -22,6 +23,7 @@ interface IFilter {
 	companion object {
 		private var init = false
 		private val filters = arrayOf<IFilter>(
+			AbilityDamageFilter,
 			ProfileInfoFilter,
 			TipMessageFilter,
 			BlessingFilter,

@@ -36,6 +36,13 @@ object ChatCategory {
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.chat.filter"))
 				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.chat.filter.hideAbilityDamageMessage"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filter.hideAbilityDamageMessage.tooltip")))
+					.binding(defaults.chat.filters.hideAbilityDamageMessage, config.chat.filters::hideAbilityDamageMessage) { config.chat.filters.hideAbilityDamageMessage = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.chat.filter.hideTipMessages"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filter.hideTipMessages.tooltip")))
 					.binding(defaults.chat.filters.hideTipMessages, config.chat.filters::hideTipMessages) { config.chat.filters.hideTipMessages = it }

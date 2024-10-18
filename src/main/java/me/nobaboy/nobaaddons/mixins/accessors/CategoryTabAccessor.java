@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.mixin;
+package me.nobaboy.nobaaddons.mixins.accessors;
 
 import dev.isxander.yacl3.gui.OptionListWidget;
 import dev.isxander.yacl3.gui.YACLScreen.CategoryTab;

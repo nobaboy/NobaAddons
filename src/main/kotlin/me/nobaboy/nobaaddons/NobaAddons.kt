@@ -54,7 +54,7 @@ object NobaAddons : ClientModInitializer {
 	override fun onInitializeClient() {
 		NobaConfigManager.init()
 
-		// Apis
+		// APIs
 		PartyAPI.init()
 		DungeonAPI.init()
 		Scheduler.schedule(20, repeat = true) { SkyblockAPI.update() }
@@ -76,7 +76,7 @@ object NobaAddons : ClientModInitializer {
 		IAlert.init()
 		IFilter.init()
 
-		// Test
+		// User Interface
 		ElementManager.init()
 
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()

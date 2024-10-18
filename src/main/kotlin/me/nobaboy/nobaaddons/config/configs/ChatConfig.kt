@@ -12,6 +12,9 @@ class ChatConfig {
 
 	class Filters {
 		@SerialEntry
+		var hideAbilityDamageMessage: Boolean = false
+
+		@SerialEntry
 		var hideProfileInfo: Boolean = false
 
 		@SerialEntry

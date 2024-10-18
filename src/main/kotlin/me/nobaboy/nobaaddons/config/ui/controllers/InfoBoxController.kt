@@ -13,7 +13,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.ui.controllers.helpers.ControllerHelper
 import me.nobaboy.nobaaddons.config.ui.controllers.helpers.ControllerWidgetHelper
 import me.nobaboy.nobaaddons.config.ui.elements.TextElement.TextMode
-import me.nobaboy.nobaaddons.mixin.CategoryTabAccessor
+import me.nobaboy.nobaaddons.mixins.accessors.CategoryTabAccessor
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.Element
 import net.minecraft.text.Text

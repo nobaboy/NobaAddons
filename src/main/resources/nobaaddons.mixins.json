@@ -1,9 +1,12 @@
 {
   "required": true,
-  "package": "me.nobaboy.nobaaddons.mixin",
+  "package": "me.nobaboy.nobaaddons.mixins",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "CategoryTabAccessor"
+    "accessors.CategoryTabAccessor",
+    "accessors.WorldRendererAccessor",
+    "invokers.BeaconBlockEntityRendererInvoker",
+    "invokers.FrustumInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

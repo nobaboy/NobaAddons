@@ -5,6 +5,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.network.ClientPlayNetworkHandler
 import net.minecraft.client.network.ClientPlayerEntity
+import net.minecraft.client.render.WorldRenderer
 import net.minecraft.client.util.Window
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.network.packet.Packet
@@ -20,7 +21,9 @@ object MCUtils {
 	val networkHandler: ClientPlayNetworkHandler? get() = client.networkHandler
 
 	val window: Window get() = client.window
+
 	val textRenderer: TextRenderer get() = client.textRenderer
+	val worldRenderer: WorldRenderer get() = client.worldRenderer
 
 	fun sendPacket(packet: Packet<*>) {
 		if(client.networkHandler?.connection == null) {
