@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.config.ui
+package me.nobaboy.nobaaddons.features.ui
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.ui.controllers.InfoBox

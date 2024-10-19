@@ -8,5 +8,5 @@ class UserInterfaceConfig {
 	var showUsageText: Boolean = true
 
 	@SerialEntry
-	val infoBoxes: MutableList<InfoBox> = mutableListOf()
+	val infoBoxes = mutableListOf<InfoBox>()
 }

@@ -55,7 +55,6 @@ object NobaConfigManager {
 				.category(UserInterfaceCategory.create(defaults, config))
 				.category(ChatCategory.create(defaults, config))
 				.category(ChatCommandsCategory.create(defaults, config))
-//				.category(MiscCategory.create(defaults, config))
 		}.generateScreen(parent)
 	}
 }

@@ -5,6 +5,7 @@ import com.mojang.brigadier.tree.CommandNode
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager.getConfigScreen
 import me.nobaboy.nobaaddons.config.ui.NobaMainScreen
+import me.nobaboy.nobaaddons.features.general.RefillPearls
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
@@ -21,6 +22,9 @@ object NobaCommand {
 			dispatcher.register(ClientCommandManager.literal("nobaaddons")
 				.then(ClientCommandManager.literal("config")
 					.executes { getConfigScreen(null).queueOpen() })
+
+				.then(ClientCommandManager.literal("refillPearls")
+					.executes { RefillPearls.refillPearls() })
 
 				.then(ClientCommandManager.literal("debugParty")
 					.executes { PartyAPI.listMembers() })

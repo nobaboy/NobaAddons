@@ -26,4 +26,11 @@ object StringUtils {
 	}
 
 	fun String.cleanFormatting(): String = Formatting.strip(this)!!
+
+	fun randomAlphanumeric(length: Int = 8) : String {
+		val allowedChars = ('0'..'9') + ('A'..'z') + ('a'..'z')
+		return (1..length)
+			.map { allowedChars.random() }
+			.joinToString("")
+	}
 }

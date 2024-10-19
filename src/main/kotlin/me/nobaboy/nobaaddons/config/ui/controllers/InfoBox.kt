@@ -5,6 +5,6 @@ import me.nobaboy.nobaaddons.config.ui.elements.TextElement
 
 data class InfoBox(
 	val text: String,
-	var mode: TextElement.TextMode = TextElement.TextMode.SHADOW,
+	val mode: TextElement.TextMode = TextElement.TextMode.SHADOW,
 	val element: Element
 )

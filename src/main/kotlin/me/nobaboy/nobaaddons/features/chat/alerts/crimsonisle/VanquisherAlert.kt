@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.api.SkyblockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.text.Text
@@ -17,7 +18,8 @@ object VanquisherAlert : IAlert {
 
 		val player = MCUtils.player ?: return false
 		val location = "x: ${player.x.toInt()}, y: ${player.y.toInt()}, z: ${player.z.toInt()}"
-		ChatUtils.sendMessage("$location | Vanquisher at [${SkyblockAPI.currentZone}]")
+		val randomString = StringUtils.randomAlphanumeric()
+		ChatUtils.sendMessage("$location | Vanquisher at ${SkyblockAPI.currentZone} @$randomString")
 		return true
 	}
 

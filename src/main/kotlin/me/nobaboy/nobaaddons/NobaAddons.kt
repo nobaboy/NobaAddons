@@ -8,12 +8,12 @@ import me.nobaboy.nobaaddons.api.SkyblockAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.config.ui.ElementManager
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.filters.IFilter
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
+import me.nobaboy.nobaaddons.features.ui.ElementManager
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -67,17 +67,19 @@ object NobaAddons : ClientModInitializer {
 		NobaCommand.init()
 		SWikiCommand.init()
 
-		// Chat Commands
-		DMCommands.init()
-		PartyCommands.init()
-		GuildCommands.init()
+		// User Interface
+		ElementManager.init()
+
+		// Features
 
 		// Chat
 		IAlert.init()
 		IFilter.init()
 
-		// User Interface
-		ElementManager.init()
+		// Chat Commands
+		DMCommands.init()
+		PartyCommands.init()
+		GuildCommands.init()
 
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyblockAPI::onLocationPacket)

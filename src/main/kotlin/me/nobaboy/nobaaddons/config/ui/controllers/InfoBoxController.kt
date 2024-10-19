@@ -61,9 +61,7 @@ class InfoBoxController(
 		private val modeControllerBuilder: (Option<TextMode>) -> EnumControllerBuilder<TextMode> = NobaConfigUtils::createCyclingController
 
 		companion object {
-			fun create(option: Option<InfoBox>): Builder {
-				return Builder(option)
-			}
+			fun create(option: Option<InfoBox>): Builder = Builder(option)
 		}
 
 		override fun build(): Controller<InfoBox> = InfoBoxController(option, textControllerBuilder, modeControllerBuilder)

@@ -2,20 +2,17 @@ package me.nobaboy.nobaaddons.utils.chat
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.Timestamp
 import net.minecraft.text.Text
 import java.util.LinkedList
 import java.util.Queue
 
 object ChatUtils {
-	private var lastSendTimestamp = Timestamp.distantPast()
 	private val commandQueue: Queue<String> = LinkedList()
 
 	// FIXME: I feel like it's waiting 1 second before it actually sends a command rather than adding it to a queue
 	fun tickCommandQueue() {
 		MCUtils.player ?: return commandQueue.clear()
 		sendCommand(commandQueue.poll() ?: return)
-		lastSendTimestamp = Timestamp.currentTime()
 	}
 
 	private fun send(message: String) {

@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils.keybinds
 
+import me.nobaboy.nobaaddons.features.general.RefillPearls
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 
@@ -10,7 +11,7 @@ object KeyBindListener {
 		CommandKeyBind("nobaaddons.key.equipment", "equipment"),
 		CommandKeyBind("nobaaddons.key.enderchest", "enderchest"),
 		CommandKeyBind("nobaaddons.key.storage", "storage"),
-		NobaKeyBind("nobaaddons.key.refillPearls") { null }
+		NobaKeyBind("nobaaddons.key.refillPearls") { RefillPearls::refillPearls }
 	)
 
 	fun init() {

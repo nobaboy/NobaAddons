@@ -59,7 +59,7 @@ object PartyAPI : IParty {
 	override var partyMembers = mutableListOf<String>()
 
 	fun init() {
-		ClientReceiveMessageEvents.GAME.register { message, _ ->
+		ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ ->
 			handleChatEvent(message.string.cleanFormatting())
 		}
 
@@ -68,13 +68,34 @@ object PartyAPI : IParty {
 	}
 
 	fun onConnect() {
-		getPartyList()
-		gotList = true
+		Scheduler.schedule(5 * 20) {
+			if(!Utils.onHypixel) return@schedule
+			HypixelCommands.partyList()
+		}
+		Scheduler.schedule(7 * 20) {
+			processPartyList()
+			gotList = true
+		}
 	}
 
 	fun onDisconnect() {
+		partyLeft()
 		storedPartyList.clear()
 		gotList = false
+	}
+
+	fun processPartyList() {
+		storedPartyList.forEach { line ->
+			partyMembersListPattern.matchMatcher(line) {
+				inParty = true
+
+				val type = group("type")
+				val isPartyLeader = type == "Leader"
+				val names = group("names")
+
+				addPlayersToList(isPartyLeader, names)
+			}
+		}
 	}
 
 	override val isLeader get() = partyLeader == MCUtils.playerName
@@ -93,24 +114,12 @@ object PartyAPI : IParty {
 		return Command.SINGLE_SUCCESS
 	}
 
-	fun handleChatEvent(message: String) {
+	fun handleChatEvent(message: String): Boolean {
 		if(!gotList) {
 			partyListPattern.matchMatcher(message) {
 				storedPartyList.add(message)
+				return false
 			}
-
-			storedPartyList.forEach { line ->
-				partyMembersListPattern.matchMatcher(line) {
-					inParty = true
-
-					val type = group("type")
-					val isPartyLeader = type == "Leader"
-					val names = group("names")
-
-					addPlayersToList(isPartyLeader, names)
-				}
-			}
-			return
 		}
 
 		partyChatPattern.matchMatcher(message) {
@@ -206,14 +215,7 @@ object PartyAPI : IParty {
 
 			addPlayersToList(isPartyLeader, names)
 		}
-	}
-
-	private fun getPartyList() {
-		Scheduler.schedule(5 * 20) {
-			if(!Utils.onHypixel) return@schedule
-			HypixelCommands.partyList()
-			gotList = true
-		}
+		return true
 	}
 
 	private fun addPlayersToList(isPartyLeader: Boolean, names: String) {
