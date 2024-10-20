@@ -8,6 +8,12 @@ import kotlin.math.min
 
 object LocationUtils {
 	fun playerLocation() = MCUtils.player?.getNobaVec() ?: NobaVec()
+	fun playerCoords(): String {
+		MCUtils.player!!.let {
+			val (x, y, z) = listOf(it.x, it.y, it.z).map { it.toInt() }
+			return "x: $x, y: $y, z: $z"
+		}
+	}
 
 	fun NobaVec.distanceToPlayer() = distance(playerLocation())
 	fun NobaVec.distanceSqToPlayer() = distanceSq(playerLocation())

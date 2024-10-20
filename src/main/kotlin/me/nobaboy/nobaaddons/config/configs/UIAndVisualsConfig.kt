@@ -9,14 +9,32 @@ class UIAndVisualsConfig {
 	var showUsageText: Boolean = true
 
 	@SerialEntry
+	val temporaryWaypoints: TemporaryWaypoints = TemporaryWaypoints()
+
+	@SerialEntry
 	val etherwarpHelper: EtherwarpHelper = EtherwarpHelper()
 
-	class EtherwarpHelper {
+	@SerialEntry
+	val infoBoxes = mutableListOf<InfoBox>()
+
+	class TemporaryWaypoints {
 		@SerialEntry
 		var enabled: Boolean = false
 
 		@SerialEntry
-		var overlayColor: Color = Color.BLUE
+		var waypointColor: Color = Color.YELLOW
+
+		@SerialEntry
+		var expirationTime: Int = 30
+	}
+
+	class EtherwarpHelper {
+
+		@SerialEntry
+		var enabled: Boolean = false
+
+		@SerialEntry
+		var highlightColor: Color = Color.BLUE
 
 		@SerialEntry
 		var showFailText: Boolean = false
@@ -24,7 +42,4 @@ class UIAndVisualsConfig {
 		@SerialEntry
 		var allowOnAir: Boolean = false
 	}
-
-	@SerialEntry
-	val infoBoxes = mutableListOf<InfoBox>()
 }

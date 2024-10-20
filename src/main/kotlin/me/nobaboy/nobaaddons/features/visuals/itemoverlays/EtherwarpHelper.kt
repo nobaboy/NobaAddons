@@ -1,12 +1,12 @@
-package me.nobaboy.nobaaddons.features.visuals
+package me.nobaboy.nobaaddons.features.visuals.itemoverlays
 
-import me.nobaboy.nobaaddons.api.SkyblockAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.utils.ItemUtils.getCustomData
-import me.nobaboy.nobaaddons.utils.ItemUtils.getSkyblockID
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyblockItem
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
@@ -38,13 +38,13 @@ object EtherwarpHelper {
 
 		val client = MCUtils.client
 		val heldItem = client.player?.mainHandStack ?: return
-		val customData = heldItem.getCustomData()
-		val itemID = customData.getSkyblockID()
+		if(!heldItem.isSkyBlockItem) return
+		val item = heldItem.skyblockItem()
 
-		if(!itemID.lowercaseEquals(etherwarpItems) || customData.getInt("ethermerge") != 1) return
+		if(!item.id.lowercaseEquals(etherwarpItems) || !item.ethermerge) return
 
 		val baseDistance = 57
-		val tunedTransmission = customData.getInt("tuned_transmission").or(0)
+		val tunedTransmission = item.tunedTransmission
 		val maxDistance = baseDistance + tunedTransmission
 
 		val target = client.crosshairTarget
@@ -67,14 +67,16 @@ object EtherwarpHelper {
 	}
 
 	private fun handleTarget(context: WorldRenderContext, client: MinecraftClient, target: BlockHitResult, maxDistance: Int) {
-		if(isTooFar(client, target, maxDistance) && !config.allowOnAir) return
+		if(isTooFar(client, target, maxDistance) && !config.allowOnAir) {
+			failText = null
+			return
+		}
 
 		if(config.showFailText) failText = getFailText(client, target, maxDistance)
-		val color = if(failText != null) Color.GRAY else config.overlayColor
-		RenderUtils.drawOutlinedBoundingBox(context, target.toNobaVec(), color)
+		val color = if(failText != null) Color.GRAY else config.highlightColor
+		RenderUtils.drawOutlinedBoundingBox(context, target.toNobaVec(), color, throughBlocks = true)
 	}
 
-	// TODO: Replace isSolid since it's deprecated
 	private fun getFailText(client: MinecraftClient, target: BlockHitResult, maxDistance: Int): String? {
 		val blockPos = target.blockPos
 		val blockState = client.world?.getBlockState(blockPos) ?: return "Invalid block!"
@@ -86,7 +88,7 @@ object EtherwarpHelper {
 
 		return when {
 			!blockState.isSolid -> "Not solid!"
-			!stateAbove.isAir || !stateTwoAbove.isAir -> "No air above!"
+			stateAbove.isSolid && !stateAbove.isAir || !stateTwoAbove.isAir -> "No air above!"
 			else -> null
 		}
 	}
@@ -94,5 +96,5 @@ object EtherwarpHelper {
 	fun isTooFar(client: MinecraftClient, target: BlockHitResult, maxDistance: Int): Boolean =
 		target.squaredDistanceTo(client.player) > maxDistance * maxDistance
 
-	private fun isEnabled() = SkyblockAPI.inSkyblock && config.enabled && MCUtils.options.sneakKey.isPressed
+	private fun isEnabled() = SkyBlockAPI.inSkyblock && config.enabled && MCUtils.options.sneakKey.isPressed
 }

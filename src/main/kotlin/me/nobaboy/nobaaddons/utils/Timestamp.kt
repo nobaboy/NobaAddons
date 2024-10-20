@@ -16,6 +16,8 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 	operator fun minus(other: Timestamp) = (millis - other.millis).milliseconds
 
 	fun elapsedSince() = currentTime() - this
+	fun elapsedSeconds() = elapsedSince().inWholeSeconds
+	fun elapsedMinutes() = elapsedSince().inWholeMinutes
 
 	fun timeRemaining() = -elapsedSince()
 

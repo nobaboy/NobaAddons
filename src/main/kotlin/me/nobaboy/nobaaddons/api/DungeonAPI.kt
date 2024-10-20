@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.api.SkyblockAPI.inIsland
+import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.BossType
 import me.nobaboy.nobaaddons.api.data.ClassType
 import me.nobaboy.nobaaddons.api.data.FloorType

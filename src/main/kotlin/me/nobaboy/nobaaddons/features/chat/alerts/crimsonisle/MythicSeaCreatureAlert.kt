@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle
 
-import me.nobaboy.nobaaddons.api.SkyblockAPI
-import me.nobaboy.nobaaddons.api.SkyblockAPI.inIsland
+import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -23,7 +23,7 @@ object MythicSeaCreatureAlert : IAlert {
 			val creature = group("creature")
 			val location = "x: ${player.x.toInt()}, y: ${player.y.toInt()}, z: ${player.z.toInt()}"
 			val randomString = StringUtils.randomAlphanumeric()
-			ChatUtils.sendMessage("$location | $creature at ${SkyblockAPI.currentZone} @$randomString")
+			ChatUtils.sendMessage("$location | $creature at ${SkyBlockAPI.currentZone} @$randomString")
 			return true
 		}
 		return false

@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.features.general
 
-import com.mojang.brigadier.Command
-import me.nobaboy.nobaaddons.api.SkyblockAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -11,14 +10,13 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 
 object RefillPearls : CooldownManager() {
-	fun refillPearls(): Int {
-		if(!isEnabled()) return 0
+	fun refillPearls() {
+		if(!isEnabled()) return
 
 		val missingPearls = getMissingPearls()
-		if(missingPearls == 0) return 0
+		if(missingPearls == 0) return
 
 		HypixelCommands.getFromSacks("ENDER_PEARL", missingPearls)
-		return Command.SINGLE_SUCCESS
 	}
 
 	private fun getMissingPearls(): Int {
@@ -36,5 +34,5 @@ object RefillPearls : CooldownManager() {
 		return (16 - sum).coerceAtLeast(0)
 	}
 
-	private fun isEnabled() = SkyblockAPI.inSkyblock
+	private fun isEnabled() = SkyBlockAPI.inSkyblock
 }

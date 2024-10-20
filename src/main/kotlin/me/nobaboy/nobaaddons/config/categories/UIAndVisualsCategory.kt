@@ -6,6 +6,7 @@ import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder
+import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.ui.controllers.InfoBox
@@ -19,6 +20,30 @@ object UIAndVisualsCategory {
 		return ConfigCategory.createBuilder()
 			.name(Text.translatable("nobaaddons.config.uiAndVisuals"))
 			.group(OptionGroup.createBuilder()
+				.name(Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints"))
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints.enabled"))
+					.binding(defaults.uiAndVisuals.temporaryWaypoints.enabled, config.uiAndVisuals.temporaryWaypoints::enabled) { config.uiAndVisuals.temporaryWaypoints.enabled = it}
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Color>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints.waypointColor"))
+					.binding(defaults.uiAndVisuals.temporaryWaypoints.waypointColor, config.uiAndVisuals.temporaryWaypoints::waypointColor) { config.uiAndVisuals.temporaryWaypoints.waypointColor = it}
+					.controller(ColorControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Int>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime.tooltip")))
+					.binding(defaults.uiAndVisuals.temporaryWaypoints.expirationTime, config.uiAndVisuals.temporaryWaypoints::expirationTime) { config.uiAndVisuals.temporaryWaypoints.expirationTime = it}
+					.controller { IntegerSliderControllerBuilder.create(it).range(15, 120).step(1).formatValue { Text.translatable("nobaaddons.config.seconds", it) } }
+					.build())
+
+				.collapsed(true)
+				.build())
+
+			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper"))
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.enabled"))
@@ -27,8 +52,8 @@ object UIAndVisualsCategory {
 					.build())
 
 				.option(Option.createBuilder<Color>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.overlayColor"))
-					.binding(defaults.uiAndVisuals.etherwarpHelper.overlayColor, config.uiAndVisuals.etherwarpHelper::overlayColor) { config.uiAndVisuals.etherwarpHelper.overlayColor = it}
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.highlightColor"))
+					.binding(defaults.uiAndVisuals.etherwarpHelper.highlightColor, config.uiAndVisuals.etherwarpHelper::highlightColor) { config.uiAndVisuals.etherwarpHelper.highlightColor = it}
 					.controller(ColorControllerBuilder::create)
 					.build())
 
@@ -48,7 +73,6 @@ object UIAndVisualsCategory {
 
 				.collapsed(true)
 				.build())
-
 
 			.group(ListOption.createBuilder<InfoBox>()
 				.name(Text.translatable("nobaaddons.config.uiAndVisuals.infoBoxes"))

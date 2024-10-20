@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.filters.dungeon
 
-import me.nobaboy.nobaaddons.api.SkyblockAPI.inIsland
+import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IFilter

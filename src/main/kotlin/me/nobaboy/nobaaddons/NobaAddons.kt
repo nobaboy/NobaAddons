@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils
 import kotlinx.coroutines.*
 import me.nobaboy.nobaaddons.api.DungeonAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.api.SkyblockAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
@@ -14,7 +14,9 @@ import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.ui.ElementManager
-import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
+import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
+import me.nobaboy.nobaaddons.features.visuals.crimsonisle.HighlightThunderSparks
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -58,7 +60,7 @@ object NobaAddons : ClientModInitializer {
 		// APIs
 		PartyAPI.init()
 		DungeonAPI.init()
-		Scheduler.schedule(20, repeat = true) { SkyblockAPI.update() }
+		Scheduler.schedule(20, repeat = true) { SkyBlockAPI.update() }
 
 		// Utils
 		KeyBindListener.init()
@@ -74,11 +76,15 @@ object NobaAddons : ClientModInitializer {
 		// Features
 
 		// Visuals
+		TemporaryWaypoint.init()
 		EtherwarpHelper.init()
 
 		// Chat
 		IAlert.init()
 		IFilter.init()
+
+		// Crimson Isle
+		HighlightThunderSparks.init()
 
 		// Chat Commands
 		DMCommands.init()
@@ -86,7 +92,7 @@ object NobaAddons : ClientModInitializer {
 		GuildCommands.init()
 
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
-		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyblockAPI::onLocationPacket)
+		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 
 		Scheduler.schedule(60 * 20, repeat = true) { Utils.sendPingPacket() }
 		HypixelModAPI.getInstance().listen<ClientboundPingPacket>(Utils::onPingPacket)

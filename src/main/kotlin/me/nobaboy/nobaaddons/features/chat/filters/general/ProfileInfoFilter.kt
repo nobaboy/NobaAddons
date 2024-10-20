@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.filters.general
 
-import me.nobaboy.nobaaddons.api.SkyblockAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.features.chat.filters.IFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.anyMatches
 import net.minecraft.text.Text
@@ -13,5 +13,5 @@ object ProfileInfoFilter : IFilter {
 	)
 
 	override fun shouldFilter(message: Text, text: String): Boolean = profileInfoPatterns.anyMatches(text)
-	override fun isEnabled() = SkyblockAPI.inSkyblock && config.hideProfileInfo
+	override fun isEnabled() = SkyBlockAPI.inSkyblock && config.hideProfileInfo
 }

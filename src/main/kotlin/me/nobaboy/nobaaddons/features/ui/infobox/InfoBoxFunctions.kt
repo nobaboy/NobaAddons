@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.api.SkyblockAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Utils
 import kotlin.math.sqrt
@@ -51,7 +51,7 @@ enum class InfoBoxFunctions(val aliases: List<String>, val runnable: () -> Strin
 //		fun getTPS(): String =
 		fun getPing(): String = Utils.ping.toString()
 
-		fun getPurse(): String = String.format("%,d", SkyblockAPI.purse)
-		fun getBits(): String = String.format("%,d", SkyblockAPI.bits)
+		fun getPurse(): String = String.format("%,d", SkyBlockAPI.purse)
+		fun getBits(): String = String.format("%,d", SkyBlockAPI.bits)
 	}
 }

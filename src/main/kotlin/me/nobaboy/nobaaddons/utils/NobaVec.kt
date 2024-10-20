@@ -155,8 +155,8 @@ data class NobaVec(
     fun slope(other: NobaVec, factor: Double) = this + (other - this).scale(factor)
     fun scale(scalar: Double): NobaVec = NobaVec(scalar * x, scalar * y, scalar * z)
 
-	fun toBoundingBox(other: NobaVec) = Box(x, y, z, other.x, other.y, other.z)
-	fun toBoundingBoxWithOffset(offsetX: Double, offsetY: Double, offsetZ: Double) =
+	fun toBox(other: NobaVec) = Box(x, y, z, other.x, other.y, other.z)
+	fun toBoxWithOffset(offsetX: Double, offsetY: Double, offsetZ: Double) =
 		Box(x, y, z, x + offsetX, y + offsetY, z + offsetZ)
 
 	fun raise(offset: Number = 1): NobaVec = copy(y = y + offset.toDouble())

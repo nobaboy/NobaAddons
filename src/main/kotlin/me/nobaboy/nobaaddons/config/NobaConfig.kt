@@ -18,4 +18,7 @@ class NobaConfig {
 
 	@SerialEntry
 	val chatCommands: ChatCommandsConfig = ChatCommandsConfig()
+
+	@SerialEntry
+	val crimsonIsle: CrimsonIsleConfig = CrimsonIsleConfig()
 }

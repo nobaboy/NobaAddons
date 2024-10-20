@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.api
 
-import com.mojang.brigadier.Command
 import me.nobaboy.nobaaddons.api.party.IParty
 import me.nobaboy.nobaaddons.api.party.PartySnapshot
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -100,7 +99,7 @@ object PartyAPI : IParty {
 
 	override val isLeader get() = partyLeader == MCUtils.playerName
 
-	fun listMembers(): Int {
+	fun listMembers() {
 		val partySize = partyMembers.size
 		if(partySize == 0) {
 			ChatUtils.addMessage("Party seems to be empty...")
@@ -111,7 +110,6 @@ object PartyAPI : IParty {
 				ChatUtils.addMessage(" §b- §7$member $isMemberLeader", false)
 			}
 		}
-		return Command.SINGLE_SUCCESS
 	}
 
 	fun handleChatEvent(message: String): Boolean {

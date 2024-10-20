@@ -12,7 +12,7 @@ import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacke
 import java.util.regex.Pattern
 import kotlin.jvm.optionals.getOrNull
 
-object SkyblockAPI {
+object SkyBlockAPI {
 	private val currencyPattern = Pattern.compile("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*")
 
 	var currentGame: ServerType? = null
