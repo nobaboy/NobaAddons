@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.utils
 import me.nobaboy.nobaaddons.utils.NumberUtils.round
 import net.minecraft.entity.Entity
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket
+import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -223,6 +224,8 @@ data class NobaVec(
 }
 
 fun BlockPos.toNobaVec(): NobaVec = NobaVec(x, y, z)
+
+fun BlockHitResult.toNobaVec(): NobaVec = blockPos.toNobaVec()
 
 fun Entity.getNobaVec(): NobaVec = NobaVec(x, y, z)
 fun Entity.getPrevNobaVec(): NobaVec = NobaVec(prevX, prevY, prevZ)

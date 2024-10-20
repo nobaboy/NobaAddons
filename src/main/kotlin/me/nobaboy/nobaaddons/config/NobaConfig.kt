@@ -11,7 +11,7 @@ class NobaConfig {
 	val general: GeneralConfig = GeneralConfig()
 
 	@SerialEntry
-	val userInterface: UserInterfaceConfig = UserInterfaceConfig()
+	val uiAndVisuals: UIAndVisualsConfig = UIAndVisualsConfig()
 
 	@SerialEntry
 	val chat: ChatConfig = ChatConfig()

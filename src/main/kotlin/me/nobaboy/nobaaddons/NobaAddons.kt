@@ -14,6 +14,7 @@ import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.ui.ElementManager
+import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -71,6 +72,9 @@ object NobaAddons : ClientModInitializer {
 		ElementManager.init()
 
 		// Features
+
+		// Visuals
+		EtherwarpHelper.init()
 
 		// Chat
 		IAlert.init()

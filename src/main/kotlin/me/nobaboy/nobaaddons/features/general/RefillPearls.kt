@@ -11,7 +11,17 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 
 object RefillPearls : CooldownManager() {
-	fun getMissingPearls(): Int {
+	fun refillPearls(): Int {
+		if(!isEnabled()) return 0
+
+		val missingPearls = getMissingPearls()
+		if(missingPearls == 0) return 0
+
+		HypixelCommands.getFromSacks("ENDER_PEARL", missingPearls)
+		return Command.SINGLE_SUCCESS
+	}
+
+	private fun getMissingPearls(): Int {
 		if(!isEnabled()) return 0
 
 		var sum = 0
@@ -26,15 +36,5 @@ object RefillPearls : CooldownManager() {
 		return (16 - sum).coerceAtLeast(0)
 	}
 
-	fun refillPearls(): Int {
-		if(!isEnabled()) return 0
-
-		val missingPearls = getMissingPearls()
-		if(missingPearls == 0) return 0
-
-		HypixelCommands.getFromSacks("ENDER_PEARL", missingPearls)
-		return Command.SINGLE_SUCCESS
-	}
-
-	fun isEnabled() = SkyblockAPI.inSkyblock
+	private fun isEnabled() = SkyblockAPI.inSkyblock
 }

@@ -5,6 +5,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.network.ClientPlayNetworkHandler
 import net.minecraft.client.network.ClientPlayerEntity
+import net.minecraft.client.option.GameOptions
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.client.util.Window
 import net.minecraft.client.world.ClientWorld
@@ -19,6 +20,8 @@ object MCUtils {
 	val playerName: String? get() = player?.name?.string
 
 	val networkHandler: ClientPlayNetworkHandler? get() = client.networkHandler
+
+	val options: GameOptions get() = client.options
 
 	val window: Window get() = client.window
 

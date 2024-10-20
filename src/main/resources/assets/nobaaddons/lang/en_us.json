@@ -23,8 +23,17 @@
   "nobaaddons.config.general.autoRefillPearls": "Auto Refill Pearls",
   "nobaaddons.config.general.autoRefillPearls.tooltip": "Automatically refill pearls after joining a Dungeon or Kuudra Instance",
 
-  "nobaaddons.config.userInterface": "User Interface",
-  "nobaaddons.config.userInterface.infoBoxes": "Info Boxes",
+  "nobaaddons.config.uiAndVisuals": "UI & Visuals",
+
+  "nobaaddons.config.uiAndVisuals.etherwarpHelper": "Etherwarp Helper",
+  "nobaaddons.config.uiAndVisuals.etherwarpHelper.enabled": "Enabled",
+  "nobaaddons.config.uiAndVisuals.etherwarpHelper.overlayColor": "Overlay Color",
+  "nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText": "Show Fail Text",
+  "nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText.tooltip": "Show displays the etherwarp fail reason under the crosshair",
+  "nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir": "Allow Overlay On Air",
+  "nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip": "Allows the helper overlay to render on air blocks",
+
+  "nobaaddons.config.uiAndVisuals.infoBoxes": "Info Boxes",
 
   "nobaaddons.config.chat": "Chat",
   "nobaaddons.config.chat.alerts": "Alerts",

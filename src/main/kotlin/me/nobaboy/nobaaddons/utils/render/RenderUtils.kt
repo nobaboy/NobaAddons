@@ -203,6 +203,18 @@ object RenderUtils {
 		drawBoundingBox(context, vec, color, yOffset, throughBlocks)
 	}
 
+	fun drawOutlinedBoundingBox(
+		context: WorldRenderContext,
+		vec: NobaVec,
+		color: Color,
+		yOffset: Double = 0.0,
+		lineWidth: Float = 3.0f,
+		throughBlocks: Boolean = false
+	) {
+		drawOutline(context, vec, color, yOffset, lineWidth, throughBlocks)
+		drawBoundingBox(context, vec, color, yOffset, throughBlocks)
+	}
+
 	fun drawBoundingBox(
 		context: WorldRenderContext,
 		vec: NobaVec,

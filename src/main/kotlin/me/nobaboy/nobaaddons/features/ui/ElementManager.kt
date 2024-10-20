@@ -11,7 +11,7 @@ import kotlin.collections.set
 object ElementManager : LinkedHashMap<String, HudElement>() {
 	private fun readResolve(): Any = ElementManager
 
-	private val config get() = NobaConfigManager.get().userInterface
+	private val config get() = NobaConfigManager.get().uiAndVisuals
 
 	fun init() {
 		loadElements()

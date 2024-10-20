@@ -42,7 +42,7 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 	private var offsetX = 0f
 	private var offsetY = 0f
 
-	private var showUsageText: Boolean = NobaConfigManager.get().userInterface.showUsageText
+	private var showUsageText: Boolean = NobaConfigManager.get().uiAndVisuals.showUsageText
 	// TODO: Add usage text after context menu implementation
 	private val usageTexts = arrayListOf<String>("usage text")
 
@@ -56,7 +56,7 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 		val scaledHeight = client.window.scaledHeight
 
 		elements = LinkedHashMap(ElementManager)
-		showUsageText = NobaConfigManager.get().userInterface.showUsageText
+		showUsageText = NobaConfigManager.get().uiAndVisuals.showUsageText
 
 		doneButtonWidget = ButtonWidget.builder(ScreenTexts.DONE) {
 			this.close()
