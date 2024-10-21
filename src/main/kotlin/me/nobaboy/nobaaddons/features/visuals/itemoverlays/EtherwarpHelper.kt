@@ -58,6 +58,8 @@ object EtherwarpHelper {
 	}
 
 	private fun renderFailText(context: DrawContext) {
+		if(!config.showFailText) return
+
 		failText?.let {
 			val window = MCUtils.window
 			val x = window.scaledWidth / 2
@@ -72,8 +74,8 @@ object EtherwarpHelper {
 			return
 		}
 
-		if(config.showFailText) failText = getFailText(client, target, maxDistance)
-		val color = if(failText != null) Color.GRAY else config.highlightColor
+		failText = getFailText(client, target, maxDistance)
+		var color = if(failText == null) config.highlightColor else Color.GRAY
 		RenderUtils.drawOutlinedBoundingBox(context, target.toNobaVec(), color, throughBlocks = true)
 	}
 
