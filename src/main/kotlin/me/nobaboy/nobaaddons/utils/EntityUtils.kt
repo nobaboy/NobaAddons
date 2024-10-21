@@ -33,8 +33,13 @@ object EntityUtils {
 	inline fun <reified T : Entity> getEntitiesNearPlayer(radius: Double): Sequence<T> =
 		getEntitiesNear<T>(LocationUtils.playerLocation(), radius)
 
-	fun ArmorStandEntity.hasSkullTexture(texture: String): Boolean {
+	fun ArmorStandEntity.armorSkullTexture(texture: String): Boolean {
 		val armor = this.armorItems ?: return false
 		return armor.any { it != null && it.getSkullTexture() == texture }
+	}
+
+	fun ArmorStandEntity.heldSkullTexture(texture: String): Boolean {
+		val heldItem = this.mainHandStack ?: return false
+		return heldItem.getSkullTexture() == texture
 	}
 }

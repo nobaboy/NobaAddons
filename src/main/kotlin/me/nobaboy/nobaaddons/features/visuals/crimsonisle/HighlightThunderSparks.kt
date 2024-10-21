@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
 import me.nobaboy.nobaaddons.utils.EntityUtils
-import me.nobaboy.nobaaddons.utils.EntityUtils.hasSkullTexture
+import me.nobaboy.nobaaddons.utils.EntityUtils.heldSkullTexture
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -33,7 +33,7 @@ object HighlightThunderSparks {
 		if(!isEnabled()) return
 
 		EntityUtils.getEntities<ArmorStandEntity>().filter {
-			it !in sparks && it.hasSkullTexture(TEXTURE)
+			it !in sparks && it.heldSkullTexture(TEXTURE)
 		}.forEach { sparks.add(it) }
 	}
 
@@ -49,7 +49,7 @@ object HighlightThunderSparks {
 			val throughBlocks =
 				vec.distanceToPlayer() < 6 && block.fluidState != null && block.fluidState.fluid is LavaFluid
 			RenderUtils.drawOutlinedBoundingBox(context, vec.add(x = -0.5, z = -0.5), color, extraSize = -0.25, throughBlocks = throughBlocks)
-			if(config.showText && vec.distanceToPlayer() < 10) RenderUtils.drawText(context, vec.raise(1.25), "Thunder Spark", throughBlocks = throughBlocks)
+			if(config.showText && vec.distanceToPlayer() < 10) RenderUtils.drawText(context, vec.raise(1.25), "Thunder Spark", hideThreshold = 0.0, throughBlocks = throughBlocks)
 		}
 	}
 
