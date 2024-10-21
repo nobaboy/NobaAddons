@@ -390,7 +390,7 @@ object RenderUtils {
 
 		val distSq = vec.distanceSq(cameraPos)
 		if(distSq < hideThreshold * hideThreshold) return
-		val scale = (distSq.toFloat() * 0.00005f).coerceIn(0.04f, 2.0f)
+		val scale = (distSq.toFloat() * 0.00005f).coerceIn(0.04f, 1.75f)
 
 		val x = vec.x - cameraPos.x
 		val y = vec.y - cameraPos.y

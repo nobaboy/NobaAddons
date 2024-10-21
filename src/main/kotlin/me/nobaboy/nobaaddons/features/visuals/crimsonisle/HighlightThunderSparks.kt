@@ -25,7 +25,7 @@ object HighlightThunderSparks {
 
 	fun init() {
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register { _, _, _ -> sparks.clear() }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
+		WorldRenderEvents.AFTER_TRANSLUCENT.register { context -> renderHighlights(context) }
 		ClientTickEvents.END_CLIENT_TICK.register { getThunderSparks() }
 	}
 

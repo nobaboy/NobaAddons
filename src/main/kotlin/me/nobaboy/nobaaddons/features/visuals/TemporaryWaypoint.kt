@@ -32,7 +32,7 @@ object TemporaryWaypoint {
 
 	fun init() {
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register { _, _, _ -> waypoints.clear() }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
+		WorldRenderEvents.AFTER_TRANSLUCENT.register { context -> renderWaypoints(context) }
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
 			handleChatEvent(message.string.cleanFormatting())
 		}
@@ -60,7 +60,7 @@ object TemporaryWaypoint {
 			val x = group("x").toDouble()
 			val y = group("y").toDouble()
 			val z = group("z").toDouble()
-			val info = group("info").take(16)
+			val info = group("info").take(24)
 
 			val text = "$username$info"
 			waypoints.add(Waypoint(NobaVec(x, y, z), text, Timestamp.currentTime(), config.expirationTime.seconds))
