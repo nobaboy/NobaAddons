@@ -21,4 +21,7 @@ class NobaConfig {
 
 	@SerialEntry
 	val crimsonIsle: CrimsonIsleConfig = CrimsonIsleConfig()
+
+	@SerialEntry
+	val dungeons: DungeonsConfig = DungeonsConfig()
 }

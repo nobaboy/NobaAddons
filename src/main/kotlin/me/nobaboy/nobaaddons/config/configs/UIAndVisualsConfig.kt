@@ -29,7 +29,6 @@ class UIAndVisualsConfig {
 	}
 
 	class EtherwarpHelper {
-
 		@SerialEntry
 		var enabled: Boolean = false
 

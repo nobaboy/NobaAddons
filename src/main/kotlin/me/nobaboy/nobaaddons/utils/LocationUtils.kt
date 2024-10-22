@@ -37,9 +37,10 @@ object LocationUtils {
 	fun NobaVec.canBeSeen(radius: Double = 150.0): Boolean {
 		val a = playerEyeLocation()
 		val b = this
+//      val canSee = canSee(a, b)
 		val notTooFar = a.distance(b) < radius
 		val inFov = FrustumUtils.isVisible(b)
-		return notTooFar && inFov
+		return /*canSee &&*/ notTooFar && inFov
 	}
 
 	fun NobaVec.canBeSeen(yOffsetRange: IntRange, radius: Double = 150.0): Boolean =
@@ -71,12 +72,12 @@ object LocationUtils {
 		var maxZ = this.maxZ
 
 		boxes.forEach { box ->
-			if (box.minX < minX) minX = box.minX
-			if (box.minY < minY) minY = box.minY
-			if (box.minZ < minZ) minZ = box.minZ
-			if (box.maxX > maxX) maxX = box.maxX
-			if (box.maxY > maxY) maxY = box.maxY
-			if (box.maxZ > maxZ) maxZ = box.maxZ
+			if(box.minX < minX) minX = box.minX
+			if(box.minY < minY) minY = box.minY
+			if(box.minZ < minZ) minZ = box.minZ
+			if(box.maxX > maxX) maxX = box.maxX
+			if(box.maxY > maxY) maxY = box.maxY
+			if(box.maxZ > maxZ) maxZ = box.maxZ
 		}
 
 		return Box(minX, minY, minZ, maxX, maxY, maxZ)

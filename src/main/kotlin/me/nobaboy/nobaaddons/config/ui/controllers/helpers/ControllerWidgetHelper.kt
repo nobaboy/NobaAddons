@@ -48,7 +48,7 @@ abstract class ControllerWidgetHelper<T : Controller<*>>(
 	}
 
 	override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-		return when (keyCode) {
+		return when(keyCode) {
 			GLFW.GLFW_KEY_TAB, GLFW.GLFW_KEY_SPACE, GLFW.GLFW_KEY_ENTER -> false
 			else -> anyElementMatches { it.keyPressed(keyCode, scanCode, modifiers) } ||
 				super.keyPressed(keyCode, scanCode, modifiers)

@@ -150,7 +150,7 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 	}
 
 	override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
-		return when (editingMode) {
+		return when(editingMode) {
 			EditingMode.EXACT -> true
 			EditingMode.DRAG -> {
 				setEditingMode(EditingMode.IDLE)

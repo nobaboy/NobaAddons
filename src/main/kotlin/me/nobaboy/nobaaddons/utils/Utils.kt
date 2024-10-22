@@ -19,7 +19,7 @@ object Utils {
 	}
 
 	fun onPingPacket(ignored: ClientboundPingPacket) {
-		if (lastPing == Timestamp.distantPast()) return
+		if(lastPing == Timestamp.distantPast()) return
 		ping = (Timestamp.currentTime() - lastPing).inWholeMilliseconds.toInt()
 	}
 }

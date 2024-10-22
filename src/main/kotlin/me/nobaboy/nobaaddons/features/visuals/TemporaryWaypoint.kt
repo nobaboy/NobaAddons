@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.events.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.findMatcher
@@ -17,7 +18,6 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
-import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents
 import java.util.regex.Pattern
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -31,11 +31,9 @@ object TemporaryWaypoint {
 	private val waypoints = mutableListOf<Waypoint>()
 
 	fun init() {
-		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register { _, _, _ -> waypoints.clear() }
+		SkyBlockIslandChangeEvent.EVENT.register { _ -> waypoints.clear() }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register { context -> renderWaypoints(context) }
-		ClientReceiveMessageEvents.GAME.register { message, _ ->
-			handleChatEvent(message.string.cleanFormatting())
-		}
+		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
 	}
 
 	fun addWaypoint(ctx: CommandContext<FabricClientCommandSource>): Int {

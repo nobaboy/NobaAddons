@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.visuals.crimsonisle
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.events.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.EntityUtils.heldSkullTexture
@@ -12,7 +13,6 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
-import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.fluid.LavaFluid
 
@@ -24,7 +24,7 @@ object HighlightThunderSparks {
 	private val sparks = mutableListOf<ArmorStandEntity>()
 
 	fun init() {
-		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register { _, _, _ -> sparks.clear() }
+		SkyBlockIslandChangeEvent.EVENT.register { _ -> sparks.clear() }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register { context -> renderHighlights(context) }
 		ClientTickEvents.END_CLIENT_TICK.register { getThunderSparks() }
 	}

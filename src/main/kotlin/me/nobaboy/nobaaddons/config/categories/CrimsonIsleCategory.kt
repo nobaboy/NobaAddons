@@ -30,7 +30,7 @@ object CrimsonIsleCategory {
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.crimsonIsle.highlightThunderSparks.showText"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.highlightThunderSparks.showText.tooltip")))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.crimsonIsle.highlightThunderSparks.showText.tooltip")))
 					.binding(defaults.crimsonIsle.highlightThunderSparks.showText, config.crimsonIsle.highlightThunderSparks::showText) { config.crimsonIsle.highlightThunderSparks.showText = it}
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())

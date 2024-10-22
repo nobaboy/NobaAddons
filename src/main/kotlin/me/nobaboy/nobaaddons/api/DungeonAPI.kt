@@ -29,12 +29,11 @@ object DungeonAPI {
 	fun isBoss(boss: BossType): Boolean = currentBoss == boss
 
 	fun init() {
+		Scheduler.schedule(20, repeat = true) { getFloorType() }
+		Scheduler.schedule(20, repeat = true) { getClassType() }
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
 			getBossType(message.string.cleanFormatting())
 		}
-
-		Scheduler.schedule(20, repeat = true) { getFloorType() }
-		Scheduler.schedule(20, repeat = true) { getClassType() }
 	}
 
 	private fun getFloorType() {
@@ -49,11 +48,12 @@ object DungeonAPI {
 			if(!cleanedLine.contains("The Catacombs (")) continue
 
 			val floor = cleanedLine.substring(cleanedLine.indexOf("(") + 1, cleanedLine.lastIndexOf(")"))
-			try {
-				currentFloor = FloorType.valueOf(floor)
-			} catch(ex: IllegalArgumentException) {
-				NobaAddons.LOGGER.error("Unexpected floor type value '$floor'", ex)
-				currentFloor = FloorType.NONE
+
+			currentFloor = runCatching {
+				FloorType.valueOf(floor)
+			}.getOrElse {
+				NobaAddons.LOGGER.error("Unexpected floor type value '$floor'", it)
+				FloorType.NONE
 			}
 
 			break

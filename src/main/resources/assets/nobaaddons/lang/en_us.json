@@ -14,6 +14,7 @@
   "nobaaddons.config.issues": "Issues",
   "nobaaddons.config.modrinth": "Modrinth",
   "nobaaddons.config.legal": "Legal",
+
   "nobaaddons.config.seconds": "%s seconds",
 
   "nobaaddons.config.general": "General",
@@ -36,12 +37,6 @@
   "nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir": "Allow Overlay On Air",
   "nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip": "Allow the overlay to render on air blocks",
   "nobaaddons.config.uiAndVisuals.infoBoxes": "Info Boxes",
-
-  "nobaaddons.config.crimsonIsle": "Crimson Isle",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks": "Highlight Thunder Sparks",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks.enabled": "Enabled",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks.highlightColor": "Highlight Color",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks.showText": "Show Text",
 
   "nobaaddons.config.chat": "Chat",
   "nobaaddons.config.chat.alerts": "Alerts",
@@ -96,5 +91,17 @@
   "nobaaddons.config.chatCommands.guild.help": "Help Command",
   "nobaaddons.config.chatCommands.guild.help.tooltip": "Replies with all usable commands",
   "nobaaddons.config.chatCommands.guild.warpOut": "Warp Out Command",
-  "nobaaddons.config.chatCommands.guild.warpOut.tooltip": "Warps out the specified user"
+  "nobaaddons.config.chatCommands.guild.warpOut.tooltip": "Warps out the specified user",
+
+  "nobaaddons.config.crimsonIsle": "Crimson Isle",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks": "Highlight Thunder Sparks",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks.enabled": "Enabled",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks.highlightColor": "Highlight Color",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks.showText": "Show Text",
+
+  "nobaaddons.config.dungeons": "Dungeons",
+  "nobaaddons.config.dungeons.simonSaysTimer": "Simon Says Timer",
+  "nobaaddons.config.dungeons.simonSaysTimer.enabled": "Enabled",
+  "nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat": "Time in Party Chat",
+  "nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat.tooltip": "Sends the completion time in Party Chat"
 }

@@ -26,7 +26,8 @@ base { archivesName.set(mod.id) }
 repositories {
     maven("https://maven.isxander.dev/releases") // YACL
     maven("https://maven.terraformersmc.com/") // ModMenu
-    maven("https://repo.hypixel.net/repository/Hypixel/") // Hypixel Mod API
+	maven("https://maven.celestialfault.dev/snapshots") // CelestialConfig
+	maven("https://repo.hypixel.net/repository/Hypixel/") // Hypixel Mod API
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
     exclusiveContent {
         forRepository {
@@ -48,6 +49,10 @@ dependencies {
 
     modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}+${mcVersion}-fabric") // YACL
     modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
+
+	// CelestialConfig
+	implementation("me.celestialfault:celestial-config:${deps["celestialconfig"]}")
+	include("me.celestialfault:celestial-config:${deps["celestialconfig"]}")
 
     // Hypixel Mod API
     implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")

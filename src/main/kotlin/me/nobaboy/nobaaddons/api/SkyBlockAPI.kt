@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.data.IslandType
+import me.nobaboy.nobaaddons.events.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchAll
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
@@ -52,7 +53,7 @@ object SkyBlockAPI {
 			val currency = group("currency")
 			val amount = group("amount").replace(",", "").toLongOrNull()
 
-			when (currency) {
+			when(currency) {
 				"Bits" -> bits = amount
 				"Purse", "Piggy" -> purse = amount
 //				"Copper" -> copper = amount
@@ -85,5 +86,6 @@ object SkyBlockAPI {
 	fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentGame = packet.serverType.getOrNull()
 		currentIsland = packet.mode.map(IslandType::getIslandType).orElse(IslandType.UNKNOWN)
+		if(currentIsland != IslandType.UNKNOWN) SkyBlockIslandChangeEvent.EVENT.invoker().onIslandChange(currentIsland)
 	}
 }

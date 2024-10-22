@@ -13,6 +13,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.IFilter
 import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
+import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.ui.ElementManager
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.crimsonisle.HighlightThunderSparks
@@ -83,13 +84,17 @@ object NobaAddons : ClientModInitializer {
 		IAlert.init()
 		IFilter.init()
 
-		// Crimson Isle
-		HighlightThunderSparks.init()
 
 		// Chat Commands
 		DMCommands.init()
 		PartyCommands.init()
 		GuildCommands.init()
+
+		// Crimson Isle
+		HighlightThunderSparks.init()
+
+		// Dungeons
+		SimonSaysTimer.init()
 
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)

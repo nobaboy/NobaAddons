@@ -84,7 +84,7 @@ data class NobaVec(
     fun maxOfEach(other: NobaVec) = NobaVec(max(x, other.x), max(y, other.y), max(z, other.z))
 
     fun formatWithAccuracy(accuracy: Int, splitChar: String = " "): String {
-        return if (accuracy == 0) {
+        return if(accuracy == 0) {
             val x = kotlin.math.round(x).toInt()
             val y = kotlin.math.round(y).toInt()
             val z = kotlin.math.round(z).toInt()
@@ -112,7 +112,7 @@ data class NobaVec(
     fun equalsIgnoreY(other: NobaVec) = x == other.x && z == other.z
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) return true
+        if(this === other) return true
 
         return (other as? NobaVec)?.let {
             x == it.x && y == it.y && z == it.z
@@ -136,9 +136,9 @@ data class NobaVec(
     }
 
     fun roundLocation(): NobaVec {
-        val x = if (x < 0) x.toInt() - 1 else x.toInt()
+        val x = if(x < 0) x.toInt() - 1 else x.toInt()
         val y = y.toInt() - 1
-        val z = if (z < 0) z.toInt() - 1 else z.toInt()
+        val z = if(z < 0) z.toInt() - 1 else z.toInt()
         return NobaVec(x, y, z)
     }
 
@@ -178,7 +178,7 @@ data class NobaVec(
 
 		val dotProduct = direction.lengthSquared()
 		var t = 0.0
-		if (dotProduct != t) t = (toPoint.dot(direction) / dotProduct).coerceIn(0.0, 1.0)
+		if(dotProduct != t) t = (toPoint.dot(direction) / dotProduct).coerceIn(0.0, 1.0)
 
 		direction *= t
 		direction += start

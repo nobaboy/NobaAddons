@@ -41,11 +41,13 @@ abstract class ChatCommandManager : CooldownManager() {
 				} ?: return
 
 			if(!cmd.bypassCooldown && isOnCooldown()) return
-			try {
+
+			runCatching {
 				cmd.run(ctx)
+			}.onSuccess {
 				if(!cmd.bypassCooldown) startCooldown()
-			} catch(ex: Exception) {
-				NobaAddons.LOGGER.error("Failed to run chat command '$cmd' | Name: '${cmd.name}'.", ex)
+			}.onFailure { ex ->
+				NobaAddons.LOGGER.error("Failed to run chat command '${cmd.name}' | Command: '$cmd'.", ex)
 			}
 		}
 	}

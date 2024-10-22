@@ -18,14 +18,14 @@ object RegexUtils {
 	}
 
 	inline fun <T> Pattern.matchAll(list: List<String>, consumer: Matcher.() -> T): T? {
-		for (line in list) {
-			matcher(line).let { if (it.find()) consumer(it) }
+		for(line in list) {
+			matcher(line).let { if(it.find()) consumer(it) }
 		}
 		return null
 	}
 
 	inline fun <T> List<Pattern>.matchMatchers(text: String, consumer: Matcher.() -> T): T? {
-		for (pattern in iterator()) {
+		for(pattern in iterator()) {
 			pattern.matchMatcher<T>(text) {
 				return consumer()
 			}
