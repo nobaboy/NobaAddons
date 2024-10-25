@@ -90,7 +90,7 @@ object EtherwarpHelper {
 
 		return when {
 			!blockState.isSolid -> "Not solid!"
-			stateAbove.isSolid && !stateAbove.isAir || !stateTwoAbove.isAir -> "No air above!"
+			stateAbove.isSolid || !stateAbove.isAir || !stateTwoAbove.isAir -> "No air above!"
 			else -> null
 		}
 	}
