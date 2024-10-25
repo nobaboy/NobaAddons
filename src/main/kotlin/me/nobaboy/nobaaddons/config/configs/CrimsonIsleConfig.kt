@@ -12,7 +12,7 @@ class CrimsonIsleConfig {
 		var enabled: Boolean = false
 
 		@SerialEntry
-		var highlightColor: Color = Color(0x44AEDA)
+		var highlightColor: Color = Color(0x24DDE5)
 
 		@SerialEntry
 		var showText: Boolean = false

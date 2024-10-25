@@ -1,13 +1,14 @@
 package me.nobaboy.nobaaddons.features.chat.filters
 
-import net.minecraft.client.resource.language.I18n
+import dev.isxander.yacl3.api.NameableEnum
+import me.nobaboy.nobaaddons.utils.StringUtils.title
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import net.minecraft.text.Text
 
-enum class ChatFilterOption {
+enum class ChatFilterOption : NameableEnum {
 	SHOWN,
 	COMPACT,
 	HIDDEN;
 
-	override fun toString(): String {
-		return I18n.translate("nobaaddons.config.chat.filter.chatFilterOption.$name")
-	}
+	override fun getDisplayName(): Text = name.title().toText()
 }

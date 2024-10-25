@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.dungeons
 
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.api.DungeonAPI
+import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
@@ -92,8 +92,6 @@ object SimonSaysTimer {
 			append(classifier)
 		}
 
-		println(message.string)
-
 		if(config.timeInPartyChat && PartyAPI.inParty) HypixelCommands.partyChat(message.string.cleanFormatting())
 		else ChatUtils.addMessage(message)
 
@@ -105,5 +103,5 @@ object SimonSaysTimer {
 		deviceCompleted = false
 	}
 
-	private fun isEnabled() = IslandType.DUNGEONS.inIsland() && DungeonAPI.inFloor(7) && config.enabled
+	private fun isEnabled() = IslandType.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7) && config.enabled
 }

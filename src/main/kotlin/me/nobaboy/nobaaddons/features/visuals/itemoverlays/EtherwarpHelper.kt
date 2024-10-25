@@ -76,7 +76,7 @@ object EtherwarpHelper {
 
 		failText = getFailText(client, target, maxDistance)
 		var color = if(failText == null) config.highlightColor else Color.GRAY
-		RenderUtils.drawOutlinedBoundingBox(context, target.toNobaVec(), color, throughBlocks = true)
+		RenderUtils.drawOutlinedFilledBox(context, target.toNobaVec(), color, throughBlocks = true)
 	}
 
 	private fun getFailText(client: MinecraftClient, target: BlockHitResult, maxDistance: Int): String? {

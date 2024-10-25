@@ -2,21 +2,22 @@ package me.nobaboy.nobaaddons
 
 import com.mojang.logging.LogUtils
 import kotlinx.coroutines.*
-import me.nobaboy.nobaaddons.api.DungeonAPI
+import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
+import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
+import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
+import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.chat.filters.IFilter
-import me.nobaboy.nobaaddons.features.chatcommands.impl.DMCommands
-import me.nobaboy.nobaaddons.features.chatcommands.impl.GuildCommands
-import me.nobaboy.nobaaddons.features.chatcommands.impl.PartyCommands
+import me.nobaboy.nobaaddons.features.crimsonisle.HighlightThunderSparks
+import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.ui.ElementManager
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
-import me.nobaboy.nobaaddons.features.visuals.crimsonisle.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
@@ -60,7 +61,7 @@ object NobaAddons : ClientModInitializer {
 
 		// APIs
 		PartyAPI.init()
-		DungeonAPI.init()
+		DungeonsAPI.init()
 		Scheduler.schedule(20, repeat = true) { SkyBlockAPI.update() }
 
 		// Utils
@@ -95,6 +96,7 @@ object NobaAddons : ClientModInitializer {
 
 		// Dungeons
 		SimonSaysTimer.init()
+		HighlightStarredMobs.init()
 
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)

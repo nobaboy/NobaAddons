@@ -23,10 +23,10 @@ object LocationUtils {
 
 	fun Entity.distanceToPlayer() = getNobaVec().distanceToPlayer()
 
-	fun Entity.distanceTo(location: NobaVec) = getNobaVec().distance(location)
+	fun Entity.distanceTo(vec: NobaVec) = getNobaVec().distance(vec)
 	fun Entity.distanceTo(other: Entity) = getNobaVec().distance(other.getNobaVec())
 
-	fun Entity.distanceToIgnoreY(location: NobaVec) = getNobaVec().distanceIgnoreY(location)
+	fun Entity.distanceToIgnoreY(vec: NobaVec) = getNobaVec().distanceIgnoreY(vec)
 
 	fun playerEyeLocation(): NobaVec {
 		val player = MCUtils.player ?: return NobaVec()

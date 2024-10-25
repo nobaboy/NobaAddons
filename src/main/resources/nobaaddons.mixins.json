@@ -3,6 +3,8 @@
   "package": "me.nobaboy.nobaaddons.mixins",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "FishingBobberEntityRendererMixin",
+    "LightningEntityRendererMixin",
     "accessors.CategoryTabAccessor",
     "accessors.WorldRendererAccessor",
     "invokers.BeaconBlockEntityRendererInvoker",

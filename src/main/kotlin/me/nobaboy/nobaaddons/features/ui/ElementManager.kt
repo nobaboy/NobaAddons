@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.ui
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.config.ui.controllers.InfoBox
+import me.nobaboy.nobaaddons.config.ui.controllers.impl.InfoBox
 import me.nobaboy.nobaaddons.config.ui.elements.HudElement
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback

@@ -24,7 +24,6 @@ import org.joml.Matrix4f
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 
-// TODO: Add world text rendering for use with waypoints
 object RenderUtils {
 	val ALLOCATOR = BufferAllocator(1536)
 
@@ -214,7 +213,7 @@ object RenderUtils {
 		drawFilledBox(context, vec, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
-	fun drawOutlinedBoundingBox(
+	fun drawOutlinedFilledBox(
 		context: WorldRenderContext,
 		vec: NobaVec,
 		color: Color,

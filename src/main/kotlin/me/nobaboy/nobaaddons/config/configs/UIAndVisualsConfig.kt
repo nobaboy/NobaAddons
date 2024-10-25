@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.config.ui.controllers.InfoBox
+import me.nobaboy.nobaaddons.config.ui.controllers.impl.InfoBox
 import java.awt.Color
 
 class UIAndVisualsConfig {
@@ -16,6 +16,9 @@ class UIAndVisualsConfig {
 
 	@SerialEntry
 	val infoBoxes = mutableListOf<InfoBox>()
+
+	@SerialEntry
+	var renderingTweaks: RenderingTweaks = RenderingTweaks()
 
 	class TemporaryWaypoints {
 		@SerialEntry
@@ -40,5 +43,13 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var allowOnAir: Boolean = false
+	}
+
+	class RenderingTweaks {
+		@SerialEntry
+		var hideOtherPeopleFishing: Boolean = false
+
+		@SerialEntry
+		var hideLightningBolt: Boolean = false
 	}
 }

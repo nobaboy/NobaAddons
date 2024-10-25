@@ -2,12 +2,12 @@ package me.nobaboy.nobaaddons.features.chat.filters
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.features.chat.filters.dungeon.BlessingFilter
-import me.nobaboy.nobaaddons.features.chat.filters.dungeon.HealerOrbFilter
-import me.nobaboy.nobaaddons.features.chat.filters.dungeon.PickupObtainFilter
-import me.nobaboy.nobaaddons.features.chat.filters.general.AbilityDamageFilter
-import me.nobaboy.nobaaddons.features.chat.filters.general.ProfileInfoFilter
-import me.nobaboy.nobaaddons.features.chat.filters.general.TipMessageFilter
+import me.nobaboy.nobaaddons.features.chat.filters.ability.AbilityFilter
+import me.nobaboy.nobaaddons.features.chat.filters.dungeons.BlessingFilter
+import me.nobaboy.nobaaddons.features.chat.filters.dungeons.HealerOrbFilter
+import me.nobaboy.nobaaddons.features.chat.filters.dungeons.PickupObtainFilter
+import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.ProfileInfoFilter
+import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessageFilter
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
@@ -23,12 +23,14 @@ interface IFilter {
 	companion object {
 		private var init = false
 		private val filters = arrayOf<IFilter>(
-			AbilityDamageFilter,
-			ProfileInfoFilter,
-			TipMessageFilter,
+			AbilityFilter,
+			// Dungeons
 			BlessingFilter,
 			HealerOrbFilter,
 			PickupObtainFilter,
+			// Miscellaneous
+			ProfileInfoFilter,
+			TipMessageFilter,
 		)
 
 		fun init() {

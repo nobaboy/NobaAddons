@@ -12,4 +12,9 @@ object NobaConfigUtils {
 	inline fun <reified E : Enum<E>> createCyclingController(option: Option<E>): EnumControllerBuilder<E> {
 		return EnumControllerBuilder.create(option).enumClass(E::class.java)
 	}
+
+	fun <T> MutableList<T>.replaceWith(with: List<T>) {
+		clear()
+		addAll(with)
+	}
 }

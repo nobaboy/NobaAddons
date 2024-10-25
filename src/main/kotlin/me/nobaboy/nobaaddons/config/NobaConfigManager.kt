@@ -6,7 +6,6 @@ import dev.isxander.yacl3.config.v2.api.ConfigClassHandler
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.categories.ChatCategory
-import me.nobaboy.nobaaddons.config.categories.ChatCommandsCategory
 import me.nobaboy.nobaaddons.config.categories.CrimsonIsleCategory
 import me.nobaboy.nobaaddons.config.categories.DungeonsCategory
 import me.nobaboy.nobaaddons.config.categories.GeneralCategory
@@ -55,10 +54,9 @@ object NobaConfigManager {
 			builder.title(Text.translatable("nobaaddons.name"))
 				.category(GeneralCategory.create(defaults, config))
 				.category(UIAndVisualsCategory.create(defaults, config))
-				.category(ChatCategory.create(defaults, config))
-				.category(ChatCommandsCategory.create(defaults, config))
-				.category(CrimsonIsleCategory.create(defaults, config))
 				.category(DungeonsCategory.create(defaults, config))
+				.category(CrimsonIsleCategory.create(defaults, config))
+				.category(ChatCategory.create(defaults, config))
 		}.generateScreen(parent)
 	}
 }

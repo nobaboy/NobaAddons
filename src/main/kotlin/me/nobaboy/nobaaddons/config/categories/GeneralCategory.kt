@@ -14,12 +14,11 @@ object GeneralCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
 		return ConfigCategory.createBuilder()
 			.name(Text.translatable("nobaaddons.config.general"))
+
 			.option(ButtonOption.createBuilder()
 				.name(Text.translatable("nobaaddons.config.general.main"))
 				.text(Text.translatable("nobaaddons.config.general.open"))
-				.action { screen, option ->
-					MinecraftClient.getInstance().setScreen(NobaMainScreen())
-				}
+				.action { screen, option -> MinecraftClient.getInstance().setScreen(NobaMainScreen()) }
 				.build())
 
 			.option(Option.createBuilder<Boolean>()
