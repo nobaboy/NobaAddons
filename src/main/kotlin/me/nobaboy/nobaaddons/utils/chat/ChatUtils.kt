@@ -1,7 +1,10 @@
 package me.nobaboy.nobaaddons.utils.chat
 
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.utils.CooldownTickEvent
+import me.nobaboy.nobaaddons.utils.CooldownTickEvent.Companion.ticks
 import me.nobaboy.nobaaddons.utils.MCUtils
+import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
 import java.util.LinkedList
 import java.util.Queue
@@ -9,10 +12,19 @@ import java.util.Queue
 object ChatUtils {
 	private val commandQueue: Queue<String> = LinkedList()
 
-	// FIXME: I feel like it's waiting 1 second before it actually sends a command rather than adding it to a queue
-	fun tickCommandQueue() {
-		MCUtils.player ?: return commandQueue.clear()
-		sendCommand(commandQueue.poll() ?: return)
+	init {
+		CooldownTickEvent.EVENT.register(CommandQueue)
+	}
+
+	private object CommandQueue : CooldownTickEvent {
+		override fun onTick(client: MinecraftClient) {
+			if(MCUtils.player == null) {
+				commandQueue.clear()
+				return
+			}
+			sendCommand(commandQueue.poll() ?: return)
+			cooldownManager.startCooldown(20.ticks)
+		}
 	}
 
 	private fun send(message: String) {
