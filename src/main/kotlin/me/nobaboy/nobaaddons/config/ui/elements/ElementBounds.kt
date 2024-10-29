@@ -4,6 +4,5 @@ class ElementBounds (
 	val x: Int,
 	val y: Int,
 	val width: Int,
-	val height: Int,
-	val scale: Double = 1.0
+	val height: Int
 )

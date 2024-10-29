@@ -1,20 +1,21 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.config.ui.controllers.impl.InfoBox
+import me.nobaboy.nobaaddons.config.ui.ElementManager
 import me.nobaboy.nobaaddons.config.ui.elements.Element
-import me.nobaboy.nobaaddons.config.ui.elements.TextElement
-import me.nobaboy.nobaaddons.features.ui.ElementManager
+import me.nobaboy.nobaaddons.config.ui.elements.TextHud
+import me.nobaboy.nobaaddons.config.ui.elements.TextMode
+import me.nobaboy.nobaaddons.config.ui.elements.impl.TextElement
 import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import java.util.regex.Pattern
 
-class InfoBoxHud(val infoBox: InfoBox) : TextElement(infoBox.element) {
+class InfoBoxHud(element: TextElement) : TextHud(element.element) {
 	val functionPattern = Pattern.compile("(?<function>\\{[A-z0-9]+})")
-	val colorCodePattern = Regex("&[0-9a-fklmnor]")
+	val colorCodePattern = Regex("&[0-9a-fk-or]")
 
-	override fun text(): String = compileString(infoBox.text)
-	override fun textMode(): TextMode = infoBox.mode
-	override fun outlineColor(): Int = 0x000000
+	override val text: String = compileString(element.text)
+	override val mode: TextMode = element.mode
+	override val outlineColor: Int = 0x000000
 
 	fun compileString(string: String): String {
 		var formattedString = string
@@ -33,9 +34,9 @@ class InfoBoxHud(val infoBox: InfoBox) : TextElement(infoBox.element) {
 	}
 
 	companion object {
-		fun newInfoBox(): InfoBox {
+		fun createHud(): TextElement {
 			val identifier = ElementManager.newIdentifier("Info Box")
-			val infoBox = InfoBox("", TextMode.SHADOW, Element(identifier, 100, 100, 1.0))
+			val infoBox = TextElement(identifier, TextMode.SHADOW, Element(identifier, 100, 100))
 			ElementManager.add(InfoBoxHud(infoBox))
 			return infoBox
 		}

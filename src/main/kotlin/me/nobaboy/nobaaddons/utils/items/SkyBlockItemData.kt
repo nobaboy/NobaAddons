@@ -1,13 +1,21 @@
 package me.nobaboy.nobaaddons.utils.items
 
+import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.utils.Timestamp
+import net.minecraft.component.DataComponentTypes
+import net.minecraft.component.type.LoreComponent
+import net.minecraft.component.type.NbtComponent
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
+import java.lang.ref.WeakReference
 
-class SkyBlockItemData(private val nbt: NbtCompound) {
-	val id: String by lazy {
-		check(nbt.contains("id")) { "Item NBT lacks an ID" }
-		nbt.getString("id")
-	}
+class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
+	private val RARITY_PATTERN = Regex("^(?:. )?(?<RARITY>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL).*")
+
+	private val nbt: NbtCompound
+		get() = item.get()!!.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).nbt
+	private val lore: LoreComponent
+		get() = item.get()!!.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT)
 
 	val enchantments: Map<String, Int> by lazy {
 		buildMap {
@@ -28,6 +36,17 @@ class SkyBlockItemData(private val nbt: NbtCompound) {
 	val stars: Int? by lazy { nbt.getInt("dungeon_item_level") }
 	val powerScroll: String? by lazy { nbt.get("power_ability_scroll")?.asString() }
 
+	val rarity: Rarity by lazy {
+		val match = lore.lines()
+			.reversed()
+			.asSequence()
+			.map { it.string }
+			.firstNotNullOfOrNull(RARITY_PATTERN::matchEntire)
+			?: return@lazy Rarity.UNKNOWN
+		Rarity.rarities[match.groups["RARITY"]!!.value] ?: Rarity.UNKNOWN
+	}
+
+	val id: String by lazy { nbt.getString("id") }
 	val uuid: String? by lazy { nbt.get("uuid")?.asString() }
 	val timestamp: Timestamp? by lazy { if(nbt.contains("timestamp")) Timestamp(nbt.getLong("timestamp")) else null }
 	val donatedToMuseum: Boolean by lazy { nbt.getBoolean("donated_museum") }

@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.ui.ElementManager
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
@@ -16,7 +17,6 @@ import me.nobaboy.nobaaddons.features.chat.filters.IFilter
 import me.nobaboy.nobaaddons.features.crimsonisle.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
-import me.nobaboy.nobaaddons.features.ui.ElementManager
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
@@ -84,7 +84,6 @@ object NobaAddons : ClientModInitializer {
 		// Chat
 		IAlert.init()
 		IFilter.init()
-
 
 		// Chat Commands
 		DMCommands.init()

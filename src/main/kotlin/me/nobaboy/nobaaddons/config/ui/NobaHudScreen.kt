@@ -2,130 +2,80 @@ package me.nobaboy.nobaaddons.config.ui
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.ui.elements.HudElement
-import me.nobaboy.nobaaddons.features.ui.ElementManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner
-import net.minecraft.client.gui.tooltip.Tooltip
 import net.minecraft.client.gui.widget.ButtonWidget
-import net.minecraft.client.gui.widget.TextFieldWidget
 import net.minecraft.screen.ScreenTexts
 import net.minecraft.text.Text
 import org.lwjgl.glfw.GLFW
+import kotlin.math.roundToInt
 
-class NobaHudScreen(parent: Screen) : Screen(TITLE) {
-	companion object {
-		private val TITLE = Text.translatable("nobaaddons.name")
+private val TITLE = Text.translatable("nobaaddons.editor")
+private const val BUTTON_WIDTH = 200
 
-		private const val BUTTON_WIDTH = 200
-		private const val BUTTON_WIDTH_HALF = 96
-	}
-
-	private var parent: Screen? = null
-
+class NobaHudScreen(private val parent: Screen) : Screen(TITLE) {
 	private lateinit var elements: LinkedHashMap<String, HudElement>
-
 	private lateinit var doneButtonWidget: ButtonWidget
-	private lateinit var setButtonWidget: ButtonWidget
-	private lateinit var xPositionWidget: TextFieldWidget
-	private lateinit var yPositionWidget: TextFieldWidget
+//	private var contextMenu: ContextMenu? = null
 
-	private var selectedElement: HudElement? = null
-	private var hoveredElement: HudElement? = null
-	private var keyboardElement: HudElement? = null
+	private var editingMode: EditingMode = EditingMode.IDLE
 
-	private var editingMode: EditingMode? = null
-
+	private val movementAmount: Int get() = if(hasControlDown()) 10 else 1
 	private var offsetX = 0f
 	private var offsetY = 0f
 
-	private var showUsageText: Boolean = NobaConfigManager.get().uiAndVisuals.showUsageText
-	// TODO: Add usage text after context menu implementation
-	private val usageTexts = arrayListOf<String>("usage text")
+	private var selectedElement: HudElement? = null
+	private var hoveredElement: HudElement? = null
 
-	init {
-		this.parent = parent
-	}
+	private var showUsageText: Boolean = NobaConfigManager.get().uiAndVisuals.showUsageText
+	private val usageTexts = listOf<String>(
+		"Left click to drag or use arrow keys to move (holding Ctrl moves further)",
+		"Scroll or use +/- to scale an element",
+		"Middle click to reset an element",
+		"Right click on an element to open context menu (soonTM)"
+	)
 
 	override fun init() {
-		val client = MCUtils.client
-		val centerX = client.window.scaledWidth / 2
-		val scaledHeight = client.window.scaledHeight
+		val window = MCUtils.window
 
 		elements = LinkedHashMap(ElementManager)
-		showUsageText = NobaConfigManager.get().uiAndVisuals.showUsageText
-
 		doneButtonWidget = ButtonWidget.builder(ScreenTexts.DONE) {
 			this.close()
-		}.dimensions(centerX - (BUTTON_WIDTH / 2), scaledHeight - 30, BUTTON_WIDTH, 20).build()
+		}.dimensions(window.scaledWidth / 2 - BUTTON_WIDTH / 2, window.scaledHeight - 30, BUTTON_WIDTH, 20).build()
 
-		setButtonWidget = ButtonWidget.builder(ScreenTexts.OK) {
-			setEditingMode(EditingMode.IDLE)
-		}.dimensions(centerX - (BUTTON_WIDTH_HALF / 2), scaledHeight - 220, BUTTON_WIDTH_HALF, 20).build()
-
-		xPositionWidget = TextFieldWidget(
-			client.textRenderer, centerX - BUTTON_WIDTH_HALF - 5, scaledHeight - 250, BUTTON_WIDTH_HALF, 20, Text.literal("")
-		).also { widget ->
-			widget.setChangedListener { input ->
-				input.toIntOrNull()?.let { newX -> selectedElement?.let { it.modifyPosition(newX, it.y) } }
-			}
-		}
-
-		yPositionWidget = TextFieldWidget(
-			client.textRenderer, centerX + 5, scaledHeight - 250, BUTTON_WIDTH_HALF, 20, Text.literal("")
-		).also { widget ->
-			widget.setChangedListener { input ->
-				input.toIntOrNull()?.let { newY -> selectedElement?.let { it.modifyPosition(it.x, newY) } }
-			}
-		}
-
-		setEditingMode(EditingMode.IDLE)
 		addDrawableChild(doneButtonWidget)
-		addDrawableChild(setButtonWidget)
-		addDrawableChild(xPositionWidget)
-		addDrawableChild(yPositionWidget)
 	}
 
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
 		super.render(context, mouseX, mouseY, delta)
+		render(context, mouseX, mouseY)
+	}
 
-		val window = MCUtils.window
-		val centerX = window.scaledWidth / 2
-		val scaledHeight = window.scaledHeight
-
+	private fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+		val (scaledWidth, scaledHeight) = MCUtils.window.let { it.scaledWidth to it.scaledHeight }
 		when(editingMode) {
-			EditingMode.IDLE -> {
-				RenderUtils.drawCenteredText(context, "Left Alt » Toggles usage text", centerX, scaledHeight - 40)
-				usageTexts.takeIf { showUsageText }?.forEachIndexed { i, text ->
-					RenderUtils.drawCenteredText(context, text, centerX, 5 + i * 10)
-				}
-			}
-
-			EditingMode.EXACT -> {
-				RenderUtils.drawCenteredText(context, "X:", centerX - (BUTTON_WIDTH_HALF / 2) - 4, scaledHeight - 260)
-				RenderUtils.drawCenteredText(context, "Y:", centerX + (BUTTON_WIDTH_HALF / 2) + 4, scaledHeight - 260)
-			}
-
-			else -> {}
+			EditingMode.IDLE -> renderIdleText(context, scaledWidth, scaledHeight)
+			else -> Unit
 		}
 
 		var hovered: HudElement? = null
-		for(element in elements.values) {
+		elements.values.forEach { element ->
 			val isHovered = clickInBounds(element, mouseX.toDouble(), mouseY.toDouble())
-			element.render(context, true, isHovered)
-			if(isHovered) {
-				hovered = element
-				if(hasShiftDown()) {
-					setTooltip(Tooltip.of(Text.literal(element.identifier)), HoveredTooltipPositioner.INSTANCE, false)
-				}
-			}
+			element.renderBackground(context, isHovered)
+			if(isHovered) hovered = element
 		}
 
 		hoveredElement = hovered
-		if(hovered == null) clearTooltip()
+	}
+
+	private fun renderIdleText(context: DrawContext, scaledWidth: Int, scaledHeight: Int) {
+		RenderUtils.drawCenteredText(context, Text.literal("Press Left Alt to toggle usage text"), scaledWidth / 2, scaledHeight - 45)
+		if(showUsageText) usageTexts.forEachIndexed { i, text ->
+			RenderUtils.drawCenteredText(context, text, scaledWidth / 2, 5 + i * 10)
+		}
 	}
 
 	override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -134,14 +84,14 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 
 			when(button) {
 				GLFW.GLFW_MOUSE_BUTTON_1 -> {
-					if(editingMode == EditingMode.EXACT) return true
-
 					selectedElement = element
-					val mode = if(hasControlDown()) EditingMode.EXACT else EditingMode.DRAG
-					if(mode == EditingMode.DRAG) updateOffset(element, mouseX, mouseY)
-					setEditingMode(mode)
+					updateOffset(element, mouseX, mouseY)
+					setEditingMode(EditingMode.DRAG)
 				}
-
+//				GLFW.GLFW_MOUSE_BUTTON_2 -> {
+//					openContextMenu(element)
+//					setEditingMode(EditingMode.MENU)
+//				}
 				GLFW.GLFW_MOUSE_BUTTON_3 -> element.reset()
 			}
 		}
@@ -150,46 +100,38 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 	}
 
 	override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
-		return when(editingMode) {
-			EditingMode.EXACT -> true
-			EditingMode.DRAG -> {
-				setEditingMode(EditingMode.IDLE)
-				selectedElement = null
-				true
-			}
-			else -> super.mouseReleased(mouseX, mouseY, button)
+		if(editingMode == EditingMode.DRAG) {
+			setEditingMode(EditingMode.IDLE)
+			selectedElement = null
+			return true
 		}
+		return super.mouseReleased(mouseX, mouseY, button)
 	}
 
 	override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
-		selectedElement.takeIf { editingMode == EditingMode.DRAG }?.apply {
-			selectedElement?.modifyPosition((mouseX - offsetX).toInt(), (mouseY - offsetY).toInt())
-		}
+		selectedElement.takeIf { editingMode == EditingMode.DRAG }?.moveTo((mouseX - offsetX).toInt(), (mouseY - offsetY).toInt())
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
 	}
 
 	override fun mouseScrolled(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {
-		hoveredElement.takeIf { editingMode != EditingMode.EXACT }.apply {
-			this?.modifyScale((verticalAmount / 10))
-		}
+		hoveredElement.takeIf { editingMode != EditingMode.MENU }?.adjustScale(verticalAmount / 10)
 		return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)
 	}
 
 	override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-		if(hoveredElement != null) keyboardElement = hoveredElement
-
+		hoveredElement?.let { selectedElement = it }
 		if(keyCode == GLFW.GLFW_KEY_LEFT_ALT) showUsageText = !showUsageText
 
-		keyboardElement?.takeIf {
-			editingMode != EditingMode.EXACT
+		selectedElement?.takeIf {
+			editingMode != EditingMode.MENU
 		}?.let {
 			when(keyCode) {
-				GLFW.GLFW_KEY_UP -> it.y -= getMovementAmount()
-				GLFW.GLFW_KEY_DOWN -> it.y += getMovementAmount()
-				GLFW.GLFW_KEY_LEFT -> it.x -= getMovementAmount()
-				GLFW.GLFW_KEY_RIGHT -> it.x += getMovementAmount()
-				GLFW.GLFW_KEY_EQUAL -> it.modifyScale(0.1)
-				GLFW.GLFW_KEY_MINUS -> it.modifyScale(-0.1)
+				GLFW.GLFW_KEY_UP -> it.moveBy(yOffset = -movementAmount)
+				GLFW.GLFW_KEY_DOWN -> it.moveBy(yOffset = movementAmount)
+				GLFW.GLFW_KEY_LEFT -> it.moveBy(xOffset = -movementAmount)
+				GLFW.GLFW_KEY_RIGHT -> it.moveBy(xOffset = movementAmount)
+				GLFW.GLFW_KEY_EQUAL -> it.adjustScale(0.1)
+				GLFW.GLFW_KEY_MINUS -> it.adjustScale(-0.1)
 			}
 		}
 
@@ -197,8 +139,9 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 	}
 
 	override fun close() {
+		NobaConfigManager.get().uiAndVisuals.showUsageText = showUsageText
 		NobaConfigManager.save()
-		parent?.queueOpen()
+		parent.queueOpen()
 	}
 
 	private fun updateOffset(element: HudElement, mouseX: Double, mouseY: Double) {
@@ -207,36 +150,31 @@ class NobaHudScreen(parent: Screen) : Screen(TITLE) {
 		offsetY = (mouseY - bounds.y).toFloat()
 	}
 
+	private fun clickInBounds(element: HudElement, mouseX: Double, mouseY: Double): Boolean {
+		val bounds = element.getBounds()
+		val offset = (1 * element.scale).roundToInt().coerceAtLeast(1)
+		return RenderUtils.isPointInArea(
+			mouseX,
+			mouseY,
+			bounds.x.toDouble() - offset,
+			bounds.y.toDouble() - offset,
+			(bounds.x + bounds.width).toDouble() + offset,
+			(bounds.y + bounds.height).toDouble() + offset
+		)
+	}
+
 	private fun setEditingMode(newMode: EditingMode) {
 		editingMode = newMode
 		val isIdle = editingMode == EditingMode.IDLE
-		val isExact = editingMode == EditingMode.EXACT
+//		val isMenu = editingMode == EditingMode.MENU
 
 		doneButtonWidget.visible = isIdle
-		setButtonWidget.visible = isExact
-		xPositionWidget.let {
-			it.visible = isExact
-			it.text = selectedElement?.x.toString()
-		}
-		yPositionWidget.let {
-			it.visible = isExact
-			it.text = selectedElement?.y.toString()
-		}
-	}
-
-	private fun getMovementAmount(): Int = if(hasControlDown()) 10 else 1
-	private fun clickInBounds(element: HudElement, mouseX: Double, mouseY: Double): Boolean {
-		val bounds = element.getBounds()
-		return RenderUtils.isPointInArea(
-			mouseX, mouseY,
-			bounds.x.toDouble(), bounds.y.toDouble(),
-			(bounds.x + bounds.width).toDouble(), (bounds.y + bounds.height).toDouble()
-		)
+//		contextMenu?.visible = isMenu
 	}
 
 	private enum class EditingMode {
 		IDLE,
 		DRAG,
-		EXACT;
+		MENU;
 	}
 }

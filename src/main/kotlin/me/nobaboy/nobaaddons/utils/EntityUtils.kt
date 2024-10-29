@@ -9,7 +9,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
 
 object EntityUtils {
-	fun PlayerEntity.isRealPlayer() = uuid?.let { it.version() == 4 } ?: false
+	fun PlayerEntity.isRealPlayer() = uuid?.let { it.version() == 4 } == true
 
 	fun Entity.canBeSeen(radius: Double = 150.0) = getNobaVec().add(y = 0.5).canBeSeen()
 

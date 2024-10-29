@@ -4,7 +4,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 object RegexUtils {
-	fun Pattern.matches(string: String?): Boolean = string?.let { matcher(it).matches() } ?: false
+	fun Pattern.matches(string: String?): Boolean = string?.let { matcher(it).matches() } == true
 
 	inline fun <T> Pattern.matchMatcher(text: String, consumer: Matcher.() -> T) =
 		matcher(text).let { if(it.matches()) consumer(it) else null }
@@ -22,6 +22,10 @@ object RegexUtils {
 			matcher(line).let { if(it.find()) consumer(it) }
 		}
 		return null
+	}
+
+	inline fun List<String>.forEachMatch(pattern: Pattern, consumer: Matcher.() -> Unit) {
+		this.forEach { pattern.matchMatcher(it, consumer) }
 	}
 
 	inline fun <T> List<Pattern>.matchMatchers(text: String, consumer: Matcher.() -> T): T? {

@@ -3,9 +3,7 @@ package me.nobaboy.nobaaddons.api
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.events.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchAll
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
-import me.nobaboy.nobaaddons.utils.ScoreboardUtils.cleanScoreboard
 import me.nobaboy.nobaaddons.utils.Utils
 import net.hypixel.data.type.GameType
 import net.hypixel.data.type.ServerType
@@ -58,20 +56,6 @@ object SkyBlockAPI {
 				"Purse", "Piggy" -> purse = amount
 //				"Copper" -> copper = amount
 //				"Motes" -> motes = amount
-			}
-		}
-	}
-
-	fun getBits() {
-		if(!inSkyblock) return
-
-		val scoreboard = ScoreboardUtils.getSidebarLines()
-		for(line in scoreboard) {
-			val cleanedLine = line.cleanScoreboard()
-			if(!cleanedLine.contains("Bits:")) continue
-
-			currencyPattern.matchMatcher(cleanedLine) {
-				bits = group("currency").replace(",", "").toLongOrNull()
 			}
 		}
 	}

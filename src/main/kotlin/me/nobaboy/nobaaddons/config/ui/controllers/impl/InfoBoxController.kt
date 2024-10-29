@@ -12,29 +12,30 @@ import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.ui.controllers.ControllerHelper
 import me.nobaboy.nobaaddons.config.ui.controllers.ControllerWidgetHelper
-import me.nobaboy.nobaaddons.config.ui.elements.TextElement.TextMode
+import me.nobaboy.nobaaddons.config.ui.elements.TextMode
+import me.nobaboy.nobaaddons.config.ui.elements.impl.TextElement
 import me.nobaboy.nobaaddons.mixins.accessors.CategoryTabAccessor
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.Element
 import net.minecraft.text.Text
 
 class InfoBoxController(
-	option: Option<InfoBox>,
+	option: Option<TextElement>,
 	textControllerBuilder: (Option<String>) -> ControllerBuilder<String>,
 	modeControllerBuilder: (Option<TextMode>) -> EnumControllerBuilder<TextMode>
-) : ControllerHelper<InfoBox>(option) {
+) : ControllerHelper<TextElement>(option) {
 	private val textController: Controller<String> = createOption<String>("Text:", textControllerBuilder,
 		{ option.pendingValue().text },
 		{ value ->
 			val infoBox = option.pendingValue()
-			option.requestSet(InfoBox(value, infoBox.mode, infoBox.element))
+			option.requestSet(TextElement(value, infoBox.mode, infoBox.element))
 		}
 	).controller()
-	private val modeController: Controller<TextMode> = createOption<TextMode>("Mode:", modeControllerBuilder,
+	private val modeController: Controller<TextMode> = createOption<TextMode>("Text Mode:", modeControllerBuilder,
 		{ option.pendingValue().mode },
 		{ value ->
 			val infoBox = option.pendingValue()
-			option.requestSet(InfoBox(infoBox.text, value, infoBox.element))
+			option.requestSet(TextElement(infoBox.text, value, infoBox.element))
 		}
 	).controller()
 
@@ -56,15 +57,15 @@ class InfoBoxController(
 		return ControllerElement(this, screen, updatedWidgetDimension, textWidget, modeWidget)
 	}
 
-	class Builder(private val option: Option<InfoBox>) : ControllerBuilder<InfoBox> {
+	class Builder(private val option: Option<TextElement>) : ControllerBuilder<TextElement> {
 		private val textControllerBuilder: (Option<String>) -> ControllerBuilder<String> = StringControllerBuilder::create
 		private val modeControllerBuilder: (Option<TextMode>) -> EnumControllerBuilder<TextMode> = NobaConfigUtils::createCyclingController
 
 		companion object {
-			fun create(option: Option<InfoBox>): Builder = Builder(option)
+			fun create(option: Option<TextElement>): Builder = Builder(option)
 		}
 
-		override fun build(): Controller<InfoBox> = InfoBoxController(option, textControllerBuilder, modeControllerBuilder)
+		override fun build(): Controller<TextElement> = InfoBoxController(option, textControllerBuilder, modeControllerBuilder)
 	}
 
 	class ControllerElement(

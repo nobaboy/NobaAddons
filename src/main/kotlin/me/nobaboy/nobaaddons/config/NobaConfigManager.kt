@@ -35,6 +35,7 @@ object NobaConfigManager {
 		}
 		.build()
 
+	@JvmStatic
 	fun get() = HANDLER.instance()
 
 	fun init() {

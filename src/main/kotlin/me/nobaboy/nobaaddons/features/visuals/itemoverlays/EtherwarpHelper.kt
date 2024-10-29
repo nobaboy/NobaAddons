@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.features.visuals.itemoverlays
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyblockItem
@@ -17,13 +16,14 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.util.Formatting
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
+import net.minecraft.world.World
 import java.awt.Color
 
 object EtherwarpHelper {
 	private val config get() = NobaConfigManager.get().uiAndVisuals.etherwarpHelper
 
-	private val etherwarpItems = listOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")
-	private var failText: String? = null
+	private val etherwarpItems = setOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")
+	private var targetBlock: ValidationType? = null
 
 	fun init() {
 		WorldRenderEvents.AFTER_TRANSLUCENT.register { context -> renderOverlay(context) }
@@ -32,7 +32,7 @@ object EtherwarpHelper {
 
 	private fun renderOverlay(context: WorldRenderContext) {
 		if(!isEnabled()) {
-			failText = null
+			targetBlock = null
 			return
 		}
 
@@ -41,7 +41,7 @@ object EtherwarpHelper {
 		if(!heldItem.isSkyBlockItem) return
 		val item = heldItem.skyblockItem()
 
-		if(!item.id.lowercaseEquals(etherwarpItems) || !item.ethermerge) return
+		if(!etherwarpItems.contains(item.id) || !item.ethermerge) return
 
 		val baseDistance = 57
 		val tunedTransmission = item.tunedTransmission
@@ -50,53 +50,52 @@ object EtherwarpHelper {
 		val target = client.crosshairTarget
 
 		if(target is BlockHitResult && target.type == HitResult.Type.BLOCK) {
-			handleTarget(context, client, target, maxDistance)
+			handleTarget(context, client, target)
 		} else if(client.interactionManager != null) {
-			val raycast = client.player?.raycast(maxDistance.toDouble(), context.tickCounter().getTickDelta(true), false) as? BlockHitResult
-			raycast?.let { handleTarget(context, client, it, maxDistance) }
+			val raycast = client.player?.raycast(maxDistance.toDouble(), context.tickCounter().getTickDelta(true), true) as? BlockHitResult
+			raycast?.let { handleTarget(context, client, it) }
 		}
 	}
 
 	private fun renderFailText(context: DrawContext) {
-		if(!config.showFailText) return
-
-		failText?.let {
+		targetBlock.takeIf { config.showFailText }?.let {
 			val window = MCUtils.window
-			val x = window.scaledWidth / 2
-			val y = window.scaledHeight / 2 + 10
-			RenderUtils.drawCenteredText(context, it.toText().formatted(Formatting.RED), x, y)
+			val (x, y) = window.scaledWidth / 2 to window.scaledHeight / 2 + 10
+			RenderUtils.drawCenteredText(context, it.text.toText().formatted(Formatting.RED), x, y)
 		}
 	}
 
-	private fun handleTarget(context: WorldRenderContext, client: MinecraftClient, target: BlockHitResult, maxDistance: Int) {
-		if(isTooFar(client, target, maxDistance) && !config.allowOnAir) {
-			failText = null
-			return
-		}
+	private fun handleTarget(context: WorldRenderContext, client: MinecraftClient, target: BlockHitResult) {
+		val world = client.world ?: return
 
-		failText = getFailText(client, target, maxDistance)
-		var color = if(failText == null) config.highlightColor else Color.GRAY
-		RenderUtils.drawOutlinedFilledBox(context, target.toNobaVec(), color, throughBlocks = true)
+		targetBlock = validateTargetBlock(world, target)
+		if(targetBlock == ValidationType.TOO_FAR && !config.allowOnAir) return
+
+		var color = targetBlock?.let { Color.GRAY } ?: config.highlightColor
+		RenderUtils.drawOutlinedFilledBox(context, target.blockPos.toNobaVec(), color, throughBlocks = true)
 	}
 
-	private fun getFailText(client: MinecraftClient, target: BlockHitResult, maxDistance: Int): String? {
+	private fun validateTargetBlock(world: World, target: BlockHitResult): ValidationType? {
 		val blockPos = target.blockPos
-		val blockState = client.world?.getBlockState(blockPos) ?: return "Invalid block!"
 
-		if(isTooFar(client, target, maxDistance) || blockState.isAir) return "Invalid block"
+		val blockState = world.getBlockState(blockPos)
+		if(blockState.isAir) return ValidationType.TOO_FAR
+		if(!blockState.isSolid) return ValidationType.NOT_SOLID
 
-		val stateAbove = client.world?.getBlockState(blockPos.up()) ?: return "Invalid block!"
-		val stateTwoAbove = client.world?.getBlockState(blockPos.up(2)) ?: return "Invalid block!"
+		val stateAbove = world.getBlockState(blockPos.up())
+		val stateTwoAbove = world.getBlockState(blockPos.up(2))
 
 		return when {
-			!blockState.isSolid -> "Not solid!"
-			stateAbove.isSolid || !stateAbove.isAir || !stateTwoAbove.isAir -> "No air above!"
+			stateAbove.isSolid && !stateAbove.isAir || !stateTwoAbove.isAir -> ValidationType.NO_AIR_ABOVE
 			else -> null
 		}
 	}
 
-	fun isTooFar(client: MinecraftClient, target: BlockHitResult, maxDistance: Int): Boolean =
-		target.squaredDistanceTo(client.player) > maxDistance * maxDistance
+	private enum class ValidationType(val text: String) {
+		TOO_FAR("Too far!"),
+		NOT_SOLID("Not solid"),
+		NO_AIR_ABOVE("No air above!");
+	}
 
 	private fun isEnabled() = SkyBlockAPI.inSkyblock && config.enabled && MCUtils.options.sneakKey.isPressed
 }

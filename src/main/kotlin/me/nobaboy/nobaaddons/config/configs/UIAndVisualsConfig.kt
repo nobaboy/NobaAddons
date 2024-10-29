@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.config.ui.controllers.impl.InfoBox
+import me.nobaboy.nobaaddons.config.ui.elements.impl.TextElement
 import java.awt.Color
 
 class UIAndVisualsConfig {
@@ -15,7 +15,7 @@ class UIAndVisualsConfig {
 	val etherwarpHelper: EtherwarpHelper = EtherwarpHelper()
 
 	@SerialEntry
-	val infoBoxes = mutableListOf<InfoBox>()
+	val infoBoxes = mutableListOf<TextElement>()
 
 	@SerialEntry
 	var renderingTweaks: RenderingTweaks = RenderingTweaks()

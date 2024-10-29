@@ -225,7 +225,7 @@ data class NobaVec(
 
 fun BlockPos.toNobaVec(): NobaVec = NobaVec(x, y, z)
 
-fun BlockHitResult.toNobaVec(): NobaVec = blockPos.toNobaVec()
+fun BlockHitResult.toNobaVec(): NobaVec = pos.toNobaVec()
 
 fun Entity.getNobaVec(): NobaVec = NobaVec(x, y, z)
 fun Entity.getPrevNobaVec(): NobaVec = NobaVec(prevX, prevY, prevZ)

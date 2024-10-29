@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class FishingBobberEntityRendererMixin {
 	@Inject(method = "render(Lnet/minecraft/entity/projectile/FishingBobberEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
 	public void render(FishingBobberEntity fishingBobberEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
-		if(NobaConfigManager.INSTANCE.get().getUiAndVisuals().getRenderingTweaks().getHideOtherPeopleFishing() &&
+		if(NobaConfigManager.get().getUiAndVisuals().getRenderingTweaks().getHideOtherPeopleFishing() &&
 			fishingBobberEntity != null &&
 			fishingBobberEntity.getPlayerOwner() != MCUtils.INSTANCE.getPlayer()) ci.cancel();
 	}

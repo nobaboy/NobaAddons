@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.config.ui
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.features.ui.ElementManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCentered
 import net.minecraft.client.gui.DrawContext

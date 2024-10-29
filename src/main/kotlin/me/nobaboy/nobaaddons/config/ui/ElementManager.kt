@@ -1,7 +1,6 @@
-package me.nobaboy.nobaaddons.features.ui
+package me.nobaboy.nobaaddons.config.ui
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.config.ui.controllers.impl.InfoBox
 import me.nobaboy.nobaaddons.config.ui.elements.HudElement
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
@@ -9,17 +8,13 @@ import java.util.LinkedHashMap
 import kotlin.collections.set
 
 object ElementManager : LinkedHashMap<String, HudElement>() {
-	private fun readResolve(): Any = ElementManager
-
 	private val config get() = NobaConfigManager.get().uiAndVisuals
 
 	fun init() {
 		loadElements()
 
-		HudRenderCallback.EVENT.register { context, tickCounter ->
-			this.forEach {
-				it.value.render(context, false, false)
-			}
+		HudRenderCallback.EVENT.register { context, _ ->
+			this.forEach { it.value.render(context) }
 		}
 	}
 
@@ -29,10 +24,8 @@ object ElementManager : LinkedHashMap<String, HudElement>() {
 
 	fun loadElements() {
 		clear()
-		config.infoBoxes.forEach {
-			val infoBox = InfoBox(it.text, it.mode, it.element)
-			add(InfoBoxHud(infoBox))
-		}
+
+		config.infoBoxes.forEach { add(InfoBoxHud(it)) }
 	}
 
 	fun newIdentifier(base: String): String {

@@ -31,6 +31,6 @@ public class LightningEntityRendererMixin {
 		boolean shiftSouth2,
 		CallbackInfo ci
 	) {
-		if(NobaConfigManager.INSTANCE.get().getUiAndVisuals().getRenderingTweaks().getHideLightningBolt()) ci.cancel();
+		if(NobaConfigManager.get().getUiAndVisuals().getRenderingTweaks().getHideLightningBolt()) ci.cancel();
 	}
 }
