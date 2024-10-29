@@ -23,7 +23,6 @@ import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.Utils
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.keybinds.KeyBindListener
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
@@ -66,7 +65,6 @@ object NobaAddons : ClientModInitializer {
 
 		// Utils
 		KeyBindListener.init()
-		Scheduler.schedule(20, repeat = true) { ChatUtils.tickCommandQueue() }
 
 		// Commands
 		NobaCommand.init()
