@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
+import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseContains
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
@@ -13,13 +14,13 @@ object WarpPlayerHandler {
 	var player: String? = null
 	private var task: Scheduler.ScheduledTask? = null
 
-	val e = listOf("Couldn't find a player with that name!", "You cannot invite that player since they're not online.")
+	val inviteFailMessages = listOf("Couldn't find a player with that name!", "You cannot invite that player since they're not online.")
 
 	fun handleMessage(message: String) {
 		when {
-			message.lowercaseEquals(e) -> cancel()
-			message.lowercaseEquals("$player is already in the party") -> cancel()
-			message.lowercaseEquals("$player joined the party") -> playerJoined = true
+			inviteFailMessages.contains(message) -> cancel()
+			message.lowercaseEquals("$player is already in the party.") -> cancel()
+			message.lowercaseContains("$player joined the party.") -> playerJoined = true
 		}
 	}
 
@@ -28,8 +29,6 @@ object WarpPlayerHandler {
 
 		isWarping = true
 		player = playerName
-
-		var warped = false
 
 		val party = PartyAPI.snapshot()
 		val membersToInvite: List<String> = if(party.isLeader) party.partyMembers else listOf()
@@ -66,10 +65,7 @@ object WarpPlayerHandler {
 				HypixelCommands.partyWarp()
 				HypixelCommands.partyDisband()
 				if(isWarpingOut) ChatUtils.queueCommand("$command Successfully warped out $player.")
-				warped = true
-			}
 
-			if(warped) {
 				if(party.isLeader && membersToInvite.isNotEmpty()) {
 					membersToInvite.filter { it != MCUtils.playerName }.forEach(HypixelCommands::partyInvite)
 				} else if(!party.isLeader && party.inParty) {
