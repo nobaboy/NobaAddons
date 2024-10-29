@@ -14,7 +14,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 object DMCommands : ChatCommandManager() {
-	private val config get() = NobaConfigManager.get().chat.chatCommands.dm
+	private val config get() = NobaConfigManager.config.chat.chatCommands.dm
 	private val chatPattern =
 		Pattern.compile("^From (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?")
 

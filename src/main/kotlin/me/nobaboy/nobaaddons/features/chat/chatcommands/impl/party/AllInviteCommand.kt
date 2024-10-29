@@ -14,7 +14,7 @@ class AllInviteCommand : IChatCommand {
 	override val usage: String = "(allinvite|allinv)"
 
 	override val isEnabled: Boolean
-		get() = NobaConfigManager.get().chat.chatCommands.party.allInvite
+		get() = NobaConfigManager.config.chat.chatCommands.party.allInvite
 
 	override fun run(ctx: ChatContext) {
 		if(!PartyAPI.isLeader) return

@@ -13,7 +13,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
 
 interface IFilter {
-	val config get() = NobaConfigManager.get().chat.filters
+	val config get() = NobaConfigManager.config.chat.filters
 
 	fun isEnabled(): Boolean
 	fun shouldFilter(message: Text, text: String): Boolean

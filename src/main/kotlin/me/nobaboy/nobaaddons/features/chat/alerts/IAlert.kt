@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
 
 interface IAlert {
-	val config get() = NobaConfigManager.get().chat.alerts
+	val config get() = NobaConfigManager.config.chat.alerts
 
 	fun isEnabled(): Boolean
 	fun shouldAlert(message: Text, text: String): Boolean

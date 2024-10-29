@@ -27,7 +27,7 @@ import net.minecraft.util.hit.BlockHitResult
 import java.util.regex.Pattern
 
 object SimonSaysTimer {
-	private val config get() = NobaConfigManager.get().dungeons.simonSaysTimer
+	private val config get() = NobaConfigManager.config.dungeons.simonSaysTimer
 
 	private val completionPattern = Pattern.compile("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)")
 	private val buttonVec = NobaVec(110, 121, 91)

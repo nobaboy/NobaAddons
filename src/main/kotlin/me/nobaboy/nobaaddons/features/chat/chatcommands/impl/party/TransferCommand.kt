@@ -16,7 +16,7 @@ class TransferCommand : IChatCommand {
 	override val usage: String = "(transfer|pt) [optional: username], ptme"
 
 	override val isEnabled: Boolean
-		get() = NobaConfigManager.get().chat.chatCommands.party.transfer
+		get() = NobaConfigManager.config.chat.chatCommands.party.transfer
 
 	override fun run(ctx: ChatContext) {
 		if(!PartyAPI.isLeader) return

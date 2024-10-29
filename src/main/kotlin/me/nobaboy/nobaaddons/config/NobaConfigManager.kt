@@ -35,8 +35,8 @@ object NobaConfigManager {
 		}
 		.build()
 
-	@JvmStatic
-	fun get() = HANDLER.instance()
+	@get:JvmStatic
+	val config get() = HANDLER.instance()
 
 	fun init() {
 		if(StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE).callerClass != NobaAddons::class.java) {

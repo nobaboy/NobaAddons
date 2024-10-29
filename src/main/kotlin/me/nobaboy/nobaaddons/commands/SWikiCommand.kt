@@ -21,7 +21,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object SWikiCommand {
-	private val config get() = NobaConfigManager.get().general
+	private val config get() = NobaConfigManager.config.general
 
 	fun init() {
 		ClientCommandRegistrationCallback.EVENT.register(this::register)

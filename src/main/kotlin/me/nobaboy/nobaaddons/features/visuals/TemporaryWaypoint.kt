@@ -23,7 +23,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 object TemporaryWaypoint {
-	private val config get() = NobaConfigManager.get().uiAndVisuals.temporaryWaypoints
+	private val config get() = NobaConfigManager.config.uiAndVisuals.temporaryWaypoints
 
 	private val chatCoordsPattern = Pattern.compile(
 		"(?i)(?<username>[A-z0-9_]+): x: (?<x>[0-9.-]+),? y: (?<y>[0-9.-]+),? z: (?<z>[0-9.-]+)(?<info>.*)"

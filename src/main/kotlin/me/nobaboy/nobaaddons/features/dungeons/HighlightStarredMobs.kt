@@ -15,7 +15,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 
 // TODO: Rework and implement Entity outlines
 object HighlightStarredMobs {
-	private val config get() = NobaConfigManager.get().dungeons.highlightStarredMobs
+	private val config get() = NobaConfigManager.config.dungeons.highlightStarredMobs
 
 	private val starredMobs = mutableListOf<ArmorStandEntity>()
 

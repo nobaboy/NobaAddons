@@ -12,7 +12,7 @@ class PartyMeCommand : IChatCommand {
 	override val aliases = mutableListOf("pme")
 
 	override val isEnabled: Boolean
-		get() = NobaConfigManager.get().chat.chatCommands.dm.partyMe
+		get() = NobaConfigManager.config.chat.chatCommands.dm.partyMe
 
 	override fun run(ctx: ChatContext) {
 		val playerName = MCUtils.playerName ?: return

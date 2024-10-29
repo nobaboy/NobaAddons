@@ -20,7 +20,7 @@ import net.minecraft.world.World
 import java.awt.Color
 
 object EtherwarpHelper {
-	private val config get() = NobaConfigManager.get().uiAndVisuals.etherwarpHelper
+	private val config get() = NobaConfigManager.config.uiAndVisuals.etherwarpHelper
 
 	private val etherwarpItems = setOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")
 	private var targetBlock: ValidationType? = null

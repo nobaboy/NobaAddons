@@ -8,7 +8,7 @@ import java.util.LinkedHashMap
 import kotlin.collections.set
 
 object ElementManager : LinkedHashMap<String, HudElement>() {
-	private val config get() = NobaConfigManager.get().uiAndVisuals
+	private val config get() = NobaConfigManager.config.uiAndVisuals
 
 	fun init() {
 		loadElements()

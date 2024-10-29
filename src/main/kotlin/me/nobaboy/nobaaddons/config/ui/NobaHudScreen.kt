@@ -30,7 +30,7 @@ class NobaHudScreen(private val parent: Screen) : Screen(TITLE) {
 	private var selectedElement: HudElement? = null
 	private var hoveredElement: HudElement? = null
 
-	private var showUsageText: Boolean = NobaConfigManager.get().uiAndVisuals.showUsageText
+	private var showUsageText: Boolean = NobaConfigManager.config.uiAndVisuals.showUsageText
 	private val usageTexts = listOf<String>(
 		"Left click to drag or use arrow keys to move (holding Ctrl moves further)",
 		"Scroll or use +/- to scale an element",
@@ -139,7 +139,7 @@ class NobaHudScreen(private val parent: Screen) : Screen(TITLE) {
 	}
 
 	override fun close() {
-		NobaConfigManager.get().uiAndVisuals.showUsageText = showUsageText
+		NobaConfigManager.config.uiAndVisuals.showUsageText = showUsageText
 		NobaConfigManager.save()
 		parent.queueOpen()
 	}
