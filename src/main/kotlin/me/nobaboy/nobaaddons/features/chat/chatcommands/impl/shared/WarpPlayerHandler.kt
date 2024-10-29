@@ -18,7 +18,7 @@ object WarpPlayerHandler {
 
 	fun handleMessage(message: String) {
 		when {
-			inviteFailMessages.contains(message) -> cancel()
+			inviteFailMessages.lowercaseContains(message) -> cancel()
 			message.lowercaseEquals("$player is already in the party.") -> cancel()
 			message.lowercaseContains("$player joined the party.") -> playerJoined = true
 		}
