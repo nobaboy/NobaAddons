@@ -2,7 +2,10 @@ package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.utils.render.FrustumUtils
 import net.minecraft.entity.Entity
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.Box
+import net.minecraft.world.RaycastContext
 import kotlin.math.max
 import kotlin.math.min
 
@@ -28,14 +31,30 @@ object LocationUtils {
 
 	fun Entity.distanceToIgnoreY(vec: NobaVec) = getNobaVec().distanceIgnoreY(vec)
 
-	fun playerEyeLocation(): NobaVec {
-		val player = MCUtils.player ?: return NobaVec()
-		val vec = player.getNobaVec()
-		return vec.add(y = player.eyeY)
+	fun PlayerEntity.eyeLocation(oldVersion: Boolean = true): NobaVec {
+		val eyePos = if(this.isSneaking) {
+			if(oldVersion) 1.54 else 1.27
+		} else {
+			1.62
+		}
+
+		return this.getNobaVec().add(y = eyePos)
+	}
+
+	fun PlayerEntity.rayCast(maxDistance: Double, tickDelta: Float, includeFluids: Boolean): HitResult? {
+		val player = MCUtils.player ?: return null
+
+		val startPos = player.eyeLocation().toVec3d()
+		val direction = player.getRotationVec(tickDelta)
+		val endPos = startPos.add(direction.x * maxDistance, direction.y * maxDistance, direction.z * maxDistance)
+
+		val fluidHandling = if(includeFluids) RaycastContext.FluidHandling.ANY else RaycastContext.FluidHandling.NONE
+		val raycastContext = RaycastContext(startPos, endPos, RaycastContext.ShapeType.OUTLINE, fluidHandling, this)
+		return MCUtils.world?.raycast(raycastContext)
 	}
 
 	fun NobaVec.canBeSeen(radius: Double = 150.0): Boolean {
-		val a = playerEyeLocation()
+		val a = MCUtils.player?.eyeLocation() ?: return false
 		val b = this
 //      val canSee = canSee(a, b)
 		val notTooFar = a.distance(b) < radius

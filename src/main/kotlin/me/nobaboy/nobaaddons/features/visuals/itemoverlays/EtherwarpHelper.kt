@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.features.visuals.itemoverlays
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
@@ -22,6 +23,7 @@ import java.awt.Color
 object EtherwarpHelper {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.etherwarpHelper
 
+	private const val BASE_DISTANCE = 57
 	private val etherwarpItems = setOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")
 	private var targetBlock: ValidationType? = null
 
@@ -39,28 +41,27 @@ object EtherwarpHelper {
 		val client = MCUtils.client
 		val heldItem = client.player?.mainHandStack ?: return
 		if(!heldItem.isSkyBlockItem) return
+
 		val item = heldItem.skyblockItem()
+		if(!etherwarpItems.contains(item.id) || !item.ethermerge) {
+			targetBlock = null
+			return
+		}
 
-		if(!etherwarpItems.contains(item.id) || !item.ethermerge) return
-
-		val baseDistance = 57
-		val tunedTransmission = item.tunedTransmission
-		val maxDistance = baseDistance + tunedTransmission
-
+		val maxDistance = BASE_DISTANCE + item.tunedTransmission
 		val target = client.crosshairTarget
 
 		if(target is BlockHitResult && target.type == HitResult.Type.BLOCK) {
 			handleTarget(context, client, target)
 		} else if(client.interactionManager != null) {
-			val raycast = client.player?.raycast(maxDistance.toDouble(), context.tickCounter().getTickDelta(true), true) as? BlockHitResult
+			val raycast = client.player?.rayCast(maxDistance.toDouble(), context.tickCounter().getTickDelta(true), true) as? BlockHitResult
 			raycast?.let { handleTarget(context, client, it) }
 		}
 	}
 
 	private fun renderFailText(context: DrawContext) {
 		targetBlock.takeIf { config.showFailText }?.let {
-			val window = MCUtils.window
-			val (x, y) = window.scaledWidth / 2 to window.scaledHeight / 2 + 10
+			val (x, y) = MCUtils.window.let { it.scaledWidth / 2 to it.scaledHeight / 2 + 10 }
 			RenderUtils.drawCenteredText(context, it.text.toText().formatted(Formatting.RED), x, y)
 		}
 	}
@@ -85,16 +86,13 @@ object EtherwarpHelper {
 		val stateAbove = world.getBlockState(blockPos.up())
 		val stateTwoAbove = world.getBlockState(blockPos.up(2))
 
-		return when {
-			stateAbove.isSolid && !stateAbove.isAir || !stateTwoAbove.isAir -> ValidationType.NO_AIR_ABOVE
-			else -> null
-		}
+		return if (stateAbove.isSolid && !stateAbove.isAir || !stateTwoAbove.isAir) ValidationType.NO_AIR_ABOVE else null
 	}
 
 	private enum class ValidationType(val text: String) {
 		TOO_FAR("Too far!"),
-		NOT_SOLID("Not solid"),
-		NO_AIR_ABOVE("No air above!");
+		NOT_SOLID("Not solid!"),
+		NO_AIR_ABOVE("No air above!")
 	}
 
 	private fun isEnabled() = SkyBlockAPI.inSkyblock && config.enabled && MCUtils.options.sneakKey.isPressed
