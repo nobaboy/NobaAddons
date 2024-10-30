@@ -9,7 +9,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager.getConfigScreen
 import me.nobaboy.nobaaddons.config.ui.NobaMainScreen
 import me.nobaboy.nobaaddons.features.general.RefillPearls
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
-import me.nobaboy.nobaaddons.utils.LocationUtils.playerCoords
+import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
@@ -36,7 +36,7 @@ object NobaCommand {
 					})
 
 					then(ClientCommandManager.literal("sendCoords").executes {
-						ChatUtils.sendChatAsPlayer(playerCoords())
+						ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
 						Command.SINGLE_SUCCESS
 					})
 

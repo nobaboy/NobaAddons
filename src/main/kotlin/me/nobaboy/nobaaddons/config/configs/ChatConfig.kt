@@ -5,13 +5,21 @@ import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 
 class ChatConfig {
 	@SerialEntry
-	val filters: Filters = Filters()
-
-	@SerialEntry
 	val alerts: Alerts = Alerts()
 
 	@SerialEntry
+	val filters: Filters = Filters()
+
+	@SerialEntry
 	val chatCommands: ChatCommands = ChatCommands()
+
+	class Alerts {
+		@SerialEntry
+		var mythicSeaCreatureSpawn: Boolean = false
+
+		@SerialEntry
+		var vanquisherSpawn: Boolean = false
+	}
 
 	class Filters {
 		@SerialEntry
@@ -55,14 +63,6 @@ class ChatConfig {
 
 		@SerialEntry
 		var hideTipMessages: Boolean = false
-	}
-
-	class Alerts {
-		@SerialEntry
-		var mythicSeaCreatureSpawn: Boolean = false
-
-		@SerialEntry
-		var vanquisherSpawn: Boolean = false
 	}
 
 	class ChatCommands {

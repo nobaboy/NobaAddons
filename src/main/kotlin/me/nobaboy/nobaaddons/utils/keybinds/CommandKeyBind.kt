@@ -6,16 +6,8 @@ import org.lwjgl.glfw.GLFW
 
 class CommandKeyBind(
 	name: String,
-	category: String,
+	command: String,
+	category: String = "nobaaddons.name",
 	key: Int = GLFW.GLFW_KEY_UNKNOWN,
-	inputType: InputUtil.Type,
-	command: String
-) : NobaKeyBind(name, category, key, inputType, { ChatUtils.queueCommand(command) }) {
-	constructor(name: String, command: String) : this(
-		name,
-		"nobaaddons.name",
-		GLFW.GLFW_KEY_UNKNOWN,
-		InputUtil.Type.KEYSYM,
-		command
-	)
-}
+	inputType: InputUtil.Type = InputUtil.Type.KEYSYM
+) : NobaKeyBind(name, category, key, inputType, { ChatUtils.queueCommand(command) })

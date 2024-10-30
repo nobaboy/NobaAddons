@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.core
 
-enum class Rarity {
+enum class ItemRarity {
 	COMMON,
 	UNCOMMON,
 	RARE,
@@ -15,6 +15,6 @@ enum class Rarity {
 	UNKNOWN;
 
 	companion object {
-		val rarities = Rarity.entries.associateBy { it.name.replace("_", " ") }
+		val rarities = entries.associateBy { it.name.replace("_", " ") }
 	}
 }

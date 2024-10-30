@@ -19,7 +19,7 @@ object DungeonsCategory {
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.dungeons.highlightStarredMobs"))
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.dungeons.highlightStarredMobs.enabled"))
+					.name(Text.translatable("nobaaddons.config.enabled"))
 					.binding(defaults.dungeons.highlightStarredMobs.enabled, config.dungeons.highlightStarredMobs::enabled) { config.dungeons.highlightStarredMobs.enabled = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
@@ -42,7 +42,7 @@ object DungeonsCategory {
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.dungeons.simonSaysTimer"))
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.dungeons.simonSaysTimer.enabled"))
+					.name(Text.translatable("nobaaddons.config.enabled"))
 					.binding(defaults.dungeons.simonSaysTimer.enabled, config.dungeons.simonSaysTimer::enabled) { config.dungeons.simonSaysTimer.enabled = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())

@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.Option
-import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -18,7 +17,7 @@ object CrimsonIsleCategory {
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.crimsonIsle.highlightThunderSparks"))
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.crimsonIsle.highlightThunderSparks.enabled"))
+					.name(Text.translatable("nobaaddons.config.enabled"))
 					.binding(defaults.crimsonIsle.highlightThunderSparks.enabled, config.crimsonIsle.highlightThunderSparks::enabled) { config.crimsonIsle.highlightThunderSparks.enabled = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
@@ -31,7 +30,6 @@ object CrimsonIsleCategory {
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.crimsonIsle.highlightThunderSparks.showText"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.crimsonIsle.highlightThunderSparks.showText.tooltip")))
 					.binding(defaults.crimsonIsle.highlightThunderSparks.showText, config.crimsonIsle.highlightThunderSparks::showText) { config.crimsonIsle.highlightThunderSparks.showText = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())

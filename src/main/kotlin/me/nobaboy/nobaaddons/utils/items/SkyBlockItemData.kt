@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.utils.items
 
-import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.ItemRarity
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.LoreComponent
@@ -36,14 +36,14 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val stars: Int? by lazy { nbt.getInt("dungeon_item_level") }
 	val powerScroll: String? by lazy { nbt.get("power_ability_scroll")?.asString() }
 
-	val rarity: Rarity by lazy {
+	val rarity: ItemRarity by lazy {
 		val match = lore.lines()
 			.reversed()
 			.asSequence()
 			.map { it.string }
 			.firstNotNullOfOrNull(RARITY_PATTERN::matchEntire)
-			?: return@lazy Rarity.UNKNOWN
-		Rarity.rarities[match.groups["RARITY"]!!.value] ?: Rarity.UNKNOWN
+			?: return@lazy ItemRarity.UNKNOWN
+		ItemRarity.rarities[match.groups["RARITY"]!!.value] ?: ItemRarity.UNKNOWN
 	}
 
 	val id: String by lazy { nbt.getString("id") }

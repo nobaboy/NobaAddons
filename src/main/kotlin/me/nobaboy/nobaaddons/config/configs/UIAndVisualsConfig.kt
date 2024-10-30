@@ -1,7 +1,8 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.config.ui.elements.impl.TextElement
+import me.nobaboy.nobaaddons.config.ui.elements.TextElement
+import me.nobaboy.nobaaddons.core.MobRarity
 import java.awt.Color
 
 class UIAndVisualsConfig {
@@ -15,10 +16,13 @@ class UIAndVisualsConfig {
 	val etherwarpHelper: EtherwarpHelper = EtherwarpHelper()
 
 	@SerialEntry
-	val infoBoxes = mutableListOf<TextElement>()
+	val seaCreatureAlert: SeaCreatureAlert = SeaCreatureAlert()
 
 	@SerialEntry
-	var renderingTweaks: RenderingTweaks = RenderingTweaks()
+	val renderingTweaks: RenderingTweaks = RenderingTweaks()
+
+	@SerialEntry
+	val infoBoxes = mutableListOf<TextElement>()
 
 	class TemporaryWaypoints {
 		@SerialEntry
@@ -28,7 +32,7 @@ class UIAndVisualsConfig {
 		var waypointColor: Color = Color.YELLOW
 
 		@SerialEntry
-		var expirationTime: Int = 30
+		var expirationTime: Int = 15
 	}
 
 	class EtherwarpHelper {
@@ -43,6 +47,17 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var allowOnAir: Boolean = false
+	}
+
+	class SeaCreatureAlert {
+		@SerialEntry
+		var enabled: Boolean = false
+
+		@SerialEntry
+		var nameInsteadOfRarity: Boolean = false
+
+		@SerialEntry
+		var minimumRarity: MobRarity = MobRarity.LEGENDARY
 	}
 
 	class RenderingTweaks {
