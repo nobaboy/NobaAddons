@@ -3,6 +3,11 @@ package me.nobaboy.nobaaddons.utils
 import me.nobaboy.nobaaddons.NobaAddons
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 
+/**
+ * Scheduling utility for running methods a certain amount of ticks later.
+ *
+ * @see CooldownTickEvent
+ */
 object Scheduler {
 	private val tasks = mutableListOf<ScheduledTask>()
 
@@ -19,7 +24,11 @@ object Scheduler {
 		tasks.filter { it.ticksRemaining-- <= 0 }.forEach { it.run() }
 	}
 
-	class ScheduledTask(val task: ScheduledTask.() -> Unit, val ticks: Int, val repeat: Boolean = false): Runnable {
+	class ScheduledTask internal constructor(
+		private val task: ScheduledTask.() -> Unit,
+		private val ticks: Int,
+		private val repeat: Boolean = false
+	) {
 		private var cancelled = false
 		internal var ticksRemaining = ticks
 
@@ -27,7 +36,7 @@ object Scheduler {
 			cancelled = true
 		}
 
-		override fun run() {
+		fun run() {
 			runCatching { task() }.onFailure { NobaAddons.LOGGER.error("Failed to run scheduled method", it) }
 			if(repeat && !cancelled) {
 				ticksRemaining = ticks

@@ -27,14 +27,13 @@ interface IAlert {
 
 			ClientReceiveMessageEvents.GAME.register { message, _ ->
 				val text = message.string.cleanFormatting()
-				alerts.asSequence().filter { it.isEnabled() }.none {
+				alerts.asSequence().filter { it.isEnabled() }.forEach {
 					runCatching { it.shouldAlert(message, text) }
 						.onFailure { error ->
 							NobaAddons.LOGGER.error(
 								"Alert {} threw an error while processing a chat message", it, error
 							)
 						}
-						.getOrDefault(false)
 				}
 			}
 		}

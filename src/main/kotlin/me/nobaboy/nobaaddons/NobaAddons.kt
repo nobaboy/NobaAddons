@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons
 
 import com.mojang.logging.LogUtils
-import kotlinx.coroutines.*
 import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
@@ -19,16 +18,9 @@ import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
-import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.Utils
 import me.nobaboy.nobaaddons.utils.keybinds.KeyBindListener
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
-import net.hypixel.modapi.HypixelModAPI
-import net.hypixel.modapi.packet.impl.clientbound.ClientboundPingPacket
-import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import net.minecraft.text.MutableText
 import net.minecraft.text.Style
 import net.minecraft.text.Text
@@ -50,55 +42,57 @@ object NobaAddons : ClientModInitializer {
 	val LOGGER: Logger = LogUtils.getLogger()
 	val modDir: Path get() = FabricLoader.getInstance().configDir
 
-	private val supervisorJob = SupervisorJob()
-	private val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
-
-	fun runAsync(runnable: suspend CoroutineScope.() -> Unit) = coroutineScope.launch(block = runnable)
-
 	override fun onInitializeClient() {
 		NobaConfigManager.init()
 
-		// APIs
+		/* region APIs */
 		PartyAPI.init()
 		DungeonsAPI.init()
-		Scheduler.schedule(20, repeat = true) { SkyBlockAPI.update() }
+		SkyBlockAPI.init()
+		/* endregion */
 
-		// Utils
+		// Note: utility object classes should avoid calling a dedicated `init` method here where possible, and instead
+		// rely on 'init {}' to run setup when first used, unless absolutely necessary for functionality (such as
+		// if the object class is never referenced anywhere else, or if it relies on chat data for a feature that isn't
+		// immediately ran).
+		/* region Utils */
 		KeyBindListener.init()
+		/* endregion */
 
-		// Commands
+		/* region Commands */
 		NobaCommand.init()
 		SWikiCommand.init()
+		/* endregion */
 
-		// User Interface
+		/* region User Interface */
 		ElementManager.init()
+		/* endregion */
 
-		// Features
-
-		// Visuals
+		/* region Features */
+		// region Visuals
 		TemporaryWaypoint.init()
 		EtherwarpHelper.init()
+		// endregion
 
-		// Chat
+		// region Chat
 		IAlert.init()
 		IFilter.init()
+		// endregion
 
-		// Chat Commands
+		// region Chat Commands
 		DMCommands.init()
 		PartyCommands.init()
 		GuildCommands.init()
+		// endregion
 
-		// Crimson Isle
+		// region Crimson Isle
 		HighlightThunderSparks.init()
+		// endregion
 
-		// Dungeons
+		// region Dungeons
 		SimonSaysTimer.init()
 		HighlightStarredMobs.init()
-
-		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
-		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
-
-		Scheduler.schedule(60 * 20, repeat = true) { Utils.sendPingPacket() }
-		HypixelModAPI.getInstance().listen<ClientboundPingPacket>(Utils::onPingPacket)
+		// endregion
+		/* endregion */
 	}
 }

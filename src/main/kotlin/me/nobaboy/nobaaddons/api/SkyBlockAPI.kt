@@ -2,23 +2,33 @@ package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.events.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.utils.HypixelUtils
+import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
+import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchAll
+import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
-import me.nobaboy.nobaaddons.utils.Utils
 import net.hypixel.data.type.GameType
 import net.hypixel.data.type.ServerType
+import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import java.util.regex.Pattern
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
+	fun init() {
+		Scheduler.schedule(20, repeat = true) { update() }
+		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
+		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
+	}
+
 	private val currencyPattern = Pattern.compile("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*")
 
 	var currentGame: ServerType? = null
 		private set
 
 	val inSkyblock: Boolean
-		get() = Utils.onHypixel && currentGame == GameType.SKYBLOCK
+		get() = HypixelUtils.onHypixel && currentGame == GameType.SKYBLOCK
 	var currentIsland: IslandType = IslandType.UNKNOWN
 		private set
 	var currentZone: String? = null
@@ -34,7 +44,7 @@ object SkyBlockAPI {
 
 	// I originally planned to make an enum including all the zones but after realising
 	// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
-	fun getZone() {
+	private fun getZone() {
 		if(!inSkyblock) return
 
 		val scoreboard = ScoreboardUtils.getSidebarLines()
@@ -43,7 +53,7 @@ object SkyBlockAPI {
 	}
 
 	// This can be further expanded to include other types like Pelts, North Stars, etc.
-	fun getCurrencies() {
+	private fun getCurrencies() {
 		if(!inSkyblock) return
 
 		val scoreboard = ScoreboardUtils.getSidebarLines()
@@ -60,14 +70,14 @@ object SkyBlockAPI {
 		}
 	}
 
-	fun update() {
+	private fun update() {
 		if(!inSkyblock) return
 
 		getZone()
 		getCurrencies()
 	}
 
-	fun onLocationPacket(packet: ClientboundLocationPacket) {
+	private fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentGame = packet.serverType.getOrNull()
 		currentIsland = packet.mode.map(IslandType::getIslandType).orElse(IslandType.UNKNOWN)
 		if(currentIsland != IslandType.UNKNOWN) SkyBlockIslandChangeEvent.EVENT.invoker().onIslandChange(currentIsland)

@@ -7,9 +7,12 @@
   "authors": [
     "nobaboy"
   ],
+  "contributors": [
+    "celeste"
+  ],
   "contact": {
-    "sources": "https://github.com/nobaboy/NobaAddons/tree/1.21",
-    "issues": "https://github.com/nobaboy/NobaAddons/tree/1.21/issues"
+    "sources": "https://github.com/nobaboy/NobaAddons",
+    "issues": "https://github.com/nobaboy/NobaAddons/issues"
   },
   "license": "",
   "environment": "client",
@@ -33,10 +36,10 @@
     "fabricloader": ">=0.16.5",
     "fabric-api": "*",
     "fabric-language-kotlin": "*",
-    "hypixel-mod-api": ">=1.0.1"
+    "hypixel-mod-api": ">=1.0.1",
+    "yet_another_config_lib_v3": "*"
   },
   "recommends": {
-    "yet_another_config_lib_v3": "*",
     "modmenu": "*"
   }
 }

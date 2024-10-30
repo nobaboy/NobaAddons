@@ -1,5 +1,7 @@
 package me.nobaboy.nobaaddons.utils
 
+import kotlin.math.pow
+
 object NumberUtils {
 	fun String.romanToDecimal(): Int {
 		var decimal = 0
@@ -79,14 +81,17 @@ object NumberUtils {
 	fun String.formatInt(): Int =
 		formatDoubleOrNull()?.toInt() ?: throw NumberFormatException("formatInt failed for '$this'")
 
-	fun Double.round(decimals: Int): Double {
-		var multiplier = 1.0
-		repeat(decimals) { multiplier *= 10 }
-		val result = kotlin.math.round(this * multiplier) / multiplier
-		val a = result.toString()
-		val b = toString()
-		return if(a.length > b.length) this else result
+	/**
+	 * This code was unmodified and taken under CC BY-SA 3.0 license
+	 * @link https://stackoverflow.com/a/22186845
+	 * @author jpdymond
+	 */
+	fun Double.roundTo(precision: Int): Double {
+		val scale = 10.0.pow(precision)
+		return kotlin.math.round(this * scale) / scale
 	}
+
+	fun Float.roundTo(precision: Int): Float = toDouble().roundTo(precision).toFloat()
 
 	val Int.million get() = this * 1_000_000.0
 	private val Int.billion get() = this * 1_000_000_000.0

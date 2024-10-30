@@ -36,7 +36,7 @@ object NobaCommand {
 					})
 
 					then(ClientCommandManager.literal("sendCoords").executes {
-						ChatUtils.sendMessage(playerCoords())
+						ChatUtils.sendChatAsPlayer(playerCoords())
 						Command.SINGLE_SUCCESS
 					})
 

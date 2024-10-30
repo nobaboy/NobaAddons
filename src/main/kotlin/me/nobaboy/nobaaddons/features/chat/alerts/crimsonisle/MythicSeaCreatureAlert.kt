@@ -13,8 +13,8 @@ import java.util.regex.Pattern
 
 object MythicSeaCreatureAlert : IAlert {
 	private val mythicSeaCreaturePatterns = listOf<Pattern>(
-		Pattern.compile("^You have angered a legendary creature... (?<creature>[A-z ]+) has arrived."),
-		Pattern.compile("^You hear a massive rumble as (?<creature>[A-z ]+) emerges.")
+		Pattern.compile("^You have angered a legendary creature\\.\\.\\. (?<creature>[A-z ]+) has arrived\\."),
+		Pattern.compile("^You hear a massive rumble as (?<creature>[A-z ]+) emerges\\.")
 	)
 
 	override fun shouldAlert(message: Text, text: String): Boolean {
@@ -23,7 +23,7 @@ object MythicSeaCreatureAlert : IAlert {
 			val creature = group("creature")
 			val location = "x: ${player.x.toInt()}, y: ${player.y.toInt()}, z: ${player.z.toInt()}"
 			val randomString = StringUtils.randomAlphanumeric()
-			ChatUtils.sendMessage("$location | $creature at ${SkyBlockAPI.currentZone} @$randomString")
+			ChatUtils.sendChatAsPlayer("$location | $creature at ${SkyBlockAPI.currentZone} @$randomString")
 			return true
 		}
 		return false

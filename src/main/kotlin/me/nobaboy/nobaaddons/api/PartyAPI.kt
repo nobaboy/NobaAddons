@@ -2,13 +2,13 @@ package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.party.IParty
 import me.nobaboy.nobaaddons.api.party.PartySnapshot
+import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatchers
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.Utils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
@@ -76,7 +76,7 @@ object PartyAPI : IParty {
 	fun requestPartyList() {
 		gotList = true
 		Scheduler.schedule(5 * 20) {
-			if(!Utils.onHypixel) return@schedule
+			if(!HypixelUtils.onHypixel) return@schedule
 			HypixelCommands.partyList()
 		}
 		Scheduler.schedule(7 * 20) {

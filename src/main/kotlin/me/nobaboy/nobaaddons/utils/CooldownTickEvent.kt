@@ -9,6 +9,9 @@ import kotlin.time.Duration.Companion.seconds
 /**
  * [ClientTickEvents.END_CLIENT_TICK] but with a cooldown attached to it.
  *
+ * **Note:** The cooldowns used by this event are relatively inaccurate due to the use of [Duration] instead
+ * of whole ticks; if you need precise tick cooldowns, consider using [Scheduler] or handling this yourself instead.
+ *
  * ## Example
  *
  * ```kt
@@ -20,6 +23,8 @@ import kotlin.time.Duration.Companion.seconds
  *     }
  * }
  * ```
+ *
+ * @see Scheduler
  */
 fun interface CooldownTickEvent {
 	fun onTick(client: MinecraftClient)

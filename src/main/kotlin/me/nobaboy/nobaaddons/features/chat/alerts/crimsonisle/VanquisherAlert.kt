@@ -19,7 +19,7 @@ object VanquisherAlert : IAlert {
 		val player = MCUtils.player ?: return false
 		val location = "x: ${player.x.toInt()}, y: ${player.y.toInt()}, z: ${player.z.toInt()}"
 		val randomString = StringUtils.randomAlphanumeric()
-		ChatUtils.sendMessage("$location | Vanquisher at ${SkyBlockAPI.currentZone} @$randomString")
+		ChatUtils.sendChatAsPlayer("$location | Vanquisher at ${SkyBlockAPI.currentZone} @$randomString")
 		return true
 	}
 

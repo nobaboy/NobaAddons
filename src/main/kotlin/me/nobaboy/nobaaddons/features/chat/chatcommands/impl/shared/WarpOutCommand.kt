@@ -13,14 +13,14 @@ class WarpOutCommand(private var command: String, private val enabled: () -> Boo
 		get() = enabled()
 
 	override fun run(ctx: ChatContext) {
-		if(command == "msg") command = "msg ${ctx.user()}"
+		if(command == "msg") command = "msg ${ctx.user}"
 
 		if(WarpPlayerHandler.isWarping) {
 			ChatUtils.queueCommand("$command Warp-out is on cooldown, try again later!")
 			return
 		}
 
-		val args = ctx.args()
+		val args = ctx.args
 		if(args.isEmpty()) {
 			ChatUtils.queueCommand("$command Please provide a username.")
 			return

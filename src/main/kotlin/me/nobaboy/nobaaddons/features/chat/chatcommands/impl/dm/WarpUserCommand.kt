@@ -15,13 +15,13 @@ class WarpUserCommand : IChatCommand {
 
 	override fun run(ctx: ChatContext) {
 		val playerName = MCUtils.playerName ?: return
-		if(ctx.user() == playerName) return
+		if(ctx.user == playerName) return
 
 		if(WarpPlayerHandler.isWarping) {
-			HypixelCommands.privateChat(ctx.user(), "Warp-in is on cooldown, try again later!")
+			HypixelCommands.privateChat(ctx.user, "Warp-in is on cooldown, try again later!")
 			return
 		}
 
-		WarpPlayerHandler.warpPlayer(ctx.user(), false, "msg ${ctx.user()}")
+		WarpPlayerHandler.warpPlayer(ctx.user, false, "msg ${ctx.user}")
 	}
 }

@@ -22,38 +22,24 @@ object ChatUtils {
 				commandQueue.clear()
 				return
 			}
-			sendCommand(commandQueue.poll() ?: return)
+			(MCUtils.networkHandler ?: return).sendCommand(commandQueue.poll() ?: return)
 			cooldownManager.startCooldown(20.ticks)
 		}
 	}
 
-	private fun send(message: String) {
-		MCUtils.networkHandler?.sendChatMessage(message)
-	}
-	private fun add(message: Text, overlay: Boolean) {
-		MCUtils.player?.sendMessage(message, overlay)
-	}
-
-	/**
-	 * Ideally use the command queuing system over sending the command instantly but if
-	 * you must then no one's stopping you.
-	 * @see queueCommand
-	 */
-	fun sendCommand(command: String) {
-		MCUtils.networkHandler?.sendCommand(command)
-	}
 	fun queueCommand(message: String) {
 		commandQueue.add(message)
 	}
 
-	fun sendMessage(message: String) {
-		send(message)
+	fun sendChatAsPlayer(message: String) {
+		MCUtils.networkHandler?.sendChatMessage(message)
 	}
 
 	fun addMessage(message: Text, prefix: Boolean = true, overlay: Boolean = false) {
 		val usePrefix = if(prefix) NobaAddons.PREFIX.copy() else Text.empty()
-		add(usePrefix.append(message), overlay)
+		MCUtils.player?.sendMessage(usePrefix.append(message), overlay)
 	}
+
 	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false) {
 		addMessage(Text.of(message), prefix, overlay)
 	}

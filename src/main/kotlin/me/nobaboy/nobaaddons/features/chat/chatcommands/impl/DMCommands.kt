@@ -7,15 +7,14 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.WarpUserCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHandler
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 object DMCommands : ChatCommandManager() {
 	private val config get() = NobaConfigManager.config.chat.chatCommands.dm
-	private val chatPattern =
+	override val enabled: Boolean = config.enabled
+	override val pattern =
 		Pattern.compile("^From (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?")
 
 	init {
@@ -23,13 +22,6 @@ object DMCommands : ChatCommandManager() {
 		register(WarpOutCommand("msg", config::warpOut))
 		register(WarpUserCommand())
 		register(PartyMeCommand())
-	}
-
-	override fun matchMessage(message: String): Matcher? {
-		chatPattern.matchMatcher(message) {
-			return this
-		}
-		return null
 	}
 
 	fun init() {
@@ -41,9 +33,7 @@ object DMCommands : ChatCommandManager() {
 				return@register
 			}
 
-			processMessage(cleanMessage, isEnabled())
+			processMessage(cleanMessage)
 		}
 	}
-
-	private fun isEnabled() = config.enabled
 }

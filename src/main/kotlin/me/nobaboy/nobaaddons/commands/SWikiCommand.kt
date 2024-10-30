@@ -5,7 +5,6 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.utils.OSUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
@@ -19,6 +18,7 @@ import net.minecraft.text.HoverEvent
 import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
+import net.minecraft.util.Util
 
 object SWikiCommand {
 	private val config get() = NobaConfigManager.config.general
@@ -41,7 +41,7 @@ object SWikiCommand {
 		if(config.wikiCommandAutoOpen) {
 			val message = compileAutoOpenMessage(query, wikiName)
 			ChatUtils.addMessage(message)
-			OSUtils.browse(link)
+			Util.getOperatingSystem().open(link)
 			return Command.SINGLE_SUCCESS
 		}
 

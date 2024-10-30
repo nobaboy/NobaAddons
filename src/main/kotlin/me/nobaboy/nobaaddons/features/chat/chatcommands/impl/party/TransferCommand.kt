@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 class TransferCommand : IChatCommand {
 	override val name: String = "transfer"
 
-	override val aliases = mutableListOf("ptme", "pt")
+	override val aliases = listOf("ptme", "pt")
 
 	override val usage: String = "(transfer|pt) [optional: username], ptme"
 
@@ -21,13 +21,13 @@ class TransferCommand : IChatCommand {
 	override fun run(ctx: ChatContext) {
 		if(!PartyAPI.isLeader) return
 
-		if(!ctx.command().lowercaseEquals("ptme")) {
-			val player = if(ctx.args().isEmpty()) ctx.user() else ctx.args()[0]
+		if(!ctx.command.lowercaseEquals("ptme")) {
+			val player = if(ctx.args.isEmpty()) ctx.user else ctx.args[0]
 			HypixelCommands.partyTransfer(player)
 			return
 		}
 
-		if(ctx.user() == MCUtils.playerName) return
-		HypixelCommands.partyTransfer(ctx.user())
+		if(ctx.user == MCUtils.playerName) return
+		HypixelCommands.partyTransfer(ctx.user)
 	}
 }

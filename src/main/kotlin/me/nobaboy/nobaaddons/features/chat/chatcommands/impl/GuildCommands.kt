@@ -5,27 +5,19 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHandler
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 object GuildCommands : ChatCommandManager() {
 	private val config get() = NobaConfigManager.config.chat.chatCommands.guild
-	private val chatPattern =
+	override val enabled: Boolean = config.enabled
+	override val pattern =
 		Pattern.compile("^Guild > .*?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+)(?<grank> \\[[A-z0-9 ]+])?.*?: [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?")
 
 	init {
 		register(HelpCommand(this, "gc", config::help))
 		register(WarpOutCommand("gc", config::warpOut))
-	}
-
-	override fun matchMessage(message: String): Matcher? {
-		chatPattern.matchMatcher(message) {
-			return this
-		}
-		return null
 	}
 
 	fun init() {
@@ -37,9 +29,7 @@ object GuildCommands : ChatCommandManager() {
 				return@register
 			}
 
-			processMessage(cleanMessage, isEnabled())
+			processMessage(cleanMessage)
 		}
 	}
-
-	private fun isEnabled() = config.enabled
 }

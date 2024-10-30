@@ -9,15 +9,15 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 class PartyMeCommand : IChatCommand {
 	override val name: String = "partyme"
 
-	override val aliases = mutableListOf("pme")
+	override val aliases = listOf("pme")
 
 	override val isEnabled: Boolean
 		get() = NobaConfigManager.config.chat.chatCommands.dm.partyMe
 
 	override fun run(ctx: ChatContext) {
 		val playerName = MCUtils.playerName ?: return
-		if(ctx.user() == playerName) return
+		if(ctx.user == playerName) return
 
-		HypixelCommands.partyInvite(ctx.user())
+		HypixelCommands.partyInvite(ctx.user)
 	}
 }

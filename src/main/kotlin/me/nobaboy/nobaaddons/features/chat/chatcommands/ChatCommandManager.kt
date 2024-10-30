@@ -4,10 +4,14 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 abstract class ChatCommandManager : CooldownManager() {
 	private val commands = mutableListOf<IChatCommand>()
 	private val lock = Object()
+
+	protected abstract val enabled: Boolean
+	protected abstract val pattern: Pattern
 
 	protected fun register(command: IChatCommand) {
 		commands.add(command)
@@ -16,7 +20,8 @@ abstract class ChatCommandManager : CooldownManager() {
 	fun getCommands(enabledOnly: Boolean = false): List<IChatCommand> =
 		if(enabledOnly) commands.filter { it.isEnabled } else commands
 
-	protected abstract fun matchMessage(message: String): Matcher?
+	protected open fun matchMessage(message: String): Matcher? =
+		pattern.matcher(message).takeIf { it.matches() }
 
 	private fun getContext(message: String): ChatContext? {
 		val match = matchMessage(message) ?: return null
@@ -26,7 +31,7 @@ abstract class ChatCommandManager : CooldownManager() {
 		return ChatContext(user, command, args, message)
 	}
 
-	fun processMessage(message: String, enabled: Boolean) {
+	fun processMessage(message: String) {
 		if(!enabled) return
 
 		synchronized(lock) {
@@ -34,9 +39,9 @@ abstract class ChatCommandManager : CooldownManager() {
 			val cmd = commands.asSequence()
 				.filter { it.isEnabled }
 				.firstOrNull {
-					it.name.lowercaseEquals(ctx.command()) ||
+					it.name.lowercaseEquals(ctx.command) ||
 						it.aliases.any { alias ->
-							alias.lowercaseEquals(ctx.command())
+							alias.lowercaseEquals(ctx.command)
 						}
 				} ?: return
 

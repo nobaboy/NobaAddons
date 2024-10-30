@@ -10,7 +10,7 @@ class CommandKeyBind(
 	key: Int = GLFW.GLFW_KEY_UNKNOWN,
 	inputType: InputUtil.Type,
 	command: String
-) : NobaKeyBind(name, category, key, inputType, { ChatUtils.sendCommand(command) }) {
+) : NobaKeyBind(name, category, key, inputType, { ChatUtils.queueCommand(command) }) {
 	constructor(name: String, command: String) : this(
 		name,
 		"nobaaddons.name",

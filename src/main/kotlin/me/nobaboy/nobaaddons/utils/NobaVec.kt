@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
-import me.nobaboy.nobaaddons.utils.NumberUtils.round
+import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import net.minecraft.entity.Entity
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket
 import net.minecraft.util.hit.BlockHitResult
@@ -126,12 +126,12 @@ data class NobaVec(
         return result
     }
 
-    fun round(decimals: Int) = NobaVec(x.round(decimals), y.round(decimals), z.round(decimals))
+    fun round(decimals: Int) = NobaVec(x.roundTo(decimals), y.roundTo(decimals), z.roundTo(decimals))
 
     fun roundToBlock(): NobaVec {
-        val x = (x - .499999).round(0)
-        val y = (y - .499999).round(0)
-        val z = (z - .499999).round(0)
+        val x = (x - .499999).roundTo(0)
+        val y = (y - .499999).roundTo(0)
+        val z = (z - .499999).roundTo(0)
         return NobaVec(x, y, z)
     }
 
