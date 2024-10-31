@@ -2,35 +2,42 @@ package me.nobaboy.nobaaddons.features.ui.infobox
 
 import me.nobaboy.nobaaddons.config.ui.ElementManager
 import me.nobaboy.nobaaddons.config.ui.elements.Element
-import me.nobaboy.nobaaddons.config.ui.elements.TextHud
+import me.nobaboy.nobaaddons.config.ui.elements.TextElement
 import me.nobaboy.nobaaddons.config.ui.elements.TextMode
-import me.nobaboy.nobaaddons.config.ui.elements.impl.TextElement
+import me.nobaboy.nobaaddons.config.ui.elements.impl.TextHud
 import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import java.util.regex.Pattern
 
 class InfoBoxHud(element: TextElement) : TextHud(element.element) {
-	val functionPattern = Pattern.compile("(?<function>\\{[A-z0-9]+})")
-	val colorCodePattern = Regex("&[0-9a-fk-or]")
+	private val functionPattern = Pattern.compile("(?<function>\\{[A-z0-9]+})")
+	private val colorCodePattern = Regex("&[0-9a-fk-or]")
 
-	override val text: String = compileString(element.text)
-	override val mode: TextMode = element.mode
-	override val outlineColor: Int = 0x000000
+	override var text: String = compileText(element.text)
+	override var mode: TextMode = element.mode
+	override var outlineColor: Int = 0x000000
 
-	fun compileString(string: String): String {
-		var formattedString = string
-		formattedString = colorCodePattern.replace(formattedString) { matchResult ->
+	private fun replaceColorCodes(text: String): String =
+		colorCodePattern.replace(text) { matchResult ->
 			matchResult.value.replace("&", "§")
 		}
 
-		functionPattern.findAllMatcher(formattedString) {
+	private fun replaceFunctions(text: String): String {
+		var formattedText = text
+		functionPattern.findAllMatcher(text) {
 			val functionName = group("function") ?: return@findAllMatcher
 			val matchedFunction = InfoBoxFunctions.entries.firstOrNull { it.aliases.any { it.lowercaseEquals(functionName) } }
 			val result = matchedFunction?.runnable?.invoke() ?: functionName
 
-			formattedString = formattedString.replace(functionName, result)
+			formattedText = formattedText.replace(functionName, result)
 		}
-		return formattedString
+
+		return formattedText
+	}
+
+	private fun compileText(text: String): String {
+		var formattedText = replaceFunctions(text)
+		return replaceColorCodes(formattedText)
 	}
 
 	companion object {

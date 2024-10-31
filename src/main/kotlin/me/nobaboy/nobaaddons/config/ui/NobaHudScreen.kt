@@ -114,7 +114,7 @@ class NobaHudScreen(private val parent: Screen) : Screen(TITLE) {
 	}
 
 	override fun mouseScrolled(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {
-		hoveredElement.takeIf { editingMode != EditingMode.MENU }?.adjustScale(verticalAmount / 10)
+		hoveredElement.takeIf { editingMode != EditingMode.MENU }?.adjustScale((verticalAmount / 10).toFloat())
 		return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)
 	}
 
@@ -126,12 +126,12 @@ class NobaHudScreen(private val parent: Screen) : Screen(TITLE) {
 			editingMode != EditingMode.MENU
 		}?.let {
 			when(keyCode) {
-				GLFW.GLFW_KEY_UP -> it.moveBy(yOffset = -movementAmount)
-				GLFW.GLFW_KEY_DOWN -> it.moveBy(yOffset = movementAmount)
-				GLFW.GLFW_KEY_LEFT -> it.moveBy(xOffset = -movementAmount)
-				GLFW.GLFW_KEY_RIGHT -> it.moveBy(xOffset = movementAmount)
-				GLFW.GLFW_KEY_EQUAL -> it.adjustScale(0.1)
-				GLFW.GLFW_KEY_MINUS -> it.adjustScale(-0.1)
+				GLFW.GLFW_KEY_UP -> it.moveBy(dy = -movementAmount)
+				GLFW.GLFW_KEY_DOWN -> it.moveBy(dy = movementAmount)
+				GLFW.GLFW_KEY_LEFT -> it.moveBy(dx = -movementAmount)
+				GLFW.GLFW_KEY_RIGHT -> it.moveBy(dx = movementAmount)
+				GLFW.GLFW_KEY_EQUAL -> it.adjustScale(0.1f)
+				GLFW.GLFW_KEY_MINUS -> it.adjustScale(-0.1f)
 			}
 		}
 
@@ -175,6 +175,6 @@ class NobaHudScreen(private val parent: Screen) : Screen(TITLE) {
 	private enum class EditingMode {
 		IDLE,
 		DRAG,
-		MENU;
+		MENU
 	}
 }

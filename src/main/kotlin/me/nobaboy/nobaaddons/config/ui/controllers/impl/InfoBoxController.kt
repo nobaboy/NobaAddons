@@ -12,8 +12,8 @@ import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.ui.controllers.ControllerHelper
 import me.nobaboy.nobaaddons.config.ui.controllers.ControllerWidgetHelper
+import me.nobaboy.nobaaddons.config.ui.elements.TextElement
 import me.nobaboy.nobaaddons.config.ui.elements.TextMode
-import me.nobaboy.nobaaddons.config.ui.elements.impl.TextElement
 import me.nobaboy.nobaaddons.mixins.accessors.CategoryTabAccessor
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.Element
