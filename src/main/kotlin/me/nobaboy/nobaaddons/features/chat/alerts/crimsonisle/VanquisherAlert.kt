@@ -16,7 +16,7 @@ object VanquisherAlert : IAlert {
 	override fun shouldAlert(message: Text, text: String): Boolean {
 		if(!text.lowercaseEquals(vanquisherSpawnMessage)) return false
 
-		val location = LocationUtils.playerLocation()
+		val location = LocationUtils.playerCoords()
 		val randomString = StringUtils.randomAlphanumeric()
 		ChatUtils.sendChatAsPlayer("$location | Vanquisher at ${SkyBlockAPI.currentZone} @$randomString")
 		return true

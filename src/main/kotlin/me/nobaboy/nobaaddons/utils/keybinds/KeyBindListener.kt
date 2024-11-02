@@ -15,10 +15,7 @@ object KeyBindListener {
 	)
 
 	fun init() {
-		keybinds.forEach {
-			KeyBindingHelper.registerKeyBinding(it)
-		}
-
+		keybinds.forEach { KeyBindingHelper.registerKeyBinding(it) }
 		ClientTickEvents.END_CLIENT_TICK.register { client ->
 			keybinds.forEach { if(it.wasPressed()) it.maybePress() }
 		}

@@ -18,7 +18,7 @@ object ChatCategory {
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.chat.alerts"))
 				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.chat.alerts.label.crimsonIsle"))
+					.line(Text.translatable("nobaaddons.config.label.crimsonIsle"))
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
@@ -94,7 +94,7 @@ object ChatCategory {
 					.build())
 
 				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.chat.filters.label.dungeons"))
+					.line(Text.translatable("nobaaddons.config.label.dungeons"))
 					.build())
 
 				.option(Option.createBuilder<ChatFilterOption>()
@@ -130,7 +130,7 @@ object ChatCategory {
 					.build())
 
 				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.chat.filters.label.miscellaneous"))
+					.line(Text.translatable("nobaaddons.config.label.miscellaneous"))
 					.build())
 
 				.option(Option.createBuilder<Boolean>()

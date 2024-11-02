@@ -31,8 +31,8 @@ object TemporaryWaypoint {
 	private val waypoints = mutableListOf<Waypoint>()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { _ -> waypoints.clear() }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register { context -> renderWaypoints(context) }
+		SkyBlockIslandChangeEvent.EVENT.register { waypoints.clear() }
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
 	}
 
@@ -82,7 +82,7 @@ object TemporaryWaypoint {
 
 	data class Waypoint(val vec: NobaVec, val text: String, val timestamp: Timestamp, val duration: Duration?) {
 		val expired: Boolean
-			get() = duration != null && timestamp.elapsedSince() > duration
+			get() = duration != null && timestamp.elapsedSince() >= duration
 	}
 
 	private fun isEnabled() = SkyBlockAPI.inSkyblock && config.enabled

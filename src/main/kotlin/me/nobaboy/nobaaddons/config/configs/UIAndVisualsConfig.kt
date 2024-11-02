@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.isxander.yacl3.config.v2.api.SerialEntry
 import me.nobaboy.nobaaddons.config.ui.elements.TextElement
 import me.nobaboy.nobaaddons.core.MobRarity
+import me.nobaboy.nobaaddons.utils.NobaColor
 import java.awt.Color
 
 class UIAndVisualsConfig {
@@ -29,7 +30,7 @@ class UIAndVisualsConfig {
 		var enabled: Boolean = false
 
 		@SerialEntry
-		var waypointColor: Color = Color.YELLOW
+		var waypointColor: Color = NobaColor.YELLOW.toColor()
 
 		@SerialEntry
 		var expirationTime: Int = 15
@@ -40,7 +41,7 @@ class UIAndVisualsConfig {
 		var enabled: Boolean = false
 
 		@SerialEntry
-		var highlightColor: Color = Color.BLUE
+		var highlightColor: Color = NobaColor.BLUE.toColor()
 
 		@SerialEntry
 		var showFailText: Boolean = false

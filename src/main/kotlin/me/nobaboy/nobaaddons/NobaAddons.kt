@@ -16,6 +16,8 @@ import me.nobaboy.nobaaddons.features.chat.filters.IFilter
 import me.nobaboy.nobaaddons.features.crimsonisle.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
+import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
+import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.utils.keybinds.KeyBindListener
@@ -74,6 +76,20 @@ object NobaAddons : ClientModInitializer {
 		EtherwarpHelper.init()
 		// endregion
 
+		// region Mining
+		MineshaftWaypoints.init()
+		CorpseLocator.init()
+		// endregion
+
+		// region Dungeons
+		SimonSaysTimer.init()
+		HighlightStarredMobs.init()
+		// endregion
+
+		// region Crimson Isle
+		HighlightThunderSparks.init()
+		// endregion
+
 		// region Chat
 		IAlert.init()
 		IFilter.init()
@@ -83,15 +99,6 @@ object NobaAddons : ClientModInitializer {
 		DMCommands.init()
 		PartyCommands.init()
 		GuildCommands.init()
-		// endregion
-
-		// region Crimson Isle
-		HighlightThunderSparks.init()
-		// endregion
-
-		// region Dungeons
-		SimonSaysTimer.init()
-		HighlightStarredMobs.init()
 		// endregion
 		/* endregion */
 	}

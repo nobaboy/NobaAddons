@@ -9,8 +9,8 @@ import me.nobaboy.nobaaddons.config.categories.ChatCategory
 import me.nobaboy.nobaaddons.config.categories.CrimsonIsleCategory
 import me.nobaboy.nobaaddons.config.categories.DungeonsCategory
 import me.nobaboy.nobaaddons.config.categories.GeneralCategory
+import me.nobaboy.nobaaddons.config.categories.MiningCategory
 import me.nobaboy.nobaaddons.config.categories.UIAndVisualsCategory
-import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
@@ -19,7 +19,7 @@ import java.nio.file.Path
 
 object NobaConfigManager {
 	const val CONFIG_VERSION = 1
-	private val CONFIG_DIR: Path = FabricLoader.getInstance().configDir.resolve("${NobaAddons.MOD_ID}/config.json")
+	private val CONFIG_DIR: Path = NobaAddons.modDir.resolve("${NobaAddons.MOD_ID}/config.json")
 
 	private val HANDLER: ConfigClassHandler<NobaConfig> = ConfigClassHandler.createBuilder(NobaConfig::class.java)
 		.serializer { config ->
@@ -55,6 +55,7 @@ object NobaConfigManager {
 			builder.title(Text.translatable("nobaaddons.name"))
 				.category(GeneralCategory.create(defaults, config))
 				.category(UIAndVisualsCategory.create(defaults, config))
+				.category(MiningCategory.create(defaults, config))
 				.category(DungeonsCategory.create(defaults, config))
 				.category(CrimsonIsleCategory.create(defaults, config))
 				.category(ChatCategory.create(defaults, config))

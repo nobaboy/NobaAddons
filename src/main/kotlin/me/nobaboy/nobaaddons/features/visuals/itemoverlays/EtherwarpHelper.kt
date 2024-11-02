@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyblockItem
@@ -18,7 +19,6 @@ import net.minecraft.util.Formatting
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.world.World
-import java.awt.Color
 
 object EtherwarpHelper {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.etherwarpHelper
@@ -28,7 +28,7 @@ object EtherwarpHelper {
 	private var targetBlock: ValidationType? = null
 
 	fun init() {
-		WorldRenderEvents.AFTER_TRANSLUCENT.register { context -> renderOverlay(context) }
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderOverlay)
 		HudRenderCallback.EVENT.register { context, _ -> renderFailText(context) }
 	}
 
@@ -72,7 +72,7 @@ object EtherwarpHelper {
 		targetBlock = validateTargetBlock(world, target)
 		if(targetBlock == ValidationType.TOO_FAR && !config.allowOnAir) return
 
-		var color = targetBlock?.let { Color.GRAY } ?: config.highlightColor
+		var color = targetBlock?.let { NobaColor.GRAY.toColor() } ?: config.highlightColor
 		RenderUtils.drawOutlinedFilledBox(context, target.blockPos.toNobaVec(), color, throughBlocks = true)
 	}
 

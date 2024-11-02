@@ -41,7 +41,7 @@ object SimonSaysTimer {
 	fun init() {
 		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
 		UseBlockCallback.EVENT.register { player, _, _, hitResult -> handleInteractEvent(player, hitResult) }
-		SkyBlockIslandChangeEvent.EVENT.register { _ -> reset() }
+		SkyBlockIslandChangeEvent.EVENT.register { reset() }
 
 		runCatching {
 			SimonSaysFile.load()

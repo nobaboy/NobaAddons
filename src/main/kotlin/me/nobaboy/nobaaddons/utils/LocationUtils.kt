@@ -56,10 +56,9 @@ object LocationUtils {
 	fun NobaVec.canBeSeen(radius: Double = 150.0): Boolean {
 		val a = MCUtils.player?.eyeLocation() ?: return false
 		val b = this
-//      val canSee = canSee(a, b)
 		val notTooFar = a.distance(b) < radius
 		val inFov = FrustumUtils.isVisible(b)
-		return /*canSee &&*/ notTooFar && inFov
+		return notTooFar && inFov
 	}
 
 	fun NobaVec.canBeSeen(yOffsetRange: IntRange, radius: Double = 150.0): Boolean =

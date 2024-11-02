@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.HighlightMode
 import java.awt.Color
 
@@ -24,7 +25,7 @@ class DungeonsConfig {
 		var enabled: Boolean = false
 
 		@SerialEntry
-		var highlightColor: Color = Color.YELLOW
+		var highlightColor: Color = NobaColor.YELLOW.toColor()
 
 		@SerialEntry
 		var highlightMode: HighlightMode = HighlightMode.FILLED_OUTLINE

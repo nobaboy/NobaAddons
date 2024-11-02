@@ -18,6 +18,10 @@
   "nobaaddons.config.enabled": "Enabled",
   "nobaaddons.config.seconds": "%s seconds",
 
+  "nobaaddons.config.label.crimsonIsle": "Crimson Isle",
+  "nobaaddons.config.label.dungeons": "Dungeons",
+  "nobaaddons.config.label.miscellaneous": "Miscellaneous",
+
   "nobaaddons.config.general": "General",
   "nobaaddons.config.general.open": "Open",
   "nobaaddons.config.general.main": "NobaAddons Main Screen",
@@ -44,11 +48,33 @@
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing": "Hide Other People Fishing",
   "nobaaddons.config.uiAndVisuals.infoBoxes": "Info Boxes",
 
+  "nobaaddons.config.mining": "Mining",
+  "nobaaddons.config.mining.glaciteMineshaft": "Glacite Mineshaft",
+  "nobaaddons.config.mining.glaciteMineshaft.label.corpses": "Corpses",
+  "nobaaddons.config.mining.glaciteMineshaft.corpseLocator": "Corpse Locator",
+  "nobaaddons.config.mining.glaciteMineshaft.autoShareCorpseCoords": "Auto Share Corpse Coords",
+  "nobaaddons.config.mining.glaciteMineshaft.autoShareCorpseCoords.tooltip": "Automatically shares the nearest corpse within a 5 block radius to party members",
+  "nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint": "Entrance Waypoint",
+  "nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint.tooltip": "Places a waypoint at the mineshaft entrance",
+  "nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint": "Ladder Waypoint",
+  "nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint.tooltip": "Places a waypoint at the ladder shaft in the mineshaft",
+
+  "nobaaddons.config.dungeons": "Dungeons",
+  "nobaaddons.config.dungeons.highlightStarredMobs": "Highlight Starred Mobs",
+  "nobaaddons.config.dungeons.highlightStarredMobs.highlightColor": "Highlight Color",
+  "nobaaddons.config.dungeons.highlightStarredMobs.highlightMode": "Highlight Mode",
+  "nobaaddons.config.dungeons.simonSaysTimer": "Simon Says Timer",
+  "nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat": "Time in Party Chat",
+  "nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat.tooltip": "Sends the completion time in Party Chat",
+
+  "nobaaddons.config.crimsonIsle": "Crimson Isle",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks": "Highlight Thunder Sparks",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks.highlightColor": "Highlight Color",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks.showText": "Show Text",
+
   "nobaaddons.config.chat": "Chat",
   "nobaaddons.config.chat.filters": "Filters",
   "nobaaddons.config.chat.filters.label.itemAbilities": "Item Abilities",
-  "nobaaddons.config.chat.filters.label.dungeons": "Dungeons",
-  "nobaaddons.config.chat.filters.label.miscellaneous": "Miscellaneous",
   "nobaaddons.config.chat.filters.hideAbilityCooldownMessage": "Hide Ability Cooldown Message",
   "nobaaddons.config.chat.filters.hideAbilityCooldownMessage.tooltip": "Removes the 'This ability is on cooldown for Xs.' message from your chat",
   "nobaaddons.config.chat.filters.hideAbilityDamageMessage": "Hide %s Message",
@@ -65,7 +91,6 @@
   "nobaaddons.config.chat.filters.hideProfileInfo": "Hide Profile Info Messages",
   "nobaaddons.config.chat.filters.hideProfileInfo.tooltip": "Removes the profile you're playing on and the profile ID messages",
   "nobaaddons.config.chat.alerts": "Alerts",
-  "nobaaddons.config.chat.alerts.label.crimsonIsle": "Crimson Isle",
   "nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn": "Alert Mythic Sea Creature Spawn",
   "nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip": "Sends your current location in chat when a Mythic Sea Creature spawns",
   "nobaaddons.config.chat.alerts.vanquisherSpawn": "Alert Vanquisher Spawn",
@@ -98,18 +123,5 @@
   "nobaaddons.config.chat.chatCommands.guild.help": "Help Command",
   "nobaaddons.config.chat.chatCommands.guild.help.tooltip": "Replies with all usable commands",
   "nobaaddons.config.chat.chatCommands.guild.warpOut": "Warp Out Command",
-  "nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip": "Warps out the specified user",
-
-  "nobaaddons.config.crimsonIsle": "Crimson Isle",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks": "Highlight Thunder Sparks",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks.highlightColor": "Highlight Color",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks.showText": "Show Text",
-
-  "nobaaddons.config.dungeons": "Dungeons",
-  "nobaaddons.config.dungeons.highlightStarredMobs": "Highlight Starred Mobs",
-  "nobaaddons.config.dungeons.highlightStarredMobs.highlightColor": "Highlight Color",
-  "nobaaddons.config.dungeons.highlightStarredMobs.highlightMode": "Highlight Mode",
-  "nobaaddons.config.dungeons.simonSaysTimer": "Simon Says Timer",
-  "nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat": "Time in Party Chat",
-  "nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat.tooltip": "Sends the completion time in Party Chat"
+  "nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip": "Warps out the specified user"
 }

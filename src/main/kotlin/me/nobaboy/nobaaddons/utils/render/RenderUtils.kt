@@ -193,7 +193,7 @@ object RenderUtils {
 		beaconThreshold: Double = 5.0,
 		throughBlocks: Boolean = false
 	) {
-		drawBeaconBeam(context, vec, color, beaconThreshold)
+		drawBeaconBeam(context, vec, color.rgb, beaconThreshold)
 		drawFilledBox(context, vec, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
@@ -208,7 +208,7 @@ object RenderUtils {
 		beaconThreshold: Double = 5.0,
 		throughBlocks: Boolean = false
 	) {
-		drawBeaconBeam(context, vec, color, beaconThreshold)
+		drawBeaconBeam(context, vec, color.rgb, beaconThreshold)
 		drawOutline(context, vec, color, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 		drawFilledBox(context, vec, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}

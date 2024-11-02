@@ -125,6 +125,7 @@ object UIAndVisualsCategory {
 				.controller(InfoBoxController.Builder::create)
 				.initial(InfoBoxHud::createHud)
 				.maximumNumberOfEntries(10)
+				.insertEntriesAtEnd(true)
 				.build())
 
 			.build()

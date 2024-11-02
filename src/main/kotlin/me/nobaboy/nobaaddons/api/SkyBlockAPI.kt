@@ -1,12 +1,12 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.data.IslandType
+import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchAll
-import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import net.hypixel.data.type.GameType
 import net.hypixel.data.type.ServerType
@@ -17,7 +17,7 @@ import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
 	fun init() {
-		Scheduler.schedule(20, repeat = true) { update() }
+		SecondPassedEvent.EVENT.register { update() }
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 	}

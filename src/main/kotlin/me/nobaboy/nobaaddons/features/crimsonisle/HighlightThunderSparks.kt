@@ -24,8 +24,8 @@ object HighlightThunderSparks {
 	private val sparks = mutableListOf<ArmorStandEntity>()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { _ -> sparks.clear() }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register { context -> renderHighlights(context) }
+		SkyBlockIslandChangeEvent.EVENT.register { sparks.clear() }
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 		ClientTickEvents.END_CLIENT_TICK.register { getThunderSparks() }
 	}
 

@@ -14,11 +14,14 @@ class NobaConfig {
 	val uiAndVisuals: UIAndVisualsConfig = UIAndVisualsConfig()
 
 	@SerialEntry
-	val chat: ChatConfig = ChatConfig()
+	val mining: MiningConfig = MiningConfig()
+
+	@SerialEntry
+	val dungeons: DungeonsConfig = DungeonsConfig()
 
 	@SerialEntry
 	val crimsonIsle: CrimsonIsleConfig = CrimsonIsleConfig()
 
 	@SerialEntry
-	val dungeons: DungeonsConfig = DungeonsConfig()
+	val chat: ChatConfig = ChatConfig()
 }

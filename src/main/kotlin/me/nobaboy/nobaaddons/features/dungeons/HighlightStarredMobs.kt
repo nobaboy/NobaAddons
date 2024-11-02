@@ -20,8 +20,8 @@ object HighlightStarredMobs {
 	private val starredMobs = mutableListOf<ArmorStandEntity>()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { _ -> starredMobs.clear() }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register { context -> renderHighlights(context) }
+		SkyBlockIslandChangeEvent.EVENT.register { starredMobs.clear() }
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 		ClientTickEvents.END_CLIENT_TICK.register { getStarredMobs() }
 	}
 
