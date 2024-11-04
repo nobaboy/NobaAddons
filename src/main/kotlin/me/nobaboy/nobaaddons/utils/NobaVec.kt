@@ -217,8 +217,6 @@ data class NobaVec(
 			return NobaVec(x, y, z)
 		}
 
-		fun blockBelowPlayer() = LocationUtils.playerLocation().roundToBlock().add(y = -1.0)
-
 		val expandVector = NobaVec(0.0020000000949949026, 0.0020000000949949026, 0.0020000000949949026)
 	}
 }

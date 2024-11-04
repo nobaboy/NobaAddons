@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.core
 
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.StringUtils.title
 
 enum class ItemRarity(val color: NobaColor? = null) {
 	COMMON(NobaColor.WHITE),
@@ -15,6 +16,8 @@ enum class ItemRarity(val color: NobaColor? = null) {
 	ULTIMATE(NobaColor.DARK_RED),
 	ADMIN(NobaColor.RED),
 	UNKNOWN;
+
+	val displayName = name.replace("_", " ").title()
 
 	fun isAtLeast(rarity: ItemRarity): Boolean = this.ordinal >= rarity.ordinal
 

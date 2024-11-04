@@ -55,9 +55,9 @@ object HighlightStarredMobs {
 			val vec = starredMob.getNobaVec()
 
 			when(mode) {
-				HighlightMode.OUTLINE -> RenderUtils.drawOutline(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = height)
-				HighlightMode.FILLED -> RenderUtils.drawFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = height)
-				HighlightMode.FILLED_OUTLINE -> RenderUtils.drawOutlinedFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = height)
+				HighlightMode.OUTLINE -> RenderUtils.renderOutline(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = height)
+				HighlightMode.FILLED -> RenderUtils.renderFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = height)
+				HighlightMode.FILLED_OUTLINE -> RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = height)
 			}
 		}
 	}

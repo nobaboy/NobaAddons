@@ -34,7 +34,8 @@ object NobaRenderLayers {
 			.layering(RenderPhase.POLYGON_OFFSET_LAYERING)
 			.transparency(DEFAULT_TRANSPARENCY)
 			.depthTest(DepthTest.LEQUAL_DEPTH_TEST)
-			.build(false))
+			.build(false)
+	)
 
 	val FILLED_THROUGH_BLOCKS: MultiPhase = RenderLayer.of(
 		"filled_through_blocks",

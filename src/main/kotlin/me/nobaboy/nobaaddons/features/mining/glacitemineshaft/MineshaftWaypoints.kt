@@ -3,9 +3,9 @@ package me.nobaboy.nobaaddons.features.mining.glacitemineshaft
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
@@ -27,9 +27,9 @@ object MineshaftWaypoints {
 		waypoints.clear()
 
 		if(island != IslandType.MINESHAFT) return
-		val blockBelow = NobaVec.blockBelowPlayer().roundToBlock()
+		val blockBelow = LocationUtils.blockBelowPlayer().roundToBlock()
 
-		if(config.entranceWaypoint) waypoints.add(Waypoint(blockBelow, "Entrance", NobaColor.YELLOW))
+		if(config.entranceWaypoint) waypoints.add(Waypoint(blockBelow, "Entrance", NobaColor.BLUE))
 		if(config.ladderWaypoint) {
 			val facing = MCUtils.player?.rotationVector?.toNobaVec()?.round(0) ?: return
 			val vec = blockBelow
@@ -40,7 +40,7 @@ object MineshaftWaypoints {
 				// Move 15 blocks down to be at the bottom of the ladder shaft
 				.add(y = -15)
 
-			waypoints.add(Waypoint(vec, "Ladder", NobaColor.YELLOW))
+			waypoints.add(Waypoint(vec, "Ladder", NobaColor.BLUE))
 		}
 	}
 
@@ -56,8 +56,8 @@ object MineshaftWaypoints {
 			}
 
 			if(!shouldRender) return
-			RenderUtils.drawOutlinedWaypoint(context, it.vec, it.color.toColor(), throughBlocks = true)
-			RenderUtils.drawText(context, it.vec.add(x = 0.5, y = 1.5, z = 0.5), it.text)
+			RenderUtils.renderWaypoint(context, it.vec, it.color, throughBlocks = true)
+			RenderUtils.renderText(context, it.vec.center().raise(), it.text)
 		}
 	}
 }

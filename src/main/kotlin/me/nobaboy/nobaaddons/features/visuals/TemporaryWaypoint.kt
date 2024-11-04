@@ -74,8 +74,8 @@ object TemporaryWaypoint {
 		waypoints.removeIf { it.expired || it.vec.distanceSq(cameraPos) < 5.0 * 5.0 }
 		waypoints.forEach { waypoint ->
 			waypoint.vec.roundToBlock().let {
-				RenderUtils.drawOutlinedWaypoint(context, it, color, throughBlocks = true)
-				RenderUtils.drawText(context, it.add(x = 0.5, y = 0.5, z = 0.5), waypoint.text)
+				RenderUtils.renderWaypoint(context, it, color, throughBlocks = true)
+				RenderUtils.renderText(context, it.center(), waypoint.text)
 			}
 		}
 	}

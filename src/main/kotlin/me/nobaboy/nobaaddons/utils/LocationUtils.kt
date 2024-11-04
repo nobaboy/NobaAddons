@@ -18,6 +18,8 @@ object LocationUtils {
 		}
 	}
 
+	fun blockBelowPlayer() = playerLocation().roundToBlock().lower()
+
 	fun NobaVec.distanceToPlayer() = distance(playerLocation())
 	fun NobaVec.distanceSqToPlayer() = distanceSq(playerLocation())
 

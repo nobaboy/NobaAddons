@@ -1,19 +1,17 @@
 package me.nobaboy.nobaaddons.core
 
-import dev.isxander.yacl3.api.NameableEnum
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.title
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import net.minecraft.text.Text
 
-enum class MobRarity : NameableEnum {
-	COMMON,
-	UNCOMMON,
-	RARE,
-	EPIC,
-	LEGENDARY,
-	MYTHIC;
+enum class MobRarity(val color: NobaColor) {
+	COMMON(NobaColor.WHITE),
+	UNCOMMON(NobaColor.GREEN),
+	RARE(NobaColor.BLUE),
+	EPIC(NobaColor.DARK_PURPLE),
+	LEGENDARY(NobaColor.GOLD),
+	MYTHIC(NobaColor.LIGHT_PURPLE);
 
-	override fun getDisplayName(): Text = name.title().toText()
+	val displayName = name.replace("_", " ").title()
 
 	fun isAtLeast(rarity: MobRarity): Boolean = this.ordinal >= rarity.ordinal
 }

@@ -21,7 +21,7 @@ object SeaCreatureAlert {
 		if(!seaCreature.rarity.isAtLeast(config.minimumRarity)) return
 
 		val titleText = if(config.nameInsteadOfRarity) "${seaCreature.displayName}!"
-			else "${seaCreature.rarity.displayName.string} Catch!"
+			else "${seaCreature.rarity.displayName} Catch!"
 	}
 
 	private fun isEnabled() = SkyBlockAPI.inSkyblock && config.enabled
