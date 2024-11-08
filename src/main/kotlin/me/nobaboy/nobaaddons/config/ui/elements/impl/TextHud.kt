@@ -10,9 +10,9 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils.getWidth
 import net.minecraft.client.gui.DrawContext
 
 abstract class TextHud(element: Element) : HudElement(element) {
-	abstract var text: String
-	abstract var mode: TextMode
-	abstract var outlineColor: Int
+	open val text: String = ""
+	open val mode: TextMode = TextMode.SHADOW
+	open val outlineColor: Int = 0x000000
 
 	override fun render(context: DrawContext) {
 		if(!shouldRender) return

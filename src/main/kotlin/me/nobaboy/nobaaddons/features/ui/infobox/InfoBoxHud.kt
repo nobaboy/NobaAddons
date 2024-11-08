@@ -9,13 +9,12 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import java.util.regex.Pattern
 
-class InfoBoxHud(element: TextElement) : TextHud(element.element) {
+class InfoBoxHud(val textElement: TextElement) : TextHud(textElement.element) {
 	private val functionPattern = Pattern.compile("(?<function>\\{[A-z0-9]+})")
 	private val colorCodePattern = Regex("&[0-9a-fk-or]")
 
-	override var text: String = compileText(element.text)
-	override var mode: TextMode = element.mode
-	override var outlineColor: Int = 0x000000
+	override val text: String get() = compileText(textElement.text)
+	override val mode: TextMode get() = textElement.mode
 
 	private fun replaceColorCodes(text: String): String =
 		colorCodePattern.replace(text) { matchResult ->
