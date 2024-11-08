@@ -45,6 +45,8 @@
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing": "Hide Other People Fishing",
   "nobaaddons.config.uiAndVisuals.infoBoxes": "Info Boxes",
 
+  "nobaaddons.config.mining": "Mining",
+  "nobaaddons.config.mining.glaciteMineshaft": "Glacite Mineshaft",
   "nobaaddons.config.mining.glaciteMineshaft.label.corpses": "Corpses",
   "nobaaddons.config.mining.glaciteMineshaft.corpseLocator": "Corpse Locator",
   "nobaaddons.config.mining.glaciteMineshaft.autoShareCorpseCoords": "Auto Share Corpse Coords",
