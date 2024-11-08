@@ -14,6 +14,9 @@ class NobaConfig {
 	val uiAndVisuals: UIAndVisualsConfig = UIAndVisualsConfig()
 
 	@SerialEntry
+	val events: EventsConfig = EventsConfig()
+
+	@SerialEntry
 	val mining: MiningConfig = MiningConfig()
 
 	@SerialEntry
