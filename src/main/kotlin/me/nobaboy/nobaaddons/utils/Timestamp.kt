@@ -3,6 +3,11 @@ package me.nobaboy.nobaaddons.utils
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
+/**
+ * This code was taken and modified under LGPL-2.1 license
+ * @link https://github.com/hannibal002/SkyHanni
+ * @author SkyHanni
+ */
 @JvmInline
 value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 	operator fun unaryMinus() = Timestamp(-millis)
@@ -15,7 +20,7 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 	operator fun minus(milliseconds: Long) = Timestamp(millis - milliseconds)
 	operator fun minus(other: Timestamp) = (millis - other.millis).milliseconds
 
-	fun elapsedSince() = currentTime() - this
+	fun elapsedSince() = now() - this
 	fun elapsedSeconds() = elapsedSince().inWholeSeconds
 	fun elapsedMinutes() = elapsedSince().inWholeMinutes
 
@@ -30,11 +35,11 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 	fun toMillis(): Long = millis
 
 	companion object {
-		fun currentTime() = Timestamp(System.currentTimeMillis())
+		fun now() = Timestamp(System.currentTimeMillis())
 		fun distantPast() = Timestamp(0)
 		fun distantFuture() = Timestamp(Long.MAX_VALUE)
 
-		fun Duration.fromNow() = currentTime() + this
+		fun Duration.fromNow() = now() + this
 
 		fun Long.asTimeStamp() = Timestamp(this)
 	}

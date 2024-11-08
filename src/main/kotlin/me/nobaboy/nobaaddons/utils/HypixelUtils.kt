@@ -21,11 +21,11 @@ object HypixelUtils {
 	fun sendPingPacket() {
 		if(!onHypixel) return
 		HypixelModAPI.getInstance().sendPacket(ServerboundPingPacket())
-		lastPing = Timestamp.currentTime()
+		lastPing = Timestamp.now()
 	}
 
 	fun onPingPacket(ignored: ClientboundPingPacket) {
 		if(lastPing == Timestamp.distantPast()) return
-		ping = (Timestamp.currentTime() - lastPing).inWholeMilliseconds.toInt()
+		ping = (Timestamp.now() - lastPing).inWholeMilliseconds.toInt()
 	}
 }

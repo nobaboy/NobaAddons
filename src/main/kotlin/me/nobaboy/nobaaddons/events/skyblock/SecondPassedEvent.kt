@@ -16,7 +16,7 @@ fun interface SecondPassedEvent {
 			ClientTickEvents.END_CLIENT_TICK.register { client ->
 				if(lastSecond.elapsedSince() >= 1.seconds) {
 					EVENT.invoker().onSecond(client)
-					lastSecond = Timestamp.currentTime()
+					lastSecond = Timestamp.now()
 				}
 			}
 		}

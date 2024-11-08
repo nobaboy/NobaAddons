@@ -43,7 +43,7 @@ object TemporaryWaypoint {
 		val y = DoubleArgumentType.getDouble(ctx, "y")
 		val z = DoubleArgumentType.getDouble(ctx, "z")
 
-		waypoints.add(Waypoint(NobaVec(x, y, z), "Temporary Waypoint", Timestamp.currentTime(), null))
+		waypoints.add(Waypoint(NobaVec(x, y, z), "Temporary Waypoint", Timestamp.now(), null))
 		ChatUtils.addMessage("Temporary Waypoint added at x: $x, y: $y, z: $z")
 		return Command.SINGLE_SUCCESS
 	}
@@ -61,7 +61,7 @@ object TemporaryWaypoint {
 			val info = group("info").take(24)
 
 			val text = "$username$info"
-			waypoints.add(Waypoint(NobaVec(x, y, z), text, Timestamp.currentTime(), config.expirationTime.seconds))
+			waypoints.add(Waypoint(NobaVec(x, y, z), text, Timestamp.now(), config.expirationTime.seconds))
 		}
 	}
 

@@ -62,7 +62,7 @@ object SimonSaysTimer {
 			val username = group("username")
 			if(username != MCUtils.playerName) return
 
-			completionTime = Timestamp.currentTime()
+			completionTime = Timestamp.now()
 			deviceCompleted = true
 
 			processCompletionTime()
@@ -72,7 +72,7 @@ object SimonSaysTimer {
 	private fun handleInteractEvent(player: PlayerEntity, hitResult: BlockHitResult): ActionResult {
 		if(!isEnabled() || buttonPressed || player != MCUtils.player || hitResult.blockPos.toNobaVec() != buttonVec) return ActionResult.PASS
 
-		startTime = Timestamp.currentTime()
+		startTime = Timestamp.now()
 		buttonPressed = true
 		return ActionResult.PASS
 	}

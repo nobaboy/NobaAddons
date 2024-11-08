@@ -8,7 +8,7 @@ open class CooldownManager(private val defaultDuration: Duration = 3.seconds) {
 	private var cooldownDuration: Duration = defaultDuration
 
 	fun startCooldown(duration: Duration = defaultDuration) {
-		this.markedAt = Timestamp.currentTime()
+		this.markedAt = Timestamp.now()
 		this.cooldownDuration = duration
 	}
 

@@ -82,7 +82,7 @@ object NumberUtils {
 		formatDoubleOrNull()?.toInt() ?: throw NumberFormatException("formatInt failed for '$this'")
 
 	/**
-	 * This code was unmodified and taken under CC BY-SA 3.0 license
+	 * This code was taken and unmodified under CC BY-SA 3.0 license
 	 * @link https://stackoverflow.com/a/22186845
 	 * @author jpdymond
 	 */
