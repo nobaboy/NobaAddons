@@ -59,6 +59,11 @@
   "nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint": "Ladder Waypoint",
   "nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint.tooltip": "Places a waypoint at the ladder shaft in the mineshaft",
 
+  "nobaaddons.config.crimsonIsle": "Crimson Isle",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks": "Highlight Thunder Sparks",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks.highlightColor": "Highlight Color",
+  "nobaaddons.config.crimsonIsle.highlightThunderSparks.showText": "Show Text",
+
   "nobaaddons.config.dungeons": "Dungeons",
   "nobaaddons.config.dungeons.highlightStarredMobs": "Highlight Starred Mobs",
   "nobaaddons.config.dungeons.highlightStarredMobs.highlightColor": "Highlight Color",
@@ -66,11 +71,6 @@
   "nobaaddons.config.dungeons.simonSaysTimer": "Simon Says Timer",
   "nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat": "Time in Party Chat",
   "nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat.tooltip": "Sends the completion time in Party Chat",
-
-  "nobaaddons.config.crimsonIsle": "Crimson Isle",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks": "Highlight Thunder Sparks",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks.highlightColor": "Highlight Color",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks.showText": "Show Text",
 
   "nobaaddons.config.chat": "Chat",
   "nobaaddons.config.chat.filters": "Filters",

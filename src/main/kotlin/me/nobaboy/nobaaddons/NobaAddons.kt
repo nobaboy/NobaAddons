@@ -81,13 +81,13 @@ object NobaAddons : ClientModInitializer {
 		CorpseLocator.init()
 		// endregion
 
+		// region Crimson Isle
+		HighlightThunderSparks.init()
+		// endregion
+
 		// region Dungeons
 		SimonSaysTimer.init()
 		HighlightStarredMobs.init()
-		// endregion
-
-		// region Crimson Isle
-		HighlightThunderSparks.init()
 		// endregion
 
 		// region Chat

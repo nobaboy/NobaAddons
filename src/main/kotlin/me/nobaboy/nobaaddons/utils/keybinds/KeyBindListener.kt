@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.utils.keybinds
 
-import me.nobaboy.nobaaddons.features.general.RefillPearls
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 
+// TODO: Either recommend celeste's keybinds mod or add a similar one for skyblock related commands
 object KeyBindListener {
 	private val keybinds = mutableListOf<NobaKeyBind>(
 		CommandKeyBind("nobaaddons.key.pets", "pets"),
@@ -11,7 +11,6 @@ object KeyBindListener {
 		CommandKeyBind("nobaaddons.key.equipment", "equipment"),
 		CommandKeyBind("nobaaddons.key.enderchest", "enderchest"),
 		CommandKeyBind("nobaaddons.key.storage", "storage"),
-		NobaKeyBind("nobaaddons.key.refillPearls") { RefillPearls::refillPearls }
 	)
 
 	fun init() {

@@ -26,6 +26,7 @@ import net.minecraft.util.Formatting
 import net.minecraft.util.hit.BlockHitResult
 import java.util.regex.Pattern
 
+// TODO: Requires actual testing in dungeons
 object SimonSaysTimer {
 	private val config get() = NobaConfigManager.config.dungeons.simonSaysTimer
 

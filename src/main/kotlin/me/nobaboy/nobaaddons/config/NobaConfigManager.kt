@@ -56,8 +56,8 @@ object NobaConfigManager {
 				.category(GeneralCategory.create(defaults, config))
 				.category(UIAndVisualsCategory.create(defaults, config))
 				.category(MiningCategory.create(defaults, config))
-				.category(DungeonsCategory.create(defaults, config))
 				.category(CrimsonIsleCategory.create(defaults, config))
+				.category(DungeonsCategory.create(defaults, config))
 				.category(ChatCategory.create(defaults, config))
 		}.generateScreen(parent)
 	}
