@@ -52,6 +52,6 @@ object MayorAPI {
 			if(lastUpdate.elapsedSince() < 20.minutes) return
 		}
 
-		lastUpdate = Timestamp.currentTime()
+		lastUpdate = Timestamp.now()
 	}
 }
