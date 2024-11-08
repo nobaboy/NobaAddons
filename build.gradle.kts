@@ -1,6 +1,7 @@
 plugins {
     id("fabric-loom")
     kotlin("jvm") version("2.0.20")
+	id("me.modmuss50.mod-publish-plugin")
 }
 
 class ModData {
@@ -100,4 +101,25 @@ tasks.register<Copy>("buildAndCollect") {
     from(tasks.remapJar.get().archiveFile)
     into(rootProject.layout.buildDirectory.file("libs/${mod.version}"))
     dependsOn("build")
+}
+
+publishMods {
+	file = tasks.remapJar.get().archiveFile
+	displayName = "${mod.version} for ${property("mod.mc_title")}"
+	version = "${mod.version}+$mcVersion"
+	changelog = rootProject.file("CHANGELOG.md").readText()
+	type = STABLE
+	modLoaders.add("fabric")
+
+	dryRun = !providers.environmentVariable("MODRINTH_TOKEN").isPresent
+
+	modrinth {
+		projectId = property("publish.modrinth").toString()
+		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		minecraftVersions.addAll(property("mod.mc_targets").toString().split(" "))
+		requires("fabric-language-kotlin")
+		optional("fabric-api")
+		optional("yacl")
+		optional("modmenu")
+	}
 }
