@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
 import me.nobaboy.nobaaddons.config.ui.elements.TextElement
-import me.nobaboy.nobaaddons.core.MobRarity
 import me.nobaboy.nobaaddons.utils.NobaColor
 import java.awt.Color
 
@@ -15,9 +14,6 @@ class UIAndVisualsConfig {
 
 	@SerialEntry
 	val etherwarpHelper: EtherwarpHelper = EtherwarpHelper()
-
-	@SerialEntry
-	val seaCreatureAlert: SeaCreatureAlert = SeaCreatureAlert()
 
 	@SerialEntry
 	val renderingTweaks: RenderingTweaks = RenderingTweaks()
@@ -48,17 +44,6 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var allowOnAir: Boolean = false
-	}
-
-	class SeaCreatureAlert {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var nameInsteadOfRarity: Boolean = false
-
-		@SerialEntry
-		var minimumRarity: MobRarity = MobRarity.LEGENDARY
 	}
 
 	class RenderingTweaks {

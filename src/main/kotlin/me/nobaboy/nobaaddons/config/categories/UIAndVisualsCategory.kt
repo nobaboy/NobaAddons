@@ -12,7 +12,6 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.replaceWith
 import me.nobaboy.nobaaddons.config.ui.controllers.impl.InfoBoxController
 import me.nobaboy.nobaaddons.config.ui.elements.TextElement
-import me.nobaboy.nobaaddons.core.MobRarity
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
 import net.minecraft.text.Text
 import java.awt.Color
@@ -72,29 +71,6 @@ object UIAndVisualsCategory {
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip")))
 					.binding(defaults.uiAndVisuals.etherwarpHelper.allowOnAir, config.uiAndVisuals.etherwarpHelper::allowOnAir) { config.uiAndVisuals.etherwarpHelper.allowOnAir = it }
 					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.collapsed(true)
-				.build())
-
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.uiAndVisuals.seaCreatureAlert"))
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.enabled"))
-					.binding(defaults.uiAndVisuals.seaCreatureAlert.enabled, config.uiAndVisuals.seaCreatureAlert::enabled) { config.uiAndVisuals.seaCreatureAlert.enabled = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.seaCreatureAlert.nameInsteadOfRarity"))
-					.binding(defaults.uiAndVisuals.seaCreatureAlert.nameInsteadOfRarity, config.uiAndVisuals.seaCreatureAlert::nameInsteadOfRarity) { config.uiAndVisuals.seaCreatureAlert.nameInsteadOfRarity = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<MobRarity>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.seaCreatureAlert.minimumRarity"))
-					.binding(defaults.uiAndVisuals.seaCreatureAlert.minimumRarity, config.uiAndVisuals.seaCreatureAlert::minimumRarity) { config.uiAndVisuals.seaCreatureAlert.minimumRarity = it }
-					.controller(NobaConfigUtils::createCyclingController)
 					.build())
 
 				.collapsed(true)
