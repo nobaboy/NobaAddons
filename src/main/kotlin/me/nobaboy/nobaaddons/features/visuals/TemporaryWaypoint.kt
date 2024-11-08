@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.features.visuals
 
-import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
@@ -36,8 +35,8 @@ object TemporaryWaypoint {
 		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
 	}
 
-	fun addWaypoint(ctx: CommandContext<FabricClientCommandSource>): Int {
-		if(!isEnabled()) return 0
+	fun addWaypoint(ctx: CommandContext<FabricClientCommandSource>) {
+		if(!isEnabled()) return
 
 		val x = DoubleArgumentType.getDouble(ctx, "x")
 		val y = DoubleArgumentType.getDouble(ctx, "y")
@@ -45,7 +44,6 @@ object TemporaryWaypoint {
 
 		waypoints.add(Waypoint(NobaVec(x, y, z), "Temporary Waypoint", Timestamp.now(), null))
 		ChatUtils.addMessage("Temporary Waypoint added at x: $x, y: $y, z: $z")
-		return Command.SINGLE_SUCCESS
 	}
 
 	private fun handleChatEvent(message: String) {
@@ -62,6 +60,7 @@ object TemporaryWaypoint {
 
 			val text = "$username$info"
 			waypoints.add(Waypoint(NobaVec(x, y, z), text, Timestamp.now(), config.expirationTime.seconds))
+			ChatUtils.addMessage("Temporary Waypoint added at x: $x, y: $y, z: $z from $username")
 		}
 	}
 

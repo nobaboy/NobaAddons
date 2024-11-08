@@ -46,7 +46,10 @@ object NobaCommand {
 						.then(ClientCommandManager.argument("x", DoubleArgumentType.doubleArg())
 							.then(ClientCommandManager.argument("y", DoubleArgumentType.doubleArg())
 								.then(ClientCommandManager.argument("z", DoubleArgumentType.doubleArg())
-									.executes(TemporaryWaypoint::addWaypoint)))))
+									.executes {
+										TemporaryWaypoint::addWaypoint
+										Command.SINGLE_SUCCESS
+									}))))
 
 					then(ClientCommandManager.literal("debugParty").executes {
 						PartyAPI.listMembers()
