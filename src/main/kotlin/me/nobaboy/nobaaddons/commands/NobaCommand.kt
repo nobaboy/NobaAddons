@@ -7,6 +7,7 @@ import com.mojang.brigadier.tree.CommandNode
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager.getConfigScreen
 import me.nobaboy.nobaaddons.config.ui.NobaMainScreen
+import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.general.RefillPearls
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.utils.LocationUtils
@@ -28,6 +29,7 @@ object NobaCommand {
 				ClientCommandManager.literal("nobaaddons").apply {
 					then(ClientCommandManager.literal("config").executes {
 						getConfigScreen(null).queueOpen()
+						Command.SINGLE_SUCCESS
 					})
 
 					then(ClientCommandManager.literal("refillPearls").executes {
@@ -51,12 +53,31 @@ object NobaCommand {
 						Command.SINGLE_SUCCESS
 					})
 
-					executes { NobaMainScreen().queueOpen() }
+					then(ClientCommandManager.literal("ssClear").executes {
+						SimonSaysTimer.clearTimes()
+						Command.SINGLE_SUCCESS
+					})
+
+					then(ClientCommandManager.literal("ssAverage").executes {
+						SimonSaysTimer.sendAverage()
+						Command.SINGLE_SUCCESS
+					})
+
+					then(ClientCommandManager.literal("ssPersonalBest").executes {
+						SimonSaysTimer.sendPersonalBest()
+						Command.SINGLE_SUCCESS
+					})
+
+					executes {
+						NobaMainScreen().queueOpen()
+						Command.SINGLE_SUCCESS
+					}
 				}
 			)
 
 			dispatcher.register(ClientCommandManager.literal("noba").executes {
 				NobaMainScreen().queueOpen()
+				Command.SINGLE_SUCCESS
 			}.redirect(mainCommand))
 	}
 }

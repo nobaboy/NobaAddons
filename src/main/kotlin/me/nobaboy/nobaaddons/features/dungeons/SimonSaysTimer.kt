@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.dungeons
 
+import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
@@ -53,6 +54,49 @@ object SimonSaysTimer {
 				}
 			}
 		}.onFailure { NobaAddons.LOGGER.error("Failed to load simon-says-timer.json", it) }
+	}
+
+	fun clearTimes() {
+		val times = SimonSaysFile.times
+
+		if(times.isEmpty()) {
+			ChatUtils.addMessage("You have not completed a Simon Says device.")
+			return
+		}
+
+		try {
+			ChatUtils.addMessage("Successfully cleared Simon Says Times.")
+			SimonSaysFile.personalBest = null
+			SimonSaysFile.times.clear()
+			SimonSaysFile.save()
+		} catch (ex: IOException) {
+			NobaAddons.LOGGER.error("Failed to modify simon-says-timer.json", ex)
+		}
+	}
+
+	fun sendAverage() {
+		val times = SimonSaysFile.times
+
+		if(times.isEmpty()) {
+			ChatUtils.addMessage("You have not completed a Simon Says device.")
+			return
+		}
+
+		val size = times.size
+		val sum = times.sum()
+		val average = sum / size
+
+		val formattedAverage = "%.3f".format(average)
+		ChatUtils.addMessage("Your average time for Simon Says is: ${formattedAverage}s (Total Count: $size)")
+	}
+
+	fun sendPersonalBest() {
+		val personalBest = SimonSaysFile.personalBest
+
+		val message = personalBest?.let {
+			"Your Simon Says Personal Best is: $personalBest"
+		} ?: "You have not completed a Simon Says device."
+		ChatUtils.addMessage(message)
 	}
 
 	private fun handleChatEvent(message: String) {
