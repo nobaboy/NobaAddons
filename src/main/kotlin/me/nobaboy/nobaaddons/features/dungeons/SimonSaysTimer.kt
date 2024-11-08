@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.events.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysFile
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -39,9 +39,9 @@ object SimonSaysTimer {
 	private var deviceCompleted: Boolean = false
 
 	fun init() {
+		SkyBlockIslandChangeEvent.EVENT.register { reset() }
 		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
 		UseBlockCallback.EVENT.register { player, _, _, hitResult -> handleInteractEvent(player, hitResult) }
-		SkyBlockIslandChangeEvent.EVENT.register { reset() }
 
 		runCatching {
 			SimonSaysFile.load()

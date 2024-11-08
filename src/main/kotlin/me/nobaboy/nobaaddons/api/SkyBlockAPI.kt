@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.events.SecondPassedEvent
-import me.nobaboy.nobaaddons.events.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
@@ -16,12 +16,6 @@ import java.util.regex.Pattern
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
-	fun init() {
-		SecondPassedEvent.EVENT.register { update() }
-		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
-		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
-	}
-
 	private val currencyPattern = Pattern.compile("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*")
 
 	var currentGame: ServerType? = null
@@ -38,6 +32,12 @@ object SkyBlockAPI {
 	var bits: Long? = null
 //	var copper: Long? = null
 //	var motes: Long? = null
+
+	fun init() {
+		SecondPassedEvent.EVENT.register { update() }
+		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
+		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
+	}
 
 	fun IslandType.inIsland(): Boolean = inSkyblock && currentIsland == this
 	fun inZone(zone: String): Boolean = inSkyblock && currentZone == zone

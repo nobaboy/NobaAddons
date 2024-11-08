@@ -6,8 +6,7 @@ import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyblockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
@@ -39,10 +38,8 @@ object EtherwarpHelper {
 		}
 
 		val client = MCUtils.client
-		val heldItem = client.player?.mainHandStack ?: return
-		if(!heldItem.isSkyBlockItem) return
+		val item = client.player?.mainHandStack?.getSkyBlockItem() ?: return
 
-		val item = heldItem.skyblockItem()
 		if(!etherwarpItems.contains(item.id) || !item.ethermerge) {
 			targetBlock = null
 			return

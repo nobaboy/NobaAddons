@@ -21,4 +21,11 @@ object ItemUtils {
 		val component = this.get(DataComponentTypes.PROFILE) ?: return null
 		return component.properties["textures"].firstOrNull()?.value
 	}
+
+	fun ItemStack.getSkyBlockItem(): SkyBlockItemData? {
+		if(!isSkyBlockItem) return null
+		return skyblockItem()
+	}
+
+	fun ItemStack.getSkyBlockItemId(): String? = getSkyBlockItem()?.id
 }

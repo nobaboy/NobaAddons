@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.events
+package me.nobaboy.nobaaddons.events.skyblock
 
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents

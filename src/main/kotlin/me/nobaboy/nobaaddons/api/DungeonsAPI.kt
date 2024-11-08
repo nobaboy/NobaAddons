@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.api.data.BossType
 import me.nobaboy.nobaaddons.api.data.ClassType
 import me.nobaboy.nobaaddons.api.data.FloorType
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.skyblock.SecondPassedEvent
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils.cleanScoreboard
@@ -32,9 +32,7 @@ object DungeonsAPI {
 	fun init() {
 		SecondPassedEvent.EVENT.register { getClassType() }
 		SecondPassedEvent.EVENT.register { getFloorType() }
-		ClientReceiveMessageEvents.GAME.register { message, _ ->
-			getBossType(message.string.cleanFormatting())
-		}
+		ClientReceiveMessageEvents.GAME.register { message, _ -> getBossType(message.string.cleanFormatting()) }
 	}
 
 	private fun getClassType() {

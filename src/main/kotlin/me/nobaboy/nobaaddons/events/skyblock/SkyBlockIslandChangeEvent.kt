@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.events
+package me.nobaboy.nobaaddons.events.skyblock
 
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.utils.Scheduler
