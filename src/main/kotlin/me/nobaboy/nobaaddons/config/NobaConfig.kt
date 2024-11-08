@@ -14,6 +14,9 @@ class NobaConfig {
 	val uiAndVisuals: UIAndVisualsConfig = UIAndVisualsConfig()
 
 	@SerialEntry
+	val fishing: FishingConfig = FishingConfig()
+
+	@SerialEntry
 	val mining: MiningConfig = MiningConfig()
 
 	@SerialEntry
