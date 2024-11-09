@@ -1,13 +1,9 @@
-name: release
+name: Release
 on: workflow_dispatch
 
 jobs:
   release:
-    strategy:
-      matrix:
-        java: [21]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -15,11 +11,15 @@ jobs:
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v2
 
-      - name: Setup Java ${{ matrix.java }}
+      - name: Setup Java 21
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.java }}
+          java-version: 21
           distribution: "microsoft"
+
+      - name: Make Gradle Wrapper Executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
 
       - name: Release
         env:
