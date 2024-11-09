@@ -56,7 +56,7 @@ enum class SeaCreature(
 	YETI(MobRarity.LEGENDARY, "What is this creature!?", IslandType.JERRYS_WORKSHOP),
 	REINDRAKE(MobRarity.LEGENDARY, "A Reindrake forms from the depths.", IslandType.JERRYS_WORKSHOP),
 
-	// Spooky Festival
+	// Spooky Event
 	SCARECROW(MobRarity.COMMON, "Phew! It's only a Scarecrow."),
 	NIGHTMARE(MobRarity.RARE, "You hear trotting from beneath the waves, you caught a Nightmare."),
 	WEREWOLF(MobRarity.EPIC, "It must be a full moon, a Werewolf appears."),
