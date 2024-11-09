@@ -65,5 +65,5 @@ object HighlightStarredMobs {
 		}
 	}
 
-	private fun isEnabled() = IslandType.DUNGEONS.inIsland() && !DungeonsAPI.inBoss() && config.enabled
+	private fun isEnabled() = !DungeonsAPI.inBoss() && config.enabled
 }
