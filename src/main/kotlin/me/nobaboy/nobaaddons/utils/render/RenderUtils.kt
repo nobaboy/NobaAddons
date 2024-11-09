@@ -429,10 +429,10 @@ object RenderUtils {
 		val cameraPos = camera.pos.toNobaVec()
 		val textRenderer = MCUtils.textRenderer
 
-		val dist = vec.distance(cameraPos).coerceAtMost(500.0)
+		val dist = vec.distance(cameraPos).coerceAtMost(512.0)
 		if(dist < hideThreshold) return
 
-		var scale = dist.toFloat() / 120.0f
+		var scale = dist.toFloat() / 256.0f
 		scale *= scaleMultiplier
 
 		val x = vec.x - cameraPos.x
@@ -449,7 +449,7 @@ object RenderUtils {
 		val consumers = VertexConsumerProvider.immediate(ALLOCATOR)
 		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
 
-		textRenderer.draw(text, xOffset, 0.0f, 0xFFFFFF, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.NORMAL, 0,
+		textRenderer.draw(text, xOffset, 0.0f, 0xFFFFFF, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0,
 			LightmapTextureManager.MAX_LIGHT_COORDINATE)
 		consumers.draw()
 

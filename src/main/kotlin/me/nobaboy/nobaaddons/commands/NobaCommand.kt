@@ -46,7 +46,7 @@ object NobaCommand {
 							.then(ClientCommandManager.argument("y", DoubleArgumentType.doubleArg())
 								.then(ClientCommandManager.argument("z", DoubleArgumentType.doubleArg())
 									.executes {
-										TemporaryWaypoint::addWaypoint
+										TemporaryWaypoint.addWaypoint(it)
 										Command.SINGLE_SUCCESS
 									}))))
 
