@@ -32,7 +32,7 @@ object NobaRenderLayers {
 			//? if >=1.21.2 {
 			.program(RenderPhase.POSITION_COLOR_PROGRAM)
 			//?} else {
-			/*.program(RenderPhase.COLOR_PROGRAM*/
+			/*.program(RenderPhase.COLOR_PROGRAM)*/
 			//?}
 			.cull(Cull.DISABLE_CULLING)
 			.layering(RenderPhase.POLYGON_OFFSET_LAYERING)
