@@ -1,11 +1,12 @@
 package me.nobaboy.nobaaddons.commands
 
-import com.mojang.brigadier.Command
-import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.DoubleArgumentType
-import com.mojang.brigadier.tree.CommandNode
+import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager.getConfigScreen
+import me.nobaboy.nobaaddons.commands.internal.Command
+import me.nobaboy.nobaaddons.commands.internal.CommandUtil
+import me.nobaboy.nobaaddons.commands.internal.Group
+import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.ui.NobaMainScreen
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.general.RefillPearls
@@ -14,74 +15,74 @@ import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
-object NobaCommand {
+@Suppress("unused")
+object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot = true) {
 	fun init() {
-		ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ -> register(dispatcher) }
+		CommandUtil.register(this)
 	}
 
-	private fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
-		val mainCommand: CommandNode<FabricClientCommandSource> =
-			dispatcher.register(
-				ClientCommandManager.literal("nobaaddons").apply {
-					then(ClientCommandManager.literal("config").executes {
-						getConfigScreen(null).queueOpen()
-						Command.SINGLE_SUCCESS
-					})
+	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
+		NobaMainScreen().queueOpen()
+		return 0
+	}
 
-					then(ClientCommandManager.literal("refillPearls").executes {
-						RefillPearls.refillPearls()
-						Command.SINGLE_SUCCESS
-					})
+	val config = Command.command("config") {
+		executes {
+			NobaConfigManager.getConfigScreen(null).queueOpen()
+		}
+	}
 
-					then(ClientCommandManager.literal("sendCoords").executes {
-						ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
-						Command.SINGLE_SUCCESS
-					})
+	val refillPearls = Command.command("refillpearls") {
+		executes {
+			RefillPearls.refillPearls()
+		}
+	}
 
-					then(ClientCommandManager.literal("waypoint")
-						.then(ClientCommandManager.argument("x", DoubleArgumentType.doubleArg())
-							.then(ClientCommandManager.argument("y", DoubleArgumentType.doubleArg())
-								.then(ClientCommandManager.argument("z", DoubleArgumentType.doubleArg())
-									.executes {
-										TemporaryWaypoint.addWaypoint(it)
-										Command.SINGLE_SUCCESS
-									}))))
+	val sendCoords = Command.command("sendcoords") {
+		executes {
+			ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
+		}
+	}
 
-					then(ClientCommandManager.literal("debugParty").executes {
-						PartyAPI.listMembers()
-						Command.SINGLE_SUCCESS
-					})
+	val waypoint = Command.command("waypoint") {
+		buildCommand {
+			ClientCommandManager.literal(name)
+				.then(ClientCommandManager.argument("x", DoubleArgumentType.doubleArg())
+					.then(ClientCommandManager.argument("y", DoubleArgumentType.doubleArg())
+						.then(ClientCommandManager.argument("z", DoubleArgumentType.doubleArg())
+							.executes(this::execute))))
+		}
 
-					then(ClientCommandManager.literal("ssClear").executes {
-						SimonSaysTimer.clearTimes()
-						Command.SINGLE_SUCCESS
-					})
+		executes(TemporaryWaypoint::addWaypoint)
+	}
 
-					then(ClientCommandManager.literal("ssAverage").executes {
-						SimonSaysTimer.sendAverage()
-						Command.SINGLE_SUCCESS
-					})
+	object Debug : Group("debug") {
+		val party = Command.command("party") {
+			executes {
+				PartyAPI.listMembers()
+			}
+		}
+	}
 
-					then(ClientCommandManager.literal("ssPersonalBest").executes {
-						SimonSaysTimer.sendPersonalBest()
-						Command.SINGLE_SUCCESS
-					})
+	object SimonSays : Group("ss", aliases = listOf("simonsays")) {
+		val clear = Command.command("clear") {
+			executes {
+				SimonSaysTimer.clearTimes()
+			}
+		}
 
-					executes {
-						NobaMainScreen().queueOpen()
-						Command.SINGLE_SUCCESS
-					}
-				}
-			)
+		val average = Command.command("average") {
+			executes {
+				SimonSaysTimer.sendAverage()
+			}
+		}
 
-			dispatcher.register(
-				ClientCommandManager.literal("noba").executes {
-					NobaMainScreen().queueOpen()
-					Command.SINGLE_SUCCESS
-				}.redirect(mainCommand)
-			)
+		val personalBest = Command.command("personalbest", aliases = listOf("pb")) {
+			executes {
+				SimonSaysTimer.sendPersonalBest()
+			}
+		}
 	}
 }

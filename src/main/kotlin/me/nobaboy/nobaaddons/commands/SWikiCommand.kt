@@ -1,15 +1,14 @@
 package me.nobaboy.nobaaddons.commands
 
-import com.mojang.brigadier.Command
-import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
+import me.nobaboy.nobaaddons.commands.internal.Command
+import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
@@ -20,19 +19,18 @@ import net.minecraft.util.Util
 object SWikiCommand {
 	private val config get() = NobaConfigManager.config.general
 
-	fun init() {
-		ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ -> register(dispatcher) }
+	private val command = Command.command("swiki") {
+		buildCommand {
+			ClientCommandManager.literal(name)
+				.then(ClientCommandManager.argument("query", StringArgumentType.greedyString())
+					.executes(this::execute))
+		}
+
+		executes(this@SWikiCommand::searchWiki)
 	}
 
-	private fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
-		dispatcher.register(
-			ClientCommandManager.literal("swiki")
-				.then(ClientCommandManager.argument("query", StringArgumentType.greedyString())
-					.executes {
-						searchWiki(it)
-						Command.SINGLE_SUCCESS
-					})
-		)
+	fun init() {
+		CommandUtil.register(command)
 	}
 
 	private fun searchWiki(ctx: CommandContext<FabricClientCommandSource>) {
@@ -54,7 +52,6 @@ object SWikiCommand {
 			.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
 
 		ChatUtils.addMessage(message)
-		return
 	}
 
 	private fun compileAutoOpenMessage(query: String, wikiName: Text) = buildText {
