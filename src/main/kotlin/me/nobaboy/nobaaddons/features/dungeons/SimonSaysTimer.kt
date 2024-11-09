@@ -69,7 +69,7 @@ object SimonSaysTimer {
 			SimonSaysFile.personalBest = null
 			SimonSaysFile.times.clear()
 			SimonSaysFile.save()
-		} catch (ex: IOException) {
+		} catch(ex: IOException) {
 			NobaAddons.LOGGER.error("Failed to modify simon-says-timer.json", ex)
 		}
 	}
