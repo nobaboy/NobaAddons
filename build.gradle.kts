@@ -117,9 +117,9 @@ publishMods {
 		projectId = property("publish.modrinth").toString()
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 		minecraftVersions.addAll(property("mod.mc_targets").toString().split(" "))
+		requires("fabric-api")
 		requires("fabric-language-kotlin")
-		optional("fabric-api")
-		optional("yacl")
+		requires("yacl")
 		optional("modmenu")
 	}
 }
