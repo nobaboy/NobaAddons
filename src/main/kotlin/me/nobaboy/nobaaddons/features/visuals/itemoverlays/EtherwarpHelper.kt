@@ -83,7 +83,7 @@ object EtherwarpHelper {
 		val stateAbove = world.getBlockState(blockPos.up())
 		val stateTwoAbove = world.getBlockState(blockPos.up(2))
 
-		return if (stateAbove.isSolid && !stateAbove.isAir || !stateTwoAbove.isAir) ValidationType.NO_AIR_ABOVE else null
+		return if(stateAbove.isSolid && !stateAbove.isAir || !stateTwoAbove.isAir) ValidationType.NO_AIR_ABOVE else null
 	}
 
 	private enum class ValidationType(val text: String) {

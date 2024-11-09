@@ -13,7 +13,7 @@ object AbilityFilter : IFilter {
 	override fun shouldFilter(message: Text, text: String): Boolean {
 		abilityDamagePattern.matchMatcher(text) {
 			val ability = group("ability")
-			return when (ability) {
+			return when(ability) {
 				"Implosion" -> config.hideImplosionDamageMessage
 				"Molten Wave" -> config.hideMoltenWaveDamageMessage
 				"Spirit Sceptre" -> config.hideSpiritSceptreDamageMessage

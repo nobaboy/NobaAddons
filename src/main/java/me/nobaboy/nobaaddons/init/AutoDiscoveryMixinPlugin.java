@@ -44,19 +44,19 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 
 	public URL baseUrl(URL classUrl) {
 		String string = classUrl.toString();
-		if (classUrl.getProtocol().equals("jar")) {
+		if(classUrl.getProtocol().equals("jar")) {
 			try {
 				return URI.create(string.substring(4, string.lastIndexOf('!'))).toURL();
-			} catch (MalformedURLException e) {
+			} catch(MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
 		}
-		if (string.endsWith(".class")) {
+		if(string.endsWith(".class")) {
 			try {
 				return URI.create(string.replace("\\", "/")
 								.replace(getClass().getCanonicalName().replace(".", "/") + ".class", ""))
 						.toURL();
-			} catch (MalformedURLException e) {
+			} catch(MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -72,7 +72,7 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 		String norm = (className.endsWith(".class") ? className.substring(0, className.length() - ".class".length()) : className)
 				.replace("\\", "/")
 				.replace("/", ".");
-		if (norm.startsWith(mixinBasePackage) && !norm.endsWith(".")) {
+		if(norm.startsWith(mixinBasePackage) && !norm.endsWith(".")) {
 			mixins.add(norm.substring(mixinBasePackage.length()));
 		}
 	}
@@ -83,14 +83,14 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 			classes.filter(Files::isRegularFile)
 					.map(it -> file.relativize(it).toString())
 					.forEach(this::tryAddMixinClass);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	@Override
 	public List<String> getMixins() {
-		if (mixins != null) return mixins;
+		if(mixins != null) return mixins;
 		System.out.println("Trying to discover mixins");
 		mixins = new ArrayList<>();
 		URL classUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -98,11 +98,11 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 		Path file;
 		try {
 			file = Paths.get(baseUrl(classUrl).toURI());
-		} catch (URISyntaxException e) {
+		} catch(URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
 		System.out.println("Base directory found at " + file);
-		if (Files.isDirectory(file)) {
+		if(Files.isDirectory(file)) {
 			walkDir(file);
 		} else {
 			walkJar(file);
@@ -120,7 +120,7 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 				tryAddMixinClass(next.getName());
 				zis.closeEntry();
 			}
-		} catch (IOException e) {
+		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
