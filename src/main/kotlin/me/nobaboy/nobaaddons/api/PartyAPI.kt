@@ -61,6 +61,7 @@ object PartyAPI : IParty {
 	)
 
 	private var storedPartyList = mutableListOf<String>()
+	private var gettingList = false
 	private var gotList = false
 
 	override var inParty: Boolean = false
@@ -74,19 +75,21 @@ object PartyAPI : IParty {
 	}
 
 	fun requestPartyList() {
-		gotList = true
+		gettingList = true
 		Scheduler.schedule(5 * 20) {
 			if(!HypixelUtils.onHypixel) return@schedule
 			HypixelCommands.partyList()
 		}
 		Scheduler.schedule(7 * 20) {
 			processPartyList()
+			gotList = true
 		}
 	}
 
 	fun clear() {
 		partyLeft()
 		storedPartyList.clear()
+		gettingList = false
 		gotList = false
 	}
 
@@ -116,7 +119,7 @@ object PartyAPI : IParty {
 	}
 
 	private fun handleChatEvent(message: String): Boolean {
-		if(!gotList) {
+		if(gettingList) {
 			partyListPattern.matchMatcher(message) {
 				storedPartyList.add(message)
 				return false

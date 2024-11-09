@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.utils.NumberUtils.formatDouble
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -47,13 +46,13 @@ object HealerOrbFilter : IFilter {
 		duration: String
 	) = buildText {
 		formatted(Formatting.GRAY)
-		append("HEALER ORB! ".toText().formatted(Formatting.YELLOW, Formatting.BOLD))
+		append(Text.literal("HEALER ORB!").formatted(Formatting.YELLOW, Formatting.BOLD))
 		if(health.formatDouble() > 0.0) {
 			append("+$health ")
-			append("❤ Health".toText().formatted(Formatting.RED))
+			append(Text.literal("❤ Health").formatted(Formatting.RED))
 			append(" and ")
 		}
-		append("$buff ")
+		append(" $buff ")
 		append(statType.toText())
 		append(" for $duration seconds from picking up $player's $orb.")
 	}

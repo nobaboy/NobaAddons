@@ -14,7 +14,6 @@ import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
@@ -22,6 +21,7 @@ import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Formatting
 import net.minecraft.util.hit.BlockHitResult
@@ -127,8 +127,8 @@ object SimonSaysTimer {
 		times.add(timeTaken)
 
 		val personalBest = SimonSaysFile.personalBest?.takeIf { timeTaken >= it } ?: timeTaken.also { SimonSaysFile.personalBest = it }
-		val classifier = if(timeTaken < personalBest) "(PB)".toText().formatted(Formatting.DARK_AQUA, Formatting.BOLD)
-			else "($personalBest)".toText().formatted(Formatting.DARK_AQUA)
+		val classifier = if(timeTaken < personalBest) Text.literal("(PB)").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
+			else Text.literal("($personalBest)").formatted(Formatting.DARK_AQUA)
 		val message = buildText {
 			formatted(Formatting.AQUA)
 			append("Took ")
@@ -137,8 +137,7 @@ object SimonSaysTimer {
 			append(classifier)
 		}
 
-		if(config.timeInPartyChat && PartyAPI.inParty) HypixelCommands.partyChat(message.string.cleanFormatting())
-		else ChatUtils.addMessage(message)
+		if(config.timeInPartyChat && PartyAPI.inParty) HypixelCommands.partyChat(message.string) else ChatUtils.addMessage(message)
 
 		runCatching { SimonSaysFile.save() }.onFailure { NobaAddons.LOGGER.error("Failed to save simon-says-timer.json", it) }
 	}

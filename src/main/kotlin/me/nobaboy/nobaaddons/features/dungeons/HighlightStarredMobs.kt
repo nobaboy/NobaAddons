@@ -1,5 +1,8 @@
 package me.nobaboy.nobaaddons.features.dungeons
 
+import me.nobaboy.nobaaddons.api.DungeonsAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
+import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.EntityUtils
@@ -50,17 +53,17 @@ object HighlightStarredMobs {
 			if(!player.canSee(starredMob)) continue
 
 			val name = starredMob.customName!!.string.cleanFormatting()
-			var height = if("Fels" in name) 2.0 else if("Withermancer" in name) 1.4 else if("Spider" in name) 0.75 else 1.0
+			val extraHeight = if("Fels" in name) 2.0 else if("Spider" in name) -0.25 else 1.0
 
 			val vec = starredMob.getNobaVec()
 
 			when(mode) {
-				HighlightMode.OUTLINE -> RenderUtils.renderOutline(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = height)
-				HighlightMode.FILLED -> RenderUtils.renderFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = height)
-				HighlightMode.FILLED_OUTLINE -> RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = height)
+				HighlightMode.OUTLINE -> RenderUtils.renderOutline(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = extraHeight)
+				HighlightMode.FILLED -> RenderUtils.renderFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = extraHeight)
+				HighlightMode.FILLED_OUTLINE -> RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = extraHeight)
 			}
 		}
 	}
 
-	private fun isEnabled() = /*IslandType.DUNGEONS.inIsland() && !DungeonsAPI.inBoss() && config.enabled*/ false
+	private fun isEnabled() = IslandType.DUNGEONS.inIsland() && !DungeonsAPI.inBoss() && config.enabled
 }

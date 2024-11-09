@@ -16,14 +16,13 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
-import net.minecraft.command.CommandRegistryAccess
 
 object NobaCommand {
 	fun init() {
-		ClientCommandRegistrationCallback.EVENT.register(this::register)
+		ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ -> register(dispatcher) }
 	}
 
-	private fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>, ignored: CommandRegistryAccess) {
+	private fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
 		val mainCommand: CommandNode<FabricClientCommandSource> =
 			dispatcher.register(
 				ClientCommandManager.literal("nobaaddons").apply {
@@ -78,9 +77,11 @@ object NobaCommand {
 				}
 			)
 
-			dispatcher.register(ClientCommandManager.literal("noba").executes {
-				NobaMainScreen().queueOpen()
-				Command.SINGLE_SUCCESS
-			}.redirect(mainCommand))
+			dispatcher.register(
+				ClientCommandManager.literal("noba").executes {
+					NobaMainScreen().queueOpen()
+					Command.SINGLE_SUCCESS
+				}.redirect(mainCommand)
+			)
 	}
 }

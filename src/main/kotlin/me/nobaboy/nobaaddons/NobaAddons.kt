@@ -24,7 +24,6 @@ import me.nobaboy.nobaaddons.utils.keybinds.KeyBindListener
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.MutableText
-import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import org.slf4j.Logger
@@ -34,12 +33,10 @@ object NobaAddons : ClientModInitializer {
 	const val MOD_ID = "nobaaddons"
 	val VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
 
-	val PREFIX: MutableText
-		get() = Text.empty()
-			.append(Text.translatable("nobaaddons.name")
-			.append(Text.literal(" > ")).setStyle(
-				Style.EMPTY.withColor(Formatting.BLUE).withBold(true))
-			)
+	val PREFIX: MutableText get() = Text.empty()
+		.append(Text.translatable("nobaaddons.name"))
+		.append(" > ")
+		.formatted(Formatting.BLUE, Formatting.BOLD)
 
 	val LOGGER: Logger = LogUtils.getLogger()
 	val modDir: Path get() = FabricLoader.getInstance().configDir

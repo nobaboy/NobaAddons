@@ -4,8 +4,10 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.CooldownTickEvent
 import me.nobaboy.nobaaddons.utils.CooldownTickEvent.Companion.ticks
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import java.util.LinkedList
 import java.util.Queue
 
@@ -36,11 +38,17 @@ object ChatUtils {
 	}
 
 	fun addMessage(message: Text, prefix: Boolean = true, overlay: Boolean = false) {
-		val usePrefix = if(prefix) NobaAddons.PREFIX.copy() else Text.empty()
-		MCUtils.player?.sendMessage(usePrefix.append(message), overlay)
+		val text = buildText {
+			if(prefix) {
+				append(NobaAddons.PREFIX)
+				formatted(Formatting.AQUA)
+			}
+			append(message)
+		}
+		MCUtils.player?.sendMessage(text, overlay)
 	}
 
 	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false) {
-		addMessage(Text.of(message), prefix, overlay)
+		addMessage(Text.literal(message), prefix, overlay)
 	}
 }
