@@ -1,5 +1,6 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.events
 
+import me.nobaboy.nobaaddons.utils.CooldownManager
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.event.EventFactory
 import net.minecraft.client.MinecraftClient
@@ -10,7 +11,8 @@ import kotlin.time.Duration.Companion.seconds
  * [ClientTickEvents.END_CLIENT_TICK] but with a cooldown attached to it.
  *
  * **Note:** The cooldowns used by this event are relatively inaccurate due to the use of [Duration] instead
- * of whole ticks; if you need precise tick cooldowns, consider using [Scheduler] or handling this yourself instead.
+ * of whole ticks; if you need precise tick cooldowns, consider using [me.nobaboy.nobaaddons.utils.Scheduler]
+ * or handling this yourself instead.
  *
  * ## Example
  *
@@ -24,7 +26,7 @@ import kotlin.time.Duration.Companion.seconds
  * }
  * ```
  *
- * @see Scheduler
+ * @see me.nobaboy.nobaaddons.utils.Scheduler
  */
 fun interface CooldownTickEvent {
 	fun onTick(client: MinecraftClient)

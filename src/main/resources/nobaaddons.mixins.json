@@ -1,15 +1,8 @@
 {
   "required": true,
   "package": "me.nobaboy.nobaaddons.mixins",
+  "plugin": "me.nobaboy.nobaaddons.init.AutoDiscoveryMixinPlugin",
   "compatibilityLevel": "JAVA_17",
-  "client": [
-    "FishingBobberEntityRendererMixin",
-    "LightningEntityRendererMixin",
-    "accessors.CategoryTabAccessor",
-    "accessors.WorldRendererAccessor",
-    "invokers.BeaconBlockEntityRendererInvoker",
-    "invokers.FrustumInvoker"
-  ],
   "injectors": {
     "defaultRequire": 1
   }

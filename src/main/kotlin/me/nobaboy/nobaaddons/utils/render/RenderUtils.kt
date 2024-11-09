@@ -1,5 +1,14 @@
 package me.nobaboy.nobaaddons.utils.render
 
+//? if >=1.21.2 {
+import me.nobaboy.nobaaddons.mixins.accessors.DrawContextAccessor
+import net.minecraft.client.render.VertexRendering
+import net.minecraft.client.gl.ShaderProgramKeys
+//?} else {
+/*import net.minecraft.client.render.WorldRenderer
+import net.minecraft.client.render.GameRenderer*/
+//?}
+
 import com.mojang.blaze3d.systems.RenderSystem
 import me.nobaboy.nobaaddons.mixins.invokers.BeaconBlockEntityRendererInvoker
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -12,12 +21,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.BufferRenderer
-import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.render.LightmapTextureManager
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.render.VertexFormat.DrawMode
 import net.minecraft.client.render.VertexFormats
-import net.minecraft.client.render.WorldRenderer
 import net.minecraft.client.util.BufferAllocator
 import net.minecraft.text.Text
 import net.minecraft.util.math.Box
@@ -75,6 +82,9 @@ object RenderUtils {
 		applyScaling: Boolean = true
 	) {
 		if(applyScaling) startScale(context, scale)
+		val vertexConsumerProvider = context.let {
+			(it /*if >=1.21.2 {*/ as DrawContextAccessor/*?}*/).vertexConsumers
+		}
 		MCUtils.textRenderer.drawWithOutline(
 			text.asOrderedText(),
 			(x / scale).toFloat(),
@@ -82,7 +92,7 @@ object RenderUtils {
 			color,
 			outlineColor,
 			context.matrices.peek().positionMatrix,
-			context.vertexConsumers,
+			vertexConsumerProvider,
 			15728880
 		)
 		if(applyScaling) endScale(context)
@@ -283,7 +293,11 @@ object RenderUtils {
 		val cameraPos = context.camera().pos.toNobaVec()
 		val tessellator = RenderSystem.renderThreadTesselator()
 
-		RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram)
+		//? if >=1.21.2 {
+		RenderSystem.setShader(ShaderProgramKeys.RENDERTYPE_LINES)
+		//?} else {
+		/*RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram)*/
+		//?}
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f)
 		RenderSystem.enableBlend()
 		RenderSystem.lineWidth(lineWidth)
@@ -308,7 +322,11 @@ object RenderUtils {
 			vec.x + 1 + extraSize, vec.y + 1 + extraSizeTopY, vec.z + 1 + extraSize
 		).expandBlock()
 
-		WorldRenderer.drawBox(
+		//? if >=1.21.2 {
+		VertexRendering.drawBox(
+		//?} else {
+		/*WorldRenderer.drawBox(*/
+		//?}
 			matrices, buffer,
 			box.minX, box.minY, box.minZ,
 			box.maxX, box.maxY, box.maxZ,
@@ -381,7 +399,11 @@ object RenderUtils {
 			vec.x + 1 + extraSize, vec.y + 1 + extraSizeTopY, vec.z + 1 + extraSize
 		).expandBlock()
 
-		WorldRenderer.renderFilledBox(
+		//? if >=1.21.2 {
+		VertexRendering.drawFilledBox(
+		//?} else {
+		/*WorldRenderer.renderFilledBox(*/
+		//?}
 			matrices, buffer,
 			box.minX, box.minY, box.minZ,
 			box.maxX, box.maxY, box.maxZ,

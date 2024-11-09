@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 /**
  * Scheduling utility for running methods a certain amount of ticks later.
  *
- * @see CooldownTickEvent
+ * @see me.nobaboy.nobaaddons.events.CooldownTickEvent
  */
 object Scheduler {
 	private val tasks = mutableListOf<ScheduledTask>()

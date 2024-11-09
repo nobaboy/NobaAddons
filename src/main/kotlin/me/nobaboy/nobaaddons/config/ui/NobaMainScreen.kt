@@ -53,8 +53,13 @@ class NobaMainScreen : Screen(TITLE) {
 		layout!!.forEachChild { addDrawableChild(it) }
 	}
 
-	override fun initTabNavigation() {
-		super.initTabNavigation()
+	//? if >=1.21.2 {
+	override fun refreshWidgetPositions() {
+		super.refreshWidgetPositions()
+	//?} else {
+	/*override fun initTabNavigation() {
+		super.initTabNavigation()*/
+	//?}
 		layout?.refreshPositions()
 	}
 

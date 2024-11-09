@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.utils.chat
 
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.utils.CooldownTickEvent
-import me.nobaboy.nobaaddons.utils.CooldownTickEvent.Companion.ticks
+import me.nobaboy.nobaaddons.events.CooldownTickEvent
+import me.nobaboy.nobaaddons.events.CooldownTickEvent.Companion.ticks
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import net.minecraft.client.MinecraftClient

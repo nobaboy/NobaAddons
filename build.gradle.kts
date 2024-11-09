@@ -1,6 +1,6 @@
 plugins {
     id("fabric-loom")
-    kotlin("jvm") version("2.0.20")
+    kotlin("jvm") version("2.0.21")
 	id("me.modmuss50.mod-publish-plugin")
 }
 
@@ -48,7 +48,7 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+${mcVersion}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${deps["kotlin"]}")
 
-    modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}+${mcVersion}-fabric") // YACL
+    modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
     modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
 	// CelestialConfig
@@ -57,7 +57,7 @@ dependencies {
 
     // Hypixel Mod API
     implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
-    modRuntimeOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}+mc${mcVersion}")
+    modRuntimeOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
 
     modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
 }
@@ -69,15 +69,15 @@ loom {
     }
 }
 
-val java = if (stonecutter.compare(mcVersion, "1.20.6") >= 0) 21 else 17
+val targetJava = if (stonecutter.compare(mcVersion, "1.20.6") >= 0) 21 else 17
 
 java {
-    targetCompatibility = JavaVersion.toVersion(java)
-    sourceCompatibility = JavaVersion.toVersion(java)
+    targetCompatibility = JavaVersion.toVersion(targetJava)
+    sourceCompatibility = JavaVersion.toVersion(targetJava)
 }
 
 kotlin {
-    jvmToolchain(java)
+    jvmToolchain(targetJava)
 }
 
 tasks.processResources {
@@ -108,7 +108,7 @@ publishMods {
 	displayName = "${mod.version} for ${property("mod.mc_title")}"
 	version = "${mod.version}+$mcVersion"
 	changelog = rootProject.file("CHANGELOG.md").readText()
-	type = STABLE
+	type = ALPHA
 	modLoaders.add("fabric")
 
 	dryRun = !providers.environmentVariable("MODRINTH_TOKEN").isPresent
@@ -120,6 +120,7 @@ publishMods {
 		requires("fabric-api")
 		requires("fabric-language-kotlin")
 		requires("yacl")
+		requires("hypixel-mod-api")
 		optional("modmenu")
 	}
 }
