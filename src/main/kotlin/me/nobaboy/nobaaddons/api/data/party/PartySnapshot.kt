@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.api.party
+package me.nobaboy.nobaaddons.api.data.party
 
 data class PartySnapshot(
 	override var inParty: Boolean,

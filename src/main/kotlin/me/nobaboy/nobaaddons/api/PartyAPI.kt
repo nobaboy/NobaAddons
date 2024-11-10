@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
-import me.nobaboy.nobaaddons.api.party.IParty
-import me.nobaboy.nobaaddons.api.party.PartySnapshot
+import me.nobaboy.nobaaddons.api.data.party.IParty
+import me.nobaboy.nobaaddons.api.data.party.PartySnapshot
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
