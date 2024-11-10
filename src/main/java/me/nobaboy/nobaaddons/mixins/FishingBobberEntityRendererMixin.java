@@ -23,7 +23,7 @@ public class FishingBobberEntityRendererMixin {
 	private @Unique boolean shouldHide(FishingBobberEntity entity) {
 		if(!NobaConfigManager.getConfig().getUiAndVisuals().getRenderingTweaks().getHideOtherPeopleFishing()) return false;
 		if(entity == null) return false;
-		return entity.getPlayerOwner() == MCUtils.INSTANCE.getPlayer();
+		return entity.getPlayerOwner() != MCUtils.INSTANCE.getPlayer();
 	}
 	//? if >=1.21.2 {
 	@Inject(method = "render(Lnet/minecraft/client/render/entity/state/FishingBobberEntityState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
