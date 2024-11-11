@@ -1,0 +1,1 @@
+Backend: Fixed PartyAPI never resetting `gettingList` resulting in any party related message being slightly broken
