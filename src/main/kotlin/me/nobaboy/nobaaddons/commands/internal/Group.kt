@@ -14,8 +14,8 @@ abstract class Group(override val name: String, override val aliases: List<Strin
 		buildList<ICommand> {
 			addAll(this@Group::class.memberProperties
 				.asSequence()
-				.filter { it.returnType.isSubtypeOf(Command::class.starProjectedType) }
-				.map { it.getter.call(this@Group) as Command })
+				.filter { it.returnType.isSubtypeOf(ICommand::class.starProjectedType) }
+				.map { it.getter.call(this@Group) as ICommand })
 			addAll(this@Group::class.nestedClasses
 				.asSequence()
 				.filter { it.isSubclassOf(Group::class) }
