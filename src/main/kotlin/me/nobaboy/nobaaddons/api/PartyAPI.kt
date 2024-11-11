@@ -83,6 +83,7 @@ object PartyAPI : IParty {
 		Scheduler.schedule(7 * 20) {
 			processPartyList()
 			gotList = true
+			gettingList = false
 		}
 	}
 

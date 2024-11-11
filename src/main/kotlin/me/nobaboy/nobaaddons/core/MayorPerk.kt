@@ -1,5 +1,9 @@
 package me.nobaboy.nobaaddons.core
 
+import me.nobaboy.nobaaddons.api.MayorAPI.foxyExtraEventPattern
+import me.nobaboy.nobaaddons.data.jsonobjects.Perk
+import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
+
 enum class MayorPerk(val perkName: String) {
 	// Aatrox
 	SLAYER_XP_BUFF("Slayer XP Buff"),
@@ -66,23 +70,30 @@ enum class MayorPerk(val perkName: String) {
 
 	var isActive = false
 	var description = "Failed to load description from API"
-	var isMinister = false
+	var minister = false
 
 	override fun toString(): String = "$perkName: $description"
 
 	companion object {
-		val perks = MayorPerk.entries.associateBy { it.perkName }
+		fun getPerk(name: String): MayorPerk? = entries.firstOrNull { it.perkName == name }
 
-		fun disablePerks() = entries.forEach { it.isActive = false }
+		fun disableAll() = entries.forEach { it.isActive = false }
 
-		private fun MayorPerk.renameFoxyPerks(): String? {
+		fun Perk.toPerk(): MayorPerk? = getPerk(this.renameFoxyPerks())?.apply {
+			description = this@toPerk.description
+			minister = this@toPerk.minister
+		}
+
+		private fun Perk.renameFoxyPerks(): String {
 			val foxyExtraEventPairs = mapOf(
 				"Mining Fiesta" to "Extra Event (Mining)",
 				"Fishing Festival" to "Extra Event (Fishing)",
 				"Spooky Festival" to "Extra Event (Spooky)"
 			)
 
-			return foxyExtraEventPairs.entries.firstOrNull { it.key in description }?.value
+			return foxyExtraEventPattern.matchMatcher(this.description) {
+				foxyExtraEventPairs.entries.firstOrNull { it.key == group("event") }?.value
+			} ?: this.name
 		}
 	}
 }

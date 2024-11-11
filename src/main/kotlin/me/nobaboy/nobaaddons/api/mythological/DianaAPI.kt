@@ -1,8 +1,8 @@
-package me.nobaboy.nobaaddons.api.impl.mythological
+package me.nobaboy.nobaaddons.api.mythological
 
+import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.api.impl.MayorAPI
 import me.nobaboy.nobaaddons.core.MayorPerk
 import me.nobaboy.nobaaddons.events.skyblock.mythological.InquisitorSpawnEvent
 import me.nobaboy.nobaaddons.utils.InventoryUtils
@@ -12,7 +12,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents
 import net.minecraft.entity.Entity
 
-class DianaAPI {
+object DianaAPI {
 	private val spade = "ANCESTRAL_SPADE"
 
 	fun init() {

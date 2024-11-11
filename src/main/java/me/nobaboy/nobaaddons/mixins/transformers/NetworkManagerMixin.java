@@ -26,7 +26,7 @@ public class NetworkManagerMixin {
 	private void onPacketSend(Packet<?> packet, CallbackInfo ci) {
 		if(this.side != NetworkSide.CLIENTBOUND) return;
 
-		PacketEvents.INSTANCE.getSEND().invoker().onPacketSend(packet);
+		PacketEvents.SEND.invoker().onPacketSend(packet);
 	}
 
 	@Inject(
@@ -36,6 +36,6 @@ public class NetworkManagerMixin {
 	private void onPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
 		if(!this.channel.isOpen() || this.side != NetworkSide.CLIENTBOUND) return;
 
-		PacketEvents.INSTANCE.getRECEIVE().invoker().onPacketReceive(packet);
+		PacketEvents.RECEIVE.invoker().onPacketReceive(packet);
 	}
 }

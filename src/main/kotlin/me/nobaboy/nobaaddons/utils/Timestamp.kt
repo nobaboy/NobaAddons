@@ -4,9 +4,9 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
- * This code was taken and modified under LGPL-2.1 license
- * @link https://github.com/hannibal002/SkyHanni
- * @author SkyHanni
+ * This is taken and adapted from SkyHanni, which is licensed under the LGPL-2.1.
+ *
+ * [Original source](https://github.com/hannibal002/SkyHanni/blob/beta/src/main/java/at/hannibal2/skyhanni/utils/SkyBlockTime.kt)
  */
 @JvmInline
 value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
@@ -41,6 +41,7 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 
 		fun Duration.fromNow() = now() + this
 
-		fun Long.asTimeStamp() = Timestamp(this)
+		fun Long.asTimestamp() = Timestamp(this)
+		fun SkyBlockTime.asTimestamp() = Timestamp(toMillis())
 	}
 }

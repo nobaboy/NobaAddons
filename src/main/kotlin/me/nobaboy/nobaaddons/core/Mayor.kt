@@ -1,5 +1,7 @@
 package me.nobaboy.nobaaddons.core
 
+import me.nobaboy.nobaaddons.core.MayorPerk.Companion.toPerk
+import me.nobaboy.nobaaddons.data.jsonobjects.Perk
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 
 enum class Mayor(vararg val perks: MayorPerk) {
@@ -77,10 +79,24 @@ enum class Mayor(vararg val perks: MayorPerk) {
 
 	override fun toString(): String = mayorName
 
-	companion object {
-		val mayors = entries.associateBy { it.mayorName }
+	fun activatePerks(perks: List<MayorPerk>) {
+		this.perks.forEach { it.isActive = it in perks }
+	}
 
+	fun activateAllPerks(): Mayor {
+		this.perks.forEach { it.isActive = true }
+		return this
+	}
+
+	companion object {
 		fun getMayor(name: String): Mayor? = entries.firstOrNull { it.mayorName == name }
 		fun getMayor(perk: MayorPerk): Mayor? = entries.firstOrNull { it.perks.contains(perk) }
+
+		fun getMayor(name: String, perks: List<Perk>): Mayor {
+			val mayor = getMayor(name) ?: return UNKNOWN
+
+			mayor.activatePerks(perks.mapNotNull { it.toPerk() })
+			return mayor
+		}
 	}
 }

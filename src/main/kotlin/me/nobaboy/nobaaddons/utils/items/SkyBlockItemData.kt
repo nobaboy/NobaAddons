@@ -2,9 +2,9 @@ package me.nobaboy.nobaaddons.utils.items
 
 import me.nobaboy.nobaaddons.core.ItemRarity
 import me.nobaboy.nobaaddons.utils.Timestamp
-import net.minecraft.component.DataComponentTypes
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.nbtCompound
 import net.minecraft.component.type.LoreComponent
-import net.minecraft.component.type.NbtComponent
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import java.lang.ref.WeakReference
@@ -12,10 +12,8 @@ import java.lang.ref.WeakReference
 class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	private val RARITY_PATTERN = Regex("^(?:. )?(?<RARITY>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL).*")
 
-	private val nbt: NbtCompound
-		get() = item.get()!!.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).nbt
-	private val lore: LoreComponent
-		get() = item.get()!!.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT)
+	private val nbt: NbtCompound get() = item.get()!!.nbtCompound.nbt
+	private val lore: LoreComponent get() = item.get()!!.lore
 
 	val enchantments: Map<String, Int> by lazy {
 		buildMap {
