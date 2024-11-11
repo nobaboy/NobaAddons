@@ -102,7 +102,7 @@ object MayorAPI {
 
 		val lore = item.lore.lines.map { it.string.cleanFormatting() }
 
-		val perk = lore.nextAfter("Perkpocalypse Perks?:", 2) ?: return
+		val perk = lore.nextAfter("Perkpocalypse Perks:", 2) ?: return
 		val extraMayor = Mayor.getMayor(MayorPerk.getPerk(perk) ?: return)?.activateAllPerks() ?: return
 
 		val lastMayorTimestamp = nextMayorTimestamp - SKYBLOCK_YEAR_MILLIS.milliseconds

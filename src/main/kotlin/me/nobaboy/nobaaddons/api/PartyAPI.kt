@@ -90,7 +90,6 @@ object PartyAPI : IParty {
 	fun clear() {
 		partyLeft()
 		storedPartyList.clear()
-		gettingList = false
 		gotList = false
 	}
 
