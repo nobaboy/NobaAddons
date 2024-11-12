@@ -1,8 +1,6 @@
 package me.nobaboy.nobaaddons.features.dungeons
 
 import me.nobaboy.nobaaddons.api.DungeonsAPI
-import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.EntityUtils

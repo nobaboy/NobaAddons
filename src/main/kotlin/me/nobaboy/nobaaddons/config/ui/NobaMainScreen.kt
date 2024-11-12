@@ -46,7 +46,7 @@ class NobaMainScreen : Screen(TITLE) {
 		adder.add(ButtonWidget.builder(SOURCE_TEXT, ConfirmLinkScreen.opening(this, GITHUB_ROOT)).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ISSUES_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/issues")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(MODRINTH_TEXT, ConfirmLinkScreen.opening(this, "https://modrinth.com/mod/nobaaddons")).width(BUTTON_WIDTH_HALF).build())
-		adder.add(ButtonWidget.builder(LEGAL_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/LICENSE")).width(BUTTON_WIDTH_HALF).build())
+		adder.add(ButtonWidget.builder(LEGAL_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/blob/master/LICENSE")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ScreenTexts.DONE) { close() }.width(BUTTON_WIDTH).build(), 2)
 
 		layout!!.refreshPositions()

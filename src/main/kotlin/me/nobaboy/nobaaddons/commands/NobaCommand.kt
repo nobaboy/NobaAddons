@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.commands
 
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
-import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.commands.internal.Group
@@ -58,13 +57,7 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 		executes(TemporaryWaypoint::addWaypoint)
 	}
 
-	object Debug : Group("debug") {
-		val party = Command.command("party") {
-			executes {
-				PartyAPI.listMembers()
-			}
-		}
-	}
+	val debug = DebugCommands
 
 	object SimonSays : Group("ss", aliases = listOf("simonsays")) {
 		val clear = Command.command("clear") {
