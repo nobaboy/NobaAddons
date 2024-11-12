@@ -1,8 +1,6 @@
 {
   "nobaaddons.name": "NobaAddons",
 
-  "nobaaddons.key.refillPearls": "Refill Pearls",
-
   "nobaaddons.config.open": "Open Config",
   "nobaaddons.config.hud": "Edit HUD",
   "nobaaddons.config.keybinds": "Keybinds",
@@ -21,6 +19,8 @@
   "nobaaddons.config.general": "General",
   "nobaaddons.config.general.open": "Open",
   "nobaaddons.config.general.main": "NobaAddons Main Screen",
+  "nobaaddons.config.general.allowKeybindsOutsideSkyBlock": "Allow Keybinds Outside SkyBlock",
+  "nobaaddons.config.general.allowKeybindsOutsideSkyBlock.tooltip": "Allows you to use your custom keybinds outside of SkyBlock",
   "nobaaddons.config.general.wikiCommandAutoOpen": "Auto Open /swiki Search",
   "nobaaddons.config.general.wikiCommandAutoOpen.tooltip": "Automatically open the Official SkyBlock Wiki when using §3/swiki§r",
 

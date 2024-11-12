@@ -22,6 +22,13 @@ object GeneralCategory {
 				.build())
 
 			.option(Option.createBuilder<Boolean>()
+				.name(Text.translatable("nobaaddons.config.general.allowKeybindsOutsideSkyBlock"))
+				.description(OptionDescription.of(Text.translatable("nobaaddons.config.general.allowKeybindsOutsideSkyBlock.tooltip")))
+				.binding(defaults.general.allowKeybindsOutsideSkyBlock, config.general::allowKeybindsOutsideSkyBlock) { config.general.allowKeybindsOutsideSkyBlock = it }
+				.controller(NobaConfigUtils::createBooleanController)
+				.build())
+
+			.option(Option.createBuilder<Boolean>()
 				.name(Text.translatable("nobaaddons.config.general.wikiCommandAutoOpen"))
 				.description(OptionDescription.of(Text.translatable("nobaaddons.config.general.wikiCommandAutoOpen.tooltip")))
 				.binding(defaults.general.wikiCommandAutoOpen, config.general::wikiCommandAutoOpen) { config.general.wikiCommandAutoOpen = it }
