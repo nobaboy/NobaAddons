@@ -20,7 +20,7 @@ import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
-import me.nobaboy.nobaaddons.utils.keybinds.KeyBindListener
+import me.nobaboy.nobaaddons.features.keybinds.KeyBindListener
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.MutableText

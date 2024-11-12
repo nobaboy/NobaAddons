@@ -23,6 +23,14 @@ open class NobaKeyBind(
 		onPress
 	)
 
+	@Suppress("UsePropertyAccessSyntax") // using property access syntax causes a StackOverflowError
+	override fun setPressed(pressed: Boolean) {
+		if(!super.isPressed() && pressed) {
+			maybePress()
+		}
+		super.setPressed(pressed)
+	}
+
 	fun maybePress() {
 		if(cooldownManager.isOnCooldown()) return
 		cooldownManager.startCooldown(250.milliseconds)
