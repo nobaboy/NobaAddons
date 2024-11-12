@@ -1,15 +1,11 @@
 {
   "nobaaddons.name": "NobaAddons",
 
-  "nobaaddons.key.pets": "Pets Menu",
-  "nobaaddons.key.wardrobe": "Wardrobe Menu",
-  "nobaaddons.key.equipment": "Equipment",
-  "nobaaddons.key.enderchest": "Ender Chest",
-  "nobaaddons.key.storage": "Storage Menu",
   "nobaaddons.key.refillPearls": "Refill Pearls",
 
   "nobaaddons.config.open": "Open Config",
-  "nobaaddons.config.edit": "Open HUD Editor",
+  "nobaaddons.config.hud": "Edit HUD",
+  "nobaaddons.config.keybinds": "Keybinds",
   "nobaaddons.config.github": "GitHub",
   "nobaaddons.config.issues": "Issues",
   "nobaaddons.config.modrinth": "Modrinth",
@@ -120,5 +116,11 @@
   "nobaaddons.config.chat.chatCommands.guild.help": "Help Command",
   "nobaaddons.config.chat.chatCommands.guild.help.tooltip": "Replies with all usable commands",
   "nobaaddons.config.chat.chatCommands.guild.warpOut": "Warp Out Command",
-  "nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip": "Warps out the specified user"
+  "nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip": "Warps out the specified user",
+
+  "nobaaddons.keybinds": "Keybinds",
+  "nobaaddons.keybind.add": "New Keybind",
+  "nobaaddons.keybind.remove": "Delete",
+  "nobaaddons.keybind.command": "Command",
+  "nobaaddons.keybind.key": "Key"
 }

@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.config.ui
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.config.ui.elements.HudElement
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
@@ -16,7 +15,7 @@ import kotlin.math.roundToInt
 private val TITLE = Text.translatable("nobaaddons.editor")
 private const val BUTTON_WIDTH = 200
 
-class NobaHudScreen(private val parent: Screen) : Screen(TITLE) {
+class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 	private lateinit var elements: LinkedHashMap<String, HudElement>
 	private lateinit var doneButtonWidget: ButtonWidget
 //	private var contextMenu: ContextMenu? = null
@@ -141,7 +140,7 @@ class NobaHudScreen(private val parent: Screen) : Screen(TITLE) {
 	override fun close() {
 		NobaConfigManager.config.uiAndVisuals.showUsageText = showUsageText
 		NobaConfigManager.save()
-		parent.queueOpen()
+		client!!.setScreen(parent)
 	}
 
 	private fun updateOffset(element: HudElement, mouseX: Double, mouseY: Double) {

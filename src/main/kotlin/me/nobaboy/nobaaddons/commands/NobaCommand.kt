@@ -7,9 +7,11 @@ import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.ui.NobaHudScreen
 import me.nobaboy.nobaaddons.config.ui.NobaMainScreen
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.general.RefillPearls
+import me.nobaboy.nobaaddons.features.keybinds.ui.KeybindConfigScreen
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
@@ -31,6 +33,18 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 	val config = Command.command("config") {
 		executes {
 			NobaConfigManager.getConfigScreen(null).queueOpen()
+		}
+	}
+
+	val keybinds = Command.command("keybinds") {
+		executes {
+			KeybindConfigScreen(null).queueOpen()
+		}
+	}
+
+	val hud = Command.command("hud") {
+		executes {
+			NobaHudScreen(null).queueOpen()
 		}
 	}
 
