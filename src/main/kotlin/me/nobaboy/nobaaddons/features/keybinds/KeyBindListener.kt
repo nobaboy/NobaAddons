@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.keybinds.data.KeybindConfig
 import me.nobaboy.nobaaddons.utils.CooldownManager
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.MCUtils
 import org.lwjgl.glfw.GLFW
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -24,7 +24,7 @@ object KeyBindListener {
 		if(cooldownManager.isOnCooldown()) return
 
 		val keybind = KeybindConfig.keybinds.firstOrNull { it.keycode == key } ?: return
-		ChatUtils.queueCommand(keybind.command)
+		MCUtils.networkHandler!!.sendChatCommand(keybind.command)
 		cooldownManager.startCooldown()
 	}
 }
