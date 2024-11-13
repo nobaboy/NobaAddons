@@ -6,7 +6,7 @@ import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionDescription
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.ui.NobaMainScreen
+import me.nobaboy.nobaaddons.screens.NobaMainScreen
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
 
@@ -19,6 +19,13 @@ object GeneralCategory {
 				.name(Text.translatable("nobaaddons.config.general.main"))
 				.text(Text.translatable("nobaaddons.config.general.open"))
 				.action { screen, option -> MinecraftClient.getInstance().setScreen(NobaMainScreen()) }
+				.build())
+
+			.option(Option.createBuilder<Boolean>()
+				.name(Text.translatable("nobaaddons.config.general.allowKeybindsOutsideSkyBlock"))
+				.description(OptionDescription.of(Text.translatable("nobaaddons.config.general.allowKeybindsOutsideSkyBlock.tooltip")))
+				.binding(defaults.general.allowKeybindsOutsideSkyBlock, config.general::allowKeybindsOutsideSkyBlock) { config.general.allowKeybindsOutsideSkyBlock = it }
+				.controller(NobaConfigUtils::createBooleanController)
 				.build())
 
 			.option(Option.createBuilder<Boolean>()

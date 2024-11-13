@@ -1,10 +1,10 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.config.ui.ElementManager
-import me.nobaboy.nobaaddons.config.ui.elements.Element
-import me.nobaboy.nobaaddons.config.ui.elements.TextElement
-import me.nobaboy.nobaaddons.config.ui.elements.TextMode
-import me.nobaboy.nobaaddons.config.ui.elements.impl.TextHud
+import me.nobaboy.nobaaddons.screens.hud.ElementManager
+import me.nobaboy.nobaaddons.screens.hud.elements.Element
+import me.nobaboy.nobaaddons.screens.hud.elements.TextElement
+import me.nobaboy.nobaaddons.screens.hud.elements.TextMode
+import me.nobaboy.nobaaddons.screens.hud.elements.impl.TextHud
 import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import java.util.regex.Pattern

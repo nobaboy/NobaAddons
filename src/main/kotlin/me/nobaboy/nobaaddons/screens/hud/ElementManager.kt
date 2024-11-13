@@ -1,8 +1,8 @@
-package me.nobaboy.nobaaddons.config.ui
+package me.nobaboy.nobaaddons.screens.hud
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.config.ui.elements.HudElement
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
+import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import java.util.LinkedHashMap
 import kotlin.collections.set

@@ -1,7 +1,9 @@
-package me.nobaboy.nobaaddons.config.ui
+package me.nobaboy.nobaaddons.screens
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.screens.hud.ElementManager
+import me.nobaboy.nobaaddons.screens.keybinds.KeybindsConfigScreen
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCentered
 import net.minecraft.client.gui.DrawContext
@@ -13,21 +15,22 @@ import net.minecraft.client.gui.widget.ThreePartsLayoutWidget
 import net.minecraft.screen.ScreenTexts
 import net.minecraft.text.Text
 
+private val TITLE = Text.translatable("nobaaddons.name")
+
+private const val SPACING = 8
+private const val BUTTON_WIDTH = 200
+private const val BUTTON_WIDTH_HALF = 96
+
 class NobaMainScreen : Screen(TITLE) {
 	private var layout: ThreePartsLayoutWidget? = null
 
 	companion object {
-		private val TITLE = Text.translatable("nobaaddons.name")
-
-		private const val SPACING = 8
-		private const val BUTTON_WIDTH = 200
-		private const val BUTTON_WIDTH_HALF = 96
-
 		private const val GITHUB_ROOT = "https://github.com/nobaboy/NobaAddons"
 
 		private val VERSION = "v${NobaAddons.VERSION}"
 		private val CONFIGURATION_TEXT = Text.translatable("nobaaddons.config.open")
-		private val EDIT_LOCATIONS_TEXT = Text.translatable("nobaaddons.config.edit")
+		private val EDIT_LOCATIONS_TEXT = Text.translatable("nobaaddons.config.hud")
+		private val EDIT_KEYBINDS_TEXT = Text.translatable("nobaaddons.config.keybinds")
 		private val SOURCE_TEXT = Text.translatable("nobaaddons.config.github")
 		private val ISSUES_TEXT = Text.translatable("nobaaddons.config.issues")
 		private val MODRINTH_TEXT = Text.translatable("nobaaddons.config.modrinth")
@@ -42,7 +45,12 @@ class NobaMainScreen : Screen(TITLE) {
 		val adder = gridWidget.createAdder(2)
 
 		adder.add(ButtonWidget.builder(CONFIGURATION_TEXT) { openConfig() }.width(BUTTON_WIDTH).build(), 2)
-		if(MCUtils.world != null) adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openHudEditor() }.width(BUTTON_WIDTH).build(), 2)
+		if(MCUtils.world != null) {
+			adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openHudEditor() }.width(BUTTON_WIDTH_HALF).build())
+			adder.add(ButtonWidget.builder(EDIT_KEYBINDS_TEXT) { openKeybindsEditor() }.width(BUTTON_WIDTH_HALF).build())
+		} else {
+			adder.add(ButtonWidget.builder(EDIT_KEYBINDS_TEXT) { openKeybindsEditor() }.width(BUTTON_WIDTH).build(), 2)
+		}
 		adder.add(ButtonWidget.builder(SOURCE_TEXT, ConfirmLinkScreen.opening(this, GITHUB_ROOT)).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ISSUES_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/issues")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(MODRINTH_TEXT, ConfirmLinkScreen.opening(this, "https://modrinth.com/mod/nobaaddons")).width(BUTTON_WIDTH_HALF).build())
@@ -79,6 +87,10 @@ class NobaMainScreen : Screen(TITLE) {
 
 	private fun openConfig() {
 		client?.setScreen(NobaConfigManager.getConfigScreen(this))
+	}
+
+	private fun openKeybindsEditor() {
+		client!!.setScreen(KeybindsConfigScreen(this))
 	}
 
 	private fun openHudEditor() {

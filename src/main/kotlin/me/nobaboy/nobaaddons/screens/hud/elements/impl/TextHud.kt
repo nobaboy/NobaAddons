@@ -1,9 +1,9 @@
-package me.nobaboy.nobaaddons.config.ui.elements.impl
+package me.nobaboy.nobaaddons.screens.hud.elements.impl
 
-import me.nobaboy.nobaaddons.config.ui.elements.Element
-import me.nobaboy.nobaaddons.config.ui.elements.ElementBounds
-import me.nobaboy.nobaaddons.config.ui.elements.HudElement
-import me.nobaboy.nobaaddons.config.ui.elements.TextMode
+import me.nobaboy.nobaaddons.screens.hud.elements.Element
+import me.nobaboy.nobaaddons.screens.hud.elements.ElementBounds
+import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
+import me.nobaboy.nobaaddons.screens.hud.elements.TextMode
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.getWidth

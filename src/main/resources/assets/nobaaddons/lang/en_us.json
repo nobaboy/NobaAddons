@@ -1,19 +1,19 @@
 {
   "nobaaddons.name": "NobaAddons",
 
-  "nobaaddons.key.pets": "Pets Menu",
-  "nobaaddons.key.wardrobe": "Wardrobe Menu",
-  "nobaaddons.key.equipment": "Equipment",
-  "nobaaddons.key.enderchest": "Ender Chest",
-  "nobaaddons.key.storage": "Storage Menu",
-  "nobaaddons.key.refillPearls": "Refill Pearls",
-
   "nobaaddons.config.open": "Open Config",
-  "nobaaddons.config.edit": "Open HUD Editor",
+  "nobaaddons.config.hud": "Edit HUD",
+  "nobaaddons.config.keybinds": "Keybinds",
   "nobaaddons.config.github": "GitHub",
   "nobaaddons.config.issues": "Issues",
   "nobaaddons.config.modrinth": "Modrinth",
   "nobaaddons.config.legal": "Legal",
+
+  "nobaaddons.keybinds": "Keybinds",
+  "nobaaddons.keybind.add": "New Keybind",
+  "nobaaddons.keybind.remove": "Delete",
+  "nobaaddons.keybind.command": "Command",
+  "nobaaddons.keybind.key": "Key",
 
   "nobaaddons.config.enabled": "Enabled",
   "nobaaddons.config.seconds": "%s seconds",
@@ -25,6 +25,8 @@
   "nobaaddons.config.general": "General",
   "nobaaddons.config.general.open": "Open",
   "nobaaddons.config.general.main": "NobaAddons Main Screen",
+  "nobaaddons.config.general.allowKeybindsOutsideSkyBlock": "Allow Keybinds Outside SkyBlock",
+  "nobaaddons.config.general.allowKeybindsOutsideSkyBlock.tooltip": "Allows you to use your custom keybinds outside of SkyBlock",
   "nobaaddons.config.general.wikiCommandAutoOpen": "Auto Open /swiki Search",
   "nobaaddons.config.general.wikiCommandAutoOpen.tooltip": "Automatically open the Official SkyBlock Wiki when using §3/swiki§r",
 
