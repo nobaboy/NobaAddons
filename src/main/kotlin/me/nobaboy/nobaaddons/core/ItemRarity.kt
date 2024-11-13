@@ -18,10 +18,13 @@ enum class ItemRarity(val color: NobaColor? = null) {
 	UNKNOWN;
 
 	val displayName = name.replace("_", " ").title()
+	val colorCode by lazy { color?.colorCode }
 
 	fun isAtLeast(rarity: ItemRarity): Boolean = this.ordinal >= rarity.ordinal
 
 	companion object {
 		val rarities = entries.associateBy { it.name.replace("_", " ") }
+
+		fun getByColorCode(colorCode: Char): ItemRarity = entries.firstOrNull { it.colorCode == colorCode } ?: UNKNOWN
 	}
 }

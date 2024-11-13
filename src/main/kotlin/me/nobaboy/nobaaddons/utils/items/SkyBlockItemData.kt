@@ -55,11 +55,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val tunedTransmission: Int by CacheOf(this::nbt) { nbt.getInt("tuned_transmission") }
 
 	// Pets
-	val pet: String by CacheOf(this::nbt) { nbt.getCompound("petInfo").getString("type") }
-	val active: Boolean by CacheOf(this::nbt) { nbt.getCompound("petInfo").getBoolean("active") }
-	val xp: Double by CacheOf(this::nbt) { nbt.getCompound("petInfo").getDouble("exp") }
-	val tier: ItemRarity by CacheOf(this::nbt) { ItemRarity.rarities[nbt.getCompound("petInfo").getString("tier")] ?: ItemRarity.UNKNOWN }
-	val heldItem: String by CacheOf(this::nbt) { nbt.getCompound("petInfo").getString("heldItem") }
+	val petInfo: String by CacheOf(this::nbt) { nbt.getString("petInfo") }
 
 	data class Gemstone(val type: String, val tier: String)
 }

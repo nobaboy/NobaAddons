@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
 import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
+import me.nobaboy.nobaaddons.api.PetAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
@@ -52,6 +53,7 @@ object NobaAddons : ClientModInitializer {
 		SkyBlockAPI.init()
 		MayorAPI.init()
 		DungeonsAPI.init()
+		PetAPI.init()
 		/* endregion */
 
 		// Note: utility object classes should avoid calling a dedicated `init` method here where possible, and instead

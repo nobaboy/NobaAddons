@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.events.PacketEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.network.packet.Packet
+import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket
 import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
@@ -23,7 +24,10 @@ object InventoryAPI {
 	}
 
 	private fun handlePacketSend(packet: Packet<*>) {
-		if(packet is CloseHandledScreenC2SPacket) close()
+		when(packet) {
+			is ClickSlotC2SPacket -> handleClickSlot(packet)
+			is CloseHandledScreenC2SPacket -> close()
+		}
 	}
 
 	private fun handlePacketReceive(packet: Packet<*>) {
@@ -33,6 +37,12 @@ object InventoryAPI {
 			is ScreenHandlerSlotUpdateS2CPacket -> handleSlotUpdate(packet)
 			is CloseScreenS2CPacket -> close()
 		}
+	}
+
+	private fun handleClickSlot(packet: ClickSlotC2SPacket) {
+		if(packet.syncId != currentWindow?.id) return
+
+		InventoryEvents.SLOT_CLICK.invoker().onInventorySlotClick(packet.stack, packet.button, packet.slot, packet.actionType)
 	}
 
 	private fun handleOpenScreen(packet: OpenScreenS2CPacket) {

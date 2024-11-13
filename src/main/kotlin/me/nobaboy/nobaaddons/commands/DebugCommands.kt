@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.commands
 
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.PartyAPI
+import me.nobaboy.nobaaddons.api.PetAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -83,6 +84,39 @@ object DebugCommands : Group("debug") {
 				println(item.get(DataComponentTypes.LORE)!!.lines)
 				source.sendFeedback(Text.literal("Dumped item lore to game logs"))
 			}
+		}
+	}
+
+	val pet = Command.command("pet") {
+		executes {
+			val pet = PetAPI.currentPet
+			if(pet == null) {
+				source.sendError(Text.literal("You don't have a pet equipped"))
+				return@executes
+			}
+
+			source.sendFeedback(buildText {
+				fun data(vararg items: Pair<String, Any?>) {
+					items.forEach {
+						append(Text.literal("${it.first}: ").formatted(Formatting.BLUE))
+						append(Text.literal(it.second.toString()).formatted(Formatting.AQUA))
+						append("\n")
+					}
+				}
+
+				append("-".repeat(20).toText().formatted(Formatting.GRAY))
+				append("\n")
+				data(
+					"Name" to pet.name,
+					"Pet ID" to pet.id,
+					"Level" to pet.level,
+					"XP" to pet.xp,
+					"Rarity" to pet.rarity,
+					"Held Item" to pet.heldItem,
+					"UUID" to pet.uuid
+				)
+				append("-".repeat(20).toText().formatted(Formatting.GRAY))
+			})
 		}
 	}
 }

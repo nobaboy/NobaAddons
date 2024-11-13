@@ -2,6 +2,8 @@ package me.nobaboy.nobaaddons.events
 
 import me.nobaboy.nobaaddons.data.InventoryData
 import net.fabricmc.fabric.api.event.EventFactory
+import net.minecraft.item.ItemStack
+import net.minecraft.screen.slot.SlotActionType
 
 object InventoryEvents {
 	val OPEN = EventFactory.createArrayBacked(InventoryOpenEvent::class.java) { listeners ->
@@ -28,6 +30,12 @@ object InventoryEvents {
 		}
 	}
 
+	val SLOT_CLICK = EventFactory.createArrayBacked(InventorySlotClickEvent::class.java) { listeners ->
+		InventorySlotClickEvent { stack, button, slot, actionType ->
+			listeners.forEach { it.onInventorySlotClick(stack, button, slot, actionType) }
+		}
+	}
+
 	fun interface InventoryOpenEvent {
 		fun onInventoryOpen(inventory: InventoryData)
 	}
@@ -42,5 +50,9 @@ object InventoryEvents {
 
 	fun interface InventoryCloseEvent {
 		fun onInventoryClose(sameName: Boolean)
+	}
+
+	fun interface InventorySlotClickEvent {
+		fun onInventorySlotClick(stack: ItemStack, button: Int, slot: Int, actionType: SlotActionType)
 	}
 }

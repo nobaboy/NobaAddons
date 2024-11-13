@@ -56,7 +56,7 @@ object MayorAPI {
 	fun init() {
 		SecondPassedEvent.EVENT.register { handleSecondPassed() }
 		InventoryEvents.READY.register(this::handleInventoryReady)
-		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting())}
+		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
 	}
 
 	private fun handleSecondPassed() {
