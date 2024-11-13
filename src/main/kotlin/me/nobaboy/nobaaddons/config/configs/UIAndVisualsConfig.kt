@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.config.ui.elements.TextElement
+import me.nobaboy.nobaaddons.screens.hud.elements.TextElement
 import me.nobaboy.nobaaddons.utils.NobaColor
 import java.awt.Color
 

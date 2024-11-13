@@ -1,20 +1,26 @@
 package me.nobaboy.nobaaddons.features.general
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
-import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 
-object RefillPearls : CooldownManager() {
+object RefillPearls {
 	fun refillPearls() {
-		if(!isEnabled()) return
+		if(!isEnabled()) {
+			ChatUtils.addMessage("Refill pearls is only usable in SkyBlock!")
+			return
+		}
 
 		val missingPearls = getMissingPearls()
-		if(missingPearls == 0) return
+		if(missingPearls == 0) {
+			ChatUtils.addMessage("You already have 16 Ender Pearls.")
+			return
+		}
 
 		HypixelCommands.getFromSacks("ENDER_PEARL", missingPearls)
 	}

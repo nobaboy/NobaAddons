@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.config.ui.elements
+package me.nobaboy.nobaaddons.screens.hud.elements
 
 import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.utils.StringUtils.title

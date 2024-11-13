@@ -1,6 +1,6 @@
-package me.nobaboy.nobaaddons.config.ui.elements
+package me.nobaboy.nobaaddons.screens.hud.elements
 
-import me.nobaboy.nobaaddons.config.ui.NobaHudScreen
+import me.nobaboy.nobaaddons.screens.NobaHudScreen
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
