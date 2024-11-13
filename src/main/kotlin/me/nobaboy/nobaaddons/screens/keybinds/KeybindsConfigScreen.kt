@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.keybinds.ui
+package me.nobaboy.nobaaddons.screens.keybinds
 
 import dev.lambdaurora.spruceui.Position
 import dev.lambdaurora.spruceui.SpruceTexts
@@ -16,7 +16,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import org.lwjgl.glfw.GLFW
 
-class KeybindConfigScreen(private val parent: Screen?) : SpruceScreen(Text.translatable("nobaaddons.keybinds")) {
+class KeybindsConfigScreen(private val parent: Screen?) : SpruceScreen(Text.translatable("nobaaddons.keybinds")) {
 	private var selecting: Selecting? = null
 	private lateinit var options: SpruceOptionListWidget
 	private val keybinds by KeybindConfig::keybinds

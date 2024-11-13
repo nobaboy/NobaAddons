@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.keybinds.ui
+package me.nobaboy.nobaaddons.screens.keybinds
 
 import dev.lambdaurora.spruceui.Position
 import dev.lambdaurora.spruceui.option.SpruceStringOption

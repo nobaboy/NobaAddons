@@ -6,12 +6,12 @@ import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.config.ui.NobaHudScreen
-import me.nobaboy.nobaaddons.config.ui.NobaMainScreen
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.general.RefillPearls
-import me.nobaboy.nobaaddons.features.keybinds.ui.KeybindConfigScreen
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
+import me.nobaboy.nobaaddons.screens.NobaHudScreen
+import me.nobaboy.nobaaddons.screens.NobaMainScreen
+import me.nobaboy.nobaaddons.screens.keybinds.KeybindsConfigScreen
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -37,7 +37,7 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 
 	val keybinds = Command.command("keybinds") {
 		executes {
-			KeybindConfigScreen(null).queueOpen()
+			KeybindsConfigScreen(null).queueOpen()
 		}
 	}
 

@@ -9,6 +9,12 @@
   "nobaaddons.config.modrinth": "Modrinth",
   "nobaaddons.config.legal": "Legal",
 
+  "nobaaddons.keybinds": "Keybinds",
+  "nobaaddons.keybind.add": "New Keybind",
+  "nobaaddons.keybind.remove": "Delete",
+  "nobaaddons.keybind.command": "Command",
+  "nobaaddons.keybind.key": "Key",
+
   "nobaaddons.config.enabled": "Enabled",
   "nobaaddons.config.seconds": "%s seconds",
 
@@ -116,11 +122,5 @@
   "nobaaddons.config.chat.chatCommands.guild.help": "Help Command",
   "nobaaddons.config.chat.chatCommands.guild.help.tooltip": "Replies with all usable commands",
   "nobaaddons.config.chat.chatCommands.guild.warpOut": "Warp Out Command",
-  "nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip": "Warps out the specified user",
-
-  "nobaaddons.keybinds": "Keybinds",
-  "nobaaddons.keybind.add": "New Keybind",
-  "nobaaddons.keybind.remove": "Delete",
-  "nobaaddons.keybind.command": "Command",
-  "nobaaddons.keybind.key": "Key"
+  "nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip": "Warps out the specified user"
 }

@@ -1,8 +1,9 @@
-package me.nobaboy.nobaaddons.config.ui
+package me.nobaboy.nobaaddons.screens
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.features.keybinds.ui.KeybindConfigScreen
+import me.nobaboy.nobaaddons.screens.hud.ElementManager
+import me.nobaboy.nobaaddons.screens.keybinds.KeybindsConfigScreen
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCentered
 import net.minecraft.client.gui.DrawContext
@@ -14,16 +15,16 @@ import net.minecraft.client.gui.widget.ThreePartsLayoutWidget
 import net.minecraft.screen.ScreenTexts
 import net.minecraft.text.Text
 
+private val TITLE = Text.translatable("nobaaddons.name")
+
+private const val SPACING = 8
+private const val BUTTON_WIDTH = 200
+private const val BUTTON_WIDTH_HALF = 96
+
 class NobaMainScreen : Screen(TITLE) {
 	private var layout: ThreePartsLayoutWidget? = null
 
 	companion object {
-		private val TITLE = Text.translatable("nobaaddons.name")
-
-		private const val SPACING = 8
-		private const val BUTTON_WIDTH = 200
-		private const val BUTTON_WIDTH_HALF = 96
-
 		private const val GITHUB_ROOT = "https://github.com/nobaboy/NobaAddons"
 
 		private val VERSION = "v${NobaAddons.VERSION}"
@@ -89,7 +90,7 @@ class NobaMainScreen : Screen(TITLE) {
 	}
 
 	private fun openKeybindsEditor() {
-		client!!.setScreen(KeybindConfigScreen(this))
+		client!!.setScreen(KeybindsConfigScreen(this))
 	}
 
 	private fun openHudEditor() {

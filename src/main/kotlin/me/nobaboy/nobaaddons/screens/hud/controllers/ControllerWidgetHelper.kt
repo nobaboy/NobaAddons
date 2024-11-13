@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.config.ui.controllers
+package me.nobaboy.nobaaddons.screens.hud.controllers
 
 import dev.isxander.yacl3.api.Controller
 import dev.isxander.yacl3.api.utils.Dimension

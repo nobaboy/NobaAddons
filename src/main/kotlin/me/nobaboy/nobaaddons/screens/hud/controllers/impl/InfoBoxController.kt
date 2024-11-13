@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.config.ui.controllers.impl
+package me.nobaboy.nobaaddons.screens.hud.controllers.impl
 
 import dev.isxander.yacl3.api.Controller
 import dev.isxander.yacl3.api.Option
@@ -10,19 +10,19 @@ import dev.isxander.yacl3.gui.AbstractWidget
 import dev.isxander.yacl3.gui.LowProfileButtonWidget
 import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.ui.controllers.ControllerHelper
-import me.nobaboy.nobaaddons.config.ui.controllers.ControllerWidgetHelper
-import me.nobaboy.nobaaddons.config.ui.elements.TextElement
-import me.nobaboy.nobaaddons.config.ui.elements.TextMode
 import me.nobaboy.nobaaddons.mixins.accessors.CategoryTabAccessor
+import me.nobaboy.nobaaddons.screens.hud.controllers.ControllerHelper
+import me.nobaboy.nobaaddons.screens.hud.controllers.ControllerWidgetHelper
+import me.nobaboy.nobaaddons.screens.hud.elements.TextElement
+import me.nobaboy.nobaaddons.screens.hud.elements.TextMode
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.Element
 import net.minecraft.text.Text
 
 class InfoBoxController(
-	option: Option<TextElement>,
-	textControllerBuilder: (Option<String>) -> ControllerBuilder<String>,
-	modeControllerBuilder: (Option<TextMode>) -> EnumControllerBuilder<TextMode>
+    option: Option<TextElement>,
+    textControllerBuilder: (Option<String>) -> ControllerBuilder<String>,
+    modeControllerBuilder: (Option<TextMode>) -> EnumControllerBuilder<TextMode>
 ) : ControllerHelper<TextElement>(option) {
 	private val textController: Controller<String> = createOption<String>("Text:", textControllerBuilder,
 		{ option.pendingValue().text },

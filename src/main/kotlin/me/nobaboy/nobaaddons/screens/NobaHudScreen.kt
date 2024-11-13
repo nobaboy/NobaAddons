@@ -1,7 +1,8 @@
-package me.nobaboy.nobaaddons.config.ui
+package me.nobaboy.nobaaddons.screens
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.config.ui.elements.HudElement
+import me.nobaboy.nobaaddons.screens.hud.ElementManager
+import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.gui.DrawContext

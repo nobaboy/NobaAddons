@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.config.ui.elements
+package me.nobaboy.nobaaddons.screens.hud.elements
 
 data class Element(
 	val identifier: String,
