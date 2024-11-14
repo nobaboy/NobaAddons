@@ -23,10 +23,10 @@ object MineshaftWaypoints {
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
-	private fun handleIslandChangeEvent(island: IslandType) {
+	private fun handleIslandChangeEvent(event: SkyBlockIslandChangeEvent) {
 		waypoints.clear()
 
-		if(island != IslandType.MINESHAFT) return
+		if(event.island != IslandType.MINESHAFT) return
 		val blockBelow = LocationUtils.blockBelowPlayer().roundToBlock()
 
 		if(config.entranceWaypoint) waypoints.add(Waypoint(blockBelow, "Entrance", NobaColor.BLUE))

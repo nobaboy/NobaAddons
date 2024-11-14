@@ -80,6 +80,6 @@ object SkyBlockAPI {
 	private fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentGame = packet.serverType.getOrNull()
 		currentIsland = packet.mode.map(IslandType::getIslandType).orElse(IslandType.UNKNOWN)
-		if(currentIsland != IslandType.UNKNOWN) SkyBlockIslandChangeEvent.EVENT.invoker().onIslandChange(currentIsland)
+		if(currentIsland != IslandType.UNKNOWN) SkyBlockIslandChangeEvent.EVENT.invoke(SkyBlockIslandChangeEvent(currentIsland))
 	}
 }
