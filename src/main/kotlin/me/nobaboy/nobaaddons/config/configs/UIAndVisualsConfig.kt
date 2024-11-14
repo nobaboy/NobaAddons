@@ -58,6 +58,8 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var hideLightningBolt: Boolean = false
+
+		@SerialEntry var removeFrontFacingThirdPerson: Boolean = false
 	}
 
 	class SwingAnimation {

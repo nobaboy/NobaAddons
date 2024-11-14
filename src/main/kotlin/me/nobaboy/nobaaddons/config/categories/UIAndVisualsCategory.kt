@@ -93,6 +93,13 @@ object UIAndVisualsCategory {
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson.tooltip")))
+					.binding(defaults.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson, config.uiAndVisuals.renderingTweaks::removeFrontFacingThirdPerson) { config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
 				.collapsed(true)
 				.build())
 

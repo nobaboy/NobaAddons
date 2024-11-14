@@ -45,6 +45,8 @@
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt": "Hide Lightning Bolt",
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt.tooltip": "Prevents lightning bolts from rendering",
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing": "Hide Other People Fishing",
+  "nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson": "Remove Front-Facing Third Person",
+  "nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson.tooltip": "Removes the front-facing third person view after pressing F5 twice",
   "nobaaddons.config.uiAndVisuals.swingAnimation": "Arm Swing Animation Tweaks",
   "nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration": "Swing Duration",
   "nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip": "Controls how long your arm swing animation duration is, ignoring all effects like Haste.",
