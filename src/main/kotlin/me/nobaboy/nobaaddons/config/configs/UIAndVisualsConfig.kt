@@ -19,6 +19,12 @@ class UIAndVisualsConfig {
 	val renderingTweaks: RenderingTweaks = RenderingTweaks()
 
 	@SerialEntry
+	val swingAnimation = SwingAnimation()
+
+	@SerialEntry
+	val itemPosition = FirstPersonItemPosition()
+
+	@SerialEntry
 	val infoBoxes = mutableListOf<TextElement>()
 
 	class TemporaryWaypoints {
@@ -52,5 +58,18 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var hideLightningBolt: Boolean = false
+	}
+
+	class SwingAnimation {
+		@SerialEntry var swingDuration: Int = 1
+		@SerialEntry var applyToAllPlayers: Boolean = false
+	}
+
+	class FirstPersonItemPosition {
+		@SerialEntry var scale: Float = 1f // [0.1f, 2f]
+		@SerialEntry var x: Int = 0 // [-150, 150]
+		@SerialEntry var y: Int = 0 // [-150, 150]
+		@SerialEntry var z: Int = 0 // [-150, 50]
+		@SerialEntry var cancelEquipAnimation: Boolean = false
 	}
 }

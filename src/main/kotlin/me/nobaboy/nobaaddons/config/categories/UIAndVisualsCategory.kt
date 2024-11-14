@@ -6,6 +6,7 @@ import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder
+import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
@@ -90,6 +91,70 @@ object UIAndVisualsCategory {
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing.tooltip")))
 					.binding(defaults.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing, config.uiAndVisuals.renderingTweaks::hideOtherPeopleFishing) { config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing = it }
 					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.collapsed(true)
+				.build())
+
+			.group(OptionGroup.createBuilder()
+				.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation"))
+				.option(Option.createBuilder<Int>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip")))
+					.binding(defaults.uiAndVisuals.swingAnimation.swingDuration, config.uiAndVisuals.swingAnimation::swingDuration) { config.uiAndVisuals.swingAnimation.swingDuration = it }
+					.controller {
+						IntegerSliderControllerBuilder.create(it)
+							.step(1)
+							.range(1, 60)
+							.formatValue { when(it) {
+								1 -> Text.translatable("nobaaddons.label.unmodified")
+								6 -> Text.translatable("nobaaddons.label.default")
+								else -> Text.literal("$it")
+							} }
+					}
+					.build())
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip")))
+					.binding(defaults.uiAndVisuals.swingAnimation.applyToAllPlayers, config.uiAndVisuals.swingAnimation::applyToAllPlayers) { config.uiAndVisuals.swingAnimation.applyToAllPlayers = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.collapsed(true)
+				.build())
+
+			.group(OptionGroup.createBuilder()
+				.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering"))
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip.tooltip")))
+					.binding(defaults.uiAndVisuals.itemPosition.cancelEquipAnimation, config.uiAndVisuals.itemPosition::cancelEquipAnimation) { config.uiAndVisuals.itemPosition.cancelEquipAnimation = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Int>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.xOffset"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.xOffset.tooltip")))
+					.binding(defaults.uiAndVisuals.itemPosition.x, config.uiAndVisuals.itemPosition::x) { config.uiAndVisuals.itemPosition.x = it }
+					.controller { IntegerSliderControllerBuilder.create(it).step(1).range(-150, 150) }
+					.build())
+				.option(Option.createBuilder<Int>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.yOffset"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.yOffset.tooltip")))
+					.binding(defaults.uiAndVisuals.itemPosition.y, config.uiAndVisuals.itemPosition::y) { config.uiAndVisuals.itemPosition.y = it }
+					.controller { IntegerSliderControllerBuilder.create(it).step(1).range(-150, 150) }
+					.build())
+				.option(Option.createBuilder<Int>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.zOffset"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.zOffset.tooltip")))
+					.binding(defaults.uiAndVisuals.itemPosition.z, config.uiAndVisuals.itemPosition::z) { config.uiAndVisuals.itemPosition.z = it }
+					.controller { IntegerSliderControllerBuilder.create(it).step(1).range(-150, 50) }
+					.build())
+				.option(Option.createBuilder<Float>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.scale"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.scale.tooltip")))
+					.binding(defaults.uiAndVisuals.itemPosition.scale, config.uiAndVisuals.itemPosition::scale) { config.uiAndVisuals.itemPosition.scale = it }
+					.controller { FloatSliderControllerBuilder.create(it).step(0.1f).range(0.1f, 2f) }
 					.build())
 
 				.collapsed(true)
