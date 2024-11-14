@@ -71,5 +71,6 @@ class UIAndVisualsConfig {
 		@SerialEntry var y: Int = 0 // [-150, 150]
 		@SerialEntry var z: Int = 0 // [-150, 50]
 		@SerialEntry var cancelEquipAnimation: Boolean = false
+		@SerialEntry var cancelDrinkAnimation: Boolean = false
 	}
 }

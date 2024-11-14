@@ -6,6 +6,7 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -59,5 +60,12 @@ public class HeldItemRendererMixin {
 			return 0f;
 		}
 		return equipProgress;
+	}
+
+	@Inject(method = "applyEatOrDrinkTransformation", at = @At(value = "INVOKE", target = "Ljava/lang/Math;pow(DD)D"), cancellable = true)
+	public void nobaaddons$cancelDrinkAnimation(MatrixStack matrices, float tickDelta, Arm arm, ItemStack stack, PlayerEntity player, CallbackInfo ci) {
+		if(NobaConfigManager.getConfig().getUiAndVisuals().getItemPosition().getCancelDrinkAnimation()) {
+			ci.cancel();
+		}
 	}
 }

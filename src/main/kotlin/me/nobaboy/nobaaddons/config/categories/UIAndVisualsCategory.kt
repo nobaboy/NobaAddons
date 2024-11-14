@@ -131,6 +131,12 @@ object UIAndVisualsCategory {
 					.binding(defaults.uiAndVisuals.itemPosition.cancelEquipAnimation, config.uiAndVisuals.itemPosition::cancelEquipAnimation) { config.uiAndVisuals.itemPosition.cancelEquipAnimation = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip")))
+					.binding(defaults.uiAndVisuals.itemPosition.cancelDrinkAnimation, config.uiAndVisuals.itemPosition::cancelDrinkAnimation) { config.uiAndVisuals.itemPosition.cancelDrinkAnimation = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
 
 				.option(Option.createBuilder<Int>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.xOffset"))

@@ -53,6 +53,8 @@
   "nobaaddons.config.uiAndVisuals.itemRendering": "First Person Rendering",
   "nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip": "Cancel Re-equip Animation",
   "nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip.tooltip": "Cancels the re-equip animation when switching between items",
+  "nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation": "Cancel Drink Animation",
+  "nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip": "Prevents the eating and drinking animation from playing",
   "nobaaddons.config.uiAndVisuals.itemRendering.xOffset": "Held Item X Offset",
   "nobaaddons.config.uiAndVisuals.itemRendering.xOffset.tooltip": "Moves the held item model in first person left or right across the screen\n\nNote that this slider is inverted if your main hand is set to left handed",
   "nobaaddons.config.uiAndVisuals.itemRendering.yOffset": "Held Item Y Offset",
