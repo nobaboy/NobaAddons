@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.data.SoundData
 import me.nobaboy.nobaaddons.events.PlaySoundEvent
-import me.nobaboy.nobaaddons.features.qol.sound.DreadlordSouleaterSoundFilter
+import me.nobaboy.nobaaddons.features.qol.sound.filters.dungeons.DreadlordAndSouleaterSoundFilter
 
 interface ISoundFilter {
 	val config get() = NobaConfigManager.config.qol.soundFilters
@@ -15,7 +15,7 @@ interface ISoundFilter {
 	companion object {
 		private var init = false
 		private val filters = mutableListOf<ISoundFilter>(
-			DreadlordSouleaterSoundFilter
+			DreadlordAndSouleaterSoundFilter
 		)
 
 		fun init() {

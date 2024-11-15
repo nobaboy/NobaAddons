@@ -11,9 +11,9 @@ import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.replaceWith
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
 import me.nobaboy.nobaaddons.screens.hud.controllers.impl.InfoBoxController
 import me.nobaboy.nobaaddons.screens.hud.elements.TextElement
-import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
 import net.minecraft.text.Text
 import java.awt.Color
 
