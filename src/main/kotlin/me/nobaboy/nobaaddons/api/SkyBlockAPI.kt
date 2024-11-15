@@ -48,7 +48,7 @@ object SkyBlockAPI {
 		if(!inSkyblock) return
 
 		val scoreboard = ScoreboardUtils.getSidebarLines()
-		val line = scoreboard.firstOrNull { it.contains("⏣")}
+		val line = scoreboard.firstOrNull { it.contains("⏣") }
 		currentZone = line?.replace("⏣", "")?.trim() ?: return
 	}
 

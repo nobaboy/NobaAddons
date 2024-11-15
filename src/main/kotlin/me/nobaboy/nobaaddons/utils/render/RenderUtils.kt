@@ -455,7 +455,7 @@ object RenderUtils {
 		if(dist < hideThreshold) return
 
 		var scale = dist.toFloat() / 256.0f
-		scale *= scaleMultiplier
+		scale = (scale * scaleMultiplier).coerceAtLeast(0.025f)
 
 		val x = vec.x - cameraPos.x
 		val y = vec.y - cameraPos.y
