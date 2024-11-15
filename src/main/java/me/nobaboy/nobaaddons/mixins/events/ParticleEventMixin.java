@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
-import me.nobaboy.nobaaddons.data.jsonobjects.ParticleData;
+import me.nobaboy.nobaaddons.data.ParticleData;
 import me.nobaboy.nobaaddons.events.ParticleEvent;
 import me.nobaboy.nobaaddons.utils.NobaVec;
 import net.minecraft.client.network.ClientPlayNetworkHandler;

@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events
 
-import me.nobaboy.nobaaddons.data.jsonobjects.ParticleData
+import me.nobaboy.nobaaddons.data.ParticleData
 import net.fabricmc.fabric.api.event.EventFactory
 
 fun interface ParticleEvent {

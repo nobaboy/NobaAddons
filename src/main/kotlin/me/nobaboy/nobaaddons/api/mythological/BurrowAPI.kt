@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.api.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.data.jsonobjects.ParticleData
+import me.nobaboy.nobaaddons.data.ParticleData
 import me.nobaboy.nobaaddons.events.ParticleEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.events.skyblock.mythological.MythologicalEvents

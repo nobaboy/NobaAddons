@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.features.events.mythological
 
 import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.data.ParticleData
 import me.nobaboy.nobaaddons.data.SoundData
-import me.nobaboy.nobaaddons.data.jsonobjects.ParticleData
 import me.nobaboy.nobaaddons.events.ParticleEvent
 import me.nobaboy.nobaaddons.events.PlaySoundEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent

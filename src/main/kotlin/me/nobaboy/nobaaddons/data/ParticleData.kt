@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.data.jsonobjects
+package me.nobaboy.nobaaddons.data
 
 import me.nobaboy.nobaaddons.utils.NobaVec
 import net.minecraft.particle.ParticleType
