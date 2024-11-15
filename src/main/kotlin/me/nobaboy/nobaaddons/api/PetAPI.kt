@@ -14,7 +14,6 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
@@ -37,7 +36,6 @@ object PetAPI {
 		InventoryEvents.READY.register { handleInventoryReady(it) }
 		InventoryEvents.SLOT_CLICK.register { stack, button, _, actionType -> handleInventorySlotClick(stack, button, actionType) }
 		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string) }
-		ScreenEvents.AFTER_INIT
 	}
 
 	private fun handleInventoryReady(inventory: InventoryData) {
