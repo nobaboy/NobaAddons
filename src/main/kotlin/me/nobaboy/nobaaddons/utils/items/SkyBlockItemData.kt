@@ -34,10 +34,10 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 
 	val reforge: String? by CacheOf(this::nbt) { nbt.get("modifier")?.asString() }
 	val recombobulated: Boolean by CacheOf(this::nbt) { nbt.getInt("rarity_upgrades") > 0 }
-	val stars: Int? by CacheOf(this::nbt) { nbt.getInt("dungeon_item_level") }
+	val stars: Int? by CacheOf(this::nbt) { nbt.getInt("upgrade_level") }
 	val powerScroll: String? by CacheOf(this::nbt) { nbt.get("power_ability_scroll")?.asString() }
 
-	val rarity: ItemRarity by CacheOf(this::nbt) {
+	val rarity: ItemRarity by CacheOf(this::lore) {
 		val match = lore.lines()
 			.reversed()
 			.asSequence()

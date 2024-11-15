@@ -68,6 +68,10 @@ dependencies {
 }
 
 loom {
+	runConfigs {
+		removeIf { it.environment == "server" }
+	}
+
     runConfigs.all {
         ideConfigGenerated(stonecutter.current.isActive)
         runDir = "../../run"
