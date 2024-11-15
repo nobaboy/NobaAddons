@@ -1,12 +1,12 @@
 package me.nobaboy.nobaaddons.features.chat.filters.miscellaneous
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
-import me.nobaboy.nobaaddons.features.chat.filters.IFilter
+import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.anyMatches
 import net.minecraft.text.Text
 import java.util.regex.Pattern
 
-object ProfileInfoFilter : IFilter {
+object ProfileInfoChatFilter : IChatFilter {
 	private val profileInfoPatterns = listOf(
 		Pattern.compile("^You are playing on profile: [A-z-() ]+"),
 		Pattern.compile("^Profile ID: [A-z0-9-]+")

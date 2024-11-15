@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
-import me.nobaboy.nobaaddons.features.chat.filters.IFilter
+import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.StatType
 import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
@@ -17,7 +17,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import java.util.regex.Pattern
 
-object BlessingFilter : IFilter {
+object BlessingChatFilter : IChatFilter {
 	private val blessingFindPattern = Pattern.compile(
 		"^DUNGEON BUFF! ([A-z0-9_]+ found a|A) Blessing of (?<blessing>[A-z]+) [IV]+( was found)?!( \\([A-z0-9 ]+\\))?"
 	)

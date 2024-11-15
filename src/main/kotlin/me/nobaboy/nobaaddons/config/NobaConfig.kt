@@ -27,4 +27,7 @@ class NobaConfig {
 
 	@SerialEntry
 	val chat: ChatConfig = ChatConfig()
+
+	@SerialEntry
+	val qol: QOLConfig = QOLConfig()
 }

@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.config.categories.CrimsonIsleCategory
 import me.nobaboy.nobaaddons.config.categories.DungeonsCategory
 import me.nobaboy.nobaaddons.config.categories.GeneralCategory
 import me.nobaboy.nobaaddons.config.categories.MiningCategory
+import me.nobaboy.nobaaddons.config.categories.QOLCategory
 import me.nobaboy.nobaaddons.config.categories.UIAndVisualsCategory
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
@@ -59,6 +60,7 @@ object NobaConfigManager {
 				.category(CrimsonIsleCategory.create(defaults, config))
 				.category(DungeonsCategory.create(defaults, config))
 				.category(ChatCategory.create(defaults, config))
+				.category(QOLCategory.create(defaults, config))
 		}.generateScreen(parent)
 	}
 }
