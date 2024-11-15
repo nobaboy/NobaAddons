@@ -34,7 +34,7 @@ interface IChatFilter {
 		)
 
 		fun init() {
-			check(!init) { "Already initialized filters!" }
+			check(!init) { "Already initialized chat filters!" }
 			init = true
 
 			ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ ->
