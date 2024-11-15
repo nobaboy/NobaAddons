@@ -45,6 +45,26 @@
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt": "Hide Lightning Bolt",
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt.tooltip": "Prevents lightning bolts from rendering",
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing": "Hide Other People Fishing",
+  "nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson": "Remove Front-Facing Third Person",
+  "nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson.tooltip": "Removes the front-facing third person view after pressing F5 twice",
+  "nobaaddons.config.uiAndVisuals.swingAnimation": "Arm Swing Animation Tweaks",
+  "nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration": "Swing Duration",
+  "nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip": "Controls how long your arm swing animation duration is, ignoring all effects like Haste.",
+  "nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers": "Apply to All Players",
+  "nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip": "If enabled, the above swing duration will also apply to all other players, instead of only yourself.",
+  "nobaaddons.config.uiAndVisuals.itemRendering": "First Person Rendering",
+  "nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip": "Cancel Re-equip Animation",
+  "nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip.tooltip": "Cancels the re-equip animation when switching between items",
+  "nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation": "Cancel Drink Animation",
+  "nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip": "Prevents the eating and drinking animation from playing",
+  "nobaaddons.config.uiAndVisuals.itemRendering.xOffset": "Held Item X Offset",
+  "nobaaddons.config.uiAndVisuals.itemRendering.xOffset.tooltip": "Moves the held item model in first person left or right across the screen\n\nNote that this slider is inverted if your main hand is set to left handed",
+  "nobaaddons.config.uiAndVisuals.itemRendering.yOffset": "Held Item Y Offset",
+  "nobaaddons.config.uiAndVisuals.itemRendering.yOffset.tooltip": "Moves the held item model in first person up or down across the screen",
+  "nobaaddons.config.uiAndVisuals.itemRendering.zOffset": "Held Item Z Offset",
+  "nobaaddons.config.uiAndVisuals.itemRendering.zOffset.tooltip": "Moves the held item model in first person towards or away from the camera",
+  "nobaaddons.config.uiAndVisuals.itemRendering.scale": "Held Item Item Scale",
+  "nobaaddons.config.uiAndVisuals.itemRendering.scale.tooltip": "Controls how large the held item is rendered in first person",
   "nobaaddons.config.uiAndVisuals.infoBoxes": "Info Boxes",
 
   "nobaaddons.config.mining": "Mining",
@@ -122,5 +142,8 @@
   "nobaaddons.config.chat.chatCommands.guild.help": "Help Command",
   "nobaaddons.config.chat.chatCommands.guild.help.tooltip": "Replies with all usable commands",
   "nobaaddons.config.chat.chatCommands.guild.warpOut": "Warp Out Command",
-  "nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip": "Warps out the specified user"
+  "nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip": "Warps out the specified user",
+
+  "nobaaddons.label.unmodified": "Unmodified",
+  "nobaaddons.label.default": "Default"
 }
