@@ -16,9 +16,8 @@ public class KeyboardMixin {
 
 	@Inject(method = "onKey", at = @At("TAIL"))
 	public void nobaaddons$onKeyPress(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
-		if(window != client.getWindow().getHandle() || client.currentScreen != null) {
-			return;
-		}
+		if(window != client.getWindow().getHandle() || client.currentScreen != null) return;
+
 		KeyBindListener.onPress(key);
 	}
 }

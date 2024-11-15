@@ -2,12 +2,12 @@ package me.nobaboy.nobaaddons.features.chat.filters.dungeons
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.features.chat.filters.IFilter
+import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import net.minecraft.text.Text
 import java.util.regex.Pattern
 
-object PickupObtainFilter : IFilter {
+object PickupObtainChatFilter : IChatFilter {
 	private val itemPickupPattern = Pattern.compile("A (?<item>[A-z ]+) was picked up!")
 	private val playerObtainPattern = Pattern.compile("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!")
 

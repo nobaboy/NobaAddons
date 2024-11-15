@@ -1,11 +1,11 @@
 package me.nobaboy.nobaaddons.features.chat.filters.miscellaneous
 
-import me.nobaboy.nobaaddons.features.chat.filters.IFilter
+import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
 import net.minecraft.text.Text
 import java.util.regex.Pattern
 
-object TipMessageFilter : IFilter {
+object TipMessageChatFilter : IChatFilter {
 	private val alreadyTippedPattern = Pattern.compile(
 		"You've already tipped someone in the past hour in [A-z ]+! Wait a bit and try again!"
 	)

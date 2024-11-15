@@ -2,17 +2,17 @@ package me.nobaboy.nobaaddons.features.chat.filters
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.features.chat.filters.ability.AbilityFilter
-import me.nobaboy.nobaaddons.features.chat.filters.dungeons.BlessingFilter
-import me.nobaboy.nobaaddons.features.chat.filters.dungeons.HealerOrbFilter
-import me.nobaboy.nobaaddons.features.chat.filters.dungeons.PickupObtainFilter
-import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.ProfileInfoFilter
-import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessageFilter
+import me.nobaboy.nobaaddons.features.chat.filters.ability.AbilityChatFilter
+import me.nobaboy.nobaaddons.features.chat.filters.dungeons.BlessingChatFilter
+import me.nobaboy.nobaaddons.features.chat.filters.dungeons.HealerOrbChatFilter
+import me.nobaboy.nobaaddons.features.chat.filters.dungeons.PickupObtainChatFilter
+import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.ProfileInfoChatFilter
+import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessageChatFilter
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
 
-interface IFilter {
+interface IChatFilter {
 	val config get() = NobaConfigManager.config.chat.filters
 
 	fun isEnabled(): Boolean
@@ -22,15 +22,15 @@ interface IFilter {
 
 	companion object {
 		private var init = false
-		private val filters = arrayOf<IFilter>(
-			AbilityFilter,
+		private val filters = arrayOf<IChatFilter>(
+			AbilityChatFilter,
 			// Dungeons
-			BlessingFilter,
-			HealerOrbFilter,
-			PickupObtainFilter,
+			BlessingChatFilter,
+			HealerOrbChatFilter,
+			PickupObtainChatFilter,
 			// Miscellaneous
-			ProfileInfoFilter,
-			TipMessageFilter,
+			ProfileInfoChatFilter,
+			TipMessageChatFilter,
 		)
 
 		fun init() {

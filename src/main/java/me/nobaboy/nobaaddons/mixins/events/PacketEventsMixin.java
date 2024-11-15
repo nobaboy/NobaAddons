@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.mixins.transformers;
+package me.nobaboy.nobaaddons.mixins.events;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientConnection.class)
-public class NetworkManagerMixin {
+public class PacketEventsMixin {
 	@Shadow
 	private Channel channel;
 

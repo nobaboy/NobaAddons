@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.features.events.mythological
 
 import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.data.SoundData
 import me.nobaboy.nobaaddons.data.jsonobjects.ParticleData
 import me.nobaboy.nobaaddons.events.ParticleEvent
 import me.nobaboy.nobaaddons.events.PlaySoundEvent
@@ -50,22 +51,22 @@ object BurrowGuess {
 
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { reset() }
-		PlaySoundEvent.SOUND.register { id, location, pitch, _ -> handlePlaySound(id, location, pitch) }
+		PlaySoundEvent.SOUND.register(this::handlePlaySound)
 		ParticleEvent.EVENT.register(this::handleParticle)
 	}
 
-	private fun handlePlaySound(id: Identifier, location: NobaVec, pitch: Float) {
+	private fun handlePlaySound(sound: SoundData) {
 		if(!isEnabled()) return
-		if(id != Identifier.ofVanilla("block.note_block.harp"))
+		if(sound.id != Identifier.ofVanilla("block.note_block.harp"))
 
-		if(!hasDinged) firstPitch = pitch
+		if(!hasDinged) firstPitch = sound.pitch
 		hasDinged = true
 
-		if(pitch < lastDingPitch) {
-			firstPitch = pitch
+		if(sound.pitch < lastDingPitch) {
+			firstPitch = sound.pitch
 			dingIndex = 0
 			dingSlope.clear()
-			lastDingPitch = pitch
+			lastDingPitch = sound.pitch
 			lastParticlePoint = null
 			lastParticlePoint2 = null
 			lastSoundPoint = null
@@ -75,7 +76,7 @@ object BurrowGuess {
 		}
 
 		if(lastDingPitch == 0.0f) {
-			lastDingPitch = pitch
+			lastDingPitch = sound.pitch
 			distance = null
 			lastParticlePoint = null
 			lastParticlePoint2 = null
@@ -86,16 +87,16 @@ object BurrowGuess {
 		}
 
 		dingIndex++
-		if(dingIndex > 1) dingSlope.add(pitch - lastDingPitch)
+		if(dingIndex > 1) dingSlope.add(sound.pitch - lastDingPitch)
 		if(dingSlope.size > 20) dingSlope.removeFirst()
 		val slope = if(dingSlope.isNotEmpty()) dingSlope.reduce { a, b -> a + b }.toDouble() / dingSlope.size else 0.0
 
-		lastSoundPoint = location
-		lastDingPitch = pitch
+		lastSoundPoint = sound.location
+		lastDingPitch = sound.pitch
 
 		if(lastParticlePoint2 == null || particlePoint == null || firstParticlePoint == null) return
 
-		distance2 = E / slope - firstParticlePoint?.distance(location)!!
+		distance2 = E / slope - firstParticlePoint?.distance(sound.location)!!
 		if (distance2!! > 1000) {
 			distance2 = null
 			guessPoint = null
