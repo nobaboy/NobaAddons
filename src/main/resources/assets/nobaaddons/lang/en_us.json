@@ -67,6 +67,17 @@
   "nobaaddons.config.uiAndVisuals.itemRendering.scale.tooltip": "Controls how large the held item is rendered in first person",
   "nobaaddons.config.uiAndVisuals.infoBoxes": "Info Boxes",
 
+  "nobaaddons.config.events": "Events",
+  "nobaaddons.config.events.mythologicalRitual": "Mythological Ritual",
+  "nobaaddons.config.events.mythologicalRitual.label.warpLocations": "Warp Locations",
+  "nobaaddons.config.events.mythologicalRitual.burrowGuess": "Burrow Guess",
+  "nobaaddons.config.events.mythologicalRitual.findNearbyBurrows": "Find Nearby Waypoints",
+  "nobaaddons.config.events.mythologicalRitual.announceRareDrops": "Announce Rare Drops",
+  "nobaaddons.config.events.mythologicalRitual.announceRareDrops.tooltip": "Announces any rare drop obtained from killing a Mythological Creature",
+  "nobaaddons.config.events.mythologicalRitual.ignoreCrypt": "Ignore Crypt",
+  "nobaaddons.config.events.mythologicalRitual.ignoreWizard": "Ignore Wizard",
+  "nobaaddons.config.events.mythologicalRitual.ignoreStonks": "Ignore Stonks",
+
   "nobaaddons.config.mining": "Mining",
   "nobaaddons.config.mining.glaciteMineshaft": "Glacite Mineshaft",
   "nobaaddons.config.mining.glaciteMineshaft.label.corpses": "Corpses",

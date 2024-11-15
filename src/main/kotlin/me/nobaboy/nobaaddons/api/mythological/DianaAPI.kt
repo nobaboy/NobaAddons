@@ -6,12 +6,12 @@ import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.core.MayorPerk
 import me.nobaboy.nobaaddons.events.skyblock.mythological.MythologicalEvents
 import me.nobaboy.nobaaddons.utils.InventoryUtils
-import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents
 import net.minecraft.entity.Entity
+import net.minecraft.entity.player.PlayerEntity
 
 object DianaAPI {
 	private val spade = "ANCESTRAL_SPADE"
@@ -28,8 +28,8 @@ object DianaAPI {
 
 	private fun hasSpadeInHotbar(): Boolean = InventoryUtils.getItemsInHotbar().any { it.getSkyBlockItemId() == spade }
 
-	private fun hasSpadeInHand(): Boolean {
-		val heldItem = MCUtils.player?.mainHandStack?.getSkyBlockItem() ?: return false
+	fun hasSpadeInHand(player: PlayerEntity): Boolean {
+		val heldItem = player.mainHandStack?.getSkyBlockItem() ?: return false
 		return heldItem.id == spade
 	}
 

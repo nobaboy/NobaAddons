@@ -23,9 +23,9 @@ object PetAPI {
 	private val petsMenuPattern = Pattern.compile("^Pets(?: \\(\\d+/\\d+\\) )?")
 	private val petNamePattern = Pattern.compile("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z ]+)(?: ✦|\$)")
 
-	private val petUnequipMessagePattern = Pattern.compile("^You despawned your (?<name>[A-z ]+)(?: ✦|\$)")
+	private val petUnequipPattern = Pattern.compile("^You despawned your (?<name>[A-z ]+)(?: ✦|\$)")
 //	private val petItemChangePattern = Pattern.compile("^Your pet is now holding (?<item>[A-z0-9- ]+)\\.")
-	private val autopetMessagePattern = Pattern.compile(
+	private val autopetPattern = Pattern.compile(
 		"^§cAutopet §eequipped your §7\\[Lvl (?<level>\\d+)] (?:§.\\[.*] )?§(?<rarity>.)(?<name>[A-z ]+)(?:§. ✦)?§e! §a§lVIEW RULE"
 	)
 
@@ -84,11 +84,11 @@ object PetAPI {
 	}
 
 	private fun handleChatEvent(message: String) {
-		petUnequipMessagePattern.matchMatcher(message.cleanFormatting()) {
+		petUnequipPattern.matchMatcher(message.cleanFormatting()) {
 			changePet(null)
 		}
 
-		autopetMessagePattern.matchMatcher(message) {
+		autopetPattern.matchMatcher(message) {
 			val name = group("name")
 			val id = name.uppercase().replace(" ", "_")
 			val level = group("level").toInt()

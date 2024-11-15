@@ -24,6 +24,8 @@ import kotlin.math.sin
  * This is taken, ported and adapted from SoopyV2 which is licensed under the GPL-3.0.
  *
  * [Original source](https://github.com/Soopyboo32/SoopyV2/blob/master/src/features/events/index.js#L499-L753)
+ *
+ * This should've been in `BurrowAPI`, but since it's a separate module I'll keep it as is
  */
 object BurrowGuess {
 	private val config get() = NobaConfigManager.config.events.mythological
@@ -54,7 +56,7 @@ object BurrowGuess {
 
 	private fun handlePlaySound(id: Identifier, location: NobaVec, pitch: Float) {
 		if(!isEnabled()) return
-		if(id != Identifier.ofVanilla("block.note_block.pling"))
+		if(id != Identifier.ofVanilla("block.note_block.harp"))
 
 		if(!hasDinged) firstPitch = pitch
 		hasDinged = true

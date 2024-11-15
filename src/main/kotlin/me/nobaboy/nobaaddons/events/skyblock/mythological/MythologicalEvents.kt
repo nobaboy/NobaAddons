@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.events.skyblock.mythological
 
+import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.utils.NobaVec
 import net.fabricmc.fabric.api.event.EventFactory
 
@@ -11,8 +12,8 @@ object MythologicalEvents {
 	}
 
 	val BURROW_FIND = EventFactory.createArrayBacked(BurrowFindEvent::class.java) { listeners ->
-		BurrowFindEvent { location ->
-			listeners.forEach { it.onBurrowFind(location) }
+		BurrowFindEvent { location, type ->
+			listeners.forEach { it.onBurrowFind(location, type) }
 		}
 	}
 
@@ -33,7 +34,7 @@ object MythologicalEvents {
 	}
 
 	fun interface BurrowFindEvent {
-		fun onBurrowFind(location: NobaVec)
+		fun onBurrowFind(location: NobaVec, type: BurrowType)
 	}
 
 	fun interface BurrowDigEvent {

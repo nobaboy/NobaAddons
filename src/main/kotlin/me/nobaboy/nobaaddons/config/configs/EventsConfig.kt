@@ -11,7 +11,7 @@ class EventsConfig {
 		var burrowGuess: Boolean = false
 
 		@SerialEntry
-		var burrowTriangulate: Boolean = false
+		var findNearbyBurrows: Boolean = false
 
 		@SerialEntry
 		var announceRareDrops: Boolean = false
