@@ -12,13 +12,14 @@ import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
-import me.nobaboy.nobaaddons.features.chat.filters.IFilter
+import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.crimsonisle.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindListener
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
+import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import net.fabricmc.api.ClientModInitializer
@@ -89,13 +90,17 @@ object NobaAddons : ClientModInitializer {
 
 		// region Chat
 		IAlert.init()
-		IFilter.init()
+		IChatFilter.init()
 		// endregion
 
 		// region Chat Commands
 		DMCommands.init()
 		PartyCommands.init()
 		GuildCommands.init()
+		// endregion
+
+		// region QOL
+		ISoundFilter.init()
 		// endregion
 		/* endregion */
 	}

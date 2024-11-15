@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.chat.filters.dungeons
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
-import me.nobaboy.nobaaddons.features.chat.filters.IFilter
+import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.StatType
 import me.nobaboy.nobaaddons.utils.NumberUtils.formatDouble
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
@@ -14,7 +14,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import java.util.regex.Pattern
 
-object HealerOrbFilter : IFilter {
+object HealerOrbChatFilter : IChatFilter {
 	private val otherPickupUserOrbPattern = Pattern.compile("◕ [A-z0-9_]+ picked up your [A-z ]+!")
 	private val userPickupHealerOrbPattern = Pattern.compile(
 		"^◕ You picked up a (?<orb>[A-z ]+) from (?<player>[A-z0-9_]+) healing you for (?<health>[0-9.]+)❤ and granting you (?<buff>[0-9+%]+) (?<stat>[A-z ]+) for (?<duration>[0-9]+) seconds\\."

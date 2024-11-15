@@ -1,12 +1,12 @@
 package me.nobaboy.nobaaddons.features.chat.filters.ability
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
-import me.nobaboy.nobaaddons.features.chat.filters.IFilter
+import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import net.minecraft.text.Text
 import java.util.regex.Pattern
 
-object AbilityFilter : IFilter {
+object AbilityChatFilter : IChatFilter {
 	private val abilityDamagePattern = Pattern.compile("Your (?<ability>[A-z' ]+) hit [0-9]+ (enemies|enemy) for [0-9,.]+ damage\\.")
 	private val abilityCooldownPattern = Pattern.compile("This ability is on cooldown for [0-9]+s\\.")
 
