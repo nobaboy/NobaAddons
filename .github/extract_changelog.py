@@ -35,6 +35,6 @@ HEADER = re.compile(r"^#(#+)", flags=re.MULTILINE)
 properties = load_properties(REPO_DIR / "gradle.properties")
 
 with open("CHANGELOG.mini", mode="w") as f:
-	notes = releases[properties["mod.version"].strip()
+	notes = releases[properties["mod.version"]].strip()
 	notes = HEADER.sub("\1", notes)
 	f.write(notes)
