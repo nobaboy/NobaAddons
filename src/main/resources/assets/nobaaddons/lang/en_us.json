@@ -18,8 +18,12 @@
   "nobaaddons.config.enabled": "Enabled",
   "nobaaddons.config.seconds": "%s seconds",
 
+  "nobaaddons.label.unmodified": "Unmodified",
+  "nobaaddons.label.default": "Default",
+
   "nobaaddons.config.label.crimsonIsle": "Crimson Isle",
   "nobaaddons.config.label.dungeons": "Dungeons",
+  "nobaaddons.config.label.rift": "Rift",
   "nobaaddons.config.label.miscellaneous": "Miscellaneous",
 
   "nobaaddons.config.general": "General",
@@ -147,7 +151,5 @@
   "nobaaddons.config.qol": "QOL",
   "nobaaddons.config.qol.soundFilters": "Sound Filters",
   "nobaaddons.config.qol.soundFilters.muteDreadlordAndSouleater": "Mute Dreadlord and Souleater",
-
-  "nobaaddons.label.unmodified": "Unmodified",
-  "nobaaddons.label.default": "Default"
+  "nobaaddons.config.qol.soundFilters.muteKillerSpring": "Mute Killer Spring"
 }

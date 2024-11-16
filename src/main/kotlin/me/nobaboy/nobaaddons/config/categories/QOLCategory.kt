@@ -25,6 +25,16 @@ object QOLCategory {
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
+				.option(LabelOption.createBuilder()
+					.line(Text.translatable("nobaaddons.config.label.rift"))
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteKillerSpring"))
+					.binding(defaults.qol.soundFilters.muteKillerSpring, config.qol.soundFilters::muteKillerSpring) { config.qol.soundFilters.muteKillerSpring = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
 				.collapsed(true)
 				.build())
 
