@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 0.1.0-Alpha.8.1 - 2024-11-17
+
+### Fixed
+
+- A crash caused by item position on 1.21
+- Thunder Sparks are actually visible in lava now
+
 ## 0.1.0-Alpha.8 - 2024-11-17
 
 ### Added
