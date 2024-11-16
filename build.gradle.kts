@@ -116,7 +116,10 @@ publishMods {
 	file = tasks.remapJar.get().archiveFile
 	displayName = "${mod.version} for ${property("mod.mc_title")}"
 	version = "${mod.version}+$mcVersion"
-	changelog = rootProject.file("CHANGELOG.md").readText()
+	changelog = runCatching {
+		// NOTE: this requires running .github/extract_changelog.py first
+		rootProject.file("CHANGELOG.mini").readText()
+	}.getOrDefault("See the full changelog at https://github.com/nobaboy/NobaAddons/blob/master/CHANGELOG.md")
 	type = ALPHA
 	modLoaders.add("fabric")
 
