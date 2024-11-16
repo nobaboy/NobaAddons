@@ -44,8 +44,9 @@ object HighlightThunderSparks {
 		sparks.removeIf { !it.isAlive }
 		sparks.forEach {
 			val vec = it.getNobaVec()
-			val block = vec.getBlockStateAt()
+			val block = vec.center().getBlockStateAt()
 			val throughBlocks = vec.distanceToPlayer() < 6 && block.fluidState != null && block.fluidState.fluid is LavaFluid
+
 			RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, z = -0.5), color, extraSize = -0.25, throughBlocks = throughBlocks)
 			if(config.showText && vec.distanceToPlayer() < 10) RenderUtils.renderText(context, vec.raise(1.25), "Thunder Spark", hideThreshold = 0.0, throughBlocks = throughBlocks)
 		}
