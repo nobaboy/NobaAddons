@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-- Thunder Sparks are now properly see through when they're in lava - nobaboy
+- Thunder Sparks are now properly visible when they're in lava - nobaboy
 - SkyBlock item stars are stored under `upgrade_level` not `dungeon_item_level` - nobaboy
 
 ## 0.1.0-Alpha.7 - 2024-11-11
