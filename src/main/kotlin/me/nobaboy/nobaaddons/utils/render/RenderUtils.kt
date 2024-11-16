@@ -258,7 +258,7 @@ object RenderUtils {
 		matrices.push()
 		matrices.translate(vec.x - cameraPos.x, vec.y - cameraPos.y, vec.z - cameraPos.z)
 
-		BeaconBlockEntityRendererInvoker.renderBeam(
+		BeaconBlockEntityRendererInvoker.invokeRenderBeam(
 			matrices,
 			context.consumers(),
 			context.tickCounter().getTickDelta(true),

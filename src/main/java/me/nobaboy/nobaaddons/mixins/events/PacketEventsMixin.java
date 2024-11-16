@@ -23,7 +23,7 @@ public class PacketEventsMixin {
 	private NetworkSide side;
 
 	@Inject(method = "send(Lnet/minecraft/network/packet/Packet;)V", at = @At("RETURN"))
-	private void onPacketSend(Packet<?> packet, CallbackInfo ci) {
+	private void nobaaddons$onPacketSend(Packet<?> packet, CallbackInfo ci) {
 		if(this.side != NetworkSide.CLIENTBOUND) return;
 
 		PacketEvents.SEND.invoker().onPacketSend(packet);
@@ -33,7 +33,7 @@ public class PacketEventsMixin {
 		method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V",
 		at = @At("RETURN")
 	)
-	private void onPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
+	private void nobaaddons$onPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
 		if(!this.channel.isOpen() || this.side != NetworkSide.CLIENTBOUND) return;
 
 		PacketEvents.RECEIVE.invoker().onPacketReceive(packet);
