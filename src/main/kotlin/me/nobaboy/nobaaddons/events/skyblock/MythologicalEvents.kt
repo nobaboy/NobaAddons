@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.events.skyblock.mythological
+package me.nobaboy.nobaaddons.events.skyblock
 
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.utils.NobaVec

@@ -6,8 +6,8 @@ import me.nobaboy.nobaaddons.data.ParticleData
 import me.nobaboy.nobaaddons.data.SoundData
 import me.nobaboy.nobaaddons.events.ParticleEvent
 import me.nobaboy.nobaaddons.events.PlaySoundEvent
+import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
-import me.nobaboy.nobaaddons.events.skyblock.mythological.MythologicalEvents
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.minecraft.particle.ParticleTypes

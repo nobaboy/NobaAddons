@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.core.MayorPerk
-import me.nobaboy.nobaaddons.events.skyblock.mythological.MythologicalEvents
+import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
