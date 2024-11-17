@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.utils.items
 
 import net.minecraft.component.DataComponentTypes
+import net.minecraft.component.type.LoreComponent
 import net.minecraft.component.type.NbtComponent
 import net.minecraft.item.ItemStack
 import java.lang.ref.WeakReference
@@ -8,6 +9,11 @@ import java.util.WeakHashMap
 
 object ItemUtils {
 	private val ITEM_CACHE = WeakHashMap<ItemStack, SkyBlockItemData>(256)
+
+	val ItemStack.nbtCompound get() = this.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT)
+	val ItemStack.lore get() = this.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT)
+
+	val LoreComponent.stringLines get() = this.lines.map { it.string }
 
 	val ItemStack.isSkyBlockItem: Boolean
 		get() = !isEmpty && getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).contains("id")
