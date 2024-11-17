@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
+import dev.isxander.yacl3.api.LabelOption
 import dev.isxander.yacl3.api.ListOption
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionDescription
@@ -8,6 +9,7 @@ import dev.isxander.yacl3.api.OptionGroup
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
+import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.replaceWith
@@ -72,6 +74,28 @@ object UIAndVisualsCategory {
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip")))
 					.binding(defaults.uiAndVisuals.etherwarpHelper.allowOnAir, config.uiAndVisuals.etherwarpHelper::allowOnAir) { config.uiAndVisuals.etherwarpHelper.allowOnAir = it }
 					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.collapsed(true)
+				.build())
+
+			.group(OptionGroup.createBuilder()
+				.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo"))
+				.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo")))
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.enabled"))
+					.binding(defaults.uiAndVisuals.slotInfo.enabled, config.uiAndVisuals.slotInfo::enabled) { config.uiAndVisuals.slotInfo.enabled = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(LabelOption.createBuilder()
+					.line(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.label.items"))
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.enchantedBook"))
+					.binding(defaults.uiAndVisuals.slotInfo.enchantedBook, config.uiAndVisuals.slotInfo::enchantedBook) { config.uiAndVisuals.slotInfo.enchantedBook = it }
+					.controller(TickBoxControllerBuilder::create)
 					.build())
 
 				.collapsed(true)

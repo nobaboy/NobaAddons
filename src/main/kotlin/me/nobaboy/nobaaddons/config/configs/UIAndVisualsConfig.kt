@@ -16,6 +16,9 @@ class UIAndVisualsConfig {
 	val etherwarpHelper: EtherwarpHelper = EtherwarpHelper()
 
 	@SerialEntry
+	val slotInfo: SlotInfo = SlotInfo()
+
+	@SerialEntry
 	val renderingTweaks: RenderingTweaks = RenderingTweaks()
 
 	@SerialEntry
@@ -50,6 +53,14 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var allowOnAir: Boolean = false
+	}
+
+	class SlotInfo {
+		@SerialEntry
+		var enabled: Boolean = false
+
+		@SerialEntry
+		var enchantedBook: Boolean = false
 	}
 
 	class RenderingTweaks {
