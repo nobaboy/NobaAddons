@@ -97,19 +97,19 @@ object PartyAPI {
 				append(" - ".toText().formatted(Formatting.AQUA))
 				append(member.name.toText().styled {
 					val uuid = member.uuid.toString().toText().formatted(Formatting.GRAY)
-					it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, uuid)).withColor(Formatting.GRAY)
+					it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, uuid)).withColor(Formatting.GRAY).withBold(member.isMe)
 				})
 				if(member.isLeader) {
-					append(" (Leader)".toText().formatted(Formatting.DARK_GRAY))
+					append(" (Leader)".toText().formatted(Formatting.BLUE))
 				} else if(member.isMod) {
-					append(" (Mod)".toText().formatted(Formatting.DARK_GRAY))
+					append(" (Mod)".toText().formatted(Formatting.BLUE))
 				}
 			}, prefix = false)
 		}
 	}
 
 	private object TickEvent : CooldownTickEvent {
-		override val cooldownManager = CooldownManager(2.seconds)
+		override val cooldownManager = CooldownManager(1.5.seconds)
 
 		override fun onTick(client: MinecraftClient) {
 			if(refreshPartyList && HypixelUtils.onHypixel) {
