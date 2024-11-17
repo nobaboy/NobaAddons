@@ -3,11 +3,10 @@ package me.nobaboy.nobaaddons.api
 import me.nobaboy.nobaaddons.core.Mayor
 import me.nobaboy.nobaaddons.core.MayorPerk
 import me.nobaboy.nobaaddons.data.InventoryData
-import me.nobaboy.nobaaddons.data.jsonobjects.MayorJson
+import me.nobaboy.nobaaddons.data.json.MayorJson
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.skyblock.SecondPassedEvent
-import me.nobaboy.nobaaddons.utils.APIUtils
-import me.nobaboy.nobaaddons.utils.APIUtils.fetchJson
+import me.nobaboy.nobaaddons.utils.HTTPUtils.fetchJson
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
@@ -27,7 +26,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
 object MayorAPI {
-	private const val ELECTION_API_URL = "${APIUtils.HYPIXEL_API_ROOT}/resources/skyblock/election"
+	private const val ELECTION_API_URL = "https://api.hypixel.net/v2/resources/skyblock/election"
 
 	// SkyBlock elections end on the 27th of Late Spring
 	private const val ELECTION_END_MONTH = 3

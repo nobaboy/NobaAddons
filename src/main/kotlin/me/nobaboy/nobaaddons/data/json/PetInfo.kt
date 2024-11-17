@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.data.jsonobjects
+package me.nobaboy.nobaaddons.data.json
 
 data class PetInfo(
 	val type: String,

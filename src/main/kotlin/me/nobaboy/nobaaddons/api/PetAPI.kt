@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.ItemRarity
 import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.data.PetData
-import me.nobaboy.nobaaddons.data.jsonobjects.PetInfo
+import me.nobaboy.nobaaddons.data.json.PetInfo
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.skyblock.PetChangeEvent
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher

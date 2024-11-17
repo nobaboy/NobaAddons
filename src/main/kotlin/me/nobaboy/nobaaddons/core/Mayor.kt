@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.core
 
 import me.nobaboy.nobaaddons.core.MayorPerk.Companion.toPerk
-import me.nobaboy.nobaaddons.data.jsonobjects.Perk
+import me.nobaboy.nobaaddons.data.json.Perk
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 
 enum class Mayor(vararg val perks: MayorPerk) {

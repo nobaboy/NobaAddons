@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.core
 
 import me.nobaboy.nobaaddons.api.MayorAPI.foxyExtraEventPattern
-import me.nobaboy.nobaaddons.data.jsonobjects.Perk
+import me.nobaboy.nobaaddons.data.json.Perk
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 
 enum class MayorPerk(val perkName: String) {
