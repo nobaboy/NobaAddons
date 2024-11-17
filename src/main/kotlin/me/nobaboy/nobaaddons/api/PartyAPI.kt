@@ -1,233 +1,128 @@
 package me.nobaboy.nobaaddons.api
 
-import me.nobaboy.nobaaddons.api.data.party.IParty
-import me.nobaboy.nobaaddons.api.data.party.PartySnapshot
+import me.nobaboy.nobaaddons.api.data.PartyInfo
+import me.nobaboy.nobaaddons.data.json.MojangProfile
+import me.nobaboy.nobaaddons.events.CooldownTickEvent
+import me.nobaboy.nobaaddons.utils.CooldownManager
+import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HypixelUtils
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatchers
-import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.ModAPIUtils.request
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
-import java.util.regex.Pattern
+import net.hypixel.modapi.HypixelModAPI
+import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
+import net.minecraft.client.MinecraftClient
+import net.minecraft.text.HoverEvent
+import net.minecraft.util.Formatting
+import net.minecraft.util.Util
+import java.util.UUID
+import java.util.concurrent.CompletableFuture
+import kotlin.text.Regex
+import kotlin.time.Duration.Companion.seconds
 
-// NOTE: The mod API isn't being used here as it returns UUIDs, while we want usernames
-object PartyAPI : IParty {
-	private val rankPrefix = Regex("\\[[A-Z+]+] ")
+object PartyAPI {
+	private val uuidCache = Util.memoize<UUID, CompletableFuture<MojangProfile>> {
+		val url = "https://sessionserver.mojang.com/session/minecraft/profile/$it"
+		HTTPUtils.fetchJson<MojangProfile>(url)
+	}
 
-	// Client Player Patterns
-	private val clientPlayerJoinPattern = Pattern.compile("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!")
-	private val clientPlayerKickedPattern = Pattern.compile("^You have been kicked from the party by (?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+)")
-	private val clientPlayerLeftPatterns by lazy { listOf(clientPlayerKickedPattern, partyDisbandPattern) }
-	private val clientPlayerLeaveMessages: Array<String> = arrayOf(
-		"You left the party.",
-		"The party was disbanded because all invites expired and the party was empty.",
-		"You are not currently in a party.",
+	private val invalidatePartyStateMessages: Array<Regex> = arrayOf(
+		// Join
+		Regex("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!"),
+		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\."),
+		Regex("^Party Finder > (?<name>[A-z0-9_]+) joined the (?:dungeon )?group! \\([A-z0-9 ]+\\)"),
+
+		// Leave
+		Regex("^(?:You left the party\\.|The party was disbanded because all invites expired and the party was empty\\.|You are not currently in a party\\.)"),
+		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has left the party\\."),
+		Regex("^You have been kicked from the party by (?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+)"),
+		Regex("^(?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+) has disbanded the party!"),
+		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has been removed from the party\\."),
+		Regex("^Kicked (?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) because they were offline\\."),
+		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) was removed from your party because they disconnected\\."),
+
+		// Transfer
+		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left"),
+		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)"),
 	)
 
-	// Other Player Patterns
-	private val otherPlayerJoinPattern = Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\.")
-	private val otherPlayersInPartyPattern = Pattern.compile("^You'll be partying with: (?<names>.*)")
-	private val otherPlayerLeftPattern = Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has left the party\\.")
-	private val otherPlayerKickedPattern = Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has been removed from the party\\.")
-	private val otherPlayerKickedOfflinePattern = Pattern.compile("^Kicked (?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) because they were offline\\.")
-	private val otherPlayerDisconnectPattern = Pattern.compile("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) was removed from your party because they disconnected\\.")
-	private val otherPlayerLeftPatterns = listOf(otherPlayerLeftPattern, otherPlayerKickedPattern, otherPlayerKickedOfflinePattern, otherPlayerDisconnectPattern)
-
-	// Party Finder
-	private val partyFinderJoinPattern = Pattern.compile("^Party Finder > (?<name>[A-z0-9_]+) joined the (?:dungeon )?group! \\([A-z0-9 ]+\\)")
-
-	// Party General
-	private val partyMembersListPattern = Pattern.compile("^Party (?<type>Leader|Moderators|Members): (?<names>.*)")
-	private val partyDisbandPattern = Pattern.compile("^(?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+) has disbanded the party!")
-	private val transferByPlayerPattern = Pattern.compile(
-		"^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)"
-	)
-	private val transferOnLeavePattern = Pattern.compile(
-		"^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left"
-	)
-	private val partyInvitePattern = Pattern.compile(
-		"^(?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+) invited (?:\\[[A-Z+]+] )?[A-z0-9_]+ to the party! They have 60 seconds to accept\\."
-	)
-
-	// Party Misc
-	private val partyChatPattern = Pattern.compile("^Party > (?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+): .*")
-	private val partyListPattern = Pattern.compile(
-		"^-{53}|^Party Members \\([0-9]+\\)|^Party (?<type>Leader|Moderators|Members): (?<names>.*)|^You are not currently in a party\\."
-	)
-
-	private var storedPartyList = mutableListOf<String>()
-	private var gettingList = false
-	private var requested = false
-
-	override var inParty: Boolean = false
-	override var partyLeader: String? = null
-	override var partyMembers = mutableListOf<String>()
+	private var refreshPartyList = false
+	var party: PartyInfo? = null
+		private set
 
 	fun init() {
-		ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
-		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> if(!requested) requestPartyList() }
-		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> clear() }
-	}
-
-	fun requestPartyList() {
-		Scheduler.schedule(5 * 20) {
-			if(!HypixelUtils.onHypixel) return@schedule
-			HypixelCommands.partyList()
+		ClientReceiveMessageEvents.GAME.register { message, _ ->
+			val cleaned = Formatting.strip(message.string)!!
+			if(invalidatePartyStateMessages.any { it.matches(cleaned) }) {
+				refreshPartyList = true
+			}
 		}
-		Scheduler.schedule(7 * 20) {
-			processPartyList()
-			gettingList = false
+		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
+		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
+		CooldownTickEvent.EVENT.register(TickEvent)
+	}
+
+	fun getPartyInfo(): CompletableFuture<PartyInfo?> {
+		var future = CompletableFuture<PartyInfo?>()
+		HypixelModAPI.getInstance().request<ClientboundPartyInfoPacket> {
+			if(!it.isInParty) {
+				party = null
+				future.complete(null)
+				return@request
+			}
+
+			buildFromApiResponse(it).thenAccept(future::complete)
+		}
+		return future
+	}
+
+	private fun buildFromApiResponse(response: ClientboundPartyInfoPacket): CompletableFuture<PartyInfo> = CompletableFuture.supplyAsync {
+		val leader = response.leader.orElseThrow()
+		val members = mutableListOf<MojangProfile>()
+
+		response.memberMap.keys.forEach {
+			val profile = uuidCache.apply(it).join()
+			members.add(profile)
 		}
 
-		requested = true
-		gettingList = true
+		PartyInfo(leader = leader, members = members.associate { UUID.fromString(it.id) to it.name })
 	}
-
-	fun clear() {
-		partyLeft()
-		storedPartyList.clear()
-		gettingList = false
-		requested = false
-	}
-
-	private fun processPartyList() {
-		storedPartyList.forEachMatch(partyMembersListPattern) {
-			val type = group("type")
-			val names = group("names")
-
-			addPlayersToList(type == "Leader", names)
-		}
-		storedPartyList.clear()
-	}
-
-	override val isLeader get() = partyLeader == MCUtils.playerName
 
 	fun listMembers() {
-		val partySize = partyMembers.size
-		if(partySize == 0) {
+		val party = this.party
+		if(party == null || party.members.isEmpty()) {
 			ChatUtils.addMessage("Party seems to be empty...")
-		} else {
-			ChatUtils.addMessage("Party Members ($partySize):")
-			for(member in partyMembers) {
-				val isMemberLeader = if(partyLeader.equals(member)) "§9(Leader)" else ""
-				ChatUtils.addMessage(" §b- §7$member $isMemberLeader", false)
-			}
-		}
-	}
-
-	private fun handleChatEvent(message: String): Boolean {
-		if(gettingList) {
-			partyListPattern.matchMatcher(message) {
-				storedPartyList.add(message)
-				return false
-			}
+			return
 		}
 
-		partyInvitePattern.takeIf { !inParty }?.matchMatcher(message) {
-			val name = group("leader")
-			partyLeader = name
-			addPlayer(name)
-		}
-
-		partyChatPattern.matchMatcher(message) {
-			val name = group("name")
-			addPlayer(name)
-		}
-
-		// Member Join
-		clientPlayerJoinPattern.matchMatcher(message) {
-			val name = group("leader")
-			partyLeader = name
-			addPlayer(name)
-			addPlayer(MCUtils.playerName!!)
-		}
-		otherPlayerJoinPattern.matchMatcher(message) {
-			val name = group("name")
-			if(partyMembers.size == 1) {
-				partyLeader = MCUtils.playerName
-			}
-			addPlayer(name)
-		}
-		partyFinderJoinPattern.matchMatcher(message) {
-			val name = group("name")
-			addPlayer(name)
-		}
-
-		// Member Leave
-		otherPlayerLeftPatterns.matchMatchers(message) {
-			val name = group("name")
-			removePlayer(name)
-		}
-		transferOnLeavePattern.matchMatcher(message) {
-			val formerLeader = group("formerLeader")
-			partyLeader = group("newLeader")
-			partyMembers.remove(formerLeader)
-			inParty = true
-		}
-		transferByPlayerPattern.matchMatcher(message) {
-			partyLeader = group("newLeader")
-			inParty = true
-		}
-
-		// Party Disband
-		clientPlayerLeftPatterns.matchMatchers(message) {
-			partyLeft()
-		}
-		if(message in clientPlayerLeaveMessages) {
-			partyLeft()
-		}
-
-		// Party Members
-		otherPlayersInPartyPattern.matchMatcher(message) {
-			group("names").replace(rankPrefix, "").split(", ").forEach(this@PartyAPI::addPlayer)
-		}
-
-		// Party List
-		partyMembersListPattern.matchMatcher(message) {
-			val type = group("type")
-			val names = group("names")
-
-			addPlayersToList(type == "Leader", names)
-		}
-
-		return true
-	}
-
-	private fun addPlayersToList(isPartyLeader: Boolean, names: String) {
-		inParty = true
-
-		for(name in names.split(" ● ")) {
-			name.replace(" ●", "")
-				.replace(rankPrefix, "")
-				.split(" ")
-				.filter { !it.isBlank() }
-				.forEach {
-					addPlayer(it)
-					if(isPartyLeader) partyLeader = it
+		val partySize = party.members.size
+		ChatUtils.addMessage("Party Members ($partySize):")
+		party.members.forEach { member ->
+			ChatUtils.addMessage(buildText {
+				append(" - ".toText().formatted(Formatting.AQUA))
+				append(member.value.toText().styled {
+					val uuid = member.key.toString().toText().formatted(Formatting.GRAY)
+					it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, uuid)).withColor(Formatting.GRAY)
+				})
+				if(party.leader == member.key) {
+					append(" (Leader)".toText().formatted(Formatting.DARK_GRAY))
 				}
+			}, prefix = false)
 		}
 	}
 
-	private fun addPlayer(playerName: String) {
-		if(partyMembers.contains(playerName)) return
-		partyMembers.add(playerName)
-		inParty = true
-	}
+	private object TickEvent : CooldownTickEvent {
+		override val cooldownManager = CooldownManager(2.seconds)
 
-	private fun removePlayer(playerName: String) {
-		partyMembers.remove(playerName)
+		override fun onTick(client: MinecraftClient) {
+			if(refreshPartyList && HypixelUtils.onHypixel) {
+				getPartyInfo()
+				refreshPartyList = false
+				cooldownManager.startCooldown()
+			}
+		}
 	}
-
-	private fun partyLeft() {
-		partyMembers.clear()
-		partyLeader = null
-		inParty = false
-	}
-
-	fun snapshot(): PartySnapshot = PartySnapshot(inParty, partyLeader, partyMembers.toMutableList(), isLeader)
 }
