@@ -96,7 +96,7 @@ object CorpseLocator {
 
 	private fun shareCorpse(player: PlayerEntity) {
 		if(!config.autoShareCorpseCoords) return
-		if(!PartyAPI.inParty) return
+		if(PartyAPI.party == null) return
 		if(MineshaftWaypoints.waypoints.isEmpty()) return
 
 		val vec = player.getNobaVec()
