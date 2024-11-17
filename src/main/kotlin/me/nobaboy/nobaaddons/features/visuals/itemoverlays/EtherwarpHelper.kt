@@ -38,7 +38,10 @@ object EtherwarpHelper {
 		}
 
 		val client = MCUtils.client
-		val item = client.player?.mainHandStack?.getSkyBlockItem() ?: return
+		val item = client.player?.mainHandStack?.getSkyBlockItem() ?: run {
+			targetBlock = null
+			return
+		}
 
 		if(!etherwarpItems.contains(item.id) || !item.ethermerge) {
 			targetBlock = null

@@ -30,7 +30,11 @@ public class HeldItemRendererMixin {
 		method = "renderFirstPersonItem",
 		at = @At(
 			value = "INVOKE",
+			//? if >=1.21.2 {
 			target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"
+			//?} else {
+			/*target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"
+			*///?}
 		)
 	)
 	public void nobaaddons$modifyItemPosition(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand,
