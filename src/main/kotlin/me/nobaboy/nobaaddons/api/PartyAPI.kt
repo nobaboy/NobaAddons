@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.request
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -54,15 +55,15 @@ object PartyAPI {
 		private set
 
 	fun init() {
+		CooldownTickEvent.EVENT.register(TickEvent)
+		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
+		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
-			val cleaned = Formatting.strip(message.string)!!
+			val cleaned = message.string.cleanFormatting()
 			if(invalidatePartyStateMessages.any { it.matches(cleaned) }) {
 				refreshPartyList = true
 			}
 		}
-		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
-		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
-		CooldownTickEvent.EVENT.register(TickEvent)
 	}
 
 	fun getPartyInfo() {
