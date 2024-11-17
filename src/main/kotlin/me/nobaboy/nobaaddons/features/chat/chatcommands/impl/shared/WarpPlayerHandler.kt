@@ -31,7 +31,7 @@ object WarpPlayerHandler {
 		player = playerName
 
 		val party = PartyAPI.party
-		val membersToInvite: List<String> = party?.members?.values?.toList() ?: listOf()
+		val membersToInvite: List<String> = party?.members?.map { it.name } ?: listOf()
 
 		var secondsPassed = 0
 		val timeoutSeconds = if(isWarpingOut) 20 else 15
@@ -70,7 +70,7 @@ object WarpPlayerHandler {
 					if(party.isLeader && membersToInvite.isNotEmpty()) {
 						membersToInvite.filter { it != MCUtils.playerName }.forEach(HypixelCommands::partyInvite)
 					} else if(!party.isLeader) {
-						HypixelCommands.partyJoin(party.leaderName)
+						HypixelCommands.partyJoin(party.leader.name)
 					}
 				}
 				cancel()

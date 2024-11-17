@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.api
 
-import me.nobaboy.nobaaddons.api.data.PartyInfo
+import me.nobaboy.nobaaddons.api.data.Party
 import me.nobaboy.nobaaddons.data.json.MojangProfile
 import me.nobaboy.nobaaddons.events.CooldownTickEvent
 import me.nobaboy.nobaaddons.utils.CooldownManager
@@ -50,7 +50,7 @@ object PartyAPI {
 	)
 
 	private var refreshPartyList = false
-	var party: PartyInfo? = null
+	var party: Party? = null
 		private set
 
 	fun init() {
@@ -65,29 +65,22 @@ object PartyAPI {
 		CooldownTickEvent.EVENT.register(TickEvent)
 	}
 
-	fun getPartyInfo(): CompletableFuture<PartyInfo?> {
-		var future = CompletableFuture<PartyInfo?>()
+	fun getPartyInfo() {
 		HypixelModAPI.getInstance().request<ClientboundPartyInfoPacket> {
 			if(!it.isInParty) {
 				party = null
-				future.complete(null)
 				return@request
 			}
 
-			buildFromApiResponse(it).thenAccept {
-				this@PartyAPI.party = it
-				future.complete(it)
+			CompletableFuture.runAsync {
+				val leader = it.leader.orElseThrow()
+				val members = it.memberMap.values.map {
+					val profile = uuidCache.apply(it.uuid).join()
+					Party.Member(uuid = it.uuid, profile = profile, role = it.role)
+				}
+				party = Party(leaderUUID = leader, members = members)
 			}
 		}
-		return future
-	}
-
-	private fun buildFromApiResponse(response: ClientboundPartyInfoPacket): CompletableFuture<PartyInfo> = CompletableFuture.supplyAsync {
-		val leader = response.leader.orElseThrow()
-		val members = buildList {
-			response.members.forEach { add(uuidCache.apply(it).join()) }
-		}
-		PartyInfo(leader = leader, members = members.associate { UUID.fromString(it.id) to it.name })
 	}
 
 	fun listMembers() {
@@ -102,12 +95,14 @@ object PartyAPI {
 		party.members.forEach { member ->
 			ChatUtils.addMessage(buildText {
 				append(" - ".toText().formatted(Formatting.AQUA))
-				append(member.value.toText().styled {
-					val uuid = member.key.toString().toText().formatted(Formatting.GRAY)
+				append(member.name.toText().styled {
+					val uuid = member.uuid.toString().toText().formatted(Formatting.GRAY)
 					it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, uuid)).withColor(Formatting.GRAY)
 				})
-				if(party.leader == member.key) {
+				if(member.isLeader) {
 					append(" (Leader)".toText().formatted(Formatting.DARK_GRAY))
+				} else if(member.isMod) {
+					append(" (Mod)".toText().formatted(Formatting.DARK_GRAY))
 				}
 			}, prefix = false)
 		}
