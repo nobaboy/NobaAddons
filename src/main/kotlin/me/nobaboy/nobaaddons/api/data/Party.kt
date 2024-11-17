@@ -7,7 +7,7 @@ import java.util.UUID
 
 data class Party(var leaderUUID: UUID, var members: List<Member>) {
 	val isLeader: Boolean
-		get() = MCUtils.player?.uuid == leaderUUID
+		get() = MCUtils.player!!.uuid == leaderUUID
 
 	val leader: Member by lazy {
 		members.first { it.isLeader }
@@ -15,6 +15,7 @@ data class Party(var leaderUUID: UUID, var members: List<Member>) {
 
 	data class Member(val uuid: UUID, val profile: MojangProfile, val role: ClientboundPartyInfoPacket.PartyRole) {
 		val name: String get() = profile.name
+		val isMe: Boolean get() = MCUtils.player!!.uuid == uuid
 		val isLeader: Boolean get() = role == ClientboundPartyInfoPacket.PartyRole.LEADER
 		val isMod: Boolean get() = role == ClientboundPartyInfoPacket.PartyRole.MOD
 	}

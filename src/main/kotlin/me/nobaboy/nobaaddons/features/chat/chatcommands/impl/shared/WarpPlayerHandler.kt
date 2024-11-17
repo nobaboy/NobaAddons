@@ -31,7 +31,7 @@ object WarpPlayerHandler {
 		player = playerName
 
 		val party = PartyAPI.party
-		val membersToInvite: List<String> = party?.members?.map { it.name } ?: listOf()
+		val membersToInvite: List<String> = party?.members?.filter { !it.isMe }?.map { it.name } ?: listOf()
 
 		var secondsPassed = 0
 		val timeoutSeconds = if(isWarpingOut) 20 else 15
