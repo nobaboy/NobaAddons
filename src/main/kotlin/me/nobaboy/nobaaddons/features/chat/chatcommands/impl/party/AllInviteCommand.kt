@@ -17,7 +17,7 @@ class AllInviteCommand : IChatCommand {
 		get() = NobaConfigManager.config.chat.chatCommands.party.allInvite
 
 	override fun run(ctx: ChatContext) {
-		if(!PartyAPI.isLeader) return
+		if(PartyAPI.party?.isLeader != true) return
 		HypixelCommands.partyAllInvite()
 	}
 }
