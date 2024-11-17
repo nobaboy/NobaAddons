@@ -30,8 +30,8 @@ object WarpPlayerHandler {
 		isWarping = true
 		player = playerName
 
-		val party = PartyAPI.snapshot()
-		val membersToInvite: List<String> = if(party.isLeader) party.partyMembers else listOf()
+		val party = PartyAPI.party
+		val membersToInvite: List<String> = party?.members?.filter { !it.isMe }?.map { it.name } ?: listOf()
 
 		var secondsPassed = 0
 		val timeoutSeconds = if(isWarpingOut) 20 else 15
@@ -39,7 +39,7 @@ object WarpPlayerHandler {
 			if(isWarpingOut) "Warp out failed, $player did not join the party."
 			else "Warp in timed out since you did not join the party."
 
-		if(party.inParty) {
+		if(party != null) {
 			val warpType = if(isWarpingOut) "warp out" else "warp in"
 			val message =
 				if(party.isLeader) "Someone requested a $warpType, will re-invite everyone after $timeoutSeconds seconds."
@@ -66,10 +66,12 @@ object WarpPlayerHandler {
 				HypixelCommands.partyDisband()
 				if(isWarpingOut) ChatUtils.queueCommand("$command Successfully warped out $player.")
 
-				if(party.isLeader && membersToInvite.isNotEmpty()) {
-					membersToInvite.filter { it != MCUtils.playerName }.forEach(HypixelCommands::partyInvite)
-				} else if(!party.isLeader && party.inParty) {
-					HypixelCommands.partyJoin(party.partyLeader!!)
+				if(party != null) {
+					if(party.isLeader && membersToInvite.isNotEmpty()) {
+						membersToInvite.filter { it != MCUtils.playerName }.forEach(HypixelCommands::partyInvite)
+					} else if(!party.isLeader) {
+						HypixelCommands.partyJoin(party.leader.name)
+					}
 				}
 				cancel()
 			}

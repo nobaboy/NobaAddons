@@ -137,7 +137,7 @@ object SimonSaysTimer {
 			append(classifier)
 		}
 
-		if(config.timeInPartyChat && PartyAPI.inParty) HypixelCommands.partyChat(message.string) else ChatUtils.addMessage(message)
+		if(config.timeInPartyChat && PartyAPI.party != null) HypixelCommands.partyChat(message.string) else ChatUtils.addMessage(message)
 
 		runCatching { SimonSaysFile.save() }.onFailure { NobaAddons.LOGGER.error("Failed to save simon-says-timer.json", it) }
 	}
