@@ -81,13 +81,9 @@ object PartyAPI {
 
 	private fun buildFromApiResponse(response: ClientboundPartyInfoPacket): CompletableFuture<PartyInfo> = CompletableFuture.supplyAsync {
 		val leader = response.leader.orElseThrow()
-		val members = mutableListOf<MojangProfile>()
-
-		response.memberMap.keys.forEach {
-			val profile = uuidCache.apply(it).join()
-			members.add(profile)
+		val members = buildList {
+			response.members.forEach { add(uuidCache.apply(it).join()) }
 		}
-
 		PartyInfo(leader = leader, members = members.associate { UUID.fromString(it.id) to it.name })
 	}
 
