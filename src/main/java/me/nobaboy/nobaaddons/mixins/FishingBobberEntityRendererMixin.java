@@ -27,7 +27,7 @@ public class FishingBobberEntityRendererMixin {
 	}
 	//? if >=1.21.2 {
 	@Inject(method = "render(Lnet/minecraft/client/render/entity/state/FishingBobberEntityState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
-	public void hideOtherPlayersBobbers(FishingBobberEntityState fishingBobberEntityState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci,
+	public void nobaaddons$hideOtherPlayersBobbers(FishingBobberEntityState fishingBobberEntityState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci,
 										@Share(namespace = "nobaaddons", value = "entity") LocalRef<Entity> entityRef) {
 		var entity = entityRef.get();
 		if(entity == null) return;
@@ -35,7 +35,7 @@ public class FishingBobberEntityRendererMixin {
 	}
 	//?} else {
 	/*@Inject(method = "render(Lnet/minecraft/entity/projectile/FishingBobberEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
-	public void hideOtherPlayersBobbers(FishingBobberEntity entity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+	public void nobaaddons$hideOtherPlayersBobbers(FishingBobberEntity entity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
 		if(shouldHide(entity)) ci.cancel();
 	}*/
 	//?}

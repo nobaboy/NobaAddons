@@ -62,7 +62,7 @@ object PartyAPI : IParty {
 
 	private var storedPartyList = mutableListOf<String>()
 	private var gettingList = false
-	private var gotList = false
+	private var requested = false
 
 	override var inParty: Boolean = false
 	override var partyLeader: String? = null
@@ -70,12 +70,11 @@ object PartyAPI : IParty {
 
 	fun init() {
 		ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
-		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> if(!gotList) requestPartyList() }
+		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> if(!requested) requestPartyList() }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> clear() }
 	}
 
 	fun requestPartyList() {
-		gettingList = true
 		Scheduler.schedule(5 * 20) {
 			if(!HypixelUtils.onHypixel) return@schedule
 			HypixelCommands.partyList()
@@ -83,15 +82,17 @@ object PartyAPI : IParty {
 		Scheduler.schedule(7 * 20) {
 			processPartyList()
 			gettingList = false
-			gotList = true
 		}
+
+		requested = true
+		gettingList = true
 	}
 
 	fun clear() {
 		partyLeft()
 		storedPartyList.clear()
 		gettingList = false
-		gotList = false
+		requested = false
 	}
 
 	private fun processPartyList() {

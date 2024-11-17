@@ -17,6 +17,9 @@ jobs:
           java-version: 21
           distribution: "microsoft"
 
+      - name: Extract Version Changelog
+        run: python .github/extract_changelog.py
+
       - name: Make Gradle Wrapper Executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew

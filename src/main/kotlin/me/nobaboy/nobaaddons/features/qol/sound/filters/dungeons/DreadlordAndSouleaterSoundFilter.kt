@@ -8,7 +8,6 @@ import net.minecraft.util.Identifier
 
 object DreadlordAndSouleaterSoundFilter : ISoundFilter {
 	override fun shouldFilter(sound: SoundData): Boolean {
-		// Dreadlord and Souleater
 		if(sound.id == Identifier.ofVanilla("entity.generic.explode") && sound.volume == 4.0f) return true
 		if(sound.id == Identifier.ofVanilla("entity.wither.shoot") && sound.pitch == 1.4920635f && sound.volume == 0.2f) return true
 		return false
