@@ -16,12 +16,12 @@ object QOLCategory {
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.qol.soundFilters"))
 				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.dungeons"))
+					.line(Text.translatable("nobaaddons.config.label.itemAbilities"))
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteDreadlordAndSouleater"))
-					.binding(defaults.qol.soundFilters.muteDreadlordAndSouleater, config.qol.soundFilters::muteDreadlordAndSouleater) { config.qol.soundFilters.muteDreadlordAndSouleater = it }
+					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities"))
+					.binding(defaults.qol.soundFilters.muteWitherSkullAbilities, config.qol.soundFilters::muteWitherSkullAbilities) { config.qol.soundFilters.muteWitherSkullAbilities = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
