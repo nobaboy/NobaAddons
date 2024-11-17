@@ -8,9 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-- PartyAPI getting the party list more than once when you swap worlds before it processes the list
-- A crash caused by item position on 1.21
-- Thunder Sparks are actually visible in lava now
+- PartyAPI getting the party list more than once when you swap worlds before it processes the list - nobaboy
+- A crash caused by item position on 1.21 - celeste
+- Thunder Sparks are actually visible in lava now - nobaboy
 
 ## 0.1.0-Alpha.8 - 2024-11-17
 
