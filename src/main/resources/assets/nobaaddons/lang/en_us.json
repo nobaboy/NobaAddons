@@ -24,6 +24,7 @@
   "nobaaddons.config.label.crimsonIsle": "Crimson Isle",
   "nobaaddons.config.label.dungeons": "Dungeons",
   "nobaaddons.config.label.rift": "Rift",
+  "nobaaddons.config.label.itemAbilities": "Item Abilities",
   "nobaaddons.config.label.miscellaneous": "Miscellaneous",
 
   "nobaaddons.config.general": "General",
@@ -108,7 +109,6 @@
 
   "nobaaddons.config.chat": "Chat",
   "nobaaddons.config.chat.filters": "Filters",
-  "nobaaddons.config.chat.filters.label.itemAbilities": "Item Abilities",
   "nobaaddons.config.chat.filters.hideAbilityCooldownMessage": "Hide Ability Cooldown Message",
   "nobaaddons.config.chat.filters.hideAbilityCooldownMessage.tooltip": "Removes the 'This ability is on cooldown for Xs.' message from your chat",
   "nobaaddons.config.chat.filters.hideAbilityDamageMessage": "Hide %s Message",
@@ -161,6 +161,6 @@
 
   "nobaaddons.config.qol": "QOL",
   "nobaaddons.config.qol.soundFilters": "Sound Filters",
-  "nobaaddons.config.qol.soundFilters.muteDreadlordAndSouleater": "Mute Dreadlord and Souleater",
+  "nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities": "Mute Wither Skull Abilities",
   "nobaaddons.config.qol.soundFilters.muteKillerSpring": "Mute Killer Spring"
 }

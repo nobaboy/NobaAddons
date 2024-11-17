@@ -8,7 +8,7 @@ class QOLConfig {
 
 	class SoundFilters {
 		@SerialEntry
-		var muteDreadlordAndSouleater: Boolean = false
+		var muteWitherSkullAbilities: Boolean = false
 
 		@SerialEntry
 		var muteKillerSpring: Boolean = false
