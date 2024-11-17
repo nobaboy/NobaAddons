@@ -41,7 +41,7 @@ object ChatCategory {
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.chat.filters"))
 				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.chat.filters.label.itemAbilities"))
+					.line(Text.translatable("nobaaddons.config.label.itemAbilities"))
 					.build())
 
 				.option(Option.createBuilder<Boolean>()

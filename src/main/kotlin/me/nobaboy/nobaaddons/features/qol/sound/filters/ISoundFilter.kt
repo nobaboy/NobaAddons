@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.data.SoundData
 import me.nobaboy.nobaaddons.events.PlaySoundEvent
-import me.nobaboy.nobaaddons.features.qol.sound.filters.dungeons.DreadlordAndSouleaterSoundFilter
+import me.nobaboy.nobaaddons.features.qol.sound.filters.ability.WitherSkullAbilitiesSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.rift.KillerSpringSoundFilter
 
 interface ISoundFilter {
@@ -17,7 +17,7 @@ interface ISoundFilter {
 		private var init = false
 		private val filters = mutableListOf<ISoundFilter>(
 			// Dungeons
-			DreadlordAndSouleaterSoundFilter,
+			WitherSkullAbilitiesSoundFilter,
 			// Rift
 			KillerSpringSoundFilter
 		)
