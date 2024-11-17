@@ -74,7 +74,10 @@ object PartyAPI {
 				return@request
 			}
 
-			buildFromApiResponse(it).thenAccept(future::complete)
+			buildFromApiResponse(it).thenAccept {
+				this@PartyAPI.party = it
+				future.complete(it)
+			}
 		}
 		return future
 	}
