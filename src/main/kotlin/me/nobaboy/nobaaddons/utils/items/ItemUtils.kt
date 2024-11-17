@@ -13,6 +13,8 @@ object ItemUtils {
 	val ItemStack.nbtCompound get() = this.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT)
 	val ItemStack.lore get() = this.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT)
 
+	val LoreComponent.stringLines get() = this.lines.map { it.string }
+
 	val ItemStack.isSkyBlockItem: Boolean
 		get() = !isEmpty && getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).contains("id")
 
