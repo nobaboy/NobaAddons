@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.config.categories
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.LabelOption
 import dev.isxander.yacl3.api.Option
+import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
@@ -21,6 +22,7 @@ object QOLCategory {
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities.tooltip")))
 					.binding(defaults.qol.soundFilters.muteWitherSkullAbilities, config.qol.soundFilters::muteWitherSkullAbilities) { config.qol.soundFilters.muteWitherSkullAbilities = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
