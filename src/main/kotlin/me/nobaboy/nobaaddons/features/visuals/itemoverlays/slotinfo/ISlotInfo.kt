@@ -2,6 +2,9 @@ package me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.BestiaryMilestoneSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.BestiaryTierSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.CollectionTierSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.EnchantedBookSlotInfo
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
@@ -26,8 +29,9 @@ interface ISlotInfo {
 	companion object {
 		private var init = false
 		private val slotInfos = listOf<ISlotInfo>(
-//			BestiaryLevelSlotInfo,
-//			CollectionTierSlotInfo,
+			BestiaryMilestoneSlotInfo,
+			BestiaryTierSlotInfo,
+			CollectionTierSlotInfo,
 //			DungeonHeadSlotInfo,
 			EnchantedBookSlotInfo,
 //			KuudraKeySlotInfo,

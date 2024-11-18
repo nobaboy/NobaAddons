@@ -60,6 +60,15 @@ class UIAndVisualsConfig {
 		var enabled: Boolean = false
 
 		@SerialEntry
+		var bestiaryMilestone: Boolean = false
+
+		@SerialEntry
+		var bestiaryTier: Boolean = false
+
+		@SerialEntry
+		var collectionTier: Boolean = false
+
+		@SerialEntry
 		var enchantedBook: Boolean = false
 	}
 

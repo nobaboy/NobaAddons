@@ -8,6 +8,7 @@ object RegexUtils {
 
 	inline fun <T> Pattern.matchMatcher(text: String, consumer: Matcher.() -> T) =
 		matcher(text).let { if(it.matches()) consumer(it) else null }
+
 	inline fun <T> Pattern.findMatcher(text: String, consumer: Matcher.() -> T) =
 		matcher(text).let { if(it.find()) consumer(it) else null }
 	inline fun Pattern.findAllMatcher(text: String, consumer: Matcher.() -> Unit) {
@@ -16,6 +17,14 @@ object RegexUtils {
 			consumer(matcher)
 		}
 	}
+
+	inline fun <T> Pattern.firstMatcher(sequence: Sequence<String>, consumer: Matcher.() -> T): T? {
+		for (line in sequence) {
+			matcher(line).let { if (it.matches()) return consumer(it) }
+		}
+		return null
+	}
+	inline fun <T> Pattern.firstMatcher(list: List<String>, consumer: Matcher.() -> T): T? = firstMatcher(list.asSequence(), consumer)
 
 	inline fun <T> Pattern.matchAll(list: List<String>, consumer: Matcher.() -> T): T? {
 		for(line in list) {
