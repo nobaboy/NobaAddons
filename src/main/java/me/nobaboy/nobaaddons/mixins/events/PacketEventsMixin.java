@@ -36,6 +36,6 @@ public class PacketEventsMixin {
 	private void nobaaddons$onPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
 		if(!this.channel.isOpen() || this.side != NetworkSide.CLIENTBOUND) return;
 
-		PacketEvents.RECEIVE.invoke(new PacketEvents.Recieve(packet));
+		PacketEvents.RECEIVE.invoke(new PacketEvents.Receive(packet));
 	}
 }
