@@ -1,19 +1,18 @@
 package me.nobaboy.nobaaddons.events
 
-import net.fabricmc.fabric.api.event.EventFactory
+import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
+import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.Slot
 
 object ScreenRenderEvents {
 	@JvmField
-	val DRAW_SLOT = EventFactory.createArrayBacked(DrawSlotEvent::class.java) { listeners ->
-		DrawSlotEvent { context, textRenderer, slot ->
-			listeners.forEach { it.onDrawSlot(context, textRenderer, slot) }
-		}
-	}
+	val DRAW_SLOT = EventDispatcher<DrawSlot>()
 
-	fun interface DrawSlotEvent {
-		fun onDrawSlot(context: DrawContext, textRenderer: TextRenderer, slot: Slot)
+	data class DrawSlot(val ctx: DrawContext, val textRenderer: TextRenderer, val slot: Slot) {
+		val itemStack: ItemStack by slot::stack
+		val x: Int by slot::x
+		val y: Int by slot::y
 	}
 }

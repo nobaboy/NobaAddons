@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.SlotInfo
 import me.nobaboy.nobaaddons.utils.StringUtils.title
@@ -11,21 +12,16 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object EnchantedBookSlotInfo : ISlotInfo {
-	override fun getSlotInfos(itemStack: ItemStack): List<SlotInfo>? {
+	override val enabled get(): Boolean = SkyBlockAPI.inSkyblock && config.enchantedBook
+
+	private fun getEnchantName(itemStack: ItemStack): SlotInfo? {
 		val item = itemStack.getSkyBlockItem() ?: return null
 		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return null
 
 		val enchant = item.enchantments.keys.first()
 		val text = formatEnchantName(enchant)
 
-		return listOf(SlotInfo(text))
-	}
-
-	override fun getStackOverlay(itemStack: ItemStack): String? {
-		val item = itemStack.getSkyBlockItem() ?: return null
-		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return null
-
-		return item.enchantments.values.first().toString()
+		return SlotInfo(text)
 	}
 
 	private fun formatEnchantName(enchant: String): Text {
@@ -56,5 +52,11 @@ object EnchantedBookSlotInfo : ISlotInfo {
 		}
 	}
 
-	override fun isEnabled(): Boolean = SkyBlockAPI.inSkyblock && config.enchantedBook
+	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+		val item = event.itemStack.getSkyBlockItem() ?: return
+		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return
+
+		drawOverlay(event, item.enchantments.values.first().toString())
+		getEnchantName(event.itemStack)?.let { drawInfo(event, it) }
+	}
 }

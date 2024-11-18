@@ -1,28 +1,15 @@
 package me.nobaboy.nobaaddons.events
 
-import net.fabricmc.fabric.api.event.EventFactory
+import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import net.minecraft.network.packet.Packet
 
 object PacketEvents {
-	@JvmField
-	val RECEIVE = EventFactory.createArrayBacked(PacketReceiveEvent::class.java) { listeners ->
-		PacketReceiveEvent { packet ->
-			listeners.forEach { it.onPacketReceive(packet) }
-		}
-	}
+	data class Recieve(val packet: Packet<*>)
+	data class Send(val packet: Packet<*>)
 
 	@JvmField
-	val SEND = EventFactory.createArrayBacked(PacketSendEvent::class.java) { listeners ->
-		PacketSendEvent { packet ->
-			listeners.forEach { it.onPacketSend(packet) }
-		}
-	}
+	val RECEIVE = EventDispatcher<Recieve>()
 
-	fun interface PacketReceiveEvent {
-		fun onPacketReceive(packet: Packet<*>)
-	}
-
-	fun interface PacketSendEvent {
-		fun onPacketSend(packet: Packet<*>)
-	}
+	@JvmField
+	val SEND = EventDispatcher<Send>()
 }
