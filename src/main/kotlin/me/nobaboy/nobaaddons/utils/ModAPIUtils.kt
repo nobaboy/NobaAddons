@@ -53,9 +53,9 @@ object ModAPIUtils {
 
 	inline fun <reified T : ClientboundHypixelPacket> HypixelModAPI.request(noinline callback: (T) -> Unit) {
 		val toSend = when(T::class) {
-			is ClientboundPingPacket -> ServerboundPingPacket()
-			is ClientboundPartyInfoPacket -> ServerboundPartyInfoPacket()
-			is ClientboundPlayerInfoPacket -> ServerboundPlayerInfoPacket()
+			ClientboundPingPacket::class -> ServerboundPingPacket()
+			ClientboundPartyInfoPacket::class -> ServerboundPartyInfoPacket()
+			ClientboundPlayerInfoPacket::class -> ServerboundPlayerInfoPacket()
 			else -> throw IllegalArgumentException("${T::class.java} does not have a serverbound packet")
 		}
 		request<T>(toSend, callback)
