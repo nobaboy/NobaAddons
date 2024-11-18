@@ -3,55 +3,29 @@ package me.nobaboy.nobaaddons.utils
 import kotlin.math.pow
 
 object NumberUtils {
-	fun String.romanToDecimal(): Int {
-		var decimal = 0
+	private val romanValues = mapOf<Char, Int>(
+		'M' to 1000,
+		'D' to 500,
+		'C' to 100,
+		'L' to 50,
+		'X' to 10,
+		'V' to 5,
+		'I' to 1
+	)
+
+	fun String.tryRomanToArabic() = toIntOrNull() ?: romanToArabic()
+
+	fun String.romanToArabic(): Int {
+		var number = 0
 		var lastNumber = 0
-		val romanNumeral = this.uppercase()
-		for(x in romanNumeral.length - 1 downTo 0) {
-			when(romanNumeral[x]) {
-				'M' -> {
-					decimal = processDecimal(1000, lastNumber, decimal)
-					lastNumber = 1000
-				}
 
-				'D' -> {
-					decimal = processDecimal(500, lastNumber, decimal)
-					lastNumber = 500
-				}
-
-				'C' -> {
-					decimal = processDecimal(100, lastNumber, decimal)
-					lastNumber = 100
-				}
-
-				'L' -> {
-					decimal = processDecimal(50, lastNumber, decimal)
-					lastNumber = 50
-				}
-
-				'X' -> {
-					decimal = processDecimal(10, lastNumber, decimal)
-					lastNumber = 10
-				}
-
-				'V' -> {
-					decimal = processDecimal(5, lastNumber, decimal)
-					lastNumber = 5
-				}
-
-				'I' -> {
-					decimal = processDecimal(1, lastNumber, decimal)
-					lastNumber = 1
-				}
-			}
+		this.uppercase().reversed().forEach { char ->
+			val currentNumber = romanValues[char] ?: 0
+			number += if(currentNumber < lastNumber) -currentNumber else currentNumber
+			lastNumber = currentNumber
 		}
-		return decimal
-	}
 
-	private fun processDecimal(decimal: Int, lastNumber: Int, lastDecimal: Int) = if(lastNumber > decimal) {
-		lastDecimal - decimal
-	} else {
-		lastDecimal + decimal
+		return number
 	}
 
 	private fun String.formatDoubleOrNull(): Double? {

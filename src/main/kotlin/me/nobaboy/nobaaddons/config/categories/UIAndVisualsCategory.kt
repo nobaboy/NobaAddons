@@ -93,8 +93,26 @@ object UIAndVisualsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryMilestone"))
+					.binding(defaults.uiAndVisuals.slotInfo.bestiaryMilestone, config.uiAndVisuals.slotInfo::bestiaryMilestone) { config.uiAndVisuals.slotInfo.bestiaryMilestone = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryTier"))
+					.binding(defaults.uiAndVisuals.slotInfo.bestiaryTier, config.uiAndVisuals.slotInfo::bestiaryTier) { config.uiAndVisuals.slotInfo.bestiaryTier = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.enchantedBook"))
 					.binding(defaults.uiAndVisuals.slotInfo.enchantedBook, config.uiAndVisuals.slotInfo::enchantedBook) { config.uiAndVisuals.slotInfo.enchantedBook = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.collectionTier"))
+					.binding(defaults.uiAndVisuals.slotInfo.collectionTier, config.uiAndVisuals.slotInfo::collectionTier) { config.uiAndVisuals.slotInfo.collectionTier = it }
 					.controller(TickBoxControllerBuilder::create)
 					.build())
 
