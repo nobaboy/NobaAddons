@@ -13,10 +13,9 @@ interface ISlotInfo {
 	val config get() = NobaConfigManager.config.uiAndVisuals.slotInfo
 
 	fun isEnabled(): Boolean
-	fun shouldRender(itemStack: ItemStack): Boolean
 
-	fun getSlotInfos(): List<SlotInfo>? = null
-	fun getStackOverlay(): String? = null
+	fun getSlotInfos(itemStack: ItemStack): List<SlotInfo>? = null
+	fun getStackOverlay(itemStack: ItemStack): String? = null
 
 	companion object {
 		private var init = false
@@ -43,13 +42,12 @@ interface ISlotInfo {
 			ScreenRenderEvents.DRAW_SLOT.register { context, textRenderer, slot ->
 				slotInfos.asSequence()
 					.filter { it.config.enabled && it.isEnabled() }
-					.filter { it.shouldRender(slot.stack) }
 					.forEach { slotInfo ->
-						slotInfo.getStackOverlay()?.let { stackOverlay ->
+						slotInfo.getStackOverlay(slot.stack)?.let { stackOverlay ->
 							context.drawStackOverlay(textRenderer, slot.stack, slot.x, slot.y, stackOverlay)
 						}
 
-						slotInfo.getSlotInfos()?.forEach {
+						slotInfo.getSlotInfos(slot.stack)?.forEach {
 							renderSlotInfo(context, textRenderer, slot, it)
 						}
 					}
@@ -61,7 +59,13 @@ interface ISlotInfo {
 			val width = textRenderer.getWidth(slotInfo.text)
 			val scale = if(width > 16) 0.8333333f else 1.0f
 
-			context.matrices.translate(0.0f, 0.0f, 200.0f)
+			when(slotInfo.position) {
+				Position.TOP_LEFT -> context.matrices.translate(0.0f, 0.0f, 200.0f)
+				Position.TOP_RIGHT -> context.matrices.translate(slot.x + 16.0f - width, 0.0f, 200.0f)
+				Position.BOTTOM_LEFT -> context.matrices.translate(0.0f, 16.0f - textRenderer.fontHeight, 200.0f)
+				Position.BOTTOM_RIGHT -> context.matrices.translate(slot.x + 16.0f - width, 16.0f - textRenderer.fontHeight, 200.0f)
+			}
+
 			RenderUtils.drawText(context, slotInfo.text, slot.x, slot.y, scale)
 		}
 	}

@@ -6,32 +6,29 @@ import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.SlotInfo
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
-import me.nobaboy.nobaaddons.utils.items.SkyBlockItemData
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object EnchantedBookSlotInfo : ISlotInfo {
-	private var cachedItem: SkyBlockItemData? = null
+	override fun getSlotInfos(itemStack: ItemStack): List<SlotInfo>? {
+		val item = itemStack.getSkyBlockItem() ?: return null
+		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return null
 
-	override fun shouldRender(itemStack: ItemStack): Boolean {
-		val item = itemStack.getSkyBlockItem() ?: return false
-		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return false
-
-		cachedItem = item
-		return true
-	}
-
-	override fun getSlotInfos(): List<SlotInfo>? {
-		val enchant = cachedItem?.enchantments?.keys?.first() ?: return null
-		val text = formatEnchantName(enchant, cachedItem!!.rarity.color?.toFormatting() ?: Formatting.WHITE)
+		val enchant = item.enchantments.keys.first()
+		val text = formatEnchantName(enchant)
 
 		return listOf(SlotInfo(text))
 	}
 
-	override fun getStackOverlay(): String? = cachedItem?.enchantments?.values?.first().toString()
+	override fun getStackOverlay(itemStack: ItemStack): String? {
+		val item = itemStack.getSkyBlockItem() ?: return null
+		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return null
 
-	private fun formatEnchantName(enchant: String, formatting: Formatting): Text {
+		return item.enchantments.values.first().toString()
+	}
+
+	private fun formatEnchantName(enchant: String): Text {
 		val formattedText = buildText {
 			when {
 				enchant.startsWith("ultimate_") -> {
@@ -40,11 +37,9 @@ object EnchantedBookSlotInfo : ISlotInfo {
 					append(formatShortenedName(name))
 				}
 				enchant.startsWith("turbo_") -> {
-					formatted(formatting)
 					append(formatShortenedName(enchant.removePrefix("turbo_")))
 				}
 				else -> {
-					formatted(formatting)
 					append(formatShortenedName(enchant))
 				}
 			}
