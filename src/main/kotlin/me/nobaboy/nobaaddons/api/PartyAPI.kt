@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.api
 import me.nobaboy.nobaaddons.api.data.Party
 import me.nobaboy.nobaaddons.data.json.MojangProfile
 import me.nobaboy.nobaaddons.events.CooldownTickEvent
-import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.request
@@ -15,7 +14,6 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
-import net.minecraft.client.MinecraftClient
 import net.minecraft.text.HoverEvent
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
@@ -55,7 +53,7 @@ object PartyAPI {
 		private set
 
 	fun init() {
-		CooldownTickEvent.EVENT.register(TickEvent)
+		CooldownTickEvent.EVENT.register(this::onTick)
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
@@ -109,15 +107,11 @@ object PartyAPI {
 		}
 	}
 
-	private object TickEvent : CooldownTickEvent {
-		override val cooldownManager = CooldownManager(1.5.seconds)
-
-		override fun onTick(client: MinecraftClient) {
-			if(refreshPartyList && HypixelUtils.onHypixel) {
-				getPartyInfo()
-				refreshPartyList = false
-				cooldownManager.startCooldown()
-			}
+	private fun onTick(event: CooldownTickEvent) {
+		if(refreshPartyList && HypixelUtils.onHypixel) {
+			getPartyInfo()
+			refreshPartyList = false
+			event.cooldownManager.startCooldown(1.5.seconds)
 		}
 	}
 }

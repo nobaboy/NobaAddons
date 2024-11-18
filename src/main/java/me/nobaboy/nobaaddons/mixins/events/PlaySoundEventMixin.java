@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
-import me.nobaboy.nobaaddons.data.SoundData;
 import me.nobaboy.nobaaddons.events.PlaySoundEvent;
 import me.nobaboy.nobaaddons.utils.NobaVec;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -28,9 +27,13 @@ public class PlaySoundEventMixin {
 				.orElseThrow());
 
 		var location = new NobaVec(packet.getX(), packet.getY(), packet.getZ());
-		var soundData = new SoundData(id, location, packet.getPitch(), packet.getVolume());
 
-		if(!PlaySoundEvent.ALLOW_SOUND.invoker().onSound(soundData)) ci.cancel();
-		PlaySoundEvent.SOUND.invoker().onSound(soundData);
+		var allow = new PlaySoundEvent.AllowSound(id, location, packet.getPitch(), packet.getVolume());
+		PlaySoundEvent.ALLOW_SOUND.invoke(allow);
+		if(allow.isCanceled()) {
+			ci.cancel();
+			return;
+		}
+		PlaySoundEvent.SOUND.invoke(new PlaySoundEvent.Sound(id, location, packet.getPitch(), packet.getVolume()));
 	}
 }

@@ -9,20 +9,26 @@ import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.Enchant
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.Slot
+import net.minecraft.util.Colors
 
 interface ISlotInfo {
 	val config get() = NobaConfigManager.config.uiAndVisuals.slotInfo
 
-	fun isEnabled(): Boolean
+	val enabled: Boolean
+	fun handle(event: ScreenRenderEvents.DrawSlot)
 
-	fun getSlotInfos(itemStack: ItemStack): List<SlotInfo>? = null
-	fun getStackOverlay(itemStack: ItemStack): String? = null
+	fun drawInfo(event: ScreenRenderEvents.DrawSlot, info: SlotInfo) {
+		renderSlotInfo(event.ctx, event.textRenderer, event.slot, info)
+	}
+
+	fun drawOverlay(event: ScreenRenderEvents.DrawSlot, text: String, color: Int = Colors.WHITE) {
+		drawStackOverlay(event.ctx, event.textRenderer, event.x, event.y, text, color)
+	}
 
 	companion object {
 		private var init = false
-		private val slotInfos = mutableListOf<ISlotInfo>(
+		private val slotInfos = listOf<ISlotInfo>(
 			BestiaryMilestoneSlotInfo,
 			BestiaryTierSlotInfo,
 			CollectionTierSlotInfo,
@@ -43,22 +49,15 @@ interface ISlotInfo {
 			check(!init) { "Already initialized slot info!" }
 			init = true
 
-			ScreenRenderEvents.DRAW_SLOT.register { context, textRenderer, slot ->
-				slotInfos.asSequence()
-					.filter { it.config.enabled && it.isEnabled() }
-					.forEach { slotInfo ->
-						slotInfo.getStackOverlay(slot.stack)?.let { stackOverlay ->
-							context.drawStackOverlay(textRenderer, slot.stack, slot.x, slot.y, stackOverlay)
-						}
-
-						slotInfo.getSlotInfos(slot.stack)?.forEach {
-							renderSlotInfo(context, textRenderer, slot, it)
-						}
-					}
+			slotInfos.forEach { handler ->
+				ScreenRenderEvents.DRAW_SLOT.register {
+					if(handler.enabled) handler.handle(it)
+				}
 			}
 		}
 
-		private fun renderSlotInfo(context: DrawContext, textRenderer: TextRenderer, slot: Slot, slotInfo: SlotInfo) {
+		// TODO: Implement position handling
+		fun renderSlotInfo(context: DrawContext, textRenderer: TextRenderer, slot: Slot, slotInfo: SlotInfo) {
 			val width = textRenderer.getWidth(slotInfo.text)
 			val scale = if(width > 16) 0.8333333f else 1.0f
 
@@ -70,6 +69,13 @@ interface ISlotInfo {
 			}
 
 			RenderUtils.drawText(context, slotInfo.text, slot.x, slot.y, scale)
+		}
+
+		fun drawStackOverlay(ctx: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: String, color: Int = Colors.WHITE) {
+			ctx.matrices.push()
+			ctx.matrices.translate(0.0F, 0.0F, 200.0F)
+			ctx.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color, true)
+			ctx.matrices.pop()
 		}
 	}
 }

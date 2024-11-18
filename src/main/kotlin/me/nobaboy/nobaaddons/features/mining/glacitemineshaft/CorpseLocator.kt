@@ -37,7 +37,8 @@ object CorpseLocator {
 		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
 	}
 
-	private fun handleSecondPassed(client: MinecraftClient) {
+	private fun handleSecondPassed(event: SecondPassedEvent) {
+		val client = event.client
 		if(!isEnabled() || client.player == null) return
 
 		getCorpses(client.player!!)

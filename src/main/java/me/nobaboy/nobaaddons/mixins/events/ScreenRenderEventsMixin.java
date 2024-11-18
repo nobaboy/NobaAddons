@@ -19,6 +19,7 @@ public abstract class ScreenRenderEventsMixin extends Screen {
 
 	@Inject(method = "drawSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawStackOverlay(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V"))
 	public void nobaaddons$onDrawSlot(DrawContext context, Slot slot, CallbackInfo ci) {
-		ScreenRenderEvents.DRAW_SLOT.invoker().onDrawSlot(context, textRenderer, slot);
+		var event = new ScreenRenderEvents.DrawSlot(context, textRenderer, slot);
+		ScreenRenderEvents.DRAW_SLOT.invoke(event);
 	}
 }
