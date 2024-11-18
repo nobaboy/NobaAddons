@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.screen.slot.Slot
+import net.minecraft.util.Colors
 
 interface ISlotInfo {
 	val config get() = NobaConfigManager.config.uiAndVisuals.slotInfo
@@ -18,8 +19,8 @@ interface ISlotInfo {
 		renderSlotInfo(event.ctx, event.textRenderer, event.slot, info)
 	}
 
-	fun drawOverlay(event: ScreenRenderEvents.DrawSlot, text: String) {
-		event.ctx.drawStackOverlay(event.textRenderer, event.itemStack, event.x, event.y, text)
+	fun drawOverlay(event: ScreenRenderEvents.DrawSlot, text: String, color: Int = Colors.WHITE) {
+		drawStackOverlay(event.ctx, event.textRenderer, event.x, event.y, text, color)
 	}
 
 	companion object {
@@ -64,6 +65,13 @@ interface ISlotInfo {
 			}
 
 			RenderUtils.drawText(context, slotInfo.text, slot.x, slot.y, scale)
+		}
+
+		fun drawStackOverlay(ctx: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: String, color: Int = Colors.WHITE) {
+			ctx.matrices.push()
+			ctx.matrices.translate(0.0F, 0.0F, 200.0F)
+			ctx.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color, true)
+			ctx.matrices.pop()
 		}
 	}
 }
