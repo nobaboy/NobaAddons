@@ -103,20 +103,35 @@ class UIAndVisualsConfig {
 		@SerialEntry
 		var hideLightningBolt: Boolean = false
 
-		@SerialEntry var removeFrontFacingThirdPerson: Boolean = false
+		@SerialEntry
+		var removeFrontFacingThirdPerson: Boolean = false
 	}
 
 	class SwingAnimation {
-		@SerialEntry var swingDuration: Int = 1
-		@SerialEntry var applyToAllPlayers: Boolean = false
+		@SerialEntry
+		var swingDuration: Int = 1
+
+		@SerialEntry
+		var applyToAllPlayers: Boolean = false
 	}
 
 	class FirstPersonItemPosition {
-		@SerialEntry var scale: Float = 1f // [0.1f, 2f]
-		@SerialEntry var x: Int = 0 // [-150, 150]
-		@SerialEntry var y: Int = 0 // [-150, 150]
-		@SerialEntry var z: Int = 0 // [-150, 50]
-		@SerialEntry var cancelEquipAnimation: Boolean = false
-		@SerialEntry var cancelDrinkAnimation: Boolean = false
+		@SerialEntry
+		var scale: Float = 1f // [0.1f, 2f]
+
+		@SerialEntry
+		var x: Int = 0 // [-150, 150]
+
+		@SerialEntry
+		var y: Int = 0 // [-150, 150]
+
+		@SerialEntry
+		var z: Int = 0 // [-150, 50]
+
+		@SerialEntry
+		var cancelEquipAnimation: Boolean = false
+
+		@SerialEntry
+		var cancelDrinkAnimation: Boolean = false
 	}
 }
