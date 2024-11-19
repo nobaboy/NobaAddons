@@ -15,6 +15,8 @@ object SkillLevelSlotInfo : ISlotInfo {
 		if(inventoryName != "Your Skills") return
 
 		val itemStack = event.itemStack
+		if(itemStack.name.string == "Dungeoneering") return
+
 		val lore = itemStack.lore.stringLines
 		if(lore.none { it == "Click to view!" }) return
 
