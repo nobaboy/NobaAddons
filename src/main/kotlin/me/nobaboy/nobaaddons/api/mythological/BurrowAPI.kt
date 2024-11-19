@@ -1,8 +1,7 @@
 package me.nobaboy.nobaaddons.api.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.data.ParticleData
-import me.nobaboy.nobaaddons.events.ParticleEvent
+import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
@@ -35,18 +34,18 @@ object BurrowAPI {
 
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { reset() }
-		ParticleEvent.EVENT.register(this::handleParticle)
-		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
-		AttackBlockCallback.EVENT.register { player, _, _, pos, _ -> handleBlockClick(player, pos.toNobaVec()) }
-		UseBlockCallback.EVENT.register { player, _, _, hitResult -> handleBlockClick(player, hitResult.toNobaVec()) }
+		ParticleEvents.PARTICLE.register(this::onParticle)
+		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
+		AttackBlockCallback.EVENT.register { player, _, _, pos, _ -> onBlockClick(player, pos.toNobaVec()) }
+		UseBlockCallback.EVENT.register { player, _, _, hitResult -> onBlockClick(player, hitResult.toNobaVec()) }
 	}
 
-	private fun handleParticle(particle: ParticleData) {
+	private fun onParticle(event: ParticleEvents.Particle) {
 		if(!isEnabled()) return
-		if(particle.location in recentlyDugBurrows) return
+		if(event.location in recentlyDugBurrows) return
 
-		val particleType = BurrowParticleType.getParticleType(particle) ?: return
-		val burrow = burrows.getOrPut(particle.location) { Burrow(particle.location) }
+		val particleType = BurrowParticleType.getParticleType(event) ?: return
+		val burrow = burrows.getOrPut(event.location) { Burrow(event.location) }
 
 		when(particleType) {
 			BurrowParticleType.ENCHANT -> burrow.hasEnchant = true
@@ -57,11 +56,11 @@ object BurrowAPI {
 
 		if(!burrow.hasEnchant || burrow.type == BurrowType.UNKNOWN || burrow.found) return
 
-		MythologicalEvents.BURROW_FIND.invoker().onBurrowFind(burrow.location, burrow.type)
+		MythologicalEvents.BURROW_FIND.invoke(MythologicalEvents.BurrowFind(burrow.location, burrow.type))
 		burrow.found = true
 	}
 
-	private fun handleChatEvent(message: String) {
+	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
 		if(burrowDugPattern.matches(message)) {
@@ -75,7 +74,7 @@ object BurrowAPI {
 	}
 
 	@Suppress("SameReturnValue")
-	private fun handleBlockClick(player: PlayerEntity, location: NobaVec): ActionResult {
+	private fun onBlockClick(player: PlayerEntity, location: NobaVec): ActionResult {
 		if(!isEnabled()) return ActionResult.PASS
 		if(!DianaAPI.hasSpadeInHand(player)) return ActionResult.PASS
 
@@ -99,7 +98,7 @@ object BurrowAPI {
 		recentlyDugBurrows.add(location)
 		lastDugBurrow = null
 
-		MythologicalEvents.BURROW_DIG.invoker().onBurrowDig(location)
+		MythologicalEvents.BURROW_DIG.invoke(MythologicalEvents.BurrowDig(location))
 		return true
 	}
 
@@ -108,14 +107,14 @@ object BurrowAPI {
 		recentlyDugBurrows.clear()
 	}
 
-	private enum class BurrowParticleType(val check: ParticleData.() -> Boolean) {
+	private enum class BurrowParticleType(val check: ParticleEvents.Particle.() -> Boolean) {
 		ENCHANT({ type == ParticleTypes.ENCHANT && count == 5 && speed == 0.05f && offset.x == 0.5 && offset.y == 0.4 && offset.z == 0.5 }),
 		START({ type == ParticleTypes.ENCHANTED_HIT && count == 4 && speed == 0.01f && offset.x == 0.5 && offset.y == 0.1 && offset.z == 0.5 }),
 		MOB({ type == ParticleTypes.CRIT && count == 3 && speed == 0.01f && offset.x == 0.5 && offset.y == 0.1 && offset.z == 0.5 }),
 		TREASURE({ type == ParticleTypes.DRIPPING_LAVA && count == 2 && speed == 0.01f && offset.x == 0.35 && offset.y == 0.1 && offset.z == 0.35 });
 
 		companion object {
-			fun getParticleType(particle: ParticleData): BurrowParticleType? {
+			fun getParticleType(particle: ParticleEvents.Particle): BurrowParticleType? {
 				if(!particle.isLongDistance) return null
 				for(type in entries) {
 					if(type.check(particle)) return type

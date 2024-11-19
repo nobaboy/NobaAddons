@@ -23,7 +23,7 @@ object DianaAPI {
 	private fun handleEntityJoin(entity: Entity) {
 		if(entity.name.string != "Minos Inquisitor") return
 
-		MythologicalEvents.INQUISITOR.invoker().onInquisitorSpawn(entity.getNobaVec())
+		MythologicalEvents.INQUISITOR_SPAWN.invoke(MythologicalEvents.InquisitorSpawn(entity.getNobaVec()))
 	}
 
 	private fun hasSpadeInHotbar(): Boolean = InventoryUtils.getItemsInHotbar().any { it.getSkyBlockItemId() == spade }

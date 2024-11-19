@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.core.Mayor
 import me.nobaboy.nobaaddons.core.MayorPerk
-import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.data.json.MayorJson
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.skyblock.SecondPassedEvent
@@ -53,13 +52,13 @@ object MayorAPI {
 		private set
 
 	fun init() {
-		SecondPassedEvent.EVENT.register { handleSecondPassed() }
-		InventoryEvents.READY.register(this::handleInventoryReady)
+		SecondPassedEvent.EVENT.register { onSecondPassed() }
+		InventoryEvents.OPEN.register(this::onInventoryReady)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
 	}
 
-	private fun handleSecondPassed() {
-		if(!SkyBlockAPI.inSkyblock) return
+	private fun onSecondPassed() {
+		if(!SkyBlockAPI.inSkyBlock) return
 
 		getCurrentMayor()
 		getNextMayorTimestamp()
@@ -80,7 +79,7 @@ object MayorAPI {
 	}
 
 	private fun handleChatEvent(message: String) {
-		if(!SkyBlockAPI.inSkyblock) return
+		if(!SkyBlockAPI.inSkyBlock) return
 		
 		if(electionOverMessage == message) {
 			lastMayor = currentMayor
@@ -89,11 +88,11 @@ object MayorAPI {
 		}
 	}
 
-	private fun handleInventoryReady(inventory: InventoryData) {
-		if(!SkyBlockAPI.inSkyblock) return
-		if(inventory.title != "Calendar and Events") return
+	private fun onInventoryReady(event: InventoryEvents.Open) {
+		if(!SkyBlockAPI.inSkyBlock) return
+		if(event.inventory.title != "Calendar and Events") return
 
-		val item = inventory.items.values.firstOrNull {
+		val item = event.inventory.items.values.firstOrNull {
 			mayorHeadPattern.matchMatcher(it.name.string.cleanFormatting()) {
 				group("name") == "Jerry"
 			} == true

@@ -1,47 +1,24 @@
 package me.nobaboy.nobaaddons.events.skyblock
 
+import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.utils.NobaVec
-import net.fabricmc.fabric.api.event.EventFactory
 
 object MythologicalEvents {
-	val GUESS = EventFactory.createArrayBacked(BurrowGuessEvent::class.java) { listeners ->
-		BurrowGuessEvent { location ->
-			listeners.forEach { it.onBurrowGuess(location) }
-		}
-	}
+	@JvmField
+	val BURROW_GUESS = EventDispatcher<BurrowGuess>()
 
-	val BURROW_FIND = EventFactory.createArrayBacked(BurrowFindEvent::class.java) { listeners ->
-		BurrowFindEvent { location, type ->
-			listeners.forEach { it.onBurrowFind(location, type) }
-		}
-	}
+	@JvmField
+	val BURROW_FIND = EventDispatcher<BurrowFind>()
 
-	val BURROW_DIG = EventFactory.createArrayBacked(BurrowDigEvent::class.java) { listeners ->
-		BurrowDigEvent { location ->
-			listeners.forEach { it.onBurrowDig(location) }
-		}
-	}
+	@JvmField
+	val BURROW_DIG = EventDispatcher<BurrowDig>()
 
-	val INQUISITOR = EventFactory.createArrayBacked(InquisitorSpawnEvent::class.java) { listeners ->
-		InquisitorSpawnEvent { location ->
-			listeners.forEach { it.onInquisitorSpawn(location) }
-		}
-	}
+	@JvmField
+	val INQUISITOR_SPAWN = EventDispatcher<InquisitorSpawn>()
 
-	fun interface BurrowGuessEvent {
-		fun onBurrowGuess(location: NobaVec)
-	}
-
-	fun interface BurrowFindEvent {
-		fun onBurrowFind(location: NobaVec, type: BurrowType)
-	}
-
-	fun interface BurrowDigEvent {
-		fun onBurrowDig(location: NobaVec)
-	}
-
-	fun interface InquisitorSpawnEvent {
-		fun onInquisitorSpawn(location: NobaVec)
-	}
+	data class BurrowGuess(val location: NobaVec)
+	data class BurrowFind(val location: NobaVec, val type: BurrowType)
+	data class BurrowDig(val location: NobaVec)
+	data class InquisitorSpawn(val location: NobaVec)
 }

@@ -1,58 +1,25 @@
 package me.nobaboy.nobaaddons.events
 
 import me.nobaboy.nobaaddons.data.InventoryData
-import net.fabricmc.fabric.api.event.EventFactory
+import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
 
 object InventoryEvents {
-	val OPEN = EventFactory.createArrayBacked(InventoryOpenEvent::class.java) { listeners ->
-		InventoryOpenEvent { inventory ->
-			listeners.forEach { it.onInventoryOpen(inventory) }
-		}
-	}
+	@JvmField
+	val OPEN = EventDispatcher<Open>()
 
-	val READY = EventFactory.createArrayBacked(InventoryReadyEvent::class.java) { listeners ->
-		InventoryReadyEvent { inventory ->
-			listeners.forEach { it.onInventoryReady(inventory) }
-		}
-	}
+	@JvmField
+	val UPDATE = EventDispatcher<Update>()
 
-	val UPDATE = EventFactory.createArrayBacked(InventoryUpdateEvent::class.java) { listeners ->
-		InventoryUpdateEvent { inventory ->
-			listeners.forEach { it.onInventoryUpdate(inventory) }
-		}
-	}
+	@JvmField
+	val CLOSE = EventDispatcher<Close>()
 
-	val CLOSE = EventFactory.createArrayBacked(InventoryCloseEvent::class.java) { listeners ->
-		InventoryCloseEvent { sameName ->
-			listeners.forEach { it.onInventoryClose(sameName) }
-		}
-	}
+	@JvmField
+	val CLICK_SLOT = EventDispatcher<ClickSlot>()
 
-	val SLOT_CLICK = EventFactory.createArrayBacked(InventorySlotClickEvent::class.java) { listeners ->
-		InventorySlotClickEvent { stack, button, slot, actionType ->
-			listeners.forEach { it.onInventorySlotClick(stack, button, slot, actionType) }
-		}
-	}
-
-	fun interface InventoryOpenEvent {
-		fun onInventoryOpen(inventory: InventoryData)
-	}
-
-	fun interface InventoryReadyEvent {
-		fun onInventoryReady(inventory: InventoryData)
-	}
-
-	fun interface InventoryUpdateEvent {
-		fun onInventoryUpdate(inventory: InventoryData)
-	}
-
-	fun interface InventoryCloseEvent {
-		fun onInventoryClose(sameName: Boolean)
-	}
-
-	fun interface InventorySlotClickEvent {
-		fun onInventorySlotClick(stack: ItemStack, button: Int, slot: Int, actionType: SlotActionType)
-	}
+	data class Open(val inventory: InventoryData)
+	data class Update(val inventory: InventoryData)
+	data class Close(val sameName: Boolean)
+	data class ClickSlot(val itemStack: ItemStack, val button: Int, val slot: Int, val actionType: SlotActionType)
 }

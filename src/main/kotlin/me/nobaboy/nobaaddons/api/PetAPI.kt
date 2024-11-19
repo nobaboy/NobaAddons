@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.api
 import com.google.gson.Gson
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.ItemRarity
-import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.data.json.PetInfo
 import me.nobaboy.nobaaddons.events.InventoryEvents
@@ -14,7 +13,6 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
 import java.util.regex.Pattern
@@ -33,15 +31,15 @@ object PetAPI {
 		private set
 
 	fun init() {
-		InventoryEvents.READY.register { handleInventoryReady(it) }
-		InventoryEvents.SLOT_CLICK.register { stack, button, _, actionType -> handleInventorySlotClick(stack, button, actionType) }
-		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string) }
+		InventoryEvents.OPEN.register(this::onInventoryReady)
+		InventoryEvents.CLICK_SLOT.register(this::onInventoryClickSlot)
+		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string) }
 	}
 
-	private fun handleInventoryReady(inventory: InventoryData) {
-		if(!petsMenuPattern.matches(inventory.title)) return
+	private fun onInventoryReady(event: InventoryEvents.Open) {
+		if(!petsMenuPattern.matches(event.inventory.title)) return
 
-		inventory.items.values.forEach { stack ->
+		event.inventory.items.values.forEach { stack ->
 			petNamePattern.matchMatcher(stack.name.string) {
 				val item = stack.getSkyBlockItem() ?: return@forEach
 				if(item.id != "PET") return@forEach
@@ -59,17 +57,17 @@ object PetAPI {
 		}
 	}
 
-	private fun handleInventorySlotClick(stack: ItemStack, button: Int, actionType: SlotActionType) {
-		if(button != GLFW.GLFW_MOUSE_BUTTON_1) return
-		if(actionType != SlotActionType.PICKUP) return
+	private fun onInventoryClickSlot(event: InventoryEvents.ClickSlot) {
+		if(event.button != GLFW.GLFW_MOUSE_BUTTON_1) return
+		if(event.actionType != SlotActionType.PICKUP) return
 
-		petNamePattern.matchMatcher(stack.name.string) {
-			if(stack.lore.lines.map { it.string.cleanFormatting() }.reversed().any { it == "Click to despawn!" }) {
+		petNamePattern.matchMatcher(event.itemStack.name.string) {
+			if(event.itemStack.lore.lines.map { it.string.cleanFormatting() }.reversed().any { it == "Click to despawn!" }) {
 				changePet(null)
 				return
 			}
 
-			val item = stack.getSkyBlockItem() ?: return
+			val item = event.itemStack.getSkyBlockItem() ?: return
 			if(item.id != "PET") return
 
 			val petInfo: PetInfo = Gson().fromJson(item.petInfo, PetInfo::class.java)
@@ -83,7 +81,7 @@ object PetAPI {
 		}
 	}
 
-	private fun handleChatEvent(message: String) {
+	private fun onChatMessage(message: String) {
 		petUnequipPattern.matchMatcher(message.cleanFormatting()) {
 			changePet(null)
 		}
@@ -103,7 +101,7 @@ object PetAPI {
 	private fun changePet(pet: PetData?) {
 		if(pet?.uuid == currentPet?.uuid) return
 
-		PetChangeEvent.EVENT.invoker().onPetChange(currentPet, pet) // old, new
+		PetChangeEvent.EVENT.invoke(PetChangeEvent(currentPet, pet))
 		currentPet = pet
 	}
 }

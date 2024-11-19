@@ -2,9 +2,7 @@ package me.nobaboy.nobaaddons.features.events.mythological
 
 import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.data.ParticleData
-import me.nobaboy.nobaaddons.data.SoundData
-import me.nobaboy.nobaaddons.events.ParticleEvent
+import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.PlaySoundEvent
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
@@ -51,22 +49,22 @@ object BurrowGuess {
 
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { reset() }
-		PlaySoundEvent.SOUND.register(this::handlePlaySound)
-		ParticleEvent.EVENT.register(this::handleParticle)
+		PlaySoundEvent.SOUND.register(this::onPlaySound)
+		ParticleEvents.PARTICLE.register(this::onParticle)
 	}
 
-	private fun handlePlaySound(sound: SoundData) {
+	private fun onPlaySound(event: PlaySoundEvent.Sound) {
 		if(!isEnabled()) return
-		if(sound.id != Identifier.ofVanilla("block.note_block.harp"))
+		if(event.id != Identifier.ofVanilla("block.note_block.harp"))
 
-		if(!hasDinged) firstPitch = sound.pitch
+		if(!hasDinged) firstPitch = event.pitch
 		hasDinged = true
 
-		if(sound.pitch < lastDingPitch) {
-			firstPitch = sound.pitch
+		if(event.pitch < lastDingPitch) {
+			firstPitch = event.pitch
 			dingIndex = 0
 			dingSlope.clear()
-			lastDingPitch = sound.pitch
+			lastDingPitch = event.pitch
 			lastParticlePoint = null
 			lastParticlePoint2 = null
 			lastSoundPoint = null
@@ -76,7 +74,7 @@ object BurrowGuess {
 		}
 
 		if(lastDingPitch == 0.0f) {
-			lastDingPitch = sound.pitch
+			lastDingPitch = event.pitch
 			distance = null
 			lastParticlePoint = null
 			lastParticlePoint2 = null
@@ -87,16 +85,16 @@ object BurrowGuess {
 		}
 
 		dingIndex++
-		if(dingIndex > 1) dingSlope.add(sound.pitch - lastDingPitch)
+		if(dingIndex > 1) dingSlope.add(event.pitch - lastDingPitch)
 		if(dingSlope.size > 20) dingSlope.removeFirst()
 		val slope = if(dingSlope.isNotEmpty()) dingSlope.reduce { a, b -> a + b }.toDouble() / dingSlope.size else 0.0
 
-		lastSoundPoint = sound.location
-		lastDingPitch = sound.pitch
+		lastSoundPoint = event.location
+		lastDingPitch = event.pitch
 
 		if(lastParticlePoint2 == null || particlePoint == null || firstParticlePoint == null) return
 
-		distance2 = E / slope - firstParticlePoint?.distance(sound.location)!!
+		distance2 = E / slope - firstParticlePoint?.distance(event.location)!!
 		if (distance2!! > 1000) {
 			distance2 = null
 			guessPoint = null
@@ -123,24 +121,24 @@ object BurrowGuess {
 		}
 	}
 
-	private fun handleParticle(particle: ParticleData) {
+	private fun onParticle(event: ParticleEvents.Particle) {
 		if(!isEnabled()) return
-		if(particle.type != ParticleTypes.DRIPPING_LAVA) return
+		if(event.type != ParticleTypes.DRIPPING_LAVA) return
 
 		lastSoundPoint?.let {
-			if(abs(particle.location.x - it.x) >= 2 || abs(particle.location.y - it.y) >= 0.5 || abs(particle.location.z - it.z) >= 2) return
+			if(abs(event.location.x - it.x) >= 2 || abs(event.location.y - it.y) >= 0.5 || abs(event.location.z - it.z) >= 2) return
 		}
 
-		if(locs.size >= 100 || locs.isNotEmpty() || locs.last().distance(particle.location) == 0.0) return
+		if(locs.size >= 100 || locs.isNotEmpty() || locs.last().distance(event.location) == 0.0) return
 
 		var distMultiplier = 1.0
 		if(locs.size > 2) {
 			val predictedDist = 0.06507 * locs.size + 0.259
 			val lastPos = locs.last()
-			val actualDist = particle.location.distance(lastPos)
+			val actualDist = event.location.distance(lastPos)
 			distMultiplier = actualDist / predictedDist
 		}
-		locs.add(particle.location)
+		locs.add(event.location)
 
 		if(locs.size < 5 || guessPoint == null) return
 
@@ -218,17 +216,17 @@ object BurrowGuess {
 			} else {
 				NobaVec(floor(p2.x), 255.0, floor(p2.z))
 			}
-			MythologicalEvents.GUESS.invoker().onBurrowGuess(finalLocation)
+			MythologicalEvents.BURROW_GUESS.invoke(MythologicalEvents.BurrowGuess(finalLocation))
 		}
 
 		if(lastParticlePoint == null) {
-			firstParticlePoint = particle.location.clone()
+			firstParticlePoint = event.location.clone()
 		}
 
 		lastParticlePoint2 = lastParticlePoint
 		lastParticlePoint = particlePoint
 
-		particlePoint = particle.location.clone()
+		particlePoint = event.location.clone()
 
 		if(lastParticlePoint2 == null || firstParticlePoint == null || distance2 == null || lastSoundPoint == null) return
 

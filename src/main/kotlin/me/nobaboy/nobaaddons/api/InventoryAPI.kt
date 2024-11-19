@@ -5,7 +5,6 @@ import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.PacketEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import net.minecraft.client.gui.screen.ChatScreen
-import net.minecraft.network.packet.Packet
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket
 import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket
@@ -16,40 +15,41 @@ import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket
 object InventoryAPI {
 	private var currentInventory: InventoryData? = null
 	private var currentWindow: Window? = null
-	private var acceptItems: Boolean = false
 
 	fun init() {
-		PacketEvents.SEND.register(this::handlePacketSend)
-		PacketEvents.RECEIVE.register(this::handlePacketReceive)
+		PacketEvents.SEND.register(this::onPacketSend)
+		PacketEvents.RECEIVE.register(this::onPacketReceive)
 	}
 
-	private fun handlePacketSend(packet: Packet<*>) {
+	private fun onPacketSend(event: PacketEvents.Send) {
+		val packet = event.packet
 		when(packet) {
-			is ClickSlotC2SPacket -> handleClickSlot(packet)
+			is ClickSlotC2SPacket -> onClickSlot(packet)
 			is CloseHandledScreenC2SPacket -> close()
 		}
 	}
 
-	private fun handlePacketReceive(packet: Packet<*>) {
+	private fun onPacketReceive(event: PacketEvents.Receive) {
+		val packet = event.packet
 		when(packet) {
-			is OpenScreenS2CPacket -> handleOpenScreen(packet)
-			is InventoryS2CPacket -> handleInventory(packet)
-			is ScreenHandlerSlotUpdateS2CPacket -> handleSlotUpdate(packet)
+			is OpenScreenS2CPacket -> onScreenOpen(packet)
+			is InventoryS2CPacket -> onInventory(packet)
+			is ScreenHandlerSlotUpdateS2CPacket -> onSlotUpdate(packet)
 			is CloseScreenS2CPacket -> close()
 		}
 	}
 
-	private fun handleClickSlot(packet: ClickSlotC2SPacket) {
+	private fun onClickSlot(packet: ClickSlotC2SPacket) {
 		if(packet.syncId != currentWindow?.id) return
 
-		InventoryEvents.SLOT_CLICK.invoker().onInventorySlotClick(packet.stack, packet.button, packet.slot, packet.actionType)
+		InventoryEvents.CLICK_SLOT.invoke(InventoryEvents.ClickSlot(packet.stack, packet.button, packet.slot, packet.actionType))
 	}
 
-	private fun handleOpenScreen(packet: OpenScreenS2CPacket) {
+	private fun onScreenOpen(packet: OpenScreenS2CPacket) {
 		currentWindow = Window(packet.syncId, packet.name.string)
 	}
 
-	private fun handleInventory(packet: InventoryS2CPacket) {
+	private fun onInventory(packet: InventoryS2CPacket) {
 		if(packet.syncId != currentWindow?.id) return
 
 		val slotCount = packet.contents.size - 36
@@ -65,7 +65,7 @@ object InventoryAPI {
 		}
 	}
 
-	private fun handleSlotUpdate(packet: ScreenHandlerSlotUpdateS2CPacket) {
+	private fun onSlotUpdate(packet: ScreenHandlerSlotUpdateS2CPacket) {
 		if(packet.syncId != currentWindow?.id) return
 
 		val inventory = currentInventory ?: return
@@ -74,19 +74,17 @@ object InventoryAPI {
 		if(slot >= inventory.slotCount) return
 		packet.stack?.let { inventory.items[slot] = it }
 
-		InventoryEvents.UPDATE.invoker().onInventoryUpdate(inventory)
+		InventoryEvents.UPDATE.invoke(InventoryEvents.Update(inventory))
 	}
 
 	private fun ready(inventory: InventoryData) {
-		InventoryEvents.READY.invoker().onInventoryReady(inventory)
-		InventoryEvents.UPDATE.invoker().onInventoryUpdate(inventory)
-		inventory.ready = true
-		acceptItems = false
+		InventoryEvents.OPEN.invoke(InventoryEvents.Open(inventory))
+		InventoryEvents.UPDATE.invoke(InventoryEvents.Update(inventory))
 	}
 
 	private fun close(sameName: Boolean = false) {
 		if(MCUtils.client.currentScreen is ChatScreen) return
-		InventoryEvents.CLOSE.invoker().onInventoryClose(sameName)
+		InventoryEvents.CLOSE.invoke(InventoryEvents.Close(sameName))
 		currentInventory = null
 	}
 
