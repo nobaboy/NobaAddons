@@ -25,5 +25,5 @@ object SeaCreatureAlert {
 //			else "${seaCreature.rarity.displayName} Catch!"
 	}
 
-	private fun isEnabled() = SkyBlockAPI.inSkyblock && config.enabled
+	private fun isEnabled() = SkyBlockAPI.inSkyBlock && config.enabled
 }
