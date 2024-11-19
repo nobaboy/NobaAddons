@@ -164,8 +164,8 @@ object ChatCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.dm.help"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.dm.help.tooltip")))
+					.name(Text.translatable("nobaaddons.config.chat.chatCommands.help"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip")))
 					.binding(defaults.chat.chatCommands.dm.help, config.chat.chatCommands.dm::help) { config.chat.chatCommands.dm.help = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
@@ -185,8 +185,8 @@ object ChatCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.dm.warpOut"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.dm.warpOut.tooltip")))
+					.name(Text.translatable("nobaaddons.config.chat.chatCommands.warpOut"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.warpOut.tooltip")))
 					.binding(defaults.chat.chatCommands.dm.warpOut, config.chat.chatCommands.dm::warpOut) { config.chat.chatCommands.dm.warpOut = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
@@ -203,8 +203,8 @@ object ChatCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.party.help"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.party.help.tooltip")))
+					.name(Text.translatable("nobaaddons.config.chat.chatCommands.help"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip")))
 					.binding(defaults.chat.chatCommands.party.help, config.chat.chatCommands.party::help) { config.chat.chatCommands.party.help = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
@@ -249,15 +249,15 @@ object ChatCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.guild.help"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.guild.help.tooltip")))
+					.name(Text.translatable("nobaaddons.config.chat.chatCommands.help"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip")))
 					.binding(defaults.chat.chatCommands.guild.help, config.chat.chatCommands.guild::help) { config.chat.chatCommands.guild.help = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.guild.warpOut"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip")))
+					.name(Text.translatable("nobaaddons.config.chat.chatCommands.warpOut"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.warpOut.tooltip")))
 					.binding(defaults.chat.chatCommands.guild.warpOut, config.chat.chatCommands.guild::warpOut) { config.chat.chatCommands.guild.warpOut = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())

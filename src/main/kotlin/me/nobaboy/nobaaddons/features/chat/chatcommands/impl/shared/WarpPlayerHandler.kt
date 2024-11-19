@@ -16,7 +16,7 @@ object WarpPlayerHandler {
 
 	val inviteFailMessages = listOf("Couldn't find a player with that name!", "You cannot invite that player since they're not online.")
 
-	fun handleMessage(message: String) {
+	fun onChatMessage(message: String) {
 		when {
 			inviteFailMessages.lowercaseContains(message) -> cancel()
 			message.lowercaseEquals("$player is already in the party.") -> cancel()

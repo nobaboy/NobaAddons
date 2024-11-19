@@ -1,28 +1,18 @@
 package me.nobaboy.nobaaddons.events
 
-import me.nobaboy.nobaaddons.data.SoundData
-import net.fabricmc.fabric.api.event.EventFactory
+import me.nobaboy.nobaaddons.events.internal.CancelableEvent
+import me.nobaboy.nobaaddons.events.internal.CancelableEventDispatcher
+import me.nobaboy.nobaaddons.events.internal.EventDispatcher
+import me.nobaboy.nobaaddons.utils.NobaVec
+import net.minecraft.util.Identifier
 
 object PlaySoundEvent {
-	@JvmField
-	val ALLOW_SOUND = EventFactory.createArrayBacked(AllowSound::class.java) { listeners ->
-		AllowSound { sound ->
-			listeners.all { it.onSound(sound) }
-		}
-	}
+	data class AllowSound(val id: Identifier, val location: NobaVec, val pitch: Float, val volume: Float) : CancelableEvent()
+	data class Sound(val id: Identifier, val location: NobaVec, val pitch: Float, val volume: Float)
 
 	@JvmField
-	val SOUND = EventFactory.createArrayBacked(Sound::class.java) { listeners ->
-		Sound { sound ->
-			listeners.forEach { it.onSound(sound) }
-		}
-	}
+	val ALLOW_SOUND = CancelableEventDispatcher<AllowSound>()
 
-	fun interface AllowSound {
-		fun onSound(sound: SoundData): Boolean
-	}
-
-	fun interface Sound {
-		fun onSound(sound: SoundData)
-	}
+	@JvmField
+	val SOUND = EventDispatcher<Sound>()
 }

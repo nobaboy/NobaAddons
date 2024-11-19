@@ -24,6 +24,7 @@ import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
@@ -78,6 +79,7 @@ object NobaAddons : ClientModInitializer {
 		// region Visuals
 		TemporaryWaypoint.init()
 		EtherwarpHelper.init()
+		ISlotInfo.init()
 		// endregion
 
 		// region Mining

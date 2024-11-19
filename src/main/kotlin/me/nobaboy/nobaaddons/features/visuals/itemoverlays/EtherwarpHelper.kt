@@ -95,5 +95,5 @@ object EtherwarpHelper {
 		NO_AIR_ABOVE("No air above!")
 	}
 
-	private fun isEnabled() = SkyBlockAPI.inSkyblock && config.enabled && MCUtils.options.sneakKey.isPressed
+	private fun isEnabled() = SkyBlockAPI.inSkyBlock && config.enabled && MCUtils.options.sneakKey.isPressed
 }
