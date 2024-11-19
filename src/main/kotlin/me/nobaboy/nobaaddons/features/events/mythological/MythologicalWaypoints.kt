@@ -73,11 +73,6 @@ object MythologicalWaypoints {
 	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
-		if(message.contains("weweweaaa")) {
-			burrows = burrows.editCopy { put(NobaVec(105, 68, 100), BurrowType.MOB) }
-			guessLocation = NobaVec(101, 67, 107)
-		}
-
 		if(message.startsWith("☠ You were killed by")) {
 			burrows = burrows.editCopy { keys.removeIf { this == lastDugBurrow } }
 		}
