@@ -29,19 +29,19 @@ object SkyBlockLevelSlotInfo : ISlotInfo {
 
 	private fun getSkyBlockLevelColor(level: Int): NobaColor {
 		return when(level) {
-			in 0..39 -> NobaColor.GRAY
-			in 40..79 -> NobaColor.WHITE
-			in 80..119 -> NobaColor.YELLOW
-			in 120..159 -> NobaColor.GREEN
-			in 160..199 -> NobaColor.DARK_GREEN
-			in 200..239 -> NobaColor.AQUA
-			in 240..279 -> NobaColor.DARK_AQUA
-			in 280..319 -> NobaColor.BLUE
-			in 320..359 -> NobaColor.LIGHT_PURPLE
-			in 360..399 -> NobaColor.DARK_PURPLE
-			in 400..439 -> NobaColor.GOLD
-			in 440..479 -> NobaColor.RED
-			in 480..519 -> NobaColor.DARK_RED
+			in 0 until 40 -> NobaColor.GRAY
+			in 40 until 80 -> NobaColor.WHITE
+			in 80 until 120 -> NobaColor.YELLOW
+			in 120 until 160 -> NobaColor.GREEN
+			in 160 until 200 -> NobaColor.DARK_GREEN
+			in 200 until 240 -> NobaColor.AQUA
+			in 240 until 280 -> NobaColor.DARK_AQUA
+			in 280 until 320 -> NobaColor.BLUE
+			in 320 until 360 -> NobaColor.LIGHT_PURPLE
+			in 360 until 400 -> NobaColor.DARK_PURPLE
+			in 400 until 440 -> NobaColor.GOLD
+			in 440 until 480 -> NobaColor.RED
+			in 480 until 520 -> NobaColor.DARK_RED
 			else -> NobaColor.BLACK
 		}
 	}
