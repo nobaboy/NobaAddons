@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
+import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.toNobaVec
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.ActionResult
 import java.util.regex.Pattern
+import kotlin.time.Duration.Companion.seconds
 
 object BurrowAPI {
 	private val config get() = NobaConfigManager.config.events.mythological
@@ -87,6 +89,10 @@ object BurrowAPI {
 		if(!burrows.containsKey(location)) return ActionResult.PASS
 
 		lastDugBurrow = location
+		Scheduler.schedule(20) {
+			if(lastBurrowChatMessage.elapsedSince() > 2.seconds) burrows.remove(location)
+		}
+
 		return ActionResult.PASS
 	}
 
@@ -131,5 +137,5 @@ object BurrowAPI {
 		var found: Boolean = false
 	)
 
-	private fun isEnabled() = DianaAPI.isActive() && config.burrowGuess
+	private fun isEnabled() = DianaAPI.isActive() && config.findNearbyBurrows
 }

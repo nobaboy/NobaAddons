@@ -7,6 +7,9 @@ import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.PetAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.api.mythological.BurrowGuessAPI
+import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
@@ -18,6 +21,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.crimsonisle.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
+import me.nobaboy.nobaaddons.features.events.mythological.MythologicalWaypoints
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindListener
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
@@ -54,8 +58,11 @@ object NobaAddons : ClientModInitializer {
 		PartyAPI.init()
 		SkyBlockAPI.init()
 		MayorAPI.init()
-		DungeonsAPI.init()
 		PetAPI.init()
+		DungeonsAPI.init()
+		DianaAPI.init()
+		BurrowAPI.init()
+		BurrowGuessAPI.init()
 		/* endregion */
 
 		// Note: utility object classes should avoid calling a dedicated `init` method here where possible, and instead
@@ -80,6 +87,10 @@ object NobaAddons : ClientModInitializer {
 		TemporaryWaypoint.init()
 		EtherwarpHelper.init()
 		ISlotInfo.init()
+		// endregion
+
+		// region Events
+		MythologicalWaypoints.init()
 		// endregion
 
 		// region Mining

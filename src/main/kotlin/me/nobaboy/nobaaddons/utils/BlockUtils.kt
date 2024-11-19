@@ -8,4 +8,6 @@ object BlockUtils {
 
 	fun NobaVec.getBlockStateAt(): BlockState =
 		MCUtils.world!!.getBlockState(toBlockPos())
+
+	fun NobaVec.inLoadedChunk(): Boolean = MCUtils.world!!.isChunkLoaded(toBlockPos())
 }

@@ -6,7 +6,6 @@ import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.core.MayorPerk
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.utils.InventoryUtils
-import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents
@@ -17,13 +16,13 @@ object DianaAPI {
 	private val spade = "ANCESTRAL_SPADE"
 
 	fun init() {
-		ServerEntityEvents.ENTITY_LOAD.register { entity, _ -> handleEntityJoin(entity) }
+		ServerEntityEvents.ENTITY_LOAD.register { entity, _ -> onEntityLoad(entity) }
 	}
 
-	private fun handleEntityJoin(entity: Entity) {
+	private fun onEntityLoad(entity: Entity) {
 		if(entity.name.string != "Minos Inquisitor") return
 
-		MythologicalEvents.INQUISITOR_SPAWN.invoke(MythologicalEvents.InquisitorSpawn(entity.getNobaVec()))
+		MythologicalEvents.INQUISITOR_SPAWN.invoke(MythologicalEvents.InquisitorSpawn(entity))
 	}
 
 	private fun hasSpadeInHotbar(): Boolean = InventoryUtils.getItemsInHotbar().any { it.getSkyBlockItemId() == spade }

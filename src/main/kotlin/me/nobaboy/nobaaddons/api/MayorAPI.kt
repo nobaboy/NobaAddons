@@ -4,7 +4,8 @@ import me.nobaboy.nobaaddons.core.Mayor
 import me.nobaboy.nobaaddons.core.MayorPerk
 import me.nobaboy.nobaaddons.data.json.MayorJson
 import me.nobaboy.nobaaddons.events.InventoryEvents
-import me.nobaboy.nobaaddons.events.skyblock.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.HTTPUtils.fetchJson
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
@@ -54,7 +55,7 @@ object MayorAPI {
 	fun init() {
 		SecondPassedEvent.EVENT.register { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onInventoryReady)
-		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
+		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
 	private fun onSecondPassed() {
@@ -78,7 +79,7 @@ object MayorAPI {
 		ChatUtils.addMessage(text)
 	}
 
-	private fun handleChatEvent(message: String) {
+	private fun onChatMessage(message: String) {
 		if(!SkyBlockAPI.inSkyBlock) return
 		
 		if(electionOverMessage == message) {
@@ -142,12 +143,5 @@ object MayorAPI {
 
 		if(month < ELECTION_END_MONTH || (day < ELECTION_END_DAY && month == ELECTION_END_MONTH)) mayorYear--
 		return mayorYear
-	}
-
-	// TODO: Move this to a utility class once one is made
-	private fun List<String>.nextAfter(after: String, skip: Int = 1): String? {
-		val index = this.indexOf(after)
-		if(index == -1) return null
- 		return this.getOrNull(index + skip)
 	}
 }

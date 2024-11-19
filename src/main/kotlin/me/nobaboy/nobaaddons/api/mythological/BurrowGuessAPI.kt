@@ -1,9 +1,8 @@
-package me.nobaboy.nobaaddons.features.events.mythological
+package me.nobaboy.nobaaddons.api.mythological
 
-import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ParticleEvents
-import me.nobaboy.nobaaddons.events.PlaySoundEvent
+import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -26,7 +25,7 @@ import kotlin.math.sin
  *
  * This should've been in `BurrowAPI`, but since it's a separate module I'll keep it as is
  */
-object BurrowGuess {
+object BurrowGuessAPI {
 	private val config get() = NobaConfigManager.config.events.mythological
 
 	private var dingIndex = 0
@@ -49,11 +48,11 @@ object BurrowGuess {
 
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { reset() }
-		PlaySoundEvent.SOUND.register(this::onPlaySound)
+		SoundEvents.SOUND.register(this::onPlaySound)
 		ParticleEvents.PARTICLE.register(this::onParticle)
 	}
 
-	private fun onPlaySound(event: PlaySoundEvent.Sound) {
+	private fun onPlaySound(event: SoundEvents.Sound) {
 		if(!isEnabled()) return
 		if(event.id != Identifier.ofVanilla("block.note_block.harp"))
 

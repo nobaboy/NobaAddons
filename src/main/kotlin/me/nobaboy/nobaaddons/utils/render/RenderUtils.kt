@@ -441,6 +441,7 @@ object RenderUtils {
 		context: WorldRenderContext,
 		vec: NobaVec,
 		text: String,
+		color: Int = 0xFFFFFF,
 		shadow: Boolean = false,
 		scaleMultiplier: Float = 1.0f,
 		hideThreshold: Double = 5.0,
@@ -471,10 +472,34 @@ object RenderUtils {
 		val consumers = VertexConsumerProvider.immediate(ALLOCATOR)
 		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
 
-		textRenderer.draw(text, xOffset, 0.0f, 0xFFFFFF, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0,
+		textRenderer.draw(text, xOffset, 0.0f, color, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0,
 			LightmapTextureManager.MAX_LIGHT_COORDINATE)
 		consumers.draw()
 
 		RenderSystem.depthFunc(GL11.GL_LEQUAL)
+	}
+	fun renderText(
+		context: WorldRenderContext,
+		vec: NobaVec,
+		text: String,
+		color: Color,
+		shadow: Boolean = false,
+		scaleMultiplier: Float = 1.0f,
+		hideThreshold: Double = 5.0,
+		throughBlocks: Boolean = false
+	) {
+		renderText(context, vec, text, color.rgb, shadow, scaleMultiplier, hideThreshold, throughBlocks)
+	}
+	fun renderText(
+		context: WorldRenderContext,
+		vec: NobaVec,
+		text: String,
+		color: NobaColor,
+		shadow: Boolean = false,
+		scaleMultiplier: Float = 1.0f,
+		hideThreshold: Double = 5.0,
+		throughBlocks: Boolean = false
+	) {
+		renderText(context, vec, text, color.toColor().rgb, shadow, scaleMultiplier, hideThreshold, throughBlocks)
 	}
 }
