@@ -34,6 +34,7 @@ public class PlaySoundEventMixin {
 			ci.cancel();
 			return;
 		}
+
 		PlaySoundEvent.SOUND.invoke(new PlaySoundEvent.Sound(id, location, packet.getPitch(), packet.getVolume()));
 	}
 }

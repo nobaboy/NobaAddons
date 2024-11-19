@@ -58,9 +58,7 @@ object PartyAPI {
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ClientReceiveMessageEvents.GAME.register { message, _ ->
 			val cleaned = message.string.cleanFormatting()
-			if(invalidatePartyStateMessages.any { it.matches(cleaned) }) {
-				refreshPartyList = true
-			}
+			if(invalidatePartyStateMessages.any { it.matches(cleaned) }) refreshPartyList = true
 		}
 	}
 

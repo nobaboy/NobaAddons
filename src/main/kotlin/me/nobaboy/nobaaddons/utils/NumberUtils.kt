@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.utils
 import kotlin.math.pow
 
 object NumberUtils {
+	private val romanRegex = Regex("[IVXLCDM]+")
 	private val romanValues = mapOf<Char, Int>(
 		'M' to 1000,
 		'D' to 500,
@@ -13,16 +14,18 @@ object NumberUtils {
 		'I' to 1
 	)
 
-	fun String.tryRomanToArabic() = toIntOrNull() ?: romanToArabic()
+	fun String.tryRomanToArabic() = toIntOrNull() ?: run {
+		if(!romanRegex.matches(this)) null else romanToArabic()
+	}
 
 	fun String.romanToArabic(): Int {
 		var number = 0
-		var lastNumber = 0
+		var lastValue = 0
 
 		this.uppercase().reversed().forEach { char ->
-			val currentNumber = romanValues[char] ?: 0
-			number += if(currentNumber < lastNumber) -currentNumber else currentNumber
-			lastNumber = currentNumber
+			val currentValue = romanValues[char] ?: 0
+			number += if(currentValue < lastValue) -currentValue else currentValue
+			lastValue = currentValue
 		}
 
 		return number

@@ -29,9 +29,13 @@ object SkyBlockAPI {
 		private set
 
 	var purse: Long? = null
+		private set
 	var bits: Long? = null
+		private set
 //	var copper: Long? = null
+//		private set
 //	var motes: Long? = null
+//		private set
 
 	fun init() {
 		SecondPassedEvent.EVENT.register { update() }

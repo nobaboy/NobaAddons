@@ -1,24 +1,29 @@
 package me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.tryRomanToArabic
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
-import net.minecraft.item.ItemStack
 
 object BestiaryTierSlotInfo : ISlotInfo {
-	override fun getStackOverlay(itemStack: ItemStack): String? {
-		val inventoryName = InventoryUtils.openInventoryName() ?: return null
+	override val enabled: Boolean get() = config.bestiaryTier
+
+	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+		val inventoryName = InventoryUtils.openInventoryName() ?: return
+		val itemStack = event.itemStack
 		val lore = itemStack.lore.stringLines
 
-		if(!(inventoryName.startsWith("Bestiary ➜") || inventoryName.startsWith("Fishing ➜")) ||
-			!lore.any { it.contains("Deaths: ") }
-		) return null
+		if(!(inventoryName.startsWith("Bestiary ➜") || inventoryName.startsWith("Fishing ➜"))) return
+		if(lore.none { it.contains("Deaths: ") }) return
 
-		return itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString()
+		val tier = if(lore.none { it == "Overall Progress: 100% (MAX!)" }) {
+			itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
+		} else {
+			"§a✔"
+		}
+
+		drawCount(event, tier)
 	}
-
-	override fun isEnabled(): Boolean = SkyBlockAPI.inSkyblock && config.bestiaryTier
 }

@@ -19,8 +19,7 @@ object WitherSkullAbilitiesSoundFilter : ISoundFilter {
 			SHOOT -> sound.pitch == 1.4920635f && sound.volume in SHOOT_VOLUMES
 			else -> false
 		}
-		if(shouldFilter) {
-			sound.cancel()
-		}
+
+		if(shouldFilter) sound.cancel()
 	}
 }

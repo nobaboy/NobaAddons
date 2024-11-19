@@ -7,22 +7,19 @@ import me.nobaboy.nobaaddons.utils.NumberUtils.tryRomanToArabic
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 
-object CollectionTierSlotInfo : ISlotInfo {
-	override val enabled: Boolean get() = config.collectionTier
+object SkillLevelSlotInfo : ISlotInfo {
+	override val enabled: Boolean get() = config.skillLevel
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
-		if(InventoryUtils.openInventoryName()?.endsWith(" Collections") != true) return
+		val inventoryName = InventoryUtils.openInventoryName() ?: return
+		if(inventoryName != "Your Skills") return
 
 		val itemStack = event.itemStack
 		val lore = itemStack.lore.stringLines
-		if(!lore.any { it == "Click to view!" }) return
+		if(lore.none { it == "Click to view!" }) return
 
-		val tier = if(lore.any { it.startsWith("Progress to") }) {
-			itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
-		} else {
-			"§a✔"
-		}
-
+		// Consider a tick mark if it's maxed?
+		val tier = itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
 		drawCount(event, tier)
 	}
 }

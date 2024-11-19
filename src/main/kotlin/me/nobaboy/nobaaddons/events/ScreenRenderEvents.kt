@@ -10,7 +10,7 @@ object ScreenRenderEvents {
 	@JvmField
 	val DRAW_SLOT = EventDispatcher<DrawSlot>()
 
-	data class DrawSlot(val ctx: DrawContext, val textRenderer: TextRenderer, val slot: Slot) {
+	data class DrawSlot(val context: DrawContext, val textRenderer: TextRenderer, val slot: Slot) {
 		val itemStack: ItemStack by slot::stack
 		val x: Int by slot::x
 		val y: Int by slot::y

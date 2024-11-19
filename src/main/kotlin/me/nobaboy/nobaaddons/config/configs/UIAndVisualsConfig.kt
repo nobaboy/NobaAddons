@@ -69,7 +69,31 @@ class UIAndVisualsConfig {
 		var collectionTier: Boolean = false
 
 		@SerialEntry
+		var dungeonBossHead: Boolean = false
+
+		@SerialEntry
 		var enchantedBook: Boolean = false
+
+		@SerialEntry
+		var kuudraKey: Boolean = false
+
+		@SerialEntry
+		var masterSkull: Boolean = false
+
+		@SerialEntry
+		var masterStar: Boolean = false
+
+		@SerialEntry
+		var minionTier: Boolean = false
+
+		@SerialEntry
+		var potionLevel: Boolean = false
+
+		@SerialEntry
+		var skillLevel: Boolean = false
+
+		@SerialEntry
+		var skyBlockLevel: Boolean = false
 	}
 
 	class RenderingTweaks {
