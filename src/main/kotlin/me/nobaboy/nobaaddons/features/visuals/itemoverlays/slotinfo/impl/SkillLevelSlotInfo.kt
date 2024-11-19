@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.tryRomanToArabic
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
+import net.minecraft.util.Colors
 
 object SkillLevelSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.skillLevel
@@ -20,8 +21,11 @@ object SkillLevelSlotInfo : ISlotInfo {
 		val lore = itemStack.lore.stringLines
 		if(lore.none { it == "Click to view!" }) return
 
-		// Consider a tick mark if it's maxed?
-		val tier = itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
-		drawCount(event, tier)
+		if(config.checkMarkIfMaxed && lore.none { it.startsWith("Progress to") }) {
+			drawCount(event, "✔", Colors.GREEN)
+		} else {
+			val tier = itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
+			drawCount(event, tier)
+		}
 	}
 }

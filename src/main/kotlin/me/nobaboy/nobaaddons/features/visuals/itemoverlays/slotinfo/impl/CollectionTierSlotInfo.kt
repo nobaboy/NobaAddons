@@ -18,11 +18,11 @@ object CollectionTierSlotInfo : ISlotInfo {
 		val lore = itemStack.lore.stringLines
 		if(!lore.any { it == "Click to view!" }) return
 
-		if(lore.any { it.startsWith("Progress to") }) {
+		if(config.checkMarkIfMaxed && lore.none { it.startsWith("Progress to") }) {
+			drawCount(event, "✔", Colors.GREEN)
+		} else {
 			val tier = itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
 			drawCount(event, tier)
-		} else {
-			drawCount(event, "✔", Colors.GREEN)
 		}
 	}
 }

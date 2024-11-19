@@ -16,14 +16,14 @@ object BestiaryTierSlotInfo : ISlotInfo {
 		val itemStack = event.itemStack
 		val lore = itemStack.lore.stringLines
 
-		if(!(inventoryName.startsWith("Bestiary ➜") || inventoryName.startsWith("Fishing ➜"))) return
+		if(!(inventoryName.contains("Bestiary ➜") || inventoryName.contains("Fishing ➜"))) return
 		if(lore.none { it.contains("Deaths: ") }) return
 
-		if(lore.none { it == "Overall Progress: 100% (MAX!)" }) {
+		if(config.checkMarkIfMaxed && lore.any { it == "Overall Progress: 100% (MAX!)" }) {
+			drawCount(event, "✔", Colors.GREEN)
+		} else {
 			val tier = itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
 			drawCount(event, tier)
-		} else {
-			drawCount(event, "✔", Colors.GREEN)
 		}
 	}
 }

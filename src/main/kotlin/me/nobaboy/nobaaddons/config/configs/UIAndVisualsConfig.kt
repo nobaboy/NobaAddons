@@ -60,6 +60,9 @@ class UIAndVisualsConfig {
 		var enabled: Boolean = false
 
 		@SerialEntry
+		var checkMarkIfMaxed: Boolean = false
+
+		@SerialEntry
 		var bestiaryMilestone: Boolean = false
 
 		@SerialEntry

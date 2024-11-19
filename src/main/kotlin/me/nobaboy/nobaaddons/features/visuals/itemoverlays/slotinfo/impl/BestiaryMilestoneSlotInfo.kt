@@ -16,7 +16,7 @@ object BestiaryMilestoneSlotInfo : ISlotInfo {
 		val itemStack = event.itemStack
 		val lore = itemStack.lore.stringLines
 
-		if(!(inventoryName.startsWith("Bestiary") || inventoryName.startsWith("Fishing ➜"))) return
+		if(!(inventoryName.contains("Bestiary") || inventoryName.contains("Fishing ➜"))) return
 		if(lore.none { it == "Click to open Bestiary Milestones!" }) return
 
 		val milestone = itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic().toString()
