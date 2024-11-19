@@ -19,8 +19,8 @@ object RegexUtils {
 	}
 
 	inline fun <T> Pattern.firstMatcher(sequence: Sequence<String>, consumer: Matcher.() -> T): T? {
-		for (line in sequence) {
-			matcher(line).let { if (it.matches()) return consumer(it) }
+		for(line in sequence) {
+			matcher(line).let { if(it.matches()) return consumer(it) }
 		}
 		return null
 	}

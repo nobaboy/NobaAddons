@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.tryRomanToArabic
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
+import net.minecraft.util.Colors
 
 object CollectionTierSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.collectionTier
@@ -20,9 +21,9 @@ object CollectionTierSlotInfo : ISlotInfo {
 		val tier = if(lore.any { it.startsWith("Progress to") }) {
 			itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
 		} else {
-			"§a✔"
+			"✔"
 		}
 
-		drawCount(event, tier)
+		drawCount(event, tier, if(tier == "✔") Colors.GREEN else Colors.WHITE)
 	}
 }

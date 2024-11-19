@@ -49,7 +49,7 @@ object EnchantedBookSlotInfo : ISlotInfo {
 
 	private fun formatShortenedName(rawName: String): String {
 		val parts = rawName.replace("_", " ").title().split(" ")
-		return if (parts.size > 1) {
+		return if(parts.size > 1) {
 			parts.joinToString("") { it.first().toString() }
 		} else {
 			rawName.take(3).title().plus(".")

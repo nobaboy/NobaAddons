@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.tryRomanToArabic
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
+import net.minecraft.util.Colors
 
 object BestiaryTierSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.bestiaryTier
@@ -21,9 +22,9 @@ object BestiaryTierSlotInfo : ISlotInfo {
 		val tier = if(lore.none { it == "Overall Progress: 100% (MAX!)" }) {
 			itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
 		} else {
-			"§a✔"
+			"✔"
 		}
 
-		drawCount(event, tier)
+		drawCount(event, tier, if(tier == "✔") Colors.GREEN else Colors.WHITE)
 	}
 }
