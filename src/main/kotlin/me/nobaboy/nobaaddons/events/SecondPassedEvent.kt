@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.events.skyblock
+package me.nobaboy.nobaaddons.events
 
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import me.nobaboy.nobaaddons.utils.Timestamp

@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
-import me.nobaboy.nobaaddons.events.PlaySoundEvent;
+import me.nobaboy.nobaaddons.events.SoundEvents;
 import me.nobaboy.nobaaddons.utils.NobaVec;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
-public class PlaySoundEventMixin {
+public class SoundEventsMixin {
 	@Inject(method = "onPlaySound", at = @At("HEAD"), cancellable = true)
 	public void nobaaddons$onPlaySound(PlaySoundS2CPacket packet, CallbackInfo ci) {
 		var sound = packet.getSound().getKeyOrValue();
@@ -28,13 +28,13 @@ public class PlaySoundEventMixin {
 
 		var location = new NobaVec(packet.getX(), packet.getY(), packet.getZ());
 
-		var allow = new PlaySoundEvent.AllowSound(id, location, packet.getPitch(), packet.getVolume());
-		PlaySoundEvent.ALLOW_SOUND.invoke(allow);
+		var allow = new SoundEvents.AllowSound(id, location, packet.getPitch(), packet.getVolume());
+		SoundEvents.ALLOW_SOUND.invoke(allow);
 		if(allow.isCanceled()) {
 			ci.cancel();
 			return;
 		}
 
-		PlaySoundEvent.SOUND.invoke(new PlaySoundEvent.Sound(id, location, packet.getPitch(), packet.getVolume()));
+		SoundEvents.SOUND.invoke(new SoundEvents.Sound(id, location, packet.getPitch(), packet.getVolume()));
 	}
 }
