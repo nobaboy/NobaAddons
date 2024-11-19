@@ -26,7 +26,7 @@ public class PacketEventsMixin {
 	private void nobaaddons$onPacketSend(Packet<?> packet, CallbackInfo ci) {
 		if(this.side != NetworkSide.CLIENTBOUND) return;
 
-		PacketEvents.SEND.invoker().onPacketSend(packet);
+		PacketEvents.SEND.invoke(new PacketEvents.Send(packet));
 	}
 
 	@Inject(
@@ -36,6 +36,6 @@ public class PacketEventsMixin {
 	private void nobaaddons$onPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
 		if(!this.channel.isOpen() || this.side != NetworkSide.CLIENTBOUND) return;
 
-		PacketEvents.RECEIVE.invoker().onPacketReceive(packet);
+		PacketEvents.RECEIVE.invoke(new PacketEvents.Receive(packet));
 	}
 }

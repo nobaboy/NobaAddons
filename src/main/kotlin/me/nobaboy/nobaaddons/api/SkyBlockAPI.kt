@@ -21,7 +21,7 @@ object SkyBlockAPI {
 	var currentGame: ServerType? = null
 		private set
 
-	val inSkyblock: Boolean
+	val inSkyBlock: Boolean
 		get() = HypixelUtils.onHypixel && currentGame == GameType.SKYBLOCK
 	var currentIsland: IslandType = IslandType.UNKNOWN
 		private set
@@ -29,9 +29,13 @@ object SkyBlockAPI {
 		private set
 
 	var purse: Long? = null
+		private set
 	var bits: Long? = null
+		private set
 //	var copper: Long? = null
+//		private set
 //	var motes: Long? = null
+//		private set
 
 	fun init() {
 		SecondPassedEvent.EVENT.register { update() }
@@ -39,14 +43,12 @@ object SkyBlockAPI {
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 	}
 
-	fun IslandType.inIsland(): Boolean = inSkyblock && currentIsland == this
-	fun inZone(zone: String): Boolean = inSkyblock && currentZone == zone
+	fun IslandType.inIsland(): Boolean = inSkyBlock && currentIsland == this
+	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
 	// I originally planned to make an enum including all the zones but after realising
 	// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
 	private fun getZone() {
-		if(!inSkyblock) return
-
 		val scoreboard = ScoreboardUtils.getSidebarLines()
 		val line = scoreboard.firstOrNull { it.contains("⏣") }
 		currentZone = line?.replace("⏣", "")?.trim() ?: return
@@ -54,8 +56,6 @@ object SkyBlockAPI {
 
 	// This can be further expanded to include other types like Pelts, North Stars, etc.
 	private fun getCurrencies() {
-		if(!inSkyblock) return
-
 		val scoreboard = ScoreboardUtils.getSidebarLines()
 		currencyPattern.matchAll(scoreboard) {
 			val currency = group("currency")
@@ -71,7 +71,7 @@ object SkyBlockAPI {
 	}
 
 	private fun update() {
-		if(!inSkyblock) return
+		if(!inSkyBlock) return
 
 		getZone()
 		getCurrencies()
@@ -80,6 +80,6 @@ object SkyBlockAPI {
 	private fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentGame = packet.serverType.getOrNull()
 		currentIsland = packet.mode.map(IslandType::getIslandType).orElse(IslandType.UNKNOWN)
-		if(currentIsland != IslandType.UNKNOWN) SkyBlockIslandChangeEvent.EVENT.invoker().onIslandChange(currentIsland)
+		if(currentIsland != IslandType.UNKNOWN) SkyBlockIslandChangeEvent.EVENT.invoke(SkyBlockIslandChangeEvent(currentIsland))
 	}
 }

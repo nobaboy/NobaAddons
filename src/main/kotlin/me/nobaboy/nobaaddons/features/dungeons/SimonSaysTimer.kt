@@ -42,8 +42,8 @@ object SimonSaysTimer {
 
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { reset() }
-		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
-		UseBlockCallback.EVENT.register { player, _, _, hitResult -> handleInteractEvent(player, hitResult) }
+		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
+		UseBlockCallback.EVENT.register { player, _, _, hitResult -> onInteract(player, hitResult) }
 
 		runCatching {
 			SimonSaysFile.load()
@@ -99,7 +99,7 @@ object SimonSaysTimer {
 		ChatUtils.addMessage(message)
 	}
 
-	private fun handleChatEvent(message: String) {
+	private fun onChatMessage(message: String) {
 		if(!isEnabled() || !buttonPressed || deviceCompleted) return
 
 		completionPattern.matchMatcher(message) {
@@ -113,7 +113,7 @@ object SimonSaysTimer {
 		}
 	}
 
-	private fun handleInteractEvent(player: PlayerEntity, hitResult: BlockHitResult): ActionResult {
+	private fun onInteract(player: PlayerEntity, hitResult: BlockHitResult): ActionResult {
 		if(!isEnabled() || buttonPressed || player != MCUtils.player || hitResult.blockPos.toNobaVec() != buttonVec) return ActionResult.PASS
 
 		startTime = Timestamp.now()

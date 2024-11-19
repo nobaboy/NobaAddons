@@ -1,8 +1,6 @@
 package me.nobaboy.nobaaddons.features.qol.sound.filters
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.data.SoundData
 import me.nobaboy.nobaaddons.events.PlaySoundEvent
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ability.WitherSkullAbilitiesSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.rift.KillerSpringSoundFilter
@@ -10,8 +8,8 @@ import me.nobaboy.nobaaddons.features.qol.sound.filters.rift.KillerSpringSoundFi
 interface ISoundFilter {
 	val config get() = NobaConfigManager.config.qol.soundFilters
 
-	fun isEnabled(): Boolean
-	fun shouldFilter(sound: SoundData): Boolean
+	val enabled: Boolean
+	fun onSound(sound: PlaySoundEvent.AllowSound)
 
 	companion object {
 		private var init = false
@@ -26,13 +24,9 @@ interface ISoundFilter {
 			check(!init) { "Already initialized sound filters!" }
 			init = true
 
-			PlaySoundEvent.ALLOW_SOUND.register { sound ->
-				filters.asSequence().filter { it.isEnabled() }.none {
-					runCatching { it.shouldFilter(sound) }
-						.onFailure { error ->
-							NobaAddons.LOGGER.error("Sound filter {} threw an error while processing a sound event", it, error)
-						}
-						.getOrDefault(false)
+			filters.forEach { handler ->
+				PlaySoundEvent.ALLOW_SOUND.register {
+					if(handler.enabled) handler.onSound(it)
 				}
 			}
 		}

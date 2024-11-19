@@ -5,7 +5,6 @@ import me.nobaboy.nobaaddons.events.CooldownTickEvent
 import me.nobaboy.nobaaddons.events.CooldownTickEvent.Companion.ticks
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import java.util.LinkedList
@@ -15,18 +14,16 @@ object ChatUtils {
 	private val commandQueue: Queue<String> = LinkedList()
 
 	init {
-		CooldownTickEvent.EVENT.register(CommandQueue)
+		CooldownTickEvent.EVENT.register(this::processCommandQueue)
 	}
 
-	private object CommandQueue : CooldownTickEvent {
-		override fun onTick(client: MinecraftClient) {
-			if(MCUtils.player == null) {
-				commandQueue.clear()
-				return
-			}
-			(MCUtils.networkHandler ?: return).sendCommand(commandQueue.poll() ?: return)
-			cooldownManager.startCooldown(20.ticks)
+	fun processCommandQueue(event: CooldownTickEvent) {
+		if(MCUtils.player == null) {
+			commandQueue.clear()
+			return
 		}
+		(MCUtils.networkHandler ?: return).sendCommand(commandQueue.poll() ?: return)
+		event.cooldownManager.startCooldown(20.ticks)
 	}
 
 	fun queueCommand(message: String) {

@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
+import dev.isxander.yacl3.api.LabelOption
 import dev.isxander.yacl3.api.ListOption
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionDescription
@@ -8,6 +9,7 @@ import dev.isxander.yacl3.api.OptionGroup
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
+import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.replaceWith
@@ -72,6 +74,95 @@ object UIAndVisualsCategory {
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip")))
 					.binding(defaults.uiAndVisuals.etherwarpHelper.allowOnAir, config.uiAndVisuals.etherwarpHelper::allowOnAir) { config.uiAndVisuals.etherwarpHelper.allowOnAir = it }
 					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.collapsed(true)
+				.build())
+
+			.group(OptionGroup.createBuilder()
+				.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo"))
+				.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.tooltip")))
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.enabled"))
+					.binding(defaults.uiAndVisuals.slotInfo.enabled, config.uiAndVisuals.slotInfo::enabled) { config.uiAndVisuals.slotInfo.enabled = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.checkMarkIfMaxed"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.checkMarkIfMaxed.tooltip")))
+					.binding(defaults.uiAndVisuals.slotInfo.checkMarkIfMaxed, config.uiAndVisuals.slotInfo::checkMarkIfMaxed) { config.uiAndVisuals.slotInfo.checkMarkIfMaxed = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(LabelOption.createBuilder()
+					.line(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.label.elements"))
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryMilestone"))
+					.binding(defaults.uiAndVisuals.slotInfo.bestiaryMilestone, config.uiAndVisuals.slotInfo::bestiaryMilestone) { config.uiAndVisuals.slotInfo.bestiaryMilestone = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryTier"))
+					.binding(defaults.uiAndVisuals.slotInfo.bestiaryTier, config.uiAndVisuals.slotInfo::bestiaryTier) { config.uiAndVisuals.slotInfo.bestiaryTier = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.dungeonBossHead"))
+					.binding(defaults.uiAndVisuals.slotInfo.dungeonBossHead, config.uiAndVisuals.slotInfo::dungeonBossHead) { config.uiAndVisuals.slotInfo.dungeonBossHead = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.enchantedBook"))
+					.binding(defaults.uiAndVisuals.slotInfo.enchantedBook, config.uiAndVisuals.slotInfo::enchantedBook) { config.uiAndVisuals.slotInfo.enchantedBook = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.kuudraKey"))
+					.binding(defaults.uiAndVisuals.slotInfo.kuudraKey, config.uiAndVisuals.slotInfo::kuudraKey) { config.uiAndVisuals.slotInfo.kuudraKey = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.masterSkull"))
+					.binding(defaults.uiAndVisuals.slotInfo.masterSkull, config.uiAndVisuals.slotInfo::masterSkull) { config.uiAndVisuals.slotInfo.masterSkull = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.masterStar"))
+					.binding(defaults.uiAndVisuals.slotInfo.masterStar, config.uiAndVisuals.slotInfo::masterStar) { config.uiAndVisuals.slotInfo.masterStar = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.minionTier"))
+					.binding(defaults.uiAndVisuals.slotInfo.minionTier, config.uiAndVisuals.slotInfo::minionTier) { config.uiAndVisuals.slotInfo.minionTier = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.potionLevel"))
+					.binding(defaults.uiAndVisuals.slotInfo.potionLevel, config.uiAndVisuals.slotInfo::potionLevel) { config.uiAndVisuals.slotInfo.potionLevel = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.skillLevel"))
+					.binding(defaults.uiAndVisuals.slotInfo.skillLevel, config.uiAndVisuals.slotInfo::skillLevel) { config.uiAndVisuals.slotInfo.skillLevel = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.skyBlockLevel"))
+					.binding(defaults.uiAndVisuals.slotInfo.skyBlockLevel, config.uiAndVisuals.slotInfo::skyBlockLevel) { config.uiAndVisuals.slotInfo.skyBlockLevel = it }
+					.controller(TickBoxControllerBuilder::create)
 					.build())
 
 				.collapsed(true)
