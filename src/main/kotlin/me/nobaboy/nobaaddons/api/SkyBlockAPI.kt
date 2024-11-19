@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.events.skyblock.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen

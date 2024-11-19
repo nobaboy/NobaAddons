@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.qol.sound.filters.ability
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
-import me.nobaboy.nobaaddons.events.PlaySoundEvent
+import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import net.minecraft.util.Identifier
 
@@ -13,7 +13,7 @@ object WitherSkullAbilitiesSoundFilter : ISoundFilter {
 
 	override val enabled get(): Boolean = SkyBlockAPI.inSkyBlock && config.muteWitherSkullAbilities
 
-	override fun onSound(sound: PlaySoundEvent.AllowSound) {
+	override fun onSound(sound: SoundEvents.AllowSound) {
 		val shouldFilter = when(sound.id) {
 			EXPLODE -> sound.pitch in (0.55..0.85) && sound.volume == 4.0f
 			SHOOT -> sound.pitch == 1.4920635f && sound.volume in SHOOT_VOLUMES

@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.api.data.BossType
 import me.nobaboy.nobaaddons.api.data.ClassType
 import me.nobaboy.nobaaddons.api.data.FloorType
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.events.skyblock.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils.cleanScoreboard
