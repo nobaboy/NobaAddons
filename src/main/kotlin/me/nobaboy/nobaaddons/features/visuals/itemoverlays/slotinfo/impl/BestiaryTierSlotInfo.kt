@@ -19,12 +19,11 @@ object BestiaryTierSlotInfo : ISlotInfo {
 		if(!(inventoryName.startsWith("Bestiary ➜") || inventoryName.startsWith("Fishing ➜"))) return
 		if(lore.none { it.contains("Deaths: ") }) return
 
-		val tier = if(lore.none { it == "Overall Progress: 100% (MAX!)" }) {
-			itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
+		if(lore.none { it == "Overall Progress: 100% (MAX!)" }) {
+			val tier = itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
+			drawCount(event, tier)
 		} else {
-			"✔"
+			drawCount(event, "✔", Colors.GREEN)
 		}
-
-		drawCount(event, tier, if(tier == "✔") Colors.GREEN else Colors.WHITE)
 	}
 }
