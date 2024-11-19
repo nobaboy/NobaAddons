@@ -61,7 +61,7 @@ interface ISlotInfo {
 
 			slotInfos.forEach { handler ->
 				ScreenRenderEvents.DRAW_SLOT.register {
-					if(SkyBlockAPI.inSkyblock && handler.enabled) handler.handle(it)
+					if(SkyBlockAPI.inSkyBlock && handler.enabled) handler.handle(it)
 				}
 			}
 		}

@@ -11,7 +11,7 @@ object WitherSkullAbilitiesSoundFilter : ISoundFilter {
 
 	private val SHOOT_VOLUMES = arrayOf(0.2f, 0.5f)
 
-	override val enabled get(): Boolean = SkyBlockAPI.inSkyblock && config.muteWitherSkullAbilities
+	override val enabled get(): Boolean = SkyBlockAPI.inSkyBlock && config.muteWitherSkullAbilities
 
 	override fun onSound(sound: PlaySoundEvent.AllowSound) {
 		val shouldFilter = when(sound.id) {

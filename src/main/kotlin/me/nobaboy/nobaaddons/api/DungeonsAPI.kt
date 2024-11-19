@@ -30,17 +30,11 @@ object DungeonsAPI {
 	fun inBoss(): Boolean = currentBoss != BossType.UNKNOWN
 
 	fun init() {
-		SecondPassedEvent.EVENT.register { getClassType() }
-		SecondPassedEvent.EVENT.register { getFloorType() }
+		SecondPassedEvent.EVENT.register { update() }
 		ClientReceiveMessageEvents.GAME.register { message, _ -> getBossType(message.string.cleanFormatting()) }
 	}
 
 	private fun getClassType() {
-		if(!IslandType.DUNGEONS.inIsland()) {
-			currentClass = ClassType.EMPTY
-			return
-		}
-
 		val playerName = MCUtils.playerName!!
 		val players = MCUtils.networkHandler!!.playerList
 		for(player in players) {
@@ -56,11 +50,6 @@ object DungeonsAPI {
 	}
 
 	private fun getFloorType() {
-		if(!IslandType.DUNGEONS.inIsland()) {
-			currentFloor = FloorType.NONE
-			return
-		}
-
 		val scoreboard = ScoreboardUtils.getSidebarLines()
 		for(line in scoreboard) {
 			val cleanedLine = line.cleanScoreboard()
@@ -77,6 +66,17 @@ object DungeonsAPI {
 
 			break
 		}
+	}
+
+	private fun update() {
+		if(!IslandType.DUNGEONS.inIsland()) {
+			currentClass = ClassType.EMPTY
+			currentFloor = FloorType.NONE
+			return
+		}
+
+		getClassType()
+		getFloorType()
 	}
 
 	private fun getBossType(message: String) {

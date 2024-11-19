@@ -13,5 +13,5 @@ object ProfileInfoChatFilter : IChatFilter {
 	)
 
 	override fun shouldFilter(message: Text, text: String): Boolean = profileInfoPatterns.anyMatches(text)
-	override fun isEnabled() = SkyBlockAPI.inSkyblock && config.hideProfileInfo
+	override fun isEnabled() = SkyBlockAPI.inSkyBlock && config.hideProfileInfo
 }

@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.features.qol.sound.filters.rift
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
-import me.nobaboy.nobaaddons.data.SoundData
 import me.nobaboy.nobaaddons.events.PlaySoundEvent
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import net.minecraft.util.Identifier

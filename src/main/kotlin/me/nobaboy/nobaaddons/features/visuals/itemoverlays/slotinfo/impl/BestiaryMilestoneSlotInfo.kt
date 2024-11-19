@@ -9,7 +9,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 
 object BestiaryMilestoneSlotInfo : ISlotInfo {
-	override val enabled get() = SkyBlockAPI.inSkyblock && config.bestiaryMilestone
+	override val enabled get() = SkyBlockAPI.inSkyBlock && config.bestiaryMilestone
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		val inventoryName = InventoryUtils.openInventoryName() ?: return

@@ -31,5 +31,5 @@ object AbilityChatFilter : IChatFilter {
 		return false
 	}
 
-	override fun isEnabled(): Boolean = SkyBlockAPI.inSkyblock
+	override fun isEnabled(): Boolean = SkyBlockAPI.inSkyBlock
 }

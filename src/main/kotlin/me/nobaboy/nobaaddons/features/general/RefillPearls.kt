@@ -40,5 +40,5 @@ object RefillPearls {
 		return (16 - sum).coerceAtLeast(0)
 	}
 
-	private fun isEnabled() = SkyBlockAPI.inSkyblock
+	private fun isEnabled() = SkyBlockAPI.inSkyBlock
 }

@@ -20,7 +20,7 @@ object KeyBindListener {
 	@JvmStatic
 	fun onPress(key: Int) {
 		if(key == GLFW.GLFW_KEY_UNKNOWN) return
-		if(!SkyBlockAPI.inSkyblock && !config.allowKeybindsOutsideSkyBlock) return
+		if(!SkyBlockAPI.inSkyBlock && !config.allowKeybindsOutsideSkyBlock) return
 		if(cooldownManager.isOnCooldown()) return
 
 		val keybind = KeybindConfig.keybinds.firstOrNull { it.keycode == key } ?: return

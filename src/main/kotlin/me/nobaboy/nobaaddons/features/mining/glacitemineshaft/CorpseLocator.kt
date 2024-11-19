@@ -16,7 +16,6 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.client.MinecraftClient
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -33,11 +32,11 @@ object CorpseLocator {
 
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { corpses.clear() }
-		SecondPassedEvent.EVENT.register(this::handleSecondPassed)
-		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
+		SecondPassedEvent.EVENT.register(this::onSecondPassed)
+		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
-	private fun handleSecondPassed(event: SecondPassedEvent) {
+	private fun onSecondPassed(event: SecondPassedEvent) {
 		val client = event.client
 		if(!isEnabled() || client.player == null) return
 
@@ -45,7 +44,7 @@ object CorpseLocator {
 		shareCorpse(client.player!!)
 	}
 
-	private fun handleChatEvent(message: String) {
+	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
 		chatCoordsPattern.findMatcher(message) {

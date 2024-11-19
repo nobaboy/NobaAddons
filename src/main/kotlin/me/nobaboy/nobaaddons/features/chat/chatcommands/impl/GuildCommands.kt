@@ -26,7 +26,7 @@ object GuildCommands : ChatCommandManager() {
 			val cleanMessage = message.string.cleanFormatting()
 
 			if(WarpPlayerHandler.isWarping) {
-				WarpPlayerHandler.handleMessage(cleanMessage)
+				WarpPlayerHandler.onChatMessage(cleanMessage)
 				return@register
 			}
 

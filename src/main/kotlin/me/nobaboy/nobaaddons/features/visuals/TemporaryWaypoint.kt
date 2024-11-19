@@ -32,7 +32,7 @@ object TemporaryWaypoint {
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { waypoints.clear() }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
-		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
+		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
 	fun addWaypoint(ctx: CommandContext<FabricClientCommandSource>) {
@@ -46,7 +46,7 @@ object TemporaryWaypoint {
 		ChatUtils.addMessage("Temporary Waypoint added at x: $x, y: $y, z: $z")
 	}
 
-	private fun handleChatEvent(message: String) {
+	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
 		chatCoordsPattern.findMatcher(message) {
@@ -84,5 +84,5 @@ object TemporaryWaypoint {
 			get() = duration != null && timestamp.elapsedSince() >= duration
 	}
 
-	private fun isEnabled() = SkyBlockAPI.inSkyblock && config.enabled
+	private fun isEnabled() = SkyBlockAPI.inSkyBlock && config.enabled
 }
