@@ -94,7 +94,7 @@ object BurrowGuessAPI {
 		if(lastParticlePoint2 == null || particlePoint == null || firstParticlePoint == null) return
 
 		distance2 = E / slope - firstParticlePoint?.distance(event.location)!!
-		if (distance2!! > 1000) {
+		if(distance2!! > 1000) {
 			distance2 = null
 			guessPoint = null
 			return
@@ -195,7 +195,7 @@ object BurrowGuessAPI {
 					distCovered = hypot(lastPos[0] - it.x, lastPos[2] - it.z)
 				}
 
-				if (distCovered > distance2!!) break
+				if(distCovered > distance2!!) break
 			}
 
 			i++

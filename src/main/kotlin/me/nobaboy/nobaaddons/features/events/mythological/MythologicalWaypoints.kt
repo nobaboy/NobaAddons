@@ -6,7 +6,6 @@ import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.BlockUtils.inLoadedChunk
-import me.nobaboy.nobaaddons.utils.CollectionUtils.editCopy
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -36,7 +35,7 @@ object MythologicalWaypoints {
 	)
 
 	private var guessLocation: NobaVec? = null
-	private var burrows = mapOf<NobaVec, BurrowType>()
+	private var burrows = mutableMapOf<NobaVec, BurrowType>()
 
 	private var lastDugBurrow: NobaVec? = null
 
@@ -56,12 +55,12 @@ object MythologicalWaypoints {
 	}
 
 	private fun onBurrowFind(event: MythologicalEvents.BurrowFind) {
-		burrows = burrows.editCopy { this[event.location] = event.type }
+		burrows[event.location] = event.type
 		update()
 	}
 
 	private fun onBurrowDig(event: MythologicalEvents.BurrowDig) {
-		burrows = burrows.editCopy { remove(event.location) }
+		burrows.remove(event.location)
 		lastDugBurrow = event.location
 		update()
 	}
@@ -73,11 +72,12 @@ object MythologicalWaypoints {
 	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
-		if(message.startsWith("☠ You were killed by")) {
-			burrows = burrows.editCopy { keys.removeIf { this == lastDugBurrow } }
+		when {
+			message.startsWith("☠ You were killed by") -> {
+				burrows.keys.removeIf { it == lastDugBurrow }
+			}
+			message == "Poof! You have cleared all your griffin burrows!" -> reset()
 		}
-
-		if(message == "Poof! You have cleared all your griffin burrows!") reset()
 	}
 
 	private fun renderWaypoints(context: WorldRenderContext) {
@@ -88,7 +88,7 @@ object MythologicalWaypoints {
 		if(config.findNearbyBurrows) {
 			burrows.forEach { (location, type) ->
 				RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-				RenderUtils.renderText(context, location.center().raise(), type.text, type.color)
+				RenderUtils.renderText(context, location.center().raise(), type.text, type.color, shadow = true)
 			}
 		}
 
@@ -98,7 +98,7 @@ object MythologicalWaypoints {
 				val distance = adjustedLocation.distance(playerLocation).roundToInt()
 
 				RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.YELLOW, throughBlocks = distance > 10)
-				RenderUtils.renderText(context, adjustedLocation.center().raise(), "Guess", NobaColor.YELLOW)
+				RenderUtils.renderText(context, adjustedLocation.center().raise(), "Text", NobaColor.YELLOW, shadow = true)
 			}
 		}
 	}
@@ -109,13 +109,13 @@ object MythologicalWaypoints {
 
 	private fun reset() {
 		guessLocation = null
-		burrows = emptyMap()
+		burrows.clear()
 	}
 
 	private fun tryRemoveGuess() {
 		guessLocation?.let { guess ->
 			val adjustedGuess = findValidLocation(guess)
-			if (burrows.any { adjustedGuess.distance(it.key) < 40 }) guessLocation = null
+			if(burrows.any { adjustedGuess.distance(it.key) < 40 }) guessLocation = null
 		}
 	}
 
@@ -129,15 +129,15 @@ object MythologicalWaypoints {
 		fun isGround(y: Double) = location.copy(y = y).getBlockAt() == Blocks.GRASS_BLOCK &&
 			location.copy(y = y + 1).getBlockAt() in validBlocks
 
-		for (y in 140 downTo 65) {
-			if (isGround(y.toDouble())) return location.copy(y = y.toDouble())
+		for(y in 140 downTo 65) {
+			if(isGround(y.toDouble())) return location.copy(y = y.toDouble())
 		}
 		return null
 	}
 
 	private fun findFirstSolidBelowAir(location: NobaVec): NobaVec {
-		for (y in 65..140) {
-			if (location.copy(y = y.toDouble()).getBlockAt() == Blocks.AIR) {
+		for(y in 65..140) {
+			if(location.copy(y = y.toDouble()).getBlockAt() == Blocks.AIR) {
 				return location.copy(y = (y - 1).toDouble())
 			}
 		}

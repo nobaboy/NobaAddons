@@ -62,14 +62,14 @@ data class SkyBlockTime(
 			second * SKYBLOCK_SECOND_MILLIS
 
 		fun getMonthName(month: Int): String {
-			val prefix = when ((month - 1) % 3) {
+			val prefix = when((month - 1) % 3) {
 				0 -> "Early "
 				1 -> ""
 				2 -> "Late "
 				else -> "Undefined!"
 			}
 
-			val season = when ((month - 1) / 3) {
+			val season = when((month - 1) / 3) {
 				0 -> "Spring"
 				1 -> "Summer"
 				2 -> "Autumn"
@@ -82,7 +82,7 @@ data class SkyBlockTime(
 
 		fun getDaySuffix(day: Int): String = when {
 			day in 11..13 -> "th"
-			else -> when (day % 10) {
+			else -> when(day % 10) {
 				1 -> "st"
 				2 -> "nd"
 				3 -> "rd"
