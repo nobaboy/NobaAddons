@@ -49,7 +49,7 @@ object MythologicalWaypoints {
 		MythologicalEvents.BURROW_GUESS.register(this::onBurrowGuess)
 		MythologicalEvents.BURROW_FIND.register(this::onBurrowFind)
 		MythologicalEvents.BURROW_DIG.register(this::onBurrowDig)
-		MythologicalEvents.INQUISITOR_SPAWN.register(this::onInquisitorSpawn)
+//		MythologicalEvents.INQUISITOR_SPAWN.register(this::onInquisitorSpawn)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
@@ -70,9 +70,9 @@ object MythologicalWaypoints {
 		update()
 	}
 
-	private fun onInquisitorSpawn(event: MythologicalEvents.InquisitorSpawn) {
-
-	}
+//	private fun onInquisitorSpawn(event: MythologicalEvents.InquisitorSpawn) {
+//
+//	}
 
 	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
