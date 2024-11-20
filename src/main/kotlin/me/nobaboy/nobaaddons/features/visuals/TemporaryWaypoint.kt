@@ -70,11 +70,11 @@ object TemporaryWaypoint {
 		val cameraPos = context.camera().pos.toNobaVec()
 		val color = config.waypointColor
 
-		waypoints.removeIf { it.expired || it.vec.distanceSq(cameraPos) < 5.0 * 5.0 }
+		waypoints.removeIf { it.expired || it.vec.distance(cameraPos) < 5.0 }
 		waypoints.forEach { waypoint ->
 			waypoint.vec.roundToBlock().let {
 				RenderUtils.renderWaypoint(context, it, color, throughBlocks = true)
-				RenderUtils.renderText(context, it.center(), waypoint.text)
+				RenderUtils.renderText(context, it.center(), waypoint.text, yOffset = -5.0f, throughBlocks = true)
 			}
 		}
 	}

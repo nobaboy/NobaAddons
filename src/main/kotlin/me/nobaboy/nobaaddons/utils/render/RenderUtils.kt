@@ -441,7 +441,8 @@ object RenderUtils {
 		context: WorldRenderContext,
 		vec: NobaVec,
 		text: String,
-		shadow: Boolean = false,
+		shadow: Boolean = true,
+		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
 		hideThreshold: Double = 5.0,
 		throughBlocks: Boolean = false
@@ -471,7 +472,7 @@ object RenderUtils {
 		val consumers = VertexConsumerProvider.immediate(ALLOCATOR)
 		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
 
-		textRenderer.draw(text, xOffset, 0.0f, 0xFFFFFF, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0,
+		textRenderer.draw(text, xOffset, yOffset, 0xFFFFFF, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0,
 			LightmapTextureManager.MAX_LIGHT_COORDINATE)
 		consumers.draw()
 
