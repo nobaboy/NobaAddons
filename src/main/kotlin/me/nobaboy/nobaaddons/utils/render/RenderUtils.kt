@@ -196,7 +196,7 @@ object RenderUtils {
 
 	fun renderWaypoint(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: Color,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
@@ -204,12 +204,12 @@ object RenderUtils {
 		beaconThreshold: Double = 5.0,
 		throughBlocks: Boolean = false
 	) {
-		renderBeaconBeam(context, vec.raise(), color.rgb, beaconThreshold)
-		renderFilledBox(context, vec, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderBeaconBeam(context, location.raise(), color.rgb, beaconThreshold)
+		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 	fun renderWaypoint(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: NobaColor,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
@@ -217,12 +217,12 @@ object RenderUtils {
 		beaconThreshold: Double = 5.0,
 		throughBlocks: Boolean = false
 	) {
-		renderWaypoint(context, vec, color.toColor(), extraSize, extraSizeTopY, extraSizeBottomY, beaconThreshold, throughBlocks)
+		renderWaypoint(context, location, color.toColor(), extraSize, extraSizeTopY, extraSizeBottomY, beaconThreshold, throughBlocks)
 	}
 
 	fun renderOutlinedFilledBox(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: Color,
 		lineWidth: Float = 3.0f,
 		extraSize: Double = 0.0,
@@ -230,12 +230,12 @@ object RenderUtils {
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false
 	) {
-		renderOutline(context, vec, color, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-		renderFilledBox(context, vec, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderOutline(context, location, color, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 	fun renderOutlinedFilledBox(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: NobaColor,
 		lineWidth: Float = 3.0f,
 		extraSize: Double = 0.0,
@@ -243,20 +243,20 @@ object RenderUtils {
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false
 	) {
-		renderOutlinedFilledBox(context, vec, color.toColor(), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderOutlinedFilledBox(context, location, color.toColor(), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
-	fun renderBeaconBeam(context: WorldRenderContext, vec: NobaVec, color: Int, hideThreshold: Double = 5.0) {
-		if(!FrustumUtils.isVisible(vec, toWorldHeight = true)) return
+	fun renderBeaconBeam(context: WorldRenderContext, location: NobaVec, color: Int, hideThreshold: Double = 5.0) {
+		if(!FrustumUtils.isVisible(location, toWorldHeight = true)) return
 
 		val matrices = context.matrixStack() ?: return
 		val cameraPos = context.camera().pos.toNobaVec()
 
-		val distSq = vec.distanceSq(cameraPos)
+		val distSq = location.distanceSq(cameraPos)
 		if(distSq < hideThreshold * hideThreshold) return
 
 		matrices.push()
-		matrices.translate(vec.x - cameraPos.x, vec.y - cameraPos.y, vec.z - cameraPos.z)
+		matrices.translate(location.x - cameraPos.x, location.y - cameraPos.y, location.z - cameraPos.z)
 
 		BeaconBlockEntityRendererInvoker.invokeRenderBeam(
 			matrices,
@@ -270,16 +270,16 @@ object RenderUtils {
 
 		matrices.pop()
 	}
-	fun renderBeaconBeam(context: WorldRenderContext, vec: NobaVec, color: Color, hideThreshold: Double = 5.0) {
-		renderBeaconBeam(context, vec, color.rgb, hideThreshold)
+	fun renderBeaconBeam(context: WorldRenderContext, location: NobaVec, color: Color, hideThreshold: Double = 5.0) {
+		renderBeaconBeam(context, location, color.rgb, hideThreshold)
 	}
-	fun renderBeaconBeam(context: WorldRenderContext, vec: NobaVec, color: NobaColor, hideThreshold: Double = 5.0) {
-		renderBeaconBeam(context, vec, color.toColor().rgb, hideThreshold)
+	fun renderBeaconBeam(context: WorldRenderContext, location: NobaVec, color: NobaColor, hideThreshold: Double = 5.0) {
+		renderBeaconBeam(context, location, color.toColor().rgb, hideThreshold)
 	}
 
 	fun renderOutline(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: Color,
 		lineWidth: Float = 3.0f,
 		extraSize: Double = 0.0,
@@ -287,7 +287,7 @@ object RenderUtils {
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false
 	) {
-		if(!FrustumUtils.isVisible(vec)) return
+		if(!FrustumUtils.isVisible(location)) return
 
 		val matrices = context.matrixStack() ?: return
 		val cameraPos = context.camera().pos.toNobaVec()
@@ -314,12 +314,12 @@ object RenderUtils {
 		val green = color.green / 255.0f
 		val blue = color.blue / 255.0f
 
-		val distSq = vec.distanceSq(cameraPos)
+		val distSq = location.distanceSq(cameraPos)
 		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.7f, 1.0f)
 
 		val box = Box(
-			vec.x - extraSize, vec.y - extraSizeBottomY, vec.z - extraSize,
-			vec.x + 1 + extraSize, vec.y + 1 + extraSizeTopY, vec.z + 1 + extraSize
+			location.x - extraSize, location.y - extraSizeBottomY, location.z - extraSize,
+			location.x + 1 + extraSize, location.y + 1 + extraSizeTopY, location.z + 1 + extraSize
 		).expandBlock()
 
 		//? if >=1.21.2 {
@@ -344,7 +344,7 @@ object RenderUtils {
 	}
 	fun renderOutline(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: Int,
 		lineWidth: Float = 3.0f,
 		extraSize: Double = 0.0,
@@ -352,11 +352,11 @@ object RenderUtils {
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false
 	) {
-		renderOutline(context, vec, Color(color), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderOutline(context, location, Color(color), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 	fun renderOutline(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: NobaColor,
 		lineWidth: Float = 3.0f,
 		extraSize: Double = 0.0,
@@ -364,19 +364,19 @@ object RenderUtils {
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false
 	) {
-		renderOutline(context, vec, color.toColor(), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderOutline(context, location, color.toColor(), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
 	fun renderFilledBox(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: Color,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false
 	) {
-		if(!FrustumUtils.isVisible(vec)) return
+		if(!FrustumUtils.isVisible(location)) return
 
 		val matrices = context.matrixStack() ?: return
 		val cameraPos = context.camera().pos.toNobaVec()
@@ -391,12 +391,12 @@ object RenderUtils {
 		val green = color.green / 255.0f
 		val blue = color.blue / 255.0f
 
-		val distSq = vec.distanceSq(cameraPos)
+		val distSq = location.distanceSq(cameraPos)
 		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.2f, 0.7f)
 
 		val box = Box(
-			vec.x - extraSize, vec.y - extraSizeBottomY, vec.z - extraSize,
-			vec.x + 1 + extraSize, vec.y + 1 + extraSizeTopY, vec.z + 1 + extraSize
+			location.x - extraSize, location.y - extraSizeBottomY, location.z - extraSize,
+			location.x + 1 + extraSize, location.y + 1 + extraSizeTopY, location.z + 1 + extraSize
 		).expandBlock()
 
 		//? if >=1.21.2 {
@@ -415,31 +415,31 @@ object RenderUtils {
 	}
 	fun renderFilledBox(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: Int,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false
 	) {
-		renderFilledBox(context, vec, Color(color), extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderFilledBox(context, location, Color(color), extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 	fun renderFilledBox(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		color: NobaColor,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false
 	) {
-		renderFilledBox(context, vec, color.toColor(), extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderFilledBox(context, location, color.toColor(), extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
 	// TODO: Try to find another way cuz shadow renders on top of text layer sometimes and it's slightly based on cameras rotation
 	fun renderText(
 		context: WorldRenderContext,
-		vec: NobaVec,
+		location: NobaVec,
 		text: String,
 		shadow: Boolean = true,
 		yOffset: Float = 0.0f,
@@ -452,15 +452,15 @@ object RenderUtils {
 		val cameraPos = camera.pos.toNobaVec()
 		val textRenderer = MCUtils.textRenderer
 
-		val dist = vec.distance(cameraPos).coerceAtMost(512.0)
+		val dist = location.distance(cameraPos).coerceAtMost(512.0)
 		if(dist < hideThreshold) return
 
 		var scale = dist.toFloat() / 256.0f
 		scale = (scale * scaleMultiplier).coerceAtLeast(0.025f)
 
-		val x = vec.x - cameraPos.x
-		val y = vec.y - cameraPos.y
-		val z = vec.z - cameraPos.z
+		val x = location.x - cameraPos.x
+		val y = location.y - cameraPos.y
+		val z = location.z - cameraPos.z
 
 		positionMatrix
 			.translate(x.toFloat(), y.toFloat(), z.toFloat())
