@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
+import java.text.NumberFormat
 import kotlin.math.pow
 
 object NumberUtils {
@@ -31,6 +32,31 @@ object NumberUtils {
 		return number
 	}
 
+	/**
+	 * This code was taken and unmodified under CC BY-SA 3.0 license
+	 * @link https://stackoverflow.com/a/22186845
+	 * @author jpdymond
+	 */
+	fun Double.roundTo(precision: Int): Double {
+		val scale = 10.0.pow(precision)
+		return kotlin.math.round(this * scale) / scale
+	}
+
+	fun Float.roundTo(precision: Int): Float = toDouble().roundTo(precision).toFloat()
+
+	fun Number.ordinalSuffix(): String {
+		val long = this.toLong()
+		if (long % 100 in 11..13) return "th"
+		return when (long % 10) {
+			1L -> "st"
+			2L -> "nd"
+			3L -> "rd"
+			else -> "th"
+		}
+	}
+
+	fun Number.addSeparators(): String = NumberFormat.getNumberInstance().format(this)
+
 	private fun String.formatDoubleOrNull(): Double? {
 		var text = lowercase().replace(",", "")
 
@@ -57,18 +83,6 @@ object NumberUtils {
 
 	fun String.formatInt(): Int =
 		formatDoubleOrNull()?.toInt() ?: throw NumberFormatException("formatInt failed for '$this'")
-
-	/**
-	 * This code was taken and unmodified under CC BY-SA 3.0 license
-	 * @link https://stackoverflow.com/a/22186845
-	 * @author jpdymond
-	 */
-	fun Double.roundTo(precision: Int): Double {
-		val scale = 10.0.pow(precision)
-		return kotlin.math.round(this * scale) / scale
-	}
-
-	fun Float.roundTo(precision: Int): Float = toDouble().roundTo(precision).toFloat()
 
 	val Int.million get() = this * 1_000_000.0
 	private val Int.billion get() = this * 1_000_000_000.0

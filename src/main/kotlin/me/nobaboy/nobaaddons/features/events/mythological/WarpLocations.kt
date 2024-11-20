@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.features.events.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.NobaVec
+import me.nobaboy.nobaaddons.utils.StringUtils.title
 
 object WarpLocations {
 	private val config get() = NobaConfigManager.config.events.mythological
@@ -27,6 +28,7 @@ object WarpLocations {
 		STONKS(NobaVec(-52.5, 71.0, -52.5), 5, { config.ignoreStonks });
 
 		val warpName = warpName ?: name.lowercase()
+		val displayName = name.replace("_", " ").title()
 
 		fun distance(other: NobaVec): Double = other.distance(location) + extraBlocks
 	}

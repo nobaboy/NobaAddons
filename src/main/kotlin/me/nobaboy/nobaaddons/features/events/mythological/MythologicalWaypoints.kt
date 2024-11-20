@@ -9,7 +9,9 @@ import me.nobaboy.nobaaddons.utils.BlockUtils.inLoadedChunk
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
+import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
@@ -17,6 +19,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.block.Blocks
 import kotlin.math.roundToInt
 
+// TODO: Add a focus mode for inquisitors
 object MythologicalWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
 
@@ -34,8 +37,10 @@ object MythologicalWaypoints {
 		Blocks.SPRUCE_FENCE
 	)
 
-	private var guessLocation: NobaVec? = null
 	private var burrows = mutableMapOf<NobaVec, BurrowType>()
+
+	private var guessLocation: NobaVec? = null
+	private var nearestWarp: WarpLocations.WarpPoint? = null
 
 	private var lastDugBurrow: NobaVec? = null
 
@@ -85,10 +90,12 @@ object MythologicalWaypoints {
 
 		val playerLocation = LocationUtils.playerLocation()
 
+		suggestNearestWarp()
+
 		if(config.findNearbyBurrows) {
 			burrows.forEach { (location, type) ->
 				RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-				RenderUtils.renderText(context, location.center().raise(), type.text, type.color, shadow = true)
+				RenderUtils.renderText(context, location.center().raise(), type.text, type.color, yOffset = -5.0f)
 			}
 		}
 
@@ -98,7 +105,12 @@ object MythologicalWaypoints {
 				val distance = adjustedLocation.distance(playerLocation).roundToInt()
 
 				RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.YELLOW, throughBlocks = distance > 10)
-				RenderUtils.renderText(context, adjustedLocation.center().raise(), "Text", NobaColor.YELLOW, shadow = true)
+				RenderUtils.renderText(context, adjustedLocation.center().raise(), "Guess", NobaColor.YELLOW, yOffset = -10.0f)
+
+				if(distance > 5) {
+					val formattedDistance = distance.toInt().addSeparators()
+					RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", NobaColor.YELLOW)
+				}
 			}
 		}
 	}
@@ -110,6 +122,11 @@ object MythologicalWaypoints {
 	private fun reset() {
 		guessLocation = null
 		burrows.clear()
+	}
+
+	// TODO: Implement title hud
+	private fun suggestNearestWarp() {
+
 	}
 
 	private fun tryRemoveGuess() {
@@ -142,6 +159,14 @@ object MythologicalWaypoints {
 			}
 		}
 		return location.copy(y = LocationUtils.playerLocation().y)
+	}
+
+	fun useNearestWarp() {
+		nearestWarp?.let {
+			val command = "warp ${it.warpName}"
+			ChatUtils.queueCommand(command)
+			nearestWarp = null
+		}
 	}
 
 	private fun isEnabled() = DianaAPI.isActive()

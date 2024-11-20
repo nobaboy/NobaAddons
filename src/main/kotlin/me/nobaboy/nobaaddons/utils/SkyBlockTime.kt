@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
+import me.nobaboy.nobaaddons.utils.NumberUtils.ordinalSuffix
 import java.time.Instant
 
 /**
@@ -16,7 +17,7 @@ data class SkyBlockTime(
 	val second: Int = 0,
 ) {
 	val monthName get() = getMonthName(month)
-	val dayName get() = "$day${getDaySuffix(day)}"
+	val dayName get() = "$day${day.ordinalSuffix()}"
 
 	fun toInstant(): Instant? = Instant.ofEpochMilli(toMillis())
 
@@ -78,16 +79,6 @@ data class SkyBlockTime(
 			}
 
 			return prefix + season
-		}
-
-		fun getDaySuffix(day: Int): String = when {
-			day in 11..13 -> "th"
-			else -> when(day % 10) {
-				1 -> "st"
-				2 -> "nd"
-				3 -> "rd"
-				else -> "th"
-			}
 		}
 	}
 }
