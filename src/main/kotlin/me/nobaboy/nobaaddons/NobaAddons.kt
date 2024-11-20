@@ -18,6 +18,7 @@ import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindListener
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
+import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
@@ -103,6 +104,7 @@ object NobaAddons : ClientModInitializer {
 
 		// region QOL
 		ISoundFilter.init()
+		MouseLock.init()
 		// endregion
 		/* endregion */
 	}
