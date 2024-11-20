@@ -97,6 +97,9 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var skyBlockLevel: Boolean = false
+
+		@SerialEntry
+		var vacuumPests: Boolean = false
 	}
 
 	class RenderingTweaks {

@@ -15,6 +15,7 @@ import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MinionT
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.PotionLevelSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.SkillLevelSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.SkyBlockLevelSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.VacuumPestsSlotInfo
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
@@ -52,7 +53,8 @@ interface ISlotInfo {
 			PotionLevelSlotInfo,
 //			RancherBootsSlotInfo,
 			SkillLevelSlotInfo,
-			SkyBlockLevelSlotInfo
+			SkyBlockLevelSlotInfo,
+			VacuumPestsSlotInfo
 		)
 
 		fun init() {
@@ -70,6 +72,8 @@ interface ISlotInfo {
 			val width = textRenderer.getWidth(slotInfo.text)
 			val scale = if(width > 16) 0.8333333f else 1.0f
 
+			context.matrices.push()
+
 			when(slotInfo.position) {
 				Position.TOP_LEFT -> context.matrices.translate(0.0f, 0.0f, 200.0f)
 				Position.TOP_RIGHT -> context.matrices.translate(16.0f - width + 1.0f, 0.0f, 200.0f)
@@ -78,6 +82,7 @@ interface ISlotInfo {
 			}
 
 			RenderUtils.drawText(context, slotInfo.text, slot.x, slot.y, scale)
+			context.matrices.pop()
 		}
 
 		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: String, color: Int = Colors.WHITE) {

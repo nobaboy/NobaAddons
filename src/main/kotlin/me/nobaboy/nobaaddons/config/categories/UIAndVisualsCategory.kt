@@ -112,6 +112,12 @@ object UIAndVisualsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.collectionTier"))
+					.binding(defaults.uiAndVisuals.slotInfo.collectionTier, config.uiAndVisuals.slotInfo::collectionTier) { config.uiAndVisuals.slotInfo.collectionTier = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.dungeonBossHead"))
 					.binding(defaults.uiAndVisuals.slotInfo.dungeonBossHead, config.uiAndVisuals.slotInfo::dungeonBossHead) { config.uiAndVisuals.slotInfo.dungeonBossHead = it }
 					.controller(TickBoxControllerBuilder::create)
@@ -162,6 +168,12 @@ object UIAndVisualsCategory {
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.skyBlockLevel"))
 					.binding(defaults.uiAndVisuals.slotInfo.skyBlockLevel, config.uiAndVisuals.slotInfo::skyBlockLevel) { config.uiAndVisuals.slotInfo.skyBlockLevel = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.vacuumPests"))
+					.binding(defaults.uiAndVisuals.slotInfo.vacuumPests, config.uiAndVisuals.slotInfo::vacuumPests) { config.uiAndVisuals.slotInfo.vacuumPests = it }
 					.controller(TickBoxControllerBuilder::create)
 					.build())
 
