@@ -10,20 +10,23 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import java.util.regex.Pattern
 
 object SkyBlockLevelSlotInfo : ISlotInfo {
-	private val skyBlockLevelPattern = Pattern.compile("Your SkyBlock Level: \\[(?<level>\\d+)]")
+	private val skyBlockLevelPattern = Pattern.compile("^Your SkyBlock Level: \\[(?<level>\\d+)]")
 
 	override val enabled: Boolean get() = config.skyBlockLevel
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
-		if(InventoryUtils.openInventoryName() != "SkyBlock Menu") return
+		val inventoryName = InventoryUtils.openInventoryName() ?: return
+		if(inventoryName != "SkyBlock Menu") return
 
 		val itemStack = event.itemStack
 		if(itemStack.name.string != "SkyBlock Leveling") return
 
 		val lore = itemStack.lore.stringLines
 		skyBlockLevelPattern.firstMatcher(lore) {
-			val color = getSkyBlockLevelColor(group("level").toInt()).toColor().rgb
-			drawCount(event, group("level"), color)
+			val level = group("level")
+			val color = getSkyBlockLevelColor(level.toInt()).toColor().rgb
+
+			drawCount(event, level, color)
 		}
 	}
 

@@ -66,28 +66,34 @@ class UIAndVisualsConfig {
 		var bestiaryMilestone: Boolean = false
 
 		@SerialEntry
-		var bestiaryTier: Boolean = false
+		var bestiaryFamilyTier: Boolean = false
 
 		@SerialEntry
 		var collectionTier: Boolean = false
 
 		@SerialEntry
-		var dungeonBossHead: Boolean = false
+		var dungeonHeadTier: Boolean = false
 
 		@SerialEntry
-		var enchantedBook: Boolean = false
+		var enchantedBookLevel: Boolean = false
 
 		@SerialEntry
-		var kuudraKey: Boolean = false
+		var enchantedBookName: Boolean = false
 
 		@SerialEntry
-		var masterSkull: Boolean = false
+		var kuudraKeyTier: Boolean = false
 
 		@SerialEntry
-		var masterStar: Boolean = false
+		var masterSkullTier: Boolean = false
+
+		@SerialEntry
+		var masterStarTier: Boolean = false
 
 		@SerialEntry
 		var minionTier: Boolean = false
+
+		@SerialEntry
+		var newYearCake: Boolean = false
 
 		@SerialEntry
 		var potionLevel: Boolean = false
@@ -97,6 +103,9 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var skyBlockLevel: Boolean = false
+
+		@SerialEntry
+		var tuningPoints: Boolean = false
 
 		@SerialEntry
 		var vacuumPests: Boolean = false

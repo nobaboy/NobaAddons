@@ -5,21 +5,22 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.BestiarySlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.CollectionTierSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.DungeonBossHeadSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.DungeonHeadTierSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.EnchantedBookSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.KuudraKeyInfoSlot
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MasterSkullSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MasterStarSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.KuudraKeyTierInfoSlot
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MasterSkullTierSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MasterStarTierSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MinionTierSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.NewYearCakeSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.PotionLevelSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.SkillLevelSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.SkyBlockLevelSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.TuningPointsSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.VacuumPestsSlotInfo
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.screen.slot.Slot
-import net.minecraft.util.Colors
 
 // TODO: Implement remaining 2 slot infos once mythological branch is merge as they both require PetAPI
 interface ISlotInfo {
@@ -32,7 +33,7 @@ interface ISlotInfo {
 		renderSlotInfo(event.context, event.textRenderer, event.slot, info)
 	}
 
-	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: String, color: Int = Colors.WHITE) {
+	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: String, color: Int = -1) {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
 
@@ -41,17 +42,19 @@ interface ISlotInfo {
 		private val slotInfos = listOf<ISlotInfo>(
 			BestiarySlotInfo,
 			CollectionTierSlotInfo,
-			DungeonBossHeadSlotInfo,
+			DungeonHeadTierSlotInfo,
 			EnchantedBookSlotInfo,
-			KuudraKeyInfoSlot,
-			MasterSkullSlotInfo,
-			MasterStarSlotInfo,
+			KuudraKeyTierInfoSlot,
+			MasterSkullTierSlotInfo,
+			MasterStarTierSlotInfo,
 			MinionTierSlotInfo,
-//			PetLevelSlotInfo,
+			NewYearCakeSlotInfo,
+//			PetSlotInfo,
 			PotionLevelSlotInfo,
 //			RancherBootsSlotInfo,
 			SkillLevelSlotInfo,
 			SkyBlockLevelSlotInfo,
+			TuningPointsSlotInfo,
 			VacuumPestsSlotInfo
 		)
 
@@ -83,7 +86,7 @@ interface ISlotInfo {
 			context.matrices.pop()
 		}
 
-		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: String, color: Int = Colors.WHITE) {
+		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: String, color: Int = -1) {
 			context.matrices.push()
 			context.matrices.translate(0.0F, 0.0F, 200.0F)
 			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color, true)

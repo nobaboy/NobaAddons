@@ -3,15 +3,15 @@ package me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.InventoryUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NumberUtils.tryRomanToArabic
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
-import net.minecraft.util.Colors
 
 object BestiarySlotInfo : ISlotInfo {
 	private var bestiaryLocation: String? = null
 
-	override val enabled get() = config.bestiaryTier || config.bestiaryMilestone
+	override val enabled get() = config.bestiaryFamilyTier || config.bestiaryMilestone
 
 	private fun getTier(name: String): String {
 		return name.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
@@ -33,9 +33,9 @@ object BestiarySlotInfo : ISlotInfo {
 
 		bestiaryLocation = getBestiaryLocation(inventoryName) ?: return
 
-		if (config.bestiaryTier && lore.any { it.endsWith("Bonuses") }) {
+		if (config.bestiaryFamilyTier && lore.any { it.endsWith("Bonuses") }) {
 			if (config.checkMarkIfMaxed && lore.any { it == "Overall Progress: 100% (MAX!)" }) {
-				drawCount(event, "✔", Colors.GREEN)
+				drawCount(event, "✔", NobaColor.GREEN.toColor().rgb)
 			} else {
 				val tier = getTier(itemStack.name.string)
 				drawCount(event, tier)
