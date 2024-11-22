@@ -31,11 +31,11 @@ data class NobaVec(
 		return Box(vec.x, vec.y, vec.z, vec.x + 1.0, vec.y + 1.0, vec.z + 1.0)
 	}
 
-	fun distance(other: NobaVec, center: Boolean = true): Double = sqrt(distanceSq(other, center))
+	fun distance(other: NobaVec, center: Boolean = false): Double = sqrt(distanceSq(other, center))
 	fun distance(x: Double, y: Double, z: Double): Double = distance(NobaVec(x, y, z), center = false)
 
 	fun distanceSq(x: Double, y: Double, z: Double): Double = distanceSq(NobaVec(x, y, z), center = false)
-	fun distanceSq(other: NobaVec, center: Boolean = true): Double {
+	fun distanceSq(other: NobaVec, center: Boolean = false): Double {
 		var vec = this
 		if(center) vec = center()
 

@@ -43,7 +43,7 @@ object BurrowGuessAPI {
 
 	private var dingSlope = mutableListOf<Float>()
 
-	var distance: Double? = null
+	private var distance: Double? = null
 	private var distance2: Double? = null
 
 	fun init() {
@@ -99,6 +99,7 @@ object BurrowGuessAPI {
 		if(lastParticlePoint2 == null || particlePoint == null || firstParticlePoint == null) return
 
 		distance2 = E / slope - firstParticlePoint?.distance(location)!!
+
 		if(distance2!! > 1000) {
 			distance2 = null
 			guessPoint = null

@@ -123,10 +123,10 @@ object BurrowAPI {
 		TREASURE({ type == ParticleTypes.DRIPPING_LAVA && count == 2 && speed == 0.01f && offset.x == 0.35 && offset.y == 0.1 && offset.z == 0.35 });
 
 		companion object {
-			fun getParticleType(particle: ParticleEvents.Particle): BurrowParticleType? {
-				if(!particle.isLongDistance) return null
+			fun getParticleType(event: ParticleEvents.Particle): BurrowParticleType? {
+				if(!event.isLongDistance) return null
 				for(type in entries) {
-					if(type.check(particle)) return type
+					if(type.check(event)) return type
 				}
 				return null
 			}

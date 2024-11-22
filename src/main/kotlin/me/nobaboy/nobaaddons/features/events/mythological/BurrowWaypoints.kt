@@ -17,7 +17,6 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.block.Blocks
-import kotlin.math.roundToInt
 
 object BurrowWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
@@ -125,7 +124,7 @@ object BurrowWaypoints {
 	private fun renderGuessLocation(context: WorldRenderContext) {
 		guessLocation?.let {
 			val adjustedLocation = findValidLocation(it)
-			val distance = adjustedLocation.distance(playerLocation).roundToInt()
+			val distance = adjustedLocation.distance(playerLocation)
 
 			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.YELLOW, throughBlocks = distance > 10)
 			RenderUtils.renderText(context, adjustedLocation.raise(), "Guess", NobaColor.YELLOW, yOffset = -10.0f)

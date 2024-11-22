@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public class SoundEventsMixin {
-	@Inject(method = "onPlaySound", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "onPlaySound", at = @At("RETURN"), cancellable = true)
 	public void nobaaddons$onPlaySound(PlaySoundS2CPacket packet, CallbackInfo ci) {
 		var sound = packet.getSound().getKeyOrValue();
 		var id = sound.left()
