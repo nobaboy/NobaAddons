@@ -24,6 +24,7 @@ object BurrowAPI {
 	private val config get() = NobaConfigManager.config.events.mythological
 
 	private val burrowDugPattern = Pattern.compile("^(You dug out a Griffin Burrow!|You finished the Griffin burrow chain!) \\(\\d/4\\)")
+	private val mobDugPattern = Pattern.compile("^.* You dug out a [A-z ]+!")
 
 	private val burrows = mutableMapOf<NobaVec, Burrow>()
 	private val recentlyDugBurrows = mutableListOf<NobaVec>()
@@ -31,6 +32,7 @@ object BurrowAPI {
 
 	// This is here in case the player digs the burrow before the particles spawn
 	private var fakeBurrow: NobaVec? = null
+	var mobBurrow: NobaVec? = null
 
 	private var lastBurrowChatMessage = Timestamp.distantPast()
 
@@ -74,6 +76,8 @@ object BurrowAPI {
 				fakeBurrow = lastDugBurrow
 			}
 		}
+
+		if(mobDugPattern.matches(message)) mobBurrow = lastDugBurrow
 
 		if(message == "Defeat all the burrow defenders in order to dig it!") lastBurrowChatMessage = Timestamp.now()
 	}

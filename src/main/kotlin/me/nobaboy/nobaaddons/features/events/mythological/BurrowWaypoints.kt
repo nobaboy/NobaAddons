@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
+import me.nobaboy.nobaaddons.api.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
@@ -39,7 +40,6 @@ object BurrowWaypoints {
 	private var guessLocation: NobaVec? = null
 
 	private var nearestWarp: WarpLocations.WarpPoint? = null
-	private var lastDugBurrow: NobaVec? = null
 
 	private val playerLocation get() = LocationUtils.playerLocation()
 
@@ -64,8 +64,6 @@ object BurrowWaypoints {
 
 	private fun onBurrowDig(event: MythologicalEvents.BurrowDig) {
 		burrows.remove(event.location)
-		lastDugBurrow = event.location
-		println(lastDugBurrow)
 		tryRemoveGuess()
 	}
 
@@ -73,7 +71,7 @@ object BurrowWaypoints {
 		if(!isEnabled()) return
 
 		when {
-			message.startsWith("☠ You were killed by") -> burrows.remove(lastDugBurrow)
+			message.startsWith(" ☠ You were killed by") -> burrows.remove(BurrowAPI.mobBurrow)
 			message == "Poof! You have cleared your griffin burrows!" -> reset()
 		}
 	}
