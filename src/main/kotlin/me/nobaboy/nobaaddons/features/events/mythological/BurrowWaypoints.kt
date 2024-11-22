@@ -65,6 +65,7 @@ object BurrowWaypoints {
 	private fun onBurrowDig(event: MythologicalEvents.BurrowDig) {
 		burrows.remove(event.location)
 		lastDugBurrow = event.location
+		println(lastDugBurrow)
 		tryRemoveGuess()
 	}
 
@@ -73,7 +74,7 @@ object BurrowWaypoints {
 
 		when {
 			message.startsWith("☠ You were killed by") -> burrows.remove(lastDugBurrow)
-			message == "Poof! You have cleared all your griffin burrows!" -> reset()
+			message == "Poof! You have cleared your griffin burrows!" -> reset()
 		}
 	}
 
