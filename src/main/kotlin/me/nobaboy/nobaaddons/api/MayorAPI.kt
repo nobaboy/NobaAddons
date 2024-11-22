@@ -53,7 +53,7 @@ object MayorAPI {
 
 	fun init() {
 		SecondPassedEvent.EVENT.register { onSecondPassed() }
-		InventoryEvents.OPEN.register(this::onInventoryReady)
+		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
@@ -78,17 +78,7 @@ object MayorAPI {
 		ChatUtils.addMessage(text)
 	}
 
-	private fun onChatMessage(message: String) {
-		if(!SkyBlockAPI.inSkyBlock) return
-		
-		if(electionOverMessage == message) {
-			lastMayor = currentMayor
-			currentMayor = Mayor.UNKNOWN
-			currentMinister = Mayor.UNKNOWN
-		}
-	}
-
-	private fun onInventoryReady(event: InventoryEvents.Open) {
+	private fun onInventoryOpen(event: InventoryEvents.Open) {
 		if(!SkyBlockAPI.inSkyBlock) return
 		if(event.inventory.title != "Calendar and Events") return
 
@@ -112,6 +102,16 @@ object MayorAPI {
 			?.coerceAtMost(nextMayorTimestamp) ?: return
 
 		jerryMayor = extraMayor to expirationTime
+	}
+
+	private fun onChatMessage(message: String) {
+		if(!SkyBlockAPI.inSkyBlock) return
+		
+		if(electionOverMessage == message) {
+			lastMayor = currentMayor
+			currentMayor = Mayor.UNKNOWN
+			currentMinister = Mayor.UNKNOWN
+		}
 	}
 
 	fun Mayor.isElected(): Boolean = currentMayor == this

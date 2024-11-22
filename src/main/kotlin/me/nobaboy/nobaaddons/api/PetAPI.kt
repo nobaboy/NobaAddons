@@ -31,12 +31,12 @@ object PetAPI {
 		private set
 
 	fun init() {
-		InventoryEvents.OPEN.register(this::onInventoryReady)
+		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		InventoryEvents.CLICK_SLOT.register(this::onInventoryClickSlot)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string) }
 	}
 
-	private fun onInventoryReady(event: InventoryEvents.Open) {
+	private fun onInventoryOpen(event: InventoryEvents.Open) {
 		if(!petsMenuPattern.matches(event.inventory.title)) return
 
 		event.inventory.items.values.forEach { stack ->
