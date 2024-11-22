@@ -19,8 +19,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.block.Blocks
 import kotlin.math.roundToInt
 
-// TODO: Add a focus mode for inquisitors
-object MythologicalWaypoints {
+object BurrowWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
 
 	private val validBlocks = listOf(
@@ -49,7 +48,6 @@ object MythologicalWaypoints {
 		MythologicalEvents.BURROW_GUESS.register(this::onBurrowGuess)
 		MythologicalEvents.BURROW_FIND.register(this::onBurrowFind)
 		MythologicalEvents.BURROW_DIG.register(this::onBurrowDig)
-//		MythologicalEvents.INQUISITOR_SPAWN.register(this::onInquisitorSpawn)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
@@ -70,10 +68,6 @@ object MythologicalWaypoints {
 		update()
 	}
 
-//	private fun onInquisitorSpawn(event: MythologicalEvents.InquisitorSpawn) {
-//
-//	}
-
 	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
@@ -93,7 +87,7 @@ object MythologicalWaypoints {
 		suggestNearestWarp()
 
 		if(config.findNearbyBurrows) {
-			burrows.forEach { (location, type) ->
+			burrows.forEach { location, type ->
 				RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
 				RenderUtils.renderText(context, location.center().raise(), type.text, type.color, yOffset = -5.0f)
 			}

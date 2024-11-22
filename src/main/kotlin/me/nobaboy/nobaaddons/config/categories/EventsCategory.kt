@@ -28,6 +28,32 @@ object EventsCategory {
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
+				.option(LabelOption.createBuilder()
+					.line(Text.translatable("nobaaddons.config.events.mythologicalRitual.label.inquisitorSharing"))
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.events.mythologicalRitual.inquisitorFocusMode"))
+					.binding(defaults.events.mythological.inquisitorFocusMode, config.events.mythological::inquisitorFocusMode) { config.events.mythological.inquisitorFocusMode = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.events.mythologicalRitual.alertInquisitor"))
+					.binding(defaults.events.mythological.alertInquisitor, config.events.mythological::alertInquisitor) { config.events.mythological.alertInquisitor = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.events.mythologicalRitual.alertOnlyInParty"))
+					.binding(defaults.events.mythological.alertOnlyInParty, config.events.mythological::alertOnlyInParty) { config.events.mythological.alertOnlyInParty = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(LabelOption.createBuilder()
+					.line(Text.translatable("nobaaddons.config.label.miscellaneous"))
+					.build())
+
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythologicalRitual.announceRareDrops"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.events.mythologicalRitual.announceRareDrops.tooltip")))

@@ -21,7 +21,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.crimsonisle.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
-import me.nobaboy.nobaaddons.features.events.mythological.MythologicalWaypoints
+import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindListener
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
@@ -91,7 +91,7 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Events
-		MythologicalWaypoints.init()
+		BurrowWaypoints.init()
 		// endregion
 
 		// region Mining

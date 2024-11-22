@@ -92,9 +92,13 @@
 
   "nobaaddons.config.events": "Events",
   "nobaaddons.config.events.mythologicalRitual": "Mythological Ritual",
+  "nobaaddons.config.events.mythologicalRitual.label.inquisitorSharing": "Warp Locations",
   "nobaaddons.config.events.mythologicalRitual.label.warpLocations": "Warp Locations",
   "nobaaddons.config.events.mythologicalRitual.burrowGuess": "Burrow Guess",
   "nobaaddons.config.events.mythologicalRitual.findNearbyBurrows": "Find Nearby Waypoints",
+  "nobaaddons.config.events.mythologicalRitual.inquisitorFocusMode": "Inquisitor Focus Mode",
+  "nobaaddons.config.events.mythologicalRitual.alertInquisitor": "Alert Inquisitor",
+  "nobaaddons.config.events.mythologicalRitual.alertOnlyInParty": "Alert Only In Party",
   "nobaaddons.config.events.mythologicalRitual.announceRareDrops": "Announce Rare Drops",
   "nobaaddons.config.events.mythologicalRitual.announceRareDrops.tooltip": "Announces any rare drop obtained from killing a Mythological Creature",
   "nobaaddons.config.events.mythologicalRitual.ignoreCrypt": "Ignore Crypt",

@@ -56,7 +56,7 @@ object TemporaryWaypoint {
 			val x = group("x").toDouble()
 			val y = group("y").toDouble()
 			val z = group("z").toDouble()
-			val info = group("info").take(24)
+			val info = group("info").take(32)
 
 			val text = "$username$info"
 			waypoints.add(Waypoint(NobaVec(x, y, z), text, Timestamp.now(), config.expirationTime.seconds))

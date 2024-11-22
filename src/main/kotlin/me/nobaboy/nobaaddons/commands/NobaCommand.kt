@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
-import me.nobaboy.nobaaddons.features.events.mythological.MythologicalWaypoints
+import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.general.RefillPearls
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
@@ -82,7 +82,7 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 	object Diana : Group("mythological", aliases = listOf("mytho")) {
 		val useWarp = Command.command("usewarp") {
 			executes {
-				MythologicalWaypoints.useNearestWarp()
+				BurrowWaypoints.useNearestWarp()
 			}
 		}
 	}
