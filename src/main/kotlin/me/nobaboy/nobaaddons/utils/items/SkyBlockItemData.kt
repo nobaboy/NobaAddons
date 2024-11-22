@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 import java.lang.ref.WeakReference
-import kotlin.text.get
 
 private val RARITY_PATTERN = Regex("^(?:. )?(?<RARITY>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL).*")
 
@@ -73,6 +72,8 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 
 	// Pets
 	val petInfo: String by CacheOf(this::nbt) { nbt.getString("petInfo") }
+
+	val newYearsCake: Int by CacheOf(this::nbt) { nbt.getInt("new_years_cake") }
 
 	data class Gemstone(val type: String, val tier: String)
 	data class Potion(val name: String, val level: Int, val ticks: Int)

@@ -6,10 +6,10 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import java.util.regex.Pattern
 
-object MasterSkullSlotInfo : ISlotInfo {
+object MasterSkullTierSlotInfo : ISlotInfo {
 	private val masterSkullIdPattern = Pattern.compile("MASTER_SKULL_TIER_(?<tier>\\d)")
 
-	override val enabled: Boolean get() = config.masterSkull
+	override val enabled: Boolean get() = config.masterSkullTier
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		val item = event.itemStack.getSkyBlockItem() ?: return

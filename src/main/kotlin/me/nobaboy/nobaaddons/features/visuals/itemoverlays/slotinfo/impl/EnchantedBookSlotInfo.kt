@@ -11,14 +11,14 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object EnchantedBookSlotInfo : ISlotInfo {
-	override val enabled: Boolean get() = config.enchantedBook
+	override val enabled: Boolean get() = config.enchantedBookLevel || config.enchantedBookName
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		val item = event.itemStack.getSkyBlockItem() ?: return
 		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return
 
-		drawCount(event, item.enchantments.values.first().toString())
-		getEnchantName(item)?.let { drawInfo(event, it) }
+		if(config.enchantedBookLevel) drawCount(event, item.enchantments.values.first().toString())
+		if(config.enchantedBookName) getEnchantName(item)?.let { drawInfo(event, it) }
 	}
 
 	private fun getEnchantName(item: SkyBlockItemData): SlotInfo? {
