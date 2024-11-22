@@ -44,10 +44,13 @@ object BurrowAPI {
 
 	private fun onParticle(event: ParticleEvents.Particle) {
 		if(!isEnabled()) return
-		if(event.location in recentlyDugBurrows) return
 
 		val particleType = BurrowParticleType.getParticleType(event) ?: return
-		val burrow = burrows.getOrPut(event.location) { Burrow(event.location) }
+
+		val location = event.location.roundToBlock().lower()
+		if(location in recentlyDugBurrows) return
+
+		val burrow = burrows.getOrPut(location) { Burrow(location) }
 
 		when(particleType) {
 			BurrowParticleType.ENCHANT -> burrow.hasEnchant = true

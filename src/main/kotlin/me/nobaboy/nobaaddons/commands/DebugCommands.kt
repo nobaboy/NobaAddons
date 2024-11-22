@@ -1,10 +1,12 @@
 package me.nobaboy.nobaaddons.commands
 
 import com.mojang.brigadier.context.CommandContext
+import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.PetAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
+import me.nobaboy.nobaaddons.core.Mayor
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
@@ -84,6 +86,38 @@ object DebugCommands : Group("debug") {
 				println(item.get(DataComponentTypes.LORE)!!.lines)
 				source.sendFeedback(Text.literal("Dumped item lore to game logs"))
 			}
+		}
+	}
+
+	val mayor = Command.command("mayor") {
+		executes {
+			val mayor = MayorAPI.currentMayor
+			val minister = MayorAPI.currentMinister
+
+			if(mayor == Mayor.UNKNOWN && minister == Mayor.UNKNOWN) {
+				source.sendError(Text.literal("Current Mayor and Minister are still unknown"))
+				return@executes
+			}
+
+			source.sendFeedback(buildText {
+				fun data(vararg items: Pair<String, Any?>) {
+					items.forEach {
+						append(Text.literal("${it.first}: ").formatted(Formatting.BLUE))
+						append(Text.literal(it.second.toString()).formatted(Formatting.AQUA))
+						append("\n")
+					}
+				}
+
+				append("-".repeat(20).toText().formatted(Formatting.GRAY))
+				append("\n")
+				data(
+					"Current Mayor" to mayor.mayorName,
+					"Mayor Perks" to mayor.activePerks,
+					"Current Minister" to minister.mayorName,
+					"Minister Perk" to minister.activePerks,
+				)
+				append("-".repeat(20).toText().formatted(Formatting.GRAY))
+			})
 		}
 	}
 

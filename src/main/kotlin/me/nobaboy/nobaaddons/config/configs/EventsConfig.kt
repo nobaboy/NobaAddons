@@ -14,13 +14,16 @@ class EventsConfig {
 		var findNearbyBurrows: Boolean = false
 
 		@SerialEntry
-		var inquisitorFocusMode: Boolean = false
-
-		@SerialEntry
 		var alertInquisitor: Boolean = false
 
 		@SerialEntry
 		var alertOnlyInParty: Boolean = false
+
+		@SerialEntry
+		var inquisitorDespawnTime: Boolean = false
+
+		@SerialEntry
+		var inquisitorFocusMode: Boolean = false
 
 		@SerialEntry
 		var announceRareDrops: Boolean = false

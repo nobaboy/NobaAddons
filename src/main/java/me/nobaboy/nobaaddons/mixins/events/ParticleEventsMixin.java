@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ParticleEventsMixin {
 	@Inject(method = "onParticle", at = @At("RETURN"), cancellable = true)
 	private void onParticle(ParticleS2CPacket packet, CallbackInfo ci) {
-		var location = new NobaVec(packet.getX(), packet.getY(), packet.getZ());
-		var offset = new NobaVec(packet.getOffsetX(), packet.getOffsetY(), packet.getOffsetZ());
+		var location = new NobaVec(packet.getX(), packet.getY(), packet.getZ()).round(2);
+		var offset = new NobaVec(packet.getOffsetX(), packet.getOffsetY(), packet.getOffsetZ()).round(2);
 
 		var allow = new ParticleEvents.AllowParticle(packet.getParameters().getType(), location, packet.getCount(), packet.getSpeed(), offset, packet.isLongDistance());
 		ParticleEvents.ALLOW_PARTICLE.invoke(allow);

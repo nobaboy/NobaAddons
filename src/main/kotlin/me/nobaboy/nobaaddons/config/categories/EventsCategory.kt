@@ -33,12 +33,6 @@ object EventsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.events.mythologicalRitual.inquisitorFocusMode"))
-					.binding(defaults.events.mythological.inquisitorFocusMode, config.events.mythological::inquisitorFocusMode) { config.events.mythological.inquisitorFocusMode = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythologicalRitual.alertInquisitor"))
 					.binding(defaults.events.mythological.alertInquisitor, config.events.mythological::alertInquisitor) { config.events.mythological.alertInquisitor = it }
 					.controller(NobaConfigUtils::createBooleanController)
@@ -47,6 +41,18 @@ object EventsCategory {
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythologicalRitual.alertOnlyInParty"))
 					.binding(defaults.events.mythological.alertOnlyInParty, config.events.mythological::alertOnlyInParty) { config.events.mythological.alertOnlyInParty = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.events.mythologicalRitual.inquisitorDespawnTime"))
+					.binding(defaults.events.mythological.inquisitorDespawnTime, config.events.mythological::inquisitorDespawnTime) { config.events.mythological.inquisitorDespawnTime = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.events.mythologicalRitual.inquisitorFocusMode"))
+					.binding(defaults.events.mythological.inquisitorFocusMode, config.events.mythological::inquisitorFocusMode) { config.events.mythological.inquisitorFocusMode = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 

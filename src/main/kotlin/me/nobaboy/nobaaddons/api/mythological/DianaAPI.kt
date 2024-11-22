@@ -11,6 +11,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.server.network.ServerPlayerEntity
 
 object DianaAPI {
 	private val spade = "ANCESTRAL_SPADE"
@@ -20,6 +21,7 @@ object DianaAPI {
 	}
 
 	private fun onEntityLoad(entity: Entity) {
+		if(entity !is ServerPlayerEntity) return
 		if(entity.name.string != "Minos Inquisitor") return
 
 		MythologicalEvents.INQUISITOR_SPAWN.invoke(MythologicalEvents.InquisitorSpawn(entity))
@@ -32,7 +34,8 @@ object DianaAPI {
 		return heldItem.id == spade
 	}
 
-	private fun isRitualActive() = MayorAPI.currentMayor.activePerks.contains(MayorPerk.MYTHOLOGICAL_RITUAL)
+	private fun isRitualActive() = MayorAPI.currentMayor.activePerks.contains(MayorPerk.MYTHOLOGICAL_RITUAL) ||
+		MayorAPI.currentMinister.activePerks.contains(MayorPerk.MYTHOLOGICAL_RITUAL)
 
 	fun isActive(): Boolean = IslandType.HUB.inIsland() && isRitualActive() && hasSpadeInHotbar()
 }
