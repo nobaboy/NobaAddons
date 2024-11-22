@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 
 data class Waypoint(
-	val vec: NobaVec,
+	val location: NobaVec,
 	val text: String,
 	val color: NobaColor,
 	var isCorpse: Boolean = false

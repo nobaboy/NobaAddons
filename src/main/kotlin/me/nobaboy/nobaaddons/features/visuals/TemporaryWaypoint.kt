@@ -70,16 +70,16 @@ object TemporaryWaypoint {
 		val cameraPos = context.camera().pos.toNobaVec()
 		val color = config.waypointColor
 
-		waypoints.removeIf { it.expired || it.vec.distanceSq(cameraPos) < 5.0 * 5.0 }
+		waypoints.removeIf { it.expired || it.location.distance(cameraPos) < 5.0 }
 		waypoints.forEach { waypoint ->
-			waypoint.vec.roundToBlock().let {
+			waypoint.location.roundToBlock().let {
 				RenderUtils.renderWaypoint(context, it, color, throughBlocks = true)
-				RenderUtils.renderText(context, it.center(), waypoint.text)
+				RenderUtils.renderText(context, it.center().raise(), waypoint.text, yOffset = -5.0f, throughBlocks = true)
 			}
 		}
 	}
 
-	data class Waypoint(val vec: NobaVec, val text: String, val timestamp: Timestamp, val duration: Duration?) {
+	data class Waypoint(val location: NobaVec, val text: String, val timestamp: Timestamp, val duration: Duration?) {
 		val expired: Boolean
 			get() = duration != null && timestamp.elapsedSince() >= duration
 	}

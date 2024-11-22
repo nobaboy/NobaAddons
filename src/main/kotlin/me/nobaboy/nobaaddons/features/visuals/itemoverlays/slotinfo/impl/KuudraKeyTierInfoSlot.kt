@@ -4,24 +4,24 @@ import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 
-object MasterStarSlotInfo : ISlotInfo {
-	override val enabled: Boolean get() = config.masterStar
+object KuudraKeyTierInfoSlot : ISlotInfo {
+	override val enabled: Boolean get() = config.kuudraKeyTier
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		val item = event.itemStack.getSkyBlockItem() ?: return
-		if(!item.id.endsWith("MASTER_STAR")) return
+		if(!item.id.startsWith("KUUDRA") || !item.id.endsWith("KEY")) return
 
-		val tier = getStarTier(item.id)
+		val tier = getKeyTier(item.id)
 		drawCount(event, tier)
 	}
 
-	private fun getStarTier(id: String): String {
+	private fun getKeyTier(id: String): String {
 		return when(id) {
-			"FIRST_MASTER_STAR" -> "1"
-			"SECOND_MASTER_STAR" -> "2"
-			"THIRD_MASTER_STAR" -> "3"
-			"FOURTH_MASTER_STAR" -> "4"
-			"FIFTH_MASTER_STAR" -> "5"
+			"KUUDRA_TIER_KEY" -> "1"
+			"KUUDRA_HOT_TIER_KEY" -> "2"
+			"KUUDRA_BURNING_TIER_KEY" -> "3"
+			"KUUDRA_FIERY_TIER_KEY" -> "4"
+			"KUUDRA_INFERNAL_TIER_KEY" -> "5"
 			else -> "?"
 		}
 	}

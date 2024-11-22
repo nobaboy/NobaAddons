@@ -24,11 +24,11 @@ object EntityUtils {
 
 	fun getEntityByID(entityId: Int) = MCUtils.player?.entityWorld?.getEntityById(entityId)
 
-	inline fun <reified T : Entity> getEntitiesNear(vec: NobaVec, radius: Double): Sequence<T> =
-		getEntities<T>().filter { it.distanceTo(vec) < radius }
+	inline fun <reified T : Entity> getEntitiesNear(location: NobaVec, radius: Double): Sequence<T> =
+		getEntities<T>().filter { it.distanceTo(location) < radius }
 
-	inline fun <reified T : Entity> getEntitiesNearIgnoreY(vec: NobaVec, radius: Double): Sequence<T> =
-		getEntities<T>().filter { it.distanceToIgnoreY(vec) < radius }
+	inline fun <reified T : Entity> getEntitiesNearIgnoreY(location: NobaVec, radius: Double): Sequence<T> =
+		getEntities<T>().filter { it.distanceToIgnoreY(location) < radius }
 
 	inline fun <reified T : Entity> getEntitiesNearPlayer(radius: Double): Sequence<T> =
 		getEntitiesNear<T>(LocationUtils.playerLocation(), radius)
@@ -36,8 +36,8 @@ object EntityUtils {
 	inline fun <reified T : Entity> Entity.getClosestEntity(radius: Double): T? =
 		getEntitiesNear<T>(pos.toNobaVec(), radius).minBy { it.distanceTo(this) }
 
-	inline fun <reified T : Entity> getClosestEntity(vec: NobaVec): T? =
-		getEntities<T>().minBy { it.distanceTo(vec) }
+	inline fun <reified T : Entity> getClosestEntity(location: NobaVec): T? =
+		getEntities<T>().minBy { it.distanceTo(location) }
 
 	fun ArmorStandEntity.armorSkullTexture(texture: String): Boolean {
 		val armor = this.armorItems ?: return false

@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.general.RefillPearls
+import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.screens.NobaHudScreen
 import me.nobaboy.nobaaddons.screens.NobaMainScreen
@@ -69,6 +70,12 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 		}
 
 		executes(TemporaryWaypoint::addWaypoint)
+	}
+
+	val lockMouse = Command.command("lockmouse") {
+		executes {
+			MouseLock.lockMouse()
+		}
 	}
 
 	val debug = DebugCommands

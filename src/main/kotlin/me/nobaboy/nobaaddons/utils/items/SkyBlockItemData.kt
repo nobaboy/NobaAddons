@@ -70,6 +70,8 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val ethermerge: Boolean by CacheOf(this::nbt) { nbt.getBoolean("ethermerge") }
 	val tunedTransmission: Int by CacheOf(this::nbt) { nbt.getInt("tuned_transmission") }
 
+	val newYearsCake: Int by CacheOf(this::nbt) { nbt.getInt("new_years_cake") }
+
 	data class Gemstone(val type: String, val tier: String)
 	data class Potion(val name: String, val level: Int, val ticks: Int)
 }
