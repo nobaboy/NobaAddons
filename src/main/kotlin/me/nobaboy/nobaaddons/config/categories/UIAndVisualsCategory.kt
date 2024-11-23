@@ -83,12 +83,6 @@ object UIAndVisualsCategory {
 				.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo"))
 				.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.tooltip")))
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.enabled"))
-					.binding(defaults.uiAndVisuals.slotInfo.enabled, config.uiAndVisuals.slotInfo::enabled) { config.uiAndVisuals.slotInfo.enabled = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.checkMarkIfMaxed"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.checkMarkIfMaxed.tooltip")))
 					.binding(defaults.uiAndVisuals.slotInfo.checkMarkIfMaxed, config.uiAndVisuals.slotInfo::checkMarkIfMaxed) { config.uiAndVisuals.slotInfo.checkMarkIfMaxed = it }
@@ -114,6 +108,12 @@ object UIAndVisualsCategory {
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.collectionTier"))
 					.binding(defaults.uiAndVisuals.slotInfo.collectionTier, config.uiAndVisuals.slotInfo::collectionTier) { config.uiAndVisuals.slotInfo.collectionTier = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.gardenPests"))
+					.binding(defaults.uiAndVisuals.slotInfo.gardenPests, config.uiAndVisuals.slotInfo::gardenPests) { config.uiAndVisuals.slotInfo.gardenPests = it }
 					.controller(TickBoxControllerBuilder::create)
 					.build())
 
