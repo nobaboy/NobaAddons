@@ -1,23 +1,9 @@
-package me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo
+package me.nobaboy.nobaaddons.features.visuals.slotinfo
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.BestiarySlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.CollectionTierSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.DungeonHeadTierSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.EnchantedBookSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.GardenPlotPestInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.KuudraKeyTierInfoSlot
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MasterSkullTierSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MasterStarTierSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MinionTierSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.NewYearCakeSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.PotionLevelSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.SkillLevelSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.SkyBlockLevelSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.TuningPointsSlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.VacuumPestsSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.slotinfo.impl.*
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext

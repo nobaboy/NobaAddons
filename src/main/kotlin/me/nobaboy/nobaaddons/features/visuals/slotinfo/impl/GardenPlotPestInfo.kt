@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl
+package me.nobaboy.nobaaddons.features.visuals.slotinfo.impl
 
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.ISlotInfo
+import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstMatcher
@@ -29,7 +29,8 @@ object GardenPlotPestInfo : ISlotInfo {
 			drawCount(event, group("count"), NobaColor.RED.toColor().rgb)
 		}
 
-		if(lore.any { it.startsWith("Sprayed with") })
+		if(lore.any { it.startsWith("Sprayed with") }) {
 			drawInfo(event, Text.literal(ICON).formatted(Formatting.GOLD, Formatting.BOLD))
+		}
 	}
 }
