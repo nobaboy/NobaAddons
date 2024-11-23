@@ -46,8 +46,8 @@ object NumberUtils {
 
 	fun Number.ordinalSuffix(): String {
 		val long = this.toLong()
-		if (long % 100 in 11..13) return "th"
-		return when (long % 10) {
+		if(long % 100 in 11..13) return "th"
+		return when(long % 10) {
 			1L -> "st"
 			2L -> "nd"
 			3L -> "rd"

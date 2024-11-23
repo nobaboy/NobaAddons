@@ -99,6 +99,15 @@ class UIAndVisualsConfig {
 		var newYearCake: Boolean = false
 
 		@SerialEntry
+		var petLevel: Boolean = false
+
+		@SerialEntry
+		var petItem: Boolean = false
+
+		@SerialEntry
+		var petCandy: Boolean = false
+
+		@SerialEntry
 		var potionLevel: Boolean = false
 
 		@SerialEntry

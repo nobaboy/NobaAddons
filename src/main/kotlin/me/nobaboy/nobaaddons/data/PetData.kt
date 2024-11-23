@@ -8,6 +8,8 @@ data class PetData(
 	val level: Int,
 	val xp: Double,
 	val rarity: ItemRarity,
+	val candy: Int = 0,
+	val active: Boolean = false,
 	val heldItem: String? = null,
 	val uuid: String? = null
 )

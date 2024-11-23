@@ -10,7 +10,7 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.screen.slot.Slot
 import net.minecraft.text.Text
 
-// TODO: Implement remaining 2 slot infos once mythological branch is merge as they both require PetAPI
+// TODO: Implement last slot info (not really last, but planned one)
 interface ISlotInfo {
 	val config get() = NobaConfigManager.config.uiAndVisuals.slotInfo
 
@@ -38,7 +38,7 @@ interface ISlotInfo {
 			MasterStarTierSlotInfo,
 			MinionTierSlotInfo,
 			NewYearCakeSlotInfo,
-//			PetSlotInfo,
+			PetSlotInfo,
 			PotionLevelSlotInfo,
 //			RancherBootsSlotInfo,
 			SkillLevelSlotInfo,

@@ -79,7 +79,7 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 
 	public void walkDir(Path file) {
 		System.out.println("Trying to find mixins from directory");
-		try (Stream<Path> classes = Files.walk(file.resolve(mixinBaseDir))) {
+		try(Stream<Path> classes = Files.walk(file.resolve(mixinBaseDir))) {
 			classes.filter(Files::isRegularFile)
 					.map(it -> file.relativize(it).toString())
 					.forEach(this::tryAddMixinClass);
@@ -114,7 +114,7 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 
 	private void walkJar(Path file) {
 		System.out.println("Trying to find mixins from jar file");
-		try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(file))) {
+		try(ZipInputStream zis = new ZipInputStream(Files.newInputStream(file))) {
 			ZipEntry next;
 			while ((next = zis.getNextEntry()) != null) {
 				tryAddMixinClass(next.getName());

@@ -13,8 +13,26 @@ object BestiarySlotInfo : ISlotInfo {
 
 	override val enabled get() = config.bestiaryFamilyTier || config.bestiaryMilestone
 
-	private fun getTier(name: String): String {
-		return name.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
+	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+		val inventoryName = InventoryUtils.openInventoryName() ?: return
+		val itemStack = event.itemStack
+		val lore = itemStack.lore.stringLines
+
+		bestiaryLocation = getBestiaryLocation(inventoryName) ?: return
+
+		if(config.bestiaryFamilyTier && lore.any { it.endsWith("Bonuses") }) {
+			if(config.checkMarkIfMaxed && lore.any { it == "Overall Progress: 100% (MAX!)" }) {
+				drawCount(event, "✔", NobaColor.GREEN.toColor().rgb)
+			} else {
+				val tier = getTier(itemStack.name.string)
+				drawCount(event, tier)
+			}
+		}
+
+		if(config.bestiaryMilestone && lore.any { it == "Click to open Bestiary Milestones!" }) {
+			val milestone = getTier(itemStack.name.string)
+			drawCount(event, milestone)
+		}
 	}
 
 	private fun getBestiaryLocation(inventoryName: String): String? {
@@ -26,25 +44,7 @@ object BestiarySlotInfo : ISlotInfo {
 		}
 	}
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
-		val inventoryName = InventoryUtils.openInventoryName() ?: return
-		val itemStack = event.itemStack
-		val lore = itemStack.lore.stringLines
-
-		bestiaryLocation = getBestiaryLocation(inventoryName) ?: return
-
-		if (config.bestiaryFamilyTier && lore.any { it.endsWith("Bonuses") }) {
-			if (config.checkMarkIfMaxed && lore.any { it == "Overall Progress: 100% (MAX!)" }) {
-				drawCount(event, "✔", NobaColor.GREEN.toColor().rgb)
-			} else {
-				val tier = getTier(itemStack.name.string)
-				drawCount(event, tier)
-			}
-		}
-
-		if (config.bestiaryMilestone && lore.any { it == "Click to open Bestiary Milestones!" }) {
-			val milestone = getTier(itemStack.name.string)
-			drawCount(event, milestone)
-		}
+	private fun getTier(name: String): String {
+		return name.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
 	}
 }

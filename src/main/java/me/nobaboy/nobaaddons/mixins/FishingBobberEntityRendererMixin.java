@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.mixins;
 //? if >=1.21.2 {
 import net.minecraft.client.render.entity.state.FishingBobberEntityState;
 //?}
+
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import me.nobaboy.nobaaddons.config.NobaConfigManager;
