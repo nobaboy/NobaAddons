@@ -196,9 +196,6 @@ object RenderUtils {
 	fun drawTitle(text: Text, duration: Duration = 3.seconds) {
 		TitleManager.draw(text, duration)
 	}
-	fun drawTitle(text: String, duration: Duration = 3.seconds) {
-		TitleManager.draw(text.toText(), duration)
-	}
 
 	fun Box.expandBlock(n: Int = 1) = expand(NobaVec.expandVector * n)
 	fun Box.shrinkBlock(n: Int = 1) = expand(NobaVec.expandVector * -n)

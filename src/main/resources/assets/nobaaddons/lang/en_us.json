@@ -98,7 +98,7 @@
 
   "nobaaddons.config.fishing": "Fishing",
   "nobaaddons.config.fishing.seaCreatureAlert": "Sea Creature Alert",
-  "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity": "Use Name instead of Sea Creature Rarity",
+  "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity": "Use Name Instead Of Rarity",
   "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity": "Minimum Rarity",
 
   "nobaaddons.config.mining": "Mining",
