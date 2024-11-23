@@ -17,6 +17,9 @@ class NobaConfig {
 	val events: EventsConfig = EventsConfig()
 
 	@SerialEntry
+	val fishing: FishingConfig = FishingConfig()
+
+	@SerialEntry
 	val mining: MiningConfig = MiningConfig()
 
 	@SerialEntry

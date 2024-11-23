@@ -23,6 +23,7 @@ import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
+import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindListener
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
@@ -94,6 +95,10 @@ object NobaAddons : ClientModInitializer {
 		// region Events
 		BurrowWaypoints.init()
 		InquisitorWaypoints.init()
+		// endregion
+
+		// region Fishing
+		SeaCreatureAlert.init()
 		// endregion
 
 		// region Mining

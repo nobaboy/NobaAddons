@@ -31,6 +31,8 @@ import net.minecraft.util.math.Box
 import org.joml.Matrix4f
 import org.lwjgl.opengl.GL11
 import java.awt.Color
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 object RenderUtils {
 	val ALLOCATOR = BufferAllocator(1024)
@@ -190,6 +192,10 @@ object RenderUtils {
 		rightX: Double,
 		rightY: Double
 	): Boolean = pointX in leftX..rightX && pointY in leftY..rightY
+
+	fun drawTitle(text: Text, duration: Duration = 3.seconds) {
+		TitleManager.draw(text, duration)
+	}
 
 	fun Box.expandBlock(n: Int = 1) = expand(NobaVec.expandVector * n)
 	fun Box.shrinkBlock(n: Int = 1) = expand(NobaVec.expandVector * -n)

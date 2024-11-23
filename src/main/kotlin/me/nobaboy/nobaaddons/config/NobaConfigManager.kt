@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.config.categories.ChatCategory
 import me.nobaboy.nobaaddons.config.categories.CrimsonIsleCategory
 import me.nobaboy.nobaaddons.config.categories.DungeonsCategory
 import me.nobaboy.nobaaddons.config.categories.EventsCategory
+import me.nobaboy.nobaaddons.config.categories.FishingCategory
 import me.nobaboy.nobaaddons.config.categories.GeneralCategory
 import me.nobaboy.nobaaddons.config.categories.MiningCategory
 import me.nobaboy.nobaaddons.config.categories.QOLCategory
@@ -58,6 +59,7 @@ object NobaConfigManager {
 				.category(GeneralCategory.create(defaults, config))
 				.category(UIAndVisualsCategory.create(defaults, config))
 				.category(EventsCategory.create(defaults, config))
+				.category(FishingCategory.create(defaults, config))
 				.category(MiningCategory.create(defaults, config))
 				.category(CrimsonIsleCategory.create(defaults, config))
 				.category(DungeonsCategory.create(defaults, config))
