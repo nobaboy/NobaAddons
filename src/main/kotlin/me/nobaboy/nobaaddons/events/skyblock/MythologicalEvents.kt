@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.events.skyblock
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.utils.NobaVec
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.client.network.OtherClientPlayerEntity
 
 object MythologicalEvents {
 	@JvmField
@@ -21,5 +21,5 @@ object MythologicalEvents {
 	data class BurrowGuess(val location: NobaVec)
 	data class BurrowFind(val location: NobaVec, val type: BurrowType)
 	data class BurrowDig(val location: NobaVec)
-	data class InquisitorSpawn(val entity: ServerPlayerEntity)
+	data class InquisitorSpawn(val entity: OtherClientPlayerEntity)
 }
