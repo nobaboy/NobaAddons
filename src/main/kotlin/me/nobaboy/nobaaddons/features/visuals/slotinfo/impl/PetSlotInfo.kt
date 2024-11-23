@@ -17,10 +17,13 @@ object PetSlotInfo : ISlotInfo {
 		if(config.petCandy && pet.candy > 0) drawInfo(event, Text.literal("■").formatted(Formatting.RED))
 
 		if(config.petItem) {
-			when(pet.heldItem) {
-				"PET_ITEM_TIER_BOOST" -> drawInfo(event, Text.literal("↑").formatted(Formatting.GOLD), Position.TOP_RIGHT)
-				"PET_ITEM_LUCKY_CLOVER" -> drawInfo(event, Text.literal("♣").formatted(Formatting.GREEN), Position.TOP_RIGHT)
-			}
+			val text = when(pet.heldItem) {
+				"PET_ITEM_TIER_BOOST" -> Text.literal("↑").formatted(Formatting.GOLD)
+				"PET_ITEM_LUCKY_CLOVER" -> Text.literal("♣").formatted(Formatting.GREEN) // maybe dark green?
+				else -> null
+			} ?: return
+
+			drawInfo(event, text, Position.TOP_RIGHT)
 		}
 	}
 }
