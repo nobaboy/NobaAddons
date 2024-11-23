@@ -16,7 +16,8 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.client.MinecraftClient
+import net.minecraft.client.network.OtherClientPlayerEntity
 import java.util.regex.Pattern
 import kotlin.time.Duration.Companion.seconds
 
@@ -28,7 +29,7 @@ object InquisitorWaypoints {
 
 	private val inquisitorDigUpPattern = Pattern.compile(".* You dug out a Minos Inquisitor!")
 
-	private val inquisitorsNearby = mutableListOf<ServerPlayerEntity>()
+	private val inquisitorsNearby = mutableListOf<OtherClientPlayerEntity>()
 	private var lastInquisitorId: Int? = null
 
 	private val inquisitorSpawnTimes = mutableListOf<Timestamp>()
@@ -43,9 +44,11 @@ object InquisitorWaypoints {
 	}
 
 	private fun onSecondPassed() {
-		if(!isEnabled()) return
+		if(!enabled) return
 
-		inquisitorsNearby.removeIf { !it.isAlive }
+		val world = MinecraftClient.getInstance().world ?: return reset()
+
+		inquisitorsNearby.removeIf { !it.isAlive || world.getEntityById(it.id) !== it }
 		waypoints.removeIf { it.spawnTime.elapsedSince() > 75.seconds }
 	}
 
@@ -59,7 +62,7 @@ object InquisitorWaypoints {
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		if(inquisitorDigUpPattern.matches(message)) checkInquisitor()
 
@@ -83,7 +86,7 @@ object InquisitorWaypoints {
 		}
 	}
 
-	private fun reset() {
+	fun reset() {
 		waypoints.clear()
 		inquisitorsNearby.clear()
 		inquisitorSpawnTimes.clear()
@@ -124,5 +127,5 @@ object InquisitorWaypoints {
 
 	data class Inquisitor(val spawner: String, val location: NobaVec, val spawnTime: Timestamp)
 
-	private fun isEnabled() = DianaAPI.isActive() && config.alertInquisitor
+	private val enabled get() = DianaAPI.isActive() && config.alertInquisitor
 }

@@ -2,12 +2,15 @@ package me.nobaboy.nobaaddons.commands
 
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
+import me.nobaboy.nobaaddons.api.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWarpLocations
+import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
+import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
 import me.nobaboy.nobaaddons.features.general.RefillPearls
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
@@ -83,6 +86,15 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 		val resetWarps = Command.command("resetwarps") {
 			executes {
 				BurrowWarpLocations.unlockAll()
+			}
+		}
+
+		val resetBurrows = Command.command("clearburrows") {
+			executes {
+				BurrowAPI.reset()
+				InquisitorWaypoints.reset()
+				BurrowWaypoints.reset()
+				ChatUtils.addMessage("Cleared all waypoints")
 			}
 		}
 	}

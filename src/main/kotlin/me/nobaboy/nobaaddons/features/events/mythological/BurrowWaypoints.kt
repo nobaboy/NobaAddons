@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
-import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
+import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
 import me.nobaboy.nobaaddons.utils.BlockUtils.inLoadedChunk
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -17,9 +17,9 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
-import net.minecraft.block.Blocks
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
+import net.minecraft.world.Heightmap
 import kotlin.time.Duration.Companion.seconds
 
 object BurrowWaypoints {
@@ -27,29 +27,13 @@ object BurrowWaypoints {
 
 	private val playerLocation get() = LocationUtils.playerLocation()
 
-	private val validBlocks = listOf(
-		Blocks.AIR,
-		Blocks.OAK_LEAVES,
-		Blocks.SPRUCE_LEAVES,
-		Blocks.SPRUCE_FENCE,
-		Blocks.SHORT_GRASS,
-		Blocks.TALL_GRASS,
-		Blocks.FERN,
-		Blocks.POPPY,
-		Blocks.DANDELION,
-		Blocks.OXEYE_DAISY,
-		Blocks.BLUE_ORCHID,
-		Blocks.AZURE_BLUET,
-		Blocks.ROSE_BUSH,
-		Blocks.LILAC
-	)
-
 	private val burrows = mutableMapOf<NobaVec, BurrowType>()
 	private var guessLocation: NobaVec? = null
 
 	private var nearestWarp: BurrowWarpLocations.WarpPoint? = null
 
-	private var shouldFocusInquisitor = false
+	private val isInquisitorSpawned: Boolean
+		get() = InquisitorWaypoints.waypoints.isNotEmpty()
 
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { reset() }
@@ -79,12 +63,15 @@ object BurrowWaypoints {
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		when {
 			message.startsWith(" ☠ You were killed by") -> burrows.remove(BurrowAPI.mobBurrow)
 			message == "Poof! You have cleared your griffin burrows!" -> reset()
 			message == "You haven't unlocked this fast travel destination!" -> {
+				// FIXME this likely doesn't actually work as intended, as we're clearing nearestWarp when warping to it!
+				//       preferably this would be a data class with the warp & a timestamp to avoid manual warps
+				//       accidentally running this
 				nearestWarp?.let {
 					ChatUtils.addMessage("It appears as you don't have the ${it.displayName} warp location unlocked.")
 					ChatUtils.addMessage("Once you have unlocked that location, use '/noba mythological resetwarps'.")
@@ -96,19 +83,19 @@ object BurrowWaypoints {
 	}
 
 	private fun renderWaypoints(context: WorldRenderContext) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		suggestNearestWarp()
 
-		shouldFocusInquisitor = renderInquisitorWaypoints(context)
-		if(shouldFocusInquisitor) return
+		renderInquisitorWaypoints(context)
+		if(isInquisitorSpawned && config.inquisitorFocusMode) return
 
 		if(config.findNearbyBurrows) renderBurrowWaypoints(context)
 		if(config.burrowGuess) renderGuessLocation(context)
 	}
 
-	private fun renderInquisitorWaypoints(context: WorldRenderContext): Boolean {
-		if(InquisitorWaypoints.waypoints.isEmpty()) return false
+	private fun renderInquisitorWaypoints(context: WorldRenderContext) {
+		if(InquisitorWaypoints.waypoints.isEmpty()) return
 
 		InquisitorWaypoints.waypoints.forEach { inquisitor ->
 			val location = inquisitor.location
@@ -125,11 +112,7 @@ object BurrowWaypoints {
 			}
 
 			if(distance < 5) InquisitorWaypoints.tryRemove(inquisitor)
-
-			if(config.inquisitorFocusMode) return true
 		}
-
-		return false
 	}
 
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
@@ -154,7 +137,7 @@ object BurrowWaypoints {
 		}
 	}
 
-	private fun reset() {
+	fun reset() {
 		guessLocation = null
 		burrows.clear()
 	}
@@ -175,24 +158,14 @@ object BurrowWaypoints {
 
 	private fun findValidLocation(location: NobaVec): NobaVec {
 		if(!location.inLoadedChunk()) return location.copy(y = playerLocation.y)
-
-		return findGroundLevel(location) ?: findFirstSolidBelowAir(location)
+		return findGroundLevel(location) ?: location.copy(y = playerLocation.y)
 	}
 
 	private fun findGroundLevel(location: NobaVec): NobaVec? {
-		for(y in 140 downTo 65) {
-			if(location.isGroundAt(y)) return location.copy(y = y.toDouble())
-		}
-		return null
-	}
-
-	private fun findFirstSolidBelowAir(location: NobaVec): NobaVec {
-		for(y in 65..140) {
-			if(location.copy(y = y.toDouble()).getBlockAt() == Blocks.AIR) {
-				return location.copy(y = (y - 1).toDouble())
-			}
-		}
-		return location.copy(y = playerLocation.y)
+		val predicate = Heightmap.Type.MOTION_BLOCKING_NO_LEAVES.blockPredicate
+		return (140 downTo 65).asSequence()
+			.map { location.copy(y = it.toDouble()) }
+			.firstOrNull { predicate.test(it.getBlockStateAt()) }
 	}
 
 	fun useNearestWarp() {
@@ -203,8 +176,5 @@ object BurrowWaypoints {
 		}
 	}
 
-	private fun NobaVec.isGroundAt(y: Int) = copy(y = y.toDouble()).getBlockAt() == Blocks.GRASS_BLOCK &&
-		copy(y = y + 1.0).getBlockAt() in validBlocks
-
-	private fun isEnabled() = DianaAPI.isActive()
+	private val enabled get() = DianaAPI.isActive()
 }

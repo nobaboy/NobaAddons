@@ -115,7 +115,7 @@ object BurrowAPI {
 		return true
 	}
 
-	private fun reset() {
+	fun reset() {
 		burrows.clear()
 		recentlyDugBurrows.clear()
 	}
