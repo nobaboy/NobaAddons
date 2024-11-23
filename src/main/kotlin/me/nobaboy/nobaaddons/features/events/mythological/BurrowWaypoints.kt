@@ -54,17 +54,15 @@ object BurrowWaypoints {
 
 	private fun onBurrowGuess(event: MythologicalEvents.BurrowGuess) {
 		guessLocation = event.location
-		tryRemoveGuess()
 	}
 
 	private fun onBurrowFind(event: MythologicalEvents.BurrowFind) {
 		burrows[event.location] = event.type
-		tryRemoveGuess()
+		tryRemoveGuess(event.location)
 	}
 
 	private fun onBurrowDig(event: MythologicalEvents.BurrowDig) {
 		burrows.remove(event.location)
-		tryRemoveGuess()
 	}
 
 	private fun onChatMessage(message: String) {
@@ -149,16 +147,16 @@ object BurrowWaypoints {
 //
 //		nearestWarp?.let {
 //			val text = "Warp to ${it.displayName}"
-//			RenderUtils.renderTitle(text, 2.seconds)
+//			RenderUtils.drawTitle(text, 2.seconds)
 //		}
 //	}
 
-	private fun tryRemoveGuess() {
+	private fun tryRemoveGuess(location: NobaVec) {
 		if(!config.findNearbyBurrows) return
 
 		guessLocation?.let { guess ->
 			val adjustedGuess = findValidLocation(guess)
-			if(burrows.any { adjustedGuess.distance(it.key) < 20 }) guessLocation = null
+			if(adjustedGuess.distance(location) < 10) guessLocation = null
 		}
 	}
 
