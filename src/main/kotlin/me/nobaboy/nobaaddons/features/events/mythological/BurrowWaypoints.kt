@@ -157,11 +157,9 @@ object BurrowWaypoints {
 		val targetLocation = getTargetLocation() ?: return
 		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
 
-		if(playerLocation.distance(nearestWarp!!.location) < 40) return
-
 		val playerToTargetDistance = playerLocation.distance(targetLocation)
 		val warpToTargetDistance = nearestWarp!!.location.distance(targetLocation)
-		if(playerToTargetDistance <= warpToTargetDistance) return
+		if(playerToTargetDistance - warpToTargetDistance < 40) return
 
 		RenderUtils.drawTitle(Text.literal("Warp to ${nearestWarp!!.displayName}").formatted(Formatting.GRAY), 1.seconds)
 	}
