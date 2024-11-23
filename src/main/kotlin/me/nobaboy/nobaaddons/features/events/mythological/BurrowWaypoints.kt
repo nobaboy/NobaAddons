@@ -62,8 +62,13 @@ object BurrowWaypoints {
 	}
 
 	private fun onBurrowFind(event: MythologicalEvents.BurrowFind) {
-		burrows[event.location] = event.type
-		tryRemoveGuess(event.location)
+		val location = event.location
+		burrows[location] = event.type
+
+		guessLocation?.let { guess ->
+			val adjustedGuess = findValidLocation(guess)
+			if(adjustedGuess.distance(location) < 10) guessLocation = null
+		}
 	}
 
 	private fun onBurrowDig(event: MythologicalEvents.BurrowDig) {
@@ -169,13 +174,6 @@ object BurrowWaypoints {
 		return guessLocation?.let { findValidLocation(it) }
 	}
 
-	private fun tryRemoveGuess(location: NobaVec) {
-		guessLocation?.let { guess ->
-			val adjustedGuess = findValidLocation(guess)
-			if(adjustedGuess.distance(location) < 10) guessLocation = null
-		}
-	}
-
 	private fun findValidLocation(location: NobaVec): NobaVec {
 		if(!location.inLoadedChunk()) return location.copy(y = playerLocation.y)
 
@@ -183,15 +181,15 @@ object BurrowWaypoints {
 	}
 
 	private fun findGroundLevel(location: NobaVec): NobaVec? {
-		for (y in 140 downTo 65) {
-			if (location.isGroundAt(y)) return location.copy(y = y.toDouble())
+		for(y in 140 downTo 65) {
+			if(location.isGroundAt(y)) return location.copy(y = y.toDouble())
 		}
 		return null
 	}
 
 	private fun findFirstSolidBelowAir(location: NobaVec): NobaVec {
-		for (y in 65..140) {
-			if (location.copy(y = y.toDouble()).getBlockAt() == Blocks.AIR) {
+		for(y in 65..140) {
+			if(location.copy(y = y.toDouble()).getBlockAt() == Blocks.AIR) {
 				return location.copy(y = (y - 1).toDouble())
 			}
 		}
