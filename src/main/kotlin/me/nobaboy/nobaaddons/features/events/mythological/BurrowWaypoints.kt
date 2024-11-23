@@ -18,6 +18,9 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.block.Blocks
+import net.minecraft.text.Text
+import net.minecraft.util.Formatting
+import kotlin.time.Duration.Companion.seconds
 
 object BurrowWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
@@ -27,7 +30,7 @@ object BurrowWaypoints {
 	private val validBlocks = listOf(
 		Blocks.AIR,
 		Blocks.OAK_LEAVES,
-		Blocks.BIRCH_LEAVES,
+		Blocks.SPRUCE_LEAVES,
 		Blocks.TALL_GRASS,
 		Blocks.LILAC,
 		Blocks.SUNFLOWER,
@@ -41,7 +44,7 @@ object BurrowWaypoints {
 	private val burrows = mutableMapOf<NobaVec, BurrowType>()
 	private var guessLocation: NobaVec? = null
 
-	private var nearestWarp: WarpLocations.WarpPoint? = null
+	private var nearestWarp: BurrowWarpLocations.WarpPoint? = null
 
 	private var shouldFocusInquisitor = false
 
@@ -73,13 +76,21 @@ object BurrowWaypoints {
 		when {
 			message.startsWith(" ☠ You were killed by") -> burrows.remove(BurrowAPI.mobBurrow)
 			message == "Poof! You have cleared your griffin burrows!" -> reset()
+			message == "You haven't unlocked this fast travel destination!" -> {
+				nearestWarp?.let {
+					ChatUtils.addMessage("It appears as you don't have the ${it.displayName} warp location unlocked.")
+					ChatUtils.addMessage("Once you have unlocked that location, use '/noba mythological resetwarps'.")
+					it.unlocked = false
+					nearestWarp = null
+				}
+			}
 		}
 	}
 
 	private fun renderWaypoints(context: WorldRenderContext) {
 		if(!isEnabled()) return
 
-//		suggestNearestWarp()
+		suggestNearestWarp()
 
 		shouldFocusInquisitor = renderInquisitorWaypoints(context)
 		if(shouldFocusInquisitor) return
@@ -140,24 +151,25 @@ object BurrowWaypoints {
 		burrows.clear()
 	}
 
-	// TODO: Implement title hud
-//	private fun suggestNearestWarp() {
-//		nearestWarp = if(InquisitorWaypoints.waypoints.isNotEmpty()) {
-//			InquisitorWaypoints.waypoints.firstOrNull()?.let { waypoint ->
-//				WarpLocations.getNearestWarp(waypoint.location)
-//			}
-//		} else {
-//			guessLocation?.let(WarpLocations::getNearestWarp)
-//				?: burrows.keys.asSequence()
-//					.mapNotNull { WarpLocations.getNearestWarp(it) }
-//					.minByOrNull { warp -> burrows.keys.minOf { it.distance(warp.location) } }
-//		}
-//
-//		nearestWarp?.let {
-//			val text = "Warp to ${it.displayName}"
-////			RenderUtils.drawTitle(text, 2.seconds)
-//		}
-//	}
+	private fun suggestNearestWarp() {
+		if(!config.findNearestWarp) return
+
+		val targetLocation = getTargetLocation() ?: return
+		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
+
+		if(playerLocation.distance(nearestWarp!!.location) < 40) return
+
+		val playerToTargetDistance = playerLocation.distance(targetLocation)
+		val warpToTargetDistance = nearestWarp!!.location.distance(targetLocation)
+		if(playerToTargetDistance <= warpToTargetDistance) return
+
+		RenderUtils.drawTitle(Text.literal("Warp to ${nearestWarp!!.displayName}").formatted(Formatting.GRAY), 1.seconds)
+	}
+
+	private fun getTargetLocation(): NobaVec? {
+		InquisitorWaypoints.waypoints.firstOrNull()?.let { return it.location }
+		return guessLocation?.let { findValidLocation(it) }
+	}
 
 	private fun tryRemoveGuess(location: NobaVec) {
 		guessLocation?.let { guess ->

@@ -3,8 +3,9 @@ package me.nobaboy.nobaaddons.features.events.mythological
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.StringUtils.title
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 
-object WarpLocations {
+object BurrowWarpLocations {
 	private val config get() = NobaConfigManager.config.events.mythological
 
 	fun getNearestWarp(location: NobaVec): WarpPoint? =
@@ -12,11 +13,16 @@ object WarpLocations {
 			.filter { !it.ignored() && it.unlocked }
 			.minByOrNull { it.distance(location) }
 
+	fun unlockAll() {
+		ChatUtils.addMessage("Unlocked all burrow warp locations.")
+		WarpPoint.entries.forEach { it.unlocked = true }
+	}
+
 	enum class WarpPoint(
 		val location: NobaVec,
 		private val extraBlocks: Int = 0,
 		val ignored: () -> Boolean = { false },
-		val unlocked: Boolean = true,
+		var unlocked: Boolean = true,
 		warpName: String? = null
 	) {
 		HUB(NobaVec(-2.5, 70.0, -69.5)),

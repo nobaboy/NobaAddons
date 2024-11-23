@@ -30,7 +30,7 @@ object EventsCategory {
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythological.findNearestWarp"))
-					.binding(defaults.events.mythological.findNearestWarp, config.events.mythological::findNearestWarp) { config.events.mythological.findNearbyBurrows = it }
+					.binding(defaults.events.mythological.findNearestWarp, config.events.mythological::findNearestWarp) { config.events.mythological.findNearestWarp = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 

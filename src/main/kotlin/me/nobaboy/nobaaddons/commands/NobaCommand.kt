@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
+import me.nobaboy.nobaaddons.features.events.mythological.BurrowWarpLocations
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.general.RefillPearls
 import me.nobaboy.nobaaddons.features.qol.MouseLock
@@ -83,6 +84,12 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 		val useWarp = Command.command("usewarp") {
 			executes {
 				BurrowWaypoints.useNearestWarp()
+			}
+		}
+
+		val resetWarps = Command.command("resetwarps") {
+			executes {
+				BurrowWarpLocations.unlockAll()
 			}
 		}
 	}
