@@ -118,6 +118,12 @@ object UIAndVisualsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.gardenPests"))
+					.binding(defaults.uiAndVisuals.slotInfo.gardenPests, config.uiAndVisuals.slotInfo::gardenPests) { config.uiAndVisuals.slotInfo.gardenPests = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.skillLevel"))
 					.binding(defaults.uiAndVisuals.slotInfo.skillLevel, config.uiAndVisuals.slotInfo::skillLevel) { config.uiAndVisuals.slotInfo.skillLevel = it }
 					.controller(TickBoxControllerBuilder::create)
