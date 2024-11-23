@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl
+package me.nobaboy.nobaaddons.features.visuals.slotinfo.impl
 
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.ISlotInfo
+import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
