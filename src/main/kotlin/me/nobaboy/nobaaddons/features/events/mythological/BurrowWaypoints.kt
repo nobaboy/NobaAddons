@@ -22,6 +22,8 @@ import net.minecraft.block.Blocks
 object BurrowWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
 
+	private val playerLocation get() = LocationUtils.playerLocation()
+
 	private val validBlocks = listOf(
 		Blocks.AIR,
 		Blocks.OAK_LEAVES,
@@ -41,7 +43,7 @@ object BurrowWaypoints {
 
 	private var nearestWarp: WarpLocations.WarpPoint? = null
 
-	private val playerLocation get() = LocationUtils.playerLocation()
+	private var shouldFocusInquisitor = false
 
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { reset() }
@@ -79,7 +81,7 @@ object BurrowWaypoints {
 
 //		suggestNearestWarp()
 
-		val shouldFocusInquisitor = renderInquisitorWaypoints(context)
+		shouldFocusInquisitor = renderInquisitorWaypoints(context)
 		if(shouldFocusInquisitor) return
 
 		if(config.findNearbyBurrows) renderBurrowWaypoints(context)
@@ -140,20 +142,24 @@ object BurrowWaypoints {
 
 	// TODO: Implement title hud
 //	private fun suggestNearestWarp() {
-//		nearestWarp = guessLocation?.let(WarpLocations::getNearestWarp)
-//			?: burrows.keys.asSequence()
-//				.mapNotNull { WarpLocations.getNearestWarp(it) }
-//				.minByOrNull { warp -> burrows.keys.minOf { it.distance(warp.location) } }
+//		nearestWarp = if(InquisitorWaypoints.waypoints.isNotEmpty()) {
+//			InquisitorWaypoints.waypoints.firstOrNull()?.let { waypoint ->
+//				WarpLocations.getNearestWarp(waypoint.location)
+//			}
+//		} else {
+//			guessLocation?.let(WarpLocations::getNearestWarp)
+//				?: burrows.keys.asSequence()
+//					.mapNotNull { WarpLocations.getNearestWarp(it) }
+//					.minByOrNull { warp -> burrows.keys.minOf { it.distance(warp.location) } }
+//		}
 //
 //		nearestWarp?.let {
 //			val text = "Warp to ${it.displayName}"
-//			RenderUtils.drawTitle(text, 2.seconds)
+////			RenderUtils.drawTitle(text, 2.seconds)
 //		}
 //	}
 
 	private fun tryRemoveGuess(location: NobaVec) {
-		if(!config.findNearbyBurrows) return
-
 		guessLocation?.let { guess ->
 			val adjustedGuess = findValidLocation(guess)
 			if(adjustedGuess.distance(location) < 10) guessLocation = null

@@ -14,6 +14,9 @@ class EventsConfig {
 		var findNearbyBurrows: Boolean = false
 
 		@SerialEntry
+		var findNearestWarp: Boolean = false
+
+		@SerialEntry
 		var alertInquisitor: Boolean = false
 
 		@SerialEntry
