@@ -16,6 +16,8 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import org.lwjgl.glfw.GLFW
 
+// TODO: Dismantle this and use Screen instead, also give each command it's own class `CommandKeyBind` like before
+//       so each command has it's own cooldown rather than a shared cooldown with all the keybinds
 class KeybindsConfigScreen(private val parent: Screen?) : SpruceScreen(Text.translatable("nobaaddons.keybinds")) {
 	private var selecting: Selecting? = null
 	private lateinit var options: SpruceOptionListWidget
@@ -39,7 +41,7 @@ class KeybindsConfigScreen(private val parent: Screen?) : SpruceScreen(Text.tran
 				SpruceButtonWidget(position, width, 20, keyText(keybind.keycode), action)
 			}
 			options.addOptionEntry(
-				// TODO this ui kinda sucks in that its hard to explain that you shouldn't add a / to the command,
+				// TODO: this ui kinda sucks in that its hard to explain that you shouldn't add a / to the command,
 				// 		but oh well, I don't feel like making something better.
 				SpruceUnlabeledStringOption("nobaaddons.keybind.command", { keybind.command }, { keybind.command = it }),
 				SpruceSimpleActionOption("nobaaddons.keybind.key", factory) { select(keybind, it) }

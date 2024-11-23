@@ -15,6 +15,8 @@
   "nobaaddons.keybind.command": "Command",
   "nobaaddons.keybind.key": "Key",
 
+  "nobaaddons.keybind.mythologicalNearestWarp": "Mythological Nearest Warp",
+
   "nobaaddons.config.enabled": "Enabled",
   "nobaaddons.config.seconds": "%s seconds",
 
