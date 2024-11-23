@@ -16,10 +16,14 @@ object InventoryEvents {
 	val CLOSE = EventDispatcher<Close>()
 
 	@JvmField
-	val CLICK_SLOT = EventDispatcher<ClickSlot>()
+	val SLOT_CLICK = EventDispatcher<SlotClick>()
+
+	@JvmField
+	val SLOT_UPDATE = EventDispatcher<SlotUpdate>()
 
 	data class Open(val inventory: InventoryData)
 	data class Update(val inventory: InventoryData)
 	data class Close(val sameName: Boolean)
-	data class ClickSlot(val itemStack: ItemStack, val button: Int, val slot: Int, val actionType: SlotActionType)
+	data class SlotClick(val itemStack: ItemStack, val button: Int, val slot: Int, val actionType: SlotActionType)
+	data class SlotUpdate(val itemStack: ItemStack, val slot: Int)
 }

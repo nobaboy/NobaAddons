@@ -32,7 +32,7 @@ object PetAPI {
 
 	fun init() {
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
-		InventoryEvents.CLICK_SLOT.register(this::onInventoryClickSlot)
+		InventoryEvents.SLOT_CLICK.register(this::onInventoryClickSlot)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string) }
 	}
 
@@ -57,7 +57,7 @@ object PetAPI {
 		}
 	}
 
-	private fun onInventoryClickSlot(event: InventoryEvents.ClickSlot) {
+	private fun onInventoryClickSlot(event: InventoryEvents.SlotClick) {
 		if(event.button != GLFW.GLFW_MOUSE_BUTTON_1) return
 		if(event.actionType != SlotActionType.PICKUP) return
 

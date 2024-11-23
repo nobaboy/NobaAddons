@@ -31,14 +31,17 @@ object BurrowWaypoints {
 		Blocks.AIR,
 		Blocks.OAK_LEAVES,
 		Blocks.SPRUCE_LEAVES,
+		Blocks.SPRUCE_FENCE,
+		Blocks.SHORT_GRASS,
 		Blocks.TALL_GRASS,
-		Blocks.LILAC,
-		Blocks.SUNFLOWER,
-		Blocks.PEONY,
-		Blocks.ROSE_BUSH,
+		Blocks.FERN,
 		Blocks.POPPY,
 		Blocks.DANDELION,
-		Blocks.SPRUCE_FENCE
+		Blocks.OXEYE_DAISY,
+		Blocks.BLUE_ORCHID,
+		Blocks.AZURE_BLUET,
+		Blocks.ROSE_BUSH,
+		Blocks.LILAC
 	)
 
 	private val burrows = mutableMapOf<NobaVec, BurrowType>()

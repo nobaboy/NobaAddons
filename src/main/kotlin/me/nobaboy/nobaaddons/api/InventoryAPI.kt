@@ -42,7 +42,7 @@ object InventoryAPI {
 	private fun onClickSlot(packet: ClickSlotC2SPacket) {
 		if(packet.syncId != currentWindow?.id) return
 
-		InventoryEvents.CLICK_SLOT.invoke(InventoryEvents.ClickSlot(packet.stack, packet.button, packet.slot, packet.actionType))
+		InventoryEvents.SLOT_CLICK.invoke(InventoryEvents.SlotClick(packet.stack, packet.button, packet.slot, packet.actionType))
 	}
 
 	private fun onScreenOpen(packet: OpenScreenS2CPacket) {
@@ -66,7 +66,10 @@ object InventoryAPI {
 	}
 
 	private fun onSlotUpdate(packet: ScreenHandlerSlotUpdateS2CPacket) {
-		if(packet.syncId != currentWindow?.id) return
+		if(packet.syncId != currentWindow?.id) {
+			InventoryEvents.SLOT_UPDATE.invoke(InventoryEvents.SlotUpdate(packet.stack, packet.slot))
+			return
+		}
 
 		val inventory = currentInventory ?: return
 		val slot = packet.slot
