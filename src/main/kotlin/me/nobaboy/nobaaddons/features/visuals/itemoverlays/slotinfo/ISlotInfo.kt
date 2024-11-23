@@ -22,6 +22,7 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.screen.slot.Slot
+import net.minecraft.text.Text
 
 // TODO: Implement remaining 2 slot infos once mythological branch is merge as they both require PetAPI
 interface ISlotInfo {
@@ -30,8 +31,8 @@ interface ISlotInfo {
 	val enabled: Boolean
 	fun handle(event: ScreenRenderEvents.DrawSlot)
 
-	fun drawInfo(event: ScreenRenderEvents.DrawSlot, info: SlotInfo) {
-		renderSlotInfo(event.context, event.textRenderer, event.slot, info)
+	fun drawInfo(event: ScreenRenderEvents.DrawSlot, text: Text, position: Position = Position.TOP_LEFT,) {
+		renderSlotInfo(event.context, event.textRenderer, event.slot, text, position)
 	}
 
 	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: String, color: Int = -1) {
@@ -71,20 +72,20 @@ interface ISlotInfo {
 			}
 		}
 
-		fun renderSlotInfo(context: DrawContext, textRenderer: TextRenderer, slot: Slot, slotInfo: SlotInfo) {
-			val width = textRenderer.getWidth(slotInfo.text)
+		fun renderSlotInfo(context: DrawContext, textRenderer: TextRenderer, slot: Slot, text: Text, position: Position) {
+			val width = textRenderer.getWidth(text)
 			val scale = if(width > 16) 0.8333333f else 1.0f
 
 			context.matrices.push()
 
-			when(slotInfo.position) {
+			when(position) {
 				Position.TOP_LEFT -> context.matrices.translate(0.0f, 0.0f, 200.0f)
 				Position.TOP_RIGHT -> context.matrices.translate(16.0f - width + 1.0f, 0.0f, 200.0f)
 				Position.BOTTOM_LEFT -> context.matrices.translate(0.0f, textRenderer.fontHeight.toFloat(), 200.0f)
 				Position.BOTTOM_RIGHT -> context.matrices.translate(16.0f - width + 1.0f, textRenderer.fontHeight.toFloat(), 200.0f)
 			}
 
-			RenderUtils.drawText(context, slotInfo.text, slot.x, slot.y, scale)
+			RenderUtils.drawText(context, text, slot.x, slot.y, scale)
 			context.matrices.pop()
 		}
 
