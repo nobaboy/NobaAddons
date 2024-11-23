@@ -217,7 +217,8 @@ object RenderUtils {
 		beaconThreshold: Double = 5.0,
 		throughBlocks: Boolean = false
 	) {
-		renderWaypoint(context, location, color.toColor(), extraSize, extraSizeTopY, extraSizeBottomY, beaconThreshold, throughBlocks)
+		renderBeaconBeam(context, location.raise(), color.toColor().rgb, beaconThreshold)
+		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
 	fun renderOutlinedFilledBox(
@@ -243,7 +244,8 @@ object RenderUtils {
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false
 	) {
-		renderOutlinedFilledBox(context, location, color.toColor(), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderOutline(context, location, color.toColor(), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderFilledBox(context, location, color.toColor(), extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
 	fun renderBeaconBeam(context: WorldRenderContext, location: NobaVec, color: Int, hideThreshold: Double = 5.0) {
@@ -436,7 +438,6 @@ object RenderUtils {
 		renderFilledBox(context, location, color.toColor(), extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
-	// TODO: Try to find another way cuz shadow renders on top of text layer sometimes and it's slightly based on cameras rotation
 	fun renderText(
 		context: WorldRenderContext,
 		location: NobaVec,

@@ -1,8 +1,7 @@
-package me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl
+package me.nobaboy.nobaaddons.features.visuals.slotinfo.impl
 
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.ISlotInfo
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.SlotInfo
+import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
@@ -18,18 +17,13 @@ object EnchantedBookSlotInfo : ISlotInfo {
 		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return
 
 		if(config.enchantedBookLevel) drawCount(event, item.enchantments.values.first().toString())
-		if(config.enchantedBookName) getEnchantName(item)?.let { drawInfo(event, it) }
+		if(config.enchantedBookName) drawInfo(event, formatEnchantName(item))
 	}
 
-	private fun getEnchantName(item: SkyBlockItemData): SlotInfo? {
+	private fun formatEnchantName(item: SkyBlockItemData): Text {
 		val enchant = item.enchantments.keys.first()
-		val text = formatEnchantName(enchant)
 
-		return SlotInfo(text)
-	}
-
-	private fun formatEnchantName(enchant: String): Text {
-		val formattedText = buildText {
+		val text = buildText {
 			when {
 				enchant.startsWith("ultimate_") -> {
 					val name = if(enchant.endsWith("wise") || enchant.endsWith("jerry")) enchant else enchant.removePrefix("ultimate_")
@@ -44,7 +38,8 @@ object EnchantedBookSlotInfo : ISlotInfo {
 				}
 			}
 		}
-		return formattedText
+
+		return text
 	}
 
 	private fun formatShortenedName(rawName: String): String {
