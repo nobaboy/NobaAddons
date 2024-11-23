@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.Bestiar
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.CollectionTierSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.DungeonHeadTierSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.EnchantedBookSlotInfo
+import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.GardenPlotPestInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.KuudraKeyTierInfoSlot
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MasterSkullTierSlotInfo
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.slotinfo.impl.MasterStarTierSlotInfo
@@ -44,6 +45,7 @@ interface ISlotInfo {
 			CollectionTierSlotInfo,
 			DungeonHeadTierSlotInfo,
 			EnchantedBookSlotInfo,
+			GardenPlotPestInfo,
 			KuudraKeyTierInfoSlot,
 			MasterSkullTierSlotInfo,
 			MasterStarTierSlotInfo,
