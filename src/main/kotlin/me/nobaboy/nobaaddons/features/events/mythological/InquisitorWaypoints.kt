@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
+import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
@@ -84,9 +85,9 @@ object InquisitorWaypoints {
 			val inquisitor = Inquisitor(username, location, Timestamp.now())
 			waypoints.add(inquisitor)
 
-			RenderUtils.drawTitle("MINOS INQUISITOR!", NobaColor.DARK_RED)
+			RenderUtils.drawTitle("INQUISITOR!", NobaColor.DARK_RED)
 			RenderUtils.drawTitle(username, NobaColor.GOLD, scale = 3.0f, height = 1.7)
-			if(config.inquisitorZeldaSecretSound) SoundUtils.zeldaSecretSound.play() else SoundUtils.dingSound.play()
+			if(config.zeldaSecretSoundOnInquisitor) SoundUtils.zeldaSecretSound.play() else SoundUtils.dingSound.play()
 		}
 
 		inquisitorDeadPattern.matchMatcher(message) {
@@ -121,8 +122,11 @@ object InquisitorWaypoints {
 
 			val message = "Inquisitor spawned at x: $x, y: $y, z: $z"
 
-			if(config.alertOnlyInParty) HypixelCommands.partyChat(message)
-				else ChatUtils.sendChatAsPlayer(message)
+			if(config.alertOnlyInParty) {
+				if(PartyAPI.party != null) HypixelCommands.partyChat(message)
+			} else {
+				ChatUtils.sendChatAsPlayer(message)
+			}
 		}
 	}
 

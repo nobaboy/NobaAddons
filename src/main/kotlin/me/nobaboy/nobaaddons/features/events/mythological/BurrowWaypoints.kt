@@ -116,10 +116,11 @@ object BurrowWaypoints {
 		InquisitorWaypoints.waypoints.toList().forEach { inquisitor ->
 			val location = inquisitor.location
 			val distance = location.distanceSq(playerLocation)
+			val yOffset = if(config.showInquisitorDespawnTime) -20.0f else -10.0f
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), "Inquisitor", NobaColor.DARK_RED, yOffset = -20.0f, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = -10.0f, throughBlocks = true)
+			RenderUtils.renderText(context, location.center().raise(), "Inquisitor", NobaColor.DARK_RED, yOffset = yOffset, throughBlocks = true)
+			RenderUtils.renderText(context, location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = yOffset + 10.0f, throughBlocks = true)
 
 			if(config.showInquisitorDespawnTime) {
 				val spawnTime = inquisitor.spawnTime

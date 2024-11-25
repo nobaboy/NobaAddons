@@ -26,7 +26,7 @@ class EventsConfig {
 		var alertOnlyInParty: Boolean = false
 
 		@SerialEntry
-		var inquisitorZeldaSecretSound: Boolean = false
+		var zeldaSecretSoundOnInquisitor: Boolean = false
 
 		@SerialEntry
 		var showInquisitorDespawnTime: Boolean = false

@@ -18,12 +18,14 @@ object EventsCategory {
 				.name(Text.translatable("nobaaddons.config.events.mythological"))
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythological.burrowGuess"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.events.mythological.burrowGuess.tooltip")))
 					.binding(defaults.events.mythological.burrowGuess, config.events.mythological::burrowGuess) { config.events.mythological.burrowGuess = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythological.findNearbyBurrows"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.events.mythological.findNearbyBurrows.tooltip")))
 					.binding(defaults.events.mythological.findNearbyBurrows, config.events.mythological::findNearbyBurrows) { config.events.mythological.findNearbyBurrows = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
@@ -46,30 +48,35 @@ object EventsCategory {
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythological.alertInquisitor"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.events.mythological.alertInquisitor.tooltip")))
 					.binding(defaults.events.mythological.alertInquisitor, config.events.mythological::alertInquisitor) { config.events.mythological.alertInquisitor = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythological.alertOnlyInParty"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.events.mythological.alertOnlyInParty.tooltip")))
 					.binding(defaults.events.mythological.alertOnlyInParty, config.events.mythological::alertOnlyInParty) { config.events.mythological.alertOnlyInParty = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.events.mythological.inquisitorZeldaSecretSound"))
-					.binding(defaults.events.mythological.inquisitorZeldaSecretSound, config.events.mythological::inquisitorZeldaSecretSound) { config.events.mythological.inquisitorZeldaSecretSound = it }
+					.name(Text.translatable("nobaaddons.config.events.mythological.zeldaSecretSoundOnInquisitor"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.events.mythological.zeldaSecretSoundOnInquisitor.tooltip")))
+					.binding(defaults.events.mythological.zeldaSecretSoundOnInquisitor, config.events.mythological::zeldaSecretSoundOnInquisitor) { config.events.mythological.zeldaSecretSoundOnInquisitor = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythological.showInquisitorDespawnTime"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.events.mythological.showInquisitorDespawnTime.tooltip")))
 					.binding(defaults.events.mythological.showInquisitorDespawnTime, config.events.mythological::showInquisitorDespawnTime) { config.events.mythological.showInquisitorDespawnTime = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythological.inquisitorFocusMode"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.events.mythological.inquisitorFocusMode.tooltip")))
 					.binding(defaults.events.mythological.inquisitorFocusMode, config.events.mythological::inquisitorFocusMode) { config.events.mythological.inquisitorFocusMode = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
