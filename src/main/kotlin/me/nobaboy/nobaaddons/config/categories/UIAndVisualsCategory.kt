@@ -282,6 +282,12 @@ object UIAndVisualsCategory {
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate.tooltip")))
+					.binding(defaults.uiAndVisuals.itemPosition.cancelItemUpdateAnimation, config.uiAndVisuals.itemPosition::cancelItemUpdateAnimation) { config.uiAndVisuals.itemPosition.cancelItemUpdateAnimation = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip")))
 					.binding(defaults.uiAndVisuals.itemPosition.cancelDrinkAnimation, config.uiAndVisuals.itemPosition::cancelDrinkAnimation) { config.uiAndVisuals.itemPosition.cancelDrinkAnimation = it }

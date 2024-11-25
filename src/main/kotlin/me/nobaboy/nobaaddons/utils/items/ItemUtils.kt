@@ -34,4 +34,10 @@ object ItemUtils {
 	}
 
 	fun ItemStack.getSkyBlockItemId(): String? = getSkyBlockItem()?.id
+
+	@JvmStatic
+	fun isEqual(first: ItemStack, second: ItemStack): Boolean {
+		if(first.item !== second.item) return false
+		return first.getSkyBlockItem() == second.getSkyBlockItem()
+	}
 }

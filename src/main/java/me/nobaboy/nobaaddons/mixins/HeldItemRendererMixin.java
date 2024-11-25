@@ -1,7 +1,10 @@
 package me.nobaboy.nobaaddons.mixins;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import me.nobaboy.nobaaddons.config.NobaConfigManager;
+import me.nobaboy.nobaaddons.utils.items.ItemUtils;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
@@ -13,7 +16,6 @@ import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeldItemRenderer.class)
@@ -58,12 +60,17 @@ public class HeldItemRendererMixin {
 		matrices.scale(scale, scale, scale);
 	}
 
-	@ModifyVariable(method = "applyEquipOffset", at = @At("HEAD"), argsOnly = true)
-	public float nobaaddons$cancelEquipAnimation(float equipProgress) {
-		if(NobaConfigManager.getConfig().getUiAndVisuals().getItemPosition().getCancelEquipAnimation()) {
-			return 0f;
+	// TODO in 1.21.4 this is changed to call #shouldSkipHandAnimationOnSwap(ItemStack, ItemStack) instead
+	@WrapOperation(method = "updateHeldItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
+	public boolean nobaaddons$cancelItemUpdateAnimation(ItemStack left, ItemStack right, Operation<Boolean> original) {
+		var config = NobaConfigManager.getConfig().getUiAndVisuals().getItemPosition();
+		if(config.getCancelEquipAnimation()) {
+			return true;
 		}
-		return equipProgress;
+		if(config.getCancelItemUpdateAnimation()) {
+			return ItemUtils.isEqual(left, right);
+		}
+		return original.call(left, right);
 	}
 
 	@Inject(method = "applyEatOrDrinkTransformation", at = @At(value = "INVOKE", target = "Ljava/lang/Math;pow(DD)D"), cancellable = true)

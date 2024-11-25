@@ -75,6 +75,8 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 
 	val newYearsCake: Int by CacheOf(this::nbt) { nbt.getInt("new_years_cake") }
 
+	override operator fun equals(other: Any?): Boolean = other is SkyBlockItemData && id == other.id && uuid == other.uuid
+
 	data class Gemstone(val type: String, val tier: String)
 	data class Potion(val name: String, val level: Int, val ticks: Int)
 }
