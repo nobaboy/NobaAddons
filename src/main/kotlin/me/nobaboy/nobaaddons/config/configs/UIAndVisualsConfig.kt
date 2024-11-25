@@ -159,6 +159,9 @@ class UIAndVisualsConfig {
 		var cancelEquipAnimation: Boolean = false
 
 		@SerialEntry
+		var cancelItemUpdateAnimation: Boolean = false
+
+		@SerialEntry
 		var cancelDrinkAnimation: Boolean = false
 	}
 }
