@@ -33,11 +33,11 @@ object BurrowWarpLocations {
 		warpName: String? = null
 	) {
 		HUB(NobaVec(-2.5, 70.0, -69.5)),
-		CASTLE(NobaVec(-250, 130, 45), 15),
+		CASTLE(NobaVec(-250, 130, 45), 10),
 		CRYPT(NobaVec(-161.5, 61.0, -99.5), 20, { config.ignoreCrypt }),
 		DARK_AUCTION(NobaVec(91.5, 75.0, 173.5), 5, warpName = "da"),
 		MUSEUM(NobaVec(-75.5, 76.0, 80.5)),
-		WIZARD(NobaVec(42.5, 122.0, 69.0), 5, { config.ignoreWizard }),
+		WIZARD(NobaVec(42.5, 122.0, 69.0), 10, { config.ignoreWizard }),
 		STONKS(NobaVec(-52.5, 71.0, -52.5), 5, { config.ignoreStonks });
 
 		val warpName = warpName ?: name.lowercase()

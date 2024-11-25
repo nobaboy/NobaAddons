@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
 import me.nobaboy.nobaaddons.api.PartyAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
@@ -120,7 +121,7 @@ object InquisitorWaypoints {
 
 			val (x, y, z) = inquisitor.getNobaVec().roundToBlock().toDoubleArray()
 
-			val message = "Inquisitor spawned at x: $x, y: $y, z: $z"
+			val message = "x: $x, y: $y, z: $z | Minos Inquisitor at [ ${SkyBlockAPI.prefixedZone} ]"
 
 			if(config.alertOnlyInParty) {
 				if(PartyAPI.party != null) HypixelCommands.partyChat(message)

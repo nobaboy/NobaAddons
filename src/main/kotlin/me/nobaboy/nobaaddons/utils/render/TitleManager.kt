@@ -31,8 +31,6 @@ object TitleManager {
 	fun draw(text: Text, color: Int, duration: Duration, scale: Float, height: Double) {
 		val title = Title(text, color, Timestamp.now(), duration, scale, height)
 		titles.add(title)
-		println(titles.size)
-		println(titles)
 	}
 
 	data class Title(val text: Text, val color: Int, val timestamp: Timestamp, val duration: Duration, val scale: Float, val height: Double) {

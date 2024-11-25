@@ -17,7 +17,7 @@ object MythicSeaCreatureAlert : IAlert {
 
 		val location = LocationUtils.playerCoords()
 		val randomString = StringUtils.randomAlphanumeric()
-		ChatUtils.sendChatAsPlayer("$location | ${seaCreature.displayName} at ${SkyBlockAPI.currentZone} @$randomString")
+		ChatUtils.sendChatAsPlayer("$location | ${seaCreature.displayName} at [ ${SkyBlockAPI.prefixedZone} ] @$randomString")
 
 		return true
 	}

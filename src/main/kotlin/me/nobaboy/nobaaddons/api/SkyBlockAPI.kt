@@ -28,6 +28,9 @@ object SkyBlockAPI {
 	var currentZone: String? = null
 		private set
 
+	val prefixedZone: String?
+		get() = if(currentZone != null) "⏣ $currentZone" else null
+
 	var purse: Long? = null
 		private set
 	var bits: Long? = null
