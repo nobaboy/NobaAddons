@@ -11,6 +11,9 @@ class QOLConfig {
 		var muteWitherSkullAbilities: Boolean = false
 
 		@SerialEntry
+		var muteGoneWithTheWind: Boolean = false
+
+		@SerialEntry
 		var muteKillerSpring: Boolean = false
 	}
 }

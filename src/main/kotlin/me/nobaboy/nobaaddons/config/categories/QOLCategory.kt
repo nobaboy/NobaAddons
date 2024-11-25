@@ -28,6 +28,16 @@ object QOLCategory {
 					.build())
 
 				.option(LabelOption.createBuilder()
+					.line(Text.translatable("nobaaddons.config.qol.label.dwarvenMines"))
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteGoneWithTheWind"))
+					.binding(defaults.qol.soundFilters.muteGoneWithTheWind, config.qol.soundFilters::muteGoneWithTheWind) { config.qol.soundFilters.muteGoneWithTheWind = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.label.rift"))
 					.build())
 

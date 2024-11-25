@@ -10,8 +10,6 @@ object KillerSpringSoundFilter : ISoundFilter {
 	override val enabled: Boolean get() = IslandType.RIFT.inIsland() && config.muteKillerSpring
 
 	override fun onSound(sound: SoundEvents.AllowSound) {
-		if(sound.id == Identifier.ofVanilla("entity.wither.spawn") && sound.volume == 0.085f) {
-			sound.cancel()
-		}
+		if(sound.id == Identifier.ofVanilla("entity.wither.spawn") && sound.volume == 0.085f) sound.cancel()
 	}
 }

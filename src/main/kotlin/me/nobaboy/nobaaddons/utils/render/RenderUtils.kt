@@ -193,8 +193,23 @@ object RenderUtils {
 		rightY: Double
 	): Boolean = pointX in leftX..rightX && pointY in leftY..rightY
 
-	fun drawTitle(text: Text, duration: Duration = 3.seconds) {
-		TitleManager.draw(text, duration)
+	fun drawTitle(text: Text, color: Int, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
+		TitleManager.draw(text, color, duration, scale, height)
+	}
+	fun drawTitle(text: Text, color: Color, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
+		drawTitle(text, color.rgb, duration, scale, height)
+	}
+	fun drawTitle(text: Text, color: NobaColor, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
+		drawTitle(text, color.toColor().rgb, duration, scale, height)
+	}
+	fun drawTitle(text: String, color: Int, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
+		drawTitle(Text.literal(text), color, duration, scale, height)
+	}
+	fun drawTitle(text: String, color: Color, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
+		drawTitle(Text.literal(text), color.rgb, duration, scale, height)
+	}
+	fun drawTitle(text: String, color: NobaColor, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
+		drawTitle(Text.literal(text), color.toColor().rgb, duration, scale, height)
 	}
 
 	fun Box.expandBlock(n: Int = 1) = expand(NobaVec.expandVector * n)

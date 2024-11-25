@@ -25,7 +25,7 @@ object CorpseLocator {
 	private val config get() = NobaConfigManager.config.mining.glaciteMineshaft
 
 	private val chatCoordsPattern = Pattern.compile(
-		"(?i)(?<username>[A-z0-9_]+): x: (?<x>[0-9.-]+),? y: (?<y>[0-9.-]+),? z: (?<z>[0-9.-]+)(?<info>.*)"
+		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
 	)
 
 	private val corpses = mutableListOf<Corpse>()

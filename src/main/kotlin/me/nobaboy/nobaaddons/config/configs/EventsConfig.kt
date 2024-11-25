@@ -14,6 +14,9 @@ class EventsConfig {
 		var findNearbyBurrows: Boolean = false
 
 		@SerialEntry
+		var removeGuessOnBurrowFind: Boolean = false
+
+		@SerialEntry
 		var findNearestWarp: Boolean = false
 
 		@SerialEntry
@@ -23,7 +26,10 @@ class EventsConfig {
 		var alertOnlyInParty: Boolean = false
 
 		@SerialEntry
-		var inquisitorDespawnTime: Boolean = false
+		var inquisitorZeldaSecretSound: Boolean = false
+
+		@SerialEntry
+		var showInquisitorDespawnTime: Boolean = false
 
 		@SerialEntry
 		var inquisitorFocusMode: Boolean = false

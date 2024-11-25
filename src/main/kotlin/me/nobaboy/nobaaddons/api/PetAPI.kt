@@ -112,7 +112,7 @@ object PetAPI {
 	}
 
 	private fun changePet(pet: PetData?) {
-		if(pet?.uuid == currentPet?.uuid) return
+		if(pet == currentPet) return
 
 		PetChangeEvent.EVENT.invoke(PetChangeEvent(currentPet, pet))
 		currentPet = pet

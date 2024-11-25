@@ -103,14 +103,16 @@
 
   "nobaaddons.config.events": "Events",
   "nobaaddons.config.events.mythological": "Mythological Ritual",
-  "nobaaddons.config.events.mythological.label.inquisitorSharing": "Warp Locations",
+  "nobaaddons.config.events.mythological.label.inquisitorSharing": "Inquisitor Sharing",
   "nobaaddons.config.events.mythological.label.warpLocations": "Warp Locations",
   "nobaaddons.config.events.mythological.burrowGuess": "Burrow Guess",
   "nobaaddons.config.events.mythological.findNearbyBurrows": "Find Nearby Waypoints",
+  "nobaaddons.config.events.mythological.removeGuessOnBurrowFind": "Remove Guess On Burrow Find",
   "nobaaddons.config.events.mythological.findNearestWarp": "Find Nearest Warp",
   "nobaaddons.config.events.mythological.alertInquisitor": "Alert Inquisitor",
   "nobaaddons.config.events.mythological.alertOnlyInParty": "Alert Only In Party",
-  "nobaaddons.config.events.mythological.inquisitorDespawnTime": "Inquisitor Despawn Time",
+  "nobaaddons.config.events.mythological.inquisitorZeldaSecretSound": "Play The Zelda Secret Sound On Inquisitor Spawn",
+  "nobaaddons.config.events.mythological.showInquisitorDespawnTime": "Show Inquisitor Despawn Time",
   "nobaaddons.config.events.mythological.inquisitorFocusMode": "Inquisitor Focus Mode",
   "nobaaddons.config.events.mythological.announceRareDrops": "Announce Rare Drops",
   "nobaaddons.config.events.mythological.announceRareDrops.tooltip": "Announces any rare drop obtained from killing a Mythological Creature",
@@ -194,8 +196,10 @@
   "nobaaddons.config.chat.chatCommands.guild.enabled.tooltip": "Enables chat commands in guild chat",
 
   "nobaaddons.config.qol": "QOL",
+  "nobaaddons.config.qol.label.dwarvenMines": "Dwarven Mines",
   "nobaaddons.config.qol.soundFilters": "Sound Filters",
   "nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities": "Mute Wither Skull Abilities",
   "nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities.tooltip": "This affects Dreadlord Sword and Soulstealer Bow, along with the dungeon mobs that use them",
+  "nobaaddons.config.qol.soundFilters.muteGoneWithTheWind": "Mute Gone With The Wind",
   "nobaaddons.config.qol.soundFilters.muteKillerSpring": "Mute Killer Spring"
 }

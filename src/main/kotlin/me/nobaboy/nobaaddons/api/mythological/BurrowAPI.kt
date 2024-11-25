@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
+import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -14,6 +15,7 @@ import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
+import net.minecraft.block.Blocks
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.ActionResult
@@ -24,7 +26,7 @@ object BurrowAPI {
 	private val config get() = NobaConfigManager.config.events.mythological
 
 	private val burrowDugPattern = Pattern.compile("^(You dug out a Griffin Burrow!|You finished the Griffin burrow chain!) \\(\\d/4\\)")
-	private val mobDugPattern = Pattern.compile("^.* You dug out a [A-z ]+!")
+	private val mobDugPattern = Pattern.compile("^[A-z ]+! You dug out (?:a )?[A-z ]+!")
 
 	private val burrows = mutableMapOf<NobaVec, Burrow>()
 	private val recentlyDugBurrows = mutableListOf<NobaVec>()
@@ -86,10 +88,11 @@ object BurrowAPI {
 	private fun onBlockClick(player: PlayerEntity, location: NobaVec): ActionResult {
 		if(!isEnabled()) return ActionResult.PASS
 		if(!DianaAPI.hasSpadeInHand(player)) return ActionResult.PASS
+		if(location.getBlockAt() != Blocks.GRASS_BLOCK) return ActionResult.PASS
 
 		if(location == fakeBurrow) {
 			fakeBurrow = null
-			digBurrow(location)
+			digBurrow(location, ignoreFound = false)
 			return ActionResult.PASS
 		}
 
@@ -103,9 +106,9 @@ object BurrowAPI {
 		return ActionResult.PASS
 	}
 
-	private fun digBurrow(location: NobaVec): Boolean {
+	private fun digBurrow(location: NobaVec, ignoreFound: Boolean = false): Boolean {
 		val burrow = burrows[location] ?: return false
-		if(!burrow.found) return false
+		if(!burrow.found && !ignoreFound) return false
 
 		burrows.remove(location)
 		recentlyDugBurrows.add(location)

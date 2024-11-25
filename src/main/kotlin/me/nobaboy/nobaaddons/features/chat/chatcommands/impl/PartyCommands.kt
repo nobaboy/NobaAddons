@@ -17,7 +17,7 @@ object PartyCommands : ChatCommandManager() {
 
 	override val enabled get() = config.enabled
 	override val pattern =
-		Pattern.compile("^Party > .*?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+).*?: [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?")
+		Pattern.compile("^Party > (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?")
 
 	init {
 		register(HelpCommand(this, "pc", config::help))

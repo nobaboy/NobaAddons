@@ -5,9 +5,12 @@ import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.RegexUtils.findMatcher
+import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
+import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -25,41 +28,33 @@ object TemporaryWaypoint {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.temporaryWaypoints
 
 	private val chatCoordsPattern = Pattern.compile(
-		"(?i)(?<username>[A-z0-9_]+): x: (?<x>[0-9.-]+),? y: (?<y>[0-9.-]+),? z: (?<z>[0-9.-]+)(?<info>.*)"
+		"(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
 	)
+
 	private val waypoints = mutableListOf<Waypoint>()
 
 	fun init() {
 		SkyBlockIslandChangeEvent.EVENT.register { waypoints.clear() }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
-	}
-
-	fun addWaypoint(ctx: CommandContext<FabricClientCommandSource>) {
-		if(!isEnabled()) return
-
-		val x = DoubleArgumentType.getDouble(ctx, "x")
-		val y = DoubleArgumentType.getDouble(ctx, "y")
-		val z = DoubleArgumentType.getDouble(ctx, "z")
-
-		waypoints.add(Waypoint(NobaVec(x, y, z), "Temporary Waypoint", Timestamp.now(), null))
-		ChatUtils.addMessage("Temporary Waypoint added at x: $x, y: $y, z: $z")
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
 	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
-		chatCoordsPattern.findMatcher(message) {
+		chatCoordsPattern.matchMatcher(message) {
 			val username = group("username")
 			if(username == MCUtils.playerName) return
 
 			val x = group("x").toDouble()
 			val y = group("y").toDouble()
 			val z = group("z").toDouble()
+			val location = NobaVec(x, y, z).roundToBlock()
+
 			val info = group("info").take(32)
 
 			val text = "$username$info"
-			waypoints.add(Waypoint(NobaVec(x, y, z), text, Timestamp.now(), config.expirationTime.seconds))
+			waypoints.add(Waypoint(location, text, Timestamp.now(), config.expirationTime.seconds))
 			ChatUtils.addMessage("Temporary Waypoint added at x: $x, y: $y, z: $z from $username")
 		}
 	}
@@ -72,11 +67,30 @@ object TemporaryWaypoint {
 
 		waypoints.removeIf { it.expired || it.location.distance(cameraPos) < 5.0 }
 		waypoints.forEach { waypoint ->
-			waypoint.location.roundToBlock().let {
+			waypoint.location.let {
+				val distance = it.distanceToPlayer()
+
 				RenderUtils.renderWaypoint(context, it, color, throughBlocks = true)
-				RenderUtils.renderText(context, it.center().raise(), waypoint.text, yOffset = -5.0f, throughBlocks = true)
+				RenderUtils.renderText(context, it.center().raise(), waypoint.text, color, yOffset = -10.0f, throughBlocks = true)
+
+				if(distance > 5) {
+					val formattedDistance = distance.toInt().addSeparators()
+					RenderUtils.renderText(context, it.center().raise(), "${formattedDistance}m", NobaColor.GRAY)
+				}
+
 			}
 		}
+	}
+
+	fun addWaypoint(ctx: CommandContext<FabricClientCommandSource>) {
+		if(!isEnabled()) return
+
+		val x = DoubleArgumentType.getDouble(ctx, "x")
+		val y = DoubleArgumentType.getDouble(ctx, "y")
+		val z = DoubleArgumentType.getDouble(ctx, "z")
+
+		waypoints.add(Waypoint(NobaVec(x, y, z), "Temporary Waypoint", Timestamp.now(), null))
+		ChatUtils.addMessage("Temporary Waypoint added at x: $x, y: $y, z: $z")
 	}
 
 	data class Waypoint(val location: NobaVec, val text: String, val timestamp: Timestamp, val duration: Duration?) {

@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.minecraft.client.network.OtherClientPlayerEntity
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
@@ -17,7 +17,7 @@ object DianaAPI {
 	private const val SPADE = "ANCESTRAL_SPADE"
 
 	fun init() {
-		ServerEntityEvents.ENTITY_LOAD.register { entity, _ -> onEntityLoad(entity) }
+		ClientEntityEvents.ENTITY_LOAD.register { entity, _ -> onEntityLoad(entity) }
 	}
 
 	private fun onEntityLoad(entity: Entity) {

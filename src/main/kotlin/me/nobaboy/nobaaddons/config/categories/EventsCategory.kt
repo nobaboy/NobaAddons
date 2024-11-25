@@ -29,6 +29,12 @@ object EventsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.events.mythological.removeGuessOnBurrowFind"))
+					.binding(defaults.events.mythological.removeGuessOnBurrowFind, config.events.mythological::removeGuessOnBurrowFind) { config.events.mythological.removeGuessOnBurrowFind = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythological.findNearestWarp"))
 					.binding(defaults.events.mythological.findNearestWarp, config.events.mythological::findNearestWarp) { config.events.mythological.findNearestWarp = it }
 					.controller(NobaConfigUtils::createBooleanController)
@@ -51,8 +57,14 @@ object EventsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.events.mythological.inquisitorDespawnTime"))
-					.binding(defaults.events.mythological.inquisitorDespawnTime, config.events.mythological::inquisitorDespawnTime) { config.events.mythological.inquisitorDespawnTime = it }
+					.name(Text.translatable("nobaaddons.config.events.mythological.inquisitorZeldaSecretSound"))
+					.binding(defaults.events.mythological.inquisitorZeldaSecretSound, config.events.mythological::inquisitorZeldaSecretSound) { config.events.mythological.inquisitorZeldaSecretSound = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.events.mythological.showInquisitorDespawnTime"))
+					.binding(defaults.events.mythological.showInquisitorDespawnTime, config.events.mythological::showInquisitorDespawnTime) { config.events.mythological.showInquisitorDespawnTime = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 

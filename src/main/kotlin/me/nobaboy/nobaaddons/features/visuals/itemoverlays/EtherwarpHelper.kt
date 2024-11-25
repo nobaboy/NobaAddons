@@ -27,8 +27,15 @@ object EtherwarpHelper {
 	private var targetBlock: ValidationType? = null
 
 	fun init() {
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderOverlay)
 		HudRenderCallback.EVENT.register { context, _ -> renderFailText(context) }
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderOverlay)
+	}
+
+	private fun renderFailText(context: DrawContext) {
+		targetBlock.takeIf { config.showFailText }?.let {
+			val (x, y) = MCUtils.window.let { it.scaledWidth / 2 to it.scaledHeight / 2 + 10 }
+			RenderUtils.drawCenteredText(context, it.text.toText().formatted(Formatting.RED), x, y)
+		}
 	}
 
 	private fun renderOverlay(context: WorldRenderContext) {
@@ -56,13 +63,6 @@ object EtherwarpHelper {
 		} else if(client.interactionManager != null) {
 			val raycast = client.player?.rayCast(maxDistance.toDouble(), context.tickCounter().getTickDelta(true), true) as? BlockHitResult
 			raycast?.let { handleTarget(context, client, it) }
-		}
-	}
-
-	private fun renderFailText(context: DrawContext) {
-		targetBlock.takeIf { config.showFailText }?.let {
-			val (x, y) = MCUtils.window.let { it.scaledWidth / 2 to it.scaledHeight / 2 + 10 }
-			RenderUtils.drawCenteredText(context, it.text.toText().formatted(Formatting.RED), x, y)
 		}
 	}
 

@@ -7,16 +7,19 @@ import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatchers
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
+import me.nobaboy.nobaaddons.utils.SoundUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
+import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.OtherClientPlayerEntity
 import java.util.regex.Pattern
 import kotlin.time.Duration.Companion.seconds
@@ -24,10 +27,13 @@ import kotlin.time.Duration.Companion.seconds
 object InquisitorWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
 
-	private val inquisitorAlertPattern = Pattern.compile("(?i)(?<party>Party >)?(?<username>[A-z0-9_]+): Inquisitor spawned at x: (?<x>[0-9.-]+),? y: (?<y>[0-9.-]+),? z: (?<z>[0-9.-]+)")
-	private val inquisitorDeadPattern = Pattern.compile("(?i)(?<party>Party >)?(?<username>[A-z0-9_]+): Inquisitor dead!")
+	private val inquisitorDigUpPattern = Pattern.compile("^[A-z ]+! You dug out a Minos Inquisitor!")
+	private val inquisitorDeadPattern = Pattern.compile("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): Inquisitor dead!")
 
-	private val inquisitorDigUpPattern = Pattern.compile(".* You dug out a Minos Inquisitor!")
+	private val inquisitorSpawnPatterns = listOf(
+		Pattern.compile("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+).*"),
+		Pattern.compile("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): A MINOS INQUISITOR has spawned near \\[.*] at Coords (?<x>[0-9.-]+) (?<y>[0-9.-]+) (?<z>[0-9.-]+)"),
+	)
 
 	private val inquisitorsNearby = mutableListOf<OtherClientPlayerEntity>()
 	private var lastInquisitorId: Int? = null
@@ -44,11 +50,9 @@ object InquisitorWaypoints {
 	}
 
 	private fun onSecondPassed() {
-		if(!enabled) return
+		if(!isEnabled()) return
 
-		val world = MinecraftClient.getInstance().world ?: return reset()
-
-		inquisitorsNearby.removeIf { !it.isAlive || world.getEntityById(it.id) !== it }
+		inquisitorsNearby.removeIf { !it.isAlive || EntityUtils.getEntityByID(it.id) !== it }
 		waypoints.removeIf { it.spawnTime.elapsedSince() > 75.seconds }
 	}
 
@@ -62,11 +66,11 @@ object InquisitorWaypoints {
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!enabled) return
+		if(!isEnabled()) return
 
 		if(inquisitorDigUpPattern.matches(message)) checkInquisitor()
 
-		inquisitorAlertPattern.matchMatcher(message) {
+		inquisitorSpawnPatterns.matchMatchers(message) {
 			val username = group("username")
 
 			if(username == MCUtils.playerName) return
@@ -79,6 +83,10 @@ object InquisitorWaypoints {
 
 			val inquisitor = Inquisitor(username, location, Timestamp.now())
 			waypoints.add(inquisitor)
+
+			RenderUtils.drawTitle("MINOS INQUISITOR!", NobaColor.DARK_RED)
+			RenderUtils.drawTitle(username, NobaColor.GOLD, scale = 3.0f, height = 1.7)
+			if(config.inquisitorZeldaSecretSound) SoundUtils.zeldaSecretSound.play() else SoundUtils.dingSound.play()
 		}
 
 		inquisitorDeadPattern.matchMatcher(message) {
@@ -98,7 +106,7 @@ object InquisitorWaypoints {
 
 		val lastTwo = inquisitorSpawnTimes.takeLast(2)
 		if(lastTwo.size != 2) return
-		if(lastTwo.none { it.elapsedSince() < 1.5.seconds }) return
+		if(lastTwo.any { it.elapsedSince() >= 1.5.seconds }) return
 
 		inquisitorSpawnTimes.clear()
 		shareInquisitor()
@@ -109,7 +117,7 @@ object InquisitorWaypoints {
 			val inquisitor = EntityUtils.getEntityByID(it) ?: return
 			if(!inquisitor.isAlive) return
 
-			val (x, y, z) = inquisitor.getNobaVec().toDoubleArray()
+			val (x, y, z) = inquisitor.getNobaVec().roundToBlock().toDoubleArray()
 
 			val message = "Inquisitor spawned at x: $x, y: $y, z: $z"
 
@@ -127,5 +135,5 @@ object InquisitorWaypoints {
 
 	data class Inquisitor(val spawner: String, val location: NobaVec, val spawnTime: Timestamp)
 
-	private val enabled get() = DianaAPI.isActive() && config.alertInquisitor
+	private fun isEnabled() = DianaAPI.isActive() && config.alertInquisitor
 }

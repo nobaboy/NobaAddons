@@ -4,11 +4,9 @@ import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SeaCreature
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
-// TODO: Implement Title Hud to use with this
 object SeaCreatureAlert {
 	private val config get() = NobaConfigManager.config.fishing.seaCreatureAlert
 
@@ -28,7 +26,7 @@ object SeaCreatureAlert {
 			"${seaCreature.rarity.displayName} Catch!"
 		}
 
-		RenderUtils.drawTitle(text.toText().formatted(seaCreature.rarity.color.toFormatting()))
+		RenderUtils.drawTitle(text, seaCreature.rarity.color)
 	}
 
 	private fun isEnabled() = SkyBlockAPI.inSkyBlock && config.enabled
