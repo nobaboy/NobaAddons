@@ -35,7 +35,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 object RenderUtils {
-	val ALLOCATOR = BufferAllocator(1024)
+	val ALLOCATOR = BufferAllocator(1536)
 
 	fun startScale(context: DrawContext, scale: Float) {
 		context.matrices.push()
@@ -493,6 +493,7 @@ object RenderUtils {
 		val xOffset = -textRenderer.getWidth(text) / 2.0f
 
 		val consumers = VertexConsumerProvider.immediate(ALLOCATOR)
+		RenderSystem.disableDepthTest()
 		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
 
 		textRenderer.draw(text, xOffset, yOffset, color, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0,
