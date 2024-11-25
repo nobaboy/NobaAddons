@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.api.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ParticleEvents
+import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.ActionResult
 import java.util.regex.Pattern
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 object BurrowAPI {
@@ -29,7 +31,7 @@ object BurrowAPI {
 	private val mobDugPattern = Pattern.compile("^[A-z ]+! You dug out (?:a )?[A-z ]+!")
 
 	private val burrows = mutableMapOf<NobaVec, Burrow>()
-	private val recentlyDugBurrows = mutableListOf<NobaVec>()
+	private val recentlyDugBurrows = mutableListOf<DugBurrow>()
 	private var lastDugBurrow: NobaVec? = null
 
 	// This is here in case the player digs the burrow before the particles spawn
@@ -40,10 +42,17 @@ object BurrowAPI {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
+		SecondPassedEvent.EVENT.register { onSecondPassed() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 		AttackBlockCallback.EVENT.register { player, _, _, pos, _ -> onBlockClick(player, pos.toNobaVec()) }
 		UseBlockCallback.EVENT.register { player, _, _, hitResult -> onBlockClick(player, hitResult.toNobaVec()) }
+	}
+
+	private fun onSecondPassed() {
+		if(!isEnabled()) return
+
+		recentlyDugBurrows.removeIf { it.timestamp.elapsedSince() > 1.minutes }
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
@@ -52,7 +61,7 @@ object BurrowAPI {
 		val particleType = BurrowParticleType.getParticleType(event) ?: return
 
 		val location = event.location.roundToBlock().lower()
-		if(location in recentlyDugBurrows) return
+		if(recentlyDugBurrows.any { it.location == location }) return
 
 		val burrow = burrows.getOrPut(location) { Burrow(location) }
 
@@ -72,16 +81,16 @@ object BurrowAPI {
 	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
-		if(burrowDugPattern.matches(message)) {
-			lastBurrowChatMessage = Timestamp.now()
-			if(lastDugBurrow != null && !digBurrow(lastDugBurrow!!)) {
+		when {
+			burrowDugPattern.matches(message) -> {
+				lastBurrowChatMessage = Timestamp.now()
+
+				if(lastDugBurrow == null || !tryDigBurrow(lastDugBurrow!!)) return
 				fakeBurrow = lastDugBurrow
 			}
+			mobDugPattern.matches(message) -> mobBurrow = lastDugBurrow
+			message == "Defeat all the burrow defenders in order to dig it!" -> lastBurrowChatMessage = Timestamp.now()
 		}
-
-		if(mobDugPattern.matches(message)) mobBurrow = lastDugBurrow
-
-		if(message == "Defeat all the burrow defenders in order to dig it!") lastBurrowChatMessage = Timestamp.now()
 	}
 
 	@Suppress("SameReturnValue")
@@ -92,7 +101,7 @@ object BurrowAPI {
 
 		if(location == fakeBurrow) {
 			fakeBurrow = null
-			digBurrow(location, ignoreFound = false)
+			tryDigBurrow(location, ignoreFound = true)
 			return ActionResult.PASS
 		}
 
@@ -106,12 +115,12 @@ object BurrowAPI {
 		return ActionResult.PASS
 	}
 
-	private fun digBurrow(location: NobaVec, ignoreFound: Boolean = false): Boolean {
+	private fun tryDigBurrow(location: NobaVec, ignoreFound: Boolean = false): Boolean {
 		val burrow = burrows[location] ?: return false
 		if(!burrow.found && !ignoreFound) return false
 
 		burrows.remove(location)
-		recentlyDugBurrows.add(location)
+		recentlyDugBurrows.add(DugBurrow(location, Timestamp.now()))
 		lastDugBurrow = null
 
 		MythologicalEvents.BURROW_DIG.invoke(MythologicalEvents.BurrowDig(location))
@@ -121,6 +130,9 @@ object BurrowAPI {
 	fun reset() {
 		burrows.clear()
 		recentlyDugBurrows.clear()
+		lastDugBurrow = null
+		fakeBurrow = null
+		mobBurrow = null
 	}
 
 	private enum class BurrowParticleType(val check: ParticleEvents.Particle.() -> Boolean) {
@@ -146,6 +158,8 @@ object BurrowAPI {
 		var type: BurrowType = BurrowType.UNKNOWN,
 		var found: Boolean = false
 	)
+
+	data class DugBurrow(val location: NobaVec, val timestamp: Timestamp)
 
 	private fun isEnabled() = DianaAPI.isActive() && config.findNearbyBurrows
 }
