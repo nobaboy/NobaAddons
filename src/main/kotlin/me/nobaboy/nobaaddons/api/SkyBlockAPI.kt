@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
@@ -80,6 +80,6 @@ object SkyBlockAPI {
 	private fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentGame = packet.serverType.getOrNull()
 		currentIsland = packet.mode.map(IslandType::getIslandType).orElse(IslandType.UNKNOWN)
-		if(currentIsland != IslandType.UNKNOWN) SkyBlockIslandChangeEvent.EVENT.invoke(SkyBlockIslandChangeEvent(currentIsland))
+		if(currentIsland != IslandType.UNKNOWN) SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
 	}
 }

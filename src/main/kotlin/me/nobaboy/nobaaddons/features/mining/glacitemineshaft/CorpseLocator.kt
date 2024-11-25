@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -31,7 +31,7 @@ object CorpseLocator {
 	private val corpses = mutableListOf<Corpse>()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { corpses.clear() }
+		SkyBlockEvents.ISLAND_CHANGE.register { corpses.clear() }
 		SecondPassedEvent.EVENT.register(this::onSecondPassed)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
@@ -85,8 +85,8 @@ object CorpseLocator {
 		//? if >=1.21.2 {
 		if(entity.shouldShowBasePlate()) return
 		//?} else {
-		/*if(!entity.shouldHideBasePlate()) return*/
-		//?}
+		/*if(!entity.shouldHideBasePlate()) return
+		*///?}
 
 		val item = entity.getEquippedStack(EquipmentSlot.HEAD).getSkyBlockItem() ?: return
 		val corpseType = CorpseType.getByHelmetOrNull(item.id) ?: return

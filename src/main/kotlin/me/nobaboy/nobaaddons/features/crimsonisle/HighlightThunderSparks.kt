@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.crimsonisle
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.EntityUtils.heldSkullTexture
@@ -23,7 +23,7 @@ object HighlightThunderSparks {
 	private val sparks = mutableListOf<ArmorStandEntity>()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { sparks.clear() }
+		SkyBlockEvents.ISLAND_CHANGE.register { sparks.clear() }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 		ClientTickEvents.END_CLIENT_TICK.register { getThunderSparks() }
 	}

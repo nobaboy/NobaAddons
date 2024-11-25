@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.qol
 
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 
 object MouseLock {
@@ -8,7 +8,7 @@ object MouseLock {
 	var mouseLocked: Boolean = false
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { mouseLocked = false }
+		SkyBlockEvents.ISLAND_CHANGE.register { mouseLocked = false }
 	}
 
 	fun lockMouse() {

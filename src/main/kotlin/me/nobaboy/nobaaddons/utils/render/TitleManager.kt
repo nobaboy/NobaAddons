@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.utils.render
 
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
@@ -12,7 +12,7 @@ object TitleManager {
 	private val titles = mutableListOf<Title>()
 
 	init {
-		SkyBlockIslandChangeEvent.EVENT.register { titles.clear() }
+		SkyBlockEvents.ISLAND_CHANGE.register { titles.clear() }
 		HudRenderCallback.EVENT.register { context, _ -> render(context) }
 	}
 

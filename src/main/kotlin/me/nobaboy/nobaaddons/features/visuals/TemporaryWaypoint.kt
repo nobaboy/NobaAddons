@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -34,7 +34,7 @@ object TemporaryWaypoint {
 	private val waypoints = mutableListOf<Waypoint>()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { waypoints.clear() }
+		SkyBlockEvents.ISLAND_CHANGE.register { waypoints.clear() }
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
@@ -75,7 +75,7 @@ object TemporaryWaypoint {
 
 				if(distance > 5) {
 					val formattedDistance = distance.toInt().addSeparators()
-					RenderUtils.renderText(context, it.center().raise(), "${formattedDistance}m", NobaColor.GRAY)
+					RenderUtils.renderText(context, it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, throughBlocks = true)
 				}
 
 			}

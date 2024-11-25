@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.dungeons
 
 import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -21,7 +21,7 @@ object HighlightStarredMobs {
 	private val starredMobs = mutableListOf<ArmorStandEntity>()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { starredMobs.clear() }
+		SkyBlockEvents.ISLAND_CHANGE.register { starredMobs.clear() }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 		ClientTickEvents.END_CLIENT_TICK.register { getStarredMobs() }
 	}

@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 0.1.0-Alpha.9 - 2024-11-2x
+
+### Added
+
+- Mythological Ritual Helper - nobaboy
+- Slot Info - nobaboy
+- Sea Creature Alert - nobaboy
+- Mouse Lock - nobaboy
+- Gone With The Wind Sound Filter - nobaboy
+
+### Changed
+
+- PartyAPI now relies on the Hypixel Mod API - celeste
+
+### Fixed
+
+- Text rendered in world space now correctly shows through blocks, though the shadow is slightly buggy and there isn't much I can do about it - nobaboy
+
 ## 0.1.0-Alpha.8.1 - 2024-11-17
 
 ### Fixed

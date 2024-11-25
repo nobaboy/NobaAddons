@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -43,7 +43,7 @@ object InquisitorWaypoints {
 	val waypoints = mutableListOf<Inquisitor>()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { reset() }
+		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		SecondPassedEvent.EVENT.register { onSecondPassed() }
 		MythologicalEvents.INQUISITOR_SPAWN.register(this::onInquisitorSpawn)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }

@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.api.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.BlockUtils.inLoadedChunk
 import me.nobaboy.nobaaddons.utils.LocationUtils
@@ -53,7 +53,7 @@ object BurrowWaypoints {
 		get() = InquisitorWaypoints.waypoints.isNotEmpty()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { reset() }
+		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		MythologicalEvents.BURROW_GUESS.register(this::onBurrowGuess)
 		MythologicalEvents.BURROW_FIND.register(this::onBurrowFind)
 		MythologicalEvents.BURROW_DIG.register(this::onBurrowDig)
@@ -118,14 +118,14 @@ object BurrowWaypoints {
 			val distance = location.distanceSq(playerLocation)
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), "Inquisitor", NobaColor.DARK_RED, yOffset = -20.0f)
-			RenderUtils.renderText(context, location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = -10.0f)
+			RenderUtils.renderText(context, location.center().raise(), "Inquisitor", NobaColor.DARK_RED, yOffset = -20.0f, throughBlocks = true)
+			RenderUtils.renderText(context, location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = -10.0f, throughBlocks = true)
 
 			if(config.showInquisitorDespawnTime) {
 				val spawnTime = inquisitor.spawnTime
 				val formattedTime = (75 - spawnTime.elapsedSince().inWholeSeconds).toInt()
 
-				RenderUtils.renderText(context, location.center().raise(), "Despawns in ${formattedTime}s", NobaColor.GRAY)
+				RenderUtils.renderText(context, location.center().raise(), "Despawns in ${formattedTime}s", NobaColor.GRAY, throughBlocks = true)
 			}
 
 			if(distance < 5) InquisitorWaypoints.tryRemove(inquisitor)
@@ -135,7 +135,7 @@ object BurrowWaypoints {
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
 		burrows.forEach { location, type ->
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), type.text, type.color, yOffset = -5.0f)
+			RenderUtils.renderText(context, location.center().raise(), type.text, type.color, yOffset = -5.0f, throughBlocks = true)
 		}
 	}
 
@@ -144,12 +144,12 @@ object BurrowWaypoints {
 			val adjustedLocation = findValidLocation(it)
 			val distance = adjustedLocation.distance(playerLocation)
 
-			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.YELLOW, throughBlocks = distance > 10)
-			RenderUtils.renderText(context, adjustedLocation.center().raise(), "Guess", NobaColor.YELLOW, yOffset = -10.0f)
+			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
+			RenderUtils.renderText(context, adjustedLocation.center().raise(), "Guess", NobaColor.AQUA, yOffset = -10.0f, throughBlocks = true)
 
 			if(distance > 5) {
 				val formattedDistance = distance.toInt().addSeparators()
-				RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", NobaColor.YELLOW)
+				RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", NobaColor.GRAY, throughBlocks = true)
 			}
 		}
 	}

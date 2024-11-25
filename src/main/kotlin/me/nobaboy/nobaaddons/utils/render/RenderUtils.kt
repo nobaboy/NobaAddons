@@ -322,8 +322,8 @@ object RenderUtils {
 		/*RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram)*/
 		//?}
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f)
-		RenderSystem.enableBlend()
 		RenderSystem.lineWidth(lineWidth)
+		RenderSystem.enableBlend()
 		RenderSystem.disableCull()
 		RenderSystem.enableDepthTest()
 		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
@@ -359,9 +359,9 @@ object RenderUtils {
 		BufferRenderer.drawWithGlobalProgram(buffer.end())
 
 		matrices.pop()
-		RenderSystem.lineWidth(1f)
-		RenderSystem.enableCull()
+		RenderSystem.lineWidth(1.0f)
 		RenderSystem.disableBlend()
+		RenderSystem.enableCull()
 		RenderSystem.disableDepthTest()
 		RenderSystem.depthFunc(GL11.GL_LEQUAL)
 	}
@@ -493,7 +493,7 @@ object RenderUtils {
 		val xOffset = -textRenderer.getWidth(text) / 2.0f
 
 		val consumers = VertexConsumerProvider.immediate(ALLOCATOR)
-		RenderSystem.disableDepthTest()
+
 		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
 
 		textRenderer.draw(text, xOffset, yOffset, color, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0,

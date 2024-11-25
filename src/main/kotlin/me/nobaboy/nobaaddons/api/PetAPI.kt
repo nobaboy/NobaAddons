@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.core.ItemRarity
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.data.json.PetInfo
 import me.nobaboy.nobaaddons.events.InventoryEvents
-import me.nobaboy.nobaaddons.events.skyblock.PetChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -114,7 +114,7 @@ object PetAPI {
 	private fun changePet(pet: PetData?) {
 		if(pet == currentPet) return
 
-		PetChangeEvent.EVENT.invoke(PetChangeEvent(currentPet, pet))
+		SkyBlockEvents.PET_CHANGE.invoke(SkyBlockEvents.PetChange(currentPet, pet))
 		currentPet = pet
 	}
 }

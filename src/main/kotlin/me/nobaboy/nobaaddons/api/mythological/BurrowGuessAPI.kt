@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.minecraft.particle.ParticleTypes
@@ -47,7 +47,7 @@ object BurrowGuessAPI {
 	private var distance2: Double? = null
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { reset() }
+		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		SoundEvents.SOUND.register(this::onPlaySound)
 		ParticleEvents.PARTICLE.register(this::onParticle)
 	}

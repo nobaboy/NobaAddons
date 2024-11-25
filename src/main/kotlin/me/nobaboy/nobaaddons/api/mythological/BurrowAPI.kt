@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.api.mythological
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockIslandChangeEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -39,7 +39,7 @@ object BurrowAPI {
 	private var lastBurrowChatMessage = Timestamp.distantPast()
 
 	fun init() {
-		SkyBlockIslandChangeEvent.EVENT.register { reset() }
+		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 		AttackBlockCallback.EVENT.register { player, _, _, pos, _ -> onBlockClick(player, pos.toNobaVec()) }
