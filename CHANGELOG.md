@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 0.1.0-Alpha.9 - 2024-11-2x
+## 0.1.0-Alpha.9 - 2024-11-25
 
 ### Added
 
@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Sea Creature Alert - nobaboy
 - Mouse Lock - nobaboy
 - Gone With The Wind Sound Filter - nobaboy
+- Cancel Item Update Animation - celeste
 
 ### Changed
 
