@@ -44,7 +44,7 @@ import java.nio.file.Path
 
 object NobaAddons : ClientModInitializer {
 	const val MOD_ID = "nobaaddons"
-	val VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
+	val VERSION: String = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
 
 	val PREFIX: MutableText get() = Text.empty()
 		.append(Text.translatable("nobaaddons.name"))
@@ -52,7 +52,7 @@ object NobaAddons : ClientModInitializer {
 		.formatted(Formatting.BLUE, Formatting.BOLD)
 
 	val LOGGER: Logger = LogUtils.getLogger()
-	val modDir: Path get() = FabricLoader.getInstance().configDir
+	val modConfigDir: Path get() = FabricLoader.getInstance().configDir.resolve("nobaaddons")
 
 	override fun onInitializeClient() {
 		NobaConfigManager.init()

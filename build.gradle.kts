@@ -53,8 +53,8 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
 	// CelestialConfig
-	implementation("me.celestialfault:celestial-config:${deps["celestialconfig"]}")
-	include("me.celestialfault:celestial-config:${deps["celestialconfig"]}")
+	implementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
+	include("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
 
     // Hypixel Mod API
     implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
