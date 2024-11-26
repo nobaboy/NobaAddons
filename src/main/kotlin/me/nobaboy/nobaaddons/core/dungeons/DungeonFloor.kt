@@ -1,6 +1,6 @@
-package me.nobaboy.nobaaddons.api.data
+package me.nobaboy.nobaaddons.core.dungeons
 
-enum class FloorType(val floor: Int) {
+enum class DungeonFloor(val floor: Int) {
 	NONE(-1),
 
 	E0(0),

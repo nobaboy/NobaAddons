@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.filters.dungeons
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.api.data.IslandType
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.StatType
@@ -57,5 +57,5 @@ object HealerOrbChatFilter : IChatFilter {
 		append(" for $duration seconds from picking up $player's $orb.")
 	}
 
-	override fun isEnabled() = IslandType.DUNGEONS.inIsland() && isEnabled(config.healerOrbMessage)
+	override fun isEnabled() = SkyBlockIsland.DUNGEONS.inIsland() && isEnabled(config.healerOrbMessage)
 }

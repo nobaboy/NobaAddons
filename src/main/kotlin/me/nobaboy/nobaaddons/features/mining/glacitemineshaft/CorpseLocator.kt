@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.features.mining.glacitemineshaft
 
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
@@ -57,7 +57,7 @@ object CorpseLocator {
 				group("z").toInt()
 			)
 
-			corpses.find { it.entity.getNobaVec().distance(vec) <= 5 }?.shared = true
+			corpses.firstOrNull { it.entity.getNobaVec().distance(vec) <= 5 }?.shared = true
 		}
 	}
 
@@ -112,5 +112,5 @@ object CorpseLocator {
 
 	data class Corpse(val entity: ArmorStandEntity, val type: CorpseType, var seen: Boolean = false, var shared: Boolean = false)
 
-	private fun isEnabled() = IslandType.MINESHAFT.inIsland() && config.corpseLocator
+	private fun isEnabled() = SkyBlockIsland.MINESHAFT.inIsland() && config.corpseLocator
 }

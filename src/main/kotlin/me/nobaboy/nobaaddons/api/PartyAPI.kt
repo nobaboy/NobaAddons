@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.api
 
-import me.nobaboy.nobaaddons.api.data.Party
+import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.data.json.MojangProfile
 import me.nobaboy.nobaaddons.events.CooldownTickEvent
 import me.nobaboy.nobaaddons.utils.HTTPUtils
@@ -49,7 +49,7 @@ object PartyAPI {
 	)
 
 	private var refreshPartyList = false
-	var party: Party? = null
+	var party: PartyData? = null
 		private set
 
 	fun init() {
@@ -73,9 +73,9 @@ object PartyAPI {
 				val leader = it.leader.orElseThrow()
 				val members = it.memberMap.values.map {
 					val profile = uuidCache.apply(it.uuid).join()
-					Party.Member(uuid = it.uuid, profile = profile, role = it.role)
+					PartyData.Member(uuid = it.uuid, profile = profile, role = it.role)
 				}
-				party = Party(leaderUUID = leader, members = members)
+				party = PartyData(leaderUUID = leader, members = members)
 			}
 		}
 	}

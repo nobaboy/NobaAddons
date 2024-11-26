@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.core.SeaCreature
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
@@ -22,5 +22,5 @@ object MythicSeaCreatureAlert : IAlert {
 		return true
 	}
 
-	override fun isEnabled(): Boolean = IslandType.CRIMSON_ISLE.inIsland() && config.mythicSeaCreatureSpawn
+	override fun isEnabled(): Boolean = SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.mythicSeaCreatureSpawn
 }

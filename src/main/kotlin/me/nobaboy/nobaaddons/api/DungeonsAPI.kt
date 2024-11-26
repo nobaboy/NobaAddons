@@ -2,10 +2,10 @@ package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.api.data.BossType
-import me.nobaboy.nobaaddons.api.data.ClassType
-import me.nobaboy.nobaaddons.api.data.FloorType
-import me.nobaboy.nobaaddons.api.data.IslandType
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
+import me.nobaboy.nobaaddons.core.dungeons.DungeonBoss
+import me.nobaboy.nobaaddons.core.dungeons.DungeonClass
+import me.nobaboy.nobaaddons.core.dungeons.DungeonFloor
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
@@ -14,20 +14,20 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object DungeonsAPI {
-	private var currentClass: ClassType = ClassType.EMPTY
-	private var currentFloor: FloorType = FloorType.NONE
-	private var currentBoss: BossType = BossType.UNKNOWN
+	private var currentClass: DungeonClass = DungeonClass.EMPTY
+	private var currentFloor: DungeonFloor = DungeonFloor.NONE
+	private var currentBoss: DungeonBoss = DungeonBoss.UNKNOWN
 
-	fun getClass(): ClassType = currentClass
-	fun isClass(classType: ClassType): Boolean = currentClass == classType
+	fun getClass(): DungeonClass = currentClass
+	fun isClass(classType: DungeonClass): Boolean = currentClass == classType
 
-	fun getFloor(): FloorType = currentFloor
+	fun getFloor(): DungeonFloor = currentFloor
+	fun inFloor(floor: DungeonFloor): Boolean = currentFloor == floor
 	fun inFloor(floor: Int): Boolean = currentFloor.floor == floor
-	fun inFloor(floor: FloorType): Boolean = currentFloor == floor
 
-	fun getBoss(): BossType = currentBoss
-	fun isBoss(boss: BossType): Boolean = currentBoss == boss
-	fun inBoss(): Boolean = currentBoss != BossType.UNKNOWN
+	fun getBoss(): DungeonBoss = currentBoss
+	fun isBoss(boss: DungeonBoss): Boolean = currentBoss == boss
+	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN
 
 	fun init() {
 		SecondPassedEvent.EVENT.register { update() }
@@ -44,7 +44,7 @@ object DungeonsAPI {
 			if(text.contains(playerName) && text.indexOf("(") != -1) {
 				if(text.contains("($playerName)")) continue // Puzzle fail text
 				val dungeonClass = text.substring(text.indexOf("(") + 1, text.lastIndexOf(")"))
-				currentClass = ClassType.valueOf(dungeonClass.split(" ")[0].uppercase())
+				currentClass = DungeonClass.valueOf(dungeonClass.split(" ")[0].uppercase())
 			}
 		}
 	}
@@ -58,10 +58,10 @@ object DungeonsAPI {
 			val floor = cleanedLine.substring(cleanedLine.indexOf("(") + 1, cleanedLine.lastIndexOf(")"))
 
 			currentFloor = runCatching {
-				FloorType.valueOf(floor)
+				DungeonFloor.valueOf(floor)
 			}.getOrElse {
 				NobaAddons.LOGGER.error("Unexpected floor type value '$floor'", it)
-				FloorType.NONE
+				DungeonFloor.NONE
 			}
 
 			break
@@ -69,9 +69,9 @@ object DungeonsAPI {
 	}
 
 	private fun update() {
-		if(!IslandType.DUNGEONS.inIsland()) {
-			currentClass = ClassType.EMPTY
-			currentFloor = FloorType.NONE
+		if(!SkyBlockIsland.DUNGEONS.inIsland()) {
+			currentClass = DungeonClass.EMPTY
+			currentFloor = DungeonFloor.NONE
 			return
 		}
 
@@ -80,12 +80,12 @@ object DungeonsAPI {
 	}
 
 	private fun getBossType(message: String) {
-		if(!IslandType.DUNGEONS.inIsland()) {
-			currentBoss = BossType.UNKNOWN
+		if(!SkyBlockIsland.DUNGEONS.inIsland()) {
+			currentBoss = DungeonBoss.UNKNOWN
 			return
 		}
 
 		if(!message.startsWith("[BOSS]")) return
-		currentBoss = BossType.fromChat(message)
+		currentBoss = DungeonBoss.fromChat(message)
 	}
 }

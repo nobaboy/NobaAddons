@@ -117,11 +117,4 @@ object PetAPI {
 
 		return null
 	}
-
-	fun isMaxLevel(pet: PetData): Boolean {
-		return when(pet.id) {
-			"GOLDEN_DRAGON" -> pet.level == 200
-			else -> pet.level == 100
-		}
-	}
 }

@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.core
+package me.nobaboy.nobaaddons.core.mayor
 
 import me.nobaboy.nobaaddons.api.MayorAPI.foxyExtraEventPattern
 import me.nobaboy.nobaaddons.data.json.Perk

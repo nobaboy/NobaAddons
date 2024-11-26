@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.mining.glacitemineshaft
 
-import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -26,7 +26,7 @@ object MineshaftWaypoints {
 	private fun onIslandChange(event: SkyBlockEvents.IslandChange) {
 		waypoints.clear()
 
-		if(event.island != IslandType.MINESHAFT) return
+		if(event.island != SkyBlockIsland.MINESHAFT) return
 		val blockBelow = LocationUtils.blockBelowPlayer().roundToBlock()
 
 		if(config.entranceWaypoint) waypoints.add(Waypoint(blockBelow, "Entrance", NobaColor.BLUE))

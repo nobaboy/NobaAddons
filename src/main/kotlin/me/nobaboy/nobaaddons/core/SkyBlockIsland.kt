@@ -1,6 +1,6 @@
-package me.nobaboy.nobaaddons.api.data
+package me.nobaboy.nobaaddons.core
 
-enum class IslandType(val apiName: String?) {
+enum class SkyBlockIsland(val apiName: String?) {
 	PRIVATE_ISLAND("dynamic"),
 	GARDEN("garden"),
 	HUB("hub"),
@@ -29,7 +29,7 @@ enum class IslandType(val apiName: String?) {
 	UNKNOWN(null);
 
 	companion object {
-		val ISLANDS = IslandType.entries.filter { it.apiName != null }.associateBy { it.apiName!! }
-		fun getIslandType(mode: String): IslandType = ISLANDS.getOrDefault(mode, UNKNOWN)
+		val ISLANDS = SkyBlockIsland.entries.filter { it.apiName != null }.associateBy { it.apiName!! }
+		fun getIslandType(mode: String): SkyBlockIsland = ISLANDS.getOrDefault(mode, UNKNOWN)
 	}
 }

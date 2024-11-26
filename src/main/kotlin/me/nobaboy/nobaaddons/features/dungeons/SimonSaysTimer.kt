@@ -5,8 +5,8 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysFile
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -147,5 +147,5 @@ object SimonSaysTimer {
 		deviceCompleted = false
 	}
 
-	private fun isEnabled() = IslandType.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7) && config.enabled
+	private fun isEnabled() = SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7) && config.enabled
 }

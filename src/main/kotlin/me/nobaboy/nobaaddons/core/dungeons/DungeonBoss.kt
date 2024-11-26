@@ -1,6 +1,6 @@
-package me.nobaboy.nobaaddons.api.data
+package me.nobaboy.nobaaddons.core.dungeons
 
-enum class BossType(val displayName: String) {
+enum class DungeonBoss(val displayName: String) {
 	WATCHER("The Watcher"),
 	BONZO("Bonzo"),
 	SCARF("Scarf"),
@@ -16,7 +16,7 @@ enum class BossType(val displayName: String) {
 	UNKNOWN("");
 
 	companion object {
-		fun fromChat(text: String): BossType {
+		fun fromChat(text: String): DungeonBoss {
 			for(boss in entries) {
 				if(text.contains(boss.displayName)) return boss
 			}

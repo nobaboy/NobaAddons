@@ -1,6 +1,6 @@
-package me.nobaboy.nobaaddons.core
+package me.nobaboy.nobaaddons.core.mayor
 
-import me.nobaboy.nobaaddons.core.MayorPerk.Companion.toPerk
+import me.nobaboy.nobaaddons.core.mayor.MayorPerk.Companion.toPerk
 import me.nobaboy.nobaaddons.data.json.Perk
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
-import me.nobaboy.nobaaddons.core.Mayor
-import me.nobaboy.nobaaddons.core.MayorPerk
+import me.nobaboy.nobaaddons.core.mayor.Mayor
+import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.data.json.MayorJson
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent

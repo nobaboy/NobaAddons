@@ -1,12 +1,11 @@
 package me.nobaboy.nobaaddons.core
 
-import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 
 enum class SeaCreature(
 	val rarity: MobRarity,
 	val spawnMessage: String,
-	val island: IslandType? = null,
+	val island: SkyBlockIsland? = null,
 	displayName: String? = null
 ) {
 	// Water
@@ -27,36 +26,36 @@ enum class SeaCreature(
 	NIGHT_SQUID(MobRarity.COMMON, "Pitch darkness reveals a Night Squid."),
 	CARROT_KING(MobRarity.RARE, "Is this even a fish? It's the Carrot King!"),
 	AGARIMOO(MobRarity.RARE, "Your Chumcap Bucket trembles, it's an Agarimoo."),
-	OASIS_RABBIT(MobRarity.UNCOMMON, "An Oasis Rabbit appears from the water.", IslandType.FARMING_ISLANDS),
-	OASIS_SHEEP(MobRarity.UNCOMMON, "An Oasis Sheep appears from the water.", IslandType.FARMING_ISLANDS),
-	WATER_WORM(MobRarity.RARE, "A Water Worm surfaces!", IslandType.CRYSTAL_HOLLOWS),
-	POISONED_WATER_WORM(MobRarity.RARE, "A Poisoned Water Worm surfaces!", IslandType.CRYSTAL_HOLLOWS),
-	ABYSSAL_MINER(MobRarity.LEGENDARY, "An Abyssal Miner breaks out of the water!", IslandType.CRYSTAL_HOLLOWS),
+	OASIS_RABBIT(MobRarity.UNCOMMON, "An Oasis Rabbit appears from the water.", SkyBlockIsland.FARMING_ISLANDS),
+	OASIS_SHEEP(MobRarity.UNCOMMON, "An Oasis Sheep appears from the water.", SkyBlockIsland.FARMING_ISLANDS),
+	WATER_WORM(MobRarity.RARE, "A Water Worm surfaces!", SkyBlockIsland.CRYSTAL_HOLLOWS),
+	POISONED_WATER_WORM(MobRarity.RARE, "A Poisoned Water Worm surfaces!", SkyBlockIsland.CRYSTAL_HOLLOWS),
+	ABYSSAL_MINER(MobRarity.LEGENDARY, "An Abyssal Miner breaks out of the water!", SkyBlockIsland.CRYSTAL_HOLLOWS),
 
 	// Lava
-	FLAMING_WORM(MobRarity.RARE, "A Flaming Worm surfaces from the depths!", IslandType.CRYSTAL_HOLLOWS),
-	LAVA_BLAZE(MobRarity.EPIC, "A Lava Blaze has surfaced from the depths!", IslandType.CRYSTAL_HOLLOWS),
-	LAVA_PIGMAN(MobRarity.EPIC, "A Lava Pigman arose from the depths!", IslandType.CRYSTAL_HOLLOWS),
-	MAGMA_SLUG(MobRarity.UNCOMMON, "From beneath the lava appears a Magma Slug.", IslandType.CRIMSON_ISLE),
-	MOOGMA(MobRarity.UNCOMMON, "You hear a faint Moo from the lava... A Moogma appears.", IslandType.CRIMSON_ISLE),
-	LAVA_LEECH(MobRarity.RARE, "A small but fearsome Lava Leech emerges.", IslandType.CRIMSON_ISLE),
-	PYROCLASTIC_WORM(MobRarity.RARE, "You feel the heat radiating as a Pyroclastic Worm surfaces.", IslandType.CRIMSON_ISLE),
-	LAVA_FLAME(MobRarity.RARE, "A Lava Flame flies out from beneath the lava.", IslandType.CRIMSON_ISLE),
-	LAVA_EAL(MobRarity.RARE, "A Fire Eel slithers out from the depths.", IslandType.CRIMSON_ISLE),
-	TAURUS(MobRarity.EPIC, "Taurus and his steed emerge.", IslandType.CRIMSON_ISLE),
-	PLHLEGBLAST(MobRarity.LEGENDARY, "WOAH! A Plhlegblast appeared.", IslandType.CRIMSON_ISLE),
-	THUNDER(MobRarity.MYTHIC, "You hear a massive rumble as Thunder emerges.", IslandType.CRIMSON_ISLE),
-	LORD_JAWBUS(MobRarity.MYTHIC, "You have angered a legendary creature... Lord Jawbus has arrived.", IslandType.CRIMSON_ISLE),
+	FLAMING_WORM(MobRarity.RARE, "A Flaming Worm surfaces from the depths!", SkyBlockIsland.CRYSTAL_HOLLOWS),
+	LAVA_BLAZE(MobRarity.EPIC, "A Lava Blaze has surfaced from the depths!", SkyBlockIsland.CRYSTAL_HOLLOWS),
+	LAVA_PIGMAN(MobRarity.EPIC, "A Lava Pigman arose from the depths!", SkyBlockIsland.CRYSTAL_HOLLOWS),
+	MAGMA_SLUG(MobRarity.UNCOMMON, "From beneath the lava appears a Magma Slug.", SkyBlockIsland.CRIMSON_ISLE),
+	MOOGMA(MobRarity.UNCOMMON, "You hear a faint Moo from the lava... A Moogma appears.", SkyBlockIsland.CRIMSON_ISLE),
+	LAVA_LEECH(MobRarity.RARE, "A small but fearsome Lava Leech emerges.", SkyBlockIsland.CRIMSON_ISLE),
+	PYROCLASTIC_WORM(MobRarity.RARE, "You feel the heat radiating as a Pyroclastic Worm surfaces.", SkyBlockIsland.CRIMSON_ISLE),
+	LAVA_FLAME(MobRarity.RARE, "A Lava Flame flies out from beneath the lava.", SkyBlockIsland.CRIMSON_ISLE),
+	LAVA_EAL(MobRarity.RARE, "A Fire Eel slithers out from the depths.", SkyBlockIsland.CRIMSON_ISLE),
+	TAURUS(MobRarity.EPIC, "Taurus and his steed emerge.", SkyBlockIsland.CRIMSON_ISLE),
+	PLHLEGBLAST(MobRarity.LEGENDARY, "WOAH! A Plhlegblast appeared.", SkyBlockIsland.CRIMSON_ISLE),
+	THUNDER(MobRarity.MYTHIC, "You hear a massive rumble as Thunder emerges.", SkyBlockIsland.CRIMSON_ISLE),
+	LORD_JAWBUS(MobRarity.MYTHIC, "You have angered a legendary creature... Lord Jawbus has arrived.", SkyBlockIsland.CRIMSON_ISLE),
 
 	// Winter
-	FROZEN_STEVE(MobRarity.COMMON, "Frozen Steve fell into the pond long ago, never to resurface...until now!", IslandType.JERRYS_WORKSHOP),
-	FROSTY(MobRarity.COMMON, "It's a snowman! He looks harmless.", IslandType.JERRYS_WORKSHOP),
-	GRINCH(MobRarity.UNCOMMON, "The Grinch stole Jerry's Gifts...get them back!", IslandType.JERRYS_WORKSHOP),
-	NUTCRACKER(MobRarity.RARE, "You found a forgotten Nutcracker laying beneath the ice.", IslandType.JERRYS_WORKSHOP),
-	YETI(MobRarity.LEGENDARY, "What is this creature!?", IslandType.JERRYS_WORKSHOP),
-	REINDRAKE(MobRarity.LEGENDARY, "A Reindrake forms from the depths.", IslandType.JERRYS_WORKSHOP),
+	FROZEN_STEVE(MobRarity.COMMON, "Frozen Steve fell into the pond long ago, never to resurface...until now!", SkyBlockIsland.JERRYS_WORKSHOP),
+	FROSTY(MobRarity.COMMON, "It's a snowman! He looks harmless.", SkyBlockIsland.JERRYS_WORKSHOP),
+	GRINCH(MobRarity.UNCOMMON, "The Grinch stole Jerry's Gifts...get them back!", SkyBlockIsland.JERRYS_WORKSHOP),
+	NUTCRACKER(MobRarity.RARE, "You found a forgotten Nutcracker laying beneath the ice.", SkyBlockIsland.JERRYS_WORKSHOP),
+	YETI(MobRarity.LEGENDARY, "What is this creature!?", SkyBlockIsland.JERRYS_WORKSHOP),
+	REINDRAKE(MobRarity.LEGENDARY, "A Reindrake forms from the depths.", SkyBlockIsland.JERRYS_WORKSHOP),
 
-	// Spooky Event
+	// Spooky Festival
 	SCARECROW(MobRarity.COMMON, "Phew! It's only a Scarecrow."),
 	NIGHTMARE(MobRarity.RARE, "You hear trotting from beneath the waves, you caught a Nightmare."),
 	WEREWOLF(MobRarity.EPIC, "It must be a full moon, a Werewolf appears."),

@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.crimsonisle
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.api.data.IslandType
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
 import me.nobaboy.nobaaddons.utils.EntityUtils
@@ -52,5 +52,5 @@ object HighlightThunderSparks {
 		}
 	}
 
-	private fun isEnabled() = IslandType.CRIMSON_ISLE.inIsland() && config.enabled
+	private fun isEnabled() = SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.enabled
 }

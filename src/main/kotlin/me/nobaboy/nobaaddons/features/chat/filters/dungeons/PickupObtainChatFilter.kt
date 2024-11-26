@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.filters.dungeons
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.api.data.IslandType
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import net.minecraft.text.Text
@@ -33,5 +33,5 @@ object PickupObtainChatFilter : IChatFilter {
 		return false
 	}
 
-	override fun isEnabled() = IslandType.DUNGEONS.inIsland() && config.pickupObtainMessage
+	override fun isEnabled() = SkyBlockIsland.DUNGEONS.inIsland() && config.pickupObtainMessage
 }

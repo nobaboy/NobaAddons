@@ -12,4 +12,6 @@ data class PetData(
 	val active: Boolean = false,
 	val heldItem: String? = null,
 	val uuid: String? = null
-)
+) {
+	val maxLevel: Int = if(id == "GOLDEN_DRAGON") 200 else 100
+}

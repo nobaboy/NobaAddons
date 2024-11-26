@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.qol.sound.filters.dwarvenmines
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.api.data.IslandType
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import net.minecraft.util.Identifier
@@ -11,7 +11,7 @@ object GoneWithTheWindSoundFilter : ISoundFilter {
 	private val WIND_CHANGE_DING = Identifier.ofVanilla("block.note_block.pling")
 	private val WIND_CHANGE_ELYTRA = Identifier.ofVanilla("item.elytra.flying")
 
-	override val enabled: Boolean get() = IslandType.DWARVEN_MINES.inIsland() && config.muteGoneWithTheWind
+	override val enabled: Boolean get() = SkyBlockIsland.DWARVEN_MINES.inIsland() && config.muteGoneWithTheWind
 
 	override fun onSound(sound: SoundEvents.AllowSound) {
 		val shouldFilter = when(sound.id) {

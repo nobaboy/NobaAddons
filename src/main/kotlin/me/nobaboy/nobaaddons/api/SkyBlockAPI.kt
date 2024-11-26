@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.api
 
-import me.nobaboy.nobaaddons.api.data.IslandType
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.HypixelUtils
@@ -23,7 +23,7 @@ object SkyBlockAPI {
 
 	val inSkyBlock: Boolean
 		get() = HypixelUtils.onHypixel && currentGame == GameType.SKYBLOCK
-	var currentIsland: IslandType = IslandType.UNKNOWN
+	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN
 		private set
 	var currentZone: String? = null
 		private set
@@ -46,7 +46,7 @@ object SkyBlockAPI {
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 	}
 
-	fun IslandType.inIsland(): Boolean = inSkyBlock && currentIsland == this
+	fun SkyBlockIsland.inIsland(): Boolean = inSkyBlock && currentIsland == this
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
 	// I originally planned to make an enum including all the zones but after realising
@@ -82,7 +82,7 @@ object SkyBlockAPI {
 
 	private fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentGame = packet.serverType.getOrNull()
-		currentIsland = packet.mode.map(IslandType::getIslandType).orElse(IslandType.UNKNOWN)
-		if(currentIsland != IslandType.UNKNOWN) SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
+		currentIsland = packet.mode.map(SkyBlockIsland::getIslandType).orElse(SkyBlockIsland.UNKNOWN)
+		if(currentIsland != SkyBlockIsland.UNKNOWN) SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
 	}
 }
