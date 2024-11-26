@@ -1,14 +1,14 @@
 package me.nobaboy.nobaaddons.features.keybinds.data
 
 import com.google.gson.JsonObject
-import me.celestialfault.celestialconfig.AbstractConfig
-import me.celestialfault.celestialconfig.Property
-import me.celestialfault.celestialconfig.Serializer
-import me.celestialfault.celestialconfig.properties.ObjectProperty
+import dev.celestialfault.celestialconfig.AbstractConfig
+import dev.celestialfault.celestialconfig.Property
+import dev.celestialfault.celestialconfig.Serializer
+import dev.celestialfault.celestialconfig.properties.ObjectProperty
 import me.nobaboy.nobaaddons.NobaAddons
 import org.lwjgl.glfw.GLFW
 
-object KeybindConfig : AbstractConfig(NobaAddons.modDir.resolve("nobaaddons").resolve("keybinds.json")) {
+object KeybindConfig : AbstractConfig(NobaAddons.modConfigDir.resolve("keybinds.json")) {
 	val keybinds by Property.list("keybinds", Serializer.obj<Keybind>())
 
 	class Keybind() : ObjectProperty<Keybind>("") {
