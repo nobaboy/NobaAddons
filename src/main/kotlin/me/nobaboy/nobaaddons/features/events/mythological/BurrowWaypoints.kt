@@ -129,7 +129,7 @@ object BurrowWaypoints {
 				RenderUtils.renderText(context, location.center().raise(), "Despawns in ${formattedTime}s", NobaColor.GRAY, throughBlocks = true)
 			}
 
-			if(distance < 5) InquisitorWaypoints.tryRemove(inquisitor)
+			if(distance < 10) InquisitorWaypoints.tryRemove(inquisitor)
 		}
 	}
 

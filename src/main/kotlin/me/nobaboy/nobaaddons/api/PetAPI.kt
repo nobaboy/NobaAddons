@@ -23,11 +23,11 @@ object PetAPI {
 	private val petsMenuPattern = Pattern.compile("^Pets(?: \\(\\d+/\\d+\\) )?")
 	private val petNamePattern = Pattern.compile("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)")
 
-	private val petUnequipPattern = Pattern.compile("^You despawned your (?<name>[A-z ]+)(?: ✦|\$)")
-//	private val petItemChangePattern = Pattern.compile("^Your pet is now holding (?<item>[A-z0-9- ]+)\\.")
 	private val autopetPattern = Pattern.compile(
 		"^§cAutopet §eequipped your §7\\[Lvl (?<level>\\d+)] (?:§.\\[.*] )?§(?<rarity>.)(?<name>[A-z ]+)(?:§. ✦)?§e! §a§lVIEW RULE"
 	)
+
+	private val petUnequipPattern = Pattern.compile("^You despawned your (?<name>[A-z ]+)(?: ✦|\$)")
 
 	private var inPetsMenu = false
 
@@ -84,6 +84,13 @@ object PetAPI {
 		}
 	}
 
+	private fun changePet(pet: PetData?) {
+		if(pet == currentPet) return
+
+		SkyBlockEvents.PET_CHANGE.invoke(SkyBlockEvents.PetChange(currentPet, pet))
+		currentPet = pet
+	}
+
 	fun getPetData(itemStack: ItemStack): PetData? {
 		petNamePattern.matchMatcher(itemStack.name.string) {
 			val item = itemStack.getSkyBlockItem() ?: return null
@@ -111,10 +118,10 @@ object PetAPI {
 		return null
 	}
 
-	private fun changePet(pet: PetData?) {
-		if(pet == currentPet) return
-
-		SkyBlockEvents.PET_CHANGE.invoke(SkyBlockEvents.PetChange(currentPet, pet))
-		currentPet = pet
+	fun isMaxLevel(pet: PetData): Boolean {
+		return when(pet.id) {
+			"GOLDEN_DRAGON" -> pet.level == 200
+			else -> pet.level == 100
+		}
 	}
 }

@@ -17,7 +17,7 @@ interface ISlotInfo {
 	val enabled: Boolean
 	fun handle(event: ScreenRenderEvents.DrawSlot)
 
-	fun drawInfo(event: ScreenRenderEvents.DrawSlot, text: Text, position: Position = Position.TOP_LEFT,) {
+	fun drawInfo(event: ScreenRenderEvents.DrawSlot, text: Text, position: Position = Position.TOP_LEFT) {
 		renderSlotInfo(event.context, event.textRenderer, event.slot, text, position)
 	}
 

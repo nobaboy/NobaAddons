@@ -52,7 +52,7 @@ object NobaAddons : ClientModInitializer {
 		.formatted(Formatting.BLUE, Formatting.BOLD)
 
 	val LOGGER: Logger = LogUtils.getLogger()
-	val modConfigDir: Path get() = FabricLoader.getInstance().configDir.resolve("nobaaddons")
+	val modConfigDir: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
 
 	override fun onInitializeClient() {
 		NobaConfigManager.init()
