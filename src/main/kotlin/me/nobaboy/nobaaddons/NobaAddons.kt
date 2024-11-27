@@ -21,9 +21,9 @@ import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.crimsonisle.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
+import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
-import me.nobaboy.nobaaddons.features.events.mythological.MinosRareDrops
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindListener
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
@@ -94,9 +94,9 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Events
+		AnnounceRareDrops.init()
 		BurrowWaypoints.init()
 		InquisitorWaypoints.init()
-		MinosRareDrops.init()
 		// endregion
 
 		// region Fishing
@@ -104,8 +104,8 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Mining
-		MineshaftWaypoints.init()
 		CorpseLocator.init()
+		MineshaftWaypoints.init()
 		// endregion
 
 		// region Crimson Isle
@@ -113,8 +113,8 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Dungeons
-		SimonSaysTimer.init()
 		HighlightStarredMobs.init()
+		SimonSaysTimer.init()
 		// endregion
 
 		// region Chat
