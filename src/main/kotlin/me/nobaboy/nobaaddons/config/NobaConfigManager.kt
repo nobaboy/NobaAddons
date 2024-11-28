@@ -13,6 +13,7 @@ import me.nobaboy.nobaaddons.config.categories.FishingCategory
 import me.nobaboy.nobaaddons.config.categories.GeneralCategory
 import me.nobaboy.nobaaddons.config.categories.MiningCategory
 import me.nobaboy.nobaaddons.config.categories.QOLCategory
+import me.nobaboy.nobaaddons.config.categories.SlayersCategory
 import me.nobaboy.nobaaddons.config.categories.UIAndVisualsCategory
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
@@ -59,6 +60,7 @@ object NobaConfigManager {
 				.category(GeneralCategory.create(defaults, config))
 				.category(UIAndVisualsCategory.create(defaults, config))
 				.category(EventsCategory.create(defaults, config))
+				.category(SlayersCategory.create(defaults, config))
 				.category(FishingCategory.create(defaults, config))
 				.category(MiningCategory.create(defaults, config))
 				.category(CrimsonIsleCategory.create(defaults, config))

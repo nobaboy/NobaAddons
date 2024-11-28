@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.PetAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.SlayerAPI
 import me.nobaboy.nobaaddons.api.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.mythological.BurrowGuessAPI
 import me.nobaboy.nobaaddons.api.mythological.DianaAPI
@@ -63,6 +64,7 @@ object NobaAddons : ClientModInitializer {
 		SkyBlockAPI.init()
 		MayorAPI.init()
 		PetAPI.init()
+		SlayerAPI.init()
 		DungeonsAPI.init()
 		DianaAPI.init()
 		BurrowAPI.init()
@@ -97,6 +99,11 @@ object NobaAddons : ClientModInitializer {
 		AnnounceRareDrops.init()
 		BurrowWaypoints.init()
 		InquisitorWaypoints.init()
+		// endregion
+
+		// region Slayers
+//		MiniBossAlert.init()
+//		HighlightMiniBosses.init()
 		// endregion
 
 		// region Fishing

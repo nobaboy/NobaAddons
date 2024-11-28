@@ -129,6 +129,13 @@
   "nobaaddons.config.events.mythological.ignoreWizard": "Ignore Wizard",
   "nobaaddons.config.events.mythological.ignoreStonks": "Ignore Stonks",
 
+  "nobaaddons.config.slayers": "Slayers",
+  "nobaaddons.config.slayers.miniBossAlert": "MiniBoss Alert",
+  "nobaaddons.config.slayers.miniBossAlert.alertText": "Alert Text",
+  "nobaaddons.config.slayers.miniBossAlert.alertColor": "Alert Color",
+  "nobaaddons.config.slayers.highlightMiniBosses": "Highlight MiniBosses",
+  "nobaaddons.config.slayers.highlightMiniBosses.highlightColor": "Highlight Color",
+
   "nobaaddons.config.fishing": "Fishing",
   "nobaaddons.config.fishing.seaCreatureAlert": "Sea Creature Alert",
   "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity": "Use Name Instead Of Rarity",

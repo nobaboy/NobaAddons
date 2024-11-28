@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.data.json.MayorJson
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.HTTPUtils.fetchJson
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
@@ -142,11 +143,5 @@ object MayorAPI {
 
 		if(month < ELECTION_END_MONTH || (day < ELECTION_END_DAY && month == ELECTION_END_MONTH)) mayorYear--
 		return mayorYear
-	}
-
-	private fun List<String>.nextAfter(after: String, skip: Int = 1): String? {
-		val index = this.indexOf(after)
-		if(index == -1) return null
-		return this.getOrNull(index + skip)
 	}
 }
