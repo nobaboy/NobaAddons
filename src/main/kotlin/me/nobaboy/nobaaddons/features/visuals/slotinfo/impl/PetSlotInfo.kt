@@ -13,7 +13,7 @@ object PetSlotInfo : ISlotInfo {
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		val pet = PetAPI.getPetData(event.itemStack) ?: return
 
-		if(config.petLevel && pet.level == pet.maxLevel) drawCount(event, pet.level.toString())
+		if(config.petLevel && pet.level != pet.maxLevel) drawCount(event, pet.level.toString())
 		if(config.petCandy && pet.candy > 0) drawInfo(event, Text.literal("■").formatted(Formatting.RED))
 
 		if(config.petItem) {
