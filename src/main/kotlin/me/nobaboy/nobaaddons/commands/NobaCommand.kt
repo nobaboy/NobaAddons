@@ -18,6 +18,7 @@ import me.nobaboy.nobaaddons.screens.NobaHudScreen
 import me.nobaboy.nobaaddons.screens.NobaMainScreen
 import me.nobaboy.nobaaddons.screens.keybinds.KeybindsConfigScreen
 import me.nobaboy.nobaaddons.utils.LocationUtils
+import me.nobaboy.nobaaddons.utils.PingUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
@@ -49,6 +50,12 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 	val hud = Command.command("hud") {
 		executes {
 			NobaHudScreen(null).queueOpen()
+		}
+	}
+
+	val ping = Command.command("ping") {
+		executes {
+			PingUtils.sendPingPacket(sendMessage = true)
 		}
 	}
 
