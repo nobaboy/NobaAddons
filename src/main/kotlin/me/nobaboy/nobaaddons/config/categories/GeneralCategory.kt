@@ -7,7 +7,7 @@ import dev.isxander.yacl3.api.OptionDescription
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.screens.NobaMainScreen
-import net.minecraft.client.MinecraftClient
+import me.nobaboy.nobaaddons.utils.MCUtils
 import net.minecraft.text.Text
 
 object GeneralCategory {
@@ -18,7 +18,7 @@ object GeneralCategory {
 			.option(ButtonOption.createBuilder()
 				.name(Text.translatable("nobaaddons.config.general.main"))
 				.text(Text.translatable("nobaaddons.config.general.open"))
-				.action { screen, option -> MinecraftClient.getInstance().setScreen(NobaMainScreen()) }
+				.action { screen, option -> MCUtils.client.setScreen(NobaMainScreen()) }
 				.build())
 
 			.option(Option.createBuilder<Boolean>()
