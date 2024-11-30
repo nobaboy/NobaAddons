@@ -21,9 +21,8 @@ object SWikiCommand {
 
 	private val command = Command.command("swiki") {
 		buildCommand {
-			ClientCommandManager.literal(name)
-				.then(ClientCommandManager.argument("query", StringArgumentType.greedyString())
-					.executes(this::execute))
+			it.then(ClientCommandManager.argument("query", StringArgumentType.greedyString())
+				.executes(this::execute))
 		}
 
 		executes(this@SWikiCommand::searchWiki)
