@@ -12,7 +12,7 @@ object SlayerAPI {
 
 	fun init() {
 		SecondPassedEvent.EVENT.register { onSecondPassed() }
-//		ClientEntityEvents.ENTITY_LOAD.register { entity, _ -> onEntityLoad(entity) }
+//		PacketEvents.RECEIVE.register(this::onPacketReceive)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
@@ -23,16 +23,30 @@ object SlayerAPI {
 		questActive = lines.any { it == "Slayer Quest" }
 	}
 
-//	private fun onEntityLoad(entity: Entity) {
+//	private fun onPacketReceive(event: PacketEvents.Receive) {
 //		if(!SkyBlockAPI.inSkyBlock) return
 //		if(!questActive) return
 //
-//		val name = entity.name.string
-//		val mob = SlayerMiniBoss.getByName(name) ?: SlayerBoss.getByName(name) ?: return
+//		val packet = event.packet
+//		if(packet !is EntityTrackerUpdateS2CPacket) return
 //
-//		when(mob) {
-//			is SlayerMiniBoss -> SlayerEvents.MINIBOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
-//			is SlayerBoss -> SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn(entity, mob, Timestamp.now()))
+//		val entity = EntityUtils.getEntityByID(packet.id) ?: return
+//		if(entity !is ArmorStandEntity) return
+//
+//		val metadata = packet.trackedValues.associate { it.id to it.value }
+//		val entry = metadata[2] ?: return
+//
+//		val optionalValue = entry as? Optional<*> ?: return
+//		if(!optionalValue.isPresent) return
+//
+//		val name = (optionalValue.get() as? Text)?.string ?: return
+//
+//		val mobType = SlayerMiniBoss.getByName(name) ?: SlayerBoss.getByName(name) ?: return
+//		val mob = EntityUtils.getClosestEntity(entity) ?: return
+//
+//		when(mobType) {
+//			is SlayerMiniBoss -> SlayerEvents.MINIBOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(mob))
+//			is SlayerBoss -> SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn(mob, mobType, Timestamp.now()))
 //		}
 //	}
 
@@ -40,6 +54,6 @@ object SlayerAPI {
 		if(!SkyBlockAPI.inSkyBlock) return
 		if(!questActive) return
 
-		if(message == "SLAYER QUEST COMPLETE") SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(Timestamp.now()))
+		if(message == "  SLAYER QUEST COMPLETE") SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(Timestamp.now()))
 	}
 }

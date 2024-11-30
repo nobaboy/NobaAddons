@@ -64,7 +64,7 @@ enum class SlayerBoss(
 	val zones = slayerZones.toSet()
 
 	companion object {
-		fun getByName(name: String) = SlayerBoss.entries.firstOrNull { it.displayName.contains(name) }
-		fun getByZone(zone: String) = SlayerBoss.entries.firstOrNull { zone in it.zones }
+		fun getByName(name: String) = entries.firstOrNull { name.contains(it.displayName) }
+		fun getByZone(zone: String) = entries.firstOrNull { zone in it.zones }
 	}
 }

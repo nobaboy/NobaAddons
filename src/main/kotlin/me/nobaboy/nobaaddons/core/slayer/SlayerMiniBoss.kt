@@ -32,6 +32,6 @@ enum class SlayerMiniBoss(vararg names: String) {
 	val names = names.toSet()
 
 	companion object {
-		fun getByName(name: String): SlayerMiniBoss? = entries.firstOrNull { name in it.names }
+		fun getByName(name: String): SlayerMiniBoss? = entries.firstOrNull { entry -> entry.names.any { name.contains(it) } }
 	}
 }
