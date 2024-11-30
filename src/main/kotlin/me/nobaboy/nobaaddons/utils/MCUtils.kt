@@ -29,7 +29,7 @@ object MCUtils {
 	val worldRenderer: WorldRenderer get() = client.worldRenderer
 
 	fun sendPacket(packet: Packet<*>) {
-		if(client.networkHandler?.connection == null) {
+		if(client.networkHandler == null) {
 			NobaAddons.LOGGER.error("Tried to send a packet {} but connection was null", packet::class.java.simpleName)
 			return
 		}
