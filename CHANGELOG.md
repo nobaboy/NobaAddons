@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 0.1.0-Alpha.9.1 - 2024-11-30
+
+### Added
+
+- `/noba ping` command with the new ping system - celeste
+- Mouse Reduce - celeste
+
+### Changed
+
+- The mod will now check ping every 10 seconds instead of once a minute - celeste
+- Switched ping to use the vanilla ping query packet instead of the Hypixel Mod API - celeste
+- You can now mute the notification sound for Inquisitor and Sea Creature Alerts - nobaboy
+
+### Fixed
+
+- Pet Slot Info not displaying Golden Dragon level properly - nobaboy
+- Subcommands not registering their aliases - celeste
+- Enchant names for Enchant Slot Info because some ids don't match the enchant name - nobaboy
+- Sea Creature Alert not having a notification sound - nobaboy
+
 ## 0.1.0-Alpha.9 - 2024-11-25
 
 ### Added
