@@ -35,6 +35,7 @@ object DebugAPI {
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket> { lastLocationPacket = it }
 	}
 
+	// this technically isn't fully correct, but it's a close enough approximation.
 	val isAwtAvailable: Boolean get() = System.getProperty("java.awt.headless") == "false"
 
 	fun openSoundDebugMenu() {

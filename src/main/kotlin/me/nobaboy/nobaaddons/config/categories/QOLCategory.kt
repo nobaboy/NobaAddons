@@ -59,12 +59,6 @@ object QOLCategory {
 					.binding(defaults.qol.soundFilters.muteReindrakeGiftDrop, config.qol.soundFilters::muteReindrakeGiftDrop) { config.qol.soundFilters.muteReindrakeGiftDrop = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteReindrakeDeath"))
-					.binding(defaults.qol.soundFilters.muteReindrakeDeath, config.qol.soundFilters::muteReindrakeDeath) { config.qol.soundFilters.muteReindrakeDeath = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
 				//endregion
 
 				//region Rift

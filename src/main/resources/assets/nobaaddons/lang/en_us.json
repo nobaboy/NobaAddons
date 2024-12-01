@@ -213,7 +213,6 @@
   "nobaaddons.config.qol.soundFilters.muteKillerSpring": "Mute Killer Spring",
   "nobaaddons.config.qol.soundFilters.muteReindrakeSpawn": "Mute Reindrake Spawning",
   "nobaaddons.config.qol.soundFilters.muteReindrakeGiftDrop": "Mute Reindrake Gifts",
-  "nobaaddons.config.qol.soundFilters.muteReindrakeDeath": "Mute Reindrake Death",
   "nobaaddons.config.qol.garden": "Garden",
   "nobaaddons.config.qol.garden.reduceMouseSensitivity": "Reduce Mouse Sensitivity",
   "nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip": "Reduces your mouse sensitivity in the Garden while you're holding a farming tool and not flying\nYour mouse may also be locked with §3/nobaaddons lockmouse§r",

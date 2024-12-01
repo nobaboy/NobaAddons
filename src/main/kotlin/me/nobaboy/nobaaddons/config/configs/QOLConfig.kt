@@ -24,9 +24,6 @@ class QOLConfig {
 
 		@SerialEntry
 		var muteReindrakeGiftDrop: Boolean = false
-
-		@SerialEntry
-		var muteReindrakeDeath: Boolean = false
 	}
 
 	class Garden {

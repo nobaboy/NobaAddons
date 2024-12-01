@@ -9,7 +9,6 @@ import net.minecraft.util.Identifier
 object ReindrakeSoundFilter : ISoundFilter {
 	private val SPAWN_SOUND = Identifier.ofVanilla("entity.warden.emerge")
 	private val GIFT_DROP_SOUND = Identifier.ofVanilla("item.totem.use")
-	private val DEATH_SOUND = Identifier.ofVanilla("entity.ender_dragon.death")
 
 	override val enabled: Boolean = SkyBlockIsland.JERRYS_WORKSHOP.inIsland()
 
@@ -19,7 +18,6 @@ object ReindrakeSoundFilter : ISoundFilter {
 		val shouldMute = when(sound.id) {
 			SPAWN_SOUND -> config.muteReindrakeSpawn
 			GIFT_DROP_SOUND -> config.muteReindrakeGiftDrop
-			DEATH_SOUND -> config.muteReindrakeDeath
 			else -> false
 		}
 
