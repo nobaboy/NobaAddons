@@ -22,8 +22,8 @@ object HighlightStarredMobs {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { starredMobs.clear() }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 		ClientTickEvents.END_CLIENT_TICK.register { getStarredMobs() }
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 	}
 
 	private fun getStarredMobs() {
