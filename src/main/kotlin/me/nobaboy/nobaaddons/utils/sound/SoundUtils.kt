@@ -1,17 +1,18 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.sound
 
+import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.Scheduler
 import net.minecraft.sound.SoundEvent
-import net.minecraft.sound.SoundEvents
 import net.minecraft.util.Identifier
 import kotlin.math.pow
 
 // TODO: Either drop this or expand on this so complex sequences are allowed (basically multiple sound events)
 object SoundUtils {
-	private val randomOrb = SoundEvent.of(Identifier.ofVanilla("entity.experience_orb.pickup"))
+	private val experienceOrbPickup = SoundEvent.of(Identifier.ofVanilla("entity.experience_orb.pickup"))
 	private val noteBlockPling = SoundEvent.of(Identifier.ofVanilla("block.note_block.pling"))
 	private val noteBlockFlute = SoundEvent.of(Identifier.ofVanilla("block.note_block.flute"))
 
-	val dingSound = SimpleSound(randomOrb)
+	val dingSound = SimpleSound(experienceOrbPickup, pitch = 0.5f)
 
 	val zeldaSecretSound = SoundSequence.uniformVolume(
 		soundEvent = noteBlockFlute,
@@ -29,15 +30,14 @@ object SoundUtils {
 
 	private fun playSound(soundEvent: SoundEvent, pitch: Float, volume: Float) {
 		MCUtils.player?.playSound(soundEvent, volume, pitch)
-		SoundEvents.BLOCK_NOTE_BLOCK_PLING
 	}
 
 	class SoundSequence(
 		val soundEvent: SoundEvent,
 		val steps: List<SoundStep>,
 		val delay: Int
-	) {
-		fun play() {
+	) : PlayableSound {
+		override fun play() {
 			steps.forEachIndexed { index, step ->
 				val delay = index * delay
 				Scheduler.schedule(delay) { playSound(soundEvent, step.pitch, step.volume) }
@@ -61,8 +61,8 @@ object SoundUtils {
 		val soundEvent: SoundEvent,
 		val pitch: Float = 1.0f,
 		val volume: Float = 1.0f
-	) {
-		fun play() {
+	) : PlayableSound {
+		override fun play() {
 			playSound(soundEvent, pitch, volume)
 		}
 	}

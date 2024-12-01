@@ -6,6 +6,7 @@ import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.core.MobRarity
+import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 import net.minecraft.text.Text
 
 object FishingCategory {
@@ -30,6 +31,12 @@ object FishingCategory {
 				.option(Option.createBuilder<MobRarity>()
 					.name(Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity"))
 					.binding(defaults.fishing.seaCreatureAlert.minimumRarity, config.fishing.seaCreatureAlert::minimumRarity) { config.fishing.seaCreatureAlert.minimumRarity = it }
+					.controller(NobaConfigUtils::createCyclingController)
+					.build())
+
+				.option(Option.createBuilder<NotificationSound>()
+					.name(Text.translatable("nobaaddons.config.notificationSound"))
+					.binding(defaults.fishing.seaCreatureAlert.notificationSound, config.fishing.seaCreatureAlert::notificationSound) { config.fishing.seaCreatureAlert.notificationSound = it }
 					.controller(NobaConfigUtils::createCyclingController)
 					.build())
 

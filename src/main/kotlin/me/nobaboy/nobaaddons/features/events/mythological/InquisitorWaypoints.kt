@@ -14,7 +14,6 @@ import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatchers
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
-import me.nobaboy.nobaaddons.utils.SoundUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -88,7 +87,7 @@ object InquisitorWaypoints {
 
 			RenderUtils.drawTitle("INQUISITOR!", NobaColor.DARK_RED)
 			RenderUtils.drawTitle(username, NobaColor.GOLD, scale = 3.0f, height = 1.7)
-			if(config.zeldaSecretSoundOnInquisitor) SoundUtils.zeldaSecretSound.play() else SoundUtils.dingSound.play()
+			config.notificationSound.play()
 		}
 
 		inquisitorDeadPattern.matchMatcher(message) {

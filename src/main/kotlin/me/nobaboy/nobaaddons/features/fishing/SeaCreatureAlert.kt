@@ -27,6 +27,7 @@ object SeaCreatureAlert {
 		}
 
 		RenderUtils.drawTitle(text, seaCreature.rarity.color)
+		config.notificationSound.play()
 	}
 
 	private fun isEnabled() = SkyBlockAPI.inSkyBlock && config.enabled

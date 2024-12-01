@@ -19,6 +19,7 @@
 
   "nobaaddons.config.enabled": "Enabled",
   "nobaaddons.config.seconds": "%s seconds",
+  "nobaaddons.config.notificationSound": "Notification Sound",
 
   "nobaaddons.label.unmodified": "Unmodified",
   "nobaaddons.label.default": "Default",
@@ -117,8 +118,6 @@
   "nobaaddons.config.events.mythological.alertInquisitor.tooltip": "Send a message in chat when you find a Minos Inquisitor",
   "nobaaddons.config.events.mythological.alertOnlyInParty": "Alert Only In Party",
   "nobaaddons.config.events.mythological.alertOnlyInParty.tooltip": "The Inquisitor alert message will always send in party chat instead of your current selected /chat",
-  "nobaaddons.config.events.mythological.zeldaSecretSoundOnInquisitor": "Zelda Secret Sound On Inquisitor Spawn",
-  "nobaaddons.config.events.mythological.zeldaSecretSoundOnInquisitor.tooltip": "Plays the secret sound from The Legend of Zelda instead of a ding when a Minos Inquisitor spawns",
   "nobaaddons.config.events.mythological.showInquisitorDespawnTime": "Show Inquisitor Despawn Time",
   "nobaaddons.config.events.mythological.showInquisitorDespawnTime.tooltip": "Displays how much time is left until the Minos Inquisitor despawns",
   "nobaaddons.config.events.mythological.inquisitorFocusMode": "Inquisitor Focus Mode",
