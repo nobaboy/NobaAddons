@@ -24,15 +24,17 @@ object DebugAPI {
 		private set
 
 	fun init() {
-		SoundEvents.SOUND.register {
-			val sound = Sound(it.id, it.category, it.pitch, it.volume)
-			recentSounds.add(sound)
-			while(recentSounds.size > HISTORY_LIMIT) {
-				recentSounds.removeFirst()
-			}
-			debugWindow?.refresh()
-		}
+		SoundEvents.SOUND.register { addSound(it) }
+		SoundEvents.SOUND_CANCELED.register { addSound(it, canceled = true) }
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket> { lastLocationPacket = it }
+	}
+
+	private fun addSound(event: SoundEvents.Sound, canceled: Boolean = false) {
+		recentSounds.add(Sound(event.id, event.category, event.pitch, event.volume, canceled))
+		while(recentSounds.size > HISTORY_LIMIT) {
+			recentSounds.removeFirst()
+		}
+		debugWindow?.refresh()
 	}
 
 	// this technically isn't fully correct, but it's a close enough approximation.
@@ -43,8 +45,9 @@ object DebugAPI {
 		debugWindow = SoundHistory()
 	}
 
-	data class Sound(val id: Identifier, val category: SoundCategory, val pitch: Float, val volume: Float) {
-		override fun toString(): String = "$id ($category) : $pitch / $volume"
+	data class Sound(val id: Identifier, val category: SoundCategory, val pitch: Float, val volume: Float, val canceled: Boolean) {
+		override fun toString(): String =
+			"${if(canceled) "(X) " else ""}${if(id.namespace == "minecraft") id.path else id} ($category) : $pitch / $volume"
 	}
 
 	private class SoundHistory : JFrame("Sound Event Log") {

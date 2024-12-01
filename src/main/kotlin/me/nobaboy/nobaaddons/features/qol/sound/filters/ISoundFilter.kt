@@ -15,7 +15,7 @@ interface ISoundFilter {
 
 	companion object {
 		private var init = false
-		private val filters = mutableListOf<ISoundFilter>(
+		private val filters = listOf<ISoundFilter>(
 			// Items Abilities
 			WitherSkullAbilitiesSoundFilter,
 			// Dwarven Mines

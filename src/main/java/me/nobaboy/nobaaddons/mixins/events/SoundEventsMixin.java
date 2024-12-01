@@ -29,12 +29,14 @@ public class SoundEventsMixin {
 		var location = new NobaVec(packet.getX(), packet.getY(), packet.getZ());
 
 		var allow = new SoundEvents.AllowSound(id, location, packet.getPitch(), packet.getVolume());
+		var soundEvent = new SoundEvents.Sound(id, packet.getCategory(), location, packet.getPitch(), packet.getVolume());
 		SoundEvents.ALLOW_SOUND.invoke(allow);
 		if(allow.isCanceled()) {
+			SoundEvents.SOUND_CANCELED.invoke(soundEvent);
 			ci.cancel();
 			return;
 		}
 
-		SoundEvents.SOUND.invoke(new SoundEvents.Sound(id, packet.getCategory(), location, packet.getPitch(), packet.getVolume()));
+		SoundEvents.SOUND.invoke(soundEvent);
 	}
 }

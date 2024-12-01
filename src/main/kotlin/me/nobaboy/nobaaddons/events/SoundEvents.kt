@@ -14,6 +14,9 @@ object SoundEvents {
 	@JvmField
 	val SOUND = EventDispatcher<Sound>()
 
+	@JvmField
+	val SOUND_CANCELED = EventDispatcher<Sound>()
+
 	data class AllowSound(val id: Identifier, val location: NobaVec, val pitch: Float, val volume: Float) : CancelableEvent()
 	data class Sound(val id: Identifier, val category: SoundCategory, val location: NobaVec, val pitch: Float, val volume: Float)
 }
