@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public class MouseMixin {
 	@ModifyExpressionValue(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;", ordinal = 0))
 	public Object nobaaddons$mouseLock(Object original) {
-		return MouseLock.mouseLocked ? -1 / 3d : original;
+		if(MouseLock.isLocked()) return -1 / 3d;
+		if(MouseLock.isReduced()) return ((double) original) / 6d;
+		return original;
 	}
 }

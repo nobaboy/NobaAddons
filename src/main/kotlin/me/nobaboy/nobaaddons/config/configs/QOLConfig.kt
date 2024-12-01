@@ -6,6 +6,9 @@ class QOLConfig {
 	@SerialEntry
 	val soundFilters: SoundFilters = SoundFilters()
 
+	@SerialEntry
+	val garden: Garden = Garden()
+
 	class SoundFilters {
 		@SerialEntry
 		var muteWitherSkullAbilities: Boolean = false
@@ -15,5 +18,12 @@ class QOLConfig {
 
 		@SerialEntry
 		var muteKillerSpring: Boolean = false
+	}
+
+	class Garden {
+		@SerialEntry
+		var reduceMouseSensitivity: Boolean = false
+		@SerialEntry
+		var daedalusIsFarmingTool: Boolean = false
 	}
 }
