@@ -118,24 +118,6 @@ object UIAndVisualsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petLevel"))
-					.binding(defaults.uiAndVisuals.slotInfo.petLevel, config.uiAndVisuals.slotInfo::petLevel) { config.uiAndVisuals.slotInfo.petLevel = it }
-					.controller(TickBoxControllerBuilder::create)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petItem"))
-					.binding(defaults.uiAndVisuals.slotInfo.petItem, config.uiAndVisuals.slotInfo::petItem) { config.uiAndVisuals.slotInfo.petItem = it }
-					.controller(TickBoxControllerBuilder::create)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petCandy"))
-					.binding(defaults.uiAndVisuals.slotInfo.petCandy, config.uiAndVisuals.slotInfo::petCandy) { config.uiAndVisuals.slotInfo.petCandy = it }
-					.controller(TickBoxControllerBuilder::create)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.skillLevel"))
 					.binding(defaults.uiAndVisuals.slotInfo.skillLevel, config.uiAndVisuals.slotInfo::skillLevel) { config.uiAndVisuals.slotInfo.skillLevel = it }
 					.controller(TickBoxControllerBuilder::create)
@@ -202,6 +184,24 @@ object UIAndVisualsCategory {
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.newYearCake"))
 					.binding(defaults.uiAndVisuals.slotInfo.newYearCake, config.uiAndVisuals.slotInfo::newYearCake) { config.uiAndVisuals.slotInfo.newYearCake = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petLevel"))
+					.binding(defaults.uiAndVisuals.slotInfo.petLevel, config.uiAndVisuals.slotInfo::petLevel) { config.uiAndVisuals.slotInfo.petLevel = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petItem"))
+					.binding(defaults.uiAndVisuals.slotInfo.petItem, config.uiAndVisuals.slotInfo::petItem) { config.uiAndVisuals.slotInfo.petItem = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petCandy"))
+					.binding(defaults.uiAndVisuals.slotInfo.petCandy, config.uiAndVisuals.slotInfo::petCandy) { config.uiAndVisuals.slotInfo.petCandy = it }
 					.controller(TickBoxControllerBuilder::create)
 					.build())
 
