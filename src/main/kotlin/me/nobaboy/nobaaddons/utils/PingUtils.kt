@@ -18,8 +18,12 @@ object PingUtils {
 	}
 
 	fun sendPingPacket(sendMessage: Boolean = false) {
-		MCUtils.networkHandler?.sendPacket(QueryPingC2SPacket(Util.getMeasuringTimeMs()))
 		if(sendMessage) sendPingMessage = true
+
+		val client = MCUtils.client
+		if(client.debugHud.shouldShowPacketSizeAndPingCharts()) return
+
+		client.networkHandler?.sendPacket(QueryPingC2SPacket(Util.getMeasuringTimeMs()))
 	}
 
 	fun onPingPacket(packet: PingResultS2CPacket) {
