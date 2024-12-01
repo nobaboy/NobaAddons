@@ -73,11 +73,10 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 
 	val waypoint = Command.command("waypoint") {
 		buildCommand {
-			ClientCommandManager.literal(name)
-				.then(ClientCommandManager.argument("x", DoubleArgumentType.doubleArg())
-					.then(ClientCommandManager.argument("y", DoubleArgumentType.doubleArg())
-						.then(ClientCommandManager.argument("z", DoubleArgumentType.doubleArg())
-							.executes(this::execute))))
+			it.then(ClientCommandManager.argument("x", DoubleArgumentType.doubleArg())
+				.then(ClientCommandManager.argument("y", DoubleArgumentType.doubleArg())
+					.then(ClientCommandManager.argument("z", DoubleArgumentType.doubleArg())
+						.executes(this::execute))))
 		}
 
 		executes(TemporaryWaypoint::addWaypoint)

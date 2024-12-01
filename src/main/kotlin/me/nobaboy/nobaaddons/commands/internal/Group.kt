@@ -24,9 +24,9 @@ abstract class Group(override val name: String, override val aliases: List<Strin
 		}
 	}
 
-	override fun create(): LiteralArgumentBuilder<FabricClientCommandSource> {
+	override fun create(name: String): LiteralArgumentBuilder<FabricClientCommandSource> {
 		val root = ClientCommandManager.literal(name)
-		commands.forEach { root.then(it.create()) }
+		CommandUtil.addAll(root, commands)
 		if(executeRoot) root.executes(this::execute)
 		return root
 	}
