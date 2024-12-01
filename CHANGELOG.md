@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Subcommands not registering their aliases - celeste
 - Enchant names for Enchant Slot Info because some ids don't match the enchant name - nobaboy
 - Sea Creature Alert not having a notification sound - nobaboy
+- Sound filters - celeste
 
 ## 0.1.0-Alpha.9 - 2024-11-25
 
