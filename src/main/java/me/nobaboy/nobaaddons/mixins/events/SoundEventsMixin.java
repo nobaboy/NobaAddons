@@ -35,6 +35,6 @@ public class SoundEventsMixin {
 			return;
 		}
 
-		SoundEvents.SOUND.invoke(new SoundEvents.Sound(id, location, packet.getPitch(), packet.getVolume()));
+		SoundEvents.SOUND.invoke(new SoundEvents.Sound(id, packet.getCategory(), location, packet.getPitch(), packet.getVolume()));
 	}
 }

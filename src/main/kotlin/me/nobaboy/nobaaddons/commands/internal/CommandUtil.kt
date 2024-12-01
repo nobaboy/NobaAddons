@@ -16,12 +16,13 @@ object CommandUtil {
 	}
 
 	fun register(root: ICommand, dispatcher: CommandDispatcher<FabricClientCommandSource>) {
+		if(!root.enabled) return
 		val names = listOf(root.name, *root.aliases.toTypedArray())
 		names.forEach { dispatcher.register(root.create(it)) }
 	}
 
 	fun addAll(command: LiteralArgumentBuilder<FabricClientCommandSource>, commands: List<ICommand>) {
-		commands.forEach {
+		commands.filter { it.enabled }.forEach {
 			val names = listOf(it.name, *it.aliases.toTypedArray())
 			names.forEach { name -> command.then(it.create(name)) }
 		}

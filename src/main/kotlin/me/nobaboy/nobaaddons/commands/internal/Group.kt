@@ -9,7 +9,12 @@ import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.starProjectedType
 
-abstract class Group(override val name: String, override val aliases: List<String> = listOf(), val executeRoot: Boolean = false): ICommand {
+abstract class Group(
+	override val name: String,
+	override val enabled: Boolean = true,
+	override val aliases: List<String> = listOf(),
+	val executeRoot: Boolean = false,
+): ICommand {
 	private val commands: List<ICommand> by lazy {
 		buildList<ICommand> {
 			addAll(this@Group::class.memberProperties

@@ -11,6 +11,7 @@ typealias CommandBuilder = Command.(LiteralArgumentBuilder<FabricClientCommandSo
 class Command(
 	override val name: String,
 	override val aliases: List<String> = listOf(),
+	override val enabled: Boolean = true,
 	private val callback: CommandContext<FabricClientCommandSource>.() -> Unit,
 	private val commandBuilder: CommandBuilder,
 ): ICommand {
@@ -29,6 +30,7 @@ class Command(
 
 	class Builder(private val name: String, private val aliases: List<String>) {
 		private lateinit var executes: CommandContext<FabricClientCommandSource>.() -> Unit
+		var enabled = true
 		private var builder: CommandBuilder = {
 			it.executes(this::execute)
 		}
@@ -45,6 +47,7 @@ class Command(
 			return Command(
 				name = name,
 				aliases = aliases,
+				enabled = enabled,
 				callback = executes,
 				commandBuilder = builder,
 			)
