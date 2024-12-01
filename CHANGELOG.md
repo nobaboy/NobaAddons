@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - `/noba ping` command with the new ping system - celeste
 - Option to reduce mouse sensitivity in the Garden - celeste
+- Reindrake sound filters - celeste
 
 ### Changed
 
