@@ -13,7 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public class SoundEventsMixin {
-	@Inject(method = "onPlaySound", at = @At("RETURN"), cancellable = true)
+	@Inject(
+		method = "onPlaySound",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/sound/SoundCategory;FFJ)V"),
+		cancellable = true
+	)
 	public void nobaaddons$onPlaySound(PlaySoundS2CPacket packet, CallbackInfo ci) {
 		var sound = packet.getSound().getKeyOrValue();
 		var id = sound.left()
