@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.qol
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
@@ -29,14 +29,14 @@ object MouseLock {
 	@get:JvmStatic
 	@get:JvmName("isReduced")
 	val reduced: Boolean get() {
-		val config = NobaConfigManager.config.qol.garden
-
+		if(!SkyBlockIsland.GARDEN.inIsland()) return false
 		if(MCUtils.player?.abilities?.flying == true) return false
-		if(SkyBlockAPI.currentIsland != SkyBlockIsland.GARDEN) return false
+
+		val config = NobaConfigManager.config.qol.garden
 		if(!config.reduceMouseSensitivity) return false
 
 		val heldItem = MCUtils.player?.mainHandStack?.getSkyBlockItem() ?: return false
-		if(heldItem.id == "DAEDALUS_AXE" || heldItem.id == "STARRED_DAEDALUS_AXE") return config.daedalusIsFarmingTool
+		if(heldItem.id == "DAEDALUS_AXE" || heldItem.id == "STARRED_DAEDALUS_AXE") return config.isDaedalusFarmingTool
 		return heldItem.id in FARMING_TOOLS
 	}
 

@@ -23,7 +23,11 @@ class QOLConfig {
 	class Garden {
 		@SerialEntry
 		var reduceMouseSensitivity: Boolean = false
+
 		@SerialEntry
-		var daedalusIsFarmingTool: Boolean = false
+		var reductionMultiplier: Int = 6
+
+		@SerialEntry
+		var isDaedalusFarmingTool: Boolean = false
 	}
 }

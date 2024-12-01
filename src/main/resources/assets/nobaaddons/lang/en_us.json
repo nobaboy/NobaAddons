@@ -167,7 +167,7 @@
   "nobaaddons.config.chat.filters.healerOrbMessage": "Healer Orb Message",
   "nobaaddons.config.chat.filters.pickupObtainMessage": "Hide Pickup/Obtain Message",
   "nobaaddons.config.chat.filters.allowKeyMessage": "Allow Key Message",
-  "nobaaddons.config.chat.filters.allowKeyMessage.tooltip": "Allow key messages even when pickup/obtain messages are hidden",
+  "nobaaddons.config.chat.filters.allowKeyMessage.tooltip": "Allow key messages even when pickup or obtain messages are hidden",
   "nobaaddons.config.chat.filters.allow5050ItemMessage": "Allow 50/50 Item Message",
   "nobaaddons.config.chat.filters.allow5050ItemMessage.tooltip": "Allow 50/50 item messages even when pickup/obtain messages are hidden",
   "nobaaddons.config.chat.filters.hideTipMessages": "Hide Tip Messages",
@@ -209,5 +209,11 @@
   "nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities": "Mute Wither Skull Abilities",
   "nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities.tooltip": "This affects Dreadlord Sword and Soulstealer Bow, along with the dungeon mobs that use them",
   "nobaaddons.config.qol.soundFilters.muteGoneWithTheWind": "Mute Gone With The Wind",
-  "nobaaddons.config.qol.soundFilters.muteKillerSpring": "Mute Killer Spring"
+  "nobaaddons.config.qol.soundFilters.muteKillerSpring": "Mute Killer Spring",
+  "nobaaddons.config.qol.garden": "Garden",
+  "nobaaddons.config.qol.garden.reduceMouseSensitivity": "Reduce Mouse Sensitivity",
+  "nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip": "Reduces your mouse sensitivity in the Garden while you're holding a farming tool and not flying\nYour mouse may also be locked with §3/nobaaddons lockmouse§r",
+  "nobaaddons.config.qol.garden.reductionMultiplier": "Reduction Multiplier",
+  "nobaaddons.config.qol.garden.isDaedalusFarmingTool": "Reduce Sensitivity with Daedalus Axe",
+  "nobaaddons.config.qol.garden.isDaedalusFarmingTool.tooltip": "While enabled, the mouse sensitivity reducer will also count Daedalus Axe as a farming tool"
 }
