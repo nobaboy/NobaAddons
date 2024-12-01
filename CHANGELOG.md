@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - `/noba ping` command with the new ping system - celeste
-- Mouse Reduce - celeste
+- Option to reduce mouse sensitivity in the Garden - celeste
 
 ### Changed
 
