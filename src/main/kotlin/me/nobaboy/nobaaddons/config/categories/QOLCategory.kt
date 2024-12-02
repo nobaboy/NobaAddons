@@ -15,10 +15,11 @@ object QOLCategory {
 		return ConfigCategory.createBuilder()
 			.name(Text.translatable("nobaaddons.config.qol"))
 
-			//region Sound Filters
+			// region Sound Filters
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.qol.soundFilters"))
-				//region Item Abilities
+
+				// region Item Abilities
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.label.itemAbilities"))
 					.build())
@@ -29,23 +30,11 @@ object QOLCategory {
 					.binding(defaults.qol.soundFilters.muteWitherSkullAbilities, config.qol.soundFilters::muteWitherSkullAbilities) { config.qol.soundFilters.muteWitherSkullAbilities = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
-				//endregion
+				// endregion
 
-				//region Dwarven Mines
+				// region Mobs
 				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.qol.label.dwarvenMines"))
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteGoneWithTheWind"))
-					.binding(defaults.qol.soundFilters.muteGoneWithTheWind, config.qol.soundFilters::muteGoneWithTheWind) { config.qol.soundFilters.muteGoneWithTheWind = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-				//endregion
-
-				//region Mobs
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.qol.label.mobs"))
+					.line(Text.translatable("nobaaddons.config.label.mobs"))
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
@@ -59,9 +48,21 @@ object QOLCategory {
 					.binding(defaults.qol.soundFilters.muteReindrakeGiftDrop, config.qol.soundFilters::muteReindrakeGiftDrop) { config.qol.soundFilters.muteReindrakeGiftDrop = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
-				//endregion
+				// endregion
 
-				//region Rift
+				// region Dwarven Mines
+				.option(LabelOption.createBuilder()
+					.line(Text.translatable("nobaaddons.config.qol.label.dwarvenMines"))
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteGoneWithTheWind"))
+					.binding(defaults.qol.soundFilters.muteGoneWithTheWind, config.qol.soundFilters::muteGoneWithTheWind) { config.qol.soundFilters.muteGoneWithTheWind = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+				// endregion
+
+				// region Rift
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.label.rift"))
 					.build())
@@ -71,16 +72,16 @@ object QOLCategory {
 					.binding(defaults.qol.soundFilters.muteKillerSpring, config.qol.soundFilters::muteKillerSpring) { config.qol.soundFilters.muteKillerSpring = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
-				//endregion
+				// endregion
 
 				.collapsed(true)
 				.build())
-			//endregion
+			// endregion
 
-			//region Garden
+			// region Garden
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.qol.garden"))
-				//region Sensitivity Reducer
+				// region Sensitivity Reducer
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.qol.garden.reduceMouseSensitivity"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip")))
@@ -107,11 +108,11 @@ object QOLCategory {
 					.binding(defaults.qol.garden.autoUnlockMouseOnTeleport, config.qol.garden::autoUnlockMouseOnTeleport) { config.qol.garden.autoUnlockMouseOnTeleport = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
-				//endregion
+				// endregion
 
 				.collapsed(true)
 				.build())
-			//endregion
+			// endregion
 
 			.build()
 	}

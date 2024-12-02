@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.visuals.slotinfo.impl
+package me.nobaboy.nobaaddons.features.visuals.slotinfo.items
 
 import me.nobaboy.nobaaddons.api.PetAPI
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents

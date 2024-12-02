@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.visuals.slotinfo.impl
+package me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements
 
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
@@ -16,7 +16,7 @@ object GardenPlotPestInfo : ISlotInfo {
 
 	private val pestsPattern = Pattern.compile("$ICON This plot has (?<count>\\d+) Pests?!")
 
-	override val enabled: Boolean get() = config.gardenPests
+	override val enabled: Boolean get() = config.gardenPlotPests
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		if(InventoryUtils.openInventoryName() != "Configure Plots") return

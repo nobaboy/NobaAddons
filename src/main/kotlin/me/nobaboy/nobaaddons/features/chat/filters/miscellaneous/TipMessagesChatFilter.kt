@@ -2,10 +2,9 @@ package me.nobaboy.nobaaddons.features.chat.filters.miscellaneous
 
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
-import net.minecraft.text.Text
 import java.util.regex.Pattern
 
-object TipMessageChatFilter : IChatFilter {
+object TipMessagesChatFilter : IChatFilter {
 	private val alreadyTippedPattern = Pattern.compile(
 		"You've already tipped someone in the past hour in [A-z ]+! Wait a bit and try again!"
 	)
@@ -16,11 +15,11 @@ object TipMessageChatFilter : IChatFilter {
 		"Slow down! You can only use /tip every few seconds."
 	)
 
-	override fun shouldFilter(message: Text, text: String): Boolean =
-		alreadyTippedPattern.matches(text) ||
-		text.startsWith("You tipped") ||
-		text.startsWith("You were tipped") ||
-		text in tipMessages
+	override fun shouldFilter(message: String): Boolean =
+		alreadyTippedPattern.matches(message) ||
+			message.startsWith("You tipped") ||
+			message.startsWith("You were tipped") ||
+			message in tipMessages
 
 	override fun isEnabled() = config.hideTipMessages
 }

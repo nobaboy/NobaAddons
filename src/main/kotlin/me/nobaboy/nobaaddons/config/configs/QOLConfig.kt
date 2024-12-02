@@ -14,16 +14,16 @@ class QOLConfig {
 		var muteWitherSkullAbilities: Boolean = false
 
 		@SerialEntry
-		var muteGoneWithTheWind: Boolean = false
-
-		@SerialEntry
-		var muteKillerSpring: Boolean = false
-
-		@SerialEntry
 		var muteReindrakeSpawn: Boolean = false
 
 		@SerialEntry
 		var muteReindrakeGiftDrop: Boolean = false
+
+		@SerialEntry
+		var muteGoneWithTheWind: Boolean = false
+
+		@SerialEntry
+		var muteKillerSpring: Boolean = false
 	}
 
 	class Garden {

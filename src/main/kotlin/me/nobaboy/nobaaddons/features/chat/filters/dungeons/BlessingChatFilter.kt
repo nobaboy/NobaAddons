@@ -29,10 +29,10 @@ object BlessingChatFilter : IChatFilter {
 	private lateinit var blessingType: BlessingType
 	private val stats = mutableListOf<Stat>()
 
-	override fun shouldFilter(message: Text, text: String): Boolean {
+	override fun shouldFilter(message: String): Boolean {
 		val filterMode = config.blessingMessage
 
-		blessingFindPattern.matchMatcher(text) {
+		blessingFindPattern.matchMatcher(message) {
 			if(filterMode == ChatFilterOption.COMPACT) {
 				blessingType = BlessingType.valueOf(group("blessing").uppercase())
 				stats.clear()
@@ -40,10 +40,10 @@ object BlessingChatFilter : IChatFilter {
 			return true
 		}
 
-		if(text.startsWith(statMessages)) {
+		if(message.startsWith(statMessages)) {
 			check(this::blessingType.isInitialized) { "Blessing type is not set!" }
 			if(filterMode == ChatFilterOption.COMPACT) {
-				blessingStatsPattern.findAllMatcher(text) {
+				blessingStatsPattern.findAllMatcher(message) {
 					val statType = StatType.entries.firstOrNull { group("stat") == it.text || group("stat") == it.identifier } ?: return@findAllMatcher
 					stats.add(Stat(statType, group("value")))
 				}

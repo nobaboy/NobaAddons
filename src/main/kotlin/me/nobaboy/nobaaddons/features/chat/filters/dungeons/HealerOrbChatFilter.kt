@@ -20,10 +20,10 @@ object HealerOrbChatFilter : IChatFilter {
 		"^◕ You picked up a (?<orb>[A-z ]+) from (?<player>[A-z0-9_]+) healing you for (?<health>[0-9.]+)❤ and granting you (?<buff>[0-9+%]+) (?<stat>[A-z ]+) for (?<duration>[0-9]+) seconds\\."
 	)
 
-	override fun shouldFilter(message: Text, text: String): Boolean {
+	override fun shouldFilter(message: String): Boolean {
 		val filterMode = config.healerOrbMessage
 
-		userPickupHealerOrbPattern.matchMatcher(text) {
+		userPickupHealerOrbPattern.matchMatcher(message) {
 			if(filterMode == ChatFilterOption.COMPACT) {
 				val statType = StatType.entries.firstOrNull { group("stat") == it.text || group("stat") == it.identifier } ?: return@matchMatcher
 				val message = compileHealerOrbMessage(
@@ -34,7 +34,7 @@ object HealerOrbChatFilter : IChatFilter {
 			return true
 		}
 
-		return otherPickupUserOrbPattern.matches(text)
+		return otherPickupUserOrbPattern.matches(message)
 	}
 
 	private fun compileHealerOrbMessage(

@@ -15,13 +15,13 @@ interface ISoundFilter {
 
 	companion object {
 		private var init = false
-		private val filters = listOf<ISoundFilter>(
+		private val filters = arrayOf<ISoundFilter>(
 			// Items Abilities
 			WitherSkullAbilitiesSoundFilter,
-			// Dwarven Mines
-			GoneWithTheWindSoundFilter,
 			// Mobs
 			ReindrakeSoundFilter,
+			// Dwarven Mines
+			GoneWithTheWindSoundFilter,
 			// Rift
 			KillerSpringSoundFilter
 		)
