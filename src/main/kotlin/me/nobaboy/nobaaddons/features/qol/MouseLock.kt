@@ -1,5 +1,9 @@
 package me.nobaboy.nobaaddons.features.qol
 
+//? if <1.21.2 {
+/*import me.nobaboy.nobaaddons.utils.NobaVec*/
+//?}
+
 import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
@@ -65,7 +69,11 @@ object MouseLock {
 		if(packet !is PlayerPositionLookS2CPacket) return
 
 		val playerLocation = LocationUtils.playerLocation().round(2)
+		//? if >=1.21.2 {
 		val packetLocation = packet.change.position.toNobaVec().round(2)
+		//?} else {
+		/*val packetLocation = NobaVec(packet.x, packet.y, packet.z).round(2)*/
+		//?}
 		if(packetLocation.distance(playerLocation) >= 5) locked = false
 	}
 
