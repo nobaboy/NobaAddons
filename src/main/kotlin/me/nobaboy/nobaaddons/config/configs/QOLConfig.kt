@@ -18,6 +18,12 @@ class QOLConfig {
 
 		@SerialEntry
 		var muteKillerSpring: Boolean = false
+
+		@SerialEntry
+		var muteReindrakeSpawn: Boolean = false
+
+		@SerialEntry
+		var muteReindrakeGiftDrop: Boolean = false
 	}
 
 	class Garden {

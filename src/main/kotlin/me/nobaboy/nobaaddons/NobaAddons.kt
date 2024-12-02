@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.PetAPI
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.mythological.BurrowGuessAPI
 import me.nobaboy.nobaaddons.api.mythological.DianaAPI
@@ -61,6 +62,7 @@ object NobaAddons : ClientModInitializer {
 		InventoryAPI.init()
 		PartyAPI.init()
 		SkyBlockAPI.init()
+		DebugAPI.init()
 		MayorAPI.init()
 		PetAPI.init()
 		DungeonsAPI.init()
