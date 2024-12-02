@@ -15,7 +15,6 @@ import javax.swing.JTextArea
  * Debug utilities API
  */
 object DebugAPI {
-	// the default debug window size allows for ~55 entries
 	private const val HISTORY_LIMIT = 50
 	private val recentSounds = mutableListOf<Sound>()
 	private var debugWindow: SoundHistory? = null
@@ -59,7 +58,7 @@ object DebugAPI {
 			refresh()
 			add(text)
 
-			setSize(500, 800)
+			setSize(500, 850)
 			isResizable = true
 			addWindowListener(Adapter)
 			defaultCloseOperation = DISPOSE_ON_CLOSE

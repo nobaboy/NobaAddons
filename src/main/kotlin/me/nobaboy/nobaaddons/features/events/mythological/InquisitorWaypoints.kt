@@ -53,7 +53,7 @@ object InquisitorWaypoints {
 	private fun onSecondPassed() {
 		if(!isEnabled()) return
 
-		inquisitorsNearby.removeIf { !it.isAlive || EntityUtils.getEntityByID(it.id) !== it }
+		inquisitorsNearby.removeIf { !it.isAlive || EntityUtils.getEntityById(it.id) !== it }
 		waypoints.removeIf { it.spawnTime.elapsedSince() > 75.seconds }
 	}
 
@@ -115,7 +115,7 @@ object InquisitorWaypoints {
 
 	private fun shareInquisitor() {
 		lastInquisitorId?.let {
-			val inquisitor = EntityUtils.getEntityByID(it) ?: return
+			val inquisitor = EntityUtils.getEntityById(it) ?: return
 			if(!inquisitor.isAlive) return
 
 			val (x, y, z) = inquisitor.getNobaVec().roundToBlock().toDoubleArray()

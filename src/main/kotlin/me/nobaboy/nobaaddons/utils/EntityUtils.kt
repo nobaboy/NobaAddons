@@ -22,7 +22,7 @@ object EntityUtils {
 		}?.asSequence()?.filterNotNull() ?: emptySequence()
 	}
 
-	fun getEntityByID(entityId: Int) = MCUtils.player?.entityWorld?.getEntityById(entityId)
+	fun getEntityById(entityId: Int) = MCUtils.player?.entityWorld?.getEntityById(entityId)
 
 	inline fun <reified T : Entity> getEntitiesNear(location: NobaVec, radius: Double): Sequence<T> =
 		getEntities<T>().filter { it.distanceTo(location) < radius }

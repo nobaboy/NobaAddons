@@ -83,6 +83,7 @@ object QOLCategory {
 				//region Sensitivity Reducer
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.qol.garden.reduceMouseSensitivity"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip")))
 					.binding(defaults.qol.garden.reduceMouseSensitivity, config.qol.garden::reduceMouseSensitivity) { config.qol.garden.reduceMouseSensitivity = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
@@ -95,7 +96,15 @@ object QOLCategory {
 
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.qol.garden.isDaedalusFarmingTool"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.qol.garden.isDaedalusFarmingTool.tooltip")))
 					.binding(defaults.qol.garden.isDaedalusFarmingTool, config.qol.garden::isDaedalusFarmingTool) { config.qol.garden.isDaedalusFarmingTool = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip")))
+					.binding(defaults.qol.garden.autoUnlockMouseOnTeleport, config.qol.garden::autoUnlockMouseOnTeleport) { config.qol.garden.autoUnlockMouseOnTeleport = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 				//endregion

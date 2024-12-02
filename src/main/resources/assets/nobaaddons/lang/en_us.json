@@ -218,5 +218,7 @@
   "nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip": "Reduces your mouse sensitivity in the Garden while you're holding a farming tool and not flying\nYour mouse may also be locked with §3/nobaaddons lockmouse§r",
   "nobaaddons.config.qol.garden.reductionMultiplier": "Reduction Multiplier",
   "nobaaddons.config.qol.garden.isDaedalusFarmingTool": "Reduce Sensitivity with Daedalus Axe",
-  "nobaaddons.config.qol.garden.isDaedalusFarmingTool.tooltip": "While enabled, the mouse sensitivity reducer will also count Daedalus Axe as a farming tool"
+  "nobaaddons.config.qol.garden.isDaedalusFarmingTool.tooltip": "While enabled, the mouse sensitivity reducer will also count Daedalus Axe as a farming tool",
+  "nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport": "Auto Unlock Mouse On Teleport",
+  "nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip": "Automatically unlocks your mouse if you teleport more than 5 blocks, this includes warping anywhere in your current island or teleporting to a Garden Plot"
 }

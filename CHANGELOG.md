@@ -4,13 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 0.1.0-Alpha.9.1 - 2024-11-30
+## 0.1.0-Alpha.10 - 2024-12-02
 
 ### Added
 
 - `/noba ping` command with the new ping system - celeste
 - Option to reduce mouse sensitivity in the Garden - celeste
 - Reindrake sound filters - celeste
+- Automatically unlock mouse on teleport - nobaboy
 
 ### Changed
 
@@ -22,7 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Pet Slot Info not displaying Golden Dragon level properly - nobaboy
 - Subcommands not registering their aliases - celeste
-- Enchant names for Enchant Slot Info because some ids don't match the enchant name - nobaboy
+- Some enchant names being wrong in Enchant Slot Info because some ids don't match the enchant name - nobaboy
 - Sea Creature Alert not having a notification sound - nobaboy
 - Sound filters - celeste
 

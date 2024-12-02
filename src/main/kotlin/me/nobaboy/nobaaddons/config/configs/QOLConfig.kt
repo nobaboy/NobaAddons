@@ -35,5 +35,8 @@ class QOLConfig {
 
 		@SerialEntry
 		var isDaedalusFarmingTool: Boolean = false
+
+		@SerialEntry
+		var autoUnlockMouseOnTeleport: Boolean = false
 	}
 }

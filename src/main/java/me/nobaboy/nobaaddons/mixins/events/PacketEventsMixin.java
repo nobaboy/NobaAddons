@@ -31,10 +31,25 @@ public class PacketEventsMixin {
 
 	@Inject(
 		method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V",
+		at = @At(
+			value = "INVOKE",
+			target = "net/minecraft/network/ClientConnection.handlePacket(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;)V"
+		)
+	)
+	private void nobaaddons$onEarlyPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
+		if(!this.channel.isOpen()) return;
+		if(this.side != NetworkSide.CLIENTBOUND) return;
+
+		PacketEvents.EARLY_RECEIVE.invoke(new PacketEvents.EarlyReceive(packet));
+	}
+
+	@Inject(
+		method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V",
 		at = @At("RETURN")
 	)
 	private void nobaaddons$onPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
-		if(!this.channel.isOpen() || this.side != NetworkSide.CLIENTBOUND) return;
+		if(!this.channel.isOpen()) return;
+		if(this.side != NetworkSide.CLIENTBOUND) return;
 
 		PacketEvents.RECEIVE.invoke(new PacketEvents.Receive(packet));
 	}

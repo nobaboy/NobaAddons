@@ -15,12 +15,12 @@ object ReindrakeSoundFilter : ISoundFilter {
 	override fun onSound(sound: SoundEvents.AllowSound) {
 		// we're not bothering with pitches or volumes here since these are the only times these sounds
 		// are ever used on the island
-		val shouldMute = when(sound.id) {
+		val shouldFilter = when(sound.id) {
 			SPAWN_SOUND -> config.muteReindrakeSpawn
 			GIFT_DROP_SOUND -> config.muteReindrakeGiftDrop
 			else -> false
 		}
 
-		if(shouldMute) sound.cancel()
+		if(shouldFilter) sound.cancel()
 	}
 }
