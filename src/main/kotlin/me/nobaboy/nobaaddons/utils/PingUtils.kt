@@ -8,6 +8,7 @@ import net.minecraft.util.Util
 
 object PingUtils {
 	private var sendPingMessage = false
+
 	var ping: Int = 0
 		private set
 
@@ -17,12 +18,17 @@ object PingUtils {
 	}
 
 	fun sendPingPacket(sendMessage: Boolean = false) {
-		MCUtils.networkHandler?.sendPacket(QueryPingC2SPacket(Util.getMeasuringTimeMs()))
-		if(sendMessage) this.sendPingMessage = true
+		if(sendMessage) sendPingMessage = true
+
+		val client = MCUtils.client
+		if(client.debugHud.shouldShowPacketSizeAndPingCharts()) return
+
+		client.networkHandler?.sendPacket(QueryPingC2SPacket(Util.getMeasuringTimeMs()))
 	}
 
 	fun onPingPacket(packet: PingResultS2CPacket) {
 		ping = (Timestamp(Util.getMeasuringTimeMs()) - Timestamp(packet.startTime)).inWholeMilliseconds.toInt()
+
 		if(sendPingMessage) {
 			sendPingMessage = false
 			ChatUtils.addMessage("Ping: ${ping}ms")

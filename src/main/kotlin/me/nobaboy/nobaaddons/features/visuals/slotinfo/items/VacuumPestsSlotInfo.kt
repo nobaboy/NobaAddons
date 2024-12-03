@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.visuals.slotinfo.impl
+package me.nobaboy.nobaaddons.features.visuals.slotinfo.items
 
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
@@ -31,13 +31,13 @@ object VacuumPestsSlotInfo : ISlotInfo {
 		val lore = itemStack.lore.stringLines
 		vacuumPestsPattern.firstMatcher(lore) {
 			var pests = group("amount").formatLong()
-			val text = when {
+			val count = when {
 				pests < 1_000 -> "$pests"
 				pests < 100_000 -> "${pests / 1_000}k"
 				else -> "${pests / 100_000 / 10.0}m"
 			}
 
-			drawCount(event, text)
+			drawCount(event, count)
 		}
 	}
 }

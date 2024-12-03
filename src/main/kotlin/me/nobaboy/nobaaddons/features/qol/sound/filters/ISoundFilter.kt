@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ability.WitherSkullAbilitiesSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.dwarvenmines.GoneWithTheWindSoundFilter
+import me.nobaboy.nobaaddons.features.qol.sound.filters.mobs.ReindrakeSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.rift.KillerSpringSoundFilter
 
 interface ISoundFilter {
@@ -14,9 +15,11 @@ interface ISoundFilter {
 
 	companion object {
 		private var init = false
-		private val filters = mutableListOf<ISoundFilter>(
+		private val filters = arrayOf<ISoundFilter>(
 			// Items Abilities
 			WitherSkullAbilitiesSoundFilter,
+			// Mobs
+			ReindrakeSoundFilter,
 			// Dwarven Mines
 			GoneWithTheWindSoundFilter,
 			// Rift

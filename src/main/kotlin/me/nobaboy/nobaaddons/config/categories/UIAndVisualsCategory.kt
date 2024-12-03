@@ -112,26 +112,8 @@ object UIAndVisualsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.gardenPests"))
-					.binding(defaults.uiAndVisuals.slotInfo.gardenPests, config.uiAndVisuals.slotInfo::gardenPests) { config.uiAndVisuals.slotInfo.gardenPests = it }
-					.controller(TickBoxControllerBuilder::create)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petLevel"))
-					.binding(defaults.uiAndVisuals.slotInfo.petLevel, config.uiAndVisuals.slotInfo::petLevel) { config.uiAndVisuals.slotInfo.petLevel = it }
-					.controller(TickBoxControllerBuilder::create)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petItem"))
-					.binding(defaults.uiAndVisuals.slotInfo.petItem, config.uiAndVisuals.slotInfo::petItem) { config.uiAndVisuals.slotInfo.petItem = it }
-					.controller(TickBoxControllerBuilder::create)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petCandy"))
-					.binding(defaults.uiAndVisuals.slotInfo.petCandy, config.uiAndVisuals.slotInfo::petCandy) { config.uiAndVisuals.slotInfo.petCandy = it }
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.gardenPlotPests"))
+					.binding(defaults.uiAndVisuals.slotInfo.gardenPlotPests, config.uiAndVisuals.slotInfo::gardenPlotPests) { config.uiAndVisuals.slotInfo.gardenPlotPests = it }
 					.controller(TickBoxControllerBuilder::create)
 					.build())
 
@@ -206,6 +188,24 @@ object UIAndVisualsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petLevel"))
+					.binding(defaults.uiAndVisuals.slotInfo.petLevel, config.uiAndVisuals.slotInfo::petLevel) { config.uiAndVisuals.slotInfo.petLevel = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petItem"))
+					.binding(defaults.uiAndVisuals.slotInfo.petItem, config.uiAndVisuals.slotInfo::petItem) { config.uiAndVisuals.slotInfo.petItem = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petCandy"))
+					.binding(defaults.uiAndVisuals.slotInfo.petCandy, config.uiAndVisuals.slotInfo::petCandy) { config.uiAndVisuals.slotInfo.petCandy = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.potionLevel"))
 					.binding(defaults.uiAndVisuals.slotInfo.potionLevel, config.uiAndVisuals.slotInfo::potionLevel) { config.uiAndVisuals.slotInfo.potionLevel = it }
 					.controller(TickBoxControllerBuilder::create)
@@ -263,6 +263,7 @@ object UIAndVisualsCategory {
 							} }
 					}
 					.build())
+
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip")))
@@ -281,12 +282,14 @@ object UIAndVisualsCategory {
 					.binding(defaults.uiAndVisuals.itemPosition.cancelEquipAnimation, config.uiAndVisuals.itemPosition::cancelEquipAnimation) { config.uiAndVisuals.itemPosition.cancelEquipAnimation = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
+
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate.tooltip")))
 					.binding(defaults.uiAndVisuals.itemPosition.cancelItemUpdateAnimation, config.uiAndVisuals.itemPosition::cancelItemUpdateAnimation) { config.uiAndVisuals.itemPosition.cancelItemUpdateAnimation = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
+
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip")))
@@ -300,18 +303,21 @@ object UIAndVisualsCategory {
 					.binding(defaults.uiAndVisuals.itemPosition.x, config.uiAndVisuals.itemPosition::x) { config.uiAndVisuals.itemPosition.x = it }
 					.controller { IntegerSliderControllerBuilder.create(it).step(1).range(-150, 150) }
 					.build())
+
 				.option(Option.createBuilder<Int>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.yOffset"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.yOffset.tooltip")))
 					.binding(defaults.uiAndVisuals.itemPosition.y, config.uiAndVisuals.itemPosition::y) { config.uiAndVisuals.itemPosition.y = it }
 					.controller { IntegerSliderControllerBuilder.create(it).step(1).range(-150, 150) }
 					.build())
+
 				.option(Option.createBuilder<Int>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.zOffset"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.zOffset.tooltip")))
 					.binding(defaults.uiAndVisuals.itemPosition.z, config.uiAndVisuals.itemPosition::z) { config.uiAndVisuals.itemPosition.z = it }
 					.controller { IntegerSliderControllerBuilder.create(it).step(1).range(-150, 50) }
 					.build())
+
 				.option(Option.createBuilder<Float>()
 					.name(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.scale"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.scale.tooltip")))

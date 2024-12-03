@@ -4,7 +4,6 @@ import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
-import net.minecraft.text.Text
 import java.util.regex.Pattern
 
 object PickupObtainChatFilter : IChatFilter {
@@ -14,12 +13,12 @@ object PickupObtainChatFilter : IChatFilter {
 	private val allowedItems = setOf("Wither Key", "Blood Key")
 	private val deniedItems = setOf("Superboom TNT", "Revive Stone", "Premium Flesh", "Beating Heart", "Vitamin Death", "Optical Lens")
 
-	override fun shouldFilter(message: Text, text: String): Boolean {
-		itemPickupPattern.matchMatcher(text) {
+	override fun shouldFilter(message: String): Boolean {
+		itemPickupPattern.matchMatcher(message) {
 			return config.allowKeyMessage && group("item") !in allowedItems
 		}
 
-		playerObtainPattern.matchMatcher(text) {
+		playerObtainPattern.matchMatcher(message) {
 			val item = group("item")
 
 			return when {

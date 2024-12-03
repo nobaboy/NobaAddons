@@ -11,10 +11,10 @@ object SeaCreatureAlert {
 	private val config get() = NobaConfigManager.config.fishing.seaCreatureAlert
 
 	fun init() {
-		ClientReceiveMessageEvents.GAME.register { message, _ -> handleChatEvent(message.string.cleanFormatting()) }
+		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
-	private fun handleChatEvent(message: String) {
+	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
 		val seaCreature = SeaCreature.creatures[message] ?: return
@@ -27,6 +27,7 @@ object SeaCreatureAlert {
 		}
 
 		RenderUtils.drawTitle(text, seaCreature.rarity.color)
+		config.notificationSound.play()
 	}
 
 	private fun isEnabled() = SkyBlockAPI.inSkyBlock && config.enabled

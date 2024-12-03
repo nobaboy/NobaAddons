@@ -24,8 +24,8 @@ object HighlightThunderSparks {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { sparks.clear() }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 		ClientTickEvents.END_CLIENT_TICK.register { getThunderSparks() }
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 	}
 
 	private fun getThunderSparks() {

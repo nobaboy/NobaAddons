@@ -7,6 +7,7 @@ import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
+import me.nobaboy.nobaaddons.core.MobRarity
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import net.minecraft.text.Text
 
@@ -15,8 +16,11 @@ object ChatCategory {
 		return ConfigCategory.createBuilder()
 			.name(Text.translatable("nobaaddons.config.chat"))
 
+			// region Alerts
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.chat.alerts"))
+
+				// region Crimson Isle
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.label.crimsonIsle"))
 					.build())
@@ -34,12 +38,17 @@ object ChatCategory {
 					.binding(defaults.chat.alerts.vanquisherSpawn, config.chat.alerts::vanquisherSpawn) { config.chat.alerts.vanquisherSpawn = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
+				// endregion
 
 				.collapsed(true)
 				.build())
+			// endregion
 
+			// region Filters
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.chat.filters"))
+
+				// region Item Abilities
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.label.itemAbilities"))
 					.build())
@@ -92,7 +101,28 @@ object ChatCategory {
 					.binding(defaults.chat.filters.hideRayOfHopeDamageMessage, config.chat.filters::hideRayOfHopeDamageMessage) { config.chat.filters.hideRayOfHopeDamageMessage = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
+				// endregion
 
+				// region Mobs
+				.option(LabelOption.createBuilder()
+					.line(Text.translatable("nobaaddons.config.label.mobs"))
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip")))
+					.binding(defaults.chat.filters.hideSeaCreatureSpawnMessage, config.chat.filters::hideSeaCreatureSpawnMessage) { config.chat.filters.hideSeaCreatureSpawnMessage = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<MobRarity>()
+					.name(Text.translatable("nobaaddons.config.chat.filters.seaCreatureMaximumRarity"))
+					.binding(defaults.chat.filters.seaCreatureMaximumRarity, config.chat.filters::seaCreatureMaximumRarity) { config.chat.filters.seaCreatureMaximumRarity = it }
+					.controller(NobaConfigUtils::createCyclingController)
+					.build())
+				// endregion
+
+				// region Dungeons
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.label.dungeons"))
 					.build())
@@ -132,7 +162,9 @@ object ChatCategory {
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.label.miscellaneous"))
 					.build())
+				// endregion
 
+				// region Miscellaneous
 				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.chat.filters.hideTipMessages"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideTipMessages.tooltip")))
@@ -146,12 +178,17 @@ object ChatCategory {
 					.binding(defaults.chat.filters.hideProfileInfo, config.chat.filters::hideProfileInfo) { config.chat.filters.hideProfileInfo = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
+				// endregion
 
 				.collapsed(true)
 				.build())
+			// endregion
 
+			// region Chat Commands
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.chat.chatCommands"))
+
+				// region DM
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.chat.chatCommands.label.dm"))
 					.build())
@@ -190,7 +227,9 @@ object ChatCategory {
 					.binding(defaults.chat.chatCommands.dm.warpOut, config.chat.chatCommands.dm::warpOut) { config.chat.chatCommands.dm.warpOut = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
+				// endregion
 
+				// region Party
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.chat.chatCommands.label.party"))
 					.build())
@@ -236,7 +275,9 @@ object ChatCategory {
 					.binding(defaults.chat.chatCommands.party.coords, config.chat.chatCommands.party::coords) { config.chat.chatCommands.party.coords = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
+				// endregion
 
+				// region Guild
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.chat.chatCommands.label.guild"))
 					.build())
@@ -261,9 +302,11 @@ object ChatCategory {
 					.binding(defaults.chat.chatCommands.guild.warpOut, config.chat.chatCommands.guild::warpOut) { config.chat.chatCommands.guild.warpOut = it }
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
+				// endregion
 
 				.collapsed(true)
 				.build())
+			// endregion
 
 			.build()
 	}

@@ -1,23 +1,29 @@
 package me.nobaboy.nobaaddons.commands.internal
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
+import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
 object CommandUtil {
 	private val commands: MutableList<ICommand> = mutableListOf()
 
 	init {
 		ClientCommandRegistrationCallback.EVENT.register { dispatch, _ ->
-			commands.forEach { command ->
-				val node = dispatch.register(command.create())
-				command.aliases.forEach { alias ->
-					val aliased = ClientCommandManager.literal(alias).redirect(node)
-					if(command !is Group || command.executeRoot) {
-						aliased.executes(command::execute)
-					}
-					dispatch.register(aliased)
-				}
-			}
+			commands.forEach { register(it, dispatch) }
+		}
+	}
+
+	fun register(root: ICommand, dispatcher: CommandDispatcher<FabricClientCommandSource>) {
+		if(!root.enabled) return
+		val names = listOf(root.name, *root.aliases.toTypedArray())
+		names.forEach { dispatcher.register(root.create(it)) }
+	}
+
+	fun addAll(command: LiteralArgumentBuilder<FabricClientCommandSource>, commands: List<ICommand>) {
+		commands.filter { it.enabled }.forEach {
+			val names = listOf(it.name, *it.aliases.toTypedArray())
+			names.forEach { name -> command.then(it.create(name)) }
 		}
 	}
 

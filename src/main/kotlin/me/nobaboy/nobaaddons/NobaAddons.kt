@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons
 
 import com.mojang.logging.LogUtils
+import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
 import me.nobaboy.nobaaddons.api.MayorAPI
@@ -62,6 +63,7 @@ object NobaAddons : ClientModInitializer {
 		InventoryAPI.init()
 		PartyAPI.init()
 		SkyBlockAPI.init()
+		DebugAPI.init()
 		MayorAPI.init()
 		PetAPI.init()
 		SlayerAPI.init()

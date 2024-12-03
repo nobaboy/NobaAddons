@@ -6,11 +6,14 @@ import me.nobaboy.nobaaddons.NobaAddons
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
+typealias CommandBuilder = Command.(LiteralArgumentBuilder<FabricClientCommandSource>) -> LiteralArgumentBuilder<FabricClientCommandSource>
+
 class Command(
 	override val name: String,
 	override val aliases: List<String> = listOf(),
+	override val enabled: Boolean = true,
 	private val callback: CommandContext<FabricClientCommandSource>.() -> Unit,
-	private val commandBuilder: Command.() -> LiteralArgumentBuilder<FabricClientCommandSource>,
+	private val commandBuilder: CommandBuilder,
 ): ICommand {
 	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
 		runCatching {
@@ -21,17 +24,18 @@ class Command(
 		return 0
 	}
 
-	override fun create(): LiteralArgumentBuilder<FabricClientCommandSource> {
-		return commandBuilder(this)
+	override fun create(name: String): LiteralArgumentBuilder<FabricClientCommandSource> {
+		return commandBuilder(this, ClientCommandManager.literal(name))
 	}
 
 	class Builder(private val name: String, private val aliases: List<String>) {
 		private lateinit var executes: CommandContext<FabricClientCommandSource>.() -> Unit
-		private var builder: Command.() -> LiteralArgumentBuilder<FabricClientCommandSource> = {
-			ClientCommandManager.literal(name).executes(this::execute)
+		var enabled = true
+		private var builder: CommandBuilder = {
+			it.executes(this::execute)
 		}
 
-		fun buildCommand(builder: Command.() -> LiteralArgumentBuilder<FabricClientCommandSource>) {
+		fun buildCommand(builder: CommandBuilder) {
 			this.builder = builder
 		}
 
@@ -43,6 +47,7 @@ class Command(
 			return Command(
 				name = name,
 				aliases = aliases,
+				enabled = enabled,
 				callback = executes,
 				commandBuilder = builder,
 			)

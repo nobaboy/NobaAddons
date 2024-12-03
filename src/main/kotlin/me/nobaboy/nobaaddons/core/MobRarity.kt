@@ -11,7 +11,8 @@ enum class MobRarity(val color: NobaColor) {
 	LEGENDARY(NobaColor.GOLD),
 	MYTHIC(NobaColor.LIGHT_PURPLE);
 
-	val displayName = name.replace("_", " ").title()
+	val displayName = name.title()
 
 	fun isAtLeast(rarity: MobRarity): Boolean = this.ordinal >= rarity.ordinal
+	fun isAtMost(rarity: MobRarity): Boolean = this.ordinal <= rarity.ordinal
 }

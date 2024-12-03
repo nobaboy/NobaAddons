@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.visuals.slotinfo.impl
+package me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements
 
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
@@ -8,14 +8,16 @@ import me.nobaboy.nobaaddons.utils.NumberUtils.tryRomanToArabic
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 
-object CollectionTierSlotInfo : ISlotInfo {
-	override val enabled: Boolean get() = config.collectionTier
+object SkillLevelSlotInfo : ISlotInfo {
+	override val enabled: Boolean get() = config.skillLevel
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		val inventoryName = InventoryUtils.openInventoryName() ?: return
-		if(!inventoryName.endsWith(" Collections")) return
+		if(inventoryName != "Your Skills") return
 
 		val itemStack = event.itemStack
+		if(itemStack.name.string == "Dungeoneering") return
+
 		val lore = itemStack.lore.stringLines
 		if(lore.none { it == "Click to view!" }) return
 

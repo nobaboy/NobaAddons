@@ -81,7 +81,7 @@ class UIAndVisualsConfig {
 		var enchantedBookName: Boolean = false
 
 		@SerialEntry
-		var gardenPests: Boolean = false
+		var gardenPlotPests: Boolean = false
 
 		@SerialEntry
 		var kuudraKeyTier: Boolean = false

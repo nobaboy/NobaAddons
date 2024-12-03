@@ -7,6 +7,7 @@ import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
+import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 import net.minecraft.text.Text
 
 object EventsCategory {
@@ -60,11 +61,10 @@ object EventsCategory {
 					.controller(NobaConfigUtils::createBooleanController)
 					.build())
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.events.mythological.zeldaSecretSoundOnInquisitor"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.events.mythological.zeldaSecretSoundOnInquisitor.tooltip")))
-					.binding(defaults.events.mythological.zeldaSecretSoundOnInquisitor, config.events.mythological::zeldaSecretSoundOnInquisitor) { config.events.mythological.zeldaSecretSoundOnInquisitor = it }
-					.controller(NobaConfigUtils::createBooleanController)
+				.option(Option.createBuilder<NotificationSound>()
+					.name(Text.translatable("nobaaddons.config.notificationSound"))
+					.binding(defaults.events.mythological.notificationSound, config.events.mythological::notificationSound) { config.events.mythological.notificationSound = it }
+					.controller(NobaConfigUtils::createCyclingController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()

@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
+import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class EventsConfig {
 	@SerialEntry
@@ -26,7 +27,7 @@ class EventsConfig {
 		var alertOnlyInParty: Boolean = false
 
 		@SerialEntry
-		var zeldaSecretSoundOnInquisitor: Boolean = false
+		var notificationSound: NotificationSound = NotificationSound.DING
 
 		@SerialEntry
 		var showInquisitorDespawnTime: Boolean = false

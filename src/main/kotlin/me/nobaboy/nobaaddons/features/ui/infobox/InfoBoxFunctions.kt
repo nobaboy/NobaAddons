@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
-import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.PingUtils
 import kotlin.math.sqrt
 
 // TODO: Make it a function system rather than using an enum
@@ -49,7 +49,7 @@ enum class InfoBoxFunctions(val aliases: List<String>, val runnable: () -> Strin
 		fun getFPS(): String = client.currentFps.toString()
 
 //		fun getTPS(): String =
-		fun getPing(): String = HypixelUtils.ping.toString()
+		fun getPing(): String = PingUtils.ping.toString()
 
 		fun getPurse(): String = String.format("%,d", SkyBlockAPI.purse)
 		fun getBits(): String = String.format("%,d", SkyBlockAPI.bits)

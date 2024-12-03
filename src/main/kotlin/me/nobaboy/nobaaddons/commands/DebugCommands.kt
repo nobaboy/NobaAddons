@@ -1,9 +1,11 @@
 package me.nobaboy.nobaaddons.commands
 
 import com.mojang.brigadier.context.CommandContext
+import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.PetAPI
+import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.core.mayor.Mayor
@@ -14,11 +16,31 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyblockItem
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.component.DataComponentTypes
+import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
+import kotlin.jvm.optionals.getOrNull
 
 @Suppress("unused")
 object DebugCommands : Group("debug") {
+	private fun MutableText.data(vararg items: Pair<String, Any?>) {
+		items.forEach {
+			append(Text.literal("${it.first}: ").formatted(Formatting.BLUE))
+			append(Text.literal(it.second.toString()).formatted(Formatting.AQUA))
+			append("\n")
+		}
+	}
+
+	private fun CommandContext<FabricClientCommandSource>.dumpInfo(vararg items: Pair<String, Any?>) {
+		val text = buildText {
+			append("-".repeat(20).toText().formatted(Formatting.GRAY))
+			append("\n")
+			data(*items)
+			append("-".repeat(20).toText().formatted(Formatting.GRAY))
+		}
+		source.sendFeedback(text)
+	}
+
 	val party = Command.command("party") {
 		executes {
 			PartyAPI.listMembers()
@@ -33,34 +55,19 @@ object DebugCommands : Group("debug") {
 				return 0
 			}
 			val itemData = item.skyblockItem()
-			ctx.source.sendFeedback(buildText {
-				fun data(vararg items: Pair<String, Any?>) {
-					items.forEach {
-						append(Text.literal("${it.first}: ").formatted(Formatting.BLUE))
-						append(Text.literal(it.second.toString()).formatted(Formatting.AQUA))
-						append("\n")
-					}
-				}
-
-				append("-".repeat(20).toText().formatted(Formatting.GRAY))
-				append("\n")
-				append(item.name)
-				append("\n\n")
-				data(
-					"Item ID" to itemData.id,
-					"UUID" to itemData.uuid,
-					"Created" to itemData.timestamp?.elapsedSince(),
-					"Reforge" to itemData.reforge,
-					"Rarity" to itemData.rarity,
-					"Recombobulated" to itemData.recombobulated,
-					"Stars" to itemData.stars,
-					"Enchants" to itemData.enchantments,
-					"Gemstones" to itemData.gemstones,
-					"Power scroll" to itemData.powerScroll,
-					"Donated to Museum" to itemData.donatedToMuseum,
-				)
-				append("-".repeat(20).toText().formatted(Formatting.GRAY))
-			})
+			ctx.dumpInfo(
+				"Item ID" to itemData.id,
+				"UUID" to itemData.uuid,
+				"Created" to itemData.timestamp?.elapsedSince(),
+				"Reforge" to itemData.reforge,
+				"Rarity" to itemData.rarity,
+				"Recombobulated" to itemData.recombobulated,
+				"Stars" to itemData.stars,
+				"Enchants" to itemData.enchantments,
+				"Gemstones" to itemData.gemstones,
+				"Power scroll" to itemData.powerScroll,
+				"Donated to Museum" to itemData.donatedToMuseum,
+			)
 			return 0
 		}
 
@@ -99,25 +106,12 @@ object DebugCommands : Group("debug") {
 				return@executes
 			}
 
-			source.sendFeedback(buildText {
-				fun data(vararg items: Pair<String, Any?>) {
-					items.forEach {
-						append(Text.literal("${it.first}: ").formatted(Formatting.BLUE))
-						append(Text.literal(it.second.toString()).formatted(Formatting.AQUA))
-						append("\n")
-					}
-				}
-
-				append("-".repeat(20).toText().formatted(Formatting.GRAY))
-				append("\n")
-				data(
-					"Current Mayor" to mayor.mayorName,
-					"Mayor Perks" to mayor.activePerks,
-					"Current Minister" to minister.mayorName,
-					"Minister Perk" to minister.activePerks,
-				)
-				append("-".repeat(20).toText().formatted(Formatting.GRAY))
-			})
+			dumpInfo(
+				"Current Mayor" to mayor.mayorName,
+				"Mayor Perks" to mayor.activePerks,
+				"Current Minister" to minister.mayorName,
+				"Minister Perk" to minister.activePerks,
+			)
 		}
 	}
 
@@ -129,28 +123,37 @@ object DebugCommands : Group("debug") {
 				return@executes
 			}
 
-			source.sendFeedback(buildText {
-				fun data(vararg items: Pair<String, Any?>) {
-					items.forEach {
-						append(Text.literal("${it.first}: ").formatted(Formatting.BLUE))
-						append(Text.literal(it.second.toString()).formatted(Formatting.AQUA))
-						append("\n")
-					}
-				}
+			dumpInfo(
+				"Name" to pet.name,
+				"Pet ID" to pet.id,
+				"Level" to pet.level,
+				"XP" to pet.xp,
+				"Rarity" to pet.rarity,
+				"Held Item" to pet.heldItem,
+				"UUID" to pet.uuid
+			)
+		}
+	}
 
-				append("-".repeat(20).toText().formatted(Formatting.GRAY))
-				append("\n")
-				data(
-					"Name" to pet.name,
-					"Pet ID" to pet.id,
-					"Level" to pet.level,
-					"XP" to pet.xp,
-					"Rarity" to pet.rarity,
-					"Held Item" to pet.heldItem,
-					"UUID" to pet.uuid
-				)
-				append("-".repeat(20).toText().formatted(Formatting.GRAY))
-			})
+	val sounds = Command.command("sounds") {
+		enabled = DebugAPI.isAwtAvailable
+
+		executes {
+			DebugAPI.openSoundDebugMenu()
+		}
+	}
+
+	val location = Command.command("location") {
+		executes {
+			val location = DebugAPI.lastLocationPacket
+			dumpInfo(
+				"Server" to location.serverName,
+				"Type" to location.serverType.getOrNull(),
+				"Lobby" to location.lobbyName.getOrNull(),
+				"Mode" to location.mode.getOrNull(),
+				"Map" to location.map.getOrNull(),
+				"Detected Island" to SkyBlockAPI.currentIsland,
+			)
 		}
 	}
 }

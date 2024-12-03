@@ -14,7 +14,6 @@ import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatchers
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
-import me.nobaboy.nobaaddons.utils.SoundUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -54,7 +53,7 @@ object InquisitorWaypoints {
 	private fun onSecondPassed() {
 		if(!isEnabled()) return
 
-		inquisitorsNearby.removeIf { !it.isAlive || EntityUtils.getEntityByID(it.id) !== it }
+		inquisitorsNearby.removeIf { !it.isAlive || EntityUtils.getEntityById(it.id) !== it }
 		waypoints.removeIf { it.spawnTime.elapsedSince() > 75.seconds }
 	}
 
@@ -88,7 +87,7 @@ object InquisitorWaypoints {
 
 			RenderUtils.drawTitle("INQUISITOR!", NobaColor.DARK_RED)
 			RenderUtils.drawTitle(username, NobaColor.GOLD, scale = 3.0f, height = 1.7)
-			if(config.zeldaSecretSoundOnInquisitor) SoundUtils.zeldaSecretSound.play() else SoundUtils.dingSound.play()
+			config.notificationSound.play()
 		}
 
 		inquisitorDeadPattern.matchMatcher(message) {
@@ -116,7 +115,7 @@ object InquisitorWaypoints {
 
 	private fun shareInquisitor() {
 		lastInquisitorId?.let {
-			val inquisitor = EntityUtils.getEntityByID(it) ?: return
+			val inquisitor = EntityUtils.getEntityById(it) ?: return
 			if(!inquisitor.isAlive) return
 
 			val (x, y, z) = inquisitor.getNobaVec().roundToBlock().toDoubleArray()

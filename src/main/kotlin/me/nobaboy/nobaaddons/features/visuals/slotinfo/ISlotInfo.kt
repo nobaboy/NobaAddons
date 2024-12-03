@@ -3,11 +3,11 @@ package me.nobaboy.nobaaddons.features.visuals.slotinfo
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
-import me.nobaboy.nobaaddons.features.visuals.slotinfo.impl.*
+import me.nobaboy.nobaaddons.features.visuals.slotinfo.items.*
+import me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements.*
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.screen.slot.Slot
 import net.minecraft.text.Text
 
 // TODO: Implement last slot info (not really last, but planned one)
@@ -18,7 +18,7 @@ interface ISlotInfo {
 	fun handle(event: ScreenRenderEvents.DrawSlot)
 
 	fun drawInfo(event: ScreenRenderEvents.DrawSlot, text: Text, position: Position = Position.TOP_LEFT) {
-		renderSlotInfo(event.context, event.textRenderer, event.slot, text, position)
+		renderSlotInfo(event.context, event.textRenderer, event.x, event.y, text, position)
 	}
 
 	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: String, color: Int = -1) {
@@ -27,12 +27,17 @@ interface ISlotInfo {
 
 	companion object {
 		private var init = false
-		private val slotInfos = listOf<ISlotInfo>(
+		private val slotInfos = arrayOf<ISlotInfo>(
+			// UI Elements
 			BestiarySlotInfo,
 			CollectionTierSlotInfo,
+			GardenPlotPestInfo,
+			SkillLevelSlotInfo,
+			SkyBlockLevelSlotInfo,
+			TuningPointsSlotInfo,
+			// Items
 			DungeonHeadTierSlotInfo,
 			EnchantedBookSlotInfo,
-			GardenPlotPestInfo,
 			KuudraKeyTierInfoSlot,
 			MasterSkullTierSlotInfo,
 			MasterStarTierSlotInfo,
@@ -41,9 +46,6 @@ interface ISlotInfo {
 			PetSlotInfo,
 			PotionLevelSlotInfo,
 //			RancherBootsSlotInfo,
-			SkillLevelSlotInfo,
-			SkyBlockLevelSlotInfo,
-			TuningPointsSlotInfo,
 			VacuumPestsSlotInfo
 		)
 
@@ -55,10 +57,11 @@ interface ISlotInfo {
 				ScreenRenderEvents.DRAW_SLOT.register {
 					if(SkyBlockAPI.inSkyBlock && handler.enabled) handler.handle(it)
 				}
+
 			}
 		}
 
-		fun renderSlotInfo(context: DrawContext, textRenderer: TextRenderer, slot: Slot, text: Text, position: Position) {
+		fun renderSlotInfo(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: Text, position: Position) {
 			val width = textRenderer.getWidth(text)
 			val scale = if(width > 16) 0.8333333f else 1.0f
 
@@ -71,7 +74,7 @@ interface ISlotInfo {
 				Position.BOTTOM_RIGHT -> context.matrices.translate(16.0f - width + 1.0f, textRenderer.fontHeight.toFloat(), 200.0f)
 			}
 
-			RenderUtils.drawText(context, text, slot.x, slot.y, scale)
+			RenderUtils.drawText(context, text, x, y, scale)
 			context.matrices.pop()
 		}
 
