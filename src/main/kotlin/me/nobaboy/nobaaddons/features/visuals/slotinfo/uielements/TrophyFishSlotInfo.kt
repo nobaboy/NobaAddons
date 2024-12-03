@@ -38,7 +38,7 @@ object TrophyFishSlotInfo : ISlotInfo {
 		val highestRarity = TrophyFishRarity.entries.lastOrNull { rarities[it]?.let { it > 0 } == true } ?: TrophyFishRarity.BRONZE
 		val nextRarity = TrophyFishRarity.BY_ID.apply(highestRarity.ordinal + 1)
 		val text = Text.literal(total.toAbbreviatedString())
-		if(nextRarity != highestRarity && nextRarity.pityAt?.let { total >= it - 100 } == true) { // TODO -100 for testing
+		if(nextRarity != highestRarity && nextRarity.pityAt?.let { total >= it - 1 } == true) {
 			text.formatted(Formatting.BOLD)
 		}
 
