@@ -19,7 +19,7 @@ object ParticleEvents {
 		val count: Int,
 		val speed: Float,
 		val offset: NobaVec,
-		val isLongDistance: Boolean
+		val forceSpawn: Boolean
 	)
 
 	data class AllowParticle(
@@ -28,6 +28,6 @@ object ParticleEvents {
 		val count: Int,
 		val speed: Float,
 		val offset: NobaVec,
-		val isLongDistance: Boolean
+		val forceSpawn: Boolean
 	) : CancelableEvent()
 }

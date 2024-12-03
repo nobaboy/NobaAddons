@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Trophy Fish slot info - celeste
+- Support for 1.21.4 - celeste
 
 ## 0.1.0-Alpha.10 - 2024-12-02
 
