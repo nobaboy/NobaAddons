@@ -26,6 +26,8 @@ interface ISlotInfo {
 	}
 
 	companion object {
+		const val CHECK = "✔"
+
 		private var init = false
 		private val slotInfos = arrayOf<ISlotInfo>(
 			// UI Elements
@@ -35,6 +37,7 @@ interface ISlotInfo {
 			SkillLevelSlotInfo,
 			SkyBlockLevelSlotInfo,
 			TuningPointsSlotInfo,
+			TrophyFishSlotInfo,
 			// Items
 			DungeonHeadTierSlotInfo,
 			EnchantedBookSlotInfo,
@@ -46,7 +49,7 @@ interface ISlotInfo {
 			PetSlotInfo,
 			PotionLevelSlotInfo,
 //			RancherBootsSlotInfo,
-			VacuumPestsSlotInfo
+			VacuumPestsSlotInfo,
 		)
 
 		fun init() {
