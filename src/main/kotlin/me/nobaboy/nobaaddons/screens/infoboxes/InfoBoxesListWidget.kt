@@ -101,7 +101,7 @@ class InfoBoxesListWidget(
 		}.size(50, 20).build()
 
 		private val deleteButton = ButtonWidget.builder(Text.translatable("nobaaddons.screen.button.delete")) {
-			oldScrollAmount = scrollAmount
+			oldScrollAmount = /*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/
 			deleteEntry()
 		}.size(50, 20).build()
 
@@ -123,7 +123,7 @@ class InfoBoxesListWidget(
 			removeEntry(this)
 
 			screen.addButton.active = size < 20
-			scrollAmount = oldScrollAmount
+			/*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/ = oldScrollAmount
 
 			regenerateIdentifiers()
 			refreshEntries()

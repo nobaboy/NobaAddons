@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Ping On Burrow Find - nobaboy
 - `/noba refill` any item from sacks - celeste
   - This is primarily useful when paired with command keybinds
+- Support for 1.21.4 - celeste
 
 ### Changed
 
