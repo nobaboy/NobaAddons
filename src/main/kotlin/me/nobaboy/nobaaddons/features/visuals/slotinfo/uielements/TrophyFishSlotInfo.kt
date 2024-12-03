@@ -36,9 +36,9 @@ object TrophyFishSlotInfo : ISlotInfo {
 
 		val total = rarities.values.sum()
 		val highestRarity = TrophyFishRarity.entries.lastOrNull { rarities[it]?.let { it > 0 } == true } ?: TrophyFishRarity.BRONZE
-		val nextRarity = TrophyFishRarity.BY_ID.apply(highestRarity.ordinal + 1)
 		val text = Text.literal(total.toAbbreviatedString())
-		if(nextRarity != highestRarity && nextRarity.pityAt?.let { total >= it - 1 } == true) {
+		val nextCatchIsPity = TrophyFishRarity.entries.any { it.pityAt?.let { total >= it - 1 } == true && (rarities[it] ?: 0) == 0 }
+		if(nextCatchIsPity) {
 			text.formatted(Formatting.BOLD)
 		}
 
