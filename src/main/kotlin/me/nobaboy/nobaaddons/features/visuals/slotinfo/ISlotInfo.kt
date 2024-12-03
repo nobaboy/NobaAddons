@@ -21,6 +21,10 @@ interface ISlotInfo {
 		renderSlotInfo(event.context, event.textRenderer, event.x, event.y, text, position)
 	}
 
+	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: Text, color: Int = -1) {
+		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
+	}
+
 	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: String, color: Int = -1) {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
@@ -78,6 +82,13 @@ interface ISlotInfo {
 			}
 
 			RenderUtils.drawText(context, text, x, y, scale)
+			context.matrices.pop()
+		}
+
+		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: Text, color: Int = -1) {
+			context.matrices.push()
+			context.matrices.translate(0.0F, 0.0F, 200.0F)
+			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color, true)
 			context.matrices.pop()
 		}
 

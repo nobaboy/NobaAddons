@@ -9,6 +9,8 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.StringUtils.toAbbreviatedString
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
+import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 
 object TrophyFishSlotInfo : ISlotInfo {
 	private val RARITY_REGEX = Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?")
@@ -34,6 +36,12 @@ object TrophyFishSlotInfo : ISlotInfo {
 
 		val total = rarities.values.sum()
 		val highestRarity = TrophyFishRarity.entries.lastOrNull { rarities[it]?.let { it > 0 } == true } ?: TrophyFishRarity.BRONZE
-		drawCount(event, total.toAbbreviatedString(), highestRarity.color.rgb)
+		val nextRarity = TrophyFishRarity.BY_ID.apply(highestRarity.ordinal + 1)
+		val text = Text.literal(total.toAbbreviatedString())
+		if(nextRarity != highestRarity && nextRarity.pityAt?.let { total >= it - 100 } == true) { // TODO -100 for testing
+			text.formatted(Formatting.BOLD)
+		}
+
+		drawCount(event, text, highestRarity.color.rgb)
 	}
 }
