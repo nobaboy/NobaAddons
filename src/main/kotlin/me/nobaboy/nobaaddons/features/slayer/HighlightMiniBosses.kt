@@ -19,7 +19,7 @@ object HighlightMiniBosses {
 	}
 
 	private fun onSecondPassed() {
-		miniBosses.removeIf { !it.isAlive || EntityUtils.getEntityByID(it.id) !== it }
+		miniBosses.removeIf { !it.isAlive || EntityUtils.getEntityById(it.id) !== it }
 	}
 
 	private fun onMiniBossSpawn(event: SlayerEvents.MiniBossSpawn) {
