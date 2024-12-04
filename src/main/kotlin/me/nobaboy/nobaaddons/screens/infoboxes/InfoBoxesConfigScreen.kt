@@ -25,13 +25,8 @@ class InfoBoxesConfigScreen(private val parent: Screen?) : Screen(TITLE) {
 		gridWidget.mainPositioner.marginX(5).marginY(2)
 		val adder = gridWidget.createAdder(3)
 
-		adder.add(ButtonWidget.builder(ScreenTexts.CANCEL) {
-//			infoBoxesListWidget.refreshEntries()
-			close()
-		}.build())
-
+		adder.add(ButtonWidget.builder(ScreenTexts.CANCEL) { close() }.build())
 		adder.add(ButtonWidget.builder(Text.translatable("nobaaddons.screen.button.new", "Info Box")) { infoBoxesListWidget.addInfoBox() }.build())
-
 		adder.add(ButtonWidget.builder(ScreenTexts.DONE) {
 			infoBoxesListWidget.saveChanges()
 			close()

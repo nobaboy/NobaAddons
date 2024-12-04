@@ -26,36 +26,35 @@ class InfoBoxesListWidget(
 		private set
 
 	init {
-		infoBoxes.clear()
 		infoBoxes.addAll(InfoBoxesManager.infoBoxes)
-
-		refreshEntries()
+		infoBoxes.forEachIndexed { index, _ ->
+			addEntry(InfoBoxEntry(index))
+		}
 	}
 
-	private fun refreshEntries() {
+	fun refreshEntries() {
 		clearEntries()
 		infoBoxes.forEachIndexed { index, _ ->
-			addEntry(InfoBoxConfigEntry(index))
+			addEntry(InfoBoxEntry(index))
 		}
 	}
 
 	fun addInfoBox() {
-		val infoBox = InfoBoxesManager.getNewInfoBox(infoBoxes)
-		infoBoxes.add(infoBox)
+		val newInfoBox = InfoBoxesManager.getNewInfoBox(infoBoxes)
+		infoBoxes.add(newInfoBox)
 
 		refreshEntries()
-
 		hasChanges = true
 	}
 
 	fun saveChanges() {
 		infoBoxes.removeIf { it.text.isEmpty() }
-		InfoBoxesManager.infoBoxes.clear()
-		InfoBoxesManager.infoBoxes.addAll(infoBoxes)
-
 		regenerateIdentifiers()
 
+		InfoBoxesManager.infoBoxes.clear()
+		InfoBoxesManager.infoBoxes.addAll(infoBoxes)
 		InfoBoxesManager.saveInfoBoxes()
+
 		hasChanges = false
 	}
 
@@ -69,7 +68,7 @@ class InfoBoxesListWidget(
 		infoBoxes.addAll(updatedInfoBoxes)
 	}
 
-	override fun getRowWidth(): Int = super.rowWidth + 180
+	override fun getRowWidth(): Int = super.rowWidth + 140 // 360
 	override fun getScrollbarX(): Int = super.scrollbarX + 100
 
 	override fun removeEntry(entry: AbstractInfoBoxEntry): Boolean {
@@ -79,26 +78,40 @@ class InfoBoxesListWidget(
 
 	abstract class AbstractInfoBoxEntry : Entry<AbstractInfoBoxEntry>()
 
-	private inner class InfoBoxConfigEntry(private val infoBoxIndex: Int) : AbstractInfoBoxEntry() {
+	private inner class InfoBoxEntry(private val infoBoxIndex: Int) : AbstractInfoBoxEntry() {
 		val infoBox = infoBoxes[infoBoxIndex]
 
-		private val textField = TextFieldWidget(client.textRenderer, width / 2 - 200, 70, 200, 20, Text.empty()).apply {
-			setMaxLength(512)
-			text = infoBox.text
-			setChangedListener { newText ->
-				val updatedElement = infoBox.element.copy()
-				val updatedInfoBox = infoBox.copy(text = newText, element = updatedElement)
+		private val textField = TextFieldWidget(client.textRenderer, width / 2 - 180, 70, 280, 20, Text.empty())
 
+		private val textModeButton = ButtonWidget.builder(infoBox.textMode.displayName) {
+			changeTextMod()
+		}.dimensions(width / 2 + 105, 70, 50, 20).build()
+
+		private val deleteButton = ButtonWidget.builder(Text.literal("✖")) {
+			deleteEntry()
+		}.dimensions(width / 2 + 160, 70, 20, 20).build()
+
+		init {
+			textField.setMaxLength(256)
+			textField.text = infoBox.text
+			textField.setChangedListener { newText ->
+				val updatedInfoBox = infoBox.copy(text = newText)
 				infoBoxes[infoBoxIndex] = updatedInfoBox
+
 				hasChanges = true
 			}
 		}
 
-//		private val textModeButton = ButtonWidget.builder()
+		private fun changeTextMod() {
+			val newTextMode = infoBox.textMode.next
+			val updatedInfoBox = infoBox.copy(textMode = newTextMode)
 
-		private val deleteButton = ButtonWidget.builder(Text.translatable("nobaaddons.screen.button.delete")) {
-			deleteEntry()
-		}.dimensions(width / 2 + 180, 70, 50, 20).build()
+			infoBoxes[infoBoxIndex] = updatedInfoBox
+			textModeButton.message = newTextMode.displayName
+
+			refreshEntries()
+			hasChanges = true
+		}
 
 		private fun deleteEntry() {
 			infoBoxes.removeAt(infoBoxIndex)
@@ -110,7 +123,7 @@ class InfoBoxesListWidget(
 			hasChanges = true
 		}
 
-		override fun children(): List<Element> = listOf(textField, deleteButton)
+		override fun children(): List<Element> = listOf(textField, textModeButton, deleteButton)
 		override fun selectableChildren(): List<Selectable> {
 			return listOf(object : Selectable {
 				override fun getType() = SelectionType.HOVERED
@@ -132,13 +145,16 @@ class InfoBoxesListWidget(
 			hovered: Boolean,
 			tickDelta: Float
 		) {
-			deleteButton.y = y
-			deleteButton.render(context, mouseX, mouseY, tickDelta)
-
 			textField.y = y
 			textField.render(context, mouseX, mouseY, tickDelta)
 
-			RenderUtils.drawText(context, infoBox.element.identifier, width / 2 - 265, y + 6)
+			textModeButton.y = y
+			textModeButton.render(context, mouseX, mouseY, tickDelta)
+
+			deleteButton.y = y
+			deleteButton.render(context, mouseX, mouseY, tickDelta)
+
+			RenderUtils.drawText(context, infoBox.element.identifier, width / 2 - 180 - 60, y + 6)
 		}
 	}
 }
