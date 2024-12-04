@@ -12,7 +12,8 @@ object KeybindConfig : AbstractConfig(NobaAddons.modConfigDir.resolve("keybinds.
 	val keybinds by Property.list("keybinds", Serializer.obj<Keybind>())
 
 	class Keybind() : ObjectProperty<Keybind>("") {
-		@Suppress("unused") constructor(obj: JsonObject) : this() {
+		@Suppress("unused")
+		constructor(obj: JsonObject) : this() {
 			load(obj)
 		}
 

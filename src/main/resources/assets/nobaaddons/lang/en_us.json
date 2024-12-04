@@ -1,19 +1,25 @@
 {
   "nobaaddons.name": "NobaAddons",
 
-  "nobaaddons.config.open": "Open Config",
-  "nobaaddons.config.hud": "Edit HUD",
-  "nobaaddons.config.keybinds": "Keybinds",
-  "nobaaddons.config.github": "GitHub",
-  "nobaaddons.config.issues": "Issues",
-  "nobaaddons.config.modrinth": "Modrinth",
-  "nobaaddons.config.legal": "Legal",
+  "nobaaddons.screen.button.open": "Open",
+  "nobaaddons.screen.button.new": "New %s",
+  "nobaaddons.screen.button.delete": "Delete",
 
-  "nobaaddons.keybinds": "Keybinds",
-  "nobaaddons.keybind.add": "New Keybind",
-  "nobaaddons.keybind.remove": "Delete",
-  "nobaaddons.keybind.command": "Command",
-  "nobaaddons.keybind.key": "Key",
+  "nobaaddons.screen.main": "NobaAddons Main Screen",
+  "nobaaddons.screen.main.button.config": "Open Config",
+  "nobaaddons.screen.main.button.hud": "Edit HUD",
+  "nobaaddons.screen.main.button.keybinds": "Keybinds",
+  "nobaaddons.screen.main.button.github": "GitHub",
+  "nobaaddons.screen.main.button.issues": "Issues",
+  "nobaaddons.screen.main.button.modrinth": "Modrinth",
+  "nobaaddons.screen.main.button.legal": "Legal",
+
+  "nobaaddons.screen.confirm": "Confirmation Screen",
+  "nobaaddons.screen.confirm.message": "You have unsaved changes; exiting now will discard them, would you like to continue?",
+
+  "nobaaddons.screen.hudEditor": "HUD Editor",
+  "nobaaddons.screen.keybindsConfig": "Keybinds Config",
+  "nobaaddons.screen.infoBoxesConfig": "Info Boxes Config",
 
   "nobaaddons.keybind.mythologicalNearestWarp": "Mythological Nearest Warp",
 
@@ -32,8 +38,6 @@
   "nobaaddons.config.label.miscellaneous": "Miscellaneous",
 
   "nobaaddons.config.general": "General",
-  "nobaaddons.config.general.open": "Open",
-  "nobaaddons.config.general.main": "NobaAddons Main Screen",
   "nobaaddons.config.general.allowKeybindsOutsideSkyBlock": "Allow Keybinds Outside SkyBlock",
   "nobaaddons.config.general.allowKeybindsOutsideSkyBlock.tooltip": "Enables the use of custom keybinds outside of SkyBlock",
   "nobaaddons.config.general.wikiCommandAutoOpen": "Auto Open /swiki Search",

@@ -1,20 +1,20 @@
 package me.nobaboy.nobaaddons.screens.hud
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
 import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
+import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import java.util.LinkedHashMap
 import kotlin.collections.set
 
 object ElementManager : LinkedHashMap<String, HudElement>() {
-	private val config get() = NobaConfigManager.config.uiAndVisuals
-
 	fun init() {
 		loadElements()
 
 		HudRenderCallback.EVENT.register { context, _ ->
-			this.forEach { it.value.render(context) }
+			this.values.forEach { value ->
+				value.takeIf { it.enabled }?.render(context)
+			}
 		}
 	}
 
@@ -24,16 +24,12 @@ object ElementManager : LinkedHashMap<String, HudElement>() {
 
 	fun loadElements() {
 		clear()
+		save()
 
-		config.infoBoxes.forEach { add(InfoBoxHud(it)) }
+		InfoBoxesManager.infoBoxes.forEach { add(InfoBoxHud(it))}
 	}
 
-	fun newIdentifier(base: String): String {
-		var identifier: String
-		var i: Int = 1
-		do {
-			identifier = "$base ${i++}"
-		} while (identifier in this)
-		return identifier
+	private fun save() {
+		InfoBoxesManager.saveInfoBoxes()
 	}
 }

@@ -18,7 +18,7 @@ import org.lwjgl.glfw.GLFW
 
 // TODO: Dismantle this and use Screen instead, also give each command it's own class `CommandKeyBind` like before
 //       so each command has it's own cooldown rather than a shared cooldown with all the keybinds
-class KeybindsConfigScreen(private val parent: Screen?) : SpruceScreen(Text.translatable("nobaaddons.keybinds")) {
+class KeybindsConfigScreen(private val parent: Screen?) : SpruceScreen(Text.translatable("nobaaddons.screen.keybindsConfig")) {
 	private var selecting: Selecting? = null
 	private lateinit var options: SpruceOptionListWidget
 	private val keybinds by KeybindConfig::keybinds
@@ -27,7 +27,7 @@ class KeybindsConfigScreen(private val parent: Screen?) : SpruceScreen(Text.tran
 		super.init()
 		initList()
 		addDrawableChild(options)
-		addDrawableChild(SpruceButtonWidget(Position.of(this, width / 2 - 155, height - 29), 150, 20, Text.translatable("nobaaddons.keybind.add")) {
+		addDrawableChild(SpruceButtonWidget(Position.of(this, width / 2 - 155, height - 29), 150, 20, Text.translatable("nobaaddons.screen.button.new", "Keybind")) {
 			keybinds.add(Keybind())
 			clearAndInit()
 		})
@@ -46,7 +46,7 @@ class KeybindsConfigScreen(private val parent: Screen?) : SpruceScreen(Text.tran
 				SpruceUnlabeledStringOption("nobaaddons.keybind.command", { keybind.command }, { keybind.command = it }),
 				SpruceSimpleActionOption("nobaaddons.keybind.key", factory) { select(keybind, it) }
 			)
-			options.addSmallSingleOptionEntry(SpruceSimpleActionOption.of("nobaaddons.keybind.remove") {
+			options.addSmallSingleOptionEntry(SpruceSimpleActionOption.of("nobaaddons.screen.button.delete") {
 				keybinds.remove(keybind)
 				clearAndInit()
 			})

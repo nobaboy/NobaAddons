@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeybindsConfigScreen
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCentered
+import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ConfirmLinkScreen
 import net.minecraft.client.gui.screen.Screen
@@ -15,7 +15,7 @@ import net.minecraft.client.gui.widget.ThreePartsLayoutWidget
 import net.minecraft.screen.ScreenTexts
 import net.minecraft.text.Text
 
-private val TITLE = Text.translatable("nobaaddons.name")
+private val TITLE = Text.translatable("nobaaddons.screen.main")
 
 private const val SPACING = 8
 private const val BUTTON_WIDTH = 200
@@ -27,14 +27,15 @@ class NobaMainScreen : Screen(TITLE) {
 	companion object {
 		private const val GITHUB_ROOT = "https://github.com/nobaboy/NobaAddons"
 
-		private val VERSION = "v${NobaAddons.VERSION}"
-		private val CONFIGURATION_TEXT = Text.translatable("nobaaddons.config.open")
-		private val EDIT_LOCATIONS_TEXT = Text.translatable("nobaaddons.config.hud")
-		private val EDIT_KEYBINDS_TEXT = Text.translatable("nobaaddons.config.keybinds")
-		private val SOURCE_TEXT = Text.translatable("nobaaddons.config.github")
-		private val ISSUES_TEXT = Text.translatable("nobaaddons.config.issues")
-		private val MODRINTH_TEXT = Text.translatable("nobaaddons.config.modrinth")
-		private val LEGAL_TEXT = Text.translatable("nobaaddons.config.legal")
+		private val TITLE_TEXT = Text.translatable("nobaaddons.name")
+		private val VERSION_TEXT = "v${NobaAddons.VERSION}"
+		private val CONFIGURATION_TEXT = Text.translatable("nobaaddons.screen.main.button.config")
+		private val EDIT_LOCATIONS_TEXT = Text.translatable("nobaaddons.screen.main.button.hud")
+		private val EDIT_KEYBINDS_TEXT = Text.translatable("nobaaddons.screen.main.button.keybinds")
+		private val SOURCE_TEXT = Text.translatable("nobaaddons.screen.main.button.github")
+		private val ISSUES_TEXT = Text.translatable("nobaaddons.screen.main.button.issues")
+		private val MODRINTH_TEXT = Text.translatable("nobaaddons.screen.main.button.modrinth")
+		private val LEGAL_TEXT = Text.translatable("nobaaddons.screen.main.button.legal")
 	}
 
 	override fun init() {
@@ -76,8 +77,9 @@ class NobaMainScreen : Screen(TITLE) {
 		super.render(context, mouseX, mouseY, delta)
 
 		val centerX = MCUtils.window.scaledWidth / 2
-		TITLE.drawCentered(context, centerX, 75, 4.0f, 0x007AFF, true)
-		VERSION.drawCentered(context, centerX, 107, 1.5f, 0xFFFFFF, true)
+
+		RenderUtils.drawCenteredText(context, TITLE_TEXT, centerX, 75, 4.0f, 0x007AFF, true)
+		RenderUtils.drawCenteredText(context, VERSION_TEXT, centerX, 107, 1.5f, 0xFFFFFF, true)
 	}
 
 	override fun close() {

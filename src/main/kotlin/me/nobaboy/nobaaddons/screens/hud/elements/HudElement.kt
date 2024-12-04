@@ -1,6 +1,8 @@
 package me.nobaboy.nobaaddons.screens.hud.elements
 
 import me.nobaboy.nobaaddons.screens.NobaHudScreen
+import me.nobaboy.nobaaddons.screens.hud.elements.data.Element
+import me.nobaboy.nobaaddons.screens.hud.elements.data.ElementBounds
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -20,14 +22,14 @@ abstract class HudElement(protected val element: Element) {
 	val shouldRender: Boolean
 		get() {
 			val client = MCUtils.client
-			return client.currentScreen !is NobaHudScreen && !client.options.hudHidden
+			return enabled && client.currentScreen !is NobaHudScreen && !client.options.hudHidden
 		}
 
+	abstract val enabled: Boolean
 	abstract fun render(context: DrawContext)
 	abstract fun getBounds(): ElementBounds
 
-	private val scaleOffset: Int
-		get() = (1 * scale).roundToInt().coerceAtLeast(1)
+	private val scaleOffset: Int get() = (1 * scale).roundToInt().coerceAtLeast(1)
 
 	private val maxScreenBounds: Pair<Int, Int>
 		get() {

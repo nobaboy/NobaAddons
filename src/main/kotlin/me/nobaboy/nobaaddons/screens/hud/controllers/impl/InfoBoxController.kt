@@ -13,8 +13,8 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.mixins.accessors.CategoryTabAccessor
 import me.nobaboy.nobaaddons.screens.hud.controllers.ControllerHelper
 import me.nobaboy.nobaaddons.screens.hud.controllers.ControllerWidgetHelper
-import me.nobaboy.nobaaddons.screens.hud.elements.TextElement
 import me.nobaboy.nobaaddons.screens.hud.elements.TextMode
+import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.Element
 import net.minecraft.text.Text
@@ -28,14 +28,14 @@ class InfoBoxController(
 		{ option.pendingValue().text },
 		{ value ->
 			val infoBox = option.pendingValue()
-			option.requestSet(TextElement(value, infoBox.mode, infoBox.element))
+			option.requestSet(TextElement(value, infoBox.textMode, 0x000000, infoBox.element))
 		}
 	).controller()
 	private val modeController: Controller<TextMode> = createOption<TextMode>("Text Mode:", modeControllerBuilder,
-		{ option.pendingValue().mode },
+		{ option.pendingValue().textMode },
 		{ value ->
 			val infoBox = option.pendingValue()
-			option.requestSet(TextElement(infoBox.text, value, infoBox.element))
+			option.requestSet(TextElement(infoBox.text, value, 0x000000, infoBox.element))
 		}
 	).controller()
 

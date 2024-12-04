@@ -1,9 +1,7 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.screens.hud.ElementManager
-import me.nobaboy.nobaaddons.screens.hud.elements.Element
-import me.nobaboy.nobaaddons.screens.hud.elements.TextElement
 import me.nobaboy.nobaaddons.screens.hud.elements.TextMode
+import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
 import me.nobaboy.nobaaddons.screens.hud.elements.impl.TextHud
 import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
@@ -11,15 +9,19 @@ import java.util.regex.Pattern
 
 class InfoBoxHud(val textElement: TextElement) : TextHud(textElement.element) {
 	private val functionPattern = Pattern.compile("(?<function>\\{[A-z0-9]+})")
-	private val colorCodePattern = Regex("&[0-9a-fk-or]")
+	private val colorCodePattern = Regex("&&[0-9a-fk-or]")
+
+	override val enabled: Boolean = true
 
 	override val text: String get() = compileText(textElement.text)
-	override val mode: TextMode get() = textElement.mode
+	override val textMode: TextMode get() = textElement.textMode
+	override val outlineColor: Int get() = textElement.outlineColor
 
-	private fun replaceColorCodes(text: String): String =
-		colorCodePattern.replace(text) { matchResult ->
-			matchResult.value.replace("&", "§")
+	private fun replaceColorCodes(text: String): String {
+		return colorCodePattern.replace(text) { matchResult ->
+			matchResult.value.replace("&&", "§")
 		}
+	}
 
 	private fun replaceFunctions(text: String): String {
 		var formattedText = text
@@ -37,14 +39,5 @@ class InfoBoxHud(val textElement: TextElement) : TextHud(textElement.element) {
 	private fun compileText(text: String): String {
 		var formattedText = replaceFunctions(text)
 		return replaceColorCodes(formattedText)
-	}
-
-	companion object {
-		fun createHud(): TextElement {
-			val identifier = ElementManager.newIdentifier("Info Box")
-			val infoBox = TextElement(identifier, TextMode.SHADOW, Element(identifier, 100, 100))
-			ElementManager.add(InfoBoxHud(infoBox))
-			return infoBox
-		}
 	}
 }

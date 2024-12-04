@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.config.categories
 
+import dev.isxander.yacl3.api.ButtonOption
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.LabelOption
-import dev.isxander.yacl3.api.ListOption
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
@@ -12,10 +12,8 @@ import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.replaceWith
-import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
-import me.nobaboy.nobaaddons.screens.hud.controllers.impl.InfoBoxController
-import me.nobaboy.nobaaddons.screens.hud.elements.TextElement
+import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesConfigScreen
+import me.nobaboy.nobaaddons.utils.MCUtils
 import net.minecraft.text.Text
 import java.awt.Color
 
@@ -23,6 +21,12 @@ object UIAndVisualsCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
 		return ConfigCategory.createBuilder()
 			.name(Text.translatable("nobaaddons.config.uiAndVisuals"))
+
+			.option(ButtonOption.createBuilder()
+				.name(Text.translatable("nobaaddons.screen.infoBoxesConfig"))
+				.text(Text.translatable("nobaaddons.screen.button.open"))
+				.action { screen, option -> MCUtils.client.setScreen(InfoBoxesConfigScreen(screen)) }
+				.build())
 
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints"))
@@ -326,15 +330,6 @@ object UIAndVisualsCategory {
 					.build())
 
 				.collapsed(true)
-				.build())
-
-			.group(ListOption.createBuilder<TextElement>()
-				.name(Text.translatable("nobaaddons.config.uiAndVisuals.infoBoxes"))
-				.binding(defaults.uiAndVisuals.infoBoxes, config.uiAndVisuals::infoBoxes) { config.uiAndVisuals.infoBoxes.replaceWith(it) }
-				.controller(InfoBoxController.Builder::create)
-				.initial(InfoBoxHud::createHud)
-				.maximumNumberOfEntries(10)
-				.insertEntriesAtEnd(true)
 				.build())
 
 			.build()

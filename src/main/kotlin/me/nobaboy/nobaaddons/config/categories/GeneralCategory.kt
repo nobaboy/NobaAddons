@@ -16,8 +16,8 @@ object GeneralCategory {
 			.name(Text.translatable("nobaaddons.config.general"))
 
 			.option(ButtonOption.createBuilder()
-				.name(Text.translatable("nobaaddons.config.general.main"))
-				.text(Text.translatable("nobaaddons.config.general.open"))
+				.name(Text.translatable("nobaaddons.screen.main"))
+				.text(Text.translatable("nobaaddons.screen.button.open"))
 				.action { screen, option -> MCUtils.client.setScreen(NobaMainScreen()) }
 				.build())
 

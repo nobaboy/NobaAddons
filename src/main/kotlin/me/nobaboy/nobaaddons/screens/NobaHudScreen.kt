@@ -13,7 +13,7 @@ import net.minecraft.text.Text
 import org.lwjgl.glfw.GLFW
 import kotlin.math.roundToInt
 
-private val TITLE = Text.translatable("nobaaddons.editor")
+private val TITLE = Text.translatable("nobaaddons.screen.hudEditor")
 private const val BUTTON_WIDTH = 200
 
 class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
@@ -32,8 +32,8 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 
 	private var showUsageText: Boolean = NobaConfigManager.config.uiAndVisuals.showUsageText
 	private val usageTexts = listOf<String>(
-		"Left click to drag or use arrow keys to move (holding Ctrl moves further)",
-		"Scroll or use +/- to scale an element",
+		"Left click and drag or use arrow keys to move (holding Ctrl moves further)",
+		"Scroll or use +/- to rescale an element",
 		"Middle click to reset an element",
 		"Right click on an element to open context menu (soonTM)"
 	)
@@ -139,6 +139,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 	}
 
 	override fun close() {
+		ElementManager.loadElements()
 		NobaConfigManager.config.uiAndVisuals.showUsageText = showUsageText
 		NobaConfigManager.save()
 		client!!.setScreen(parent)
