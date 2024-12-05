@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.screens.infoboxes
 
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.ConfirmScreen
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.ButtonWidget
 import net.minecraft.client.gui.widget.GridWidget
@@ -25,12 +24,8 @@ class InfoBoxesConfigScreen(private val parent: Screen?) : Screen(TITLE) {
 		gridWidget.mainPositioner.marginX(5).marginY(2)
 		val adder = gridWidget.createAdder(3)
 
-		adder.add(ButtonWidget.builder(ScreenTexts.CANCEL) { close() }.build())
 		adder.add(ButtonWidget.builder(Text.translatable("nobaaddons.screen.button.new", "Info Box")) { infoBoxesListWidget.addInfoBox() }.build())
-		adder.add(ButtonWidget.builder(ScreenTexts.DONE) {
-			infoBoxesListWidget.saveChanges()
-			close()
-		}.build())
+		adder.add(ButtonWidget.builder(ScreenTexts.DONE) { close() }.build())
 
 		gridWidget.refreshPositions()
 		SimplePositioningWidget.setPos(gridWidget, 0, height - 64, width, 64)
@@ -43,23 +38,7 @@ class InfoBoxesConfigScreen(private val parent: Screen?) : Screen(TITLE) {
 	}
 
 	override fun close() {
-		if(!infoBoxesListWidget.hasChanges) {
-			client!!.setScreen(parent)
-			return
-		}
-
-		client!!.setScreen(ConfirmScreen(
-			{ confirmed ->
-				if(confirmed) {
-					client!!.setScreen(parent)
-				} else {
-					client!!.setScreen(this)
-				}
-			},
-			Text.translatable("nobaaddons.screen.confirm"),
-			Text.translatable("nobaaddons.screen.confirm.message"),
-			ScreenTexts.YES,
-			ScreenTexts.NO
-		))
+		infoBoxesListWidget.saveChanges()
+		client!!.setScreen(parent)
 	}
 }

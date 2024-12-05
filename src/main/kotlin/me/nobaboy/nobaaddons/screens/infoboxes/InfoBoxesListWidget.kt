@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.narration.NarrationPart
 import net.minecraft.client.gui.widget.ButtonWidget
 import net.minecraft.client.gui.widget.ElementListWidget
 import net.minecraft.client.gui.widget.TextFieldWidget
+import net.minecraft.client.toast.SystemToast
 import net.minecraft.text.Text
 
 class InfoBoxesListWidget(
@@ -22,29 +23,37 @@ class InfoBoxesListWidget(
 	itemHeight: Int
 ) : ElementListWidget<InfoBoxesListWidget.AbstractInfoBoxEntry>(client, width, height, y, itemHeight) {
 	private val infoBoxes = mutableListOf<TextElement>()
-	var hasChanges: Boolean = false
-		private set
+	private val maxLimitToast = SystemToast(
+		SystemToast.Type.PERIODIC_NOTIFICATION,
+		Text.literal("Max Limit Reached"),
+		Text.literal("You can have up to 20 Info Boxes at a time")
+	)
 
 	init {
 		infoBoxes.addAll(InfoBoxesManager.infoBoxes)
 		infoBoxes.forEachIndexed { index, _ ->
-			addEntry(InfoBoxEntry(index))
+			addEntry(InfoBoxConfigEntry(index))
 		}
 	}
 
 	fun refreshEntries() {
 		clearEntries()
 		infoBoxes.forEachIndexed { index, _ ->
-			addEntry(InfoBoxEntry(index))
+			addEntry(InfoBoxConfigEntry(index))
 		}
 	}
 
 	fun addInfoBox() {
+		if(infoBoxes.size >= 20) {
+			client.toastManager.clear()
+			client.toastManager.add(maxLimitToast)
+			return
+		}
+
 		val newInfoBox = InfoBoxesManager.getNewInfoBox(infoBoxes)
 		infoBoxes.add(newInfoBox)
 
 		refreshEntries()
-		hasChanges = true
 	}
 
 	fun saveChanges() {
@@ -54,8 +63,6 @@ class InfoBoxesListWidget(
 		InfoBoxesManager.infoBoxes.clear()
 		InfoBoxesManager.infoBoxes.addAll(infoBoxes)
 		InfoBoxesManager.saveInfoBoxes()
-
-		hasChanges = false
 	}
 
 	private fun regenerateIdentifiers() {
@@ -71,14 +78,9 @@ class InfoBoxesListWidget(
 	override fun getRowWidth(): Int = super.rowWidth + 140 // 360
 	override fun getScrollbarX(): Int = super.scrollbarX + 100
 
-	override fun removeEntry(entry: AbstractInfoBoxEntry): Boolean {
-		hasChanges = true
-		return super.removeEntry(entry)
-	}
-
 	abstract class AbstractInfoBoxEntry : Entry<AbstractInfoBoxEntry>()
 
-	private inner class InfoBoxEntry(private val infoBoxIndex: Int) : AbstractInfoBoxEntry() {
+	private inner class InfoBoxConfigEntry(private val infoBoxIndex: Int) : AbstractInfoBoxEntry() {
 		val infoBox = infoBoxes[infoBoxIndex]
 
 		private val textField = TextFieldWidget(client.textRenderer, width / 2 - 180, 70, 280, 20, Text.empty())
@@ -97,8 +99,6 @@ class InfoBoxesListWidget(
 			textField.setChangedListener { newText ->
 				val updatedInfoBox = infoBox.copy(text = newText)
 				infoBoxes[infoBoxIndex] = updatedInfoBox
-
-				hasChanges = true
 			}
 		}
 
@@ -110,7 +110,6 @@ class InfoBoxesListWidget(
 			textModeButton.message = newTextMode.displayName
 
 			refreshEntries()
-			hasChanges = true
 		}
 
 		private fun deleteEntry() {
@@ -119,8 +118,6 @@ class InfoBoxesListWidget(
 
 			regenerateIdentifiers()
 			refreshEntries()
-
-			hasChanges = true
 		}
 
 		override fun children(): List<Element> = listOf(textField, textModeButton, deleteButton)
@@ -154,7 +151,7 @@ class InfoBoxesListWidget(
 			deleteButton.y = y
 			deleteButton.render(context, mouseX, mouseY, tickDelta)
 
-			RenderUtils.drawText(context, infoBox.element.identifier, width / 2 - 180 - 60, y + 6)
+			RenderUtils.drawCenteredText(context, infoBox.element.identifier, width / 2 - 180 - 35, y + 6)
 		}
 	}
 }
