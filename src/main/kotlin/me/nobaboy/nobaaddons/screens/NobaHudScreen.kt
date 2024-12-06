@@ -39,6 +39,8 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 	)
 
 	override fun init() {
+		super.init()
+
 		val window = MCUtils.window
 
 		elements = LinkedHashMap(ElementManager)

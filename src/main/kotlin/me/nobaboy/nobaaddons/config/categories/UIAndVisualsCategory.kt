@@ -12,7 +12,7 @@ import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesConfigScreen
+import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.MCUtils
 import net.minecraft.text.Text
 import java.awt.Color
@@ -23,9 +23,9 @@ object UIAndVisualsCategory {
 			.name(Text.translatable("nobaaddons.config.uiAndVisuals"))
 
 			.option(ButtonOption.createBuilder()
-				.name(Text.translatable("nobaaddons.screen.infoBoxesConfig"))
+				.name(Text.translatable("nobaaddons.screen.infoBoxes"))
 				.text(Text.translatable("nobaaddons.screen.button.open"))
-				.action { screen, option -> MCUtils.client.setScreen(InfoBoxesConfigScreen(screen)) }
+				.action { screen, option -> MCUtils.client.setScreen(InfoBoxesScreen(screen)) }
 				.build())
 
 			.group(OptionGroup.createBuilder()
@@ -261,8 +261,8 @@ object UIAndVisualsCategory {
 							.step(1)
 							.range(1, 60)
 							.formatValue { when(it) {
-								1 -> Text.translatable("nobaaddons.label.unmodified")
-								6 -> Text.translatable("nobaaddons.label.default")
+								1 -> Text.translatable("nobaaddons.config.label.unmodified")
+								6 -> Text.translatable("nobaaddons.config.label.default")
 								else -> Text.literal("$it")
 							} }
 					}

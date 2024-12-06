@@ -26,7 +26,6 @@ import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
-import me.nobaboy.nobaaddons.features.keybinds.KeyBindListener
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
@@ -35,6 +34,7 @@ import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
+import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.MutableText
@@ -76,7 +76,7 @@ object NobaAddons : ClientModInitializer {
 		// if the object class is never referenced anywhere else, or if it relies on chat data for a feature that isn't
 		// immediately ran).
 		/* region Utils */
-		KeyBindListener.init()
+		KeyBindsManager.init()
 		/* endregion */
 
 		/* region Commands */

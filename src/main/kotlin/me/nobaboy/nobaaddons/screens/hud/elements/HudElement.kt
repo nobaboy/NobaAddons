@@ -22,7 +22,7 @@ abstract class HudElement(protected val element: Element) {
 	val shouldRender: Boolean
 		get() {
 			val client = MCUtils.client
-			return enabled && client.currentScreen !is NobaHudScreen && !client.options.hudHidden
+			return enabled && !client.options.hudHidden && client.currentScreen !is NobaHudScreen
 		}
 
 	abstract val enabled: Boolean
