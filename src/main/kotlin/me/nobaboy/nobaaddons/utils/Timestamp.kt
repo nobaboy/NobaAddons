@@ -30,9 +30,9 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 	fun isFuture(): Boolean = timeRemaining().isPositive()
 	fun isDistantPast(): Boolean = millis == 0L
 
-	override fun compareTo(other: Timestamp): Int = millis.compareTo(other.millis)
-
 	fun toMillis(): Long = millis
+
+	override fun compareTo(other: Timestamp): Int = millis.compareTo(other.millis)
 
 	companion object {
 		fun now() = Timestamp(System.currentTimeMillis())

@@ -66,8 +66,6 @@ data class NobaVec(
 	fun add(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0): NobaVec =
 		NobaVec(this.x + x, this.y + y, this.z + z)
 
-	override fun toString() = "NobaVec{x=$x, y=$y, z=$z}"
-
 	fun dot(other: NobaVec): Double = (x * other.x) + (y * other.y) + (z * other.z)
 
     fun cosAngle(other: NobaVec) = this.normalize().dot(other.normalize())
@@ -110,21 +108,6 @@ data class NobaVec(
     fun toFloatArray(): Array<Float> = arrayOf(x.toFloat(), y.toFloat(), z.toFloat())
 
     fun equalsIgnoreY(other: NobaVec) = x == other.x && z == other.z
-
-    override fun equals(other: Any?): Boolean {
-        if(this === other) return true
-
-        return (other as? NobaVec)?.let {
-            x == it.x && y == it.y && z == it.z
-        } ?: super.equals(other)
-    }
-
-    override fun hashCode(): Int {
-        var result = x.hashCode()
-        result = 31 * result + y.hashCode()
-        result = 31 * result + z.hashCode()
-        return result
-    }
 
     fun round(decimals: Int) = NobaVec(x.roundTo(decimals), y.roundTo(decimals), z.roundTo(decimals))
 
@@ -199,6 +182,23 @@ data class NobaVec(
 	fun offsetBy(other: Vec3d): NobaVec = NobaVec(x + other.x, y + other.y, z + other.z)
 
 	private operator fun div(i: Number): NobaVec = NobaVec(x / i.toDouble(), y / i.toDouble(), z / i.toDouble())
+
+	override fun equals(other: Any?): Boolean {
+		if(this === other) return true
+
+		return (other as? NobaVec)?.let {
+			x == it.x && y == it.y && z == it.z
+		} ?: super.equals(other)
+	}
+
+	override fun hashCode(): Int {
+		var result = x.hashCode()
+		result = 31 * result + y.hashCode()
+		result = 31 * result + z.hashCode()
+		return result
+	}
+
+	override fun toString(): String = "NobaVec{x=$x, y=$y, z=$z}"
 
 	companion object {
 		fun fromYawPitch(yaw: Double, pitch: Double): NobaVec {

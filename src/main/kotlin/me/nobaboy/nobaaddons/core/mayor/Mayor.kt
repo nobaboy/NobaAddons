@@ -77,8 +77,6 @@ enum class Mayor(vararg val perks: MayorPerk) {
 	val mayorName = name.title()
 	val activePerks get() = perks.filter { it.isActive }
 
-	override fun toString(): String = mayorName
-
 	fun activatePerks(perks: List<MayorPerk>) {
 		this.perks.forEach { it.isActive = it in perks }
 	}
@@ -87,6 +85,8 @@ enum class Mayor(vararg val perks: MayorPerk) {
 		this.perks.forEach { it.isActive = true }
 		return this
 	}
+
+	override fun toString(): String = mayorName
 
 	companion object {
 		fun getMayor(name: String): Mayor? = entries.firstOrNull { it.mayorName == name }

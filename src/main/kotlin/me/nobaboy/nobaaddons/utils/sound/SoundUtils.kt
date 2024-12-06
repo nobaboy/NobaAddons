@@ -3,14 +3,14 @@ package me.nobaboy.nobaaddons.utils.sound
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
 import net.minecraft.sound.SoundEvent
-import net.minecraft.util.Identifier
+import net.minecraft.sound.SoundEvents
 import kotlin.math.pow
 
 // TODO: Either drop this or expand on this so complex sequences are allowed (basically multiple sound events)
 object SoundUtils {
-	private val experienceOrbPickup = SoundEvent.of(Identifier.ofVanilla("entity.experience_orb.pickup"))
-	private val noteBlockPling = SoundEvent.of(Identifier.ofVanilla("block.note_block.pling"))
-	private val noteBlockFlute = SoundEvent.of(Identifier.ofVanilla("block.note_block.flute"))
+	private val experienceOrbPickup = SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP
+	private val noteBlockPling = SoundEvents.BLOCK_NOTE_BLOCK_PLING.value()
+	private val noteBlockFlute = SoundEvents.BLOCK_NOTE_BLOCK_HARP.value()
 
 	val dingSound = SimpleSound(experienceOrbPickup, pitch = 0.5f)
 

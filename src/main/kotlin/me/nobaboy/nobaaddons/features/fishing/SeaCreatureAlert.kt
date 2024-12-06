@@ -23,7 +23,7 @@ object SeaCreatureAlert {
 		val text = if(config.nameInsteadOfRarity) {
 			"${seaCreature.displayName}!"
 		} else {
-			"${seaCreature.rarity.displayName} Catch!"
+			"${seaCreature.rarity} Catch!"
 		}
 
 		RenderUtils.drawTitle(text, seaCreature.rarity.color)

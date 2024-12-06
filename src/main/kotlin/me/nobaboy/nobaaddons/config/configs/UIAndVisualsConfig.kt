@@ -120,6 +120,9 @@ class UIAndVisualsConfig {
 		var tuningPoints: Boolean = false
 
 		@SerialEntry
+		var trophyFish: Boolean = false
+
+		@SerialEntry
 		var vacuumPests: Boolean = false
 	}
 
