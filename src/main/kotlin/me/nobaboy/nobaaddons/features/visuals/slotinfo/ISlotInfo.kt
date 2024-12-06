@@ -57,7 +57,6 @@ interface ISlotInfo {
 				ScreenRenderEvents.DRAW_SLOT.register {
 					if(SkyBlockAPI.inSkyBlock && handler.enabled) handler.handle(it)
 				}
-
 			}
 		}
 

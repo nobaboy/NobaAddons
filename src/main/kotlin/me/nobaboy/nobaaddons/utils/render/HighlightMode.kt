@@ -1,14 +1,11 @@
 package me.nobaboy.nobaaddons.utils.render
 
-import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.utils.StringUtils.title
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import net.minecraft.text.Text
 
-enum class HighlightMode : NameableEnum {
+enum class HighlightMode {
 	OUTLINE,
 	FILLED,
 	FILLED_OUTLINE;
 
-	override fun getDisplayName(): Text = name.replace("_", " ").title().toText()
+	override fun toString(): String = name.replace("_", " ").title()
 }
