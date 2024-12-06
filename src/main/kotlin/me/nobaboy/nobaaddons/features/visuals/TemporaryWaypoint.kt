@@ -28,7 +28,7 @@ object TemporaryWaypoint {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.temporaryWaypoints
 
 	private val chatCoordsPattern = Pattern.compile(
-		"(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
+		"^\\[[0-9]+](?: .)? ?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
 	)
 
 	private val waypoints = mutableListOf<Waypoint>()

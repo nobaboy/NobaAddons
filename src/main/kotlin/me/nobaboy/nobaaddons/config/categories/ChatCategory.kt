@@ -54,7 +54,7 @@ object ChatCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage", "Implosion"))
+					.name(Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage"))
 					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage.tooltip")))
 					.binding(defaults.chat.filters.hideAbilityCooldownMessage, config.chat.filters::hideAbilityCooldownMessage) { config.chat.filters.hideAbilityCooldownMessage = it }
 					.controller(NobaConfigUtils::createBooleanController)
