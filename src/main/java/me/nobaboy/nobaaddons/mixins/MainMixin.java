@@ -19,7 +19,7 @@ public class MainMixin {
 
 		// This uses a Mixin because this must be done as early as possible - before other mods load that use AWT
 		// see https://github.com/BuiltBrokenModding/SBM-SheepMetal/issues/2
-		if (!System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("mac")) {
+		if(!System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("mac")) {
 			System.out.println("[NobaAddons] Setting java.awt.headless to false");
 			System.setProperty("java.awt.headless", "false");
 		}
