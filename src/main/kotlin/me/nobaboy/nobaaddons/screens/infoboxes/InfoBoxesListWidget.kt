@@ -84,6 +84,7 @@ class InfoBoxesListWidget(
 	override fun getScrollbarX(): Int = super.scrollbarX + 20
 
 	inner class InfoBoxConfigEntry(private val infoBoxIndex: Int) : AbstractInfoBoxEntry() {
+		private var oldScrollAmount = 0.0
 		val infoBox = infoBoxes[infoBoxIndex]
 
 		private val textField = TextFieldWidget(client.textRenderer, 250, 20, Text.empty()).apply {
@@ -100,6 +101,7 @@ class InfoBoxesListWidget(
 		}.size(50, 20).build()
 
 		private val deleteButton = ButtonWidget.builder(Text.translatable("nobaaddons.screen.button.delete")) {
+			oldScrollAmount = scrollAmount
 			deleteEntry()
 		}.size(50, 20).build()
 
@@ -121,6 +123,7 @@ class InfoBoxesListWidget(
 			removeEntry(this)
 
 			screen.addButton.active = size < 20
+			scrollAmount = oldScrollAmount
 
 			regenerateIdentifiers()
 			refreshEntries()

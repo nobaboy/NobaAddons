@@ -6,6 +6,6 @@ import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.screens.keybinds.impl.KeyBind
 
-object KeyBindsConfig : AbstractConfig(NobaAddons.modConfigDir.resolve("key-binds.json")) {
-	val keyBinds by Property.list("keyBinds", Serializer.expose<KeyBind>())
+object KeyBindsConfig : AbstractConfig(NobaAddons.modConfigDir.resolve("keybinds.json")) {
+	val keyBinds by Property.list("keybinds", Serializer.expose<KeyBind>())
 }

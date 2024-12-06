@@ -6,14 +6,14 @@ import me.nobaboy.nobaaddons.screens.hud.elements.data.Element
 import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
 
 object InfoBoxesManager {
-	val infoBoxes = mutableListOf<TextElement>()
+	internal val infoBoxes = mutableListOf<TextElement>()
 
 	fun init() {
-		runCatching {
+		try {
 			InfoBoxesConfig.load()
 			infoBoxes.addAll(InfoBoxesConfig.infoBoxes)
-		}.onFailure {
-			NobaAddons.LOGGER.error("Failed to load info-boxes.json", it)
+		} catch(ex: IOException) {
+			NobaAddons.LOGGER.error("Failed to load info-boxes.json", ex)
 		}
 	}
 

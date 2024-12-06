@@ -60,7 +60,8 @@ class KeyBindsScreen(private val parent: Screen?) : Screen(TITLE) {
 				else -> button
 			}
 
-			selectedKeyBind!!.keyCode = code
+			if(selectedKeyBind!!.key != code) keyBindsList.hasChanges = true
+			selectedKeyBind!!.key = code
 			selectedKeyBind = null
 			keyBindsList.update()
 			return true
@@ -76,7 +77,8 @@ class KeyBindsScreen(private val parent: Screen?) : Screen(TITLE) {
 				else -> keyCode
 			}
 
-			selectedKeyBind!!.keyCode = code
+			if(selectedKeyBind!!.key != code) keyBindsList.hasChanges = true
+			selectedKeyBind!!.key = code
 			selectedKeyBind = null
 			keyBindsList.update()
 			return true
@@ -87,7 +89,7 @@ class KeyBindsScreen(private val parent: Screen?) : Screen(TITLE) {
 
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
 		super.render(context, mouseX, mouseY, delta)
-		RenderUtils.drawCenteredText(context, this.title.copy().append(" (${keyBindsList.size}/20)"), this.width / 2, 12)
+		RenderUtils.drawCenteredText(context, this.title, this.width / 2, 12)
 	}
 
 	override fun close() {

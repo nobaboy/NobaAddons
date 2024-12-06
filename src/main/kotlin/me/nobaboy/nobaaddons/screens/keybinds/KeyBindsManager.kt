@@ -7,25 +7,29 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.screens.keybinds.impl.KeyBind
 import me.nobaboy.nobaaddons.screens.keybinds.impl.NobaKeyBind
+import me.nobaboy.nobaaddons.utils.CooldownManager
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import org.lwjgl.glfw.GLFW
+import kotlin.time.Duration.Companion.milliseconds
 
 object KeyBindsManager {
 	private val config = NobaConfigManager.config.general
 
-	val commandKeyBinds = mutableListOf<KeyBind>()
-	private val gameKeyBinds = mutableListOf<NobaKeyBind>(
+	private val cooldownManager = CooldownManager(100.milliseconds)
+
+	internal val commandKeyBinds = mutableListOf<KeyBind>()
+	private val gameKeyBinds = listOf<NobaKeyBind>(
 		NobaKeyBind("nobaaddons.keyBind.mythologicalRitual.nearestWarp") { BurrowWaypoints.useNearestWarp() }
 	)
 
 	fun init() {
 		gameKeyBinds.forEach(KeyBindingHelper::registerKeyBinding)
 
-		runCatching {
+		try {
 			KeyBindsConfig.load()
 			commandKeyBinds.addAll(KeyBindsConfig.keyBinds)
-		}.onFailure {
-			NobaAddons.LOGGER.error("Failed to load key-binds.json", it)
+		} catch(ex: IOException) {
+			NobaAddons.LOGGER.error("Failed to load key-binds.json", ex)
 		}
 	}
 
@@ -43,8 +47,10 @@ object KeyBindsManager {
 	fun onPress(keyCode: Int) {
 		if(keyCode == GLFW.GLFW_KEY_UNKNOWN) return
 		if(!SkyBlockAPI.inSkyBlock && !config.allowKeybindsOutsideSkyBlock) return
+		if(cooldownManager.isOnCooldown()) return
 
-		val keyBind = commandKeyBinds.firstOrNull { it.keyCode == keyCode } ?: return
+		val keyBind = commandKeyBinds.firstOrNull { it.key == keyCode } ?: return
 		keyBind.maybePress()
+		cooldownManager.startCooldown()
 	}
 }

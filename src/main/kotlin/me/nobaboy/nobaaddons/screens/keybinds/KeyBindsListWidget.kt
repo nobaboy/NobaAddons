@@ -24,8 +24,6 @@ class KeyBindsListWidget(
 	itemHeight: Int
 ) : ElementListWidget<KeyBindsListWidget.AbstractKeyBindEntry>(client, width, height, y, itemHeight) {
 	private val keyBinds = mutableListOf<KeyBind>()
-	val size: Int get() = keyBinds.size
-
 	var hasChanges = false
 
 	init {
@@ -51,8 +49,6 @@ class KeyBindsListWidget(
 
 	fun addKeyBind() {
 		keyBinds.add(KeyBind())
-		screen.addButton.active = keyBinds.size < 20
-
 		refreshEntries()
 		hasChanges = true
 	}
@@ -74,6 +70,7 @@ class KeyBindsListWidget(
 	override fun getScrollbarX(): Int = super.scrollbarX + 20
 
 	inner class KeyBindEntry(private val keyBindIndex: Int) : AbstractKeyBindEntry() {
+		private var oldScrollAmount = 0.0
 		private val keyBind = keyBinds[keyBindIndex]
 		private var duplicate = false
 
@@ -89,11 +86,11 @@ class KeyBindsListWidget(
 
 		private val editButton = ButtonWidget.builder(Text.empty()) {
 			screen.selectedKeyBind = keyBind
-			hasChanges = true
 			update()
 		}.size(75, 20).build()
 
 		private val deleteButton = ButtonWidget.builder(Text.translatable("nobaaddons.screen.button.delete")) {
+			oldScrollAmount = scrollAmount
 			deleteEntry()
 		}.size(50, 20).build()
 
@@ -105,7 +102,7 @@ class KeyBindsListWidget(
 			keyBinds.removeAt(keyBindIndex)
 			removeEntry(this)
 
-			screen.addButton.active = size < 20
+			scrollAmount = oldScrollAmount
 
 			refreshEntries()
 			hasChanges = true
@@ -151,11 +148,11 @@ class KeyBindsListWidget(
 			deleteButton.x = width / 2 + 130
 
 			duplicate = false
-			editButton.message = getKeyText(keyBind.keyCode)
+			editButton.message = getKeyText(keyBind.key)
 
-			if(keyBind.keyCode != GLFW.GLFW_KEY_UNKNOWN) {
+			if(keyBind.key != GLFW.GLFW_KEY_UNKNOWN) {
 				val filteredKeyBinds = keyBinds.filterIndexed { index, _ -> index != keyBindIndex }
-				duplicate = filteredKeyBinds.any { it.keyCode == keyBind.keyCode }
+				duplicate = filteredKeyBinds.any { it.key == keyBind.key }
 			}
 
 			if(duplicate) editButton.apply {

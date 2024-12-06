@@ -8,7 +8,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 data class KeyBind(
 	@Expose var command: String = "",
-	@Expose var keyCode: Int = GLFW.GLFW_KEY_UNKNOWN
+	@Expose var key: Int = GLFW.GLFW_KEY_UNKNOWN
 ) {
 	private val cooldownManager = CooldownManager(500.milliseconds)
 
