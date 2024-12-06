@@ -11,14 +11,14 @@ import net.minecraft.text.Text
 interface IAlert {
 	val config get() = NobaConfigManager.config.chat.alerts
 
-	fun isEnabled(): Boolean
+	val enabled: Boolean
 	fun shouldAlert(message: Text, text: String): Boolean
 
 	companion object {
 		private var init = false
 		private var alerts = arrayOf<IAlert>(
 			MythicSeaCreatureAlert,
-			VanquisherAlert,
+			VanquisherAlert
 		)
 
 		fun init() {
@@ -27,7 +27,7 @@ interface IAlert {
 
 			ClientReceiveMessageEvents.GAME.register { message, _ ->
 				val text = message.string.cleanFormatting()
-				alerts.asSequence().filter { it.isEnabled() }.forEach {
+				alerts.asSequence().filter { it.enabled }.forEach {
 					runCatching { it.shouldAlert(message, text) }
 						.onFailure { error ->
 							NobaAddons.LOGGER.error(

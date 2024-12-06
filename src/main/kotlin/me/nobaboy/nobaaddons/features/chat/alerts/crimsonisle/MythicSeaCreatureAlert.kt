@@ -11,6 +11,8 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.text.Text
 
 object MythicSeaCreatureAlert : IAlert {
+	override val enabled: Boolean get() = SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.mythicSeaCreatureSpawn
+
 	override fun shouldAlert(message: Text, text: String): Boolean {
 		val seaCreature = SeaCreature.creatures[text]
 		if(seaCreature != SeaCreature.THUNDER && seaCreature != SeaCreature.LORD_JAWBUS) return false
@@ -21,6 +23,4 @@ object MythicSeaCreatureAlert : IAlert {
 
 		return true
 	}
-
-	override fun isEnabled(): Boolean = SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.mythicSeaCreatureSpawn
 }

@@ -13,6 +13,8 @@ import net.minecraft.text.Text
 object VanquisherAlert : IAlert {
 	private val vanquisherSpawnMessage = "A Vanquisher is spawning nearby!"
 
+	override val enabled: Boolean get() = SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.vanquisherSpawn
+
 	override fun shouldAlert(message: Text, text: String): Boolean {
 		if(!text.lowercaseEquals(vanquisherSpawnMessage)) return false
 
@@ -21,6 +23,4 @@ object VanquisherAlert : IAlert {
 		ChatUtils.sendChatAsPlayer("$location | Vanquisher at [ ${SkyBlockAPI.prefixedZone} ] @$randomString")
 		return true
 	}
-
-	override fun isEnabled(): Boolean = SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.vanquisherSpawn
 }
