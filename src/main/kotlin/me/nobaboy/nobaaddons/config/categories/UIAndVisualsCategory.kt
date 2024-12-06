@@ -135,6 +135,13 @@ object UIAndVisualsCategory {
 					.controller(TickBoxControllerBuilder::create)
 					.build())
 
+				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.trophyFish"))
+					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.trophyFish.tooltip")))
+					.binding(defaults.uiAndVisuals.slotInfo.trophyFish, config.uiAndVisuals.slotInfo::trophyFish) { config.uiAndVisuals.slotInfo.trophyFish = it }
+					.controller(TickBoxControllerBuilder::create)
+					.build())
+
 				.option(LabelOption.createBuilder()
 					.line(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.label.items"))
 					.build())
