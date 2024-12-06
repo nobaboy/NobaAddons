@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
 object InfoBoxesManager {
 	val infoBoxes = mutableListOf<TextElement>()
 
-	init {
+	fun init() {
 		runCatching {
 			InfoBoxesConfig.load()
 			infoBoxes.addAll(InfoBoxesConfig.infoBoxes)
