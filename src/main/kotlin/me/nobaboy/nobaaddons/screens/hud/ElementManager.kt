@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.screens.hud
 
+import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
 import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
@@ -12,8 +13,13 @@ object ElementManager : LinkedHashMap<String, HudElement>() {
 		loadElements()
 
 		HudRenderCallback.EVENT.register { context, _ ->
-			this.values.forEach { value ->
-				value.takeIf { it.enabled }?.render(context)
+			values.asSequence().filter { it.enabled }.forEach {
+				runCatching { it.render(context) }
+					.onFailure { error ->
+						NobaAddons.LOGGER.error(
+							"Hud Element {} threw an error while attempting to render", it, error
+						)
+					}
 			}
 		}
 	}

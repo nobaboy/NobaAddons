@@ -14,6 +14,16 @@ abstract class TextHud(element: Element) : HudElement(element) {
 	abstract val textMode: TextMode
 	abstract val outlineColor: Int
 
+	private fun renderLine(context: DrawContext) {
+		when(textMode) {
+			TextMode.OUTLINE -> RenderUtils.drawOutlinedText(context, text, x, y, scale, color, outlineColor, applyScaling = false)
+			TextMode.PURE, TextMode.SHADOW -> {
+				val shadow = textMode == TextMode.SHADOW
+				RenderUtils.drawText(context, text, x, y, scale, color, shadow, applyScaling = false)
+			}
+		}
+	}
+
 	override fun render(context: DrawContext) {
 		if(!shouldRender) return
 
@@ -28,15 +38,5 @@ abstract class TextHud(element: Element) : HudElement(element) {
 		val height = MCUtils.textRenderer.fontHeight - 1
 
 		return ElementBounds(x, y, (width * scale).toInt(), (height * scale).toInt())
-	}
-
-	private fun renderLine(context: DrawContext) {
-		when(textMode) {
-			TextMode.OUTLINE -> RenderUtils.drawOutlinedText(context, text, x, y, scale, color, outlineColor, applyScaling = false)
-			TextMode.PURE, TextMode.SHADOW -> {
-				val shadow = textMode == TextMode.SHADOW
-				RenderUtils.drawText(context, text, x, y, scale, color, shadow, applyScaling = false)
-			}
-		}
 	}
 }
