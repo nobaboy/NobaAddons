@@ -74,7 +74,7 @@ object MouseLock {
 		//?} else {
 		/*val packetLocation = NobaVec(packet.x, packet.y, packet.z).round(2)*/
 		//?}
-		if(packetLocation.distance(playerLocation) >= 5) locked = false
+		if(packetLocation.distance(playerLocation) >= 5) lockMouse()
 	}
 
 	fun lockMouse() {

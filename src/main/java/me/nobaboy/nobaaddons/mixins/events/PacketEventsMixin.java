@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import me.nobaboy.nobaaddons.events.PacketEvents;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
+import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,16 +31,10 @@ public class PacketEventsMixin {
 	}
 
 	@Inject(
-		method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V",
-		at = @At(
-			value = "INVOKE",
-			target = "net/minecraft/network/ClientConnection.handlePacket(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;)V"
-		)
+		method = "handlePacket",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/Packet;apply(Lnet/minecraft/network/listener/PacketListener;)V")
 	)
-	private void nobaaddons$onEarlyPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
-		if(!this.channel.isOpen()) return;
-		if(this.side != NetworkSide.CLIENTBOUND) return;
-
+	private static void nobaaddons$onEarlyPacketReceive(Packet<?> packet, PacketListener listener, CallbackInfo ci) {
 		PacketEvents.EARLY_RECEIVE.invoke(new PacketEvents.EarlyReceive(packet));
 	}
 
