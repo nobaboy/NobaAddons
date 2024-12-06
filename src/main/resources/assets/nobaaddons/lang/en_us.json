@@ -83,6 +83,8 @@
   "nobaaddons.config.uiAndVisuals.slotInfo.skillLevel": "Skill Level",
   "nobaaddons.config.uiAndVisuals.slotInfo.skyBlockLevel": "SkyBlock Level",
   "nobaaddons.config.uiAndVisuals.slotInfo.tuningPoints": "Tuning Points",
+  "nobaaddons.config.uiAndVisuals.slotInfo.trophyFish": "Trophy Fish",
+  "nobaaddons.config.uiAndVisuals.slotInfo.trophyFish.tooltip": "Displays a count of how many of each trophy fish you've caught in Odegar's menu",
   "nobaaddons.config.uiAndVisuals.slotInfo.vacuumPests": "Vacuum Pests",
   "nobaaddons.config.uiAndVisuals.renderingTweaks": "Rendering Tweaks",
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt": "Hide Lightning Bolt",

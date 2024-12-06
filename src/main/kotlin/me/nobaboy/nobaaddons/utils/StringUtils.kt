@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
+import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import net.minecraft.util.Formatting
 
 object StringUtils {
@@ -30,5 +31,13 @@ object StringUtils {
 		return (1..length)
 			.map { allowedChars.random() }
 			.joinToString("")
+	}
+
+	fun Int.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2): String {
+		return when {
+			this.toInt() > 1_000 -> "${(this / 1_000.0).roundTo(thousandPrecision)}k"
+			this.toInt() > 1_000_000 -> "${(this / 1_000_000.0).roundTo(millionPrecision)}m"
+			else -> this.toString()
+		}
 	}
 }

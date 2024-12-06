@@ -23,6 +23,7 @@ enum class NobaColor(val colorCode: Char, private val color: Color, private val 
 	WHITE('f', Color(255, 255, 255), Formatting.WHITE);
 
 	val next by lazy { BY_ID.apply(ordinal + 1) }
+	val rgb get() = toColor().rgb
 
 	fun toColor(): Color = color
 	fun toFormatting(): Formatting = formatting
