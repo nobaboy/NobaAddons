@@ -8,15 +8,14 @@ import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import net.minecraft.text.Text
 
 object VanquisherAlert : IAlert {
 	private val vanquisherSpawnMessage = "A Vanquisher is spawning nearby!"
 
 	override val enabled: Boolean get() = SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.vanquisherSpawn
 
-	override fun shouldAlert(message: Text, text: String): Boolean {
-		if(!text.lowercaseEquals(vanquisherSpawnMessage)) return false
+	override fun shouldAlert(message: String): Boolean {
+		if(!message.lowercaseEquals(vanquisherSpawnMessage)) return false
 
 		val location = LocationUtils.playerCoords()
 		val randomString = StringUtils.randomAlphanumeric()

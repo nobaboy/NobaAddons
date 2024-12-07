@@ -6,13 +6,12 @@ import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.MythicSeaCreatureA
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.VanquisherAlert
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.text.Text
 
 interface IAlert {
 	val config get() = NobaConfigManager.config.chat.alerts
 
 	val enabled: Boolean
-	fun shouldAlert(message: Text, text: String): Boolean
+	fun shouldAlert(message: String): Boolean
 
 	companion object {
 		private var init = false
@@ -26,9 +25,8 @@ interface IAlert {
 			init = true
 
 			ClientReceiveMessageEvents.GAME.register { message, _ ->
-				val text = message.string.cleanFormatting()
 				alerts.asSequence().filter { it.enabled }.forEach {
-					runCatching { it.shouldAlert(message, text) }
+					runCatching { it.shouldAlert(message.string.cleanFormatting()) }
 						.onFailure { error ->
 							NobaAddons.LOGGER.error(
 								"Alert {} threw an error while processing a chat message", it, error
