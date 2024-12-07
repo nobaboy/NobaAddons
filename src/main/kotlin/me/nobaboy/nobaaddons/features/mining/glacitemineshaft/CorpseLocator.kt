@@ -11,6 +11,7 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.findMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
@@ -19,6 +20,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.text.Text
 import java.util.regex.Pattern
 
 object CorpseLocator {
@@ -66,15 +68,25 @@ object CorpseLocator {
 			.filter { entity -> corpses.none { it.entity == entity } }
 			.forEach { checkCorpse(it) }
 
-		corpses.forEach { corpse ->
-			if(!corpse.seen && player.canSee(corpse.entity)) {
-				val article = if(corpse.type == CorpseType.UMBER) "an" else "a"
-				val corpseText = "${corpse.type.displayName} Corpse"
-				ChatUtils.addMessage("Located $article $corpseText and marked its location with a waypoint.")
+		corpses.filter { !it.seen && player.canSee(it.entity) }.forEach { corpse ->
+			val article = if(corpse.type == CorpseType.UMBER) "an" else "a"
+			val (x, y, z) = corpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
 
-				MineshaftWaypoints.waypoints.add(Waypoint(corpse.entity.getNobaVec(), corpseText, corpse.type.color, isCorpse = true))
-				corpse.seen = true
+			val text = buildText {
+				append("Found $article ")
+				append(Text.literal("${corpse.type} Corpse").formatted(corpse.type.color.toFormatting()))
+				append(" at $x, $y, $z!")
 			}
+
+			ChatUtils.addMessage(text)
+			MineshaftWaypoints.waypoints.add(Waypoint(
+				corpse.entity.getNobaVec().roundToBlock(),
+				"${corpse.type} Corpse",
+				corpse.type.color,
+				true
+			))
+
+			corpse.seen = true
 		}
 	}
 
@@ -85,8 +97,8 @@ object CorpseLocator {
 		//? if >=1.21.2 {
 		if(entity.shouldShowBasePlate()) return
 		//?} else {
-		/*if(!entity.shouldHideBasePlate()) return
-		*///?}
+		/*if(!entity.shouldHideBasePlate()) return*/
+		//?}
 
 		val item = entity.getEquippedStack(EquipmentSlot.HEAD).getSkyBlockItem() ?: return
 		val corpseType = CorpseType.getByHelmetOrNull(item.id) ?: return
@@ -106,7 +118,7 @@ object CorpseLocator {
 
 		val (x, y, z) = closestCorpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
 
-		HypixelCommands.partyChat("x: $x, y: $y, z: $z | (${closestCorpse.type.displayName} Corpse)")
+		HypixelCommands.partyChat("x: $x, y: $y, z: $z | (${closestCorpse.type} Corpse)")
 		closestCorpse.shared = true
 	}
 
