@@ -14,8 +14,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 object MineshaftWaypoints {
 	private val config get() = NobaConfigManager.config.mining.glaciteMineshaft
 
-	private const val BLOCKS_FORWARD: Int = 7
-
 	val waypoints = mutableListOf<Waypoint>()
 
 	fun init() {
@@ -34,7 +32,7 @@ object MineshaftWaypoints {
 			val facing = MCUtils.player?.rotationVector?.toNobaVec()?.round(0) ?: return
 			val vec = blockBelow
 				// Move 7 blocks in front of the player to be in the ladder shaft
-				.add(x = facing.x * BLOCKS_FORWARD, z = facing.z * BLOCKS_FORWARD)
+				.add(x = facing.x * 7, z = facing.z * 7)
 				// Adjust 2 blocks to the right to be in the center of the ladder shaft
 				.add(x = facing.z * -2, z = facing.x * 2)
 				// Move 15 blocks down to be at the bottom of the ladder shaft

@@ -29,7 +29,8 @@ enum class SkyBlockIsland(val apiName: String?) {
 	UNKNOWN(null);
 
 	companion object {
-		val ISLANDS = SkyBlockIsland.entries.filter { it.apiName != null }.associateBy { it.apiName!! }
-		fun getIslandType(mode: String): SkyBlockIsland = ISLANDS.getOrDefault(mode, UNKNOWN)
+		val ISLANDS = entries.filter { it.apiName != null }.associateBy { it.apiName!! }
+
+		fun getSkyBlockIsland(mode: String): SkyBlockIsland = ISLANDS.getOrDefault(mode, UNKNOWN)
 	}
 }

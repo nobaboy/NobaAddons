@@ -29,7 +29,7 @@ object SkyBlockAPI {
 		private set
 
 	val prefixedZone: String?
-		get() = if(currentZone != null) "⏣ $currentZone" else null
+		get() = currentZone?.let { "⏣ $it" }
 
 	var purse: Long? = null
 		private set
@@ -82,7 +82,7 @@ object SkyBlockAPI {
 
 	private fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentGame = packet.serverType.getOrNull()
-		currentIsland = packet.mode.map(SkyBlockIsland::getIslandType).orElse(SkyBlockIsland.UNKNOWN)
+		currentIsland = packet.mode.map(SkyBlockIsland::getSkyBlockIsland).orElse(SkyBlockIsland.UNKNOWN)
 		if(currentIsland != SkyBlockIsland.UNKNOWN) SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
 	}
 }

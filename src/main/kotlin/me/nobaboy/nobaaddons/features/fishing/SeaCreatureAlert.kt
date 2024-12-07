@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.fishing
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.core.SeaCreature
+import me.nobaboy.nobaaddons.core.fishing.SeaCreature
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
@@ -17,7 +17,7 @@ object SeaCreatureAlert {
 	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
-		val seaCreature = SeaCreature.creatures[message] ?: return
+		val seaCreature = SeaCreature.getBySpawnMessage(message) ?: return
 		if(!seaCreature.rarity.isAtLeast(config.minimumRarity)) return
 
 		val text = if(config.nameInsteadOfRarity) {

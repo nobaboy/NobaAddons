@@ -11,7 +11,7 @@ import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 import java.lang.ref.WeakReference
 
-private val RARITY_PATTERN = Regex("^(?:. )?(?<RARITY>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL).*")
+private val RARITY_PATTERN = Regex("^(?:. )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL).*")
 
 class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	private val nbt: NbtCompound get() = item.get()!!.nbtCompound.nbt
@@ -44,7 +44,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 			.map { it.string }
 			.firstNotNullOfOrNull(RARITY_PATTERN::matchEntire)
 			?: return@CacheOf ItemRarity.UNKNOWN
-		ItemRarity.rarities[match.groups["RARITY"]!!.value] ?: ItemRarity.UNKNOWN
+		ItemRarity.getRarity(match.groups["rarity"]!!.value)
 	}
 
 	val id: String by CacheOf(this::nbt) { nbt.getString("id") }

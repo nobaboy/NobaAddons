@@ -1,5 +1,7 @@
-package me.nobaboy.nobaaddons.core
+package me.nobaboy.nobaaddons.core.fishing
 
+import me.nobaboy.nobaaddons.core.MobRarity
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 
 enum class SeaCreature(
@@ -71,6 +73,8 @@ enum class SeaCreature(
 	val displayName = displayName ?: name.replace("_", " ").title()
 
 	companion object {
-		val creatures = entries.associateBy { it.spawnMessage }
+		val CREATURES = entries.associateBy { it.spawnMessage }
+
+		fun getBySpawnMessage(message: String): SeaCreature? = CREATURES[message]
 	}
 }

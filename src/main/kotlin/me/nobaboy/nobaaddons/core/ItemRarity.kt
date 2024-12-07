@@ -17,14 +17,16 @@ enum class ItemRarity(val color: NobaColor? = null) {
 	ADMIN(NobaColor.RED),
 	UNKNOWN;
 
-	val displayName = name.replace("_", " ").title()
 	val colorCode by lazy { color?.colorCode }
 
 	fun isAtLeast(rarity: ItemRarity): Boolean = this.ordinal >= rarity.ordinal
 
-	companion object {
-		val rarities = entries.associateBy { it.name.replace("_", " ") }
+	override fun toString(): String = name.replace("_", " ").title()
 
+	companion object {
+		val RARITIES = entries.associateBy { it.name.replace("_", " ") }
+
+		fun getRarity(text: String): ItemRarity = RARITIES.getOrDefault(text, UNKNOWN)
 		fun getByColorCode(colorCode: Char): ItemRarity = entries.firstOrNull { it.colorCode == colorCode } ?: UNKNOWN
 	}
 }
