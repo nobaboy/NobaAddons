@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.core
+package me.nobaboy.nobaaddons.core.fishing
 
 import me.nobaboy.nobaaddons.utils.NobaColor
 

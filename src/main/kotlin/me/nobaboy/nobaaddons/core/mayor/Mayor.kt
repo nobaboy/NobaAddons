@@ -89,11 +89,11 @@ enum class Mayor(vararg val perks: MayorPerk) {
 	override fun toString(): String = mayorName
 
 	companion object {
-		fun getMayor(name: String): Mayor? = entries.firstOrNull { it.mayorName == name }
-		fun getMayor(perk: MayorPerk): Mayor? = entries.firstOrNull { it.perks.contains(perk) }
+		fun getByName(name: String): Mayor? = entries.firstOrNull { it.mayorName == name }
+		fun getByPerk(perk: MayorPerk): Mayor? = entries.firstOrNull { it.perks.contains(perk) }
 
 		fun getMayor(name: String, perks: List<Perk>): Mayor {
-			val mayor = getMayor(name) ?: return UNKNOWN
+			val mayor = getByName(name) ?: return UNKNOWN
 
 			mayor.activatePerks(perks.mapNotNull { it.toPerk() })
 			return mayor

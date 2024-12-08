@@ -75,11 +75,11 @@ enum class MayorPerk(val perkName: String) {
 	override fun toString(): String = "$perkName: $description"
 
 	companion object {
-		fun getPerk(name: String): MayorPerk? = entries.firstOrNull { it.perkName == name }
+		fun getByName(name: String): MayorPerk? = entries.firstOrNull { it.perkName == name }
 
 		fun disableAll() = entries.forEach { it.isActive = false }
 
-		fun Perk.toPerk(): MayorPerk? = getPerk(this.renameFoxyPerks())?.apply {
+		fun Perk.toPerk(): MayorPerk? = getByName(this.renameFoxyPerks())?.apply {
 			description = this@toPerk.description
 			minister = this@toPerk.minister
 		}

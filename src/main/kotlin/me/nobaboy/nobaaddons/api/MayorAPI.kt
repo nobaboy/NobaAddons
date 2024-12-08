@@ -32,7 +32,7 @@ object MayorAPI {
 	private const val ELECTION_END_MONTH = 3
 	private const val ELECTION_END_DAY = 27
 
-	private const val electionOverMessage = "The election room is now closed. Clerk Serpahine is doing a final count of the votes..."
+	private const val electionOverMessage = "The election room is now closed. Clerk Seraphine is doing a final count of the votes..."
 	private val mayorHeadPattern = Pattern.compile("Mayor (?<name>[A-z]+)")
 
 	val foxyExtraEventPattern = Pattern.compile("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.")
@@ -92,13 +92,12 @@ object MayorAPI {
 		val lore = item.lore.lines.map { it.string.cleanFormatting() }
 
 		val perk = lore.nextAfter("Perkpocalypse Perks:", 2) ?: return
-		val extraMayor = Mayor.getMayor(MayorPerk.getPerk(perk) ?: return)?.activateAllPerks() ?: return
+		val extraMayor = Mayor.getByPerk(MayorPerk.getByName(perk) ?: return)?.activateAllPerks() ?: return
 
 		val lastMayorTimestamp = nextMayorTimestamp - SKYBLOCK_YEAR_MILLIS.milliseconds
 
 		// The maximum amount of extra mayors we get while Jerry is elected is 21
-		val expirationTime = (1..21)
-			.map { lastMayorTimestamp + (6.hours * it) }
+		val expirationTime = (1..21).map { lastMayorTimestamp + (6.hours * it) }
 			.firstOrNull { it.isFuture() }
 			?.coerceAtMost(nextMayorTimestamp) ?: return
 

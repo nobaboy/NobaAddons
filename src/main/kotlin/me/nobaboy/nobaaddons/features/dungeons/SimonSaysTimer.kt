@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysFile
+import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysTimes
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
@@ -45,19 +45,21 @@ object SimonSaysTimer {
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 		UseBlockCallback.EVENT.register { player, _, _, hitResult -> onInteract(player, hitResult) }
 
-		runCatching {
-			SimonSaysFile.load()
-			SimonSaysFile.times.minOrNull()?.takeIf { !it.isNaN() }?.let { newPersonalBest ->
-				if(newPersonalBest != SimonSaysFile.personalBest) {
-					SimonSaysFile.personalBest = newPersonalBest
-					SimonSaysFile.save()
+		try {
+			SimonSaysTimes.load()
+			SimonSaysTimes.times.minOrNull()?.takeIf { !it.isNaN() }?.let { newPersonalBest ->
+				if(newPersonalBest != SimonSaysTimes.personalBest) {
+					SimonSaysTimes.personalBest = newPersonalBest
+					SimonSaysTimes.save()
 				}
 			}
-		}.onFailure { NobaAddons.LOGGER.error("Failed to load simon-says-timer.json", it) }
+		} catch(ex: IOException) {
+			NobaAddons.LOGGER.error("Failed to load simon-says-timer.json", ex)
+		}
 	}
 
 	fun clearTimes() {
-		val times = SimonSaysFile.times
+		val times = SimonSaysTimes.times
 
 		if(times.isEmpty()) {
 			ChatUtils.addMessage("You have not completed a Simon Says device.")
@@ -66,16 +68,16 @@ object SimonSaysTimer {
 
 		try {
 			ChatUtils.addMessage("Successfully cleared Simon Says Times.")
-			SimonSaysFile.personalBest = null
-			SimonSaysFile.times.clear()
-			SimonSaysFile.save()
+			SimonSaysTimes.personalBest = null
+			SimonSaysTimes.times.clear()
+			SimonSaysTimes.save()
 		} catch(ex: IOException) {
 			NobaAddons.LOGGER.error("Failed to modify simon-says-timer.json", ex)
 		}
 	}
 
 	fun sendAverage() {
-		val times = SimonSaysFile.times
+		val times = SimonSaysTimes.times
 
 		if(times.isEmpty()) {
 			ChatUtils.addMessage("You have not completed a Simon Says device.")
@@ -91,7 +93,7 @@ object SimonSaysTimer {
 	}
 
 	fun sendPersonalBest() {
-		val personalBest = SimonSaysFile.personalBest
+		val personalBest = SimonSaysTimes.personalBest
 
 		val message = personalBest?.let {
 			"Your Simon Says Personal Best is: $personalBest"
@@ -122,11 +124,11 @@ object SimonSaysTimer {
 	}
 
 	private fun processCompletionTime() {
-		val times: MutableList<Double> = SimonSaysFile.times
+		val times: MutableList<Double> = SimonSaysTimes.times
 		val timeTaken = (completionTime - startTime).inWholeMilliseconds / 1000.0
 		times.add(timeTaken)
 
-		val personalBest = SimonSaysFile.personalBest?.takeIf { timeTaken >= it } ?: timeTaken.also { SimonSaysFile.personalBest = it }
+		val personalBest = SimonSaysTimes.personalBest?.takeIf { timeTaken >= it } ?: timeTaken.also { SimonSaysTimes.personalBest = it }
 		val classifier = if(timeTaken < personalBest) Text.literal("(PB)").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
 			else Text.literal("($personalBest)").formatted(Formatting.DARK_AQUA)
 		val message = buildText {
@@ -139,7 +141,11 @@ object SimonSaysTimer {
 
 		if(config.timeInPartyChat && PartyAPI.party != null) HypixelCommands.partyChat(message.string) else ChatUtils.addMessage(message)
 
-		runCatching { SimonSaysFile.save() }.onFailure { NobaAddons.LOGGER.error("Failed to save simon-says-timer.json", it) }
+		try {
+			SimonSaysTimes.save()
+		} catch(ex: IOException) {
+			NobaAddons.LOGGER.error("Failed to save simon-says-timer.json", ex)
+		}
 	}
 
 	private fun reset() {

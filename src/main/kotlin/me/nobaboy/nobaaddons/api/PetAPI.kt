@@ -100,7 +100,7 @@ object PetAPI {
 
 			val name = group("name")
 			val level = group("level").toInt()
-			val rarity = ItemRarity.rarities[petInfo.tier] ?: ItemRarity.UNKNOWN
+			val rarity = ItemRarity.getRarity(petInfo.tier)
 
 			return PetData(
 				name,

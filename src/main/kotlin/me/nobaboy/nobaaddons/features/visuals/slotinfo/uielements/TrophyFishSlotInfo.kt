@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements
 
 import me.nobaboy.nobaaddons.api.SkyBlockAPI
-import me.nobaboy.nobaaddons.core.TrophyFishRarity
+import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.InventoryUtils
