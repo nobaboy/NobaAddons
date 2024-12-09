@@ -1,11 +1,11 @@
-package me.nobaboy.nobaaddons.api
+package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.data.json.MayorJson
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
-import me.nobaboy.nobaaddons.utils.HTTPUtils.fetchJson
+import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
@@ -119,7 +119,7 @@ object MayorAPI {
 		if(lastApiUpdate.elapsedSince() < 20.minutes) return
 		lastApiUpdate = Timestamp.now()
 
-		fetchJson<MayorJson>(ELECTION_API_URL).thenAccept { mayorJson ->
+		HTTPUtils.fetchJson<MayorJson>(ELECTION_API_URL).thenAccept { mayorJson ->
 			val mayor = mayorJson.mayor
 
 			val currentMayorName = mayor.name

@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.api
+package me.nobaboy.nobaaddons.api.skyblock
 
 import com.google.gson.Gson
 import me.nobaboy.nobaaddons.NobaAddons

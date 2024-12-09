@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.api
+package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
+import me.nobaboy.nobaaddons.utils.RegexUtils.firstMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchAll
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import net.hypixel.data.type.GameType
@@ -16,6 +17,7 @@ import java.util.regex.Pattern
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
+	private val zonePattern = Pattern.compile("^ [⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$")
 	private val currencyPattern = Pattern.compile("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*")
 
 	var currentGame: ServerType? = null
@@ -29,7 +31,10 @@ object SkyBlockAPI {
 		private set
 
 	val prefixedZone: String?
-		get() = currentZone?.let { "⏣ $it" }
+		get() = currentZone?.let {
+			val symbol = if (currentIsland == SkyBlockIsland.RIFT) "ф" else "⏣"
+			"$symbol $it"
+		}
 
 	var purse: Long? = null
 		private set
@@ -53,8 +58,9 @@ object SkyBlockAPI {
 	// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
 	private fun getZone() {
 		val scoreboard = ScoreboardUtils.getSidebarLines()
-		val line = scoreboard.firstOrNull { it.contains("⏣") }
-		currentZone = line?.replace("⏣", "")?.trim() ?: return
+		zonePattern.firstMatcher(scoreboard) {
+			currentZone = group("zone")
+		}
 	}
 
 	// This can be further expanded to include other types like Pelts, North Stars, etc.

@@ -4,7 +4,7 @@ package me.nobaboy.nobaaddons.features.qol
 /*import me.nobaboy.nobaaddons.utils.NobaVec*/
 //?}
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.PacketEvents

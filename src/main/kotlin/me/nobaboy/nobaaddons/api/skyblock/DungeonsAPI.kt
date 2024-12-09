@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.api
+package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.dungeons.DungeonBoss
 import me.nobaboy.nobaaddons.core.dungeons.DungeonClass

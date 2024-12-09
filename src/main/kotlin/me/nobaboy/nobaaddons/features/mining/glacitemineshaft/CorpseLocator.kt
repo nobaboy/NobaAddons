@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.mining.glacitemineshaft
 
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SecondPassedEvent

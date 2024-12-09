@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.PingUtils
 import kotlin.math.sqrt

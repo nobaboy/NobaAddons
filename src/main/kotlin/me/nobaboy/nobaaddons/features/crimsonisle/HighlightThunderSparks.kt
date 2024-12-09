@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.crimsonisle
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents

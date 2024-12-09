@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.qol.sound.filters.dwarvenmines
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter

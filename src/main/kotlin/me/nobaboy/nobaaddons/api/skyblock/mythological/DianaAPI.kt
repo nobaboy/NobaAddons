@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.api.mythological
+package me.nobaboy.nobaaddons.api.skyblock.mythological
 
-import me.nobaboy.nobaaddons.api.MayorAPI
-import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
+import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents

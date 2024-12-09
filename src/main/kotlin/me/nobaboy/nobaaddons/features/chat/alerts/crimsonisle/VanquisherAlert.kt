@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
-import me.nobaboy.nobaaddons.api.SkyBlockAPI.inIsland
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.utils.LocationUtils

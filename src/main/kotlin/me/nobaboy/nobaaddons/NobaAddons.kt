@@ -2,15 +2,15 @@ package me.nobaboy.nobaaddons
 
 import com.mojang.logging.LogUtils
 import me.nobaboy.nobaaddons.api.DebugAPI
-import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
-import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.api.PetAPI
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
-import me.nobaboy.nobaaddons.api.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.api.mythological.BurrowGuessAPI
-import me.nobaboy.nobaaddons.api.mythological.DianaAPI
+import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
+import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
+import me.nobaboy.nobaaddons.api.skyblock.PetAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowGuessAPI
+import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager

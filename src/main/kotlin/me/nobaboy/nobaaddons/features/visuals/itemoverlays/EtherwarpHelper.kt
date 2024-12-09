@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.visuals.itemoverlays
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
 import me.nobaboy.nobaaddons.utils.MCUtils

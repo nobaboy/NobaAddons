@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.commands
 
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
-import me.nobaboy.nobaaddons.api.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.commands.internal.Group

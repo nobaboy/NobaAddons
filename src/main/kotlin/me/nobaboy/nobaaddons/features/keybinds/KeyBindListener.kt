@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.keybinds
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.keybinds.data.KeybindConfig
