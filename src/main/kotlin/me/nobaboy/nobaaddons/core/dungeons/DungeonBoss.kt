@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.core.dungeons
 
-enum class DungeonBoss(val displayName: String) {
+enum class DungeonBoss(val displayName: String?) {
 	WATCHER("The Watcher"),
 	BONZO("Bonzo"),
 	SCARF("Scarf"),
@@ -13,14 +13,9 @@ enum class DungeonBoss(val displayName: String) {
 	GOLDOR("Goldor"),
 	NECRON("Necron"),
 	WITHER_KING("Wither King"),
-	UNKNOWN("");
+	UNKNOWN(null);
 
 	companion object {
-		fun fromChat(text: String): DungeonBoss {
-			for(boss in entries) {
-				if(text.contains(boss.displayName)) return boss
-			}
-			return UNKNOWN
-		}
+		fun getByMessage(text: String): DungeonBoss = entries.firstOrNull { it.displayName != null && text.contains(it.displayName) } ?: UNKNOWN
 	}
 }

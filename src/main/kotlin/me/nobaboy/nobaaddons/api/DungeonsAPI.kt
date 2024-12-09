@@ -14,18 +14,18 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object DungeonsAPI {
-	private var currentClass: DungeonClass = DungeonClass.EMPTY
-	private var currentFloor: DungeonFloor = DungeonFloor.NONE
-	private var currentBoss: DungeonBoss = DungeonBoss.UNKNOWN
+	var currentClass: DungeonClass = DungeonClass.EMPTY
+		private set
+	var currentFloor: DungeonFloor = DungeonFloor.NONE
+		private set
+	var currentBoss: DungeonBoss = DungeonBoss.UNKNOWN
+		private set
 
-	fun getClass(): DungeonClass = currentClass
 	fun isClass(classType: DungeonClass): Boolean = currentClass == classType
 
-	fun getFloor(): DungeonFloor = currentFloor
 	fun inFloor(floor: DungeonFloor): Boolean = currentFloor == floor
 	fun inFloor(floor: Int): Boolean = currentFloor.floor == floor
 
-	fun getBoss(): DungeonBoss = currentBoss
 	fun isBoss(boss: DungeonBoss): Boolean = currentBoss == boss
 	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN
 
@@ -86,6 +86,6 @@ object DungeonsAPI {
 		}
 
 		if(!message.startsWith("[BOSS]")) return
-		currentBoss = DungeonBoss.fromChat(message)
+		currentBoss = DungeonBoss.getByMessage(message)
 	}
 }
