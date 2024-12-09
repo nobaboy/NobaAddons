@@ -1,14 +1,15 @@
-package me.nobaboy.nobaaddons.core
+package me.nobaboy.nobaaddons.core.mob
 
 enum class SkyBlockMobType {
 	BASIC,
 	DUNGEON,
-	BOSS,
 	SLAYER,
+	PLAYER,
+	BOSS,
 	NPC;
 
 	fun isSkyBlockMob() = when(this) {
-		BASIC, DUNGEON, BOSS, SLAYER -> true
+		BASIC, DUNGEON, SLAYER, BOSS -> true
 		else -> false
 	}
 }
