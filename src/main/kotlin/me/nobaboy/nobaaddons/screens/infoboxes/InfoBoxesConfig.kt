@@ -6,6 +6,6 @@ import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
 
-object InfoBoxesConfig : AbstractConfig(NobaAddons.modConfigDir.resolve("info-boxes.json")) {
-	val infoBoxes by Property.list("info_boxes", Serializer.expose<TextElement>())
+object InfoBoxesConfig : AbstractConfig(NobaAddons.modConfigDir.resolve("infoboxes.json")) {
+	val infoBoxes by Property.list("infoboxes", Serializer.expose<TextElement>())
 }

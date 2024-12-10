@@ -13,7 +13,7 @@ object InfoBoxesManager {
 			InfoBoxesConfig.load()
 			infoBoxes.addAll(InfoBoxesConfig.infoBoxes)
 		} catch(ex: IOException) {
-			NobaAddons.LOGGER.error("Failed to load info-boxes.json", ex)
+			NobaAddons.LOGGER.error("Failed to load infoboxes.json", ex)
 		}
 	}
 
@@ -23,7 +23,7 @@ object InfoBoxesManager {
 			InfoBoxesConfig.infoBoxes.addAll(infoBoxes)
 			InfoBoxesConfig.save()
 		} catch(ex: IOException) {
-			NobaAddons.LOGGER.error("Failed to save info-boxes.json", ex)
+			NobaAddons.LOGGER.error("Failed to save infoboxes.json", ex)
 		}
 	}
 
