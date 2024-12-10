@@ -6,9 +6,6 @@ import java.awt.Color
 
 class UIAndVisualsConfig {
 	@SerialEntry
-	var showUsageText: Boolean = true
-
-	@SerialEntry
 	val temporaryWaypoints: TemporaryWaypoints = TemporaryWaypoints()
 
 	@SerialEntry
