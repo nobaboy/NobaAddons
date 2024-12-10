@@ -95,13 +95,6 @@ object InquisitorWaypoints {
 		}
 	}
 
-	fun reset() {
-		waypoints.clear()
-		inquisitorsNearby.clear()
-		inquisitorSpawnTimes.clear()
-		lastInquisitorId = null
-	}
-
 	private fun checkInquisitor() {
 		inquisitorSpawnTimes.add(Timestamp.now())
 
@@ -135,6 +128,13 @@ object InquisitorWaypoints {
 
 		ChatUtils.addMessage("Couldn't find ${inquisitor.spawner}'s Inquisitor.")
 		waypoints.remove(inquisitor)
+	}
+
+	fun reset() {
+		waypoints.clear()
+		inquisitorsNearby.clear()
+		inquisitorSpawnTimes.clear()
+		lastInquisitorId = null
 	}
 
 	data class Inquisitor(val spawner: String, val location: NobaVec, val spawnTime: Timestamp)

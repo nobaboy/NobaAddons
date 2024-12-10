@@ -115,6 +115,7 @@
   "nobaaddons.config.events.mythological.burrowGuess.tooltip": "Guesses the next burrow location from the Ancestral Spade's Echo ability",
   "nobaaddons.config.events.mythological.findNearbyBurrows": "Find Nearby Burrows",
   "nobaaddons.config.events.mythological.findNearbyBurrows.tooltip": "Highlights nearby burrows with a waypoint",
+  "nobaaddons.config.events.mythological.dingOnBurrowFind": "Ding On Burrow Find",
   "nobaaddons.config.events.mythological.removeGuessOnBurrowFind": "Remove Guess On Burrow Find",
   "nobaaddons.config.events.mythological.findNearestWarp": "Find Nearest Warp",
   "nobaaddons.config.events.mythological.alertInquisitor": "Alert Inquisitor",

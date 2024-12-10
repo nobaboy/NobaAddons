@@ -32,6 +32,12 @@ object EventsCategory {
 					.build())
 
 				.option(Option.createBuilder<Boolean>()
+					.name(Text.translatable("nobaaddons.config.events.mythological.pingOnBurrowFind"))
+					.binding(defaults.events.mythological.dingOnBurrowFind, config.events.mythological::dingOnBurrowFind) { config.events.mythological.dingOnBurrowFind = it }
+					.controller(NobaConfigUtils::createBooleanController)
+					.build())
+
+				.option(Option.createBuilder<Boolean>()
 					.name(Text.translatable("nobaaddons.config.events.mythological.removeGuessOnBurrowFind"))
 					.binding(defaults.events.mythological.removeGuessOnBurrowFind, config.events.mythological::removeGuessOnBurrowFind) { config.events.mythological.removeGuessOnBurrowFind = it }
 					.controller(NobaConfigUtils::createBooleanController)

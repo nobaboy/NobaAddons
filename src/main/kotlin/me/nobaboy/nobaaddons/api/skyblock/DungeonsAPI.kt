@@ -30,8 +30,19 @@ object DungeonsAPI {
 	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN
 
 	fun init() {
-		SecondPassedEvent.EVENT.register { update() }
+		SecondPassedEvent.EVENT.register { onSecondPassed() }
 		ClientReceiveMessageEvents.GAME.register { message, _ -> getBossType(message.string.cleanFormatting()) }
+	}
+
+	private fun onSecondPassed() {
+		if(!SkyBlockIsland.DUNGEONS.inIsland()) {
+			currentClass = DungeonClass.EMPTY
+			currentFloor = DungeonFloor.NONE
+			return
+		}
+
+		getClassType()
+		getFloorType()
 	}
 
 	private fun getClassType() {
@@ -66,17 +77,6 @@ object DungeonsAPI {
 
 			break
 		}
-	}
-
-	private fun update() {
-		if(!SkyBlockIsland.DUNGEONS.inIsland()) {
-			currentClass = DungeonClass.EMPTY
-			currentFloor = DungeonFloor.NONE
-			return
-		}
-
-		getClassType()
-		getFloorType()
 	}
 
 	private fun getBossType(message: String) {

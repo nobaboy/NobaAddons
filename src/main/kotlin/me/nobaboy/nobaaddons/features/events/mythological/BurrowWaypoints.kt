@@ -15,6 +15,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
@@ -69,6 +70,7 @@ object BurrowWaypoints {
 		val location = event.location
 		burrows[location] = event.type
 
+		if(config.dingOnBurrowFind) SoundUtils.plingSound.play()
 		if(!config.removeGuessOnBurrowFind) return
 
 		guessLocation?.let { guess ->
@@ -102,8 +104,8 @@ object BurrowWaypoints {
 		if(!isEnabled()) return
 
 		suggestNearestWarp()
-
 		renderInquisitorWaypoints(context)
+
 		if(isInquisitorSpawned && config.inquisitorFocusMode) return
 
 		if(config.findNearbyBurrows) renderBurrowWaypoints(context)
@@ -153,11 +155,6 @@ object BurrowWaypoints {
 				RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", NobaColor.GRAY, throughBlocks = true)
 			}
 		}
-	}
-
-	fun reset() {
-		guessLocation = null
-		burrows.clear()
 	}
 
 	private fun suggestNearestWarp() {
@@ -211,6 +208,11 @@ object BurrowWaypoints {
 			ChatUtils.queueCommand(command)
 			it.used = true
 		}
+	}
+
+	fun reset() {
+		guessLocation = null
+		burrows.clear()
 	}
 
 	private fun isEnabled() = DianaAPI.isActive()

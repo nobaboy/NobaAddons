@@ -45,14 +45,27 @@ object SkyBlockAPI {
 //	var motes: Long? = null
 //		private set
 
+	fun SkyBlockIsland.inIsland(): Boolean = inSkyBlock && currentIsland == this
+	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
+
 	fun init() {
-		SecondPassedEvent.EVENT.register { update() }
+		SecondPassedEvent.EVENT.register { onSecondPassed() }
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 	}
 
-	fun SkyBlockIsland.inIsland(): Boolean = inSkyBlock && currentIsland == this
-	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
+	private fun onSecondPassed() {
+		if(!inSkyBlock) return
+
+		getZone()
+		getCurrencies()
+	}
+
+	private fun onLocationPacket(packet: ClientboundLocationPacket) {
+		currentGame = packet.serverType.getOrNull()
+		currentIsland = packet.mode.map(SkyBlockIsland::getSkyBlockIsland).orElse(SkyBlockIsland.UNKNOWN)
+		if(currentIsland != SkyBlockIsland.UNKNOWN) SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
+	}
 
 	// I originally planned to make an enum including all the zones but after realising
 	// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
@@ -77,18 +90,5 @@ object SkyBlockAPI {
 //				"Motes" -> motes = amount
 			}
 		}
-	}
-
-	private fun update() {
-		if(!inSkyBlock) return
-
-		getZone()
-		getCurrencies()
-	}
-
-	private fun onLocationPacket(packet: ClientboundLocationPacket) {
-		currentGame = packet.serverType.getOrNull()
-		currentIsland = packet.mode.map(SkyBlockIsland::getSkyBlockIsland).orElse(SkyBlockIsland.UNKNOWN)
-		if(currentIsland != SkyBlockIsland.UNKNOWN) SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
 	}
 }
