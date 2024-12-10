@@ -16,7 +16,7 @@ import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.screens.NobaHudScreen
 import me.nobaboy.nobaaddons.screens.NobaMainScreen
-import me.nobaboy.nobaaddons.screens.keybinds.KeybindsConfigScreen
+import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.PingUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
@@ -43,7 +43,7 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 
 	val keybinds = Command.command("keybinds") {
 		executes {
-			KeybindsConfigScreen(null).queueOpen()
+			KeyBindsScreen(null).queueOpen()
 		}
 	}
 
