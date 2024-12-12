@@ -14,10 +14,7 @@ object EntityNametagRenderEvents {
 	 * Event invoked when an [Entity]'s nametag is being rendered, allowing for adding new nametag line(s)
 	 * to be rendered.
 	 *
-	 * Note that the provided [Nametag.tags] list also contains the entity's name, and as such will need to be
-	 * removed if this is undesired.
-	 *
-	 * Also note that adding new lines to player nametags will currently cause the scoreboard objective
+	 * Note that adding new lines to player nametags will currently cause the scoreboard objective
 	 * in the below name slot (if any) to render multiple times.
 	 */
 	@JvmField val EVENT = EventDispatcher<Nametag>()
