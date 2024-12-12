@@ -6,17 +6,17 @@ import net.minecraft.entity.Entity
 
 object EntityRenderEvents {
 	/**
-	 * Event invoked to determine if a given [Entity] should be allowed to render in the world
+	 * Event invoked to determine whether a given [Entity] should be allowed to render in the world.
 	 */
 	@JvmField val ALLOW_RENDER = EventDispatcher<AllowRender>()
 
 	/**
-	 * Event called before an [Entity] is rendered, before any matrix stack modifications have been made.
+	 * Event invoked before an [Entity] is rendered, before any matrix stack modifications have been made.
 	 */
 	@JvmField val PRE_RENDER = EventDispatcher<Render>()
 
 	/**
-	 * Event called after an [Entity] is rendered, after all matrix stack modifications have been unwound.
+	 * Event invoked after an [Entity] is rendered, after all matrix stack modifications have been unwound.
 	 */
 	@JvmField val POST_RENDER = EventDispatcher<Render>()
 

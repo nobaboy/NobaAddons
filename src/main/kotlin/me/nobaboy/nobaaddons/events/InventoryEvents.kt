@@ -6,20 +6,30 @@ import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
 
 object InventoryEvents {
-	@JvmField
-	val OPEN = EventDispatcher<Open>()
+	/**
+	 * Event invoked after an inventory is opened and fully ready.
+	 */
+	@JvmField val OPEN = EventDispatcher<Open>()
 
-	@JvmField
-	val UPDATE = EventDispatcher<Update>()
+	/**
+	 * Event called when the opened inventory is updated, which could be a singular slot or more.
+	 */
+	@JvmField val UPDATE = EventDispatcher<Update>()
 
-	@JvmField
-	val CLOSE = EventDispatcher<Close>()
+	/**
+	 * Event invoked after the current opened inventory is closed.
+	 */
+	@JvmField val CLOSE = EventDispatcher<Close>()
 
-	@JvmField
-	val SLOT_CLICK = EventDispatcher<SlotClick>()
+	/**
+	 * Event invoked when a slot in the current opened inventory is clicked.
+	 */
+	@JvmField val SLOT_CLICK = EventDispatcher<SlotClick>()
 
-	@JvmField
-	val SLOT_UPDATE = EventDispatcher<SlotUpdate>()
+	/**
+	 * Event invoked when an individual inventory slot is updated, regardless of whether an inventory is open.
+	 */
+	@JvmField val SLOT_UPDATE = EventDispatcher<SlotUpdate>()
 
 	data class Open(val inventory: InventoryData)
 	data class Update(val inventory: InventoryData)
