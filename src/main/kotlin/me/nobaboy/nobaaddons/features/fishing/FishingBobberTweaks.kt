@@ -58,13 +58,7 @@ object FishingBobberTweaks {
 			color = if(seconds >= slugTime) GOLD else GREEN
 		}
 
-		RenderUtils.renderText(
-			entity.pos.toNobaVec().add(y = 0.5),
-			seconds.roundTo(1).toString(),
-			color,
-			/*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
-			throughBlocks = true
-		)
+		RenderUtils.renderText(entity.pos.toNobaVec().add(y = 0.5), seconds.roundTo(1).toString(), color, throughBlocks = true)
 	}
 
 	private fun onEntityLoad(entity: Entity) {

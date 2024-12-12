@@ -73,11 +73,8 @@ object TemporaryWaypoint {
 				RenderUtils.renderWaypoint(context, it, color, throughBlocks = true)
 				RenderUtils.renderText(it.center().raise(), waypoint.text, color, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
 
-				if(distance > 5) {
-					val formattedDistance = distance.toInt().addSeparators()
-					RenderUtils.renderText(it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
-				}
-
+				val formattedDistance = distance.toInt().addSeparators()
+				RenderUtils.renderText(it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 		}
 	}

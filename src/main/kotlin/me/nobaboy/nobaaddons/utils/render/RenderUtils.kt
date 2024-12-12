@@ -276,7 +276,7 @@ object RenderUtils {
 		val cameraPos = context.camera().pos.toNobaVec()
 
 		val distSq = location.distanceSq(cameraPos)
-		if(distSq < hideThreshold * hideThreshold) return
+		if(distSq <= hideThreshold * hideThreshold) return
 
 		matrices.push()
 		matrices.translate(location.x - cameraPos.x, location.y - cameraPos.y, location.z - cameraPos.z)
@@ -469,13 +469,15 @@ object RenderUtils {
 		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {
+		val client = MCUtils.client
+
 		val positionMatrix = Matrix4f()
-		val camera = MCUtils.client.gameRenderer.camera
+		val camera = client.gameRenderer.camera
 		val cameraPos = camera.pos.toNobaVec()
-		val textRenderer = MCUtils.textRenderer
+		val textRenderer = client.textRenderer
 
 		val dist = location.distance(cameraPos).coerceAtMost(512.0)
-		if(dist < hideThreshold) return
+		if(dist <= hideThreshold) return
 
 		var scale = dist.toFloat() / 256.0f
 		scale = (scale * scaleMultiplier).coerceAtLeast(0.025f)
@@ -483,6 +485,8 @@ object RenderUtils {
 		val x = location.x - cameraPos.x
 		val y = location.y - cameraPos.y
 		val z = location.z - cameraPos.z
+
+		val shadow = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/ && shadow
 
 		positionMatrix
 			.translate(x.toFloat(), y.toFloat(), z.toFloat())
