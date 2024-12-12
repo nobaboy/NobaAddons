@@ -66,8 +66,8 @@ class NobaMainScreen : Screen(TITLE) {
 		super.refreshWidgetPositions()
 	//?} else {
 	/*override fun initTabNavigation() {
-		super.initTabNavigation()*/
-	//?}
+		super.initTabNavigation()
+	*///?}
 		layout.refreshPositions()
 	}
 

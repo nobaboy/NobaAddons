@@ -24,8 +24,8 @@ public abstract class ScreenRenderEventsMixin extends Screen {
 			//? if >=1.21.2 {
 			target = "Lnet/minecraft/client/gui/DrawContext;drawStackOverlay(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V"
 			//?} else {
-			/*target = "Lnet/minecraft/client/gui/DrawContext;drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V"*/
-			//?}
+			/*target = "Lnet/minecraft/client/gui/DrawContext;drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V"
+			*///?}
 		)
 	)
 	public void nobaaddons$onDrawSlot(DrawContext context, Slot slot, CallbackInfo ci) {

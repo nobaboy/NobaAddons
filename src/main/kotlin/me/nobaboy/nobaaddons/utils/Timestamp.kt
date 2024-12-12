@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
+import java.time.Instant
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -43,5 +44,6 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 
 		fun Long.asTimestamp() = Timestamp(this)
 		fun SkyBlockTime.asTimestamp() = Timestamp(toMillis())
+		fun Instant.asTimestamp() = Timestamp(this.toEpochMilli())
 	}
 }

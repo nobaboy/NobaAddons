@@ -19,6 +19,7 @@ extensions.configure<StonecutterSettings> {
 
     shared {
         versions("1.21", "1.21.3")
+        vcsVersion = "1.21.3"
     }
     create(rootProject)
 }

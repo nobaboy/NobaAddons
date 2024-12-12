@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.mixins;
+package me.nobaboy.nobaaddons.mixins.misc;
 
 import net.minecraft.client.main.Main;
 import org.spongepowered.asm.mixin.Mixin;

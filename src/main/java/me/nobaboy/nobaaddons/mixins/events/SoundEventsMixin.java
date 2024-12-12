@@ -28,8 +28,8 @@ public class SoundEventsMixin {
 				//? if >=1.21.2 {
 				.map(SoundEvent::id)
 				//?} else {
-				/*.map(SoundEvent::getId)*/
-				//?}
+				/*.map(SoundEvent::getId)
+				*///?}
 				.orElseThrow());
 
 		var location = new NobaVec(x, y, z);

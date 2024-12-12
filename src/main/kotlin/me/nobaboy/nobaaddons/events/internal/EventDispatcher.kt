@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.events.internal
 
+// TODO change this to require T to extend Event
 open class EventDispatcher<T> : AbstractEventDispatcher<T>() {
 	protected val listeners: MutableList<(T) -> Unit> = mutableListOf()
 
@@ -8,6 +9,7 @@ open class EventDispatcher<T> : AbstractEventDispatcher<T>() {
 	}
 
 	override fun invoke(event: T) {
+		// TODO merge CancelableEventDispatcher into this (with a separate val on Event to enable the early exit?)
 		listeners.forEach { it(event) }
 	}
 }

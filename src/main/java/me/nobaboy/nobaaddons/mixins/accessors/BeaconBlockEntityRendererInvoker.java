@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.mixins.invokers;
+package me.nobaboy.nobaaddons.mixins.accessors;
 
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BeaconBlockEntityRenderer;

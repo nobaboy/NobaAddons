@@ -8,6 +8,12 @@ class FishingConfig {
 	@SerialEntry
 	val seaCreatureAlert: SeaCreatureAlert = SeaCreatureAlert()
 
+	@SerialEntry
+	var showBobberTimer: Boolean = false
+
+	@SerialEntry
+	var lerpBobberTimer: Boolean = false
+
 	class SeaCreatureAlert {
 		@SerialEntry
 		var enabled: Boolean = false

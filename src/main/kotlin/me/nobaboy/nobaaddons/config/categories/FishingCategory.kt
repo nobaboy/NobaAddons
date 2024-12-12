@@ -5,6 +5,8 @@ import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.core.MobRarity
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 import net.minecraft.text.Text
@@ -13,6 +15,11 @@ object FishingCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
 		return ConfigCategory.createBuilder()
 			.name(Text.translatable("nobaaddons.config.fishing"))
+
+			.buildGroup(Text.translatable("nobaaddons.config.fishing.bobberTimer")) {
+				boolean(Text.translatable("nobaaddons.config.enabled"), default = defaults.fishing.showBobberTimer, property = config.fishing::showBobberTimer)
+				boolean(Text.translatable("nobaaddons.config.fishing.bobberTimer.lerp"), default = defaults.fishing.lerpBobberTimer, property = config.fishing::lerpBobberTimer)
+			}
 
 			.group(OptionGroup.createBuilder()
 				.name(Text.translatable("nobaaddons.config.fishing.seaCreatureAlert"))
