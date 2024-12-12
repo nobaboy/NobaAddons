@@ -1,6 +1,6 @@
 plugins {
     id("dev.kikugie.stonecutter")
-    id("fabric-loom") version "1.7-SNAPSHOT" apply false
+    id("fabric-loom") version "1.9-SNAPSHOT" apply false
 	id("me.modmuss50.mod-publish-plugin") version "0.7.+" apply false
 }
 stonecutter active "1.21.3" /* [SC] DO NOT EDIT */
