@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.mixins;
+package me.nobaboy.nobaaddons.mixins.render;
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager;
 import net.minecraft.client.render.VertexConsumer;

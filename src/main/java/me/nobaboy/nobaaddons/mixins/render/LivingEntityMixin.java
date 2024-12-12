@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.mixins;
+package me.nobaboy.nobaaddons.mixins.render;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import me.nobaboy.nobaaddons.config.NobaConfigManager;

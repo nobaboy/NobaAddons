@@ -6,11 +6,11 @@ import net.minecraft.client.render.VertexRendering
 import net.minecraft.client.gl.ShaderProgramKeys
 //?} else {
 /*import net.minecraft.client.render.WorldRenderer
-import net.minecraft.client.render.GameRenderer*/
-//?}
+import net.minecraft.client.render.GameRenderer
+*///?}
 
 import com.mojang.blaze3d.systems.RenderSystem
-import me.nobaboy.nobaaddons.mixins.invokers.BeaconBlockEntityRendererInvoker
+import me.nobaboy.nobaaddons.mixins.accessors.BeaconBlockEntityRendererInvoker
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -319,8 +319,8 @@ object RenderUtils {
 		//? if >=1.21.2 {
 		RenderSystem.setShader(ShaderProgramKeys.RENDERTYPE_LINES)
 		//?} else {
-		/*RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram)*/
-		//?}
+		/*RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram)
+		*///?}
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f)
 		RenderSystem.lineWidth(lineWidth)
 		RenderSystem.enableBlend()
@@ -348,8 +348,8 @@ object RenderUtils {
 		//? if >=1.21.2 {
 		VertexRendering.drawBox(
 		//?} else {
-		/*WorldRenderer.drawBox(*/
-		//?}
+		/*WorldRenderer.drawBox(
+		*///?}
 			matrices, buffer,
 			box.minX, box.minY, box.minZ,
 			box.maxX, box.maxY, box.maxZ,
@@ -425,8 +425,8 @@ object RenderUtils {
 		//? if >=1.21.2 {
 		VertexRendering.drawFilledBox(
 		//?} else {
-		/*WorldRenderer.renderFilledBox(*/
-		//?}
+		/*WorldRenderer.renderFilledBox(
+		*///?}
 			matrices, buffer,
 			box.minX, box.minY, box.minZ,
 			box.maxX, box.maxY, box.maxZ,
@@ -460,7 +460,7 @@ object RenderUtils {
 	}
 
 	fun renderText(
-		context: WorldRenderContext,
+		context: WorldRenderContext? = null, // TODO remove
 		location: NobaVec,
 		text: String,
 		color: Int = 0xFFFFFF,
@@ -471,7 +471,7 @@ object RenderUtils {
 		throughBlocks: Boolean = false
 	) {
 		val positionMatrix = Matrix4f()
-		val camera = context.camera()
+		val camera = MCUtils.client.gameRenderer.camera
 		val cameraPos = camera.pos.toNobaVec()
 		val textRenderer = MCUtils.textRenderer
 
@@ -503,7 +503,7 @@ object RenderUtils {
 		RenderSystem.depthFunc(GL11.GL_LEQUAL)
 	}
 	fun renderText(
-		context: WorldRenderContext,
+		context: WorldRenderContext? = null, // TODO remove
 		location: NobaVec,
 		text: String,
 		color: Color,
@@ -516,7 +516,7 @@ object RenderUtils {
 		renderText(context, location, text, color.rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
 	}
 	fun renderText(
-		context: WorldRenderContext,
+		context: WorldRenderContext? = null, // TODO remove
 		location: NobaVec,
 		text: String,
 		color: NobaColor,

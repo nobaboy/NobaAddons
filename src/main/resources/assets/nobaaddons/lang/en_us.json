@@ -141,6 +141,9 @@
   "nobaaddons.config.events.mythological.ignoreStonks": "Ignore Stonks",
 
   "nobaaddons.config.fishing": "Fishing",
+  "nobaaddons.config.fishing.bobberTimer": "Fishing Bobber Timer",
+  "nobaaddons.config.fishing.bobberTimer.lerp": "Lerp Timer",
+  "nobaaddons.config.fishing.bobberTimer.lerp.tooltip": "The timer will change to ",
   "nobaaddons.config.fishing.seaCreatureAlert": "Sea Creature Alert",
   "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity": "Use Name Instead Of Rarity",
   "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity": "Minimum Rarity",

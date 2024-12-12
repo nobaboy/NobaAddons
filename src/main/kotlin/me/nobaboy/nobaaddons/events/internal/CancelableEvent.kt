@@ -1,11 +1,7 @@
 package me.nobaboy.nobaaddons.events.internal
 
-abstract class CancelableEvent {
-	@get:JvmName("isCanceled")
-	var canceled: Boolean = false
-		protected set
+import org.jetbrains.annotations.ApiStatus
 
-	fun cancel() {
-		this.canceled = true
-	}
-}
+// TODO merge this into Event
+@ApiStatus.Obsolete
+abstract class CancelableEvent : Event(isCancelable = true)
