@@ -12,9 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Keyboard.class)
 public class KeyboardMixin {
-	@Shadow
-	@Final
-	private MinecraftClient client;
+	@Shadow @Final private MinecraftClient client;
 
 	@Inject(method = "onKey", at = @At("TAIL"))
 	public void nobaaddons$onKeyPress(long window, int keyCode, int scancode, int action, int modifiers, CallbackInfo ci) {

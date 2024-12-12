@@ -16,12 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientConnection.class)
 public class PacketEventsMixin {
-	@Shadow
-	private Channel channel;
+	@Shadow private Channel channel;
 
-	@Shadow
-	@Final
-	private NetworkSide side;
+	@Shadow @Final private NetworkSide side;
 
 	@Inject(method = "send(Lnet/minecraft/network/packet/Packet;)V", at = @At("RETURN"))
 	private void nobaaddons$onPacketSend(Packet<?> packet, CallbackInfo ci) {
