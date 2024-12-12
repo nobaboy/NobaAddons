@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.mixins;
+package me.nobaboy.nobaaddons.mixins.io;
 
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager;
 import net.minecraft.client.Keyboard;

@@ -141,6 +141,9 @@
   "nobaaddons.config.events.mythological.ignoreStonks": "Ignore Stonks",
 
   "nobaaddons.config.fishing": "Fishing",
+  "nobaaddons.config.fishing.bobberTimer": "Fishing Bobber Timer",
+  "nobaaddons.config.fishing.bobberTimer.lerp": "Lerp Color",
+  "nobaaddons.config.fishing.bobberTimer.lerp.tooltip": "When enabled, the timer color will gradually change to gold as you approach the time required to catch a Slugfish; otherwise, the color will only change after reaching the time required to catch one.",
   "nobaaddons.config.fishing.seaCreatureAlert": "Sea Creature Alert",
   "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity": "Use Name Instead Of Rarity",
   "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity": "Minimum Rarity",

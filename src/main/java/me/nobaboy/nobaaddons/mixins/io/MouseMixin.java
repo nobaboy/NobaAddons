@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.mixins;
+package me.nobaboy.nobaaddons.mixins.io;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import me.nobaboy.nobaaddons.config.NobaConfigManager;
