@@ -55,7 +55,7 @@ object MineshaftWaypoints {
 
 			if(!shouldRender) return
 			RenderUtils.renderWaypoint(context, it.location, it.color, throughBlocks = true)
-			RenderUtils.renderText(context, it.location.center().raise(), it.text, yOffset = -5.0f, throughBlocks = true)
+			RenderUtils.renderText(it.location.center().raise(), it.text, yOffset = -5.0f, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 }

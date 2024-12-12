@@ -26,7 +26,7 @@
   "nobaaddons.screen.infoBoxes": "Info Boxes",
 
   "nobaaddons.screen.keyBinds": "Key Binds",
-  "nobaaddons.screen.keyBinds.command.tooltip": "The command to send when the key bind is pressed. The command must not start with a '/'.",
+  "nobaaddons.screen.keyBinds.command.tooltip": "The command to send when the key bind is pressed. The command must not start with a '/'",
 
   "nobaaddons.config.enabled": "Enabled",
   "nobaaddons.config.seconds": "%s seconds",
@@ -95,9 +95,9 @@
   "nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson.tooltip": "Removes the front-facing third person view after pressing F5 twice",
   "nobaaddons.config.uiAndVisuals.swingAnimation": "Arm Swing Animation Tweaks",
   "nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration": "Swing Duration",
-  "nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip": "Controls how long your arm swing animation duration is, ignoring all effects like Haste.",
+  "nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip": "Controls how long your arm swing animation duration is, ignoring all effects like Haste",
   "nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers": "Apply to All Players",
-  "nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip": "If enabled, the above swing duration will also apply to all other players, instead of only yourself.",
+  "nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip": "If enabled, the above swing duration will also apply to all other players, instead of only yourself",
   "nobaaddons.config.uiAndVisuals.itemRendering": "First Person Rendering",
   "nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip": "Cancel Re-equip Animation",
   "nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip.tooltip": "Prevents the item update animation from playing entirely, including when switching slots",
@@ -141,9 +141,9 @@
   "nobaaddons.config.events.mythological.ignoreStonks": "Ignore Stonks",
 
   "nobaaddons.config.fishing": "Fishing",
-  "nobaaddons.config.fishing.bobberTimer": "Fishing Bobber Timer",
-  "nobaaddons.config.fishing.bobberTimer.lerp": "Lerp Color",
-  "nobaaddons.config.fishing.bobberTimer.lerp.tooltip": "When enabled, the timer color will gradually change to gold as you approach the time required to catch a Slugfish; otherwise, the color will only change after reaching the time required to catch one.",
+  "nobaaddons.config.fishing.bobberTimer": "Bobber Timer",
+  "nobaaddons.config.fishing.bobberTimer.lerpColor": "Lerp Color",
+  "nobaaddons.config.fishing.bobberTimer.lerpColor.tooltip": "When enabled, the timer color will gradually change to gold as you approach the time required to catch a Slugfish; otherwise, the color will only change after reaching the time required to catch one",
   "nobaaddons.config.fishing.seaCreatureAlert": "Sea Creature Alert",
   "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity": "Use Name Instead Of Rarity",
   "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity": "Minimum Rarity",

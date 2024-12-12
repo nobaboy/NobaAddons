@@ -70,7 +70,7 @@ object EventsCategory {
 				.option(Option.createBuilder<NotificationSound>()
 					.name(Text.translatable("nobaaddons.config.notificationSound"))
 					.binding(defaults.events.mythological.notificationSound, config.events.mythological::notificationSound) { config.events.mythological.notificationSound = it }
-					.controller(NobaConfigUtils::createCyclingController)
+					.controller(NobaConfigUtils::createEnumController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()

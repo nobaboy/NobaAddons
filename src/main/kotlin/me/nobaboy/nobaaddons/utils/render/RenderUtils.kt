@@ -460,14 +460,13 @@ object RenderUtils {
 	}
 
 	fun renderText(
-		context: WorldRenderContext? = null, // TODO remove
 		location: NobaVec,
 		text: String,
 		color: Int = 0xFFFFFF,
 		shadow: Boolean = true,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
-		hideThreshold: Double = 5.0,
+		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {
 		val positionMatrix = Matrix4f()
@@ -503,29 +502,27 @@ object RenderUtils {
 		RenderSystem.depthFunc(GL11.GL_LEQUAL)
 	}
 	fun renderText(
-		context: WorldRenderContext? = null, // TODO remove
 		location: NobaVec,
 		text: String,
 		color: Color,
 		shadow: Boolean = true,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
-		hideThreshold: Double = 5.0,
+		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {
-		renderText(context, location, text, color.rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
+		renderText(location, text, color.rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
 	}
 	fun renderText(
-		context: WorldRenderContext? = null, // TODO remove
 		location: NobaVec,
 		text: String,
 		color: NobaColor,
 		shadow: Boolean = true,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
-		hideThreshold: Double = 5.0,
+		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {
-		renderText(context, location, text, color.toColor().rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
+		renderText(location, text, color.toColor().rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
 	}
 }

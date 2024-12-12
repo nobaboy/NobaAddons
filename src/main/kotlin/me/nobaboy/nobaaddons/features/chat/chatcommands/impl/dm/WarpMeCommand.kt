@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHa
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
-class WarpUserCommand : IChatCommand {
+class WarpMeCommand : IChatCommand {
 	override val name: String = "warpme"
 
 	override val isEnabled: Boolean

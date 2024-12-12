@@ -121,14 +121,14 @@ object BurrowWaypoints {
 			val yOffset = if(config.showInquisitorDespawnTime) -20.0f else -10.0f
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), "Inquisitor", NobaColor.DARK_RED, yOffset = yOffset, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = yOffset + 10.0f, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), "Inquisitor", NobaColor.DARK_RED, yOffset = yOffset, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = yOffset + 10.0f, hideThreshold = 5.0, throughBlocks = true)
 
 			if(config.showInquisitorDespawnTime) {
 				val spawnTime = inquisitor.spawnTime
 				val formattedTime = (75 - spawnTime.elapsedSince().inWholeSeconds).toInt()
 
-				RenderUtils.renderText(context, location.center().raise(), "Despawns in ${formattedTime}s", NobaColor.GRAY, throughBlocks = true)
+				RenderUtils.renderText(location.center().raise(), "Despawns in ${formattedTime}s", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 
 			if(distance < 10) InquisitorWaypoints.tryRemove(inquisitor)
@@ -138,7 +138,7 @@ object BurrowWaypoints {
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
 		burrows.forEach { location, type ->
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), type.text, type.color, yOffset = -5.0f, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), type.text, type.color, yOffset = -5.0f, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 
@@ -148,11 +148,11 @@ object BurrowWaypoints {
 			val distance = adjustedLocation.distance(playerLocation)
 
 			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
-			RenderUtils.renderText(context, adjustedLocation.center().raise(), "Guess", NobaColor.AQUA, yOffset = -10.0f, throughBlocks = true)
+			RenderUtils.renderText(adjustedLocation.center().raise(), "Guess", NobaColor.AQUA, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
 
 			if(distance > 5) {
 				val formattedDistance = distance.toInt().addSeparators()
-				RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", NobaColor.GRAY, throughBlocks = true)
+				RenderUtils.renderText(adjustedLocation.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 		}
 	}

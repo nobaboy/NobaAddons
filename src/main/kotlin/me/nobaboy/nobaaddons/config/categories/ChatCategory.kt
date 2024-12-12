@@ -118,7 +118,7 @@ object ChatCategory {
 				.option(Option.createBuilder<MobRarity>()
 					.name(Text.translatable("nobaaddons.config.chat.filters.seaCreatureMaximumRarity"))
 					.binding(defaults.chat.filters.seaCreatureMaximumRarity, config.chat.filters::seaCreatureMaximumRarity) { config.chat.filters.seaCreatureMaximumRarity = it }
-					.controller(NobaConfigUtils::createCyclingController)
+					.controller(NobaConfigUtils::createEnumController)
 					.build())
 				// endregion
 
@@ -130,13 +130,13 @@ object ChatCategory {
 				.option(Option.createBuilder<ChatFilterOption>()
 					.name(Text.translatable("nobaaddons.config.chat.filters.blessingMessage"))
 					.binding(defaults.chat.filters.blessingMessage, config.chat.filters::blessingMessage) { config.chat.filters.blessingMessage = it }
-					.controller(NobaConfigUtils::createCyclingController)
+					.controller(NobaConfigUtils::createEnumController)
 					.build())
 
 				.option(Option.createBuilder<ChatFilterOption>()
 					.name(Text.translatable("nobaaddons.config.chat.filters.healerOrbMessage"))
 					.binding(defaults.chat.filters.healerOrbMessage, config.chat.filters::healerOrbMessage) { config.chat.filters.healerOrbMessage = it }
-					.controller(NobaConfigUtils::createCyclingController)
+					.controller(NobaConfigUtils::createEnumController)
 					.build())
 
 				.option(Option.createBuilder<Boolean>()

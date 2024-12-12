@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
-import com.google.gson.Gson
+import me.nobaboy.nobaaddons.NobaAddons
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -15,7 +15,7 @@ object HTTPUtils {
 			val request = HttpRequest.newBuilder().uri(URI.create(url)).GET().also(requestBuilder).build()
 			val response = client.send(request, HttpResponse.BodyHandlers.ofString())
 			check(response.statusCode() < 400) { "Failed to fetch JSON: ${response.statusCode()}" }
-			Gson().fromJson(response.body(), T::class.java)
+			NobaAddons.GSON.fromJson(response.body(), T::class.java)
 		}
 	}
 }

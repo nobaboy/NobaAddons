@@ -22,7 +22,7 @@ import java.nio.file.Path
 
 object NobaConfigManager {
 	const val CONFIG_VERSION = 1
-	private val CONFIG_DIR: Path = NobaAddons.modConfigDir.resolve("config.json")
+	private val CONFIG_DIR: Path = NobaAddons.CONFIG_DIR.resolve("config.json")
 
 	private val HANDLER: ConfigClassHandler<NobaConfig> = ConfigClassHandler.createBuilder(NobaConfig::class.java)
 		.serializer { config ->

@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons
 
+import com.google.gson.Gson
 import com.mojang.logging.LogUtils
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
@@ -55,7 +56,9 @@ object NobaAddons : ClientModInitializer {
 		.formatted(Formatting.BLUE, Formatting.BOLD)
 
 	val LOGGER: Logger = LogUtils.getLogger()
-	val modConfigDir: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
+	val CONFIG_DIR: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
+
+	val GSON = Gson()
 
 	// Note: utility object classes should avoid calling a dedicated `init` method here where possible, and instead
 	// rely on 'init {}' to run setup when first used, unless absolutely necessary for functionality (such as

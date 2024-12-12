@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
-import com.google.gson.Gson
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.ItemRarity
 import me.nobaboy.nobaaddons.data.PetData
@@ -11,8 +10,6 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
@@ -57,14 +54,7 @@ object PetAPI {
 		if(event.button != GLFW.GLFW_MOUSE_BUTTON_1) return
 		if(event.actionType != SlotActionType.PICKUP) return
 
-		val itemStack = event.itemStack
-		if(itemStack.lore.stringLines.any { it == "Click to despawn!" }) {
-			changePet(null)
-			return
-		}
-
-		val pet = getPetData(itemStack)
-		changePet(pet)
+		getPetData(event.itemStack)?.let { changePet(it) }
 	}
 
 	private fun onChatMessage(message: String) {
@@ -77,7 +67,7 @@ object PetAPI {
 			val id = name.uppercase().replace(" ", "_")
 			val level = group("level").toInt()
 			val rarity = ItemRarity.getByColorCode(group("rarity")[0])
-			if(rarity == ItemRarity.UNKNOWN) NobaAddons.LOGGER.warn("Failed to get pet rarity from Autopet chat message")
+			if(rarity == ItemRarity.UNKNOWN) NobaAddons.LOGGER.warn("Failed to get pet rarity from Autopet chat message: '$message'")
 
 			val pet = PetData(name, id, level, 0.0, rarity, active = true)
 			changePet(pet)
@@ -96,7 +86,7 @@ object PetAPI {
 			val item = itemStack.getSkyBlockItem() ?: return null
 			if(item.id != "PET") return null
 
-			val petInfo: PetInfo = Gson().fromJson(item.petInfo, PetInfo::class.java)
+			val petInfo: PetInfo = NobaAddons.GSON.fromJson(item.petInfo, PetInfo::class.java)
 
 			val name = group("name")
 			val level = group("level").toInt()

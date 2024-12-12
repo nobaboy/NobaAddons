@@ -33,7 +33,7 @@ object DungeonsCategory {
 				.option(Option.createBuilder<HighlightMode>()
 					.name(Text.translatable("nobaaddons.config.dungeons.highlightStarredMobs.highlightMode"))
 					.binding(defaults.dungeons.highlightStarredMobs.highlightMode, config.dungeons.highlightStarredMobs::highlightMode) { config.dungeons.highlightStarredMobs.highlightMode = it }
-					.controller(NobaConfigUtils::createCyclingController)
+					.controller(NobaConfigUtils::createEnumController)
 					.build())
 
 				.collapsed(true)

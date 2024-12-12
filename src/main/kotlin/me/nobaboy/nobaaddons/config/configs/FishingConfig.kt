@@ -6,13 +6,18 @@ import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class FishingConfig {
 	@SerialEntry
+	val bobberTimer: BobberTimer = BobberTimer()
+
+	@SerialEntry
 	val seaCreatureAlert: SeaCreatureAlert = SeaCreatureAlert()
 
-	@SerialEntry
-	var showBobberTimer: Boolean = false
+	class BobberTimer {
+		@SerialEntry
+		var enabled: Boolean = false
 
-	@SerialEntry
-	var lerpBobberTimer: Boolean = false
+		@SerialEntry
+		var lerpColor: Boolean = false
+	}
 
 	class SeaCreatureAlert {
 		@SerialEntry

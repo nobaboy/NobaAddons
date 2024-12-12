@@ -11,7 +11,6 @@ import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
-import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.Entity
 import net.minecraft.entity.projectile.FishingBobberEntity
 import net.minecraft.util.math.ColorHelper
@@ -26,35 +25,33 @@ object FishingBobberTweaks {
 	private val GOLD = NobaColor.GOLD.rgb
 
 	fun init() {
-		EntityRenderEvents.ALLOW_RENDER.register(this::hideOthers)
+		EntityRenderEvents.ALLOW_RENDER.register(this::onEntityRender)
 		EntityRenderEvents.POST_RENDER.register(this::renderTimer)
-		ClientEntityEvents.ENTITY_LOAD.register(this::onSpawn)
+		ClientEntityEvents.ENTITY_LOAD.register { entity, _ -> onEntityLoad(entity) }
 	}
 
-	private fun onSpawn(entity: Entity, @Suppress("unused") world: ClientWorld) {
-		if(entity !is FishingBobberEntity) return
-		(entity as FishingBobberTimerDuck).`nobaaddons$markSpawnTime`()
-	}
-
-	private fun hideOthers(event: EntityRenderEvents.AllowRender) {
+	private fun onEntityRender(event: EntityRenderEvents.AllowRender) {
 		val entity = event.entity as? FishingBobberEntity ?: return
-		if(renderConfig.hideOtherPeopleFishing && !entity.isOurs) {
-			event.cancel()
-			return
-		}
+		if(!renderConfig.hideOtherPeopleFishing) return
+		if(entity.isOurs) return
+
+		event.cancel()
 	}
 
 	private fun renderTimer(event: EntityRenderEvents.Render) {
 		val entity = event.entity as? FishingBobberEntity ?: return
-		if(!fishingConfig.showBobberTimer || !entity.isOurs) return
+		if(!fishingConfig.bobberTimer.enabled) return
+		if(!entity.isOurs) return
 
-		val time = ((entity as FishingBobberTimerDuck).`nobaaddons$spawnedAt`() ?: return).asTimestamp()
+		val time = (entity as FishingBobberTimerDuck).`nobaaddons$spawnedAt`() ?: return
+		val seconds = time.asTimestamp().elapsedSince().toDouble(DurationUnit.SECONDS)
 
-		val seconds = time.elapsedSince().toDouble(DurationUnit.SECONDS)
-		val slugTime = if(PetAPI.currentPet?.let { it.id == "SLUG" } == true) 10 else 20
+		val slugTime = PetAPI.currentPet?.takeIf { it.id == "SLUG" }?.let {
+			20.0 - it.level * 0.1
+		} ?: 20.0
 
 		val color: Int
-		if(fishingConfig.lerpBobberTimer) {
+		if(fishingConfig.bobberTimer.lerpColor) {
 			val delta = MathHelper.clamp(seconds / slugTime.toDouble(), 0.0, 1.0).toFloat()
 			color = ColorHelper/*? if <1.21.2 {*//*.Argb*//*?}*/.lerp(delta, GREEN, GOLD)
 		} else {
@@ -62,15 +59,19 @@ object FishingBobberTweaks {
 		}
 
 		RenderUtils.renderText(
-			null,
 			entity.pos.toNobaVec().add(y = 0.5),
-			text = seconds.roundTo(1).toString(),
-			color = color,
-			hideThreshold = 0.0, // noba wtf is this?
-			shadow = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
+			seconds.roundTo(1).toString(),
+			color,
+			/*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
 			throughBlocks = true
 		)
 	}
 
-	private val FishingBobberEntity.isOurs: Boolean get() = this.owner == MCUtils.player
+	private fun onEntityLoad(entity: Entity) {
+		if(entity !is FishingBobberEntity) return
+		(entity as FishingBobberTimerDuck).`nobaaddons$markSpawnTime`()
+	}
+
+	private val FishingBobberEntity.isOurs: Boolean
+		get() = this.owner == MCUtils.player
 }
