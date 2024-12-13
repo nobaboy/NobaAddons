@@ -8,10 +8,10 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 object AnnounceRareDrops {
-	private val uuidCache = TimedSet<String>(1.minutes)
+	private val uuidCache = TimedSet<String>(10.seconds)
 
 	private val rareDrops = listOf(
 		"ANTIQUE_REMEDIES",
@@ -27,7 +27,9 @@ object AnnounceRareDrops {
 	private fun onSlotUpdate(event: InventoryEvents.SlotUpdate) {
 		val itemStack = event.itemStack
 		val item = itemStack.getSkyBlockItem() ?: return
+
 		if(item.id !in rareDrops) return
+		item.timestamp?.let { if(it.elapsedSince() > 3.seconds) return } ?: return
 
 		val uuid = item.uuid ?: return
 		if(uuid in uuidCache) return
