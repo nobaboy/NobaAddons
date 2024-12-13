@@ -1,27 +1,27 @@
 import dev.kikugie.stonecutter.StonecutterSettings
 
 pluginManagement {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-        maven("https://maven.fabricmc.net/")
-        maven("https://maven.kikugie.dev/releases")
-    }
+	repositories {
+		mavenCentral()
+		gradlePluginPortal()
+		maven("https://maven.fabricmc.net/")
+		maven("https://maven.kikugie.dev/releases")
+	}
 }
 
 plugins {
-    id("dev.kikugie.stonecutter") version "0.4"
+	id("dev.kikugie.stonecutter") version "0.4"
 }
 
 extensions.configure<StonecutterSettings> {
-    kotlinController = true
-    centralScript = "build.gradle.kts"
+	kotlinController = true
+	centralScript = "build.gradle.kts"
 
-    shared {
-        versions("1.21", "1.21.3")
-        vcsVersion = "1.21.3"
-    }
-    create(rootProject)
+	shared {
+		versions("1.21", "1.21.3")
+		vcsVersion = "1.21.3"
+	}
+	create(rootProject)
 }
 
 rootProject.name = "nobaaddons"
