@@ -12,3 +12,5 @@
 97d847842261de3348d23d28b97900e69efa12bc
 # reformat code
 43e442d28600a486058aa5cd636b8922867827a8
+# enforce consistent indentation styles for build scripts
+6b4e0e77eae05ceb702271d37903adf0f1be6e1e
