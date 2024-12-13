@@ -11,11 +11,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Trophy Fish slot info - celeste
 - Fishing Bobber Timer - celeste
 - Ping On Burrow Find - nobaboy
+- `/noba refill` any item from sacks - celeste
+  - This is primarily useful when paired with command keybinds
 
 ### Changed
 
 - Info Box and Key Binds have their custom screens now - nobaboy
 - Key Binds now allow you to use mouse buttons (excluding the main ones, Left, Right and Middle) - nobaboy
+- `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
+- Minor internal changes to item data caching - celeste
 
 ### Fixed
 
