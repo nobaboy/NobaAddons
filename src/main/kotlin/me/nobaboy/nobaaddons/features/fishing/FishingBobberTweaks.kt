@@ -3,16 +3,16 @@ package me.nobaboy.nobaaddons.features.fishing
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.ducks.FishingBobberTimerDuck
+import me.nobaboy.nobaaddons.events.EntityNametagRenderEvents
 import me.nobaboy.nobaaddons.events.EntityRenderEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
-import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.minecraft.entity.Entity
 import net.minecraft.entity.projectile.FishingBobberEntity
+import net.minecraft.text.Text
 import net.minecraft.util.math.ColorHelper
 import net.minecraft.util.math.MathHelper
 import kotlin.time.DurationUnit
@@ -26,7 +26,8 @@ object FishingBobberTweaks {
 
 	fun init() {
 		EntityRenderEvents.ALLOW_RENDER.register(this::onEntityRender)
-		EntityRenderEvents.POST_RENDER.register(this::renderTimer)
+		EntityNametagRenderEvents.VISIBILITY.register(this::allowNameTag)
+		EntityNametagRenderEvents.EVENT.register(this::renderTimer)
 		ClientEntityEvents.ENTITY_LOAD.register { entity, _ -> onEntityLoad(entity) }
 	}
 
@@ -38,7 +39,16 @@ object FishingBobberTweaks {
 		event.cancel()
 	}
 
-	private fun renderTimer(event: EntityRenderEvents.Render) {
+	private fun allowNameTag(event: EntityNametagRenderEvents.Visibility) {
+		val entity = event.entity as? FishingBobberEntity ?: return
+		if(!fishingConfig.bobberTimer.enabled) return
+		if(!entity.isOurs) return
+		if((entity as FishingBobberTimerDuck).`nobaaddons$spawnedAt`() == null) return
+
+		event.shouldRender = true
+	}
+
+	private fun renderTimer(event: EntityNametagRenderEvents.Nametag) {
 		val entity = event.entity as? FishingBobberEntity ?: return
 		if(!fishingConfig.bobberTimer.enabled) return
 		if(!entity.isOurs) return
@@ -58,7 +68,8 @@ object FishingBobberTweaks {
 			color = if(seconds >= slugTime) GOLD else GREEN
 		}
 
-		RenderUtils.renderText(entity.pos.toNobaVec().add(y = 0.5), seconds.roundTo(1).toString(), color, throughBlocks = true)
+		event.renderEntityName = false
+		event.tags.add(Text.literal(seconds.roundTo(1).toString()).withColor(color))
 	}
 
 	private fun onEntityLoad(entity: Entity) {

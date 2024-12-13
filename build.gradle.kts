@@ -20,6 +20,8 @@ val deps = ModDependencies()
 val mcVersion = stonecutter.current.version
 val mcDep = property("mod.mc_dep").toString()
 
+val isCi = System.getenv("CI") != null
+
 version = "${mod.version}+$mcVersion"
 group = mod.group
 base { archivesName.set(mod.id) }
@@ -41,6 +43,11 @@ repositories {
 }
 
 dependencies {
+	fun devEnvOnly(dependencyNotation: String) {
+		if(isCi) return
+		modRuntimeOnly(dependencyNotation)
+	}
+
     minecraft("com.mojang:minecraft:${mcVersion}")
     mappings("net.fabricmc:yarn:${mcVersion}+build.${deps["yarn_build"]}:v2")
     modImplementation("net.fabricmc:fabric-loader:${deps["fabric_loader"]}")
@@ -60,6 +67,9 @@ dependencies {
     modRuntimeOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
 
     modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
+
+	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}") // Sodium
+	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // Sodium
 }
 
 loom {
