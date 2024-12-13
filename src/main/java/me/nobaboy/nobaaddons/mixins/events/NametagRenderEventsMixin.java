@@ -140,7 +140,7 @@ public abstract class NametagRenderEventsMixin {
 			original.call(
 				instance,
 				/*? if >=1.21.2 {*/state/*?} else {*//*entity*//*?}*/,
-				text,
+				text == null ? entity.getDisplayName() : text,
 				matrices,
 				vertexConsumers,
 				light
