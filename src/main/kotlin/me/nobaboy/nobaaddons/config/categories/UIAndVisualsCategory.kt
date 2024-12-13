@@ -58,7 +58,7 @@ object UIAndVisualsCategory {
 					property = config.uiAndVisuals.etherwarpHelper::enabled
 				)
 				color(
-					Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.waypointColor"),
+					Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.highlightColor"),
 					default = defaults.uiAndVisuals.etherwarpHelper.highlightColor,
 					property = config.uiAndVisuals.etherwarpHelper::highlightColor
 				)
@@ -167,32 +167,32 @@ object UIAndVisualsCategory {
 					property = config.uiAndVisuals.slotInfo::minionTier
 				)
 				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.minionTier"),
+					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.newYearCake"),
 					default = defaults.uiAndVisuals.slotInfo.newYearCake,
 					property = config.uiAndVisuals.slotInfo::newYearCake
 				)
 				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.minionTier"),
+					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petLevel"),
 					default = defaults.uiAndVisuals.slotInfo.petLevel,
 					property = config.uiAndVisuals.slotInfo::petLevel
 				)
 				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.minionTier"),
+					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petItem"),
 					default = defaults.uiAndVisuals.slotInfo.petItem,
 					property = config.uiAndVisuals.slotInfo::petItem
 				)
 				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.minionTier"),
+					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petCandy"),
 					default = defaults.uiAndVisuals.slotInfo.petCandy,
 					property = config.uiAndVisuals.slotInfo::petCandy
 				)
 				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.minionTier"),
+					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.potionLevel"),
 					default = defaults.uiAndVisuals.slotInfo.potionLevel,
 					property = config.uiAndVisuals.slotInfo::potionLevel
 				)
 				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.minionTier"),
+					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.vacuumPests"),
 					default = defaults.uiAndVisuals.slotInfo.vacuumPests,
 					property = config.uiAndVisuals.slotInfo::vacuumPests
 				)

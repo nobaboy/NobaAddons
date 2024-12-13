@@ -30,7 +30,6 @@ repositories {
 	maven("https://maven.celestialfault.dev/snapshots") // CelestialConfig
 	maven("https://repo.hypixel.net/repository/Hypixel/") // Hypixel Mod API
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
-	maven("https://maven.gegy.dev") // SpruceUI
     exclusiveContent {
         forRepository {
             maven("https://api.modrinth.com/maven")
@@ -59,10 +58,6 @@ dependencies {
     // Hypixel Mod API
     implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
     modRuntimeOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
-
-	// SpruceUI
-	modImplementation("dev.lambdaurora:spruceui:${deps["spruceui"]}")
-	include("dev.lambdaurora:spruceui:${deps["spruceui"]}")
 
     modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
 }
