@@ -43,7 +43,8 @@ public abstract class NametagRenderEventsMixin {
 		method = "render",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/client/render/entity/state/EntityRenderState;displayName:Lnet/minecraft/text/Text;"
+			target = "Lnet/minecraft/client/render/entity/state/EntityRenderState;displayName:Lnet/minecraft/text/Text;",
+			ordinal = 0
 		)
 	)
 	public Text nobaaddons$modifyNametagVisibility(Text original, @Local(argsOnly = true) EntityRenderState state) {
