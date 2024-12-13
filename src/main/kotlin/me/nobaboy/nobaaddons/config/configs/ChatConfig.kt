@@ -33,13 +33,13 @@ class ChatConfig {
 		var hideMoltenWaveDamageMessage: Boolean = false
 
 		@SerialEntry
-		var hideSpiritSceptreDamageMessage: Boolean = false
+		var hideGuidedBatDamageMessage: Boolean = false
 
 		@SerialEntry
-		var hideGiantSwordDamageMessage: Boolean = false
+		var hideGiantsSlamDamageMessage: Boolean = false
 
 		@SerialEntry
-		var hideLividDaggerDamageMessage: Boolean = false
+		var hideThrowDamageMessage: Boolean = false
 
 		@SerialEntry
 		var hideRayOfHopeDamageMessage: Boolean = false

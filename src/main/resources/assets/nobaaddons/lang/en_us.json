@@ -123,7 +123,8 @@
   "nobaaddons.config.events.mythological.burrowGuess.tooltip": "Guesses the next burrow location from the Ancestral Spade's Echo ability",
   "nobaaddons.config.events.mythological.findNearbyBurrows": "Find Nearby Burrows",
   "nobaaddons.config.events.mythological.findNearbyBurrows.tooltip": "Highlights nearby burrows with a waypoint",
-  "nobaaddons.config.events.mythological.dingOnBurrowFind": "Ding On Burrow Find",
+  "nobaaddons.config.events.mythological.pingOnBurrowFind": "Ping On Burrow Find",
+  "nobaaddons.config.events.mythological.pingOnBurrowFind.tooltip": "Plays a ping sound when a burrow is found nearby",
   "nobaaddons.config.events.mythological.removeGuessOnBurrowFind": "Remove Guess On Burrow Find",
   "nobaaddons.config.events.mythological.findNearestWarp": "Find Nearest Warp",
   "nobaaddons.config.events.mythological.alertInquisitor": "Alert Inquisitor",
@@ -147,6 +148,9 @@
   "nobaaddons.config.fishing.seaCreatureAlert": "Sea Creature Alert",
   "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity": "Use Name Instead Of Rarity",
   "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity": "Minimum Rarity",
+  "nobaaddons.config.fishing.highlightThunderSparks": "Highlight Thunder Sparks",
+  "nobaaddons.config.fishing.highlightThunderSparks.highlightColor": "Highlight Color",
+  "nobaaddons.config.fishing.highlightThunderSparks.showText": "Show Text",
 
   "nobaaddons.config.mining": "Mining",
   "nobaaddons.config.mining.glaciteMineshaft": "Glacite Mineshaft",
@@ -158,11 +162,6 @@
   "nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint.tooltip": "Adds a waypoint at the Mineshaft's entrance",
   "nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint": "Ladder Waypoint",
   "nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint.tooltip": "Adds a waypoint at the Mineshaft's ladder shaft",
-
-  "nobaaddons.config.crimsonIsle": "Crimson Isle",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks": "Highlight Thunder Sparks",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks.highlightColor": "Highlight Color",
-  "nobaaddons.config.crimsonIsle.highlightThunderSparks.showText": "Show Text",
 
   "nobaaddons.config.dungeons": "Dungeons",
   "nobaaddons.config.dungeons.highlightStarredMobs": "Highlight Starred Mobs",
