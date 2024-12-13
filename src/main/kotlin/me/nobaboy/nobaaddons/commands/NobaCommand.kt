@@ -1,6 +1,8 @@
 package me.nobaboy.nobaaddons.commands
 
 import com.mojang.brigadier.arguments.DoubleArgumentType
+import com.mojang.brigadier.arguments.IntegerArgumentType
+import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
@@ -11,7 +13,7 @@ import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWarpLocations
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
-import me.nobaboy.nobaaddons.features.general.RefillPearls
+import me.nobaboy.nobaaddons.features.general.RefillFromSacks
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.screens.NobaHudScreen
@@ -59,9 +61,38 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 		}
 	}
 
-	val refillPearls = Command.command("refillpearls") {
-		executes {
-			RefillPearls.refillPearls()
+	object Refill : Group("refill") {
+		val pearls = Command.command("pearls") {
+			executes {
+				RefillFromSacks.refill("ENDER_PEARLS", 16)
+			}
+		}
+
+		val superboom = Command.command("superboom") {
+			executes {
+				RefillFromSacks.refill("SUPERBOOM_TNT", 64)
+			}
+		}
+
+		val leaps = Command.command("leaps") {
+			executes {
+				RefillFromSacks.refill("SPIRIT_LEAP", 16)
+			}
+		}
+
+		val item = Command.command("item") {
+			buildCommand {
+				it.then(ClientCommandManager.argument("id", StringArgumentType.string())
+					.executes(this::execute)
+					.then(ClientCommandManager.argument("count", IntegerArgumentType.integer(1))
+						.executes(this::execute)))
+			}
+
+			executes {
+				val id = StringArgumentType.getString(this, "id")
+				val count = runCatching { IntegerArgumentType.getInteger(this, "count") }.getOrDefault(64)
+				RefillFromSacks.refill(id, count)
+			}
 		}
 	}
 

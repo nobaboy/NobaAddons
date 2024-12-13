@@ -143,9 +143,9 @@
 
   "nobaaddons.config.fishing": "Fishing",
   "nobaaddons.config.fishing.bobberTimer": "Bobber Timer",
+  "nobaaddons.config.fishing.bobberTimer.crimsonIsleOnly": "Only Show in Crimson Isle",
   "nobaaddons.config.fishing.bobberTimer.lerpColor": "Lerp Color",
-  "nobaaddons.config.fishing.bobberTimer.lerpColor.tooltip": "When enabled, the timer color will gradually change to gold as you approach the time required to catch a Slugfish; otherwise, the color will only change after reaching the time required to catch one",
-  "nobaaddons.config.fishing.seaCreatureAlert": "Sea Creature Alert",
+  "nobaaddons.config.fishing.bobberTimer.lerpColor.tooltip": "When enabled, the timer color will gradually change to gold as you approach the time required to catch a Slugfish; otherwise, the color will only change after reaching the time required to catch one",  "nobaaddons.config.fishing.seaCreatureAlert": "Sea Creature Alert",
   "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity": "Use Name Instead Of Rarity",
   "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity": "Minimum Rarity",
   "nobaaddons.config.fishing.highlightThunderSparks": "Highlight Thunder Sparks",

@@ -1,7 +1,10 @@
 package me.nobaboy.nobaaddons.features.fishing
 
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.ducks.FishingBobberTimerDuck
 import me.nobaboy.nobaaddons.events.EntityNametagRenderEvents
 import me.nobaboy.nobaaddons.events.EntityRenderEvents
@@ -42,6 +45,8 @@ object FishingBobberTweaks {
 	private fun allowNameTag(event: EntityNametagRenderEvents.Visibility) {
 		val entity = event.entity as? FishingBobberEntity ?: return
 		if(!fishingConfig.bobberTimer.enabled) return
+		if(!SkyBlockAPI.inSkyBlock) return
+		if(!SkyBlockIsland.CRIMSON_ISLE.inIsland() && fishingConfig.bobberTimer.crimsonIsleOnly) return
 		if(!entity.isOurs) return
 		if((entity as FishingBobberTimerDuck).`nobaaddons$spawnedAt`() == null) return
 
