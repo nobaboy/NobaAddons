@@ -22,6 +22,7 @@ object FishingCategory {
 				)
 				boolean(
 					Text.translatable("nobaaddons.config.fishing.bobberTimer.lerpColor"),
+					Text.translatable("nobaaddons.config.fishing.bobberTimer.lerpColor.tooltip"),
 					default = defaults.fishing.bobberTimer.lerpColor,
 					property = config.fishing.bobberTimer::lerpColor
 				)
