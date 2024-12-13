@@ -1,13 +1,11 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
-import dev.isxander.yacl3.api.Option
-import dev.isxander.yacl3.api.OptionDescription
-import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.core.MobRarity
-import me.nobaboy.nobaaddons.utils.sound.NotificationSound
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import net.minecraft.text.Text
 
 object FishingCategory {
@@ -15,52 +13,66 @@ object FishingCategory {
 		return ConfigCategory.createBuilder()
 			.name(Text.translatable("nobaaddons.config.fishing"))
 
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.fishing.bobberTimer"))
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.enabled"))
-					.binding(defaults.fishing.bobberTimer.enabled, config.fishing.bobberTimer::enabled) { config.fishing.bobberTimer.enabled = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+			// region Bobber Timer
+			.buildGroup(Text.translatable("nobaaddons.config.fishing.bobberTimer")) {
+				boolean(
+					Text.translatable("nobaaddons.config.enabled"),
+					default = defaults.fishing.bobberTimer.enabled,
+					property = config.fishing.bobberTimer::enabled
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.fishing.bobberTimer.lerpColor"),
+					Text.translatable("nobaaddons.config.fishing.bobberTimer.lerpColor.tooltip"),
+					default = defaults.fishing.bobberTimer.lerpColor,
+					property = config.fishing.bobberTimer::lerpColor
+				)
+			}
+			// endregion
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.fishing.bobberTimer.lerpColor"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.fishing.bobberTimer.lerpColor.tooltip")))
-					.binding(defaults.fishing.bobberTimer.lerpColor, config.fishing.bobberTimer::lerpColor) { config.fishing.bobberTimer.lerpColor = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+			// region Sea Creature Alert
+			.buildGroup(Text.translatable("nobaaddons.config.fishing.seaCreatureAlert")) {
+				boolean(
+					Text.translatable("nobaaddons.config.enabled"),
+					default = defaults.fishing.seaCreatureAlert.enabled,
+					property = config.fishing.seaCreatureAlert::enabled
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity"),
+					default = defaults.fishing.seaCreatureAlert.nameInsteadOfRarity,
+					property = config.fishing.seaCreatureAlert::nameInsteadOfRarity
+				)
+				cycler(
+					Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity"),
+					default = defaults.fishing.seaCreatureAlert.minimumRarity,
+					property = config.fishing.seaCreatureAlert::minimumRarity
+				)
+				cycler(
+					Text.translatable("nobaaddons.config.notificationSound"),
+					default = defaults.fishing.seaCreatureAlert.notificationSound,
+					property = config.fishing.seaCreatureAlert::notificationSound
+				)
+			}
+			// endregion
 
-				.collapsed(true)
-				.build())
-
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.fishing.seaCreatureAlert"))
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.enabled"))
-					.binding(defaults.fishing.seaCreatureAlert.enabled, config.fishing.seaCreatureAlert::enabled) { config.fishing.seaCreatureAlert.enabled = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity"))
-					.binding(defaults.fishing.seaCreatureAlert.nameInsteadOfRarity, config.fishing.seaCreatureAlert::nameInsteadOfRarity) { config.fishing.seaCreatureAlert.nameInsteadOfRarity = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<MobRarity>()
-					.name(Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity"))
-					.binding(defaults.fishing.seaCreatureAlert.minimumRarity, config.fishing.seaCreatureAlert::minimumRarity) { config.fishing.seaCreatureAlert.minimumRarity = it }
-					.controller(NobaConfigUtils::createEnumController)
-					.build())
-
-				.option(Option.createBuilder<NotificationSound>()
-					.name(Text.translatable("nobaaddons.config.notificationSound"))
-					.binding(defaults.fishing.seaCreatureAlert.notificationSound, config.fishing.seaCreatureAlert::notificationSound) { config.fishing.seaCreatureAlert.notificationSound = it }
-					.controller(NobaConfigUtils::createEnumController)
-					.build())
-
-				.collapsed(true)
-				.build())
+			// region Highlight Thunder Sparks
+			.buildGroup(Text.translatable("nobaaddons.config.fishing.highlightThunderSparks")) {
+				boolean(
+					Text.translatable("nobaaddons.config.enabled"),
+					default = defaults.fishing.highlightThunderSparks.enabled,
+					property = config.fishing.highlightThunderSparks::enabled
+				)
+				color(
+					Text.translatable("nobaaddons.config.fishing.highlightThunderSparks.highlightColor"),
+					default = defaults.fishing.highlightThunderSparks.highlightColor,
+					property = config.fishing.highlightThunderSparks::highlightColor
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.fishing.highlightThunderSparks.showText"),
+					default = defaults.fishing.highlightThunderSparks.showText,
+					property = config.fishing.highlightThunderSparks::showText
+				)
+			}
+			// endregion
 
 			.build()
 	}

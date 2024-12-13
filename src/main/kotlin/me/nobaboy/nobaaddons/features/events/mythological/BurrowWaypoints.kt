@@ -68,6 +68,8 @@ object BurrowWaypoints {
 
 	private fun onBurrowFind(event: MythologicalEvents.BurrowFind) {
 		val location = event.location
+		if(location in burrows) return
+
 		burrows[location] = event.type
 
 		if(config.dingOnBurrowFind) SoundUtils.plingSound.play()

@@ -1,11 +1,10 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
-import dev.isxander.yacl3.api.LabelOption
-import dev.isxander.yacl3.api.Option
-import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import net.minecraft.text.Text
 
 object MiningCategory {
@@ -13,42 +12,39 @@ object MiningCategory {
 		return ConfigCategory.createBuilder()
 			.name(Text.translatable("nobaaddons.config.mining"))
 
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.mining.glaciteMineshaft"))
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.mining.glaciteMineshaft.label.corpses"))
-					.build())
+			// region Glacite Mineshaft
+			.buildGroup(Text.translatable("nobaaddons.config.mining.glaciteMineshaft")) {
+				// region Corpses
+				label(Text.translatable("nobaaddons.config.mining.glaciteMineshaft.label.corpses"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.mining.glaciteMineshaft.corpseLocator"))
-					.binding(defaults.mining.glaciteMineshaft.corpseLocator, config.mining.glaciteMineshaft::corpseLocator) { config.mining.glaciteMineshaft.corpseLocator = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.mining.glaciteMineshaft.corpseLocator"),
+					default = defaults.mining.glaciteMineshaft.corpseLocator,
+					property = config.mining.glaciteMineshaft::corpseLocator
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpseCoords"),
+					default = defaults.mining.glaciteMineshaft.autoShareCorpseCoords,
+					property = config.mining.glaciteMineshaft::autoShareCorpseCoords
+				)
+				// endregion
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpseCoords"))
-					.binding(defaults.mining.glaciteMineshaft.autoShareCorpseCoords, config.mining.glaciteMineshaft::autoShareCorpseCoords) { config.mining.glaciteMineshaft.autoShareCorpseCoords = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				// region Miscellaneous
+				label(Text.translatable("nobaaddons.config.label.miscellaneous"))
 
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.miscellaneous"))
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint"))
-					.binding(defaults.mining.glaciteMineshaft.entranceWaypoint, config.mining.glaciteMineshaft::entranceWaypoint) { config.mining.glaciteMineshaft.entranceWaypoint = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint"))
-					.binding(defaults.mining.glaciteMineshaft.ladderWaypoint, config.mining.glaciteMineshaft::ladderWaypoint) { config.mining.glaciteMineshaft.ladderWaypoint = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.collapsed(true)
-				.build())
+				boolean(
+					Text.translatable("nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint"),
+					default = defaults.mining.glaciteMineshaft.entranceWaypoint,
+					property = config.mining.glaciteMineshaft::entranceWaypoint
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint"),
+					default = defaults.mining.glaciteMineshaft.ladderWaypoint,
+					property = config.mining.glaciteMineshaft::ladderWaypoint
+				)
+				// endregion
+			}
+			// endregion
 
 			.build()
 	}

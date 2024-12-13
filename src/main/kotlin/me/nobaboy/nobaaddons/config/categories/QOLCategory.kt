@@ -1,13 +1,11 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
-import dev.isxander.yacl3.api.LabelOption
-import dev.isxander.yacl3.api.Option
-import dev.isxander.yacl3.api.OptionDescription
-import dev.isxander.yacl3.api.OptionGroup
-import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import net.minecraft.text.Text
 
 object QOLCategory {
@@ -16,102 +14,86 @@ object QOLCategory {
 			.name(Text.translatable("nobaaddons.config.qol"))
 
 			// region Sound Filters
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.qol.soundFilters"))
-
+			.buildGroup(Text.translatable("nobaaddons.config.qol.soundFilters")) {
 				// region Item Abilities
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.itemAbilities"))
-					.build())
+				label(Text.translatable("nobaaddons.config.label.itemAbilities"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities.tooltip")))
-					.binding(defaults.qol.soundFilters.muteWitherSkullAbilities, config.qol.soundFilters::muteWitherSkullAbilities) { config.qol.soundFilters.muteWitherSkullAbilities = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities"),
+					Text.translatable("nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities.tooltip"),
+					default = defaults.qol.soundFilters.muteWitherSkullAbilities,
+					property = config.qol.soundFilters::muteWitherSkullAbilities,
+				)
 				// endregion
 
 				// region Mobs
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.mobs"))
-					.build())
+				label(Text.translatable("nobaaddons.config.label.mobs"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteReindrakeSpawn"))
-					.binding(defaults.qol.soundFilters.muteReindrakeSpawn, config.qol.soundFilters::muteReindrakeSpawn) { config.qol.soundFilters.muteReindrakeSpawn = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteReindrakeGiftDrop"))
-					.binding(defaults.qol.soundFilters.muteReindrakeGiftDrop, config.qol.soundFilters::muteReindrakeGiftDrop) { config.qol.soundFilters.muteReindrakeGiftDrop = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.qol.soundFilters.muteReindrakeSpawn"),
+					default = defaults.qol.soundFilters.muteReindrakeSpawn,
+					property = config.qol.soundFilters::muteReindrakeSpawn,
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.qol.soundFilters.muteReindrakeGiftDrop"),
+					default = defaults.qol.soundFilters.muteReindrakeGiftDrop,
+					property = config.qol.soundFilters::muteReindrakeGiftDrop,
+				)
 				// endregion
 
 				// region Dwarven Mines
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.qol.label.dwarvenMines"))
-					.build())
+				label(Text.translatable("nobaaddons.config.qol.label.dwarvenMines"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteGoneWithTheWind"))
-					.binding(defaults.qol.soundFilters.muteGoneWithTheWind, config.qol.soundFilters::muteGoneWithTheWind) { config.qol.soundFilters.muteGoneWithTheWind = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.qol.soundFilters.muteGoneWithTheWind"),
+					default = defaults.qol.soundFilters.muteGoneWithTheWind,
+					property = config.qol.soundFilters::muteGoneWithTheWind
+				)
 				// endregion
 
 				// region Rift
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.rift"))
-					.build())
+				label(Text.translatable("nobaaddons.config.label.rift"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.soundFilters.muteKillerSpring"))
-					.binding(defaults.qol.soundFilters.muteKillerSpring, config.qol.soundFilters::muteKillerSpring) { config.qol.soundFilters.muteKillerSpring = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.qol.soundFilters.muteKillerSpring"),
+					default = defaults.qol.soundFilters.muteKillerSpring,
+					property = config.qol.soundFilters::muteKillerSpring
+				)
 				// endregion
-
-				.collapsed(true)
-				.build())
+			}
 			// endregion
 
 			// region Garden
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.qol.garden"))
+			.buildGroup(Text.translatable("nobaaddons.config.qol.garden")) {
 				// region Sensitivity Reducer
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.garden.reduceMouseSensitivity"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip")))
-					.binding(defaults.qol.garden.reduceMouseSensitivity, config.qol.garden::reduceMouseSensitivity) { config.qol.garden.reduceMouseSensitivity = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Int>()
-					.name(Text.translatable("nobaaddons.config.qol.garden.reductionMultiplier"))
-					.binding(defaults.qol.garden.reductionMultiplier, config.qol.garden::reductionMultiplier) { config.qol.garden.reductionMultiplier = it }
-					.controller { IntegerSliderControllerBuilder.create(it).step(1).range(2, 10) }
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.garden.isDaedalusFarmingTool"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.qol.garden.isDaedalusFarmingTool.tooltip")))
-					.binding(defaults.qol.garden.isDaedalusFarmingTool, config.qol.garden::isDaedalusFarmingTool) { config.qol.garden.isDaedalusFarmingTool = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip")))
-					.binding(defaults.qol.garden.autoUnlockMouseOnTeleport, config.qol.garden::autoUnlockMouseOnTeleport) { config.qol.garden.autoUnlockMouseOnTeleport = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.qol.garden.reduceMouseSensitivity"),
+					Text.translatable("nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip"),
+					default = defaults.qol.garden.reduceMouseSensitivity,
+					property = config.qol.garden::reduceMouseSensitivity
+				)
+				slider(
+					Text.translatable("nobaaddons.config.qol.garden.reductionMultiplier"),
+					default = defaults.qol.garden.reductionMultiplier,
+					property = config.qol.garden::reductionMultiplier,
+					min = 2,
+					max = 10,
+					step = 1
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.qol.garden.isDaedalusFarmingTool"),
+					Text.translatable("nobaaddons.config.qol.garden.isDaedalusFarmingTool.tooltip"),
+					default = defaults.qol.garden.isDaedalusFarmingTool,
+					property = config.qol.garden::isDaedalusFarmingTool
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport"),
+					Text.translatable("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip"),
+					default = defaults.qol.garden.autoUnlockMouseOnTeleport,
+					property = config.qol.garden::autoUnlockMouseOnTeleport
+				)
 				// endregion
-
-				.collapsed(true)
-				.build())
+			}
 			// endregion
 
 			.build()

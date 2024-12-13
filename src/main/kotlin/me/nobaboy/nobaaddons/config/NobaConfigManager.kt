@@ -5,15 +5,7 @@ import dev.isxander.yacl3.api.YetAnotherConfigLib
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.config.categories.ChatCategory
-import me.nobaboy.nobaaddons.config.categories.CrimsonIsleCategory
-import me.nobaboy.nobaaddons.config.categories.DungeonsCategory
-import me.nobaboy.nobaaddons.config.categories.EventsCategory
-import me.nobaboy.nobaaddons.config.categories.FishingCategory
-import me.nobaboy.nobaaddons.config.categories.GeneralCategory
-import me.nobaboy.nobaaddons.config.categories.MiningCategory
-import me.nobaboy.nobaaddons.config.categories.QOLCategory
-import me.nobaboy.nobaaddons.config.categories.UIAndVisualsCategory
+import me.nobaboy.nobaaddons.config.categories.*
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
@@ -61,7 +53,6 @@ object NobaConfigManager {
 				.category(EventsCategory.create(defaults, config))
 				.category(FishingCategory.create(defaults, config))
 				.category(MiningCategory.create(defaults, config))
-				.category(CrimsonIsleCategory.create(defaults, config))
 				.category(DungeonsCategory.create(defaults, config))
 				.category(ChatCategory.create(defaults, config))
 				.category(QOLCategory.create(defaults, config))

@@ -45,7 +45,7 @@ class UIAndVisualsConfig {
 		var showFailText: Boolean = false
 
 		@SerialEntry
-		var allowOnAir: Boolean = false
+		var allowOverlayOnAir: Boolean = false
 	}
 
 	class SlotInfo {

@@ -27,7 +27,7 @@ object InventoryEvents {
 	@JvmField val SLOT_CLICK = EventDispatcher<SlotClick>()
 
 	/**
-	 * Event invoked when an individual inventory slot is updated, regardless of whether an inventory is open.
+	 * Event invoked when any individual slot is updated, including in the player's inventory.
 	 */
 	@JvmField val SLOT_UPDATE = EventDispatcher<SlotUpdate>()
 
