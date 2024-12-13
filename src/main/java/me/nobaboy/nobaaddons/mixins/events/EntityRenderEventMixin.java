@@ -11,6 +11,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/*? if >=1.21.2 {*/
+// I don't know either. I don't know either too.
+@SuppressWarnings("InvalidInjectorMethodSignature")
+/*?}*/
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRenderEventMixin {
 	@Inject(

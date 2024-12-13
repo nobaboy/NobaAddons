@@ -69,7 +69,7 @@ dependencies {
     modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
 
 	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}") // Sodium
-	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // Sodium
+	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // No Telemetry
 }
 
 loom {

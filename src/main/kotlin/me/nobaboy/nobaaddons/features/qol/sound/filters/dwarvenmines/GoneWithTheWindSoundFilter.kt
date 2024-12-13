@@ -6,7 +6,6 @@ import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import net.minecraft.util.Identifier
 
-// TODO: Requires testing
 object GoneWithTheWindSoundFilter : ISoundFilter {
 	private val WIND_CHANGE_DING = Identifier.ofVanilla("block.note_block.pling")
 	private val WIND_CHANGE_ELYTRA = Identifier.ofVanilla("item.elytra.flying")
