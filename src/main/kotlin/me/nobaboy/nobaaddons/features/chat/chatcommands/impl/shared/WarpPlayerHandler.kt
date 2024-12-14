@@ -73,6 +73,7 @@ object WarpPlayerHandler {
 						HypixelCommands.partyJoin(party.leader.name)
 					}
 				}
+
 				cancel()
 			}
 		}

@@ -1,13 +1,16 @@
 package me.nobaboy.nobaaddons.events.internal
 
-open class EventDispatcher<T> : AbstractEventDispatcher<T>() {
+open class EventDispatcher<T : Event>  {
 	protected val listeners: MutableList<(T) -> Unit> = mutableListOf()
 
-	override fun register(listener: (T) -> Unit) {
+	open fun register(listener: (T) -> Unit) {
 		listeners.add(listener)
 	}
 
-	override fun invoke(event: T) {
-		listeners.forEach { it(event) }
+	open fun invoke(event: T) {
+		listeners.forEach {
+			it(event)
+			if(event.canceled && event.exitEarlyOnCancel) return
+		}
 	}
 }

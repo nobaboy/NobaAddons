@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.visuals.itemoverlays
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -70,7 +70,7 @@ object EtherwarpHelper {
 		val world = client.world ?: return
 
 		targetBlock = validateTargetBlock(world, target)
-		if(targetBlock == ValidationType.TOO_FAR && !config.allowOnAir) return
+		if(targetBlock == ValidationType.TOO_FAR && !config.allowOverlayOnAir) return
 
 		var color = targetBlock?.let { NobaColor.GRAY.toColor() } ?: config.highlightColor
 		RenderUtils.renderOutlinedFilledBox(context, target.blockPos.toNobaVec(), color, throughBlocks = true)

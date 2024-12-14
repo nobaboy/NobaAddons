@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.core.mayor
 
-import me.nobaboy.nobaaddons.api.MayorAPI.foxyExtraEventPattern
+import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.foxyExtraEventPattern
 import me.nobaboy.nobaaddons.data.json.Perk
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 

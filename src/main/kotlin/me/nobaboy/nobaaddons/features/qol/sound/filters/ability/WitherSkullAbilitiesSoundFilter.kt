@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.qol.sound.filters.ability
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import net.minecraft.util.Identifier

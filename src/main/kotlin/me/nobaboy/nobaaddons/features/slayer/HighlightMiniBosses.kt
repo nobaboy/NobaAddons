@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.slayer
 
-import me.nobaboy.nobaaddons.api.SlayerAPI
+import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents

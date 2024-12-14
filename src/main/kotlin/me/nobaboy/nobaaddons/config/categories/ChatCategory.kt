@@ -1,14 +1,11 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
-import dev.isxander.yacl3.api.LabelOption
-import dev.isxander.yacl3.api.Option
-import dev.isxander.yacl3.api.OptionDescription
-import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.core.MobRarity
-import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import net.minecraft.text.Text
 
 object ChatCategory {
@@ -17,295 +14,243 @@ object ChatCategory {
 			.name(Text.translatable("nobaaddons.config.chat"))
 
 			// region Alerts
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.chat.alerts"))
-
+			.buildGroup(Text.translatable("nobaaddons.config.chat.alerts")) {
 				// region Crimson Isle
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.crimsonIsle"))
-					.build())
+				label(Text.translatable("nobaaddons.config.label.crimsonIsle")).build()
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip")))
-					.binding(defaults.chat.alerts.mythicSeaCreatureSpawn, config.chat.alerts::mythicSeaCreatureSpawn) { config.chat.alerts.mythicSeaCreatureSpawn = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.alerts.vanquisherSpawn"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.alerts.vanquisherSpawn.tooltip")))
-					.binding(defaults.chat.alerts.vanquisherSpawn, config.chat.alerts::vanquisherSpawn) { config.chat.alerts.vanquisherSpawn = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn"),
+					Text.translatable("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip"),
+					default = defaults.chat.alerts.mythicSeaCreatureSpawn,
+					property = config.chat.alerts::mythicSeaCreatureSpawn
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.alerts.vanquisherSpawn"),
+					Text.translatable("nobaaddons.config.chat.alerts.vanquisherSpawn.tooltip"),
+					default = defaults.chat.alerts.vanquisherSpawn,
+					property = config.chat.alerts::vanquisherSpawn
+				)
 				// endregion
-
-				.collapsed(true)
-				.build())
+			}
 			// endregion
 
 			// region Filters
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.chat.filters"))
+			.buildGroup(Text.translatable("nobaaddons.config.chat.filters")) {
+				// region Crimson Isle
+				label(Text.translatable("nobaaddons.config.label.crimsonIsle"))
 
-				// region Item Abilities
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.itemAbilities"))
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage.tooltip")))
-					.binding(defaults.chat.filters.hideAbilityCooldownMessage, config.chat.filters::hideAbilityCooldownMessage) { config.chat.filters.hideAbilityCooldownMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Implosion"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Wither Blade")))
-					.binding(defaults.chat.filters.hideImplosionDamageMessage, config.chat.filters::hideImplosionDamageMessage) { config.chat.filters.hideImplosionDamageMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Molten Wave"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Midas Staff")))
-					.binding(defaults.chat.filters.hideMoltenWaveDamageMessage, config.chat.filters::hideMoltenWaveDamageMessage) { config.chat.filters.hideMoltenWaveDamageMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Guided Bat"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Spirit Sceptre")))
-					.binding(defaults.chat.filters.hideSpiritSceptreDamageMessage, config.chat.filters::hideSpiritSceptreDamageMessage) { config.chat.filters.hideSpiritSceptreDamageMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Giant's Slam"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Giant's Sword")))
-					.binding(defaults.chat.filters.hideGiantSwordDamageMessage, config.chat.filters::hideGiantSwordDamageMessage) { config.chat.filters.hideGiantSwordDamageMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Throw"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Livid Dagger")))
-					.binding(defaults.chat.filters.hideLividDaggerDamageMessage, config.chat.filters::hideLividDaggerDamageMessage) { config.chat.filters.hideLividDaggerDamageMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Ray of Hope"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Staff of the Rising Sun")))
-					.binding(defaults.chat.filters.hideRayOfHopeDamageMessage, config.chat.filters::hideRayOfHopeDamageMessage) { config.chat.filters.hideRayOfHopeDamageMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage"),
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage.tooltip"),
+					default = defaults.chat.filters.hideAbilityCooldownMessage,
+					property = config.chat.filters::hideAbilityCooldownMessage
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Implosion"),
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Wither Blade"),
+					default = defaults.chat.filters.hideImplosionDamageMessage,
+					property = config.chat.filters::hideImplosionDamageMessage
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Molten Wave"),
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Midas Staff"),
+					default = defaults.chat.filters.hideMoltenWaveDamageMessage,
+					property = config.chat.filters::hideMoltenWaveDamageMessage
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Guided Bat"),
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Spirit Sceptre"),
+					default = defaults.chat.filters.hideGuidedBatDamageMessage,
+					property = config.chat.filters::hideGuidedBatDamageMessage
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Giant's Slam"),
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Giant's Sword"),
+					default = defaults.chat.filters.hideGiantsSlamDamageMessage,
+					property = config.chat.filters::hideGiantsSlamDamageMessage
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Throw"),
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Livid Dagger"),
+					default = defaults.chat.filters.hideThrowDamageMessage,
+					property = config.chat.filters::hideThrowDamageMessage
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Ray of Hope"),
+					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Staff of the Rising Sun"),
+					default = defaults.chat.filters.hideRayOfHopeDamageMessage,
+					property = config.chat.filters::hideRayOfHopeDamageMessage
+				)
 				// endregion
 
 				// region Mobs
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.mobs"))
-					.build())
+				label(Text.translatable("nobaaddons.config.label.mobs"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip")))
-					.binding(defaults.chat.filters.hideSeaCreatureSpawnMessage, config.chat.filters::hideSeaCreatureSpawnMessage) { config.chat.filters.hideSeaCreatureSpawnMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<MobRarity>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.seaCreatureMaximumRarity"))
-					.binding(defaults.chat.filters.seaCreatureMaximumRarity, config.chat.filters::seaCreatureMaximumRarity) { config.chat.filters.seaCreatureMaximumRarity = it }
-					.controller(NobaConfigUtils::createCyclingController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage"),
+					Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip"),
+					default = defaults.chat.filters.hideSeaCreatureSpawnMessage,
+					property = config.chat.filters::hideSeaCreatureSpawnMessage
+				)
+				cycler(
+					Text.translatable("nobaaddons.config.chat.filters.seaCreatureMaximumRarity"),
+					default = defaults.chat.filters.seaCreatureMaximumRarity,
+					property = config.chat.filters::seaCreatureMaximumRarity
+				)
 				// endregion
 
 				// region Dungeons
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.dungeons"))
-					.build())
+				label(Text.translatable("nobaaddons.config.label.dungeons"))
 
-				.option(Option.createBuilder<ChatFilterOption>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.blessingMessage"))
-					.binding(defaults.chat.filters.blessingMessage, config.chat.filters::blessingMessage) { config.chat.filters.blessingMessage = it }
-					.controller(NobaConfigUtils::createCyclingController)
-					.build())
-
-				.option(Option.createBuilder<ChatFilterOption>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.healerOrbMessage"))
-					.binding(defaults.chat.filters.healerOrbMessage, config.chat.filters::healerOrbMessage) { config.chat.filters.healerOrbMessage = it }
-					.controller(NobaConfigUtils::createCyclingController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.pickupObtainMessage"))
-					.binding(defaults.chat.filters.pickupObtainMessage, config.chat.filters::pickupObtainMessage) { config.chat.filters.pickupObtainMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.allowKeyMessage"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.allowKeyMessage.tooltip")))
-					.binding(defaults.chat.filters.allowKeyMessage, config.chat.filters::allowKeyMessage) { config.chat.filters.allowKeyMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.allow5050ItemMessage"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.allow5050ItemMessage.tooltip")))
-					.binding(defaults.chat.filters.allow5050ItemMessage, config.chat.filters::allow5050ItemMessage) { config.chat.filters.allow5050ItemMessage = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.label.miscellaneous"))
-					.build())
+				cycler(
+					Text.translatable("nobaaddons.config.chat.filters.blessingMessage"),
+					default = defaults.chat.filters.blessingMessage,
+					property = config.chat.filters::blessingMessage
+				)
+				cycler(
+					Text.translatable("nobaaddons.config.chat.filters.healerOrbMessage"),
+					default = defaults.chat.filters.healerOrbMessage,
+					property = config.chat.filters::healerOrbMessage
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.pickupObtainMessage"),
+					default = defaults.chat.filters.pickupObtainMessage,
+					property = config.chat.filters::pickupObtainMessage
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.allowKeyMessage"),
+					Text.translatable("nobaaddons.config.chat.filters.allowKeyMessage.tooltip"),
+					default = defaults.chat.filters.allowKeyMessage,
+					property = config.chat.filters::allowKeyMessage
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.allow5050ItemMessage"),
+					Text.translatable("nobaaddons.config.chat.filters.allow5050ItemMessage.tooltip"),
+					default = defaults.chat.filters.allow5050ItemMessage,
+					property = config.chat.filters::allow5050ItemMessage
+				)
 				// endregion
 
 				// region Miscellaneous
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideTipMessages"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideTipMessages.tooltip")))
-					.binding(defaults.chat.filters.hideTipMessages, config.chat.filters::hideTipMessages) { config.chat.filters.hideTipMessages = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				label(Text.translatable("nobaaddons.config.label.miscellaneous"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.filters.hideProfileInfo"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.filters.hideProfileInfo.tooltip")))
-					.binding(defaults.chat.filters.hideProfileInfo, config.chat.filters::hideProfileInfo) { config.chat.filters.hideProfileInfo = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideTipMessages"),
+					Text.translatable("nobaaddons.config.chat.filters.hideTipMessages.tooltip"),
+					default = defaults.chat.filters.hideTipMessages,
+					property = config.chat.filters::hideTipMessages
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.filters.hideProfileInfo"),
+					Text.translatable("nobaaddons.config.chat.filters.hideProfileInfo.tooltip"),
+					default = defaults.chat.filters.hideProfileInfo,
+					property = config.chat.filters::hideProfileInfo
+				)
 				// endregion
-
-				.collapsed(true)
-				.build())
+			}
 			// endregion
 
 			// region Chat Commands
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.chat.chatCommands"))
-
+			.buildGroup(Text.translatable("nobaaddons.config.chat.chatCommands")) {
 				// region DM
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.chat.chatCommands.label.dm"))
-					.build())
+				label(Text.translatable("nobaaddons.config.chat.chatCommands.label.dm"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.enabled"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.dm.enabled.tooltip")))
-					.binding(defaults.chat.chatCommands.dm.enabled, config.chat.chatCommands.dm::enabled) { config.chat.chatCommands.dm.enabled = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.help"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip")))
-					.binding(defaults.chat.chatCommands.dm.help, config.chat.chatCommands.dm::help) { config.chat.chatCommands.dm.help = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.dm.warpMe"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip")))
-					.binding(defaults.chat.chatCommands.dm.warpMe, config.chat.chatCommands.dm::warpMe) { config.chat.chatCommands.dm.warpMe = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.dm.partyMe"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.dm.partyMe.tooltip")))
-					.binding(defaults.chat.chatCommands.dm.partyMe, config.chat.chatCommands.dm::partyMe) { config.chat.chatCommands.dm.partyMe = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.warpOut"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.warpOut.tooltip")))
-					.binding(defaults.chat.chatCommands.dm.warpOut, config.chat.chatCommands.dm::warpOut) { config.chat.chatCommands.dm.warpOut = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.enabled"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.dm.enabled.tooltip"),
+					default = defaults.chat.chatCommands.dm.enabled,
+					property = config.chat.chatCommands.dm::enabled
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.help"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip"),
+					default = defaults.chat.chatCommands.dm.help,
+					property = config.chat.chatCommands.dm::help
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.dm.warpMe"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip"),
+					default = defaults.chat.chatCommands.dm.warpMe,
+					property = config.chat.chatCommands.dm::warpMe
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.dm.partyMe"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.dm.partyMe.tooltip"),
+					default = defaults.chat.chatCommands.dm.partyMe,
+					property = config.chat.chatCommands.dm::partyMe
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.warpOut"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.warpOut.tooltip"),
+					default = defaults.chat.chatCommands.dm.warpOut,
+					property = config.chat.chatCommands.dm::warpOut
+				)
 				// endregion
 
 				// region Party
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.chat.chatCommands.label.party"))
-					.build())
+				label(Text.translatable("nobaaddons.config.chat.chatCommands.label.party"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.enabled"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.party.enabled.tooltip")))
-					.binding(defaults.chat.chatCommands.party.enabled, config.chat.chatCommands.party::enabled) { config.chat.chatCommands.party.enabled = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.help"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip")))
-					.binding(defaults.chat.chatCommands.party.help, config.chat.chatCommands.party::help) { config.chat.chatCommands.party.help = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.party.allInvite"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip")))
-					.binding(defaults.chat.chatCommands.party.allInvite, config.chat.chatCommands.party::allInvite) { config.chat.chatCommands.party.allInvite = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.party.transfer"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.party.transfer.tooltip")))
-					.binding(defaults.chat.chatCommands.party.transfer, config.chat.chatCommands.party::transfer) { config.chat.chatCommands.party.transfer = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.party.warp"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.party.warp.tooltip")))
-					.binding(defaults.chat.chatCommands.party.warp, config.chat.chatCommands.party::warp) { config.chat.chatCommands.party.warp = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.party.coords"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.party.coords.tooltip")))
-					.binding(defaults.chat.chatCommands.party.coords, config.chat.chatCommands.party::coords) { config.chat.chatCommands.party.coords = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.enabled"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.party.enabled.tooltip"),
+					default = defaults.chat.chatCommands.party.enabled,
+					property = config.chat.chatCommands.party::enabled
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.help"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip"),
+					default = defaults.chat.chatCommands.party.help,
+					property = config.chat.chatCommands.party::help
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.party.allInvite"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip"),
+					default = defaults.chat.chatCommands.party.allInvite,
+					property = config.chat.chatCommands.party::allInvite
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.party.transfer"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.party.transfer.tooltip"),
+					default = defaults.chat.chatCommands.party.transfer,
+					property = config.chat.chatCommands.party::transfer
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.party.warp"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.party.warp.tooltip"),
+					default = defaults.chat.chatCommands.party.warp,
+					property = config.chat.chatCommands.party::warp
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.party.coords"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.party.coords.tooltip"),
+					default = defaults.chat.chatCommands.party.coords,
+					property = config.chat.chatCommands.party::coords
+				)
 				// endregion
 
 				// region Guild
-				.option(LabelOption.createBuilder()
-					.line(Text.translatable("nobaaddons.config.chat.chatCommands.label.guild"))
-					.build())
+				label(Text.translatable("nobaaddons.config.chat.chatCommands.label.guild"))
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.enabled"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.guild.enabled.tooltip")))
-					.binding(defaults.chat.chatCommands.guild.enabled, config.chat.chatCommands.guild::enabled) { config.chat.chatCommands.guild.enabled = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.help"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip")))
-					.binding(defaults.chat.chatCommands.guild.help, config.chat.chatCommands.guild::help) { config.chat.chatCommands.guild.help = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.chat.chatCommands.warpOut"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.chat.chatCommands.warpOut.tooltip")))
-					.binding(defaults.chat.chatCommands.guild.warpOut, config.chat.chatCommands.guild::warpOut) { config.chat.chatCommands.guild.warpOut = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
+				boolean(
+					Text.translatable("nobaaddons.config.enabled"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.guild.enabled.tooltip"),
+					default = defaults.chat.chatCommands.guild.enabled,
+					property = config.chat.chatCommands.guild::enabled
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.help"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip"),
+					default = defaults.chat.chatCommands.guild.help,
+					property = config.chat.chatCommands.guild::help
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.chat.chatCommands.guild.warpOut"),
+					Text.translatable("nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip"),
+					default = defaults.chat.chatCommands.guild.warpOut,
+					property = config.chat.chatCommands.guild::warpOut
+				)
 				// endregion
-
-				.collapsed(true)
-				.build())
+			}
 			// endregion
 
 			.build()

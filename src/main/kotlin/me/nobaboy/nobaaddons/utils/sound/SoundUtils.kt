@@ -12,6 +12,7 @@ object SoundUtils {
 	private val noteBlockPling = SoundEvents.BLOCK_NOTE_BLOCK_PLING.value()
 	private val noteBlockFlute = SoundEvents.BLOCK_NOTE_BLOCK_HARP.value()
 
+	val plingSound = SimpleSound(noteBlockPling, pitch = 2.0f)
 	val dingSound = SimpleSound(experienceOrbPickup, pitch = 0.5f)
 
 	val zeldaSecretSound = SoundSequence.uniformVolume(
@@ -50,7 +51,7 @@ object SoundUtils {
 				semitones: List<Int>,
 				volume: Float,
 				delay: Int
-			): SoundSequence {
+			) : SoundSequence {
 				val steps = semitones.map { SoundStep(it, volume) }
 				return SoundSequence(soundEvent, steps, delay)
 			}

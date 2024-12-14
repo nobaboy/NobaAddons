@@ -62,6 +62,14 @@ object PartyAPI {
 		}
 	}
 
+	private fun onTick(event: CooldownTickEvent) {
+		if(refreshPartyList && HypixelUtils.onHypixel) {
+			getPartyInfo()
+			refreshPartyList = false
+			event.cooldownManager.startCooldown(1.5.seconds)
+		}
+	}
+
 	fun getPartyInfo() {
 		HypixelModAPI.getInstance().request<ClientboundPartyInfoPacket> {
 			if(!it.isInParty) {
@@ -102,14 +110,6 @@ object PartyAPI {
 					append(" (Mod)".toText().formatted(Formatting.BLUE))
 				}
 			}, prefix = false)
-		}
-	}
-
-	private fun onTick(event: CooldownTickEvent) {
-		if(refreshPartyList && HypixelUtils.onHypixel) {
-			getPartyInfo()
-			refreshPartyList = false
-			event.cooldownManager.startCooldown(1.5.seconds)
 		}
 	}
 }

@@ -1,17 +1,18 @@
 package me.nobaboy.nobaaddons
 
+import com.google.gson.Gson
 import com.mojang.logging.LogUtils
 import me.nobaboy.nobaaddons.api.DebugAPI
-import me.nobaboy.nobaaddons.api.DungeonsAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
-import me.nobaboy.nobaaddons.api.MayorAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.api.PetAPI
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
-import me.nobaboy.nobaaddons.api.SlayerAPI
-import me.nobaboy.nobaaddons.api.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.api.mythological.BurrowGuessAPI
-import me.nobaboy.nobaaddons.api.mythological.DianaAPI
+import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
+import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
+import me.nobaboy.nobaaddons.api.skyblock.PetAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
+import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowGuessAPI
+import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
@@ -20,14 +21,14 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
-import me.nobaboy.nobaaddons.features.crimsonisle.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
+import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
+import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
-import me.nobaboy.nobaaddons.features.keybinds.KeyBindListener
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
@@ -36,6 +37,8 @@ import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
+import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
+import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.MutableText
@@ -54,8 +57,14 @@ object NobaAddons : ClientModInitializer {
 		.formatted(Formatting.BLUE, Formatting.BOLD)
 
 	val LOGGER: Logger = LogUtils.getLogger()
-	val modConfigDir: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
+	val CONFIG_DIR: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
 
+	val GSON = Gson()
+
+	// Note: utility object classes should avoid calling a dedicated `init` method here where possible, and instead
+	// rely on 'init {}' to run setup when first used, unless absolutely necessary for functionality (such as
+	// if the object class is never referenced anywhere else, or if it relies on chat data for a feature that isn't
+	// immediately ran).
 	override fun onInitializeClient() {
 		NobaConfigManager.init()
 
@@ -73,12 +82,9 @@ object NobaAddons : ClientModInitializer {
 		BurrowGuessAPI.init()
 		/* endregion */
 
-		// Note: utility object classes should avoid calling a dedicated `init` method here where possible, and instead
-		// rely on 'init {}' to run setup when first used, unless absolutely necessary for functionality (such as
-		// if the object class is never referenced anywhere else, or if it relies on chat data for a feature that isn't
-		// immediately ran).
-		/* region Utils */
-		KeyBindListener.init()
+		/* region Screens */
+		InfoBoxesManager.init()
+		KeyBindsManager.init()
 		/* endregion */
 
 		/* region Commands */
@@ -109,6 +115,7 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Fishing
+		FishingBobberTweaks.init()
 		SeaCreatureAlert.init()
 		// endregion
 

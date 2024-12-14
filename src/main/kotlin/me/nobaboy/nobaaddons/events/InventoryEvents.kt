@@ -1,29 +1,40 @@
 package me.nobaboy.nobaaddons.events
 
 import me.nobaboy.nobaaddons.data.InventoryData
+import me.nobaboy.nobaaddons.events.internal.Event
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
 
 object InventoryEvents {
-	@JvmField
-	val OPEN = EventDispatcher<Open>()
+	/**
+	 * Event invoked after an inventory is opened and fully ready.
+	 */
+	@JvmField val OPEN = EventDispatcher<Open>()
 
-	@JvmField
-	val UPDATE = EventDispatcher<Update>()
+	/**
+	 * Event called when the opened inventory is updated, which could be a singular slot or more.
+	 */
+	@JvmField val UPDATE = EventDispatcher<Update>()
 
-	@JvmField
-	val CLOSE = EventDispatcher<Close>()
+	/**
+	 * Event invoked after the current opened inventory is closed.
+	 */
+	@JvmField val CLOSE = EventDispatcher<Close>()
 
-	@JvmField
-	val SLOT_CLICK = EventDispatcher<SlotClick>()
+	/**
+	 * Event invoked when a slot in the current opened inventory is clicked.
+	 */
+	@JvmField val SLOT_CLICK = EventDispatcher<SlotClick>()
 
-	@JvmField
-	val SLOT_UPDATE = EventDispatcher<SlotUpdate>()
+	/**
+	 * Event invoked when any individual slot is updated, including in the player's inventory.
+	 */
+	@JvmField val SLOT_UPDATE = EventDispatcher<SlotUpdate>()
 
-	data class Open(val inventory: InventoryData)
-	data class Update(val inventory: InventoryData)
-	data class Close(val sameName: Boolean)
-	data class SlotClick(val itemStack: ItemStack, val button: Int, val slot: Int, val actionType: SlotActionType)
-	data class SlotUpdate(val itemStack: ItemStack, val slot: Int)
+	data class Open(val inventory: InventoryData) : Event()
+	data class Update(val inventory: InventoryData) : Event()
+	data class Close(val sameName: Boolean) : Event()
+	data class SlotClick(val itemStack: ItemStack, val button: Int, val slot: Int, val actionType: SlotActionType) : Event()
+	data class SlotUpdate(val itemStack: ItemStack, val slot: Int) : Event()
 }

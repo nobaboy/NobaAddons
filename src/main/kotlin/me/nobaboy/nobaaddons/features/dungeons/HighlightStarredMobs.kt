@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.dungeons
 
-import me.nobaboy.nobaaddons.api.DungeonsAPI
+import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils

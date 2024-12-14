@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.events
 
+import me.nobaboy.nobaaddons.events.internal.Event
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -26,7 +27,7 @@ import kotlin.time.Duration.Companion.seconds
  *
  * @see me.nobaboy.nobaaddons.utils.Scheduler
  */
-data class CooldownTickEvent(val client: MinecraftClient, val cooldownManager: CooldownManager) {
+data class CooldownTickEvent(val client: MinecraftClient, val cooldownManager: CooldownManager) : Event() {
 	companion object {
 		private val DUMMY_MANAGER = CooldownManager()
 

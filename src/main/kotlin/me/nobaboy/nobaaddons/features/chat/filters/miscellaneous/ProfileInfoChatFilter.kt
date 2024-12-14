@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.filters.miscellaneous
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.anyMatches
 import java.util.regex.Pattern

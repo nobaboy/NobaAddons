@@ -4,20 +4,22 @@ import me.nobaboy.nobaaddons.NobaAddons
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.network.ClientPlayNetworkHandler
-import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.client.option.GameOptions
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.client.util.Window
 import net.minecraft.client.world.ClientWorld
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.network.packet.Packet
+import java.util.UUID
 
 object MCUtils {
 	val client: MinecraftClient get() = MinecraftClient.getInstance()
 
 	val world: ClientWorld? get() = client.world
 
-	val player: ClientPlayerEntity? get() = client.player
+	val player: PlayerEntity? get() = client.player
 	val playerName: String? get() = player?.name?.string
+	val playerUuid: UUID? get() = player?.uuid
 
 	val networkHandler: ClientPlayNetworkHandler? get() = client.networkHandler
 

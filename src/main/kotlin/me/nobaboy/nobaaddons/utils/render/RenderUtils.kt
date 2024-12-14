@@ -6,11 +6,11 @@ import net.minecraft.client.render.VertexRendering
 import net.minecraft.client.gl.ShaderProgramKeys
 //?} else {
 /*import net.minecraft.client.render.WorldRenderer
-import net.minecraft.client.render.GameRenderer*/
-//?}
+import net.minecraft.client.render.GameRenderer
+*///?}
 
 import com.mojang.blaze3d.systems.RenderSystem
-import me.nobaboy.nobaaddons.mixins.invokers.BeaconBlockEntityRendererInvoker
+import me.nobaboy.nobaaddons.mixins.accessors.BeaconBlockEntityRendererInvoker
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -276,7 +276,7 @@ object RenderUtils {
 		val cameraPos = context.camera().pos.toNobaVec()
 
 		val distSq = location.distanceSq(cameraPos)
-		if(distSq < hideThreshold * hideThreshold) return
+		if(distSq <= hideThreshold * hideThreshold) return
 
 		matrices.push()
 		matrices.translate(location.x - cameraPos.x, location.y - cameraPos.y, location.z - cameraPos.z)
@@ -319,8 +319,8 @@ object RenderUtils {
 		//? if >=1.21.2 {
 		RenderSystem.setShader(ShaderProgramKeys.RENDERTYPE_LINES)
 		//?} else {
-		/*RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram)*/
-		//?}
+		/*RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram)
+		*///?}
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f)
 		RenderSystem.lineWidth(lineWidth)
 		RenderSystem.enableBlend()
@@ -348,8 +348,8 @@ object RenderUtils {
 		//? if >=1.21.2 {
 		VertexRendering.drawBox(
 		//?} else {
-		/*WorldRenderer.drawBox(*/
-		//?}
+		/*WorldRenderer.drawBox(
+		*///?}
 			matrices, buffer,
 			box.minX, box.minY, box.minZ,
 			box.maxX, box.maxY, box.maxZ,
@@ -425,8 +425,8 @@ object RenderUtils {
 		//? if >=1.21.2 {
 		VertexRendering.drawFilledBox(
 		//?} else {
-		/*WorldRenderer.renderFilledBox(*/
-		//?}
+		/*WorldRenderer.renderFilledBox(
+		*///?}
 			matrices, buffer,
 			box.minX, box.minY, box.minZ,
 			box.maxX, box.maxY, box.maxZ,
@@ -460,23 +460,24 @@ object RenderUtils {
 	}
 
 	fun renderText(
-		context: WorldRenderContext,
 		location: NobaVec,
 		text: String,
 		color: Int = 0xFFFFFF,
 		shadow: Boolean = true,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
-		hideThreshold: Double = 5.0,
+		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {
+		val client = MCUtils.client
+
 		val positionMatrix = Matrix4f()
-		val camera = context.camera()
+		val camera = client.gameRenderer.camera
 		val cameraPos = camera.pos.toNobaVec()
-		val textRenderer = MCUtils.textRenderer
+		val textRenderer = client.textRenderer
 
 		val dist = location.distance(cameraPos).coerceAtMost(512.0)
-		if(dist < hideThreshold) return
+		if(dist <= hideThreshold) return
 
 		var scale = dist.toFloat() / 256.0f
 		scale = (scale * scaleMultiplier).coerceAtLeast(0.025f)
@@ -484,6 +485,8 @@ object RenderUtils {
 		val x = location.x - cameraPos.x
 		val y = location.y - cameraPos.y
 		val z = location.z - cameraPos.z
+
+		val shadow = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/ && shadow
 
 		positionMatrix
 			.translate(x.toFloat(), y.toFloat(), z.toFloat())
@@ -503,29 +506,27 @@ object RenderUtils {
 		RenderSystem.depthFunc(GL11.GL_LEQUAL)
 	}
 	fun renderText(
-		context: WorldRenderContext,
 		location: NobaVec,
 		text: String,
 		color: Color,
 		shadow: Boolean = true,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
-		hideThreshold: Double = 5.0,
+		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {
-		renderText(context, location, text, color.rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
+		renderText(location, text, color.rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
 	}
 	fun renderText(
-		context: WorldRenderContext,
 		location: NobaVec,
 		text: String,
 		color: NobaColor,
 		shadow: Boolean = true,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
-		hideThreshold: Double = 5.0,
+		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {
-		renderText(context, location, text, color.toColor().rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
+		renderText(location, text, color.toColor().rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
 	}
 }

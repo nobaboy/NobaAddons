@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.visuals
 
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
@@ -71,13 +71,10 @@ object TemporaryWaypoint {
 				val distance = it.distanceToPlayer()
 
 				RenderUtils.renderWaypoint(context, it, color, throughBlocks = true)
-				RenderUtils.renderText(context, it.center().raise(), waypoint.text, color, yOffset = -10.0f, throughBlocks = true)
+				RenderUtils.renderText(it.center().raise(), waypoint.text, color, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
 
-				if(distance > 5) {
-					val formattedDistance = distance.toInt().addSeparators()
-					RenderUtils.renderText(context, it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, throughBlocks = true)
-				}
-
+				val formattedDistance = distance.toInt().addSeparators()
+				RenderUtils.renderText(it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 		}
 	}

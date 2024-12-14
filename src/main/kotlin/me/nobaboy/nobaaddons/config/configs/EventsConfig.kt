@@ -15,6 +15,9 @@ class EventsConfig {
 		var findNearbyBurrows: Boolean = false
 
 		@SerialEntry
+		var dingOnBurrowFind: Boolean = false
+
+		@SerialEntry
 		var removeGuessOnBurrowFind: Boolean = false
 
 		@SerialEntry

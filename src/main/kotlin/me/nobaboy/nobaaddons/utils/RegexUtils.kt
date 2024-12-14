@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.utils
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-// TODO switch to using kotlin Regex
 object RegexUtils {
 	fun Pattern.matches(string: String?): Boolean = string?.let { matcher(it).matches() } == true
 

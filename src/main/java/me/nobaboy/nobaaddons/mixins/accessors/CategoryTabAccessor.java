@@ -8,6 +8,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(CategoryTab.class)
 public interface CategoryTabAccessor {
-	@Accessor(remap = false)
-	ListHolderWidget<OptionListWidget> getOptionList();
+	@Accessor(remap = false) ListHolderWidget<OptionListWidget> getOptionList();
 }

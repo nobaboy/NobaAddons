@@ -3,10 +3,25 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.isxander.yacl3.config.v2.api.SerialEntry
 import me.nobaboy.nobaaddons.core.MobRarity
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
+import java.awt.Color
 
 class FishingConfig {
 	@SerialEntry
+	val bobberTimer: BobberTimer = BobberTimer()
+
+	@SerialEntry
 	val seaCreatureAlert: SeaCreatureAlert = SeaCreatureAlert()
+
+	@SerialEntry
+	val highlightThunderSparks: HighlightThunderSparks = HighlightThunderSparks()
+
+	class BobberTimer {
+		@SerialEntry
+		var enabled: Boolean = false
+
+		@SerialEntry
+		var lerpColor: Boolean = false
+	}
 
 	class SeaCreatureAlert {
 		@SerialEntry
@@ -20,5 +35,16 @@ class FishingConfig {
 
 		@SerialEntry
 		var notificationSound: NotificationSound = NotificationSound.DING
+	}
+
+	class HighlightThunderSparks {
+		@SerialEntry
+		var enabled: Boolean = false
+
+		@SerialEntry
+		var highlightColor: Color = Color(0x24DDE5)
+
+		@SerialEntry
+		var showText: Boolean = false
 	}
 }

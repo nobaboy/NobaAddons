@@ -14,7 +14,7 @@ abstract class Group(
 	override val enabled: Boolean = true,
 	override val aliases: List<String> = listOf(),
 	val executeRoot: Boolean = false,
-): ICommand {
+) : ICommand {
 	private val commands: List<ICommand> by lazy {
 		buildList<ICommand> {
 			addAll(this@Group::class.memberProperties

@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.visuals.slotinfo
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.items.*

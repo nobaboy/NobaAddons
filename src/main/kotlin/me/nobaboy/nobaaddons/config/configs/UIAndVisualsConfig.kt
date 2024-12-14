@@ -1,14 +1,10 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.screens.hud.elements.TextElement
 import me.nobaboy.nobaaddons.utils.NobaColor
 import java.awt.Color
 
 class UIAndVisualsConfig {
-	@SerialEntry
-	var showUsageText: Boolean = true
-
 	@SerialEntry
 	val temporaryWaypoints: TemporaryWaypoints = TemporaryWaypoints()
 
@@ -26,9 +22,6 @@ class UIAndVisualsConfig {
 
 	@SerialEntry
 	val itemPosition = FirstPersonItemPosition()
-
-	@SerialEntry
-	val infoBoxes = mutableListOf<TextElement>()
 
 	class TemporaryWaypoints {
 		@SerialEntry
@@ -52,7 +45,7 @@ class UIAndVisualsConfig {
 		var showFailText: Boolean = false
 
 		@SerialEntry
-		var allowOnAir: Boolean = false
+		var allowOverlayOnAir: Boolean = false
 	}
 
 	class SlotInfo {

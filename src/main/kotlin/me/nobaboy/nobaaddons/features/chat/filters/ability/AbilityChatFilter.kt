@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.filters.ability
 
-import me.nobaboy.nobaaddons.api.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import java.util.regex.Pattern
@@ -15,9 +15,9 @@ object AbilityChatFilter : IChatFilter {
 			return when(ability) {
 				"Implosion" -> config.hideImplosionDamageMessage
 				"Molten Wave" -> config.hideMoltenWaveDamageMessage
-				"Spirit Sceptre" -> config.hideSpiritSceptreDamageMessage
-				"Giant's Sword" -> config.hideGiantSwordDamageMessage
-				"Livid Dagger" -> config.hideLividDaggerDamageMessage
+				"Spirit Sceptre" -> config.hideGuidedBatDamageMessage
+				"Giant's Sword" -> config.hideGiantsSlamDamageMessage
+				"Livid Dagger" -> config.hideThrowDamageMessage
 				"Ray of Hope" -> config.hideRayOfHopeDamageMessage
 				else -> false
 			}

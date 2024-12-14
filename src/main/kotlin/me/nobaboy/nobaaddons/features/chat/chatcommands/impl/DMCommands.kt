@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.PartyMeCommand
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.WarpUserCommand
+import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.WarpMeCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHandler
@@ -21,7 +21,7 @@ object DMCommands : ChatCommandManager() {
 	init {
 		register(HelpCommand(this, "msg", config::help))
 		register(WarpOutCommand("msg", config::warpOut))
-		register(WarpUserCommand())
+		register(WarpMeCommand())
 		register(PartyMeCommand())
 	}
 

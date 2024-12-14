@@ -1,24 +1,19 @@
 package me.nobaboy.nobaaddons.screens
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.gui.widget.ButtonWidget
-import net.minecraft.screen.ScreenTexts
 import net.minecraft.text.Text
 import org.lwjgl.glfw.GLFW
 import kotlin.math.roundToInt
 
-private val TITLE = Text.translatable("nobaaddons.editor")
-private const val BUTTON_WIDTH = 200
+private val TITLE = Text.translatable("nobaaddons.screen.hudEditor")
 
 class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 	private lateinit var elements: LinkedHashMap<String, HudElement>
-	private lateinit var doneButtonWidget: ButtonWidget
 //	private var contextMenu: ContextMenu? = null
 
 	private var editingMode: EditingMode = EditingMode.IDLE
@@ -30,23 +25,17 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 	private var selectedElement: HudElement? = null
 	private var hoveredElement: HudElement? = null
 
-	private var showUsageText: Boolean = NobaConfigManager.config.uiAndVisuals.showUsageText
 	private val usageTexts = listOf<String>(
-		"Left click to drag or use arrow keys to move (holding Ctrl moves further)",
-		"Scroll or use +/- to scale an element",
-		"Middle click to reset an element",
-		"Right click on an element to open context menu (soonTM)"
+		"Left-click and drag, or use arrows to move (Ctrl moves further)",
+		"Scroll or use +/- to resize an element",
+		"Middle-click to reset an element",
+		"Right-click for context menu (coming soon)"
 	)
 
 	override fun init() {
-		val window = MCUtils.window
+		super.init()
 
 		elements = LinkedHashMap(ElementManager)
-		doneButtonWidget = ButtonWidget.builder(ScreenTexts.DONE) {
-			this.close()
-		}.dimensions(window.scaledWidth / 2 - BUTTON_WIDTH / 2, window.scaledHeight - 30, BUTTON_WIDTH, 20).build()
-
-		addDrawableChild(doneButtonWidget)
 	}
 
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
@@ -72,9 +61,8 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 	}
 
 	private fun renderIdleText(context: DrawContext, scaledWidth: Int, scaledHeight: Int) {
-		RenderUtils.drawCenteredText(context, Text.literal("Press Left Alt to toggle usage text"), scaledWidth / 2, scaledHeight - 45)
-		if(showUsageText) usageTexts.forEachIndexed { i, text ->
-			RenderUtils.drawCenteredText(context, text, scaledWidth / 2, 5 + i * 10)
+		usageTexts.forEachIndexed { i, text ->
+			RenderUtils.drawCenteredText(context, text, scaledWidth / 2, scaledHeight / 2 - 20 + i * 10)
 		}
 	}
 
@@ -84,9 +72,9 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 
 			when(button) {
 				GLFW.GLFW_MOUSE_BUTTON_1 -> {
-					selectedElement = element
 					updateOffset(element, mouseX, mouseY)
-					setEditingMode(EditingMode.DRAG)
+					editingMode = EditingMode.DRAG
+					selectedElement = element
 				}
 //				GLFW.GLFW_MOUSE_BUTTON_2 -> {
 //					openContextMenu(element)
@@ -101,7 +89,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 
 	override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
 		if(editingMode == EditingMode.DRAG) {
-			setEditingMode(EditingMode.IDLE)
+			editingMode = EditingMode.IDLE
 			selectedElement = null
 			return true
 		}
@@ -120,7 +108,6 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 
 	override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
 		hoveredElement?.let { selectedElement = it }
-		if(keyCode == GLFW.GLFW_KEY_LEFT_ALT) showUsageText = !showUsageText
 
 		selectedElement?.takeIf {
 			editingMode != EditingMode.MENU
@@ -139,8 +126,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 	}
 
 	override fun close() {
-		NobaConfigManager.config.uiAndVisuals.showUsageText = showUsageText
-		NobaConfigManager.save()
+		ElementManager.loadElements()
 		client!!.setScreen(parent)
 	}
 
@@ -161,15 +147,6 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 			(bounds.x + bounds.width).toDouble() + offset,
 			(bounds.y + bounds.height).toDouble() + offset
 		)
-	}
-
-	private fun setEditingMode(newMode: EditingMode) {
-		editingMode = newMode
-		val isIdle = editingMode == EditingMode.IDLE
-//		val isMenu = editingMode == EditingMode.MENU
-
-		doneButtonWidget.visible = isIdle
-//		contextMenu?.visible = isMenu
 	}
 
 	private enum class EditingMode {

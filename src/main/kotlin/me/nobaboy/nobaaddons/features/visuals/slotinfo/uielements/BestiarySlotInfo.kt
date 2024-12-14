@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 object BestiarySlotInfo : ISlotInfo {
 	private var bestiaryLocation: String? = null
 
-	override val enabled get() = config.bestiaryFamilyTier || config.bestiaryMilestone
+	override val enabled: Boolean get() = config.bestiaryFamilyTier || config.bestiaryMilestone
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		val inventoryName = InventoryUtils.openInventoryName() ?: return

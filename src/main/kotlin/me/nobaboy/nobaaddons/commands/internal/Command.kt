@@ -14,7 +14,7 @@ class Command(
 	override val enabled: Boolean = true,
 	private val callback: CommandContext<FabricClientCommandSource>.() -> Unit,
 	private val commandBuilder: CommandBuilder,
-): ICommand {
+) : ICommand {
 	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
 		runCatching {
 			callback(ctx)
