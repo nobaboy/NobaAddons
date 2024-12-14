@@ -51,7 +51,7 @@ object SoundUtils {
 				semitones: List<Int>,
 				volume: Float,
 				delay: Int
-			): SoundSequence {
+			) : SoundSequence {
 				val steps = semitones.map { SoundStep(it, volume) }
 				return SoundSequence(soundEvent, steps, delay)
 			}

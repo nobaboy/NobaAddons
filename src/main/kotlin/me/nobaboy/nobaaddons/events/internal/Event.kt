@@ -1,12 +1,15 @@
 package me.nobaboy.nobaaddons.events.internal
 
-abstract class Event(val isCancelable: Boolean = false) {
+abstract class Event(
+	val isCancelable: Boolean = false,
+	internal val exitEarlyOnCancel: Boolean = true
+) {
 	@get:JvmName("isCanceled")
 	var canceled: Boolean = false
 		private set
 
 	open fun cancel() {
-		require(isCancelable) { "This event cannot be canceled" }
+		check(isCancelable) { "Attempted to cancel a non-cancelable event" }
 		canceled = true
 	}
 }

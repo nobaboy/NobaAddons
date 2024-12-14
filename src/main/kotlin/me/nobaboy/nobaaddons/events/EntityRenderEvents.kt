@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events
 
-import me.nobaboy.nobaaddons.events.internal.CancelableEvent
+import me.nobaboy.nobaaddons.events.internal.Event
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import net.minecraft.entity.Entity
 
@@ -20,6 +20,6 @@ object EntityRenderEvents {
 	 */
 	@JvmField val POST_RENDER = EventDispatcher<Render>()
 
-	data class AllowRender(val entity: Entity) : CancelableEvent()
-	data class Render(val entity: Entity, val delta: Float)
+	data class AllowRender(val entity: Entity) : Event(isCancelable = true)
+	data class Render(val entity: Entity, val delta: Float) : Event()
 }

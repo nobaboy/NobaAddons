@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.events
 
-import me.nobaboy.nobaaddons.events.internal.CancelableEvent
-import me.nobaboy.nobaaddons.events.internal.CancelableEventDispatcher
+import me.nobaboy.nobaaddons.events.internal.Event
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import me.nobaboy.nobaaddons.utils.NobaVec
 import net.minecraft.particle.ParticleType
@@ -10,7 +9,7 @@ object ParticleEvents {
 	/**
 	 * Event invoked to determine whether a given [ParticleType] should be allowed to render.
 	 */
-	@JvmField val ALLOW_PARTICLE = CancelableEventDispatcher<AllowParticle>()
+	@JvmField val ALLOW_PARTICLE = EventDispatcher<AllowParticle>()
 
 	/**
 	 * Event invoked after a [ParticleType] is rendered.
@@ -24,7 +23,7 @@ object ParticleEvents {
 		val speed: Float,
 		val offset: NobaVec,
 		val isLongDistance: Boolean
-	) : CancelableEvent()
+	): Event(isCancelable = true)
 
 	data class Particle(
 		val type: ParticleType<*>,
@@ -33,5 +32,5 @@ object ParticleEvents {
 		val speed: Float,
 		val offset: NobaVec,
 		val isLongDistance: Boolean
-	)
+	) : Event()
 }
