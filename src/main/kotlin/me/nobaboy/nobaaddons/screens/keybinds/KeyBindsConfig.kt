@@ -7,5 +7,5 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.screens.keybinds.impl.KeyBind
 
 object KeyBindsConfig : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("keybinds.json")) {
-	val keyBinds by Property.list("keybinds", Serializer.expose<KeyBind>())
+	val keyBinds by Property.of("keybinds", Serializer.list(Serializer.expose<KeyBind>()), mutableListOf())
 }

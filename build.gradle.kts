@@ -29,7 +29,7 @@ base { archivesName.set(mod.id) }
 repositories {
     maven("https://maven.isxander.dev/releases") // YACL
     maven("https://maven.terraformersmc.com/") // ModMenu
-	maven("https://maven.celestialfault.dev/snapshots") // CelestialConfig
+	maven("https://maven.celestialfault.dev/releases") // CelestialConfig
 	maven("https://repo.hypixel.net/repository/Hypixel/") // Hypixel Mod API
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
     exclusiveContent {
@@ -64,9 +64,9 @@ dependencies {
 
     // Hypixel Mod API
     implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
-    modRuntimeOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
+	devEnvOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
 
-    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
+	devEnvOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
 
 	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}") // Sodium
 	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // No Telemetry
