@@ -21,6 +21,11 @@ object FishingCategory {
 					property = config.fishing.bobberTimer::enabled
 				)
 				boolean(
+					Text.translatable("nobaaddons.config.fishing.bobberTimer.crimsonIsleOnly"),
+					default = defaults.fishing.bobberTimer.crimsonIsleOnly,
+					property = config.fishing.bobberTimer::crimsonIsleOnly
+				)
+				boolean(
 					Text.translatable("nobaaddons.config.fishing.bobberTimer.lerpColor"),
 					Text.translatable("nobaaddons.config.fishing.bobberTimer.lerpColor.tooltip"),
 					default = defaults.fishing.bobberTimer.lerpColor,

@@ -5,7 +5,7 @@ insert_final_newline = false
 tab_width = 4
 indent_style = tab
 
-[{*.java,*.kt}]
+[{*.java,*.kt,*.kts}]
 ij_any_space_before_if_parentheses = false
 ij_any_space_before_for_parentheses = false
 ij_any_space_before_when_parentheses = false

@@ -1,14 +1,20 @@
 package me.nobaboy.nobaaddons.utils.items
 
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
+import com.google.common.cache.LoadingCache
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.LoreComponent
 import net.minecraft.component.type.NbtComponent
 import net.minecraft.item.ItemStack
 import java.lang.ref.WeakReference
-import java.util.WeakHashMap
 
 object ItemUtils {
-	private val ITEM_CACHE = WeakHashMap<ItemStack, SkyBlockItemData>(256)
+	private val ITEM_CACHE: LoadingCache<ItemStack, SkyBlockItemData> = CacheBuilder.newBuilder()
+		.weakKeys()
+		.build(object : CacheLoader<ItemStack, SkyBlockItemData>() {
+			override fun load(key: ItemStack) = SkyBlockItemData(WeakReference(key))
+		})
 
 	val ItemStack.nbtCompound get() = this.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT)
 	val ItemStack.lore get() = this.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT)
@@ -20,7 +26,7 @@ object ItemUtils {
 
 	fun ItemStack.skyblockItem(): SkyBlockItemData {
 		require(isSkyBlockItem) { "Stack is not a valid SkyBlock item" }
-		return ITEM_CACHE.getOrPut(this) { SkyBlockItemData(WeakReference(this)) }
+		return ITEM_CACHE.getUnchecked(this)
 	}
 
 	fun ItemStack.getSkullTexture(): String? {
