@@ -1,12 +1,13 @@
 package me.nobaboy.nobaaddons.events
 
+import me.nobaboy.nobaaddons.events.internal.Event
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.minecraft.client.MinecraftClient
 import kotlin.time.Duration.Companion.seconds
 
-data class SecondPassedEvent(val client: MinecraftClient) {
+data class SecondPassedEvent(val client: MinecraftClient) : Event() {
 	companion object {
 		private var lastSecond = Timestamp.distantPast()
 

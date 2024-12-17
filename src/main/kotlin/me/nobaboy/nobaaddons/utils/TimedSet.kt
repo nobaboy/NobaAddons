@@ -6,7 +6,7 @@ import kotlin.time.Duration
 class TimedSet<T : Any>(
 	duration: Duration,
 	private val removalListener: (T, RemovalCause) -> Unit = { _, _ -> }
-): Iterable<T> {
+) : Iterable<T> {
 	private val cache = TimedCache<T, Unit>(duration) { key, _, cause ->
 		key?.let { removalListener(it, cause) }
 	}

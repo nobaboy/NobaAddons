@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.events
 
-import me.nobaboy.nobaaddons.events.internal.CancelableEvent
-import me.nobaboy.nobaaddons.events.internal.CancelableEventDispatcher
+import me.nobaboy.nobaaddons.events.internal.Event
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import me.nobaboy.nobaaddons.utils.NobaVec
 import net.minecraft.sound.SoundCategory
@@ -11,7 +10,7 @@ object SoundEvents {
 	/**
 	 * Event invoked to determine whether a given sound should be allowed to play.
 	 */
-	@JvmField val ALLOW_SOUND = CancelableEventDispatcher<AllowSound>()
+	@JvmField val ALLOW_SOUND = EventDispatcher<AllowSound>()
 
 	/**
 	 * Event invoked after a sound is canceled.
@@ -23,6 +22,18 @@ object SoundEvents {
 	 */
 	@JvmField val SOUND = EventDispatcher<Sound>()
 
-	data class AllowSound(val id: Identifier, val location: NobaVec, val pitch: Float, val volume: Float) : CancelableEvent()
-	data class Sound(val id: Identifier, val category: SoundCategory, val location: NobaVec, val pitch: Float, val volume: Float)
+	data class AllowSound(
+		val id: Identifier,
+		val location: NobaVec,
+		val pitch: Float,
+		val volume: Float
+	) : Event(isCancelable = true)
+
+	data class Sound(
+		val id: Identifier,
+		val category: SoundCategory,
+		val location: NobaVec,
+		val pitch: Float,
+		val volume: Float
+	) : Event()
 }

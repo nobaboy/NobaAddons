@@ -13,14 +13,6 @@ ij_any_space_before_while_parentheses = false
 ij_any_space_before_try_parentheses = false
 ij_any_space_before_catch_parentheses = false
 
-[*.md]
-indent_style = space
-indent_size = 2
-
-[*.properties]
-indent_style = space
-indent_size = 2
-
-[*.json]
+[{*.json,*.yml,*.properties,*.md}]
 indent_style = space
 indent_size = 2
