@@ -68,8 +68,8 @@ public class HeldItemRendererMixin {
 			//? if >=1.21.4 {
 			target = "Lnet/minecraft/client/render/item/HeldItemRenderer;shouldSkipHandAnimationOnSwap(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"
 			//?} else {
-			/*target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"*/
-			//?}
+			/*target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"
+			*///?}
 		)
 	)
 	public boolean nobaaddons$cancelItemUpdateAnimation(/*? if >=1.21.4 {*/HeldItemRenderer renderer,/*?}*/ ItemStack left, ItemStack right, Operation<Boolean> original) {

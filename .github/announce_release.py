@@ -25,7 +25,7 @@ def parse_version(version: str) -> int:
 	"""Converts version strings like '1.21' to integers like 210, '1.21.3' to 213, etc."""
 	ver_int = version[2:len(version)].replace(".", "")
 	if len(ver_int) == 2:
-		ver_int = f"{ver_int}0"
+		ver_int += "0"
 	return int(ver_int)
 
 
