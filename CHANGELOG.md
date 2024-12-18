@@ -8,8 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Trophy Fish slot info - celeste
+- Trophy Fish slot info in Odegar menu - celeste
 - Fishing Bobber Timer - celeste
+- Trophy Fish chat message counts - celeste
+  - This requires that you open Odegar's menu at least once for accurate counts
 - Ping On Burrow Find - nobaboy
 - `/noba refill` any item from sacks - celeste
   - This is primarily useful when paired with command keybinds
