@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ability.WitherSkullAbilitiesSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.dwarvenmines.GoneWithTheWindSoundFilter
+import me.nobaboy.nobaaddons.features.qol.sound.filters.misc.PunchSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.mobs.ReindrakeSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.rift.KillerSpringSoundFilter
 
@@ -23,7 +24,9 @@ interface ISoundFilter {
 			// Dwarven Mines
 			GoneWithTheWindSoundFilter,
 			// Rift
-			KillerSpringSoundFilter
+			KillerSpringSoundFilter,
+			// Misc
+			PunchSoundFilter,
 		)
 
 		fun init() {

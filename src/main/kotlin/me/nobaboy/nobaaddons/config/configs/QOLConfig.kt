@@ -24,6 +24,9 @@ class QOLConfig {
 
 		@SerialEntry
 		var muteKillerSpring: Boolean = false
+
+		@SerialEntry
+		var mutePunch: Boolean = false
 	}
 
 	class Garden {
