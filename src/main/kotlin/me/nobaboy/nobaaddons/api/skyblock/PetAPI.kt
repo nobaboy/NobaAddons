@@ -21,6 +21,7 @@ object PetAPI {
 	private val petsMenuPattern = Pattern.compile("^Pets(?: \\(\\d+/\\d+\\) )?")
 	private val petNamePattern = Pattern.compile("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)")
 
+	// TODO cache autopet rule pets to allow for getting complete data
 	private val autopetPattern = Pattern.compile(
 		"^§cAutopet §eequipped your §7\\[Lvl (?<level>\\d+)] (?:§.\\[.*] )?§(?<rarity>.)(?<name>[A-z ]+)(?:§. ✦)?§e! §a§lVIEW RULE"
 	)
