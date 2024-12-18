@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Temporary Waypoints not getting parsed because of player emblems - nobaboy
 - MayorAPI not resetting once an election ends caused by a typo - nobaboy
 - PetAPI resetting current pet upon clicking any item other than pets in the pets menu - nobaboy
+- PetAPI thinking you don't have a pet spawned until opening the pets menu once - celeste
 - Announce Rare Drops announcing the same item more than once if it is moved around your inventory or swap islands - nobaboy
 
 ## 0.1.0-Alpha.10 - 2024-12-02
