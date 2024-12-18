@@ -11,7 +11,7 @@ data class PetData(
 	@Expose val xp: Double,
 	@Expose val rarity: ItemRarity,
 	@Expose val candy: Int = 0,
-	@Expose val active: Boolean = false,
+	val active: Boolean = false,
 	@Expose val heldItem: String? = null,
 	@Expose val uuid: String? = null
 ) {
