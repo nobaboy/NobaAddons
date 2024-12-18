@@ -20,6 +20,9 @@ class FishingConfig {
 		var enabled: Boolean = false
 
 		@SerialEntry
+		var crimsonIsleOnly: Boolean = true
+
+		@SerialEntry
 		var lerpColor: Boolean = false
 	}
 

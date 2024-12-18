@@ -27,7 +27,7 @@ object DungeonsAPI {
 	fun inFloor(floor: Int): Boolean = currentFloor.floor == floor
 
 	fun isBoss(boss: DungeonBoss): Boolean = currentBoss == boss
-	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN
+	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN && currentBoss != DungeonBoss.WATCHER
 
 	fun init() {
 		SecondPassedEvent.EVENT.register { onSecondPassed() }

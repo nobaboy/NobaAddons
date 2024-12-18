@@ -463,7 +463,7 @@ object RenderUtils {
 		location: NobaVec,
 		text: String,
 		color: Int = 0xFFFFFF,
-		shadow: Boolean = true,
+		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
 		hideThreshold: Double = 0.0,
@@ -486,8 +486,6 @@ object RenderUtils {
 		val y = location.y - cameraPos.y
 		val z = location.z - cameraPos.z
 
-		val shadow = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/ && shadow
-
 		positionMatrix
 			.translate(x.toFloat(), y.toFloat(), z.toFloat())
 			.rotate(camera.rotation)
@@ -509,7 +507,7 @@ object RenderUtils {
 		location: NobaVec,
 		text: String,
 		color: Color,
-		shadow: Boolean = true,
+		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
 		hideThreshold: Double = 0.0,
@@ -521,7 +519,7 @@ object RenderUtils {
 		location: NobaVec,
 		text: String,
 		color: NobaColor,
-		shadow: Boolean = true,
+		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
 		hideThreshold: Double = 0.0,
