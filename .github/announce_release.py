@@ -20,9 +20,18 @@ with open(Path(__file__).parent.parent / "gradle.properties") as f:
 with open(Path(__file__).parent.parent / "CHANGELOG.mini") as f:
 	CHANGELOG = f.read()
 
+
+def parse_version(version: str) -> int:
+	"""Converts version strings like '1.21' to integers like 210, '1.21.3' to 213, etc."""
+	ver_int = version[2:len(version)].replace(".", "")
+	if len(ver_int) == 2:
+		ver_int += "0"
+	return int(ver_int)
+
+
 versions = "\n".join(
 	f"- [{x}](<https://modrinth.com/mod/nobaaddons/version/{VERSION}+{x}>)"
-	for x in mc_versions
+	for x in reversed(sorted(mc_versions, key=parse_version))
 )
 
 
