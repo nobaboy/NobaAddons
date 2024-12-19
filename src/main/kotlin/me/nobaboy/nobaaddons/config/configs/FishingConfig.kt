@@ -45,6 +45,12 @@ class FishingConfig {
 		var minimumRarity: MobRarity = MobRarity.LEGENDARY
 
 		@SerialEntry
+		var carrotKingIsRare: Boolean = false
+
+		@SerialEntry
+		var announceInPartyChat: Boolean = false
+
+		@SerialEntry
 		var notificationSound: NotificationSound = NotificationSound.DING
 	}
 
