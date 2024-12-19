@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.ItemRarity
+import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.data.json.PetInfo
 import me.nobaboy.nobaaddons.events.InventoryEvents
@@ -20,6 +21,7 @@ object PetAPI {
 	private val petsMenuPattern = Pattern.compile("^Pets(?: \\(\\d+/\\d+\\) )?")
 	private val petNamePattern = Pattern.compile("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)")
 
+	// TODO cache autopet rule pets to allow for getting complete data
 	private val autopetPattern = Pattern.compile(
 		"^§cAutopet §eequipped your §7\\[Lvl (?<level>\\d+)] (?:§.\\[.*] )?§(?<rarity>.)(?<name>[A-z ]+)(?:§. ✦)?§e! §a§lVIEW RULE"
 	)
@@ -29,12 +31,17 @@ object PetAPI {
 	private var inPetsMenu = false
 
 	var currentPet: PetData? = null
-		private set
+		get() = if(SkyBlockAPI.inSkyBlock) field else null
+		private set(value) {
+			if(value != PersistentCache.pet) PersistentCache.pet = value
+			field = value
+		}
 
 	fun init() {
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		InventoryEvents.SLOT_CLICK.register(this::onInventorySlotClick)
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string) }
+		currentPet = PersistentCache.pet
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {

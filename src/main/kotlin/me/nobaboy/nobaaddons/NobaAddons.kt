@@ -16,6 +16,7 @@ import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
@@ -29,6 +30,8 @@ import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
 import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
+import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
+import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
@@ -67,6 +70,7 @@ object NobaAddons : ClientModInitializer {
 	// immediately ran).
 	override fun onInitializeClient() {
 		NobaConfigManager.init()
+		PersistentCache.init()
 
 		/* region APIs */
 		InventoryAPI.init()
@@ -80,6 +84,7 @@ object NobaAddons : ClientModInitializer {
 		DianaAPI.init()
 		BurrowAPI.init()
 		BurrowGuessAPI.init()
+		TrophyFishAPI.init()
 		/* endregion */
 
 		/* region Screens */
@@ -117,6 +122,7 @@ object NobaAddons : ClientModInitializer {
 		// region Fishing
 		FishingBobberTweaks.init()
 		SeaCreatureAlert.init()
+		TrophyFishChat.init()
 		// endregion
 
 		// region Mining

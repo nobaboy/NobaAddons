@@ -10,10 +10,18 @@ class FishingConfig {
 	val bobberTimer: BobberTimer = BobberTimer()
 
 	@SerialEntry
+	val trophyFishing: TrophyFishing = TrophyFishing()
+
+	@SerialEntry
 	val seaCreatureAlert: SeaCreatureAlert = SeaCreatureAlert()
 
 	@SerialEntry
 	val highlightThunderSparks: HighlightThunderSparks = HighlightThunderSparks()
+
+	class TrophyFishing {
+		@SerialEntry
+		var modifyChatMessages: Boolean = false
+	}
 
 	class BobberTimer {
 		@SerialEntry

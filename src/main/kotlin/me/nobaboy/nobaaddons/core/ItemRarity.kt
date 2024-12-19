@@ -17,6 +17,7 @@ enum class ItemRarity(val color: NobaColor? = null) {
 	ADMIN(NobaColor.RED),
 	UNKNOWN;
 
+	val formatting by lazy { color?.toFormatting() }
 	val colorCode by lazy { color?.colorCode }
 
 	fun isAtLeast(rarity: ItemRarity): Boolean = this.ordinal >= rarity.ordinal

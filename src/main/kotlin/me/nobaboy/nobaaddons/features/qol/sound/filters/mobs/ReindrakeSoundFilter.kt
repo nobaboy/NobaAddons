@@ -10,7 +10,8 @@ object ReindrakeSoundFilter : ISoundFilter {
 	private val SPAWN_SOUND = Identifier.ofVanilla("entity.warden.emerge")
 	private val GIFT_DROP_SOUND = Identifier.ofVanilla("item.totem.use")
 
-	override val enabled: Boolean get() = SkyBlockIsland.JERRYS_WORKSHOP.inIsland()
+	override val enabled: Boolean
+		get() = SkyBlockIsland.JERRYS_WORKSHOP.inIsland()
 
 	override fun onSound(sound: SoundEvents.AllowSound) {
 		// we're not bothering with pitches or volumes here since these are the only times these sounds
