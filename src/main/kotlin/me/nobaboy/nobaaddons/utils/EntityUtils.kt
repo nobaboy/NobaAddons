@@ -33,11 +33,13 @@ object EntityUtils {
 	inline fun <reified T : Entity> getEntitiesNearPlayer(radius: Double): Sequence<T> =
 		getEntitiesNear<T>(LocationUtils.playerLocation(), radius)
 
-	inline fun <reified T : Entity> Entity.getClosestEntity(radius: Double): T? =
-		getEntitiesNear<T>(pos.toNobaVec(), radius).minBy { it.distanceTo(this) }
-
 	inline fun <reified T : Entity> getClosestEntity(location: NobaVec): T? =
 		getEntities<T>().minBy { it.distanceTo(location) }
+
+	inline fun <reified T : Entity> getClosestEntity(location: NobaVec, radius: Double): T? =
+		getEntitiesNear<T>(location, radius).minBy { it.distanceTo(location) }
+
+	fun getNextEntity(entity: Entity, offset: Int) = getEntityById(entity.id + offset)
 
 	fun ArmorStandEntity.armorSkullTexture(texture: String): Boolean {
 		val armor = this.armorItems ?: return false

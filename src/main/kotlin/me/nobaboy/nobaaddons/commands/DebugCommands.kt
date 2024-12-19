@@ -117,6 +117,11 @@ object DebugCommands : Group("debug") {
 
 	val pet = Command.command("pet") {
 		executes {
+			if(!SkyBlockAPI.inSkyBlock) {
+				source.sendError(Text.literal("You aren't in SkyBlock!"))
+				return@executes
+			}
+
 			val pet = PetAPI.currentPet
 			if(pet == null) {
 				source.sendError(Text.literal("You don't have a pet equipped"))

@@ -27,6 +27,7 @@ group = mod.group
 base { archivesName.set(mod.id) }
 
 repositories {
+	mavenCentral()
 	maven("https://maven.isxander.dev/releases") // YACL
 	maven("https://maven.terraformersmc.com/") // ModMenu
 	maven("https://maven.celestialfault.dev/releases") // CelestialConfig
@@ -61,6 +62,9 @@ dependencies {
 	// CelestialConfig
 	implementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}".also { include(it) })
 
+	implementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
+	include("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
+
 	// Hypixel Mod API
 	implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
 	devEnvOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
@@ -69,6 +73,7 @@ dependencies {
 
 	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}") // Sodium
 	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // No Telemetry
+	devEnvOnly("maven.modrinth:compacting:${deps["compacting"]}") // Compacting
 }
 
 loom {

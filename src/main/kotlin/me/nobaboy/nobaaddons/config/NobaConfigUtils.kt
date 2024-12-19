@@ -15,6 +15,8 @@ import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import net.minecraft.text.Text
+import net.minecraft.text.Texts
+import net.minecraft.text.TranslatableTextContent
 import java.awt.Color
 import kotlin.reflect.KMutableProperty
 
@@ -53,9 +55,15 @@ object NobaConfigUtils {
 		}
 	}
 
+	fun findDescription(title: Text): Text? =
+		title.content
+			.takeIf { it is TranslatableTextContent }
+			?.let { Text.translatable("${(it as TranslatableTextContent).key}.tooltip") }
+			?.takeIf(Texts::hasTranslation)
+
 	inline fun ConfigCategory.Builder.buildGroup(
 		name: Text,
-		description: Text? = null,
+		description: Text? = findDescription(name),
 		collapsed: Boolean = true,
 		crossinline builder: OptionGroup.Builder.() -> Unit
 	): ConfigCategory.Builder {
@@ -71,7 +79,7 @@ object NobaConfigUtils {
 
 	fun <G : OptionAddable, T : Any> G.add(
 		name: Text,
-		description: Text? = null,
+		description: Text? = findDescription(name),
 		optionController: (Option<T>) -> ControllerBuilder<T>,
 		default: T,
 		property: KMutableProperty<T>
@@ -88,7 +96,7 @@ object NobaConfigUtils {
 
 	fun <G : OptionAddable> G.boolean(
 		name: Text,
-		description: Text? = null,
+		description: Text? = findDescription(name),
 		default: Boolean,
 		property: KMutableProperty<Boolean>
 	): G {
@@ -106,7 +114,7 @@ object NobaConfigUtils {
 
 	inline fun <G : OptionAddable, reified E : Enum<E>> G.cycler(
 		name: Text,
-		description: Text? = null,
+		description: Text? = findDescription(name),
 		default: E,
 		property: KMutableProperty<E>
 	): G {
@@ -115,7 +123,7 @@ object NobaConfigUtils {
 
 	inline fun <G : OptionAddable, reified N : Number> G.slider(
 		name: Text,
-		description: Text? = null,
+		description: Text? = findDescription(name),
 		default: N,
 		property: KMutableProperty<N>,
 		min: N,
@@ -143,7 +151,7 @@ object NobaConfigUtils {
 
 	fun <G : OptionAddable> G.color(
 		name: Text,
-		description: Text? = null,
+		description: Text? = findDescription(name),
 		default: Color,
 		property: KMutableProperty<Color>
 	): G {

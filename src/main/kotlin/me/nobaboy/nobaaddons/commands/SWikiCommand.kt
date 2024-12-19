@@ -12,9 +12,11 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
+import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
+import java.util.function.UnaryOperator
 
 object SWikiCommand {
 	private val config get() = NobaConfigManager.config.general
@@ -44,11 +46,11 @@ object SWikiCommand {
 			return
 		}
 
-		val message = compileClickWikiMessage(query, wikiName)
 		val hoverText = Text.literal("View '$query' on the Official SkyBlock Wiki").formatted(Formatting.GRAY)
-		message.style = message.style
-			.withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, link))
-			.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
+		val message = compileClickWikiMessage(query, wikiName) {
+			it.withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, link))
+				.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
+		}
 
 		ChatUtils.addMessage(message)
 	}
@@ -59,11 +61,12 @@ object SWikiCommand {
 		append(" with search query '$query'.")
 	}
 
-	private fun compileClickWikiMessage(query: String, wikiName: Text) = buildText {
+	private fun compileClickWikiMessage(query: String, wikiName: Text, styleUpdater: UnaryOperator<Style>) = buildText {
 		append("Click ")
 		append(Text.literal("HERE").formatted(Formatting.DARK_AQUA, Formatting.BOLD))
 		append(" to find '$query' on the ")
 		append(wikiName)
 		append(".")
+		styled(styleUpdater)
 	}
 }
