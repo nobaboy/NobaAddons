@@ -20,9 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Info Box and Key Binds have their custom screens now - nobaboy
-- Key Binds now allow you to use mouse buttons (excluding the main ones, Left, Right and Middle) - nobaboy
+- Key Binds now allow you to use mouse buttons (excluding the primary Left, Right, and Middle buttons) - nobaboy
 - `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
-- Minor internal changes to item data caching - celeste
 
 ### Fixed
 
