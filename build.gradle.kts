@@ -60,8 +60,7 @@ dependencies {
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
 	// CelestialConfig
-	implementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
-	include("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
+	implementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}".also { include(it) })
 
 	implementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
 	include("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
