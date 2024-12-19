@@ -60,6 +60,17 @@ object QOLCategory {
 					property = config.qol.soundFilters::muteKillerSpring
 				)
 				// endregion
+
+				// region Misc
+				label(Text.translatable("nobaaddons.config.label.miscellaneous"))
+
+				boolean(
+					Text.translatable("nobaaddons.config.qol.soundFilters.mutePunch"),
+					Text.translatable("nobaaddons.config.qol.soundFilters.mutePunch.tooltip"),
+					default = defaults.qol.soundFilters.mutePunch,
+					property = config.qol.soundFilters::mutePunch
+				)
+				// endregion
 			}
 			// endregion
 
