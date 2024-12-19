@@ -6,7 +6,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object TextUtils {
-	inline fun buildText(crossinline builder: MutableText.() -> Unit): MutableText = Text.empty().apply(builder)
+	inline fun buildText(crossinline builder: MutableText.() -> Unit): Text = Text.empty().apply(builder)
 	fun Formatting.bold(): Style = Style.EMPTY.withColor(this).withBold(true)
 	fun Formatting.italic(): Style = Style.EMPTY.withColor(this).withItalic(true)
 	fun Formatting.underline(): Style = Style.EMPTY.withColor(this).withUnderline(true)

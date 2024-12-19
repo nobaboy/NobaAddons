@@ -72,9 +72,9 @@ object MayorAPI {
 			append("The Perokpocalypse Mayor has expired! Click ")
 			append(Text.literal("HERE").formatted(Formatting.DARK_AQUA, Formatting.BOLD))
 			append(" to update the new mayor.")
+			styled { it.withClickEvent(ClickEvent(ClickEvent.Action.RUN_COMMAND, "calendar")) }
 		}
 
-		text.style = text.style.withClickEvent(ClickEvent(ClickEvent.Action.RUN_COMMAND, "calendar"))
 		ChatUtils.addMessage(text)
 	}
 

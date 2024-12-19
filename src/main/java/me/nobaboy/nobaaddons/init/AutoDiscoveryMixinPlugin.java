@@ -1,5 +1,7 @@
 package me.nobaboy.nobaaddons.init;
 
+import com.moulberry.mixinconstraints.MixinConstraints;
+import com.moulberry.mixinconstraints.mixin.MixinConstraintsBootstrap;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
@@ -24,8 +26,15 @@ import java.util.zip.ZipInputStream;
  * <a href="https://github.com/hannibal002/SkyHanni/blob/beta/src/main/java/at/hannibal2/skyhanni/mixins/init/SkyhanniMixinPlugin.java">Original source</a>
  */
 public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
+	private String mixinPackage, mixinBasePackage, mixinBaseDir;
+	private List<String> mixins = null;
+
 	@Override
 	public void onLoad(String mixinPackage) {
+		this.mixinPackage = mixinPackage;
+		mixinBasePackage = mixinPackage + ".";
+		mixinBaseDir = mixinBasePackage.replace(".", "/");
+		MixinConstraintsBootstrap.init(mixinPackage);
 	}
 
 	@Override
@@ -35,7 +44,10 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		return false;
+		if(this.mixinPackage != null && !mixinClassName.startsWith(this.mixinPackage)) {
+			return true;
+		}
+		return MixinConstraints.shouldApplyMixin(mixinClassName);
 	}
 
 	@Override
@@ -62,11 +74,6 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 		}
 		return classUrl;
 	}
-
-	String mixinBasePackage = "me.nobaboy.nobaaddons.mixins.";
-	String mixinBaseDir = mixinBasePackage.replace(".", "/");
-
-	List<String> mixins = null;
 
 	public void tryAddMixinClass(String className) {
 		String norm = (className.endsWith(".class") ? className.substring(0, className.length() - ".class".length()) : className)
