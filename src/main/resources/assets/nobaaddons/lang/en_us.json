@@ -157,7 +157,7 @@
   "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity": "Use Name Instead Of Rarity",
   "nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity.tooltip": "Uses the sea creature name when displaying the notification on screen instead of 'Legendary Catch!'",
   "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity": "Minimum Rarity",
-  "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity.tooltip": "The minimum sea creature rarity to display a notification upon catch",
+  "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity.tooltip": "The minimum sea creature rarity to display a notification for upon catch",
   "nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare": "Carrot King is Rare",
   "nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare.tooltip": "Carrot King will be treated as rare even if the above minimum rarity isn't low enough for it while enabled (because not many people fish for it).",
   "nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat": "Announce Catches in Party Chat",
