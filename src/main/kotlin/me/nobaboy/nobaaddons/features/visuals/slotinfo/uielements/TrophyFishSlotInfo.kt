@@ -17,7 +17,7 @@ object TrophyFishSlotInfo : ISlotInfo {
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		if(InventoryUtils.openInventoryName() != "Trophy Fishing") return
 
-		val rarities = TrophyFishAPI.getCountFromOdegarStack(event.itemStack)
+		val rarities = TrophyFishAPI.getCountFromOdgerStack(event.itemStack)
 		if(rarities.isEmpty()) return
 
 		if(config.checkMarkIfMaxed && TrophyFishRarity.entries.all { rarities[it]?.let { it > 0 } == true }) {
