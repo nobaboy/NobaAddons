@@ -30,7 +30,7 @@ object MayorAPI {
 	private const val ELECTION_END_MONTH = 3
 	private const val ELECTION_END_DAY = 27
 
-	private val ELECTION_END_MESSAGE by "The election room is now closed. Clerk Seraphine is doing a final count of the votes...".fromRepo("mayor.election_end")
+	private val electionEndMessage by "The election room is now closed. Clerk Seraphine is doing a final count of the votes...".fromRepo("mayor.election_end")
 	private val mayorHeadPattern by Regex("Mayor (?<name>[A-z]+)").fromRepo("mayor.skull_item")
 
 	val foxyExtraEventPattern by Regex("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
@@ -103,7 +103,7 @@ object MayorAPI {
 	private fun onChatMessage(message: String) {
 		if(!SkyBlockAPI.inSkyBlock) return
 		
-		if(ELECTION_END_MESSAGE == message) {
+		if(electionEndMessage == message) {
 			lastMayor = currentMayor
 			currentMayor = Mayor.UNKNOWN
 			currentMinister = Mayor.UNKNOWN
