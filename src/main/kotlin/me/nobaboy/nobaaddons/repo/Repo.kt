@@ -41,24 +41,25 @@ object Repo {
 	}
 
 	fun update(): CompletableFuture<Void> =
-		CompletableFuture.runAsync({
-			runCatching {
-				updateInternal()
-			}.onFailure { NobaAddons.LOGGER.error("Failed to initialize repository", it) }
-			reloadObjects()
-		}, Util.getIoWorkerExecutor())
+		CompletableFuture.runAsync({ updateInternal() }, Util.getIoWorkerExecutor())
 
 	@Blocking
 	private fun updateInternal() {
-		if(!REPO_DIRECTORY.exists()) {
-			clone()
-			return
-		}
+		runCatching {
+			if(!REPO_DIRECTORY.exists()) {
+				clone()
+			} else {
+				// TODO properly update if config.uri is changed
+				pull()
+				if(git.repository.branch != config.branch) {
+					git.checkout().setName(config.branch).call()
+				}
+			}
+		}.onFailure { NobaAddons.LOGGER.error("Failed to update repository", it) }
 
-		// TODO properly update if config.uri is changed
-		pull()
-		if(git.repository.branch != config.branch) {
-			git.checkout().setName(config.branch).call()
+		if(REPO_DIRECTORY.exists()) {
+			commit = git.repository.resolve("HEAD").name
+			reloadObjects()
 		}
 
 		if(announceRepoUpdate) {
@@ -75,14 +76,12 @@ object Repo {
 			.setURI(config.uri)
 			.setBranch(config.branch)
 			.call()
-		commit = git.repository.resolve("HEAD").name
 	}
 
 	@Blocking
 	private fun pull() {
 		NobaAddons.LOGGER.debug("Pulling repository changes")
 		git.pull().call()
-		commit = git.repository.resolve("HEAD").name
 	}
 
 	private fun reloadObjects() {
