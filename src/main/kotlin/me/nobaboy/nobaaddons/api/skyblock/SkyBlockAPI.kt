@@ -23,6 +23,8 @@ object SkyBlockAPI {
 	var currentGame: ServerType? = null
 		private set
 
+	@get:JvmStatic
+	@get:JvmName("inSkyBlock")
 	val inSkyBlock: Boolean
 		get() = HypixelUtils.onHypixel && currentGame == GameType.SKYBLOCK
 	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN
@@ -70,7 +72,7 @@ object SkyBlockAPI {
 	// I originally planned to make an enum including all the zones but after realising
 	// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
 	private fun getZone() {
-		val scoreboard = ScoreboardUtils.getSidebarLines()
+		val scoreboard = ScoreboardUtils.getScoreboardLines()
 		zonePattern.firstMatcher(scoreboard) {
 			currentZone = group("zone")
 		}
@@ -78,7 +80,7 @@ object SkyBlockAPI {
 
 	// This can be further expanded to include other types like Pelts, North Stars, etc.
 	private fun getCurrencies() {
-		val scoreboard = ScoreboardUtils.getSidebarLines()
+		val scoreboard = ScoreboardUtils.getScoreboardLines()
 		currencyPattern.matchAll(scoreboard) {
 			val currency = group("currency")
 			val amount = group("amount").replace(",", "").toLongOrNull()
