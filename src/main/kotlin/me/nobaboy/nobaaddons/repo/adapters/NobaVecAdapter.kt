@@ -23,35 +23,8 @@ class NobaVecAdapter : TypeAdapter<NobaVec>() {
 			return null
 		}
 
-		return when(reader.peek()) {
-			JsonToken.STRING -> parseFromString(reader)
-			JsonToken.BEGIN_OBJECT -> parseFromObject(reader)
-			JsonToken.BEGIN_ARRAY -> parseFromArray(reader)
-			else -> throw JsonParseException("Malformed value: must be an object, array, or string")
-		}
-	}
+		if(reader.peek() != JsonToken.BEGIN_ARRAY) throw JsonParseException("Element must be an array")
 
-	// "-1:3" or "-1:2:3"
-	private fun parseFromString(reader: JsonReader): NobaVec {
-		val parts = reader.nextString().split(":")
-			.map { it.toDoubleOrNull() ?: throw JsonParseException("'$it' is not a valid number") }
-		return fromList(parts)
-	}
-
-	// {"x": -1, "y": 2, "z": 3}
-	private fun parseFromObject(reader: JsonReader): NobaVec {
-		reader.beginObject()
-		val values = buildMap {
-			while(reader.peek() != JsonToken.END_OBJECT) {
-				put(reader.nextName(), reader.nextDouble())
-			}
-		}
-		reader.endObject()
-		return NobaVec(values["x"] ?: -1.0, values["y"] ?: -1.0, values["z"] ?: -1.0)
-	}
-
-	// [-1, 3] or [-1, 2, 3]
-	private fun parseFromArray(reader: JsonReader): NobaVec {
 		reader.beginArray()
 		val items = buildList { while(reader.peek() != JsonToken.END_ARRAY) add(reader.nextDouble()) }
 		reader.endArray()

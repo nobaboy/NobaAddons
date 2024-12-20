@@ -18,7 +18,7 @@ object ChatUtils {
 		CooldownTickEvent.EVENT.register(this::processCommandQueue)
 	}
 
-	fun processCommandQueue(event: CooldownTickEvent) {
+	private fun processCommandQueue(event: CooldownTickEvent) {
 		if(MCUtils.player == null) {
 			commandQueue.clear()
 			return
