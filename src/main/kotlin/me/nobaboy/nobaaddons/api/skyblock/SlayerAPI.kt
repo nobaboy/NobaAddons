@@ -32,7 +32,7 @@ object SlayerAPI {
 	private fun onTick() {
 		if(!SkyBlockAPI.inSkyBlock) return
 
-		val lines = ScoreboardUtils.getSidebarLines()
+		val lines = ScoreboardUtils.getScoreboardLines()
 		val questLine = lines.nextAfter("Slayer Quest") ?: return
 		val boss = SlayerBoss.getByName(questLine) ?: return
 
