@@ -31,8 +31,8 @@ object Repo {
 	@Volatile lateinit var commit: String
 		private set
 
+	val loaded get() = this::commit.isInitialized
 	private val git: Git = Git(RepositoryBuilder().setWorkTree(REPO_DIRECTORY).setMustExist(false).build())
-	private var loaded = false
 	private val objects: MutableSet<IRepoObject> = mutableSetOf()
 
 	fun init() {
@@ -76,14 +76,12 @@ object Repo {
 			.setBranch(config.branch)
 			.call()
 		commit = git.repository.resolve("HEAD").name
-		loaded = true
 	}
 
 	@Blocking
 	private fun pull() {
 		NobaAddons.LOGGER.debug("Pulling repository changes")
 		git.pull().call()
-		loaded = true
 		commit = git.repository.resolve("HEAD").name
 	}
 
