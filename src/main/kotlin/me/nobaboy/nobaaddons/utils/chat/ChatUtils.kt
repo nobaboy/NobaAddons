@@ -34,18 +34,18 @@ object ChatUtils {
 		MCUtils.networkHandler?.sendChatMessage(message)
 	}
 
-	fun addMessage(message: Text, prefix: Boolean = true, overlay: Boolean = false) {
+	fun addMessage(message: Text, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.GRAY) {
 		val text = buildText {
 			if(prefix) {
 				append(NobaAddons.PREFIX)
-				formatted(Formatting.AQUA)
+				color?.let { formatted(it) }
 			}
 			append(message)
 		}
 		MCUtils.player?.sendMessage(text, overlay)
 	}
 
-	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false) {
-		addMessage(Text.literal(message), prefix, overlay)
+	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.GRAY) {
+		addMessage(Text.literal(message), prefix, overlay, color)
 	}
 }

@@ -4,6 +4,8 @@ import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.events.InventoryEvents
+import me.nobaboy.nobaaddons.repo.Repo
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
@@ -18,9 +20,9 @@ import kotlin.text.get
 object TrophyFishAPI {
 	val trophyFish: EnumMap<TrophyFish, EnumMap<TrophyFishRarity, Int>> by PersistentCache::trophyFish
 
-	private val ODEGAR_RARITY_REGEX = Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?")
+	private val ODEGAR_RARITY_REGEX by Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?").fromRepo("trophy_fish.odger")
 	// .* is required to catch any extra text added afterward from compact chat mods like Compacting
-	private val TROPHY_FISH_REGEX = Regex("^TROPHY FISH! You caught a (?<fish>[A-z 0-9]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*")
+	private val TROPHY_FISH_REGEX by Regex("^TROPHY FISH! You caught a (?<fish>[A-z 0-9]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*").fromRepo("trophy_fish.catch")
 	private val inventorySlots = 10..31
 
 	fun init() {

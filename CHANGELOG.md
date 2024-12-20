@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Fundamentals of a mod repository - celeste
 - Trophy Fish slot info in Odegar menu - celeste
 - Fishing Bobber Timer - celeste
 - Trophy Fish chat message counts - celeste
@@ -22,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Key Binds now allow you to use mouse buttons (excluding the main ones, Left, Right and Middle) - nobaboy
 - `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
 - Minor internal changes to item data caching - celeste
+- Mod chat message prefix & colors - celeste
 
 ### Fixed
 

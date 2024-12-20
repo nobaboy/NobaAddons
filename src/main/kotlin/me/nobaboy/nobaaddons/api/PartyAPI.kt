@@ -3,6 +3,8 @@ package me.nobaboy.nobaaddons.api
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.data.json.MojangProfile
 import me.nobaboy.nobaaddons.events.CooldownTickEvent
+import me.nobaboy.nobaaddons.repo.Repo
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.request
@@ -28,25 +30,25 @@ object PartyAPI {
 		HTTPUtils.fetchJson<MojangProfile>(url)
 	}
 
-	private val invalidatePartyStateMessages: Array<Regex> = arrayOf(
+	private val invalidatePartyStateMessages: List<Regex> by Repo.regex(listOf(
 		// Join
-		Regex("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!"),
-		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\."),
-		Regex("^Party Finder > (?<name>[A-z0-9_]+) joined the (?:dungeon )?group! \\([A-z0-9 ]+\\)"),
+		Regex("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!").fromRepo("party.join"),
+		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\.").fromRepo("party.other_join"),
+		Regex("^Party Finder > (?<name>[A-z0-9_]+) joined the (?:dungeon )?group! \\([A-z0-9 ]+\\)").fromRepo("party.party_finder_join"),
 
 		// Leave
-		Regex("^(?:You left the party\\.|The party was disbanded because all invites expired and the party was empty\\.|You are not currently in a party\\.)"),
-		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has left the party\\."),
-		Regex("^You have been kicked from the party by (?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+)"),
-		Regex("^(?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+) has disbanded the party!"),
-		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has been removed from the party\\."),
-		Regex("^Kicked (?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) because they were offline\\."),
-		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) was removed from your party because they disconnected\\."),
+		Regex("^(?:You left the party\\.|The party was disbanded because all invites expired and the party was empty\\.|You are not currently in a party\\.)").fromRepo("party.leave"),
+		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has left the party\\.").fromRepo("party.other_leave"),
+		Regex("^You have been kicked from the party by (?:\\[[A-Z+]+] )?[A-z0-9_]+").fromRepo("party.kicked"),
+		Regex("^(?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+) has disbanded the party!").fromRepo("party.disbanded"),
+		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has been removed from the party\\.").fromRepo("party.other_kicked"),
+		Regex("^Kicked (?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) because they were offline\\.").fromRepo("party.offline_kicked"),
+		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) was removed from your party because they disconnected\\.").fromRepo("party.offline_removed"),
 
 		// Transfer
-		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left"),
-		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)"),
-	)
+		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left").fromRepo("party.transfer_leave"),
+		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)").fromRepo("party.transfer"),
+	))
 
 	private var refreshPartyList = false
 	var party: PartyData? = null
