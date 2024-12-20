@@ -2,15 +2,13 @@ package me.nobaboy.nobaaddons.mixins.events;
 
 //? if >=1.21.2 {
 import me.nobaboy.nobaaddons.ducks.EntityStateCaptureDuck;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.entity.EntityAttachmentType;
 //?}
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import me.nobaboy.nobaaddons.events.EntityNametagRenderEvents;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -37,50 +35,18 @@ public abstract class NametagRenderEventsMixin {
 		/*? if <1.21.2 {*//*, float tickDelta*//*?}*/
 	);
 
-	// This fucking sucks
-	//? if >=1.21.2 {
-	@ModifyExpressionValue(
-		method = "render",
-		at = @At(
-			value = "FIELD",
-			target = "Lnet/minecraft/client/render/entity/state/EntityRenderState;displayName:Lnet/minecraft/text/Text;",
-			ordinal = 0
-		)
-	)
-	public Text nobaaddons$modifyNametagVisibility(Text original, @Local(argsOnly = true) EntityRenderState state) {
-	//?} else {
-	/*@WrapOperation(
-		method = "render",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/render/entity/EntityRenderer;hasLabel(Lnet/minecraft/entity/Entity;)Z"
-		)
-	)
-	public boolean nobaaddons$modifyNametagVisibility(EntityRenderer<?> instance, Entity entity, Operation<Boolean> original) {
-	*///?}
-		//? if >=1.21.2 {
-		Entity entity = ((EntityStateCaptureDuck) state).nobaaddons$getEntity();
-		if(entity == null) return original;
-		//?} else {
-		/*boolean vanilla = original.call(instance, entity);
-		*///?}
-		var event = new EntityNametagRenderEvents.Visibility(entity, /*? if >=1.21.2 {*/original != null/*?} else {*//*vanilla*//*?}*/);
+	@ModifyReturnValue(method = "hasLabel", at = @At("RETURN"))
+	public boolean nobaaddons$modifyNametagVisibility(boolean original, @Local(argsOnly = true) Entity entity) {
+		var event = new EntityNametagRenderEvents.Visibility(entity, original);
 		EntityNametagRenderEvents.VISIBILITY.invoke(event);
-		//? if >=1.21.2 {
-		if(event.getShouldRender()) {
-			// the game will only set this if it thinks that there is a name tag it should be rendering, so we have
-			// to convince it that there is one ourselves...
-			float tickDelta = MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true);
-			state.nameLabelPos = entity.getAttachments().getPoint(EntityAttachmentType.NAME_TAG, 0, entity.getLerpedYaw(tickDelta));
-			return original != null ? original : Text.of("<force render>");
-		}
-		return null;
-		//?} else {
-		/*return event.getShouldRender();
-		*///?}
+		return event.getShouldRender();
 	}
 
+	//? if >=1.21.2 {
+	// For whatever reason, the MC Dev plugin complains about this, but only on 1.21.2+.
+	// This is despite the fact that this is, in fact, a valid injector.
 	@SuppressWarnings("InvalidInjectorMethodSignature")
+	//?}
 	@WrapOperation(
 		method = "render",
 		at = @At(

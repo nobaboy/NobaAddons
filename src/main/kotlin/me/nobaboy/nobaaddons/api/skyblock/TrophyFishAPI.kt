@@ -20,7 +20,7 @@ import kotlin.text.get
 object TrophyFishAPI {
 	val trophyFish: EnumMap<TrophyFish, EnumMap<TrophyFishRarity, Int>> by PersistentCache::trophyFish
 
-	private val ODEGAR_RARITY_REGEX by Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?").fromRepo("trophy_fish.odger")
+	private val ODGER_RARITY_REGEX by Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?").fromRepo("trophy_fish.odger")
 	// .* is required to catch any extra text added afterward from compact chat mods like Compacting
 	private val TROPHY_FISH_REGEX by Regex("^TROPHY FISH! You caught a (?<fish>[A-z 0-9]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*").fromRepo("trophy_fish.catch")
 	private val inventorySlots = 10..31
@@ -45,7 +45,7 @@ object TrophyFishAPI {
 			if(item.item != Items.PLAYER_HEAD) return@forEach
 
 			val trophy = TrophyFish.entries.firstOrNull { it.fishName == item.name.string.cleanFormatting() } ?: return@forEach
-			val rarities = getCountFromOdegarStack(item).toMutableMap()
+			val rarities = getCountFromOdgerStack(item).toMutableMap()
 				.also { TrophyFishRarity.entries.forEach { e -> if(e !in it) it.put(e, 0) } }
 				.let { EnumMap(it) }
 			trophyFish[trophy] = rarities
@@ -58,8 +58,8 @@ object TrophyFishAPI {
 		rarities[rarity] = (rarities[rarity] ?: 0) + 1
 	}
 
-	fun getCountFromOdegarStack(item: ItemStack): Map<TrophyFishRarity, Int> {
-		val fish = item.lore?.stringLines?.mapNotNull { ODEGAR_RARITY_REGEX.matchEntire(it) } ?: return emptyMap()
+	fun getCountFromOdgerStack(item: ItemStack): Map<TrophyFishRarity, Int> {
+		val fish = item.lore?.stringLines?.mapNotNull { ODGER_RARITY_REGEX.matchEntire(it) } ?: return emptyMap()
 		if(fish.isEmpty()) return emptyMap()
 
 		return fish.associate {

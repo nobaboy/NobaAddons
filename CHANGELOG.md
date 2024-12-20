@@ -8,20 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Trophy Fish slot info in Odegar menu - celeste
+- Trophy Fish slot info in Odger menu - celeste
 - Fishing Bobber Timer - celeste
 - Trophy Fish chat message counts - celeste
-  - This requires that you open Odegar's menu at least once for accurate counts
+  - This requires that you open Odger's menu at least once for accurate counts
 - Ping On Burrow Find - nobaboy
 - `/noba refill` any item from sacks - celeste
   - This is primarily useful when paired with command keybinds
+- Support for 1.21.4 - celeste
 
 ### Changed
 
 - Info Box and Key Binds have their custom screens now - nobaboy
-- Key Binds now allow you to use mouse buttons (excluding the main ones, Left, Right and Middle) - nobaboy
+- Key Binds now allows use of mouse buttons (not including the primary Left, Right, and Middle mouse buttons) - nobaboy
 - `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
-- Minor internal changes to item data caching - celeste
 - Mod chat message prefix & colors - celeste
 
 ### Fixed

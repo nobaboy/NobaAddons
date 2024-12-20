@@ -66,6 +66,16 @@ object FishingCategory {
 					default = defaults.fishing.seaCreatureAlert.minimumRarity,
 					property = config.fishing.seaCreatureAlert::minimumRarity
 				)
+				boolean(
+					Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare"),
+					default = defaults.fishing.seaCreatureAlert.carrotKingIsRare,
+					property = config.fishing.seaCreatureAlert::carrotKingIsRare
+				)
+				boolean(
+					Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat"),
+					default = defaults.fishing.seaCreatureAlert.announceInPartyChat,
+					property = config.fishing.seaCreatureAlert::announceInPartyChat
+				)
 				cycler(
 					Text.translatable("nobaaddons.config.notificationSound"),
 					default = defaults.fishing.seaCreatureAlert.notificationSound,

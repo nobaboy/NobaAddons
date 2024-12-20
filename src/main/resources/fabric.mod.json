@@ -3,18 +3,16 @@
   "id": "nobaaddons",
   "version": "${version}",
   "name": "NobaAddons",
-  "description": "",
+  "description": "A Hypixel SkyBlock mod for modern versions of Minecraft",
   "authors": [
-    "nobaboy"
-  ],
-  "contributors": [
+    "nobaboy",
     "celeste"
   ],
   "contact": {
     "sources": "https://github.com/nobaboy/NobaAddons",
     "issues": "https://github.com/nobaboy/NobaAddons/issues"
   },
-  "license": "",
+  "license": "zlib",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -41,5 +39,13 @@
   },
   "recommends": {
     "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/N9Db3NeWfU",
+        "modmenu.modrinth": "https://modrinth.com/mod/nobaaddons"
+      }
+    }
   }
 }
