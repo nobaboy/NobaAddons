@@ -2,54 +2,28 @@ package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.scoreboard.ScoreboardDisplaySlot
+import net.minecraft.scoreboard.ScoreboardEntry
+import net.minecraft.scoreboard.Team
 
 object ScoreboardUtils {
-	private val splitIcons = listOf(
-		"\uD83C\uDF6B",
-		"\uD83D\uDCA3",
-		"\uD83D\uDC7D",
-		"\uD83D\uDD2E",
-		"\uD83D\uDC0D",
-		"\uD83D\uDC7E",
-		"\uD83C\uDF20",
-		"\uD83C\uDF6D",
-		"⚽",
-		"\uD83C\uDFC0",
-		"\uD83D\uDC79",
-		"\uD83C\uDF81",
-		"\uD83C\uDF89",
-		"\uD83C\uDF82",
-		"\uD83D\uDD2B",
-	)
-
-	fun String.cleanScoreboard() = this.cleanFormatting().filter { it.code in (21 until 127) }
+	private val SCOREBOARD_ENTRY_COMPARATOR = Comparator.comparing(ScoreboardEntry::value).reversed().thenComparing(ScoreboardEntry::owner, String.CASE_INSENSITIVE_ORDER)
+	private val FORMATTING_CODE_REGEX = Regex("§.")
 
 	fun getSidebarLines(): List<String> {
-		val lines = mutableListOf<String>()
-		val player = MCUtils.player ?: return lines
+		val scoreboard = MCUtils.player?.scoreboard ?: return listOf()
+		val objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR) ?: return listOf()
 
-		val scoreboard = player.scoreboard ?: return lines
-		val objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.FROM_ID.apply(1))
+		return scoreboard.getScoreboardEntries(objective)
+			.filter { !it.hidden() }
+			.sortedWith(SCOREBOARD_ENTRY_COMPARATOR)
+			.take(15)
+			.mapNotNull { entry ->
+				scoreboard.getScoreHolderTeam(entry.owner)?.let { team ->
+					val line = Team.decorateName(team, entry.name()).string
+						.cleanFormatting().trim().replace(FORMATTING_CODE_REGEX, "")
 
-		scoreboard.knownScoreHolders.forEach { scoreHolder ->
-			if(scoreboard.getScoreHolderObjectives(scoreHolder).contains(objective)) {
-				val team = scoreboard.getScoreHolderTeam(scoreHolder.nameForScoreboard)
-
-				if(team != null) {
-					val line = team.prefix.string + team.suffix.string
-					if(!line.trim().isEmpty()) lines.add(line.cleanFormatting())
+					line.takeIf { it.isNotEmpty() }
 				}
 			}
-		}
-
-		lines.replaceAll { line ->
-			var modifiedLine = line
-			splitIcons.forEach { icon ->
-				modifiedLine = modifiedLine.replace(icon, "")
-			}
-			modifiedLine
-		}
-
-		return lines
 	}
 }

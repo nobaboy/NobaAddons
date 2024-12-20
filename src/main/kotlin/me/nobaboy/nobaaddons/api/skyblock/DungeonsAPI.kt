@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.core.dungeons.DungeonFloor
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
-import me.nobaboy.nobaaddons.utils.ScoreboardUtils.cleanScoreboard
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
@@ -46,37 +45,39 @@ object DungeonsAPI {
 	}
 
 	private fun getClassType() {
-		val playerName = MCUtils.playerName!!
-		val players = MCUtils.networkHandler!!.playerList
-		for(player in players) {
-			if(player == null || player.displayName == null) continue
-			val text = player.displayName!!.string.cleanFormatting()
+		val playerName = MCUtils.playerName ?: return
+		val playerList = MCUtils.networkHandler?.playerList ?: return
 
-			if(text.contains(playerName) && text.indexOf("(") != -1) {
-				if(text.contains("($playerName)")) continue // Puzzle fail text
-				val dungeonClass = text.substring(text.indexOf("(") + 1, text.lastIndexOf(")"))
-				currentClass = DungeonClass.valueOf(dungeonClass.split(" ")[0].uppercase())
-			}
-		}
+		val dungeonClass = playerList.mapNotNull { it?.displayName?.string?.cleanFormatting() }
+			.firstOrNull { it.contains(playerName) && it.contains("(") && !it.contains("($playerName)") }
+			?.substringAfter("(")
+			?.substringBefore(")")
+			?.split(" ")
+			?.firstOrNull()
+			?.uppercase()
+
+		currentClass = dungeonClass?.let { clazz ->
+			runCatching { DungeonClass.valueOf(clazz) }
+				.getOrElse {
+					NobaAddons.LOGGER.error("Unexpected class type value '$clazz'", it)
+					DungeonClass.EMPTY
+				}
+		} ?: DungeonClass.EMPTY
 	}
 
 	private fun getFloorType() {
-		val scoreboard = ScoreboardUtils.getSidebarLines()
-		for(line in scoreboard) {
-			val cleanedLine = line.cleanScoreboard()
-			if(!cleanedLine.contains("The Catacombs (")) continue
+		val lines = ScoreboardUtils.getSidebarLines()
 
-			val floor = cleanedLine.substring(cleanedLine.indexOf("(") + 1, cleanedLine.lastIndexOf(")"))
+		val dungeonFloor = lines.firstOrNull { it.contains("The Catacombs (") }
+			?.substringAfter("(")?.substringBefore(")")
 
-			currentFloor = runCatching {
-				DungeonFloor.valueOf(floor)
-			}.getOrElse {
-				NobaAddons.LOGGER.error("Unexpected floor type value '$floor'", it)
-				DungeonFloor.NONE
-			}
-
-			break
-		}
+		currentFloor = dungeonFloor?.let { floor ->
+			runCatching { DungeonFloor.valueOf(floor) }
+				.getOrElse {
+					NobaAddons.LOGGER.error("Unexpected floor type value '$floor'", it)
+					DungeonFloor.NONE
+				}
+		} ?: DungeonFloor.NONE
 	}
 
 	private fun getBossType(message: String) {
@@ -85,7 +86,6 @@ object DungeonsAPI {
 			return
 		}
 
-		if(!message.startsWith("[BOSS]")) return
-		currentBoss = DungeonBoss.getByMessage(message)
+		if(message.startsWith("[BOSS]")) currentBoss = DungeonBoss.getByMessage(message)
 	}
 }
