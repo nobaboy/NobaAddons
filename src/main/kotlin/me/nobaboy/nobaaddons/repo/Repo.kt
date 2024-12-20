@@ -69,7 +69,7 @@ object Repo {
 
 	@Blocking
 	private fun clone() {
-		NobaAddons.LOGGER.info("Cloning repository")
+		NobaAddons.LOGGER.debug("Cloning repository")
 		Git.cloneRepository()
 			.setDirectory(REPO_DIRECTORY)
 			.setURI(config.uri)
@@ -81,14 +81,14 @@ object Repo {
 
 	@Blocking
 	private fun pull() {
-		NobaAddons.LOGGER.info("Pulling repository changes")
+		NobaAddons.LOGGER.debug("Pulling repository changes")
 		git.pull().call()
 		loaded = true
 		commit = git.repository.resolve("HEAD").name
 	}
 
 	private fun reloadObjects() {
-		NobaAddons.LOGGER.info("Reloading repository objects")
+		NobaAddons.LOGGER.debug("Reloading repository objects")
 		objects.forEach {
 			println(it)
 			runCatching { it.load() }.onFailure { NobaAddons.LOGGER.error("Repo object failed to reload", it) }
