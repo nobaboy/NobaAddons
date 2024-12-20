@@ -4,6 +4,9 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 object RegexUtils {
+	inline fun <T> Regex.map(text: String, consumer: MatchResult.() -> T): T? = matchEntire(text)?.let(consumer)
+	inline fun Regex.forEachMatch(text: String, consumer: MatchResult.() -> Unit) = this.findAll(text).forEach(consumer)
+
 	fun Pattern.matches(string: String?): Boolean = string?.let { matcher(it).matches() } == true
 
 	inline fun <T> Pattern.matchMatcher(text: String, consumer: Matcher.() -> T) =

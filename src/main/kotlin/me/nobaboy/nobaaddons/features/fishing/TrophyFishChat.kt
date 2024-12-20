@@ -8,6 +8,8 @@ import me.nobaboy.nobaaddons.events.LateChatMessageEvent
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.NumberUtils.ordinalSuffix
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.literal
+import me.nobaboy.nobaaddons.utils.TextUtils.translatable
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
@@ -19,18 +21,16 @@ object TrophyFishChat {
 	}
 
 	fun format(fish: TrophyFish, rarity: TrophyFishRarity, count: Int, total: Int) = buildText {
-		append(Text.translatable("nobaaddons.trophyFishing.prefix").formatted(Formatting.GOLD, Formatting.BOLD))
-		append(" ")
-		append(
-			Text.translatable(
-				"nobaaddons.trophyFishing.caught",
-				"${count.addSeparators()}${count.ordinalSuffix()}",
-				fish.displayName,
-				Text.literal(rarity.name).formatted(rarity.formatting, Formatting.BOLD),
-			).formatted(Formatting.AQUA)
-		)
-		append(" ")
-		append(Text.translatable("nobaaddons.trophyFishing.total", "${total.addSeparators()}${total.ordinalSuffix()}").formatted(Formatting.GRAY))
+		translatable("nobaaddons.trophyFishing.prefix") { formatted(Formatting.GOLD, Formatting.BOLD) }
+		literal(" ")
+		translatable(
+			"nobaaddons.trophyFishing.caught",
+			"${count.addSeparators()}${count.ordinalSuffix()}",
+			fish.displayName,
+			Text.literal(rarity.name).formatted(rarity.formatting, Formatting.BOLD)
+		) { formatted(Formatting.AQUA) }
+		literal(" ")
+		translatable("nobaaddons.trophyFishing.total", "${total.addSeparators()}${total.ordinalSuffix()}").formatted(Formatting.GRAY)
 	}
 
 	private fun modifyChatMessage(event: LateChatMessageEvent) {

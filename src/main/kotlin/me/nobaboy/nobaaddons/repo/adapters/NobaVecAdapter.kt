@@ -27,7 +27,7 @@ class NobaVecAdapter : TypeAdapter<NobaVec>() {
 			JsonToken.STRING -> parseFromString(reader)
 			JsonToken.BEGIN_OBJECT -> parseFromObject(reader)
 			JsonToken.BEGIN_ARRAY -> parseFromArray(reader)
-			else -> throw JsonParseException("Malformed value: must be an object or array")
+			else -> throw JsonParseException("Malformed value: must be an object, array, or string")
 		}
 	}
 

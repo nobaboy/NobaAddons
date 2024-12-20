@@ -8,4 +8,7 @@ class RepoConfig {
 
 	@SerialEntry
 	var branch: String = "main"
+
+	@SerialEntry
+	var autoUpdate: Boolean = true
 }

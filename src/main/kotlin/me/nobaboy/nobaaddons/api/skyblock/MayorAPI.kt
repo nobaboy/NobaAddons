@@ -5,21 +5,20 @@ import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.data.json.MayorJson
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.HTTPUtils
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.map
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.formatted
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.ClickEvent
-import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import java.util.regex.Pattern
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
@@ -31,10 +30,10 @@ object MayorAPI {
 	private const val ELECTION_END_MONTH = 3
 	private const val ELECTION_END_DAY = 27
 
-	private const val electionOverMessage = "The election room is now closed. Clerk Seraphine is doing a final count of the votes..."
-	private val mayorHeadPattern = Pattern.compile("Mayor (?<name>[A-z]+)")
+	private val ELECTION_END_MESSAGE by "The election room is now closed. Clerk Seraphine is doing a final count of the votes...".fromRepo("mayor.election_end")
+	private val mayorHeadPattern by Regex("Mayor (?<name>[A-z]+)").fromRepo("mayor.skull_item")
 
-	val foxyExtraEventPattern = Pattern.compile("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.")
+	val foxyExtraEventPattern by Regex("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
 
 	var currentMayor: Mayor = Mayor.UNKNOWN
 		private set
@@ -68,14 +67,12 @@ object MayorAPI {
 
 		jerryMayor = Mayor.UNKNOWN to Timestamp.distantPast()
 
-		val text = buildText {
-			append("The Perokpocalypse Mayor has expired! Click ")
-			append(Text.literal("HERE").formatted(Formatting.DARK_AQUA, Formatting.BOLD))
+		ChatUtils.addMessage {
+			append("The Perkpocalypse mayor has expired! ")
+			append("Click here".formatted(Formatting.YELLOW, Formatting.BOLD))
 			append(" to update the new mayor.")
 			styled { it.withClickEvent(ClickEvent(ClickEvent.Action.RUN_COMMAND, "calendar")) }
 		}
-
-		ChatUtils.addMessage(text)
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
@@ -83,8 +80,8 @@ object MayorAPI {
 		if(event.inventory.title != "Calendar and Events") return
 
 		val item = event.inventory.items.values.firstOrNull {
-			mayorHeadPattern.matchMatcher(it.name.string.cleanFormatting()) {
-				group("name") == "Jerry"
+			mayorHeadPattern.map(it.name.string.cleanFormatting()) {
+				groups["name"]?.value == "Jerry"
 			} == true
 		} ?: return
 
@@ -106,7 +103,7 @@ object MayorAPI {
 	private fun onChatMessage(message: String) {
 		if(!SkyBlockAPI.inSkyBlock) return
 		
-		if(electionOverMessage == message) {
+		if(ELECTION_END_MESSAGE == message) {
 			lastMayor = currentMayor
 			currentMayor = Mayor.UNKNOWN
 			currentMinister = Mayor.UNKNOWN

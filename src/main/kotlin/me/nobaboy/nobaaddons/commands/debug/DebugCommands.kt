@@ -4,7 +4,6 @@ import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
-import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
@@ -22,7 +21,7 @@ object DebugCommands : Group("debug") {
 	internal fun MutableText.data(vararg items: Pair<String, Any?>) {
 		items.forEach {
 			append(Text.literal("${it.first}: ").formatted(Formatting.BLUE))
-			append(Text.literal(it.second.toString()).formatted(Formatting.GRAY))
+			append(it.second as? Text ?: Text.literal(it.second.toString()).formatted(Formatting.GRAY))
 			append("\n")
 		}
 	}
@@ -38,6 +37,7 @@ object DebugCommands : Group("debug") {
 	}
 
 	val item = ItemDebugCommands
+	val pet = PetDebugCommands
 
 	val party = Command.command("party") {
 		executes {
@@ -60,31 +60,6 @@ object DebugCommands : Group("debug") {
 				"Mayor Perks" to mayor.activePerks,
 				"Current Minister" to minister.mayorName,
 				"Minister Perk" to minister.activePerks,
-			)
-		}
-	}
-
-	val pet = Command.command("pet") {
-		executes {
-			if(!SkyBlockAPI.inSkyBlock) {
-				source.sendError(Text.literal("You aren't in SkyBlock!"))
-				return@executes
-			}
-
-			val pet = PetAPI.currentPet
-			if(pet == null) {
-				source.sendError(Text.literal("You don't have a pet equipped"))
-				return@executes
-			}
-
-			dumpInfo(
-				"Name" to pet.name,
-				"Pet ID" to pet.id,
-				"Level" to pet.level,
-				"XP" to pet.xp,
-				"Rarity" to pet.rarity,
-				"Held Item" to pet.heldItem,
-				"UUID" to pet.uuid
 			)
 		}
 	}

@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.startsWith
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.TextUtils.formatted
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -99,7 +99,7 @@ object BlessingChatFilter : IChatFilter {
 		LIFE("LIFE BUFF!", Formatting.LIGHT_PURPLE, 2),
 		TIME("TIME BUFF!", Formatting.DARK_GREEN, 4);
 
-		fun toText(): Text = text.toText().setStyle(color.bold())
+		fun toText(): Text = text.formatted(color).bold()
 	}
 
 	override fun isEnabled() = SkyBlockIsland.DUNGEONS.inIsland() && isEnabled(config.blessingMessage)

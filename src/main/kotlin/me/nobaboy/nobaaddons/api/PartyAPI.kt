@@ -30,7 +30,7 @@ object PartyAPI {
 		HTTPUtils.fetchJson<MojangProfile>(url)
 	}
 
-	private val invalidatePartyStateMessages: List<Regex> by Repo.regex(listOf(
+	private val invalidatePartyStateMessages: List<Regex> by Repo.list(
 		// Join
 		Regex("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!").fromRepo("party.join"),
 		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\.").fromRepo("party.other_join"),
@@ -48,7 +48,7 @@ object PartyAPI {
 		// Transfer
 		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left").fromRepo("party.transfer_leave"),
 		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)").fromRepo("party.transfer"),
-	))
+	)
 
 	private var refreshPartyList = false
 	var party: PartyData? = null
