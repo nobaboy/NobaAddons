@@ -7,13 +7,12 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
 import net.minecraft.entity.Entity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
+import kotlin.reflect.KClass
 
 object EntityUtils {
 	fun PlayerEntity.isRealPlayer() = uuid?.let { it.version() == 4 } == true
 
 	fun Entity.canBeSeen(radius: Double = 150.0) = getNobaVec().add(y = 0.5).canBeSeen()
-
-	inline fun <reified R : Entity> getEntities(): Sequence<R> = getAllEntities().filterIsInstance<R>()
 
 	fun getAllEntities(): Sequence<Entity> {
 		val client = MCUtils.client
@@ -21,6 +20,12 @@ object EntityUtils {
 			if(client.isOnThread) it else it.toMutableList()
 		}?.asSequence()?.filterNotNull() ?: emptySequence()
 	}
+
+	inline fun <reified T : Entity> getEntities(): Sequence<T> = getAllEntities().filterIsInstance<T>()
+
+	@Suppress("UNCHECKED_CAST")
+	fun <T : Entity> getEntities(clazz: KClass<T>): Sequence<T> =
+		getAllEntities().filter { clazz.isInstance(it) } as Sequence<T>
 
 	fun getEntityById(entityId: Int) = MCUtils.player?.entityWorld?.getEntityById(entityId)
 

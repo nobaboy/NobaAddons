@@ -18,12 +18,12 @@ enum class SlayerMiniBoss(vararg names: String) {
 		"Sven Follower",
 		"Sven Alpha"
 	),
-	VOIDLING(
+	VOIDGLOOM(
 		"Voidling Devotee",
 		"Voidling Radical",
 		"Voidcrazed Maniac"
 	),
-	INFERNAL(
+	INFERNO(
 		"Flare Demon",
 		"Kindleheart Demon",
 		"Burningsoul Demon"

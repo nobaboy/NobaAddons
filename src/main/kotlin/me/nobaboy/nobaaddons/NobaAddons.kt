@@ -115,8 +115,6 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Slayers
-//		MiniBossAlert.init()
-//		HighlightMiniBosses.init()
 		// endregion
 
 		// region Fishing
