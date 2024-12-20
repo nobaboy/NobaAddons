@@ -23,6 +23,8 @@ object SkyBlockAPI {
 	var currentGame: ServerType? = null
 		private set
 
+	@get:JvmStatic
+	@get:JvmName("inSkyBlock")
 	val inSkyBlock: Boolean
 		get() = HypixelUtils.onHypixel && currentGame == GameType.SKYBLOCK
 	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN

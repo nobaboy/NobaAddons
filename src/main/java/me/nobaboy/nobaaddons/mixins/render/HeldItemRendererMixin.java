@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.mixins.render;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI;
 import me.nobaboy.nobaaddons.config.NobaConfigManager;
 import me.nobaboy.nobaaddons.utils.items.ItemUtils;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -60,17 +61,26 @@ public class HeldItemRendererMixin {
 		matrices.scale(scale, scale, scale);
 	}
 
-	// TODO in 1.21.4 this is changed to call #shouldSkipHandAnimationOnSwap(ItemStack, ItemStack) instead
-	@WrapOperation(method = "updateHeldItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
-	public boolean nobaaddons$cancelItemUpdateAnimation(ItemStack left, ItemStack right, Operation<Boolean> original) {
+	@WrapOperation(
+		method = "updateHeldItems",
+		at = @At(
+			value = "INVOKE",
+			//? if >=1.21.4 {
+			target = "Lnet/minecraft/client/render/item/HeldItemRenderer;shouldSkipHandAnimationOnSwap(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"
+			//?} else {
+			/*target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"
+			*///?}
+		)
+	)
+	public boolean nobaaddons$cancelItemUpdateAnimation(/*? if >=1.21.4 {*/HeldItemRenderer renderer,/*?}*/ ItemStack left, ItemStack right, Operation<Boolean> original) {
 		var config = NobaConfigManager.getConfig().getUiAndVisuals().getItemPosition();
 		if(config.getCancelEquipAnimation()) {
 			return true;
 		}
-		if(config.getCancelItemUpdateAnimation()) {
+		if(SkyBlockAPI.inSkyBlock() && config.getCancelItemUpdateAnimation()) {
 			return ItemUtils.isEqual(left, right);
 		}
-		return original.call(left, right);
+		return original.call(/*? if >=1.21.4 {*/renderer,/*?}*/ left, right);
 	}
 
 	@Inject(method = "applyEatOrDrinkTransformation", at = @At(value = "INVOKE", target = "Ljava/lang/Math;pow(DD)D"), cancellable = true)

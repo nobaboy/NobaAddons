@@ -90,7 +90,7 @@ class KeyBindsListWidget(
 		}.size(75, 20).build()
 
 		private val deleteButton = ButtonWidget.builder(Text.translatable("nobaaddons.screen.button.delete")) {
-			oldScrollAmount = scrollAmount
+			oldScrollAmount = /*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/
 			deleteEntry()
 		}.size(50, 20).build()
 
@@ -102,7 +102,7 @@ class KeyBindsListWidget(
 			keyBinds.removeAt(keyBindIndex)
 			removeEntry(this)
 
-			scrollAmount = oldScrollAmount
+			/*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/ = oldScrollAmount
 
 			refreshEntries()
 			hasChanges = true

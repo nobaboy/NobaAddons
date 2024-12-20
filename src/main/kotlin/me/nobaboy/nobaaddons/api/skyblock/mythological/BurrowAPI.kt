@@ -136,7 +136,7 @@ object BurrowAPI {
 
 		companion object {
 			fun getParticleType(event: ParticleEvents.Particle): BurrowParticleType? {
-				if(!event.isLongDistance) return null
+				if(!event.forceSpawn) return null
 				for(type in entries) {
 					if(type.check(event)) return type
 				}
