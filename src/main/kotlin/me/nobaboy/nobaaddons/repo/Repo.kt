@@ -45,6 +45,7 @@ object Repo {
 			runCatching {
 				updateInternal()
 			}.onFailure { NobaAddons.LOGGER.error("Failed to initialize repository", it) }
+			reloadObjects()
 		}, Util.getIoWorkerExecutor())
 
 	@Blocking
@@ -58,7 +59,6 @@ object Repo {
 		pull()
 		if(git.repository.branch != config.branch) {
 			git.checkout().setName(config.branch).call()
-			reloadObjects()
 		}
 
 		if(announceRepoUpdate) {
@@ -77,7 +77,6 @@ object Repo {
 			.call()
 		commit = git.repository.resolve("HEAD").name
 		loaded = true
-		reloadObjects()
 	}
 
 	@Blocking
@@ -86,7 +85,6 @@ object Repo {
 		git.pull().call()
 		loaded = true
 		commit = git.repository.resolve("HEAD").name
-		reloadObjects()
 	}
 
 	private fun reloadObjects() {
