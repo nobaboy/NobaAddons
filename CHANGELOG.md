@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Keybinds now allows use of mouse buttons (not including the primary Left, Right, and Middle mouse buttons) - nobaboy
 - `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
 - Mod chat message prefix & colors - celeste
+- Pet info overlays now properly render in the EXP Share menu - celeste
 
 ### Fixed
 

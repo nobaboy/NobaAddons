@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.core.ItemRarity
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
+import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.formatted
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
@@ -17,7 +18,6 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import kotlin.math.absoluteValue
 
 @Suppress("unused")
 object PetDebugCommands : Group("pet", executeRoot = true) {
@@ -35,7 +35,7 @@ object PetDebugCommands : Group("pet", executeRoot = true) {
 
 		ctx.dumpInfo(
 			"Pet" to buildText {
-				append(pet.rarity.name.formatted(Formatting.DARK_GRAY, Formatting.BOLD))
+				append(pet.rarity.name.toText().bold())
 				append(" ")
 				append(pet.name.formatted(pet.rarity.formatting ?: Formatting.WHITE))
 			},
