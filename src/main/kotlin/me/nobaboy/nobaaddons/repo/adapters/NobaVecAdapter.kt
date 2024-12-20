@@ -40,10 +40,11 @@ class NobaVecAdapter : TypeAdapter<NobaVec>() {
 
 	// {"x": -1, "y": 2, "z": 3}
 	private fun parseFromObject(reader: JsonReader): NobaVec {
-		val values = mutableMapOf<String, Double>()
 		reader.beginObject()
-		while(reader.peek() != JsonToken.END_OBJECT) {
-			values.put(reader.nextName(), reader.nextDouble())
+		val values = buildMap {
+			while(reader.peek() != JsonToken.END_OBJECT) {
+				put(reader.nextName(), reader.nextDouble())
+			}
 		}
 		reader.endObject()
 		return NobaVec(values["x"] ?: -1.0, values["y"] ?: -1.0, values["z"] ?: -1.0)
