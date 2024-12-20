@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 
 @Suppress("unused")
 object RepoCommands : Group("repo") {
-	val pull = Command.Companion.command("pull") {
+	val update = Command.Companion.command("update") {
 		executes {
 			ChatUtils.addMessage("Updating repository")
 			Repo.announceRepoUpdate = true
@@ -15,7 +15,7 @@ object RepoCommands : Group("repo") {
 		}
 	}
 
-	val commit = Command.Companion.command("commit") {
+	val info = Command.Companion.command("info") {
 		executes {
 			ChatUtils.addMessage("Current repository commit: ${Repo.commit.take(8)}")
 		}
