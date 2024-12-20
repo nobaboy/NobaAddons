@@ -33,7 +33,7 @@ object Repo {
 
 	private val git: Git = Git(RepositoryBuilder().setWorkTree(REPO_DIRECTORY).setMustExist(false).build())
 	private var loaded = false
-	private val objects: MutableList<IRepoObject> = mutableListOf()
+	private val objects: MutableSet<IRepoObject> = mutableSetOf()
 
 	fun init() {
 		register(RepoRegex)
@@ -90,7 +90,6 @@ object Repo {
 	private fun reloadObjects() {
 		NobaAddons.LOGGER.debug("Reloading repository objects")
 		objects.forEach {
-			println(it)
 			runCatching { it.load() }.onFailure { NobaAddons.LOGGER.error("Repo object failed to reload", it) }
 		}
 	}
