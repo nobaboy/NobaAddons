@@ -9,7 +9,7 @@ object ScoreboardUtils {
 	private val SCOREBOARD_ENTRY_COMPARATOR = Comparator.comparing(ScoreboardEntry::value).reversed().thenComparing(ScoreboardEntry::owner, String.CASE_INSENSITIVE_ORDER)
 	private val FORMATTING_CODE_REGEX = Regex("§.")
 
-	fun getSidebarLines(): List<String> {
+	fun getScoreboardLines(): List<String> {
 		val scoreboard = MCUtils.player?.scoreboard ?: return listOf()
 		val objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR) ?: return listOf()
 

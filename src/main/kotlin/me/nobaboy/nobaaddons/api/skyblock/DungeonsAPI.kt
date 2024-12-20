@@ -66,7 +66,7 @@ object DungeonsAPI {
 	}
 
 	private fun getFloorType() {
-		val lines = ScoreboardUtils.getSidebarLines()
+		val lines = ScoreboardUtils.getScoreboardLines()
 
 		val dungeonFloor = lines.firstOrNull { it.contains("The Catacombs (") }
 			?.substringAfter("(")?.substringBefore(")")
