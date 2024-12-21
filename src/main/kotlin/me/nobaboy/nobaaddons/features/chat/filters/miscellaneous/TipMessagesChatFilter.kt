@@ -1,24 +1,31 @@
 package me.nobaboy.nobaaddons.features.chat.filters.miscellaneous
 
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
+import me.nobaboy.nobaaddons.repo.Repo
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.RegexUtils.matches
 import java.util.regex.Pattern
 
 object TipMessagesChatFilter : IChatFilter {
-	private val alreadyTippedPattern = Pattern.compile(
+	private val alreadyTippedPattern by Regex(
 		"You've already tipped someone in the past hour in [A-z ]+! Wait a bit and try again!"
-	)
-	private val tipMessages = listOf(
-		"That player is not online, try another user!",
-		"No one has a network booster active right now, Try again later.",
-		"You already tipped everyone that has boosters active, so there isn't anybody to be tipped right now!",
-		"Slow down! You can only use /tip every few seconds."
+	).fromRepo("filter.tips.already_tipped")
+
+	private val tipMessages by Repo.list(
+		"That player is not online, try another user!".fromRepo("filter.tips.not_online"),
+		"No one has a network booster active right now, Try again later.".fromRepo("filter.tips.no_boosters"),
+		"You already tipped everyone that has boosters active, so there isn't anybody to be tipped right now!".fromRepo("filter.tips.already_tipped_all"),
+		"Slow down! You can only use /tip every few seconds.".fromRepo("filter.tips.cooldown")
 	)
 
+	// TODO change these to regexes
+	private val tipReceivedPrefix by "You were tipped".fromRepo("filter.tips.received_prefix")
+	private val tipSentPrefix by "You tipped".fromRepo("filter.tips.sent_prefix")
+
 	override fun shouldFilter(message: String): Boolean =
-		alreadyTippedPattern.matches(message) ||
-			message.startsWith("You tipped") ||
-			message.startsWith("You were tipped") ||
+		alreadyTippedPattern matches message ||
+			message.startsWith(tipSentPrefix) ||
+			message.startsWith(tipReceivedPrefix) ||
 			message in tipMessages
 
 	override fun isEnabled() = config.hideTipMessages

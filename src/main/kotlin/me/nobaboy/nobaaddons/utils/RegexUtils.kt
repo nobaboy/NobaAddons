@@ -31,6 +31,10 @@ object RegexUtils {
 	inline fun Regex.firstFullMatch(lines: Collection<String>, consumer: MatchResult.() -> Unit) =
 		lines.firstNotNullOfOrNull { matchEntire(it) }?.let(consumer)
 
+	fun Iterable<Regex>.anyFullMatch(text: String): Boolean {
+		return this.firstNotNullOfOrNull { it.matchEntire(text) } != null
+	}
+
 	/**
 	 * Returns the value of the requested group from the given [text] if it fully matches the current pattern
 	 */
