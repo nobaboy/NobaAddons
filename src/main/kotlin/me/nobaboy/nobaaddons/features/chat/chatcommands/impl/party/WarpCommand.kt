@@ -16,12 +16,11 @@ class WarpCommand : IChatCommand {
 	private var delay = 0
 	private var isWarping = false
 
+	override val enabled: Boolean get() = NobaConfigManager.config.chat.chatCommands.party.warp
+
 	override val name: String = "warp"
 
 	override val usage: String = "warp [optional: delay]"
-
-	override val isEnabled: Boolean
-		get() = NobaConfigManager.config.chat.chatCommands.party.warp
 
 	override fun run(ctx: ChatContext) {
 		if(PartyAPI.party?.isLeader != true) return

@@ -17,6 +17,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 // TODO: Rework and implement Entity outlines
 object HighlightStarredMobs {
 	private val config get() = NobaConfigManager.config.dungeons.highlightStarredMobs
+	private val enabled: Boolean get() = !DungeonsAPI.inBoss() && config.enabled
 
 	private val starredMobs = mutableListOf<ArmorStandEntity>()
 
@@ -27,7 +28,7 @@ object HighlightStarredMobs {
 	}
 
 	private fun getStarredMobs() {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		EntityUtils.getEntities<ArmorStandEntity>().filter {
 			it !in starredMobs &&
@@ -39,7 +40,7 @@ object HighlightStarredMobs {
 	}
 
 	private fun renderHighlights(context: WorldRenderContext) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		val player = MCUtils.player ?: return
 
@@ -62,6 +63,4 @@ object HighlightStarredMobs {
 			}
 		}
 	}
-
-	private fun isEnabled() = !DungeonsAPI.inBoss() && config.enabled
 }

@@ -7,12 +7,11 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class PartyMeCommand : IChatCommand {
+	override val enabled: Boolean get() = NobaConfigManager.config.chat.chatCommands.dm.partyMe
+
 	override val name: String = "partyme"
 
 	override val aliases = listOf("pme")
-
-	override val isEnabled: Boolean
-		get() = NobaConfigManager.config.chat.chatCommands.dm.partyMe
 
 	override fun run(ctx: ChatContext) {
 		val playerName = MCUtils.playerName ?: return

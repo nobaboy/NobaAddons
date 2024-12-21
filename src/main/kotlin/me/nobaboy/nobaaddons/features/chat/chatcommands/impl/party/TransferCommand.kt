@@ -9,14 +9,13 @@ import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class TransferCommand : IChatCommand {
+	override val enabled: Boolean get() = NobaConfigManager.config.chat.chatCommands.party.transfer
+
 	override val name: String = "transfer"
 
 	override val aliases = listOf("ptme", "pt")
 
 	override val usage: String = "(transfer|pt) [optional: username], ptme"
-
-	override val isEnabled: Boolean
-		get() = NobaConfigManager.config.chat.chatCommands.party.transfer
 
 	override fun run(ctx: ChatContext) {
 		if(PartyAPI.party?.isLeader != true) return

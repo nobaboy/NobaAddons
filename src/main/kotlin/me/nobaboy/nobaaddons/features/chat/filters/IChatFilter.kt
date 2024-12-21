@@ -15,10 +15,8 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 interface IChatFilter {
 	val config get() = NobaConfigManager.config.chat.filters
 
-	fun isEnabled(): Boolean
+	val enabled: Boolean
 	fun shouldFilter(message: String): Boolean
-
-	fun isEnabled(option: ChatFilterOption): Boolean = option != ChatFilterOption.SHOWN
 
 	companion object {
 		private var init = false
@@ -41,7 +39,7 @@ interface IChatFilter {
 			init = true
 
 			ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ ->
-				filters.asSequence().filter { it.isEnabled() }.none {
+				filters.asSequence().filter { it.enabled }.none {
 					runCatching { it.shouldFilter(message.string.cleanFormatting()) }
 						.onFailure { error ->
 							NobaAddons.LOGGER.error("Filter {} threw an error while processing a chat message", it, error)

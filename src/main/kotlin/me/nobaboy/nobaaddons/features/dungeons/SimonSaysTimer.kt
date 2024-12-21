@@ -30,6 +30,7 @@ import java.util.regex.Pattern
 // TODO: Requires actual testing in dungeons
 object SimonSaysTimer {
 	private val config get() = NobaConfigManager.config.dungeons.simonSaysTimer
+	private val enabled: Boolean get() = SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7) && config.enabled
 
 	private val completionPattern = Pattern.compile("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)")
 	private val buttonVec = NobaVec(110, 121, 91)
@@ -102,7 +103,7 @@ object SimonSaysTimer {
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!isEnabled() || !buttonPressed || deviceCompleted) return
+		if(!enabled || !buttonPressed || deviceCompleted) return
 
 		completionPattern.matchMatcher(message) {
 			val username = group("username")
@@ -116,7 +117,7 @@ object SimonSaysTimer {
 	}
 
 	private fun onInteract(player: PlayerEntity, hitResult: BlockHitResult): ActionResult {
-		if(!isEnabled() || buttonPressed || player != MCUtils.player || hitResult.blockPos.toNobaVec() != buttonVec) return ActionResult.PASS
+		if(!enabled || buttonPressed || player != MCUtils.player || hitResult.blockPos.toNobaVec() != buttonVec) return ActionResult.PASS
 
 		startTime = Timestamp.now()
 		buttonPressed = true
@@ -152,6 +153,4 @@ object SimonSaysTimer {
 		buttonPressed = false
 		deviceCompleted = false
 	}
-
-	private fun isEnabled() = SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7) && config.enabled
 }

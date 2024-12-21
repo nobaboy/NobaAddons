@@ -26,6 +26,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object TemporaryWaypoint {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.temporaryWaypoints
+	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && config.enabled
 
 	private val chatCoordsPattern = Pattern.compile(
 		"^\\[[0-9]+](?: .)? ?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
@@ -40,7 +41,7 @@ object TemporaryWaypoint {
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		chatCoordsPattern.matchMatcher(message) {
 			val username = group("username")
@@ -60,7 +61,7 @@ object TemporaryWaypoint {
 	}
 
 	private fun renderWaypoints(context: WorldRenderContext) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		val cameraPos = context.camera().pos.toNobaVec()
 		val color = config.waypointColor
@@ -80,7 +81,7 @@ object TemporaryWaypoint {
 	}
 
 	fun addWaypoint(ctx: CommandContext<FabricClientCommandSource>) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		val x = DoubleArgumentType.getDouble(ctx, "x")
 		val y = DoubleArgumentType.getDouble(ctx, "y")
@@ -94,6 +95,4 @@ object TemporaryWaypoint {
 		val expired: Boolean
 			get() = duration != null && timestamp.elapsedSince() >= duration
 	}
-
-	private fun isEnabled() = SkyBlockAPI.inSkyBlock && config.enabled
 }

@@ -10,13 +10,14 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object SeaCreatureAlert {
 	private val config get() = NobaConfigManager.config.fishing.seaCreatureAlert
+	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && config.enabled
 
 	fun init() {
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		val seaCreature = SeaCreature.getBySpawnMessage(message) ?: return
 		if(!seaCreature.isRare) return
@@ -41,6 +42,4 @@ object SeaCreatureAlert {
 			if(this == SeaCreature.CARROT_KING && config.carrotKingIsRare) return true
 			return false
 		}
-
-	private fun isEnabled() = SkyBlockAPI.inSkyBlock && config.enabled
 }

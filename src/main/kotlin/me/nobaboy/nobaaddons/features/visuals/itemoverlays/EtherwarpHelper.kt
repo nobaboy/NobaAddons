@@ -21,6 +21,7 @@ import net.minecraft.world.World
 
 object EtherwarpHelper {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.etherwarpHelper
+	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && config.enabled && MCUtils.options.sneakKey.isPressed
 
 	private const val BASE_DISTANCE = 57
 	private val etherwarpItems = setOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")
@@ -39,7 +40,7 @@ object EtherwarpHelper {
 	}
 
 	private fun renderOverlay(context: WorldRenderContext) {
-		if(!isEnabled()) {
+		if(!enabled) {
 			targetBlock = null
 			return
 		}
@@ -94,6 +95,4 @@ object EtherwarpHelper {
 		NOT_SOLID("Not solid!"),
 		NO_AIR_ABOVE("No air above!")
 	}
-
-	private fun isEnabled() = SkyBlockAPI.inSkyBlock && config.enabled && MCUtils.options.sneakKey.isPressed
 }
