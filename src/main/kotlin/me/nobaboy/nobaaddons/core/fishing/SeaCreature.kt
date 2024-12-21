@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.core.fishing
 
 import me.nobaboy.nobaaddons.core.MobRarity
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.repo.RepoObjects.Companion.listFromRepository
+import me.nobaboy.nobaaddons.repo.RepoObjectArray.Companion.listFromRepository
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 
 data class SeaCreature(
