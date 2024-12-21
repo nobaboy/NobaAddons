@@ -14,39 +14,48 @@ object SlayersCategory {
 		return ConfigCategory.createBuilder()
 			.name(Text.translatable("nobaaddons.config.slayers"))
 
-			.buildGroup(Text.translatable("nobaaddons.config.slayers.miniBossAlert")) {
+			.buildGroup(Text.translatable("nobaaddons.config.slayers.announceBossKillTime")) {
 				boolean(
-					Text.translatable("nobaaddons.config.slayers.miniBoss.alert"),
-					default = defaults.slayers.miniBoss.alert,
-					property = config.slayers.miniBoss::alert
-				)
-				string(
-					Text.translatable("nobaaddons.config.slayers.miniBoss.alertText"),
-					default = defaults.slayers.miniBoss.alertText,
-					property = config.slayers.miniBoss::alertText
-				)
-				color(
-					Text.translatable("nobaaddons.config.slayers.miniBoss.alertColor"),
-					default = defaults.slayers.miniBoss.alertColor,
-					property = config.slayers.miniBoss::alertColor
+					Text.translatable("nobaaddons.config.enabled"),
+					default = defaults.slayers.announceBossKillTime.enabled,
+					property = config.slayers.announceBossKillTime::enabled
 				)
 				cycler(
-					Text.translatable("nobaaddons.config.notificationSound"),
-					default = defaults.slayers.miniBoss.notificationSound,
-					property = config.slayers.miniBoss::notificationSound
+					Text.translatable("nobaaddons.config.slayers.announceBossKillTime.timeSource"),
+					Text.translatable("nobaaddons.config.slayers.announceBossKillTime.timeSource.tooltip"),
+					default = defaults.slayers.announceBossKillTime.timeSource,
+					property = config.slayers.announceBossKillTime::timeSource
 				)
 			}
 
-			.buildGroup(Text.translatable("nobaaddons.config.slayers.miniBoss")) {
+			.buildGroup(Text.translatable("nobaaddons.config.slayers.miniBossAlert")) {
 				boolean(
-					Text.translatable("nobaaddons.config.slayers.miniBoss.highlight"),
-					default = defaults.slayers.miniBoss.highlight,
-					property = config.slayers.miniBoss::highlight
+					Text.translatable("nobaaddons.config.enabled"),
+					default = defaults.slayers.miniBossAlert.enabled,
+					property = config.slayers.miniBossAlert::enabled
+				)
+				string(
+					Text.translatable("nobaaddons.config.slayers.miniBossAlert.alertText"),
+					default = defaults.slayers.miniBossAlert.alertText,
+					property = config.slayers.miniBossAlert::alertText
 				)
 				color(
-					Text.translatable("nobaaddons.config.slayers.miniBoss.highlightColor"),
-					default = defaults.slayers.miniBoss.highlightColor,
-					property = config.slayers.miniBoss::highlightColor
+					Text.translatable("nobaaddons.config.slayers.miniBossAlert.alertColor"),
+					default = defaults.slayers.miniBossAlert.alertColor,
+					property = config.slayers.miniBossAlert::alertColor
+				)
+			}
+
+			.buildGroup(Text.translatable("nobaaddons.config.slayers.highlightMiniBosses")) {
+				boolean(
+					Text.translatable("nobaaddons.config.enabled"),
+					default = defaults.slayers.highlightMiniBosses.enabled,
+					property = config.slayers.highlightMiniBosses::enabled
+				)
+				color(
+					Text.translatable("nobaaddons.config.slayers.highlightMiniBosses.highlightColor"),
+					default = defaults.slayers.highlightMiniBosses.highlightColor,
+					property = config.slayers.highlightMiniBosses::highlightColor
 				)
 			}
 

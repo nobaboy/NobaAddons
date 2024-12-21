@@ -146,6 +146,9 @@
   "nobaaddons.config.events.mythological.ignoreStonks": "Ignore Stonks",
 
   "nobaaddons.config.slayers": "Slayers",
+  "nobaaddons.config.slayers.announceBossKillTime": "Announce Boss Kill Time",
+  "nobaaddons.config.slayers.announceBossKillTime.timeSource": "Time Source",
+  "nobaaddons.config.slayers.announceBossKillTime.timeSource.tooltip": "Determines the source for the boss kill time\n\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag",
   "nobaaddons.config.slayers.miniBossAlert": "MiniBoss Alert",
   "nobaaddons.config.slayers.miniBossAlert.alertText": "Alert Text",
   "nobaaddons.config.slayers.miniBossAlert.alertColor": "Alert Color",
@@ -166,7 +169,7 @@
   "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity": "Minimum Rarity",
   "nobaaddons.config.fishing.seaCreatureAlert.minimumRarity.tooltip": "The minimum sea creature rarity to display a notification for upon catch",
   "nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare": "Carrot King is Rare",
-  "nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare.tooltip": "Carrot King will be treated as rare even if the above minimum rarity isn't low enough for it while enabled (because not many people fish for it).",
+  "nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare.tooltip": "Carrot King will be treated as rare even if the above minimum rarity isn't low enough for it while enabled (because not many people fish for it)",
   "nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat": "Announce Catches in Party Chat",
   "nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat.tooltip": "Rare creatures will automatically be announced in party chat while enabled",
   "nobaaddons.config.fishing.highlightThunderSparks": "Highlight Thunder Sparks",

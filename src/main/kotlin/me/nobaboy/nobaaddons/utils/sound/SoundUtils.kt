@@ -10,7 +10,7 @@ import kotlin.math.pow
 object SoundUtils {
 	private val experienceOrbPickup = SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP
 	private val noteBlockPling = SoundEvents.BLOCK_NOTE_BLOCK_PLING.value()
-	private val noteBlockFlute = SoundEvents.BLOCK_NOTE_BLOCK_HARP.value()
+	private val noteBlockFlute = SoundEvents.BLOCK_NOTE_BLOCK_FLUTE.value()
 
 	val plingSound = SimpleSound(noteBlockPling, pitch = 2.0f)
 	val dingSound = SimpleSound(experienceOrbPickup, pitch = 0.5f)

@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.Timestamp
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.entity.Entity
@@ -37,29 +36,31 @@ object SlayerAPI {
 		val boss = SlayerBoss.getByName(questLine) ?: return
 
 		if(currentQuest?.boss != boss) currentQuest = SlayerQuest(boss)
-
-		val previousState = currentQuest?.spawned
 		currentQuest?.spawned = lines.any { it == "Slay the boss!" }
-
-		// TODO: Remove this, pass in the boss entity with kill event and calculate time to kill using entity age
-		if(previousState == false && currentQuest?.spawned == true) {
-			SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn(Timestamp.now()))
-		}
 
 		currentQuest?.boss?.entity?.let { entityClass ->
 			EntityUtils.getEntities(entityClass).forEach { entity ->
-				val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return@forEach
-				slayerNamePattern.matchMatcher(armorStand.name.string) {
-					val ownerArmorStand = EntityUtils.getNextEntity(armorStand, 1) as? ArmorStandEntity ?: return
-					val playerName = MCUtils.playerName ?: return
+				if(entity in miniBosses) return@forEach
 
-					if(ownerArmorStand.name.string == "Spawned by: $playerName") currentQuest?.entity = entity
+				val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return@forEach
+
+				slayerNamePattern.matchMatcher(armorStand.name.string) {
+					val ownerArmorStand = EntityUtils.getNextEntity(armorStand, 2) as? ArmorStandEntity ?: return@forEach
+					val playerName = MCUtils.playerName ?: return@forEach
+
+					if(ownerArmorStand.name.string != "Spawned by: $playerName") return
+					val timerEntity = EntityUtils.getNextEntity(armorStand, 1) as? ArmorStandEntity ?: return@forEach
+
+					currentQuest?.let {
+						it.entity = entity
+						it.timerEntity = timerEntity
+					}
+
+					return@forEach
 				}
 
-				if(entity.age > 1) return@forEach
-
 				SlayerMiniBoss.getByName(armorStand.name.string)?.let {
-					SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
+					if(entity.age <= 20) SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
 					miniBosses.add(entity)
 				}
 			}
@@ -68,15 +69,21 @@ object SlayerAPI {
 
 	private fun onChatMessage(message: String) {
 		if(!SkyBlockAPI.inSkyBlock) return
+		if(currentQuest == null) return
 
 		when(message.trim()) {
-			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest?.spawned = false
+			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest = null
 			"SLAYER QUEST COMPLETE!" -> {
-				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill())
+				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerEntity))
 				currentQuest?.spawned = false
 			}
 		}
 	}
 
-	data class SlayerQuest(val boss: SlayerBoss?, var entity: Entity? = null, var spawned: Boolean = false)
+	data class SlayerQuest(
+		val boss: SlayerBoss?,
+		var spawned: Boolean = false,
+		var entity: Entity? = null,
+		var timerEntity: Entity? = null
+	)
 }

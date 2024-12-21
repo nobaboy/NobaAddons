@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
+import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
 import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowGuessAPI
 import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
@@ -30,12 +31,13 @@ import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
 import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
-import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
+import me.nobaboy.nobaaddons.features.slayers.AnnounceBossKillTime
+import me.nobaboy.nobaaddons.features.slayers.MiniBossAlert
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
@@ -115,6 +117,8 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Slayers
+		AnnounceBossKillTime.init()
+		MiniBossAlert.init()
 		// endregion
 
 		// region Fishing
