@@ -8,7 +8,6 @@ import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.RegexUtils.matches
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TimedSet
@@ -21,7 +20,6 @@ import net.minecraft.block.Blocks
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.ActionResult
-import java.util.regex.Pattern
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 

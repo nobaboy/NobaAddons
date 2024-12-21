@@ -3,9 +3,7 @@ package me.nobaboy.nobaaddons.features.chat.filters.ability
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
-import java.util.regex.Pattern
 
 object AbilityChatFilter : IChatFilter {
 	private val abilityDamagePattern by Regex("Your (?<ability>[A-z' ]+) hit [0-9]+ (enemies|enemy) for [0-9,.]+ damage\\.").fromRepo("filter.abilities.damage")

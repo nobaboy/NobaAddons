@@ -22,10 +22,12 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.RepositoryBuilder
 import org.eclipse.jgit.transport.URIish
 import org.jetbrains.annotations.Blocking
+import org.jetbrains.annotations.UnmodifiableView
 import java.io.File
 import java.io.FileReader
 import java.nio.file.Path
 import java.time.Instant
+import java.util.Collections
 import java.util.concurrent.CompletableFuture
 import kotlin.jvm.java
 import kotlin.time.Duration.Companion.seconds
@@ -52,21 +54,27 @@ object Repo {
 		private set
 	var updateFailed: Boolean = false
 		private set
-	var loaded: Boolean = false
+	// we want this to be immediately visible to all threads, while the others
+	// can be left to be eventually consistent.
+	@Volatile var loaded: Boolean = false
 		private set
 
-	// note that while this *is* blocking, it shouldn't be too big a concern given it's just a simple status call.
+	// note that while this *is* blocking, it shouldn't be too big a concern given it's just a simple status call,
+	// and we only ever use this in a command.
 	val isDirty: Boolean by CacheFor(60.seconds) { !git.status().call().isClean }
 
 	private val git: Git = Git(RepositoryBuilder().setWorkTree(REPO_DIRECTORY).setMustExist(false).build())
 	private val objects: MutableSet<IRepoObject> = mutableSetOf()
 	private var sentRepoWarning = false
 
+	val knownRegexKeys = mutableSetOf<String>()
+	val knownStringKeys = mutableSetOf<String>()
+
 	fun init() {
 		register(RepoValues.Regexes)
 		register(RepoValues.Strings)
-		update()
 		ClientTickEvents.END_CLIENT_TICK.register { onTick() }
+		ClientLifecycleEvents.CLIENT_STARTED.register { update() }
 		ClientLifecycleEvents.CLIENT_STOPPING.register { git.repository.close() }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> sentRepoWarning = false }
 	}
@@ -142,6 +150,7 @@ object Repo {
 		git.pull().call()
 	}
 
+	@Blocking
 	private fun reloadObjects() {
 		NobaAddons.LOGGER.debug("Reloading repository objects")
 		loaded = true
@@ -159,6 +168,11 @@ object Repo {
 	}
 
 	/**
+	 * Returns an unmodifiable view of all registered [IRepoObject] instances
+	 */
+	fun objects(): @UnmodifiableView Collection<IRepoObject> = Collections.unmodifiableCollection(objects)
+
+	/**
 	 * Creates a [RepoValues.Entries] object supplying a list of mapped values from the provided
 	 * [RepoValues.Entry] objects.
 	 */
@@ -169,13 +183,13 @@ object Repo {
 	 * Creates a [RepoValues.Entry] object supplying a regex pattern from the mod repository,
 	 * falling back to [this] if none exists.
 	 */
-	fun Regex.fromRepo(key: String) = RepoValues.Entry(key, this, RepoValues.Regexes)
+	fun Regex.fromRepo(key: String) = RepoValues.Entry(key, this, RepoValues.Regexes).also { knownRegexKeys.add(key) }
 
 	/**
 	 * Creates a [RepoValues.Entry] object supplying a string from the mod repository, falling
 	 * back to [this] if none exists.
 	 */
-	fun String.fromRepo(key: String) = RepoValues.Entry(key, this, RepoValues.Strings)
+	fun String.fromRepo(key: String) = RepoValues.Entry(key, this, RepoValues.Strings).also { knownStringKeys.add(key) }
 
 	/**
 	 * Loads [this] using GSON, returning a built instance of the provided class.

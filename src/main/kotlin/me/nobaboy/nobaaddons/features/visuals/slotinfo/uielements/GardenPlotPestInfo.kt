@@ -6,12 +6,10 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
-import me.nobaboy.nobaaddons.utils.RegexUtils.firstMatcher
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import java.util.regex.Pattern
 
 object GardenPlotPestInfo : ISlotInfo {
 	private const val ICON = "ൠ"

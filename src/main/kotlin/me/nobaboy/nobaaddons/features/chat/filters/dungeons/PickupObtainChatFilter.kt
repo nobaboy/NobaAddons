@@ -5,9 +5,7 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.repo.RepoObject.Companion.fromRepository
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
-import java.util.regex.Pattern
 
 object PickupObtainChatFilter : IChatFilter {
 	private val itemPickupPattern by Regex("A (?<item>[A-z ]+) was picked up!").fromRepo("filter.pickup.item")

@@ -3,8 +3,6 @@ package me.nobaboy.nobaaddons.features.chat.filters.miscellaneous
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.RegexUtils.matches
-import java.util.regex.Pattern
 
 object TipMessagesChatFilter : IChatFilter {
 	private val alreadyTippedPattern by Regex(

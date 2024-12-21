@@ -38,6 +38,7 @@ object DebugCommands : Group("debug") {
 
 	val item = ItemDebugCommands
 	val pet = PetDebugCommands
+	val regex = RepoDebugCommands
 
 	val party = Command.command("party") {
 		executes {
