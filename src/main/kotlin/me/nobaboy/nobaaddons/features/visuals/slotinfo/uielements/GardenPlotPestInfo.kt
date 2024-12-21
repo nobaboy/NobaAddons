@@ -2,19 +2,20 @@ package me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements
 
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.RegexUtils.firstMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import java.util.regex.Pattern
 
 object GardenPlotPestInfo : ISlotInfo {
 	private const val ICON = "ൠ"
 
-	private val pestsPattern = Pattern.compile("$ICON This plot has (?<count>\\d+) Pests?!")
+	private val pestsPattern by Regex("ൠ This plot has (?<count>\\d+) Pests?!").fromRepo("slot_info.desk_pest_count")
+	private val sprayedWith by "Sprayed with".fromRepo("slot_info.desk_sprayed_with_prefix")
 
 	override val enabled: Boolean get() = config.gardenPlotPests
 
@@ -25,11 +26,11 @@ object GardenPlotPestInfo : ISlotInfo {
 		if(!itemStack.name.string.startsWith("Plot -")) return
 
 		val lore = itemStack.lore.stringLines
-		pestsPattern.firstMatcher(lore) {
-			drawCount(event, group("count"), NobaColor.RED.toColor().rgb)
+		pestsPattern.firstFullMatch(lore) {
+			drawCount(event, groups["count"]!!.value, NobaColor.RED.toColor().rgb)
 		}
 
-		if(lore.any { it.startsWith("Sprayed with") }) {
+		if(lore.any { it.startsWith(sprayedWith) }) {
 			drawInfo(event, Text.literal(ICON).formatted(Formatting.GOLD, Formatting.BOLD))
 		}
 	}

@@ -39,7 +39,7 @@ object SeaCreatureAlert {
 	private val SeaCreature.isRare: Boolean
 		get() {
 			if(rarity.isAtLeast(config.minimumRarity)) return true
-			if(this == SeaCreature.CARROT_KING && config.carrotKingIsRare) return true
+			if(this.id == "CARROT_KING" && config.carrotKingIsRare) return true
 			return false
 		}
 }

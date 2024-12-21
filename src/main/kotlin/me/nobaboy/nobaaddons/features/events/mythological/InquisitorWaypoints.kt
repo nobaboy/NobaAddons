@@ -7,13 +7,14 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.repo.Repo
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatchers
-import me.nobaboy.nobaaddons.utils.RegexUtils.matches
+import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -22,19 +23,18 @@ import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.client.network.OtherClientPlayerEntity
-import java.util.regex.Pattern
 import kotlin.time.Duration.Companion.seconds
 
 object InquisitorWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
 	private val enabled: Boolean get() = DianaAPI.isActive() && config.alertInquisitor
 
-	private val inquisitorDigUpPattern = Pattern.compile("^[A-z ]+! You dug out a Minos Inquisitor!")
-	private val inquisitorDeadPattern = Pattern.compile("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): Inquisitor dead!")
+	private val inquisitorDigUpPattern by Regex("^[A-z ]+! You dug out a Minos Inquisitor!").fromRepo("mythological.inquisitor")
+	private val inquisitorDeadPattern by Regex("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): Inquisitor dead!").fromRepo("mythological.inquisitor_dead")
 
-	private val inquisitorSpawnPatterns = listOf(
-		Pattern.compile("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+).*"),
-		Pattern.compile("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): A MINOS INQUISITOR has spawned near \\[.*] at Coords (?<x>[0-9.-]+) (?<y>[0-9.-]+) (?<z>[0-9.-]+)"),
+	private val inquisitorSpawnPatterns by Repo.list(
+		Regex("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+).*").fromRepo("mythological.inquisitor_spawn.coords"),
+		Regex("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): A MINOS INQUISITOR has spawned near \\[.*] at Coords (?<x>[0-9.-]+) (?<y>[0-9.-]+) (?<z>[0-9.-]+)").fromRepo("mythological.inquisitor_spawn.inquisitorchecker"),
 	)
 
 	private val inquisitorsNearby = mutableListOf<OtherClientPlayerEntity>()
@@ -70,17 +70,17 @@ object InquisitorWaypoints {
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
 
-		if(inquisitorDigUpPattern.matches(message)) checkInquisitor()
+		if(inquisitorDigUpPattern matches message) checkInquisitor()
 
-		inquisitorSpawnPatterns.matchMatchers(message) {
-			val username = group("username")
+		inquisitorSpawnPatterns.firstFullMatch(message) {
+			val username = groups["username"]!!.value
 
 			if(username == MCUtils.playerName) return
 			if(waypoints.any { it.spawner == username }) return
 
-			val x = group("x").toDouble()
-			val y = group("y").toDouble()
-			val z = group("z").toDouble()
+			val x = groups["x"]!!.value.toDouble()
+			val y = groups["y"]!!.value.toDouble()
+			val z = groups["z"]!!.value.toDouble()
 			val location = NobaVec(x, y, z)
 
 			val inquisitor = Inquisitor(username, location, Timestamp.now())
@@ -91,8 +91,8 @@ object InquisitorWaypoints {
 			config.notificationSound.play()
 		}
 
-		inquisitorDeadPattern.matchMatcher(message) {
-			waypoints.removeIf { it.spawner == group("username") }
+		inquisitorDeadPattern.onFullMatch(message) {
+			waypoints.removeIf { it.spawner == groups["username"]!!.value }
 		}
 	}
 

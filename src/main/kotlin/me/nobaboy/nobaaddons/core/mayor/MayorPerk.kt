@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.core.mayor
 
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.foxyExtraEventPattern
 import me.nobaboy.nobaaddons.data.json.Perk
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.mapFullMatch
 
 enum class MayorPerk(val perkName: String) {
 	// Aatrox
@@ -68,6 +68,7 @@ enum class MayorPerk(val perkName: String) {
 	BRIBE("Bribe"),
 	DARKER_AUCTIONS("Darker Auctions");
 
+	// FIXME noba why the fuck are these values mutable
 	var isActive = false
 	var description = "Failed to load description from API"
 	var minister = false
@@ -91,8 +92,8 @@ enum class MayorPerk(val perkName: String) {
 				"Spooky Festival" to "Extra Event (Spooky)"
 			)
 
-			return foxyExtraEventPattern.matchMatcher(this.description) {
-				foxyExtraEventPairs.entries.firstOrNull { it.key == group("event") }?.value
+			return foxyExtraEventPattern.mapFullMatch(this.description) {
+				foxyExtraEventPairs.entries.firstOrNull { it.key == groups["event"]?.value }?.value
 			} ?: this.name
 		}
 	}

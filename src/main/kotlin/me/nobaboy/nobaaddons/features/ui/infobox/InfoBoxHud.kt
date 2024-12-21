@@ -5,13 +5,12 @@ import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
 import me.nobaboy.nobaaddons.screens.hud.elements.impl.TextHud
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
-import java.util.regex.Pattern
 
 class InfoBoxHud(val textElement: TextElement) : TextHud(textElement.element) {
-	private val functionPattern = Pattern.compile("(?<function>\\{[A-z0-9]+})")
-	private val colorCodePattern = Regex("&&[0-9a-fk-or]")
+	private val functionPattern = Regex("(?<function>\\{[A-z0-9]+})")
+	private val colorCodePattern = Regex("&&[0-9a-fk-or]", RegexOption.IGNORE_CASE)
 
 	override val enabled: Boolean get() = MCUtils.client.currentScreen !is InfoBoxesScreen
 
@@ -27,8 +26,8 @@ class InfoBoxHud(val textElement: TextElement) : TextHud(textElement.element) {
 
 	private fun replaceFunctions(text: String): String {
 		var formattedText = text
-		functionPattern.findAllMatcher(text) {
-			val functionName = group("function") ?: return@findAllMatcher
+		functionPattern.forEachMatch(text) {
+			val functionName = groups["function"]?.value ?: return@forEachMatch
 			val matchedFunction = InfoBoxFunctions.entries.firstOrNull { it.aliases.any { it.lowercaseEquals(functionName) } }
 			val result = matchedFunction?.runnable?.invoke() ?: functionName
 

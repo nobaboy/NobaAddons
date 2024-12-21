@@ -2,15 +2,15 @@ package me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements
 
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.RegexUtils.firstMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
-import java.util.regex.Pattern
 
 object SkyBlockLevelSlotInfo : ISlotInfo {
-	private val skyBlockLevelPattern = Pattern.compile("^Your SkyBlock Level: \\[(?<level>\\d+)]")
+	private val skyBlockLevelPattern by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("slot_info.skyblock_level")
 
 	override val enabled: Boolean get() = config.skyBlockLevel
 
@@ -22,8 +22,8 @@ object SkyBlockLevelSlotInfo : ISlotInfo {
 		if(itemStack.name.string != "SkyBlock Leveling") return
 
 		val lore = itemStack.lore.stringLines
-		skyBlockLevelPattern.firstMatcher(lore) {
-			val level = group("level")
+		skyBlockLevelPattern.firstFullMatch(lore) {
+			val level = groups["level"]!!.value
 			val color = getSkyBlockLevelColor(level.toInt()).toColor().rgb
 
 			drawCount(event, level, color)

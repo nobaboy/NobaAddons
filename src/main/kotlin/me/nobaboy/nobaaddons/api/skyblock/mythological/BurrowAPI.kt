@@ -5,9 +5,9 @@ import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.RegexUtils.matches
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TimedSet
@@ -20,7 +20,6 @@ import net.minecraft.block.Blocks
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.ActionResult
-import java.util.regex.Pattern
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
@@ -28,8 +27,8 @@ object BurrowAPI {
 	private val config get() = NobaConfigManager.config.events.mythological
 	private val enabled: Boolean get() = DianaAPI.isActive() && config.findNearbyBurrows
 
-	private val burrowDugPattern = Pattern.compile("^(You dug out a Griffin Burrow!|You finished the Griffin burrow chain!) \\(\\d/4\\)")
-	private val mobDugPattern = Pattern.compile("^[A-z ]+! You dug out (?:a )?[A-z ]+!")
+	private val burrowDugPattern by Regex("^(You dug out a Griffin Burrow!|You finished the Griffin burrow chain!) \\(\\d/4\\)").fromRepo("mythological.dig_burrow")
+	private val mobDugPattern by Regex("^[A-z ]+! You dug out (?:a )?[A-z ]+!").fromRepo("mythological.dig_mob")
 
 	private val burrows = mutableMapOf<NobaVec, Burrow>()
 	private val recentlyDugBurrows = TimedSet<NobaVec>(1.minutes)
