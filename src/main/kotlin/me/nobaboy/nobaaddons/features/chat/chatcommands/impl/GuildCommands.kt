@@ -12,8 +12,8 @@ import java.util.regex.Pattern
 object GuildCommands : ChatCommandManager() {
 	private val config get() = NobaConfigManager.config.chat.chatCommands.guild
 
-	override val enabled get() = config.enabled
-	override val pattern =
+	override val enabled: Boolean get() = config.enabled
+	override val pattern: Pattern =
 		Pattern.compile("^Guild > (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+)(?<grank> \\[[A-z0-9 ]+])?: [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?")
 
 	init {

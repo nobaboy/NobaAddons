@@ -27,6 +27,7 @@ import kotlin.math.sin
  */
 object BurrowGuessAPI {
 	private val config get() = NobaConfigManager.config.events.mythological
+	private val enabled: Boolean get() = DianaAPI.isActive() && config.burrowGuess
 
 	private var dingIndex = 0
 	private var hasDinged = false
@@ -53,7 +54,7 @@ object BurrowGuessAPI {
 	}
 
 	private fun onPlaySound(event: SoundEvents.Sound) {
-		if(!isEnabled()) return
+		if(!enabled) return
 		if(event.id != Identifier.ofVanilla("block.note_block.harp")) return
 
 		val pitch = event.pitch
@@ -126,7 +127,7 @@ object BurrowGuessAPI {
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
-		if(!isEnabled()) return
+		if(!enabled) return
 		if(event.type != ParticleTypes.DRIPPING_LAVA) return
 
 		val location = event.location
@@ -276,6 +277,4 @@ object BurrowGuessAPI {
 		dingIndex = 0
 		dingSlope.clear()
 	}
-
-	private fun isEnabled() = DianaAPI.isActive() && config.burrowGuess
 }

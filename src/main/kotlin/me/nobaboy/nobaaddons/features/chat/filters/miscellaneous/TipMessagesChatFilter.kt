@@ -15,11 +15,11 @@ object TipMessagesChatFilter : IChatFilter {
 		"Slow down! You can only use /tip every few seconds."
 	)
 
+	override val enabled = config.hideTipMessages
+
 	override fun shouldFilter(message: String): Boolean =
 		alreadyTippedPattern.matches(message) ||
 			message.startsWith("You tipped") ||
 			message.startsWith("You were tipped") ||
 			message in tipMessages
-
-	override fun isEnabled() = config.hideTipMessages
 }

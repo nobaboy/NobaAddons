@@ -7,10 +7,9 @@ import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class CoordsCommand : IChatCommand {
-	override val name: String = "coords"
+	override val enabled: Boolean get() = NobaConfigManager.config.chat.chatCommands.party.coords
 
-	override val isEnabled: Boolean
-		get() = NobaConfigManager.config.chat.chatCommands.party.coords
+	override val name: String = "coords"
 
 	override fun run(ctx: ChatContext) {
 		val coords = LocationUtils.playerCoords()

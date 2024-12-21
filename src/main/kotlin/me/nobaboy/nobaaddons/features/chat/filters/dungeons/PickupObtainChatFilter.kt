@@ -13,6 +13,8 @@ object PickupObtainChatFilter : IChatFilter {
 	private val allowedItems = setOf("Wither Key", "Blood Key")
 	private val deniedItems = setOf("Superboom TNT", "Revive Stone", "Premium Flesh", "Beating Heart", "Vitamin Death", "Optical Lens")
 
+	override val enabled = SkyBlockIsland.DUNGEONS.inIsland() && config.pickupObtainMessage
+
 	override fun shouldFilter(message: String): Boolean {
 		itemPickupPattern.matchMatcher(message) {
 			return config.allowKeyMessage && group("item") !in allowedItems
@@ -31,6 +33,4 @@ object PickupObtainChatFilter : IChatFilter {
 
 		return false
 	}
-
-	override fun isEnabled() = SkyBlockIsland.DUNGEONS.inIsland() && config.pickupObtainMessage
 }
