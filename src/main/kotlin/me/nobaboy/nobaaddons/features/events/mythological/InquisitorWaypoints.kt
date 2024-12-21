@@ -27,6 +27,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object InquisitorWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
+	private val enabled: Boolean get() = DianaAPI.isActive() && config.alertInquisitor
 
 	private val inquisitorDigUpPattern by Regex("^[A-z ]+! You dug out a Minos Inquisitor!").fromRepo("mythological.inquisitor")
 	private val inquisitorDeadPattern by Regex("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): Inquisitor dead!").fromRepo("mythological.inquisitor_dead")
@@ -51,7 +52,7 @@ object InquisitorWaypoints {
 	}
 
 	private fun onSecondPassed() {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		inquisitorsNearby.removeIf { !it.isAlive || EntityUtils.getEntityById(it.id) !== it }
 		waypoints.removeIf { it.spawnTime.elapsedSince() > 75.seconds }
@@ -67,7 +68,7 @@ object InquisitorWaypoints {
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		if(inquisitorDigUpPattern matches message) checkInquisitor()
 
@@ -138,6 +139,4 @@ object InquisitorWaypoints {
 	}
 
 	data class Inquisitor(val spawner: String, val location: NobaVec, val spawnTime: Timestamp)
-
-	private fun isEnabled() = DianaAPI.isActive() && config.alertInquisitor
 }

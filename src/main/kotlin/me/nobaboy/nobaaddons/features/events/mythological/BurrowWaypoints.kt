@@ -24,6 +24,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object BurrowWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
+	private val enabled: Boolean get() = DianaAPI.isActive()
 
 	private val playerLocation get() = LocationUtils.playerLocation()
 
@@ -86,7 +87,7 @@ object BurrowWaypoints {
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		when {
 			message.startsWith(" ☠ You were killed by") -> burrows.remove(BurrowAPI.mobBurrow)
@@ -103,7 +104,7 @@ object BurrowWaypoints {
 	}
 
 	private fun renderWaypoints(context: WorldRenderContext) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		suggestNearestWarp()
 		renderInquisitorWaypoints(context)
@@ -201,7 +202,7 @@ object BurrowWaypoints {
 		copy(y = y + 1.0).getBlockAt() in validBlocks
 
 	fun useNearestWarp() {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		nearestWarp?.let {
 			if(it.used) return
@@ -216,6 +217,4 @@ object BurrowWaypoints {
 		guessLocation = null
 		burrows.clear()
 	}
-
-	private fun isEnabled() = DianaAPI.isActive()
 }

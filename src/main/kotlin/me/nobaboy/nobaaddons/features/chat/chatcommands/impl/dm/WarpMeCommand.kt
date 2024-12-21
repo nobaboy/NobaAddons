@@ -8,10 +8,9 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class WarpMeCommand : IChatCommand {
-	override val name: String = "warpme"
+	override val enabled: Boolean get() = NobaConfigManager.config.chat.chatCommands.dm.warpMe
 
-	override val isEnabled: Boolean
-		get() = NobaConfigManager.config.chat.chatCommands.dm.warpMe
+	override val name: String = "warpme"
 
 	override fun run(ctx: ChatContext) {
 		val playerName = MCUtils.playerName ?: return

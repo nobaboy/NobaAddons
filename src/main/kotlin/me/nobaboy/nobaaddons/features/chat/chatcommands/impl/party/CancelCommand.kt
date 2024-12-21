@@ -5,10 +5,9 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chat.chatcommands.IChatCommand
 
 class CancelCommand : IChatCommand {
-	override val name: String = "cancel"
+	override val enabled: Boolean get() = NobaConfigManager.config.chat.chatCommands.party.warp
 
-	override val isEnabled: Boolean
-		get() = NobaConfigManager.config.chat.chatCommands.party.warp
+	override val name: String = "cancel"
 
 	override val bypassCooldown: Boolean = true
 

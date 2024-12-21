@@ -21,12 +21,11 @@ object TipMessagesChatFilter : IChatFilter {
 	// TODO change these to regexes
 	private val tipReceivedPrefix by "You were tipped".fromRepo("filter.tips.received_prefix")
 	private val tipSentPrefix by "You tipped".fromRepo("filter.tips.sent_prefix")
+	override val enabled = config.hideTipMessages
 
 	override fun shouldFilter(message: String): Boolean =
 		alreadyTippedPattern matches message ||
 			message.startsWith(tipSentPrefix) ||
 			message.startsWith(tipReceivedPrefix) ||
 			message in tipMessages
-
-	override fun isEnabled() = config.hideTipMessages
 }

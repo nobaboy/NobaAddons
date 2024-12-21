@@ -25,6 +25,7 @@ import net.minecraft.text.Text
 
 object CorpseLocator {
 	private val config get() = NobaConfigManager.config.mining.glaciteMineshaft
+	private val enabled: Boolean get() = SkyBlockIsland.MINESHAFT.inIsland() && config.corpseLocator
 
 	private val chatCoordsPattern by Regex(
 		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
@@ -40,14 +41,14 @@ object CorpseLocator {
 
 	private fun onSecondPassed(event: SecondPassedEvent) {
 		val client = event.client
-		if(!isEnabled() || client.player == null) return
+		if(!enabled || client.player == null) return
 
 		getCorpses(client.player!!)
 		shareCorpse(client.player!!)
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		chatCoordsPattern.onFullMatch(message) {
 			val username = groups["username"]!!.value
@@ -91,7 +92,7 @@ object CorpseLocator {
 	}
 
 	private fun checkCorpse(entity: ArmorStandEntity) {
-		if(!isEnabled()) return
+		if(!enabled) return
 		if(entity.isInvisible) return
 		if(!entity.shouldShowArms()) return
 		//? if >=1.21.2 {
@@ -123,6 +124,4 @@ object CorpseLocator {
 	}
 
 	data class Corpse(val entity: ArmorStandEntity, val type: CorpseType, var seen: Boolean = false, var shared: Boolean = false)
-
-	private fun isEnabled() = SkyBlockIsland.MINESHAFT.inIsland() && config.corpseLocator
 }

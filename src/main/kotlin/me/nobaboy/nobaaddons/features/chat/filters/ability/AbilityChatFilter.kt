@@ -11,6 +11,8 @@ object AbilityChatFilter : IChatFilter {
 	private val abilityDamagePattern by Regex("Your (?<ability>[A-z' ]+) hit [0-9]+ (enemies|enemy) for [0-9,.]+ damage\\.").fromRepo("filter.abilities.damage")
 	private val abilityCooldownPattern by Regex("This ability is on cooldown for [0-9]+s\\.").fromRepo("filter.abilities.cooldown")
 
+	override val enabled: Boolean get() = SkyBlockAPI.inSkyBlock
+
 	override fun shouldFilter(message: String): Boolean {
 		abilityDamagePattern.onFullMatch(message) {
 			val ability = groups["ability"]?.value ?: return@onFullMatch
@@ -31,6 +33,4 @@ object AbilityChatFilter : IChatFilter {
 
 		return false
 	}
-
-	override fun isEnabled(): Boolean = SkyBlockAPI.inSkyBlock
 }

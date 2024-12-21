@@ -15,6 +15,8 @@ object PickupObtainChatFilter : IChatFilter {
 
 	private val items by Items::class.fromRepository("filters/pickup")
 
+	override val enabled = SkyBlockIsland.DUNGEONS.inIsland() && config.pickupObtainMessage
+
 	override fun shouldFilter(message: String): Boolean {
 		itemPickupPattern.onFullMatch(message) {
 			return config.allowKeyMessage && groups["item"]!!.value !in (items?.allowed ?: emptySet())
@@ -33,8 +35,6 @@ object PickupObtainChatFilter : IChatFilter {
 
 		return false
 	}
-
-	override fun isEnabled() = SkyBlockIsland.DUNGEONS.inIsland() && config.pickupObtainMessage
 
 	private data class Items(val allowed: Set<String>, val denied: Set<String>)
 }

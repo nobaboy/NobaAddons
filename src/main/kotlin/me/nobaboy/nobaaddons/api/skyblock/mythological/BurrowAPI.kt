@@ -27,6 +27,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object BurrowAPI {
 	private val config get() = NobaConfigManager.config.events.mythological
+	private val enabled: Boolean get() = DianaAPI.isActive() && config.findNearbyBurrows
 
 	private val burrowDugPattern by Regex("^(You dug out a Griffin Burrow!|You finished the Griffin burrow chain!) \\(\\d/4\\)").fromRepo("mythological.dig_burrow")
 	private val mobDugPattern by Regex("^[A-z ]+! You dug out (?:a )?[A-z ]+!").fromRepo("mythological.dig_mob")
@@ -50,7 +51,7 @@ object BurrowAPI {
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		val particleType = BurrowParticleType.getParticleType(event) ?: return
 
@@ -73,7 +74,7 @@ object BurrowAPI {
 	}
 
 	private fun onChatMessage(message: String) {
-		if(!isEnabled()) return
+		if(!enabled) return
 
 		when {
 			burrowDugPattern.matches(message) -> {
@@ -89,7 +90,7 @@ object BurrowAPI {
 
 	@Suppress("SameReturnValue")
 	private fun onBlockClick(player: PlayerEntity, location: NobaVec): ActionResult {
-		if(!isEnabled()) return ActionResult.PASS
+		if(!enabled) return ActionResult.PASS
 		if(!DianaAPI.hasSpadeInHand(player)) return ActionResult.PASS
 		if(location.getBlockAt() != Blocks.GRASS_BLOCK) return ActionResult.PASS
 
@@ -152,6 +153,4 @@ object BurrowAPI {
 		var type: BurrowType = BurrowType.UNKNOWN,
 		var found: Boolean = false
 	)
-
-	private fun isEnabled() = DianaAPI.isActive() && config.findNearbyBurrows
 }

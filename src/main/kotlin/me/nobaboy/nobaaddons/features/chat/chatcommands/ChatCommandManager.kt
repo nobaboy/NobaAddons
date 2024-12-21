@@ -18,7 +18,7 @@ abstract class ChatCommandManager : CooldownManager() {
 	}
 
 	fun getCommands(enabledOnly: Boolean = false): List<IChatCommand> =
-		if(enabledOnly) commands.filter { it.isEnabled } else commands
+		if(enabledOnly) commands.filter { it.enabled } else commands
 
 	protected open fun matchMessage(message: String): MatchResult? =
 		pattern.matchEntire(message)
@@ -37,7 +37,7 @@ abstract class ChatCommandManager : CooldownManager() {
 		synchronized(lock) {
 			val ctx = getContext(message) ?: return
 			val cmd = commands.asSequence()
-				.filter { it.isEnabled }
+				.filter { it.enabled }
 				.firstOrNull {
 					it.name.lowercaseEquals(ctx.command) ||
 						it.aliases.any { alias ->

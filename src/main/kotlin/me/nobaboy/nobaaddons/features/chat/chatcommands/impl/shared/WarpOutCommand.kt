@@ -4,13 +4,12 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chat.chatcommands.IChatCommand
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 
-class WarpOutCommand(private var command: String, private val enabled: () -> Boolean) : IChatCommand {
+class WarpOutCommand(private var command: String, private val categoryEnabled: () -> Boolean) : IChatCommand {
+	override val enabled: Boolean get() = categoryEnabled()
+
 	override val name: String = "warpout"
 
 	override val usage: String = "warpout [username]"
-
-	override val isEnabled: Boolean
-		get() = enabled()
 
 	override fun run(ctx: ChatContext) {
 		if(command == "msg") command = "msg ${ctx.user}"
