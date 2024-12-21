@@ -9,27 +9,27 @@ import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.repo.RepoObject.Companion.fromRepository
-import me.nobaboy.nobaaddons.utils.RegexUtils.map
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
-import java.util.regex.Pattern
 
 object PetAPI {
+	val constants by PetConstants::class.fromRepository("pets/constants")
+
 	private val petsMenuPattern by Regex("^Pets(?: \\(\\d+/\\d+\\) )?").fromRepo("pets.menu_title")
 	private val petNamePattern by Regex("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)").fromRepo("pets.name")
 
 	// TODO cache autopet rule pets to allow for getting complete data
-	private val autopetPattern = Pattern.compile(
+	private val autopetPattern by Regex(
 		"^§cAutopet §eequipped your §7\\[Lvl (?<level>\\d+)] (?:§.\\[.*] )?§(?<rarity>.)(?<name>[A-z ]+)(?:§. ✦)?§e! §a§lVIEW RULE"
-	)
+	).fromRepo("pets.autopet")
 
-	val constants by PetConstants::class.fromRepository("pets/constants")
-	private val petUnequipPattern = Pattern.compile("^You despawned your (?<name>[A-z ]+)(?: ✦|\$)")
+	private val petUnequipPattern by Regex("^You despawned your (?<name>[A-z ]+)(?: ✦|\$)").fromRepo("pets.despawn")
 
 	private var inPetsMenu = false
 
@@ -68,15 +68,15 @@ object PetAPI {
 	}
 
 	private fun onChatMessage(message: String) {
-		petUnequipPattern.matchMatcher(message.cleanFormatting()) {
+		petUnequipPattern.onFullMatch(message.cleanFormatting()) {
 			changePet(null)
 		}
 
-		autopetPattern.matchMatcher(message) {
-			val name = group("name")
+		autopetPattern.onFullMatch(message) {
+			val name = groups["name"]?.value ?: return
 			val id = name.uppercase().replace(" ", "_")
-			val level = group("level").toInt()
-			val rarity = ItemRarity.getByColorCode(group("rarity")[0])
+			val level = groups["level"]?.value?.toInt() ?: return
+			val rarity = ItemRarity.getByColorCode(groups["rarity"]?.value?.first() ?: return)
 			if(rarity == ItemRarity.UNKNOWN) NobaAddons.LOGGER.warn("Failed to get pet rarity from Autopet chat message: '$message'")
 			val xpRarity = if(id == "BINGO") ItemRarity.COMMON else rarity
 
@@ -126,7 +126,7 @@ object PetAPI {
 		if(item.id != "PET") return null
 
 		val petInfo: PetInfo = NobaAddons.GSON.fromJson(item.petInfo, PetInfo::class.java)
-		val name = petNamePattern.map(itemStack.name.string) { groups["name"]?.value } ?: itemStack.name.string
+		val name = petNamePattern.getGroupFromFullMatch(itemStack.name.string, "name") ?: itemStack.name.string
 		val rarity = ItemRarity.getRarity(petInfo.tier)
 
 		return PetData(

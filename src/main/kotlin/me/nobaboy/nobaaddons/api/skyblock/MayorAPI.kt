@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.HTTPUtils
-import me.nobaboy.nobaaddons.utils.RegexUtils.map
+import me.nobaboy.nobaaddons.utils.RegexUtils.mapFullMatch
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -80,7 +80,7 @@ object MayorAPI {
 		if(event.inventory.title != "Calendar and Events") return
 
 		val item = event.inventory.items.values.firstOrNull {
-			mayorHeadPattern.map(it.name.string.cleanFormatting()) {
+			mayorHeadPattern.mapFullMatch(it.name.string.cleanFormatting()) {
 				groups["name"]?.value == "Jerry"
 			} == true
 		} ?: return

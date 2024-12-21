@@ -24,6 +24,7 @@ import org.eclipse.jgit.transport.URIish
 import org.jetbrains.annotations.Blocking
 import java.io.File
 import java.io.FileReader
+import java.nio.file.Path
 import java.time.Instant
 import java.util.concurrent.CompletableFuture
 import kotlin.jvm.java
@@ -36,7 +37,11 @@ TODO: Bundle a copy of the repo in the mod jar for users that can't clone it? Si
 object Repo {
 	private val config get() = NobaConfigManager.config.repo
 
-	val REPO_DIRECTORY: File = NobaAddons.CONFIG_DIR.resolve("repo").toFile()
+	val REPO_DIRECTORY: File = run {
+		System.getProperty("nobaaddons.repoDir")?.let { return@run Path.of(it).toFile() }
+		NobaAddons.CONFIG_DIR.resolve("repo").toFile()
+	}
+
 	val GSON: Gson = GsonBuilder()
 		.registerTypeAdapter(Instant::class.java, InstantTypeAdapter())
 		.registerTypeAdapter(NobaVec::class.java, NobaVecAdapter())
@@ -67,7 +72,7 @@ object Repo {
 	}
 
 	private fun onTick() {
-		if(MCUtils.world == null) return
+		if(MCUtils.player == null) return
 		if(sentRepoWarning) return
 		if(!updateFailed) return
 

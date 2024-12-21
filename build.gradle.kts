@@ -86,6 +86,7 @@ loom {
 	runConfigs.all {
 		ideConfigGenerated(stonecutter.current.isActive)
 		runDir = "../../run"
+		vmArgs("-Dnobaaddons.repoDir=${rootProject.layout.projectDirectory.dir("repo")}")
 	}
 }
 

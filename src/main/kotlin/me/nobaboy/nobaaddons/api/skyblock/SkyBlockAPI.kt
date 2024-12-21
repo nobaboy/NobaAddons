@@ -3,22 +3,21 @@ package me.nobaboy.nobaaddons.api.skyblock
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
-import me.nobaboy.nobaaddons.utils.RegexUtils.firstMatcher
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchAll
+import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import net.hypixel.data.type.GameType
 import net.hypixel.data.type.ServerType
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
-import java.util.regex.Pattern
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
-	private val zonePattern = Pattern.compile("^ [⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$")
-	private val currencyPattern = Pattern.compile("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*")
+	private val zonePattern by Regex("^ [⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("zone")
+	private val currencyPattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("currency")
 
 	var currentGame: ServerType? = null
 		private set
@@ -73,17 +72,17 @@ object SkyBlockAPI {
 	// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
 	private fun getZone() {
 		val scoreboard = ScoreboardUtils.getSidebarLines()
-		zonePattern.firstMatcher(scoreboard) {
-			currentZone = group("zone")
+		zonePattern.firstFullMatch(scoreboard) {
+			currentZone = groups["zone"]?.value
 		}
 	}
 
 	// This can be further expanded to include other types like Pelts, North Stars, etc.
 	private fun getCurrencies() {
 		val scoreboard = ScoreboardUtils.getSidebarLines()
-		currencyPattern.matchAll(scoreboard) {
-			val currency = group("currency")
-			val amount = group("amount").replace(",", "").toLongOrNull()
+		currencyPattern.firstFullMatch(scoreboard) {
+			val currency = groups["currency"]?.value ?: return
+			val amount = (groups["amount"]?.value ?: "0").replace(",", "").toLongOrNull()
 
 			when(currency) {
 				"Bits" -> bits = amount

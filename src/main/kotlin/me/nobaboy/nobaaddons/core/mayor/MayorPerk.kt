@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.core.mayor
 
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.foxyExtraEventPattern
 import me.nobaboy.nobaaddons.data.json.Perk
-import me.nobaboy.nobaaddons.utils.RegexUtils.map
+import me.nobaboy.nobaaddons.utils.RegexUtils.mapFullMatch
 
 enum class MayorPerk(val perkName: String) {
 	// Aatrox
@@ -92,7 +92,7 @@ enum class MayorPerk(val perkName: String) {
 				"Spooky Festival" to "Extra Event (Spooky)"
 			)
 
-			return foxyExtraEventPattern.map(this.description) {
+			return foxyExtraEventPattern.mapFullMatch(this.description) {
 				foxyExtraEventPairs.entries.firstOrNull { it.key == groups["event"]?.value }?.value
 			} ?: this.name
 		}

@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.request
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
@@ -48,6 +47,7 @@ object PartyAPI {
 		// Transfer
 		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left").fromRepo("party.transfer_leave"),
 		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)").fromRepo("party.transfer"),
+		Regex("^(?:\\[[A-Z+]+] )?[A-z0-9_]+ has (?:promoted|demoted) (?:\\[[A-Z+]+] )?[A-z0-9_]+ to Party (?:Member|Moderator|Leader)").fromRepo("party.promote_demote"),
 	)
 
 	private var refreshPartyList = false
@@ -90,6 +90,7 @@ object PartyAPI {
 		}
 	}
 
+	// This method is only called from debug commands, and as such is fine being untranslated.
 	fun listMembers() {
 		val party = this.party
 		if(party == null || party.members.isEmpty()) {
@@ -100,7 +101,7 @@ object PartyAPI {
 		val partySize = party.members.size
 		ChatUtils.addMessage("Party Members ($partySize):")
 		party.members.forEach { member ->
-			ChatUtils.addMessage(buildText {
+			ChatUtils.addMessage(prefix = false) {
 				append(" - ".toText().formatted(Formatting.AQUA))
 				append(member.name.toText().styled {
 					val uuid = member.uuid.toString().toText().formatted(Formatting.GRAY)
@@ -111,7 +112,7 @@ object PartyAPI {
 				} else if(member.isMod) {
 					append(" (Mod)".toText().formatted(Formatting.BLUE))
 				}
-			}, prefix = false)
+			}
 		}
 	}
 }
