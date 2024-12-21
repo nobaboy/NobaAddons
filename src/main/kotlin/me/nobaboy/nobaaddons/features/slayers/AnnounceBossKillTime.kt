@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 
 object AnnounceBossKillTime {
-	private val config = NobaConfigManager.config.slayers.announceBossKillTime
+	private val config get() = NobaConfigManager.config.slayers.announceBossKillTime
 	private val enabled: Boolean get() = SlayerAPI.currentQuest != null && config.enabled
 
 	fun init() {

@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object MiniBossAlert {
 	private val config get() = NobaConfigManager.config.slayers.miniBossAlert
-	private val enabled get() = SlayerAPI.currentQuest?.spawned == false && config.enabled
+	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false && config.enabled
 
 	fun init() {
 		SlayerEvents.MINI_BOSS_SPAWN.register(this::onMiniBossSpawn)
