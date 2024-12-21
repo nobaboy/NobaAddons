@@ -15,7 +15,7 @@ object TipMessagesChatFilter : IChatFilter {
 		"Slow down! You can only use /tip every few seconds."
 	)
 
-	override val enabled = config.hideTipMessages
+	override val enabled: Boolean get() = config.hideTipMessages
 
 	override fun shouldFilter(message: String): Boolean =
 		alreadyTippedPattern.matches(message) ||

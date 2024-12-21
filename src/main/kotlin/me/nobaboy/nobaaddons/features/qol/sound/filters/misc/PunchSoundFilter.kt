@@ -7,8 +7,7 @@ import net.minecraft.util.Identifier
 object PunchSoundFilter : ISoundFilter {
 	private val SOUND = Identifier.ofVanilla("entity.player.attack.weak")
 
-	override val enabled: Boolean
-		get() = config.mutePunch
+	override val enabled: Boolean get() = config.mutePunch
 
 	override fun onSound(sound: SoundEvents.AllowSound) {
 		if(sound.id == SOUND) sound.cancel()
