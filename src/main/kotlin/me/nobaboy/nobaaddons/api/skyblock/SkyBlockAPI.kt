@@ -71,15 +71,15 @@ object SkyBlockAPI {
 	// I originally planned to make an enum including all the zones but after realising
 	// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
 	private fun getZone() {
-		val scoreboard = ScoreboardUtils.getSidebarLines()
-		zonePattern.firstFullMatch(scoreboard) {
-			currentZone = groups["zone"]?.value
+		val scoreboard = ScoreboardUtils.getScoreboardLines()
+			zonePattern.firstFullMatch(scoreboard) {
+				currentZone = groups["zone"]?.value
 		}
 	}
 
 	// This can be further expanded to include other types like Pelts, North Stars, etc.
 	private fun getCurrencies() {
-		val scoreboard = ScoreboardUtils.getSidebarLines()
+		val scoreboard = ScoreboardUtils.getScoreboardLines()
 		currencyPattern.firstFullMatch(scoreboard) {
 			val currency = groups["currency"]?.value ?: return
 			val amount = (groups["amount"]?.value ?: "0").replace(",", "").toLongOrNull()
