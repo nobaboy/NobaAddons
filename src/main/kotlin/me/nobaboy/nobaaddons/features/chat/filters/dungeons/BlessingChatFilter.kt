@@ -29,7 +29,7 @@ object BlessingChatFilter : IChatFilter {
 	private lateinit var blessingType: BlessingType
 	private val stats = mutableListOf<Stat>()
 
-	override val enabled = SkyBlockIsland.DUNGEONS.inIsland() && config.blessingMessage.enabled
+	override val enabled: Boolean get() = SkyBlockIsland.DUNGEONS.inIsland() && config.blessingMessage.enabled
 
 	override fun shouldFilter(message: String): Boolean {
 		val filterMode = config.blessingMessage
