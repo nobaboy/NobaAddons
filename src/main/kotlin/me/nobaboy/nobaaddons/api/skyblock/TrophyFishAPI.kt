@@ -43,7 +43,7 @@ object TrophyFishAPI {
 			val item = event.inventory.items[it] ?: return@forEach
 			if(item.item != Items.PLAYER_HEAD) return@forEach
 
-			val trophy = TrophyFish.FISH.firstOrNull { it.name == item.name.string.cleanFormatting() } ?: return@forEach
+			val trophy = TrophyFish.get(item.name.string.cleanFormatting()) ?: return@forEach
 			val rarities = getCountFromOdgerStack(item).toMutableMap()
 				.also { TrophyFishRarity.entries.forEach { e -> if(e !in it) it.put(e, 0) } }
 				.let { EnumMap(it) }
