@@ -15,22 +15,20 @@ class RepoObjectArray<T : Any>(val path: String, val cls: Class<T>) : IRepoObjec
 	operator fun getValue(instance: Any, property: KProperty<*>): List<T> = instances
 
 	override fun load() {
-		val file = Repo.REPO_DIRECTORY.toPath().resolve(if(path.endsWith(".json")) path else "$path.json")
-		val data = file.toFile().readJson(JsonArray::class.java)
-		instances = data.map { adapt(it) }
+		instances = Repo.REPO_DIRECTORY.resolve(this.path)
+			.readJson(JsonArray::class.java)
+			.map { adapt(it) }
 	}
 
 	/**
-	 * Ugly hack to force GSON to load the correct type
+	 * Loads the correct class type by wrapping the given [JsonElement] in a stream to re-load through GSON
 	 */
 	private fun adapt(json: JsonElement): T {
-		val stream = ByteArrayInputStream(json.toString().toByteArray())
+		val stream = ByteArrayInputStream(json.toString().toByteArray()) // .close() is a noop, so no need to wrap in use { }
 		return InputStreamReader(stream).use { Repo.GSON.fromJson(it, cls) }
 	}
 
-	override fun toString(): String {
-		return "RepoObjectArray(value=$instances, repoPath=$path, class=$cls)"
-	}
+	override fun toString(): String = "RepoObjectArray(value=$instances, repoPath=$path, class=$cls)"
 
 	companion object {
 		/**
@@ -45,9 +43,9 @@ class RepoObjectArray<T : Any>(val path: String, val cls: Class<T>) : IRepoObjec
 		 * val ITEMS by DataClass::class.listFromRepository("feature_name")
 		 * ```
 		 */
-		fun <T : Any> KClass<T>.listFromRepository(path: String): RepoObjectArray<T> {
+		fun <T : Any> KClass<T>.listFromRepository(file: String): RepoObjectArray<T> {
 			require(isData) { "The used class must be a data class" }
-			return RepoObjectArray(path, java).also(Repo::register)
+			return RepoObjectArray(file, java).also(Repo::register)
 		}
 	}
 }

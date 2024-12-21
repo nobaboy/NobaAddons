@@ -6,20 +6,18 @@ import kotlin.io.path.nameWithoutExtension
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-class RepoObjectDirectory<T>(private val dir: String, private val cls: Class<T>) : IRepoObject {
+class RepoObjectDirectory<T>(private val path: String, private val cls: Class<T>) : IRepoObject {
 	@Volatile private var instances: Map<String, T> = emptyMap()
 
 	@Suppress("unused")
 	operator fun getValue(instance: Any, property: KProperty<*>): Map<String, T> = instances
 
 	override fun load() {
-		val files = Repo.REPO_DIRECTORY.toPath().resolve(this.dir).listDirectoryEntries("*.json")
+		val files = Repo.REPO_DIRECTORY.toPath().resolve(this.path).listDirectoryEntries("*.json")
 		instances = files.associate { it.nameWithoutExtension to it.toFile().readJson(cls) }
 	}
 
-	override fun toString(): String {
-		return "RepoObjectDirectory(value=$instances, repoPath=$dir, class=$cls)"
-	}
+	override fun toString(): String = "RepoObjectDirectory(value=$instances, repoPath=$path, class=$cls)"
 
 	companion object {
 		/**

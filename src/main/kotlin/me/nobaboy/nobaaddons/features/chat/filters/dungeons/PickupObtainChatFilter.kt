@@ -11,7 +11,7 @@ object PickupObtainChatFilter : IChatFilter {
 	private val itemPickupPattern by Regex("A (?<item>[A-z ]+) was picked up!").fromRepo("filter.pickup.item")
 	private val playerObtainPattern by Regex("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!").fromRepo("filter.pickup.player_obtain")
 
-	private val items by Items::class.fromRepository("filters/pickup")
+	private val items by Items::class.fromRepository("filters/pickup.json")
 
 	override val enabled: Boolean get() = SkyBlockIsland.DUNGEONS.inIsland() && config.pickupObtainMessage
 

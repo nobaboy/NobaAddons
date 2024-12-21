@@ -1,28 +1,20 @@
 package me.nobaboy.nobaaddons.repo
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.repo.Repo.readJson
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-class RepoObject<T : Any>(val file: String, val cls: Class<T>) : IRepoObject {
+class RepoObject<T : Any>(val path: String, val cls: Class<T>) : IRepoObject {
 	@Volatile private var instance: T? = null
 
-	@Suppress("UNCHECKED_CAST", "unused")
+	@Suppress("unused")
 	operator fun getValue(instance: Any, property: KProperty<*>): T? = this.instance
 
 	override fun load() {
-		val file = Repo.REPO_DIRECTORY.resolve(this.file)
-		if(file.exists()) {
-			instance = file.readJson(cls)
-		} else {
-			NobaAddons.LOGGER.warn("Can't load repository file $file as it doesn't exist")
-		}
+		instance = Repo.REPO_DIRECTORY.resolve(path).readJson(cls)
 	}
 
-	override fun toString(): String {
-		return "RepoObject(instance=$instance, repoFile=$file, class=$cls)"
-	}
+	override fun toString(): String = "RepoObject(value=$instance, repoPath=$path, class=$cls)"
 
 	companion object {
 		/**
@@ -33,13 +25,12 @@ class RepoObject<T : Any>(val file: String, val cls: Class<T>) : IRepoObject {
 		 * ## Example
 		 *
 		 * ```kt
-		 * // .json will be appended to the file name automatically if it isn't present
-		 * val DATA by DataClass::class.fromRepository("feature/data")
+		 * val DATA by DataClass::class.fromRepository("feature/data.json")
 		 * ```
 		 */
 		fun <T : Any> KClass<T>.fromRepository(file: String): RepoObject<T> {
 			require(isData) { "The used class must be a data class" }
-			return RepoObject(file.let { if(!it.endsWith(".json")) "$it.json" else it }, java).also(Repo::register)
+			return RepoObject(file, java).also(Repo::register)
 		}
 	}
 }
