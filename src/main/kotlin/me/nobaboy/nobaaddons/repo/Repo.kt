@@ -104,6 +104,10 @@ object Repo {
 	private fun updateInternal() {
 		runCatching {
 			if(!config.autoUpdate) return@runCatching
+			if(REPO_DIRECTORY.exists() && !REPO_DIRECTORY.resolve(".git").exists()) {
+				NobaAddons.LOGGER.warn("Repository directory already exists but isn't a git directory; can't automatically update it")
+				return@runCatching
+			}
 			if(!REPO_DIRECTORY.exists()) clone() else pull()
 		}.onFailure {
 			sentRepoWarning = false
@@ -112,7 +116,7 @@ object Repo {
 		}.onSuccess { updateFailed = false }
 
 		if(REPO_DIRECTORY.exists()) {
-			commit = git.repository.resolve("HEAD").name
+			commit = runCatching { git.repository.resolve("HEAD").name }.getOrNull()
 			reloadObjects()
 		}
 
