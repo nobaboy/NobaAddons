@@ -5,12 +5,13 @@ import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -20,16 +21,15 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
-import java.util.regex.Pattern
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 object TemporaryWaypoint {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.temporaryWaypoints
 
-	private val chatCoordsPattern = Pattern.compile(
+	private val chatCoordsPattern by Regex(
 		"^\\[[0-9]+](?: .)? ?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
-	)
+	).fromRepo("temporary_waypoints.coordinates")
 
 	private val waypoints = mutableListOf<Waypoint>()
 
@@ -42,16 +42,16 @@ object TemporaryWaypoint {
 	private fun onChatMessage(message: String) {
 		if(!isEnabled()) return
 
-		chatCoordsPattern.matchMatcher(message) {
-			val username = group("username")
+		chatCoordsPattern.onFullMatch(message) {
+			val username = groups["username"]!!.value
 			if(username == MCUtils.playerName) return
 
-			val x = group("x").toDouble()
-			val y = group("y").toDouble()
-			val z = group("z").toDouble()
+			val x = groups["x"]!!.value.toDouble()
+			val y = groups["y"]!!.value.toDouble()
+			val z = groups["z"]!!.value.toDouble()
 			val location = NobaVec(x, y, z).roundToBlock()
 
-			val info = group("info").take(32)
+			val info = groups["info"]?.value?.take(32) ?: ""
 
 			val text = "$username$info"
 			waypoints.add(Waypoint(location, text, Timestamp.now(), config.expirationTime.seconds))

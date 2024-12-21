@@ -15,7 +15,7 @@ object RegexUtils {
 	inline fun <T> Regex.mapFullMatch(text: String, consumer: MatchResult.() -> T): T? = matchEntire(text)?.let(consumer)
 
 	/**
-	 * Executes [consumer] for each partial match of the current regex on [text]
+	 * Executes [consumer] for each partial match of the current pattern on [text]
 	 */
 	inline fun Regex.forEachMatch(text: String, consumer: MatchResult.() -> Unit) = findAll(text).forEach(consumer)
 
@@ -31,9 +31,17 @@ object RegexUtils {
 	inline fun Regex.firstFullMatch(lines: Collection<String>, consumer: MatchResult.() -> Unit) =
 		lines.firstNotNullOfOrNull { matchEntire(it) }?.let(consumer)
 
-	fun Iterable<Regex>.anyFullMatch(text: String): Boolean {
-		return this.firstNotNullOfOrNull { it.matchEntire(text) } != null
-	}
+	/**
+	 * Executes [consumer] with the first full match from any of the patterns in the current iterable
+	 */
+	inline fun Iterable<Regex>.firstFullMatch(text: String, consumer: MatchResult.() -> Unit) =
+		this.firstNotNullOfOrNull { it.matchEntire(text) }?.let(consumer)
+
+	/**
+	 * Returns `true` if any pattern in the current iterable fully matches the provided string
+	 */
+	fun Iterable<Regex>.anyFullMatch(text: String): Boolean =
+		this.firstNotNullOfOrNull { it.matchEntire(text) } != null
 
 	/**
 	 * Returns the value of the requested group from the given [text] if it fully matches the current pattern

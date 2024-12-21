@@ -9,9 +9,10 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysTimes
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.Timestamp
@@ -25,13 +26,12 @@ import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Formatting
 import net.minecraft.util.hit.BlockHitResult
-import java.util.regex.Pattern
 
 // TODO: Requires actual testing in dungeons
 object SimonSaysTimer {
 	private val config get() = NobaConfigManager.config.dungeons.simonSaysTimer
 
-	private val completionPattern = Pattern.compile("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)")
+	private val completionPattern by Regex("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)").fromRepo("dungeons.complete_device")
 	private val buttonVec = NobaVec(110, 121, 91)
 
 	private var startTime = Timestamp.distantPast()
@@ -104,8 +104,8 @@ object SimonSaysTimer {
 	private fun onChatMessage(message: String) {
 		if(!isEnabled() || !buttonPressed || deviceCompleted) return
 
-		completionPattern.matchMatcher(message) {
-			val username = group("username")
+		completionPattern.onFullMatch(message) {
+			val username = groups["username"]!!.value
 			if(username != MCUtils.playerName) return
 
 			completionTime = Timestamp.now()
@@ -115,6 +115,7 @@ object SimonSaysTimer {
 		}
 	}
 
+	@Suppress("SameReturnValue")
 	private fun onInteract(player: PlayerEntity, hitResult: BlockHitResult): ActionResult {
 		if(!isEnabled() || buttonPressed || player != MCUtils.player || hitResult.blockPos.toNobaVec() != buttonVec) return ActionResult.PASS
 
