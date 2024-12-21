@@ -28,7 +28,7 @@
   "nobaaddons.screen.keyBinds": "Key Binds",
   "nobaaddons.screen.keyBinds.command.tooltip": "The command to send when the key bind is pressed. The command must not start with a '/'",
 
-  "nobaaddons.repo.updateFailed": "Failed to update data repository! Some features may not work properly until this is fixed; you may be able to resolve this issue with %s. If this issue persists, please join the Discord and ask for support.",
+  "nobaaddons.repo.updateFailed": "Failed to update mod data repository! Some features may not work properly until this is fixed; you may be able to resolve this issue with %s. If this issue persists, please join the Discord and ask for support.",
   "nobaaddons.repo.updateStarted": "Updating repository",
   "nobaaddons.repo.updated": "Repository updated",
   "nobaaddons.repo.version.notLoaded": "The repository hasn't been loaded yet!",
