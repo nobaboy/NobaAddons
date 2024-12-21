@@ -40,7 +40,7 @@ object PetDebugCommands : Group("pet", executeRoot = true) {
 				append(pet.name.formatted(pet.rarity.formatting ?: Formatting.WHITE))
 			},
 			"ID" to pet.id,
-			"XP" to pet.xp,
+			"XP" to pet.xp.addSeparators(),
 			"Level" to pet.level,
 			"Held Item" to pet.heldItem,
 			"UUID" to pet.uuid,
