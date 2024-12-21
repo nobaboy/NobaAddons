@@ -7,14 +7,13 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.IChatCommand
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class AllInviteCommand : IChatCommand {
+	override val enabled: Boolean get() = NobaConfigManager.config.chat.chatCommands.party.allInvite
+
 	override val name: String = "allinvite"
 
 	override val aliases = listOf("allinv")
 
 	override val usage: String = "(allinvite|allinv)"
-
-	override val isEnabled: Boolean
-		get() = NobaConfigManager.config.chat.chatCommands.party.allInvite
 
 	override fun run(ctx: ChatContext) {
 		if(PartyAPI.party?.isLeader != true) return

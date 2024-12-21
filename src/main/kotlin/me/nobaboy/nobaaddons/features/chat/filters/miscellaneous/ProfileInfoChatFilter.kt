@@ -11,6 +11,7 @@ object ProfileInfoChatFilter : IChatFilter {
 		Pattern.compile("^Profile ID: [A-z0-9-]+")
 	)
 
+	override val enabled = SkyBlockAPI.inSkyBlock && config.hideProfileInfo
+
 	override fun shouldFilter(message: String): Boolean = profileInfoPatterns.anyMatches(message)
-	override fun isEnabled() = SkyBlockAPI.inSkyBlock && config.hideProfileInfo
 }

@@ -7,5 +7,7 @@ enum class ChatFilterOption {
 	COMPACT,
 	HIDDEN;
 
+	val enabled: Boolean get() = this != SHOWN
+
 	override fun toString(): String = name.title()
 }

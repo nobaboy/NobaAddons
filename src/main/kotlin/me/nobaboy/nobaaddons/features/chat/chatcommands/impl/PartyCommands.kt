@@ -15,8 +15,8 @@ import java.util.regex.Pattern
 object PartyCommands : ChatCommandManager() {
 	private val config get() = NobaConfigManager.config.chat.chatCommands.party
 
-	override val enabled get() = config.enabled
-	override val pattern =
+	override val enabled: Boolean get() = config.enabled
+	override val pattern: Pattern =
 		Pattern.compile("^Party > (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?")
 
 	init {

@@ -20,6 +20,8 @@ object HealerOrbChatFilter : IChatFilter {
 		"^◕ You picked up a (?<orb>[A-z ]+) from (?<player>[A-z0-9_]+) healing you for (?<health>[0-9.]+)❤ and granting you (?<buff>[0-9+%]+) (?<stat>[A-z ]+) for (?<duration>[0-9]+) seconds\\."
 	)
 
+	override val enabled = SkyBlockIsland.DUNGEONS.inIsland() && config.healerOrbMessage.enabled
+
 	override fun shouldFilter(message: String): Boolean {
 		val filterMode = config.healerOrbMessage
 
@@ -56,6 +58,4 @@ object HealerOrbChatFilter : IChatFilter {
 		append(statType.toText())
 		append(" for $duration seconds from picking up $player's $orb.")
 	}
-
-	override fun isEnabled() = SkyBlockIsland.DUNGEONS.inIsland() && isEnabled(config.healerOrbMessage)
 }
