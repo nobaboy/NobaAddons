@@ -16,7 +16,7 @@ import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacke
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
-	private val zonePattern by Regex("^ [⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("zone")
+	private val zonePattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("zone")
 	private val currencyPattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("currency")
 
 	var currentGame: ServerType? = null
@@ -72,8 +72,8 @@ object SkyBlockAPI {
 	// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
 	private fun getZone() {
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
-			zonePattern.firstFullMatch(scoreboard) {
-				currentZone = groups["zone"]?.value
+		zonePattern.firstFullMatch(scoreboard) {
+			currentZone = groups["zone"]?.value
 		}
 	}
 

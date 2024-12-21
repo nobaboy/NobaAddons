@@ -96,7 +96,8 @@ object PetAPI {
 		val constants = this.constants ?: return 0.0
 		val offset = constants.petRarityOffset[rarity] ?: 0
 		val levels = constants.petLevels.slice(offset until offset + maxLevel - 1)
-		return levels.slice(0 until level).sum().toDouble()
+		// FIXME
+		return runCatching { levels.slice(0 until level).sum().toDouble() }.getOrDefault(0.0)
 	}
 
 	fun levelFromXp(xp: Double, rarity: ItemRarity, maxLevel: Int = 100): Int {

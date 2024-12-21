@@ -9,7 +9,12 @@ import me.nobaboy.nobaaddons.utils.NobaVec
 
 // TODO none of this has actually been tested to work
 class NobaVecAdapter : TypeAdapter<NobaVec>() {
-	override fun write(writer: JsonWriter, value: NobaVec) {
+	override fun write(writer: JsonWriter, value: NobaVec?) {
+		if(value == null) {
+			writer.nullValue()
+			return
+		}
+
 		writer.beginArray()
 		writer.value(value.x)
 		writer.value(value.y)

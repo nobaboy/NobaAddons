@@ -28,8 +28,7 @@ class RepoObject<T : Any>(val file: String, val cls: Class<T>) : IRepoObject {
 		/**
 		 * Creates a new [RepoObject] supplying an instance of [T] loaded from the mod's repository
 		 *
-		 * Note that the supplied value will be nullable, as it may not be loaded yet (or potentially at all,
-		 * depending on user conditions)
+		 * The supplied value may be null if the repository failed to load.
 		 *
 		 * ## Example
 		 *

@@ -12,16 +12,9 @@ object StringUtils {
 
 	fun String.startsWith(list: List<String>): Boolean = list.any { this.startsWith(it) }
 
-	fun String.title(): String {
-		return this.lowercase().split(" ").joinToString(" ") {
-			if(it.contains("/")) {
-				it.split("/").joinToString("/") { word ->
-					word.replaceFirstChar { firstChar -> firstChar.uppercase() }
-				}
-			} else {
-				it.replaceFirstChar { firstChar -> firstChar.uppercase() }
-			}
-		}
+	fun String.title(): String = lowercase().split(" ").joinToString(" ") {
+		if(it == "of" || it == "the") it
+		else it.replaceFirstChar(Char::uppercase)
 	}
 
 	fun String.cleanFormatting(): String = Formatting.strip(this)!!

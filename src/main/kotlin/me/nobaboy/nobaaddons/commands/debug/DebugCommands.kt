@@ -83,6 +83,7 @@ object DebugCommands : Group("debug") {
 				"Mode" to location.mode.getOrNull(),
 				"Map" to location.map.getOrNull(),
 				"Detected Island" to SkyBlockAPI.currentIsland,
+				"Zone" to SkyBlockAPI.currentZone,
 			)
 		}
 	}
