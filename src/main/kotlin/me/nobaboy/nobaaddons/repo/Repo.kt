@@ -143,6 +143,10 @@ object Repo {
 
 	@Blocking
 	private fun pull() {
+		if(!GIT_DIRECTORY.exists()) {
+			NobaAddons.LOGGER.warn("Can't pull repo changes as the repo directory isn't managed by git")
+			return
+		}
 		NobaAddons.LOGGER.debug("Pulling repository changes")
 
 		// why is kotlin transforming 'getURIs()' to 'urIs'?
