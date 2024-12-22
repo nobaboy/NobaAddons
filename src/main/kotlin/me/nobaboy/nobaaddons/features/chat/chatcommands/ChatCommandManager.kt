@@ -11,7 +11,7 @@ abstract class ChatCommandManager : CooldownManager() {
 	private val lock = Object()
 
 	protected abstract val enabled: Boolean
-	protected abstract val pattern: Pattern
+	protected abstract val pattern: Regex
 
 	protected fun register(command: IChatCommand) {
 		commands.add(command)
@@ -20,14 +20,14 @@ abstract class ChatCommandManager : CooldownManager() {
 	fun getCommands(enabledOnly: Boolean = false): List<IChatCommand> =
 		if(enabledOnly) commands.filter { it.enabled } else commands
 
-	protected open fun matchMessage(message: String): Matcher? =
-		pattern.matcher(message).takeIf { it.matches() }
+	protected open fun matchMessage(message: String): MatchResult? =
+		pattern.matchEntire(message)
 
 	private fun getContext(message: String): ChatContext? {
 		val match = matchMessage(message) ?: return null
-		val user = match.group("username")
-		val command = match.group("command")
-		val args = match.group("argument")?.split(" ") ?: emptyList()
+		val user = match.groups["username"]?.value!!
+		val command = match.groups["command"]?.value!!
+		val args = match.groups["argument"]?.value?.split(" ") ?: emptyList()
 		return ChatContext(user, command, args, message)
 	}
 

@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.commands.debug.DebugCommands
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.commands.internal.Group
@@ -156,5 +157,6 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 		}
 	}
 
+	val repo = RepoCommands
 	val debug = DebugCommands
 }

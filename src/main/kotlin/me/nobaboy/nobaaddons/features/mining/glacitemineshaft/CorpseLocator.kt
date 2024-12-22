@@ -6,10 +6,11 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.RegexUtils.findMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -21,15 +22,14 @@ import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.text.Text
-import java.util.regex.Pattern
 
 object CorpseLocator {
 	private val config get() = NobaConfigManager.config.mining.glaciteMineshaft
 	private val enabled: Boolean get() = SkyBlockIsland.MINESHAFT.inIsland() && config.corpseLocator
 
-	private val chatCoordsPattern = Pattern.compile(
+	private val chatCoordsPattern by Regex(
 		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
-	)
+	).fromRepo("chat_coordinates")
 
 	private val corpses = mutableListOf<Corpse>()
 
@@ -50,14 +50,14 @@ object CorpseLocator {
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
 
-		chatCoordsPattern.findMatcher(message) {
-			val username = group("username")
+		chatCoordsPattern.onFullMatch(message) {
+			val username = groups["username"]!!.value
 			if(username == MCUtils.playerName) return
 
 			val vec = NobaVec(
-				group("x").toInt(),
-				group("y").toInt(),
-				group("z").toInt()
+				groups["x"]!!.value.toInt(),
+				groups["y"]!!.value.toInt(),
+				groups["z"]!!.value.toInt()
 			)
 
 			corpses.firstOrNull { it.entity.getNobaVec().distance(vec) <= 5 }?.shared = true

@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
 import net.minecraft.util.Formatting
-import net.minecraft.util.function.ValueLists
 import java.awt.Color
 
 enum class NobaColor(val colorCode: Char, private val color: Color, private val formatting: Formatting) {
@@ -22,13 +21,13 @@ enum class NobaColor(val colorCode: Char, private val color: Color, private val 
 	YELLOW('e', Color(255, 255, 85), Formatting.YELLOW),
 	WHITE('f', Color(255, 255, 255), Formatting.WHITE);
 
-	val next by lazy { BY_ID.apply(ordinal + 1) }
+	val next: NobaColor by lazy { BY_ID.apply(ordinal + 1) }
 	val rgb get() = toColor().rgb
 
 	fun toColor(): Color = color
 	fun toFormatting(): Formatting = formatting
 
 	companion object {
-		val BY_ID = ValueLists.createIdToValueFunction(NobaColor::ordinal, entries.toTypedArray(), ValueLists.OutOfBoundsHandling.WRAP)
+		val BY_ID = EnumUtils.ordinalMapper<NobaColor>()
 	}
 }

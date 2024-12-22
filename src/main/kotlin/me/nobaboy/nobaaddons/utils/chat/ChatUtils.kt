@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.events.CooldownTickEvent
 import me.nobaboy.nobaaddons.events.CooldownTickEvent.Companion.ticks
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import java.util.LinkedList
@@ -17,7 +18,7 @@ object ChatUtils {
 		CooldownTickEvent.EVENT.register(this::processCommandQueue)
 	}
 
-	fun processCommandQueue(event: CooldownTickEvent) {
+	private fun processCommandQueue(event: CooldownTickEvent) {
 		if(MCUtils.player == null) {
 			commandQueue.clear()
 			return
@@ -34,18 +35,22 @@ object ChatUtils {
 		MCUtils.networkHandler?.sendChatMessage(message)
 	}
 
-	fun addMessage(message: Text, prefix: Boolean = true, overlay: Boolean = false) {
+	fun addMessage(message: Text, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.GRAY) {
 		val text = buildText {
 			if(prefix) {
 				append(NobaAddons.PREFIX)
-				formatted(Formatting.AQUA)
+				color?.let { formatted(it) }
 			}
 			append(message)
 		}
 		MCUtils.player?.sendMessage(text, overlay)
 	}
 
-	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false) {
-		addMessage(Text.literal(message), prefix, overlay)
+	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.GRAY) {
+		addMessage(Text.literal(message), prefix, overlay, color)
+	}
+
+	inline fun addMessage(prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.GRAY, builder: MutableText.() -> Unit) {
+		addMessage(Text.empty().apply(builder), prefix, overlay, color)
 	}
 }

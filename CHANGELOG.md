@@ -16,20 +16,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `/noba refill` any item from sacks - celeste
   - This is primarily useful when paired with command keybinds
 - Support for 1.21.4 - celeste
+- Option to make Sea Creature Alert also notify when catching a Carrot King (since not many people fish for it) - celeste
+- Option to make Sea Creature Alert also send a message in party chat - celeste
 
 ### Changed
 
-- Info Box and Key Binds have their custom screens now - nobaboy
-- Key Binds now allows use of mouse buttons (not including the primary Left, Right, and Middle mouse buttons) - nobaboy
+- The mod will now pull some data from a repository - celeste
+- Redesigned keybind screen and moved info boxes to their own custom screen - nobaboy
+- Keybinds now allows use of mouse buttons (not including the primary Left, Right, and Middle mouse buttons) - nobaboy
 - `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
+- Mod chat message prefix & colors - celeste
 
 ### Fixed
 
 - Temporary Waypoints not getting parsed because of player emblems - nobaboy
-- MayorAPI not resetting once an election ends caused by a typo - nobaboy
+- MayorAPI not resetting once an election ends due to a typo - nobaboy
 - PetAPI resetting current pet upon clicking any item other than pets in the pets menu - nobaboy
 - PetAPI thinking you don't have a pet spawned until opening the pets menu once - celeste
 - Announce Rare Drops announcing the same item more than once if it is moved around your inventory or swap islands - nobaboy
+- Pet info overlays now properly render in the EXP Share menu - celeste
 
 ## 0.1.0-Alpha.10 - 2024-12-02
 

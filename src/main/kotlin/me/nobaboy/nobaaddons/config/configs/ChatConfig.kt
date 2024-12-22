@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.core.MobRarity
+import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 
 class ChatConfig {
@@ -48,7 +48,7 @@ class ChatConfig {
 		var hideSeaCreatureSpawnMessage: Boolean = false
 
 		@SerialEntry
-		var seaCreatureMaximumRarity: MobRarity = MobRarity.RARE
+		var seaCreatureMaximumRarity: Rarity = Rarity.RARE
 
 		@SerialEntry
 		var blessingMessage: ChatFilterOption = ChatFilterOption.SHOWN

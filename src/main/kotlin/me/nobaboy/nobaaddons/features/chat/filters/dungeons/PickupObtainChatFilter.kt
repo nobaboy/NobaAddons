@@ -3,34 +3,36 @@ package me.nobaboy.nobaaddons.features.chat.filters.dungeons
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
-import java.util.regex.Pattern
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.RepoObject.Companion.fromRepository
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 
 object PickupObtainChatFilter : IChatFilter {
-	private val itemPickupPattern = Pattern.compile("A (?<item>[A-z ]+) was picked up!")
-	private val playerObtainPattern = Pattern.compile("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!")
+	private val itemPickupPattern by Regex("A (?<item>[A-z ]+) was picked up!").fromRepo("filter.pickup.item")
+	private val playerObtainPattern by Regex("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!").fromRepo("filter.pickup.player_obtain")
 
-	private val allowedItems = setOf("Wither Key", "Blood Key")
-	private val deniedItems = setOf("Superboom TNT", "Revive Stone", "Premium Flesh", "Beating Heart", "Vitamin Death", "Optical Lens")
+	private val items by Items::class.fromRepository("filters/pickup.json")
 
 	override val enabled: Boolean get() = SkyBlockIsland.DUNGEONS.inIsland() && config.pickupObtainMessage
 
 	override fun shouldFilter(message: String): Boolean {
-		itemPickupPattern.matchMatcher(message) {
-			return config.allowKeyMessage && group("item") !in allowedItems
+		itemPickupPattern.onFullMatch(message) {
+			return config.allowKeyMessage && groups["item"]!!.value !in (items?.allowed ?: emptySet())
 		}
 
-		playerObtainPattern.matchMatcher(message) {
-			val item = group("item")
+		playerObtainPattern.onFullMatch(message) {
+			val item = groups["item"]!!.value
 
 			return when {
-				item in allowedItems -> !config.allowKeyMessage
-				item.startsWith("Blessing") || item in deniedItems -> true
-				config.allow5050ItemMessage && item !in deniedItems -> false
+				item in (items?.allowed ?: emptySet()) -> !config.allowKeyMessage
+				item.startsWith("Blessing") || item in (items?.denied ?: emptySet()) -> true
+				config.allow5050ItemMessage && item !in (items?.denied ?: emptySet()) -> false
 				else -> false
 			}
 		}
 
 		return false
 	}
+
+	private data class Items(val allowed: Set<String>, val denied: Set<String>)
 }

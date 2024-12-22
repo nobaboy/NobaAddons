@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.utils.items
 
-import me.nobaboy.nobaaddons.core.ItemRarity
+import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.nbtCompound
@@ -37,14 +37,14 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val stars: Int by CacheOf(this::nbt) { nbt.getInt("upgrade_level") }
 	val powerScroll: String? by CacheOf(this::nbt) { nbt.get("power_ability_scroll")?.asString() }
 
-	val rarity: ItemRarity by CacheOf(this::lore) {
+	val rarity: Rarity by CacheOf(this::lore) {
 		val match = lore.lines()
 			.reversed()
 			.asSequence()
 			.map { it.string }
 			.firstNotNullOfOrNull(RARITY_PATTERN::matchEntire)
-			?: return@CacheOf ItemRarity.UNKNOWN
-		ItemRarity.getRarity(match.groups["rarity"]!!.value)
+			?: return@CacheOf Rarity.UNKNOWN
+		Rarity.getRarity(match.groups["rarity"]!!.value)
 	}
 
 	val id: String by CacheOf(this::nbt) { nbt.getString("id") }

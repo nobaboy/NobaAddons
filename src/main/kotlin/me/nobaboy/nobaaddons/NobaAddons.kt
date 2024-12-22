@@ -38,12 +38,14 @@ import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import org.slf4j.Logger
@@ -53,10 +55,11 @@ object NobaAddons : ClientModInitializer {
 	const val MOD_ID = "nobaaddons"
 	val VERSION: String = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
 
-	val PREFIX: MutableText get() = Text.empty()
-		.append(Text.translatable("nobaaddons.name"))
-		.append(" > ")
-		.formatted(Formatting.BLUE, Formatting.BOLD)
+	val PREFIX: Text get() = buildText {
+		append(Text.translatable("nobaaddons.name"))
+		append(" ⟫ ".toText().formatted(Formatting.DARK_GRAY))
+		formatted(Formatting.BLUE, Formatting.BOLD)
+	}
 
 	val LOGGER: Logger = LogUtils.getLogger()
 	val CONFIG_DIR: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
@@ -70,6 +73,7 @@ object NobaAddons : ClientModInitializer {
 	override fun onInitializeClient() {
 		NobaConfigManager.init()
 		PersistentCache.init()
+		Repo.init()
 
 		/* region APIs */
 		InventoryAPI.init()

@@ -6,6 +6,8 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
+import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import net.minecraft.text.Text
 
 object ChatCategory {
@@ -94,8 +96,10 @@ object ChatCategory {
 				)
 				cycler(
 					Text.translatable("nobaaddons.config.chat.filters.seaCreatureMaximumRarity"),
+					Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip"),
 					default = defaults.chat.filters.seaCreatureMaximumRarity,
-					property = config.chat.filters::seaCreatureMaximumRarity
+					property = config.chat.filters::seaCreatureMaximumRarity,
+					onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray()
 				)
 				// endregion
 

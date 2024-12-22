@@ -6,10 +6,12 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.core.fishing.TrophyFish
+import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 
 object FishingCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
@@ -42,7 +44,7 @@ object FishingCategory {
 				boolean(
 					Text.translatable("nobaaddons.config.fishing.trophyFishing.modifyChatMessages"),
 					Text.translatable("nobaaddons.config.fishing.trophyFishing.modifyChatMessages.tooltip",
-						TrophyFishChat.format(TrophyFish.BLOBFISH, TrophyFishRarity.BRONZE, 1234, 2345)),
+						TrophyFishChat.format(Text.literal("Blobfish").formatted(Formatting.WHITE), TrophyFishRarity.BRONZE, 1234, 2345)),
 					default = defaults.fishing.trophyFishing.modifyChatMessages,
 					property = config.fishing.trophyFishing::modifyChatMessages,
 				)
@@ -64,7 +66,8 @@ object FishingCategory {
 				cycler(
 					Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity"),
 					default = defaults.fishing.seaCreatureAlert.minimumRarity,
-					property = config.fishing.seaCreatureAlert::minimumRarity
+					property = config.fishing.seaCreatureAlert::minimumRarity,
+					onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray()
 				)
 				boolean(
 					Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare"),

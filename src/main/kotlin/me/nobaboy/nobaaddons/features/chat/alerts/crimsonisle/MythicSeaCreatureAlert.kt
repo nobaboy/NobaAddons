@@ -13,8 +13,8 @@ object MythicSeaCreatureAlert : IAlert {
 	override val enabled: Boolean get() = SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.mythicSeaCreatureSpawn
 
 	override fun shouldAlert(message: String): Boolean {
-		val seaCreature = SeaCreature.getBySpawnMessage(message)
-		if(seaCreature != SeaCreature.THUNDER && seaCreature != SeaCreature.LORD_JAWBUS) return false
+		val seaCreature = SeaCreature.getBySpawnMessage(message) ?: return false
+		if(seaCreature.id != "THUNDER" && seaCreature.id != "LORD_JAWBUS") return false
 
 		val location = LocationUtils.playerCoords()
 		val randomString = StringUtils.randomAlphanumeric()

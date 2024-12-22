@@ -49,6 +49,11 @@ dependencies {
 		modRuntimeOnly(dependencyNotation)
 	}
 
+	fun includeImplementation(dependencyNotation: String, mod: Boolean = false, configuration: Action<ExternalModuleDependency> = Action { }) {
+		if(mod) modImplementation(dependencyNotation, configuration) else implementation(dependencyNotation, configuration)
+		include(dependencyNotation, configuration)
+	}
+
 	minecraft("com.mojang:minecraft:${mcVersion}")
 	mappings("net.fabricmc:yarn:${mcVersion}+build.${deps["yarn_build"]}:v2")
 	modImplementation("net.fabricmc:fabric-loader:${deps["fabric_loader"]}")
@@ -59,13 +64,10 @@ dependencies {
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
-	// CelestialConfig
-	implementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}".also { include(it) })
+	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
+	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
+	includeImplementation("org.eclipse.jgit:org.eclipse.jgit:${deps["jgit"]}")
 
-	implementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
-	include("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
-
-	// Hypixel Mod API
 	implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
 	devEnvOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
 
@@ -84,6 +86,7 @@ loom {
 	runConfigs.all {
 		ideConfigGenerated(stonecutter.current.isActive)
 		runDir = "../../run"
+		vmArgs("-Dnobaaddons.repoDir=${rootProject.layout.projectDirectory.dir("repo")}")
 	}
 }
 
