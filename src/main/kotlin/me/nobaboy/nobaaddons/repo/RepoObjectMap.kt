@@ -39,5 +39,7 @@ class RepoObjectMap<T>(private val path: String, private val cls: Class<T>) : IR
 			require(isData) { "The used class must be a data class" }
 			return RepoObjectMap(path, java).also(Repo::register)
 		}
+
+		// TODO add single file map
 	}
 }

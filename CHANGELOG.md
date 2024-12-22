@@ -30,6 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Added a fix for Skyblocker's transparent head item feature on 1.21.1 and 1.21.3 - celeste
 - Temporary Waypoints not getting parsed because of player emblems - nobaboy
 - MayorAPI not resetting once an election ends due to a typo - nobaboy
 - PetAPI resetting current pet upon clicking any item other than pets in the pets menu - nobaboy
