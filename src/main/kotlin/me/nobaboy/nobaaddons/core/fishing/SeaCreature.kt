@@ -1,10 +1,12 @@
 package me.nobaboy.nobaaddons.core.fishing
 
+import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.repo.RepoObjectArray.Companion.listFromRepository
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 
+@Serializable
 data class SeaCreature(
 	val id: String,
 	val spawnMessage: String,
@@ -15,7 +17,7 @@ data class SeaCreature(
 	val displayName: String by lazy { id.replace("_", "").title() }
 
 	companion object {
-		val CREATURES by SeaCreature::class.listFromRepository("fishing/sea_creatures.json")
+		val CREATURES by Repo.createList("fishing/sea_creatures.json", serializer())
 
 		fun getBySpawnMessage(message: String): SeaCreature? = CREATURES.firstOrNull { it.spawnMessage == message }
 	}

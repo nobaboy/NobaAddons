@@ -1,26 +1,23 @@
 package me.nobaboy.nobaaddons.repo
 
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.serializer
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.repo.Repo.readJson
+import me.nobaboy.nobaaddons.repo.serializers.RegexKSerializer
 import net.fabricmc.loader.api.FabricLoader
 import kotlin.reflect.KProperty
 
 /**
- * Shared constants storage for basic types like strings and regex patterns.
+ * Shared constants storage for common types like strings and regex patterns.
  */
 object RepoValues {
-	sealed class Values<T>(private val file: String, private val knownKeys: Set<String>?) : IRepoObject {
+	sealed class Values<T>(private val file: String, private val knownKeys: Set<String>?, private val valueSerializer: KSerializer<T>) : IRepoObject {
 		@Volatile private var values: Map<String, T> = mutableMapOf()
 
-		protected abstract fun mapValues(entry: Map.Entry<String, JsonElement>): T
-
 		override fun load() {
-			values = Repo.REPO_DIRECTORY.resolve(file)
-				.readJson(JsonObject::class.java)
-				.asMap()
-				.mapValues(this::mapValues)
+			val data = Repo.readAsJson(file) as JsonObject
+			values = data.mapValues { Repo.JSON.decodeFromJsonElement(valueSerializer, it.value) }
 			if(FabricLoader.getInstance().isDevelopmentEnvironment) warnMissingRepoKeys()
 		}
 
@@ -38,23 +35,19 @@ object RepoValues {
 	/**
 	 * Shared repo storage for [Regex] patterns
 	 */
-	object Regexes : Values<Regex>("data/regexes.json", Repo.knownRegexKeys) {
-		override fun mapValues(value: Map.Entry<String, JsonElement>): Regex = Regex(value.value.asString)
-	}
+	object Regexes : Values<Regex>("data/regexes.json", Repo.knownRegexKeys, RegexKSerializer)
 
 	/**
 	 * Shared repo storage for [String]s
 	 */
-	object Strings : Values<String>("data/strings.json", Repo.knownStringKeys) {
-		override fun mapValues(value: Map.Entry<String, JsonElement>): String = value.value.asString
-	}
+	object Strings : Values<String>("data/strings.json", Repo.knownStringKeys, serializer())
 
 	/**
 	 * Deferred property supplier of a field from a repository [Values] instance
 	 */
 	class Entry<T>(private val key: String, private val fallback: T, private val supplier: Values<T>) {
 		fun get(): T = supplier[key] ?: fallback
-		@Suppress("unused") operator fun getValue(instance: Any, property: KProperty<*>): T = get()
+		@Suppress("unused") operator fun getValue(instance: Any?, property: KProperty<*>): T = get()
 	}
 
 	/**
@@ -62,6 +55,6 @@ object RepoValues {
 	 */
 	class Entries<T>(private val entries: Collection<Entry<T>>) {
 		fun get(): List<T> = entries.map { it.get() }
-		@Suppress("unused") operator fun getValue(instance: Any, property: KProperty<*>): List<T> = get()
+		@Suppress("unused") operator fun getValue(instance: Any?, property: KProperty<*>): List<T> = get()
 	}
 }
