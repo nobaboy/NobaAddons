@@ -15,7 +15,7 @@ object StringUtils {
 	fun String.title(): String = lowercase().split(" ").joinToString(" ") {
 		if(it == "of" || it == "the") it
 		else it.replaceFirstChar(Char::uppercase)
-	}.replaceFirstChar(Char::uppercase) // make sure that the first character is always uppercase if the string starts with 'the' or 'of'
+	}.replaceFirstChar(Char::uppercase) // ensure that the first character is always uppercase, even if the string starts with 'the' or 'of'
 
 	fun String.cleanFormatting(): String = Formatting.strip(this)!!
 

@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `/noba refill` any item from sacks - celeste
   - This is primarily useful when paired with command keybinds
 - Support for 1.21.4 - celeste
+- Option to make Sea Creature Alert notify when catching some creatures that aren't as rare (like Carrot King) - celeste
+- Option to make Sea Creature Alert also send a message in party chat - celeste
 
 ### Changed
 

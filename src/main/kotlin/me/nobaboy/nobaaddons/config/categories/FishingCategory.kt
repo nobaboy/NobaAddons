@@ -6,6 +6,8 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
+import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import net.minecraft.text.Text
@@ -64,7 +66,8 @@ object FishingCategory {
 				cycler(
 					Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity"),
 					default = defaults.fishing.seaCreatureAlert.minimumRarity,
-					property = config.fishing.seaCreatureAlert::minimumRarity
+					property = config.fishing.seaCreatureAlert::minimumRarity,
+					onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray()
 				)
 				boolean(
 					Text.translatable("nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare"),

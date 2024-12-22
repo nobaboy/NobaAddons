@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.core.ItemRarity
+import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.data.json.PetInfo
@@ -76,9 +76,9 @@ object PetAPI {
 			val name = groups["name"]?.value ?: return
 			val id = name.uppercase().replace(" ", "_")
 			val level = groups["level"]?.value?.toInt() ?: return
-			val rarity = ItemRarity.getByColorCode(groups["rarity"]?.value?.first() ?: return)
-			if(rarity == ItemRarity.UNKNOWN) NobaAddons.LOGGER.warn("Failed to get pet rarity from Autopet chat message: '$message'")
-			val xpRarity = if(id == "BINGO") ItemRarity.COMMON else rarity
+			val rarity = Rarity.getByColorCode(groups["rarity"]?.value?.first() ?: return)
+			if(rarity == Rarity.UNKNOWN) NobaAddons.LOGGER.warn("Failed to get pet rarity from Autopet chat message: '$message'")
+			val xpRarity = if(id == "BINGO") Rarity.COMMON else rarity
 
 			val pet = PetData(name, id, xpFromLevel(level, xpRarity, if(id == "GOLDEN_DRAGON") 200 else 100), rarity, active = true)
 			changePet(pet)
@@ -92,14 +92,14 @@ object PetAPI {
 		currentPet = pet
 	}
 
-	fun xpFromLevel(level: Int, rarity: ItemRarity, maxLevel: Int = 100): Double {
+	fun xpFromLevel(level: Int, rarity: Rarity, maxLevel: Int = 100): Double {
 		val constants = this.constants ?: return 0.0
 		val offset = constants.petRarityOffset[rarity] ?: 0
 		val levels = constants.petLevels.slice(offset until offset + maxLevel - 1)
 		return runCatching { levels.slice(0 until level - 1).sum().toDouble() }.getOrDefault(0.0)
 	}
 
-	fun levelFromXp(xp: Double, rarity: ItemRarity, maxLevel: Int = 100): Int {
+	fun levelFromXp(xp: Double, rarity: Rarity, maxLevel: Int = 100): Int {
 		val constants = this.constants ?: return 0
 		val offset = constants.petRarityOffset[rarity] ?: 0
 		val levels = constants.petLevels.slice(offset until offset + maxLevel - 1)
@@ -127,7 +127,7 @@ object PetAPI {
 
 		val petInfo: PetInfo = NobaAddons.GSON.fromJson(item.petInfo, PetInfo::class.java)
 		val name = petNamePattern.getGroupFromFullMatch(itemStack.name.string, "name") ?: itemStack.name.string
-		val rarity = ItemRarity.getRarity(petInfo.tier)
+		val rarity = Rarity.getRarity(petInfo.tier)
 
 		return PetData(
 			name,
@@ -141,5 +141,5 @@ object PetAPI {
 		)
 	}
 
-	data class PetConstants(val petRarityOffset: Map<ItemRarity, Int>, val petLevels: List<Int>, val names: Map<String, String>)
+	data class PetConstants(val petRarityOffset: Map<Rarity, Int>, val petLevels: List<Int>, val names: Map<String, String>)
 }

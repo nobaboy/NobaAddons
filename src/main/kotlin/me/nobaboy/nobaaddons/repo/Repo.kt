@@ -43,6 +43,7 @@ object Repo {
 		System.getProperty("nobaaddons.repoDir")?.let { return@run Path.of(it).toFile() }
 		NobaAddons.CONFIG_DIR.resolve("repo").toFile()
 	}
+	private val GIT_DIRECTORY: File = REPO_DIRECTORY.resolve(".git")
 
 	val GSON: Gson = GsonBuilder()
 		.registerTypeAdapter(Instant::class.java, InstantTypeAdapter())
@@ -50,8 +51,6 @@ object Repo {
 		.create()
 
 	var announceRepoUpdate: Boolean = false
-	var commit: String? = null
-		private set
 	var updateFailed: Boolean = false
 		private set
 	// we want this to be immediately visible to all threads, while the others
@@ -59,9 +58,10 @@ object Repo {
 	@Volatile var loaded: Boolean = false
 		private set
 
-	// note that while this *is* blocking, it shouldn't be too big a concern given it's just a simple status call,
-	// and we only ever use this in a command.
-	val isDirty: Boolean by CacheFor(60.seconds) { !git.status().call().isClean }
+	// note that while these *are* blocking, I'm not too worried about these, given that they don't implicitly make any
+	// network requests of any kind.
+	val isDirty: Boolean by CacheFor(60.seconds) { if(GIT_DIRECTORY.exists()) !git.status().call().isClean else false }
+	val commit: String? by CacheFor(60.seconds) { if(GIT_DIRECTORY.exists()) git.repository.resolve("HEAD").name else null }
 
 	private val git: Git = Git(RepositoryBuilder().setWorkTree(REPO_DIRECTORY).setMustExist(false).build())
 	private val objects: MutableSet<IRepoObject> = mutableSetOf()
@@ -103,12 +103,7 @@ object Repo {
 	@Blocking
 	private fun updateInternal() {
 		runCatching {
-			if(!config.autoUpdate) return@runCatching
-			if(REPO_DIRECTORY.exists() && !REPO_DIRECTORY.resolve(".git").exists()) {
-				NobaAddons.LOGGER.warn("Repository directory already exists but isn't a git directory; can't automatically update it")
-				return@runCatching
-			}
-			if(!REPO_DIRECTORY.exists()) clone() else pull()
+			initOrPullRepo()
 		}.onFailure {
 			sentRepoWarning = false
 			updateFailed = true
@@ -116,7 +111,6 @@ object Repo {
 		}.onSuccess { updateFailed = false }
 
 		if(REPO_DIRECTORY.exists()) {
-			commit = runCatching { git.repository.resolve("HEAD").name }.getOrNull()
 			reloadObjects()
 		}
 
@@ -127,6 +121,16 @@ object Repo {
 	}
 
 	@Blocking
+	private fun initOrPullRepo() {
+		if(!REPO_DIRECTORY.exists()) {
+			clone()
+			return
+		}
+		if(!config.autoUpdate) return
+		pull()
+	}
+
+	@Blocking
 	private fun clone() {
 		NobaAddons.LOGGER.debug("Cloning repository")
 		Git.cloneRepository()
@@ -134,6 +138,7 @@ object Repo {
 			.setURI(config.uri)
 			.setBranch(config.branch)
 			.call()
+			.close()
 	}
 
 	@Blocking

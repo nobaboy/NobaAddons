@@ -1,12 +1,13 @@
 package me.nobaboy.nobaaddons.repo
 
+import com.google.gson.JsonElement
 import me.nobaboy.nobaaddons.repo.Repo.readJson
 import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.nameWithoutExtension
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-class RepoObjectDirectory<T>(private val path: String, private val cls: Class<T>) : IRepoObject {
+class RepoObjectMap<T>(private val path: String, private val cls: Class<T>) : IRepoObject {
 	@Volatile private var instances: Map<String, T> = emptyMap()
 
 	@Suppress("unused")
@@ -21,8 +22,10 @@ class RepoObjectDirectory<T>(private val path: String, private val cls: Class<T>
 
 	companion object {
 		/**
-		 * Creates a [RepoObjectDirectory] instance supplying a [Map] of instances of the target class
-		 * from the mod's data repository
+		 * Creates a [RepoObjectMap] instance supplying a [Map] of instances of the target class
+		 * from the mod's data repository, reading individual JSON files from the provided directory
+		 *
+		 * The directory is not recursively loaded, and will only load `*.json` files at the top level.
 		 *
 		 * The supplied map may be empty if the repository failed to load.
 		 *
@@ -32,9 +35,9 @@ class RepoObjectDirectory<T>(private val path: String, private val cls: Class<T>
 		 * val ITEMS by DataClass::class.mapFromRepositoryDirectory("feature_name")
 		 * ```
 		 */
-		fun <T : Any> KClass<T>.mapFromRepositoryDirectory(path: String): RepoObjectDirectory<T> {
+		fun <T : Any> KClass<T>.mapFromRepositoryDirectory(path: String): RepoObjectMap<T> {
 			require(isData) { "The used class must be a data class" }
-			return RepoObjectDirectory(path, java).also(Repo::register)
+			return RepoObjectMap(path, java).also(Repo::register)
 		}
 	}
 }

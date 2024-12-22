@@ -32,7 +32,6 @@ object RepoValues {
 		}
 
 		operator fun get(key: String): T? = values[key]
-
 		override fun toString(): String = "${this::class.simpleName}($values)"
 	}
 

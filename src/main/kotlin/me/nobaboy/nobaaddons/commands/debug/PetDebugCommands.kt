@@ -8,16 +8,15 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
-import me.nobaboy.nobaaddons.core.ItemRarity
+import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.Rarity.Companion.rarityFormatted
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.formatted
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.text.Text
-import net.minecraft.util.Formatting
 
 @Suppress("unused")
 object PetDebugCommands : Group("pet", executeRoot = true) {
@@ -37,7 +36,7 @@ object PetDebugCommands : Group("pet", executeRoot = true) {
 			"Pet" to buildText {
 				append(pet.rarity.name.toText().bold())
 				append(" ")
-				append(pet.name.formatted(pet.rarity.formatting ?: Formatting.WHITE))
+				append(pet.name.toText().rarityFormatted(pet.rarity))
 			},
 			"ID" to pet.id,
 			"XP" to pet.xp.addSeparators(),
@@ -52,7 +51,7 @@ object PetDebugCommands : Group("pet", executeRoot = true) {
 	val level = Command.command("level") {
 		buildCommand {
 			it.then(ClientCommandManager.argument("xp", DoubleArgumentType.doubleArg())
-				.then(ClientCommandManager.argument("rarity", ItemRarity.ItemRarityArgumentType)
+				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
 					.then(ClientCommandManager.argument("max", IntegerArgumentType.integer(100, 200))
 						.executes(this::execute))
 					.executes(this::execute)))
@@ -60,7 +59,7 @@ object PetDebugCommands : Group("pet", executeRoot = true) {
 
 		executes {
 			val xp = DoubleArgumentType.getDouble(this, "xp")
-			val rarity = ItemRarity.ItemRarityArgumentType.getItemRarity(this, "rarity")
+			val rarity = Rarity.RarityArgumentType.getItemRarity(this, "rarity")
 			val maxLevel = runCatching { IntegerArgumentType.getInteger(this, "max") }.getOrDefault(100)
 			val level = PetAPI.levelFromXp(xp, rarity, maxLevel)
 			source.sendFeedback("$rarity XP ${xp.addSeparators()} -> $level".toText())
@@ -70,13 +69,13 @@ object PetDebugCommands : Group("pet", executeRoot = true) {
 	val xp = Command.command("xp") {
 		buildCommand {
 			it.then(ClientCommandManager.argument("level", IntegerArgumentType.integer(1, 100))
-				.then(ClientCommandManager.argument("rarity", ItemRarity.ItemRarityArgumentType)
+				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
 					.executes(this::execute)))
 		}
 
 		executes {
 			val level = IntegerArgumentType.getInteger(this, "level")
-			val rarity = ItemRarity.ItemRarityArgumentType.getItemRarity(this, "rarity")
+			val rarity = Rarity.RarityArgumentType.getItemRarity(this, "rarity")
 			val xp = PetAPI.xpFromLevel(level, rarity, 200).addSeparators()
 			source.sendFeedback("$rarity LVL $level -> $xp".toText())
 		}

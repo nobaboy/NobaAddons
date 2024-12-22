@@ -1,7 +1,9 @@
 package me.nobaboy.nobaaddons.config
 
 import dev.isxander.yacl3.api.ConfigCategory
+import dev.isxander.yacl3.api.Controller
 import dev.isxander.yacl3.api.LabelOption
+import dev.isxander.yacl3.api.NameableEnum
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionAddable
 import dev.isxander.yacl3.api.OptionDescription
@@ -14,9 +16,12 @@ import dev.isxander.yacl3.api.controller.EnumControllerBuilder
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
+import dev.isxander.yacl3.api.controller.ValueFormatter
+import dev.isxander.yacl3.gui.controllers.cycling.EnumController
 import net.minecraft.text.Text
 import net.minecraft.text.Texts
 import net.minecraft.text.TranslatableTextContent
+import net.minecraft.util.TranslatableOption
 import java.awt.Color
 import kotlin.reflect.KMutableProperty
 
@@ -29,7 +34,25 @@ object NobaConfigUtils {
 		return TickBoxControllerBuilder.create(option)
 	}
 
-	inline fun <reified E : Enum<E>> createCyclerController(option: Option<E>): EnumControllerBuilder<E> {
+	@Suppress("UnstableApiUsage")
+	fun <E : Enum<E>> createLimitedCyclerController(option: Option<E>, onlyInclude: Array<E>) = object : EnumControllerBuilder<E> {
+		// I couldn't get EnumController.createDefaultFormatter() to work, so we're just reimplementing
+		// this ourselves instead.
+		private var formatter: ValueFormatter<E> = ValueFormatter<E> {
+			when(it) {
+				is NameableEnum -> it.displayName
+				is TranslatableOption -> it.text
+				else -> Text.literal(it.name)
+			}
+		}
+
+		override fun enumClass(p0: Class<E>): EnumControllerBuilder<E> = throw UnsupportedOperationException()
+		override fun formatValue(p0: ValueFormatter<E>): EnumControllerBuilder<E> = this.apply { formatter = p0 }
+		override fun build(): Controller<E> = EnumController.createInternal(option, formatter, onlyInclude)
+	}
+
+	inline fun <reified E : Enum<E>> createCyclerController(option: Option<E>, onlyInclude: Array<E>? = null): EnumControllerBuilder<E> {
+		if(onlyInclude != null) return createLimitedCyclerController(option, onlyInclude)
 		return EnumControllerBuilder.create(option).enumClass(E::class.java)
 	}
 
@@ -116,11 +139,17 @@ object NobaConfigUtils {
 		name: Text,
 		description: Text? = findDescription(name),
 		default: E,
-		property: KMutableProperty<E>
+		property: KMutableProperty<E>,
+		onlyInclude: Array<E>? = null,
+		formatter: ValueFormatter<E>? = null,
 	): G {
-		return add(name, description, ::createCyclerController, default, property)
+		val builder: (Option<E>) -> ControllerBuilder<E> = {
+			createCyclerController(it, onlyInclude).apply { if(formatter != null) formatValue(formatter) }
+		}
+		return add(name, description, builder, default, property)
 	}
 
+	@Suppress("UNCHECKED_CAST")
 	inline fun <G : OptionAddable, reified N : Number> G.slider(
 		name: Text,
 		description: Text? = findDescription(name),
@@ -132,15 +161,12 @@ object NobaConfigUtils {
 	): G {
 		val controller: (Option<N>) -> ControllerBuilder<N> = when(N::class) {
 			Integer::class -> { option ->
-				@Suppress("UNCHECKED_CAST")
 				createIntegerSliderController(option as Option<Int>, min.toInt(), max.toInt(), step.toInt()) as ControllerBuilder<N>
 			}
 			Float::class -> { option ->
-				@Suppress("UNCHECKED_CAST")
 				createFloatSliderController(option as Option<Float>, min.toFloat(), max.toFloat(), step.toFloat()) as ControllerBuilder<N>
 			}
 			Double::class -> { option ->
-				@Suppress("UNCHECKED_CAST")
 				createDoubleSliderController(option as Option<Double>, min.toDouble(), max.toDouble(), step.toDouble()) as ControllerBuilder<N>
 			}
 			else -> throw IllegalArgumentException("${N::class.java} does not have a slider controller")
