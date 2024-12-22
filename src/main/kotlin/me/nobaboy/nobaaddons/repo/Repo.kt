@@ -1,13 +1,13 @@
 package me.nobaboy.nobaaddons.repo
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.mojang.util.InstantTypeAdapter
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.repo.adapters.NobaVecAdapter
+import me.nobaboy.nobaaddons.repo.Repo.loaded
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.TextUtils.formatted
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.TextUtils.translatable
@@ -24,12 +24,9 @@ import org.eclipse.jgit.transport.URIish
 import org.jetbrains.annotations.Blocking
 import org.jetbrains.annotations.UnmodifiableView
 import java.io.File
-import java.io.FileReader
 import java.nio.file.Path
-import java.time.Instant
-import java.util.Collections
+import java.util.*
 import java.util.concurrent.CompletableFuture
-import kotlin.jvm.java
 import kotlin.time.Duration.Companion.seconds
 
 /*
@@ -37,6 +34,7 @@ TODO: Bundle a copy of the repo in the mod jar for users that can't clone it? Si
 */
 
 object Repo {
+	private val RELOAD_LOCK = Any()
 	private val config get() = NobaConfigManager.config.repo
 
 	val REPO_DIRECTORY: File = run {
@@ -45,10 +43,16 @@ object Repo {
 	}
 	private val GIT_DIRECTORY: File = REPO_DIRECTORY.resolve(".git")
 
-	val GSON: Gson = GsonBuilder()
-		.registerTypeAdapter(Instant::class.java, InstantTypeAdapter())
-		.registerTypeAdapter(NobaVec::class.java, NobaVecAdapter())
-		.create()
+	@OptIn(ExperimentalSerializationApi::class)
+	val JSON = Json {
+		encodeDefaults = true
+		ignoreUnknownKeys = true
+		decodeEnumsCaseInsensitive = true
+		allowComments = true
+		allowTrailingComma = true
+		allowStructuredMapKeys = true
+		prettyPrint = true
+	}
 
 	var announceRepoUpdate: Boolean = false
 	var updateFailed: Boolean = false
@@ -77,6 +81,61 @@ object Repo {
 		ClientLifecycleEvents.CLIENT_STARTED.register { update() }
 		ClientLifecycleEvents.CLIENT_STOPPING.register { git.repository.close() }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> sentRepoWarning = false }
+	}
+
+	/**
+	 * Creates a new [RepoObject] supplying a single instance of [T] loaded from the mod's repository
+	 *
+	 * The supplied value may be null if the repository failed to load.
+	 *
+	 * ## Example
+	 *
+	 * ```kt
+	 * @Serializable
+	 * data class DataClass(val string: String, val number: Int)
+	 *
+	 * val DATA by Repo.create("feature.json", DataClass.serializer())
+	 * ```
+	 */
+	fun <T : Any> create(path: String, serializer: KSerializer<T>): RepoObject<T> {
+		return RepoObject(path, serializer).also(::register)
+	}
+
+	/**
+	 * Creates a new [RepoObjectArray] supplying a list of [T] instances loaded from a JSON file containing an array
+	 * of objects from the mod's repository
+	 *
+	 * The supplied list may be empty if the repository failed to load.
+	 *
+	 * ## Example
+	 *
+	 * ```kt
+	 * @Serializable
+	 * data class DataClass(val string: String, val number: Int)
+	 *
+	 * val DATA by Repo.createArray("features.json", DataClass.serializer())
+	 * ```
+	 */
+	fun <T : Any> createList(path: String, serializer: KSerializer<T>): RepoObjectArray<T> {
+		return RepoObjectArray(path, serializer).also(::register)
+	}
+
+	/**
+	 * Creates a new [RepoObjectMap] supplying a map of [String] file names to instances of [T]
+	 *
+	 * The supplied map may be empty if the repository failed to load.
+	 *
+	 * ## Example
+	 *
+	 * ```kt
+	 * @Serializable
+	 * data class DataClass(val string: String, val number: Int)
+	 *
+	 * val DATA by Repo.createMapFromDirectory("feature/", DataClass.serializer())
+	 * ```
+	 */
+	fun <T : Any> createMapFromDirectory(path: String, serializer: KSerializer<T>): RepoObjectArray<T> {
+		return RepoObjectArray(path, serializer).also(::register)
 	}
 
 	private fun onTick() {
@@ -166,9 +225,11 @@ object Repo {
 	@Blocking
 	private fun reloadObjects() {
 		NobaAddons.LOGGER.debug("Reloading repository objects")
-		loaded = true
-		objects.forEach {
-			runCatching { it.load() }.onFailure { NobaAddons.LOGGER.error("Repo object failed to reload", it) }
+		synchronized(RELOAD_LOCK) {
+			loaded = true
+			objects.forEach {
+				runCatching { it.load() }.onFailure { NobaAddons.LOGGER.error("Repo object failed to reload", it) }
+			}
 		}
 	}
 
@@ -176,8 +237,10 @@ object Repo {
 	 * Register the supplied [IRepoObject], and loads it if the repository has already been [loaded].
 	 */
 	fun register(obj: IRepoObject) {
-		if(loaded) obj.load()
-		objects.add(obj)
+		synchronized(RELOAD_LOCK) {
+			if(loaded) obj.load()
+			objects.add(obj)
+		}
 	}
 
 	/**
@@ -205,9 +268,16 @@ object Repo {
 	fun String.fromRepo(key: String) = RepoValues.Entry(key, this, RepoValues.Strings).also { knownStringKeys.add(key) }
 
 	/**
-	 * Loads [this] using GSON, returning a built instance of the provided class.
+	 * Reads the file located at the provided [path] relative to the repository directory root,
+	 * and returns its contents as a [String]
 	 */
-	fun <T> File.readJson(cls: Class<T>): T {
-		return FileReader(this).use { GSON.fromJson(it, cls) }
-	}
+	@Blocking
+	fun readAsString(path: String): String = REPO_DIRECTORY.resolve(path).readText()
+
+	/**
+	 * Reads the file located at the provided [path] relative to the repository directory root,
+	 * and returns its contents as a [JsonElement]
+	 */
+	@Blocking
+	fun readAsJson(path: String): JsonElement = JSON.parseToJsonElement(readAsString(path))
 }

@@ -1,17 +1,18 @@
 package me.nobaboy.nobaaddons.features.chat.filters.dungeons
 
+import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.repo.RepoObject.Companion.fromRepository
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 
 object PickupObtainChatFilter : IChatFilter {
 	private val itemPickupPattern by Regex("A (?<item>[A-z ]+) was picked up!").fromRepo("filter.pickup.item")
 	private val playerObtainPattern by Regex("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!").fromRepo("filter.pickup.player_obtain")
 
-	private val items by Items::class.fromRepository("filters/pickup.json")
+	private val items by Repo.create("filters/pickup.json", Items.serializer())
 
 	override val enabled: Boolean get() = SkyBlockIsland.DUNGEONS.inIsland() && config.pickupObtainMessage
 
@@ -34,5 +35,6 @@ object PickupObtainChatFilter : IChatFilter {
 		return false
 	}
 
+	@Serializable
 	private data class Items(val allowed: Set<String>, val denied: Set<String>)
 }
