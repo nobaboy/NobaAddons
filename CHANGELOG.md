@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - The mod will now pull some data from a repository - celeste
+  - This is a fairly large internal change; if something doesn't load properly, please try `/noba repo update` (and report it in the Discord)
 - Redesigned keybind screen and moved info boxes to their own custom screen - nobaboy
 - Keybinds now allows use of mouse buttons (not including the primary Left, Right, and Middle mouse buttons) - nobaboy
 - `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
@@ -34,7 +35,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - PetAPI resetting current pet upon clicking any item other than pets in the pets menu - nobaboy
 - PetAPI thinking you don't have a pet spawned until opening the pets menu once - celeste
 - Announce Rare Drops announcing the same item more than once if it is moved around your inventory or swap islands - nobaboy
-- Pet info overlays now properly render in the EXP Share menu - celeste
 
 ## 0.1.0-Alpha.10 - 2024-12-02
 
