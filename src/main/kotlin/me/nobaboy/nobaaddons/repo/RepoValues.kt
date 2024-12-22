@@ -47,7 +47,7 @@ object RepoValues {
 	 */
 	class Entry<T>(private val key: String, private val fallback: T, private val supplier: Values<T>) {
 		fun get(): T = supplier[key] ?: fallback
-		@Suppress("unused") operator fun getValue(instance: Any, property: KProperty<*>): T = get()
+		@Suppress("unused") operator fun getValue(instance: Any?, property: KProperty<*>): T = get()
 	}
 
 	/**
@@ -55,6 +55,6 @@ object RepoValues {
 	 */
 	class Entries<T>(private val entries: Collection<Entry<T>>) {
 		fun get(): List<T> = entries.map { it.get() }
-		@Suppress("unused") operator fun getValue(instance: Any, property: KProperty<*>): List<T> = get()
+		@Suppress("unused") operator fun getValue(instance: Any?, property: KProperty<*>): List<T> = get()
 	}
 }

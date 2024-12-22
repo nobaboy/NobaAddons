@@ -34,9 +34,9 @@ TODO: Bundle a copy of the repo in the mod jar for users that can't clone it? Si
 */
 
 object Repo {
-	private val RELOAD_LOCK = Any()
 	private val config get() = NobaConfigManager.config.repo
 
+	private val RELOAD_LOCK = Any()
 	val REPO_DIRECTORY: File = run {
 		System.getProperty("nobaaddons.repoDir")?.let { return@run Path.of(it).toFile() }
 		NobaAddons.CONFIG_DIR.resolve("repo").toFile()
@@ -45,12 +45,15 @@ object Repo {
 
 	@OptIn(ExperimentalSerializationApi::class)
 	val JSON = Json {
-		encodeDefaults = true
 		ignoreUnknownKeys = true
-		decodeEnumsCaseInsensitive = true
+		allowStructuredMapKeys = true
+
+		// allow some quality of life for repo maintenance
 		allowComments = true
 		allowTrailingComma = true
-		allowStructuredMapKeys = true
+
+		// unused as we don't encode anything with this currently, but could be helpful for debugging?
+		encodeDefaults = true
 		prettyPrint = true
 	}
 

@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.utils.items
 
 import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.nbtCompound
@@ -11,7 +12,7 @@ import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 import java.lang.ref.WeakReference
 
-private val RARITY_PATTERN = Regex("^(?:. )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL).*")
+private val RARITY_PATTERN by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("item_tag")
 
 class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	private val nbt: NbtCompound get() = item.get()!!.nbtCompound.nbt
@@ -37,14 +38,16 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val stars: Int by CacheOf(this::nbt) { nbt.getInt("upgrade_level") }
 	val powerScroll: String? by CacheOf(this::nbt) { nbt.get("power_ability_scroll")?.asString() }
 
-	val rarity: Rarity by CacheOf(this::lore) {
-		val match = lore.lines()
+	private val rarityLine: MatchResult? by CacheOf(this::lore) {
+		lore.lines()
 			.reversed()
 			.asSequence()
 			.map { it.string }
 			.firstNotNullOfOrNull(RARITY_PATTERN::matchEntire)
-			?: return@CacheOf Rarity.UNKNOWN
-		Rarity.getRarity(match.groups["rarity"]!!.value)
+	}
+
+	val rarity: Rarity by CacheOf(this::lore) {
+		Rarity.getRarity(rarityLine?.groups["rarity"]?.value ?: return@CacheOf Rarity.UNKNOWN)
 	}
 
 	val id: String by CacheOf(this::nbt) { nbt.getString("id") }
@@ -76,6 +79,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val newYearsCake: Int by CacheOf(this::nbt) { nbt.getInt("new_years_cake") }
 
 	override operator fun equals(other: Any?): Boolean = other is SkyBlockItemData && id == other.id && uuid == other.uuid
+	override fun hashCode(): Int = item.get().hashCode()
 
 	data class Gemstone(val type: String, val tier: String)
 	data class Potion(val name: String, val level: Int, val ticks: Int)
