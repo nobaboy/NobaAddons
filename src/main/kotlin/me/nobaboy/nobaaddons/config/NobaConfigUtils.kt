@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.config
 
+import dev.isxander.yacl3.api.ButtonOption
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.Controller
 import dev.isxander.yacl3.api.LabelOption
@@ -17,10 +18,9 @@ import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import dev.isxander.yacl3.api.controller.ValueFormatter
+import dev.isxander.yacl3.gui.YACLScreen
 import dev.isxander.yacl3.gui.controllers.cycling.EnumController
 import net.minecraft.text.Text
-import net.minecraft.text.Texts
-import net.minecraft.text.TranslatableTextContent
 import net.minecraft.util.TranslatableOption
 import java.awt.Color
 import kotlin.reflect.KMutableProperty
@@ -78,16 +78,14 @@ object NobaConfigUtils {
 		}
 	}
 
-	// TODO remove in favor of tr()
-	fun findDescription(title: Text): Text? =
-		title.content
-			.takeIf { it is TranslatableTextContent }
-			?.let { Text.translatable("${(it as TranslatableTextContent).key}.tooltip") }
-			?.takeIf(Texts::hasTranslation)
+	inline fun buildCategory(name: Text, builder: ConfigCategory.Builder.() -> Unit): ConfigCategory = ConfigCategory.createBuilder()
+		.name(name)
+		.apply(builder)
+		.build()
 
 	inline fun ConfigCategory.Builder.buildGroup(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		collapsed: Boolean = true,
 		crossinline builder: OptionGroup.Builder.() -> Unit
 	): ConfigCategory.Builder {
@@ -103,7 +101,7 @@ object NobaConfigUtils {
 
 	fun <G : OptionAddable, T : Any> G.add(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		optionController: (Option<T>) -> ControllerBuilder<T>,
 		default: T,
 		property: KMutableProperty<T>
@@ -120,7 +118,7 @@ object NobaConfigUtils {
 
 	fun <G : OptionAddable> G.boolean(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		default: Boolean,
 		property: KMutableProperty<Boolean>
 	): G {
@@ -138,7 +136,7 @@ object NobaConfigUtils {
 
 	inline fun <G : OptionAddable, reified E : Enum<E>> G.cycler(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		default: E,
 		property: KMutableProperty<E>,
 		onlyInclude: Array<E>? = null,
@@ -153,7 +151,7 @@ object NobaConfigUtils {
 	@Suppress("UNCHECKED_CAST")
 	inline fun <G : OptionAddable, reified N : Number> G.slider(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		default: N,
 		property: KMutableProperty<N>,
 		min: N,
@@ -179,7 +177,7 @@ object NobaConfigUtils {
 
 	fun <G : OptionAddable> G.color(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		default: Color,
 		property: KMutableProperty<Color>
 	): G {
@@ -187,4 +185,14 @@ object NobaConfigUtils {
 	}
 
 	fun <G : OptionAddable> G.label(vararg lines: Text): G = this.apply { option(createLabelController(*lines).build()) }
+
+	fun <G : OptionAddable> G.button(name: Text, description: Text? = null, text: Text? = null, action: (YACLScreen) -> Unit): G {
+		option(ButtonOption.createBuilder()
+			.name(name)
+			.also { if(description != null) it.description(OptionDescription.of(description)) }
+			.also { if(text != null) it.text(text) }
+			.action { screen, _ -> action(screen) }
+			.build())
+		return this
+	}
 }

@@ -15,15 +15,6 @@ object TextUtils {
 	inline fun MutableText.literal(string: String, builder: MutableText.() -> Unit = {}): MutableText =
 		append(Text.literal(string).apply(builder))
 
-	inline fun MutableText.translatable(key: String, vararg args: Any, fallback: String? = null, builder: MutableText.() -> Unit = {}): MutableText {
-		val text = when(fallback) {
-			null -> Text.translatable(key, *args)
-			else -> Text.translatableWithFallback(key, fallback, *args)
-		}
-		text.apply(builder)
-		return append(text)
-	}
-
 	fun MutableText.appendLine(line: Text): MutableText {
 		append(line)
 		append("\n")
