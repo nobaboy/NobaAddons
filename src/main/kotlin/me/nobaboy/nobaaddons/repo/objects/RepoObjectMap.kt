@@ -8,7 +8,7 @@ import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
 import kotlin.reflect.KProperty
 
-class RepoObjectMap<T>(private val path: String, private val cls: Class<T>, private val serializer: KSerializer<T>) : IRepoObject {
+class RepoObjectMap<T>(private val path: String, private val serializer: KSerializer<T>) : IRepoObject {
 	@Volatile private var instances: Map<String, T> = emptyMap()
 
 	@Suppress("unused")
@@ -19,5 +19,5 @@ class RepoObjectMap<T>(private val path: String, private val cls: Class<T>, priv
 		instances = files.associate { it.nameWithoutExtension to Repo.JSON.decodeFromString(serializer, it.readText()) }
 	}
 
-	override fun toString(): String = "RepoObjectDirectory(value=$instances, repoPath=$path, class=$cls)"
+	override fun toString(): String = "RepoObjectDirectory(value=$instances, repoPath=$path)"
 }

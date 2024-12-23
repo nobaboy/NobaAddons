@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.repo.objects.IRepoObject
 import me.nobaboy.nobaaddons.repo.objects.RepoConstants
 import me.nobaboy.nobaaddons.repo.objects.RepoObject
 import me.nobaboy.nobaaddons.repo.objects.RepoObjectArray
+import me.nobaboy.nobaaddons.repo.objects.RepoObjectMap
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
@@ -30,6 +31,12 @@ object Repo {
 	val knownRegexKeys = mutableSetOf<String>()
 	val knownStringKeys = mutableSetOf<String>()
 
+	/**
+	 * Returns an unmodifiable view of all registered [IRepoObject] instances
+	 */
+	val objects: @UnmodifiableView Collection<IRepoObject>
+		get() = Collections.unmodifiableCollection(RepoManager.objects)
+
 	fun init() {
 		RepoManager.add(RepoConstants.Regexes)
 		RepoManager.add(RepoConstants.Strings)
@@ -47,7 +54,7 @@ object Repo {
 	}
 
 	/**
-	 * Creates a new [me.nobaboy.nobaaddons.repo.objects.RepoObject] supplying a single instance of [T] loaded from the mod's repository
+	 * Creates a new [RepoObject] supplying a single instance of [T] loaded from the mod's repository
 	 *
 	 * The supplied value may be null if the repository failed to load.
 	 *
@@ -65,7 +72,7 @@ object Repo {
 	}
 
 	/**
-	 * Creates a new [me.nobaboy.nobaaddons.repo.objects.RepoObjectArray] supplying a list of [T] instances loaded from a JSON file containing an array
+	 * Creates a new [RepoObjectArray] supplying a list of [T] instances loaded from a JSON file containing an array
 	 * of objects from the mod's repository
 	 *
 	 * The supplied list may be empty if the repository failed to load.
@@ -84,7 +91,7 @@ object Repo {
 	}
 
 	/**
-	 * Creates a new [me.nobaboy.nobaaddons.repo.objects.RepoObjectMap] supplying a map of [String] file names to instances of [T]
+	 * Creates a new [RepoObjectMap] supplying a map of [String] file names to instances of [T]
 	 *
 	 * The supplied map may be empty if the repository failed to load.
 	 *
@@ -97,14 +104,9 @@ object Repo {
 	 * val DATA by Repo.createMapFromDirectory("feature/", DataClass.serializer())
 	 * ```
 	 */
-	fun <T : Any> createMapFromDirectory(path: String, serializer: KSerializer<T>): RepoObjectArray<T> {
-		return RepoObjectArray(path, serializer).also(RepoManager::add)
+	fun <T : Any> createMapFromDirectory(path: String, serializer: KSerializer<T>): RepoObjectMap<T> {
+		return RepoObjectMap(path, serializer).also(RepoManager::add)
 	}
-
-	/**
-	 * Returns an unmodifiable view of all registered [me.nobaboy.nobaaddons.repo.objects.IRepoObject] instances
-	 */
-	fun objects(): @UnmodifiableView Collection<IRepoObject> = Collections.unmodifiableCollection(RepoManager.objects)
 
 	/**
 	 * Creates a [RepoConstants.Entries] object supplying a list of mapped values from the provided
