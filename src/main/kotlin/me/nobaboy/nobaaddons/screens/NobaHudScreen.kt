@@ -4,15 +4,14 @@ import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
 import org.lwjgl.glfw.GLFW
 import kotlin.math.roundToInt
 
-private val TITLE = Text.translatable("nobaaddons.screen.hudEditor")
-
-class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
+class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.hudEditor", "HUD Editor")) {
 	private lateinit var elements: LinkedHashMap<String, HudElement>
 //	private var contextMenu: ContextMenu? = null
 
@@ -25,11 +24,11 @@ class NobaHudScreen(private val parent: Screen?) : Screen(TITLE) {
 	private var selectedElement: HudElement? = null
 	private var hoveredElement: HudElement? = null
 
-	private val usageTexts = listOf<String>(
-		"Left-click and drag, or use arrows to move (Ctrl moves further)",
-		"Scroll or use +/- to resize an element",
-		"Middle-click to reset an element",
-		"Right-click for context menu (coming soon)"
+	private val usageTexts = listOf<Text>(
+		tr("nobaaddons.screen.hudEditor.usage.line1", "Left-click and drag, or use arrows to move (Ctrl moves further)"),
+		tr("nobaaddons.screen.hudEditor.usage.line2", "Scroll or use +/- to resize an element"),
+		tr("nobaaddons.screen.hudEditor.usage.line3", "Middle-click to reset an element"),
+		tr("nobaaddons.screen.hudEditor.usage.line4", "Right-click for context menu (coming soon)"),
 	)
 
 	override fun init() {

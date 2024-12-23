@@ -1,45 +1,5 @@
 {
-  "nobaaddons.name": "NobaAddons",
-
-  "nobaaddons.toast.maxLimitReached": "Max Limit Reached",
-  "nobaaddons.toast.maxLimitReached.tooltip": "You can have up to %s %s at a time",
-
   "nobaaddons.keyBind.mythologicalRitual.nearestWarp": "Mythological Nearest Warp",
-
-  "nobaaddons.screen.button.open": "Open",
-  "nobaaddons.screen.button.new": "New %s",
-  "nobaaddons.screen.button.delete": "Delete",
-
-  "nobaaddons.screen.main": "NobaAddons Main Screen",
-  "nobaaddons.screen.main.button.config": "Open Config",
-  "nobaaddons.screen.main.button.hud": "Edit HUD",
-  "nobaaddons.screen.main.button.keyBinds": "Key Binds",
-  "nobaaddons.screen.main.button.github": "GitHub",
-  "nobaaddons.screen.main.button.issues": "Issues",
-  "nobaaddons.screen.main.button.modrinth": "Modrinth",
-  "nobaaddons.screen.main.button.legal": "Legal",
-
-  "nobaaddons.screen.confirm": "Confirmation Screen",
-  "nobaaddons.screen.confirm.message": "You have unsaved changes; exiting now will discard them, would you like to continue?",
-
-  "nobaaddons.screen.hudEditor": "HUD Editor",
-  "nobaaddons.screen.infoBoxes": "Info Boxes",
-
-  "nobaaddons.screen.keyBinds": "Key Binds",
-  "nobaaddons.screen.keyBinds.command.tooltip": "The command to send when the key bind is pressed. The command must not start with a '/'",
-
-  "nobaaddons.config.enabled": "Enabled",
-  "nobaaddons.config.seconds": "%s seconds",
-  "nobaaddons.config.notificationSound": "Notification Sound",
-
-  "nobaaddons.config.label.crimsonIsle": "Crimson Isle",
-  "nobaaddons.config.label.default": "Default",
-  "nobaaddons.config.label.dungeons": "Dungeons",
-  "nobaaddons.config.label.itemAbilities": "Item Abilities",
-  "nobaaddons.config.label.miscellaneous": "Miscellaneous",
-  "nobaaddons.config.label.mobs": "Mobs",
-  "nobaaddons.config.label.rift": "Rift",
-  "nobaaddons.config.label.unmodified": "Unmodified",
 
   "nobaaddons.config.general": "General",
   "nobaaddons.config.general.allowKeybindsOutsideSkyBlock": "Allow Keybinds Outside SkyBlock",
@@ -93,11 +53,6 @@
   "nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing.tooltip": "Hides the fishing rods lines and bobbers of other players, showing only your own",
   "nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson": "Remove Front-Facing Third Person",
   "nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson.tooltip": "Removes the front-facing third person view after pressing F5 twice",
-  "nobaaddons.config.uiAndVisuals.swingAnimation": "Arm Swing Animation Tweaks",
-  "nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration": "Swing Duration",
-  "nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip": "Controls how long your arm swing animation duration is, ignoring all effects like Haste",
-  "nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers": "Apply to All Players",
-  "nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip": "If enabled, the above swing duration will also apply to all other players, instead of only yourself",
   "nobaaddons.config.uiAndVisuals.itemRendering": "First Person Rendering",
   "nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip": "Cancel Re-equip Animation",
   "nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip.tooltip": "Prevents the item update animation from playing entirely, including when switching slots",

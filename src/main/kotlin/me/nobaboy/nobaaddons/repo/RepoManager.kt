@@ -70,7 +70,7 @@ object RepoManager {
 	}
 
 	private suspend fun getLatestCommit(): String =
-		HTTPUtils.fetchJson(commitApiUrl, GithubCommitResponse.serializer()).await().sha
+		HTTPUtils.fetchJson<GithubCommitResponse>(commitApiUrl).await().sha
 
 	suspend fun update(sendMessages: Boolean = false) {
 		this.sendChatMessage = sendMessages

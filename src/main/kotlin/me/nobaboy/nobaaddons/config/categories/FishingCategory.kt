@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
+import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
@@ -21,7 +22,7 @@ object FishingCategory {
 			// region Bobber Timer
 			.buildGroup(Text.translatable("nobaaddons.config.fishing.bobberTimer")) {
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					default = defaults.fishing.bobberTimer.enabled,
 					property = config.fishing.bobberTimer::enabled
 				)
@@ -54,7 +55,7 @@ object FishingCategory {
 			// region Sea Creature Alert
 			.buildGroup(Text.translatable("nobaaddons.config.fishing.seaCreatureAlert")) {
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					default = defaults.fishing.seaCreatureAlert.enabled,
 					property = config.fishing.seaCreatureAlert::enabled
 				)
@@ -80,7 +81,7 @@ object FishingCategory {
 					property = config.fishing.seaCreatureAlert::announceInPartyChat
 				)
 				cycler(
-					Text.translatable("nobaaddons.config.notificationSound"),
+					CommonText.Config.NOTIFICATION_SOUND,
 					default = defaults.fishing.seaCreatureAlert.notificationSound,
 					property = config.fishing.seaCreatureAlert::notificationSound
 				)
@@ -90,7 +91,7 @@ object FishingCategory {
 			// region Highlight Thunder Sparks
 			.buildGroup(Text.translatable("nobaaddons.config.fishing.highlightThunderSparks")) {
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					default = defaults.fishing.highlightThunderSparks.enabled,
 					property = config.fishing.highlightThunderSparks::enabled
 				)

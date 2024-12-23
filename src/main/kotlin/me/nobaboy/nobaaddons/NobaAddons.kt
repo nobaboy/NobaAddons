@@ -49,9 +49,9 @@ import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager
+import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.literal
-import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.Text
@@ -63,9 +63,8 @@ object NobaAddons : ClientModInitializer {
 	const val MOD_ID = "nobaaddons"
 	val VERSION: String = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
 
-	val name get() = tr("nobaaddons.name", "NobaAddons")
 	val PREFIX: Text get() = buildText {
-		append(name)
+		append(CommonText.NOBAADDONS)
 		literal(" ⟫ ") { formatted(Formatting.DARK_GRAY) }
 		formatted(Formatting.BLUE, Formatting.BOLD)
 	}

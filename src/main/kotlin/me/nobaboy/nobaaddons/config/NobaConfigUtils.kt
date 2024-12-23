@@ -56,16 +56,16 @@ object NobaConfigUtils {
 		return EnumControllerBuilder.create(option).enumClass(E::class.java)
 	}
 
-	fun createIntegerSliderController(option: Option<Int>, min: Int, max: Int, step: Int): ControllerBuilder<Int> {
-		return IntegerSliderControllerBuilder.create(option).range(min, max).step(step)
+	fun createIntegerSliderController(option: Option<Int>, min: Int, max: Int, step: Int, format: ((Int) -> Text)? = null): ControllerBuilder<Int> {
+		return IntegerSliderControllerBuilder.create(option).range(min, max).step(step).also { if(format != null) it.formatValue(format) }
 	}
 
-	fun createFloatSliderController(option: Option<Float>, min: Float, max: Float, step: Float): ControllerBuilder<Float> {
-		return FloatSliderControllerBuilder.create(option).range(min, max).step(step)
+	fun createFloatSliderController(option: Option<Float>, min: Float, max: Float, step: Float, format: ((Float) -> Text)? = null): ControllerBuilder<Float> {
+		return FloatSliderControllerBuilder.create(option).range(min, max).step(step).also { if(format != null) it.formatValue(format) }
 	}
 
-	fun createDoubleSliderController(option: Option<Double>, min: Double, max: Double, step: Double): ControllerBuilder<Double> {
-		return DoubleSliderControllerBuilder.create(option).range(min, max).step(step)
+	fun createDoubleSliderController(option: Option<Double>, min: Double, max: Double, step: Double, format: ((Double) -> Text)? = null): ControllerBuilder<Double> {
+		return DoubleSliderControllerBuilder.create(option).range(min, max).step(step).also { if(format != null) it.formatValue(format) }
 	}
 
 	fun createColorController(option: Option<Color>): ColorControllerBuilder {
@@ -78,6 +78,7 @@ object NobaConfigUtils {
 		}
 	}
 
+	// TODO remove in favor of tr()
 	fun findDescription(title: Text): Text? =
 		title.content
 			.takeIf { it is TranslatableTextContent }
@@ -157,17 +158,18 @@ object NobaConfigUtils {
 		property: KMutableProperty<N>,
 		min: N,
 		max: N,
-		step: N
+		step: N,
+		noinline format: ((N) -> Text)? = null,
 	): G {
 		val controller: (Option<N>) -> ControllerBuilder<N> = when(N::class) {
 			Integer::class -> { option ->
-				createIntegerSliderController(option as Option<Int>, min.toInt(), max.toInt(), step.toInt()) as ControllerBuilder<N>
+				createIntegerSliderController(option as Option<Int>, min.toInt(), max.toInt(), step.toInt(), format as ((Int) -> Text)?) as ControllerBuilder<N>
 			}
 			Float::class -> { option ->
-				createFloatSliderController(option as Option<Float>, min.toFloat(), max.toFloat(), step.toFloat()) as ControllerBuilder<N>
+				createFloatSliderController(option as Option<Float>, min.toFloat(), max.toFloat(), step.toFloat(), format as ((Float) -> Text)?) as ControllerBuilder<N>
 			}
 			Double::class -> { option ->
-				createDoubleSliderController(option as Option<Double>, min.toDouble(), max.toDouble(), step.toDouble()) as ControllerBuilder<N>
+				createDoubleSliderController(option as Option<Double>, min.toDouble(), max.toDouble(), step.toDouble(), format as ((Double) -> Text)?) as ControllerBuilder<N>
 			}
 			else -> throw IllegalArgumentException("${N::class.java} does not have a slider controller")
 		}
@@ -184,8 +186,5 @@ object NobaConfigUtils {
 		return add(name, description, ::createColorController, default, property)
 	}
 
-	fun <G : OptionAddable> G.label(vararg lines: Text): G {
-		option(createLabelController(*lines).build())
-		return this
-	}
+	fun <G : OptionAddable> G.label(vararg lines: Text): G = this.apply { option(createLabelController(*lines).build()) }
 }

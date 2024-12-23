@@ -2,12 +2,7 @@ package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ButtonOption
 import dev.isxander.yacl3.api.ConfigCategory
-import dev.isxander.yacl3.api.Option
-import dev.isxander.yacl3.api.OptionDescription
-import dev.isxander.yacl3.api.OptionGroup
-import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
@@ -15,7 +10,10 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.tickBox
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
+import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
 object UIAndVisualsCategory {
@@ -25,13 +23,13 @@ object UIAndVisualsCategory {
 
 			.option(ButtonOption.createBuilder()
 				.name(Text.translatable("nobaaddons.screen.infoBoxes"))
-				.text(Text.translatable("nobaaddons.screen.button.open"))
+				.text(CommonText.SCREEN_OPEN)
 				.action { screen, option -> MCUtils.client.setScreen(InfoBoxesScreen(screen)) }
 				.build())
 
 			.buildGroup(Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints")) {
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					default = defaults.uiAndVisuals.temporaryWaypoints.enabled,
 					property = config.uiAndVisuals.temporaryWaypoints::enabled
 				)
@@ -53,7 +51,7 @@ object UIAndVisualsCategory {
 
 			.buildGroup(Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper")) {
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					default = defaults.uiAndVisuals.etherwarpHelper.enabled,
 					property = config.uiAndVisuals.etherwarpHelper::enabled
 				)
@@ -219,33 +217,30 @@ object UIAndVisualsCategory {
 				)
 			}
 
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation"))
-				.option(Option.createBuilder<Int>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip")))
-					.binding(defaults.uiAndVisuals.swingAnimation.swingDuration, config.uiAndVisuals.swingAnimation::swingDuration) { config.uiAndVisuals.swingAnimation.swingDuration = it }
-					.controller {
-						IntegerSliderControllerBuilder.create(it)
-							.step(1)
-							.range(1, 60)
-							.formatValue { when(it) {
-								1 -> Text.translatable("nobaaddons.config.label.unmodified")
-								6 -> Text.translatable("nobaaddons.config.label.default")
-								else -> Text.literal("$it")
-							} }
+			.buildGroup(tr("nobaaddons.config.uiAndVisuals.swingAnimation", "Arm Swing Animation Tweaks")) {
+				slider(
+					tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration", "Swing Duration"),
+					tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip", "Controls how long your arm swing animation duration is, ignoring all effects like Haste"),
+					default = defaults.uiAndVisuals.swingAnimation.swingDuration,
+					property = config.uiAndVisuals.swingAnimation::swingDuration,
+					min = 1,
+					max = 60,
+					step = 1,
+				) {
+					when(it) {
+						1 -> tr("nobaaddons.config.label.unmodified", "Unmodified")
+						6 -> tr("nobaaddons.config.label.default", "Default")
+						else -> it.toString().toText()
 					}
-					.build())
+				}
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip")))
-					.binding(defaults.uiAndVisuals.swingAnimation.applyToAllPlayers, config.uiAndVisuals.swingAnimation::applyToAllPlayers) { config.uiAndVisuals.swingAnimation.applyToAllPlayers = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.collapsed(true)
-				.build())
+				boolean(
+					tr("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers", "Apply to All Players"),
+					tr("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip", "If enabled, the above swing duration will also apply to all players, insteada of only yourself"),
+					default = defaults.uiAndVisuals.swingAnimation.applyToAllPlayers,
+					property = config.uiAndVisuals.swingAnimation::applyToAllPlayers,
+				)
+			}
 
 			.buildGroup(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering")) {
 				boolean(

@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
+import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.text.Text
 
 object ChatCategory {
@@ -18,7 +19,7 @@ object ChatCategory {
 			// region Alerts
 			.buildGroup(Text.translatable("nobaaddons.config.chat.alerts")) {
 				// region Crimson Isle
-				label(Text.translatable("nobaaddons.config.label.crimsonIsle")).build()
+				label(CommonText.Config.LABEL_CRIMSON_ISLE)
 
 				boolean(
 					Text.translatable("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn"),
@@ -39,7 +40,7 @@ object ChatCategory {
 			// region Filters
 			.buildGroup(Text.translatable("nobaaddons.config.chat.filters")) {
 				// region Crimson Isle
-				label(Text.translatable("nobaaddons.config.label.crimsonIsle"))
+				label(CommonText.Config.LABEL_CRIMSON_ISLE)
 
 				boolean(
 					Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage"),
@@ -86,7 +87,7 @@ object ChatCategory {
 				// endregion
 
 				// region Mobs
-				label(Text.translatable("nobaaddons.config.label.mobs"))
+				label(CommonText.Config.LABEL_MOBS)
 
 				boolean(
 					Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage"),
@@ -104,7 +105,7 @@ object ChatCategory {
 				// endregion
 
 				// region Dungeons
-				label(Text.translatable("nobaaddons.config.label.dungeons"))
+				label(CommonText.Config.LABEL_DUNGEONS)
 
 				cycler(
 					Text.translatable("nobaaddons.config.chat.filters.blessingMessage"),
@@ -136,7 +137,7 @@ object ChatCategory {
 				// endregion
 
 				// region Miscellaneous
-				label(Text.translatable("nobaaddons.config.label.miscellaneous"))
+				label(CommonText.Config.LABEL_MISC)
 
 				boolean(
 					Text.translatable("nobaaddons.config.chat.filters.hideTipMessages"),
@@ -160,7 +161,7 @@ object ChatCategory {
 				label(Text.translatable("nobaaddons.config.chat.chatCommands.label.dm"))
 
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					Text.translatable("nobaaddons.config.chat.chatCommands.dm.enabled.tooltip"),
 					default = defaults.chat.chatCommands.dm.enabled,
 					property = config.chat.chatCommands.dm::enabled
@@ -195,7 +196,7 @@ object ChatCategory {
 				label(Text.translatable("nobaaddons.config.chat.chatCommands.label.party"))
 
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					Text.translatable("nobaaddons.config.chat.chatCommands.party.enabled.tooltip"),
 					default = defaults.chat.chatCommands.party.enabled,
 					property = config.chat.chatCommands.party::enabled
@@ -236,7 +237,7 @@ object ChatCategory {
 				label(Text.translatable("nobaaddons.config.chat.chatCommands.label.guild"))
 
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					Text.translatable("nobaaddons.config.chat.chatCommands.guild.enabled.tooltip"),
 					default = defaults.chat.chatCommands.guild.enabled,
 					property = config.chat.chatCommands.guild::enabled

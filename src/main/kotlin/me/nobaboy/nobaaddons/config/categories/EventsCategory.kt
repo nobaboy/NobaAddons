@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
+import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.text.Text
 
 object EventsCategory {
@@ -57,7 +58,7 @@ object EventsCategory {
 					property = config.events.mythological::alertOnlyInParty
 				)
 				cycler(
-					Text.translatable("nobaaddons.config.notificationSound"),
+					CommonText.Config.NOTIFICATION_SOUND,
 					default = defaults.events.mythological.notificationSound,
 					property = config.events.mythological::notificationSound
 				)
@@ -74,7 +75,7 @@ object EventsCategory {
 					property = config.events.mythological::inquisitorFocusMode
 				)
 
-				label(Text.translatable("nobaaddons.config.label.miscellaneous"))
+				label(CommonText.Config.LABEL_MISC)
 
 				boolean(
 					Text.translatable("nobaaddons.config.events.mythological.announceRareDrops"),

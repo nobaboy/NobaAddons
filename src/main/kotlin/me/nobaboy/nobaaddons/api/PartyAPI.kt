@@ -1,5 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
+import kotlinx.coroutines.Deferred
+import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.data.json.MojangProfile
 import me.nobaboy.nobaaddons.events.CooldownTickEvent
@@ -19,12 +21,11 @@ import net.minecraft.text.HoverEvent
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
 import java.util.UUID
-import java.util.concurrent.CompletableFuture
 import kotlin.text.Regex
 import kotlin.time.Duration.Companion.seconds
 
 object PartyAPI {
-	private val uuidCache = Util.memoize<UUID, CompletableFuture<MojangProfile>> {
+	private val uuidCache = Util.memoize<UUID, Deferred<MojangProfile>> {
 		val url = "https://sessionserver.mojang.com/session/minecraft/profile/$it"
 		HTTPUtils.fetchJson<MojangProfile>(url)
 	}
@@ -79,10 +80,11 @@ object PartyAPI {
 				return@request
 			}
 
-			CompletableFuture.runAsync {
+			NobaAddons.runAsync {
 				val leader = it.leader.orElseThrow()
+				// TODO this should be reworked to not wait until *every* profile is fetched
 				val members = it.memberMap.values.map {
-					val profile = uuidCache.apply(it.uuid).join()
+					val profile = uuidCache.apply(it.uuid).await()
 					PartyData.Member(uuid = it.uuid, profile = profile, role = it.role)
 				}
 				party = PartyData(leaderUUID = leader, members = members)

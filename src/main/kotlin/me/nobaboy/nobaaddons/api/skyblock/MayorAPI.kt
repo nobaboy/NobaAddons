@@ -1,5 +1,7 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.data.json.MayorJson
@@ -46,6 +48,8 @@ object MayorAPI {
 	private var lastMayor: Mayor? = null
 
 	private var lastApiUpdate = Timestamp.distantPast()
+	private val shouldUpdateMayor: Boolean
+		get() = lastApiUpdate.elapsedSince() < 20.minutes
 
 	var nextMayorTimestamp = Timestamp.distantPast()
 		private set
@@ -59,7 +63,9 @@ object MayorAPI {
 	private fun onSecondPassed() {
 		if(!SkyBlockAPI.inSkyBlock) return
 
-		getCurrentMayor()
+		if(shouldUpdateMayor) {
+			NobaAddons.runAsync { getCurrentMayor() }
+		}
 		getNextMayorTimestamp()
 
 		if(!Mayor.JERRY.isElected()) return
@@ -112,19 +118,18 @@ object MayorAPI {
 
 	fun Mayor.isElected(): Boolean = currentMayor == this
 
-	private fun getCurrentMayor() {
-		if(lastApiUpdate.elapsedSince() < 20.minutes) return
+	private suspend fun getCurrentMayor() {
+		if(!shouldUpdateMayor) return
 		lastApiUpdate = Timestamp.now()
 
-		HTTPUtils.fetchJson<MayorJson>(ELECTION_API_URL).thenAccept { mayorJson ->
-			val mayor = mayorJson.mayor
+		val mayorJson = HTTPUtils.fetchJson<MayorJson>(ELECTION_API_URL).await()
+		val mayor = mayorJson.mayor
 
-			val currentMayorName = mayor.name
-			if(lastMayor?.name != currentMayorName) {
-				MayorPerk.disableAll()
-				currentMayor = Mayor.getMayor(currentMayorName, mayor.perks)
-				currentMinister = mayor.minister?.let { Mayor.getMayor(it.name, listOf(it.perk)) } ?: Mayor.UNKNOWN
-			}
+		val currentMayorName = mayor.name
+		if(lastMayor?.name != currentMayorName) {
+			MayorPerk.disableAll()
+			currentMayor = Mayor.getMayor(currentMayorName, mayor.perks)
+			currentMinister = mayor.minister?.let { Mayor.getMayor(it.name, listOf(it.perk)) } ?: Mayor.UNKNOWN
 		}
 	}
 

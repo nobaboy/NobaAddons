@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
+import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.text.Text
 
 object QOLCategory {
@@ -16,7 +17,7 @@ object QOLCategory {
 			// region Sound Filters
 			.buildGroup(Text.translatable("nobaaddons.config.qol.soundFilters")) {
 				// region Item Abilities
-				label(Text.translatable("nobaaddons.config.label.itemAbilities"))
+				label(CommonText.Config.LABEL_ITEM_ABILITIES)
 
 				boolean(
 					Text.translatable("nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities"),
@@ -27,7 +28,7 @@ object QOLCategory {
 				// endregion
 
 				// region Mobs
-				label(Text.translatable("nobaaddons.config.label.mobs"))
+				label(CommonText.Config.LABEL_MOBS)
 
 				boolean(
 					Text.translatable("nobaaddons.config.qol.soundFilters.muteReindrakeSpawn"),
@@ -52,7 +53,7 @@ object QOLCategory {
 				// endregion
 
 				// region Rift
-				label(Text.translatable("nobaaddons.config.label.rift"))
+				label(CommonText.Config.LABEL_RIFT)
 
 				boolean(
 					Text.translatable("nobaaddons.config.qol.soundFilters.muteKillerSpring"),
@@ -62,7 +63,7 @@ object QOLCategory {
 				// endregion
 
 				// region Misc
-				label(Text.translatable("nobaaddons.config.label.miscellaneous"))
+				label(CommonText.Config.LABEL_MISC)
 
 				boolean(
 					Text.translatable("nobaaddons.config.qol.soundFilters.mutePunch"),

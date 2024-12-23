@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
+import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.text.Text
 
 object DungeonsCategory {
@@ -16,7 +17,7 @@ object DungeonsCategory {
 			// region Highlight Starred Mobs
 			.buildGroup(Text.translatable("nobaaddons.config.dungeons.highlightStarredMobs")) {
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					default = defaults.dungeons.highlightStarredMobs.enabled,
 					property = config.dungeons.highlightStarredMobs::enabled
 				)
@@ -36,7 +37,7 @@ object DungeonsCategory {
 			// region Simon Says Timer
 			.buildGroup(Text.translatable("nobaaddons.config.dungeons.simonSaysTimer")) {
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					default = defaults.dungeons.simonSaysTimer.enabled,
 					property = config.dungeons.simonSaysTimer::enabled
 				)

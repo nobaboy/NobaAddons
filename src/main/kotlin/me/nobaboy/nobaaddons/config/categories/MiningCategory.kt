@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
+import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.text.Text
 
 object MiningCategory {
@@ -30,7 +31,7 @@ object MiningCategory {
 				// endregion
 
 				// region Miscellaneous
-				label(Text.translatable("nobaaddons.config.label.miscellaneous"))
+				label(CommonText.Config.LABEL_MISC)
 
 				boolean(
 					Text.translatable("nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint"),

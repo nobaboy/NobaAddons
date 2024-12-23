@@ -8,20 +8,12 @@ import kotlin.time.Duration.Companion.milliseconds
 
 open class NobaKeyBind(
 	name: String,
-	category: String,
+	category: String = "nobaaddons.name",
 	key: Int = GLFW.GLFW_KEY_UNKNOWN,
-	inputType: InputUtil.Type,
+	inputType: InputUtil.Type = InputUtil.Type.KEYSYM,
 	private val onPress: () -> Unit
 ) : KeyBinding(name, inputType, key, category) {
 	private val cooldownManager = CooldownManager()
-
-	constructor(name: String, onPress: () -> Unit) : this(
-		name,
-		"nobaaddons.name",
-		GLFW.GLFW_KEY_UNKNOWN,
-		InputUtil.Type.KEYSYM,
-		onPress
-	)
 
 	@Suppress("UsePropertyAccessSyntax") // using property access syntax causes a StackOverflowError
 	override fun setPressed(pressed: Boolean) {
