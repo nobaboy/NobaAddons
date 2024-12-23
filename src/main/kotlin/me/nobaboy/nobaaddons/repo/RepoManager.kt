@@ -53,6 +53,7 @@ object RepoManager {
 
 	private var sendChatMessage: Boolean = false
 	var commit: String? by PersistentCache::repoCommit
+		private set
 
 	private val username: String get() = config.username
 	private val repository: String get() = config.repository
@@ -121,7 +122,7 @@ object RepoManager {
 		}
 
 		loaded = false
-		REPO_DIRECTORY.mkdirs()
+		val created = REPO_DIRECTORY.mkdirs()
 		try {
 			RepoUtils.unzipIgnoreFirstFolder(repoZip.pathString, REPO_DIRECTORY.absolutePath)
 		} catch(e: Exception) {
@@ -130,7 +131,7 @@ object RepoManager {
 				ChatUtils.addMessage(tr("nobaaddons.repo.unpackFailed", "Failed to unpack downloaded repository"), color = Formatting.RED)
 			}
 			repoDownloadFailed = true
-			switchToBackupRepo()
+			if(created) switchToBackupRepo()
 			return
 		}
 
