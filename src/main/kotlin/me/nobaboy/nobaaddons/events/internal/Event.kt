@@ -1,9 +1,6 @@
 package me.nobaboy.nobaaddons.events.internal
 
-abstract class Event(
-	val isCancelable: Boolean = false,
-	internal val exitEarlyOnCancel: Boolean = true
-) {
+abstract class Event(val isCancelable: Boolean = false) {
 	@get:JvmName("isCanceled")
 	var canceled: Boolean = false
 		private set

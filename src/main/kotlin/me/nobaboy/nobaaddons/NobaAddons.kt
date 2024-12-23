@@ -2,6 +2,12 @@ package me.nobaboy.nobaaddons
 
 import com.google.gson.Gson
 import com.mojang.logging.LogUtils
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
@@ -39,11 +45,13 @@ import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.Repo
+import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.TextUtils.literal
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.Text
@@ -55,9 +63,10 @@ object NobaAddons : ClientModInitializer {
 	const val MOD_ID = "nobaaddons"
 	val VERSION: String = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
 
+	val name get() = tr("nobaaddons.name", "NobaAddons")
 	val PREFIX: Text get() = buildText {
-		append(Text.translatable("nobaaddons.name"))
-		append(" ⟫ ".toText().formatted(Formatting.DARK_GRAY))
+		append(name)
+		literal(" ⟫ ") { formatted(Formatting.DARK_GRAY) }
 		formatted(Formatting.BLUE, Formatting.BOLD)
 	}
 
@@ -66,6 +75,25 @@ object NobaAddons : ClientModInitializer {
 
 	val GSON = Gson()
 
+	@OptIn(ExperimentalSerializationApi::class)
+	val JSON = Json {
+		ignoreUnknownKeys = true
+		allowStructuredMapKeys = true
+
+		// allow some quality of life
+		allowComments = true
+		allowTrailingComma = true
+
+		// encoding related
+		encodeDefaults = true
+		prettyPrint = true
+	}
+
+	private val supervisorJob = SupervisorJob()
+	val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
+
+	fun runAsync(runnable: suspend CoroutineScope.() -> Unit) = coroutineScope.launch(block = runnable)
+
 	// Note: utility object classes should avoid calling a dedicated `init` method here where possible, and instead
 	// rely on 'init {}' to run setup when first used, unless absolutely necessary for functionality (such as
 	// if the object class is never referenced anywhere else, or if it relies on chat data for a feature that isn't
@@ -73,6 +101,7 @@ object NobaAddons : ClientModInitializer {
 	override fun onInitializeClient() {
 		NobaConfigManager.init()
 		PersistentCache.init()
+		RepoManager.init()
 		Repo.init()
 
 		/* region APIs */

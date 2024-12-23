@@ -6,8 +6,12 @@ import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.events.LateChatMessageEvent
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.NumberUtils.ordinalSuffix
+import me.nobaboy.nobaaddons.utils.TextUtils.aqua
+import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.translatable
+import me.nobaboy.nobaaddons.utils.TextUtils.gold
+import me.nobaboy.nobaaddons.utils.TextUtils.gray
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
@@ -19,16 +23,14 @@ object TrophyFishChat {
 	}
 
 	fun format(name: Text, rarity: TrophyFishRarity, count: Int, total: Int) = buildText {
-		translatable("nobaaddons.trophyFishing.prefix") { formatted(Formatting.GOLD, Formatting.BOLD) }
+		append(tr("nobaaddons.trophyFishing.prefix", "TROPHY FISH!").gold().bold())
 		append(" ")
-		translatable(
-			"nobaaddons.trophyFishing.caught",
-			"${count.addSeparators()}${count.ordinalSuffix()}",
-			name,
-			Text.literal(rarity.name).formatted(rarity.formatting, Formatting.BOLD)
-		) { formatted(Formatting.AQUA) }
+		val count = "${count.addSeparators()}${count.ordinalSuffix()}"
+		val rarity = Text.literal(rarity.name).formatted(rarity.formatting, Formatting.BOLD)
+		append(tr("nobaaddons.trophyFishing.caught", "You caught your $count $name $rarity").aqua())
 		append(" ")
-		translatable("nobaaddons.trophyFishing.total", "${total.addSeparators()}${total.ordinalSuffix()}").formatted(Formatting.GRAY)
+		val total = "${total.addSeparators()}${total.ordinalSuffix()}"
+		append(tr("nobaaddons.trophyFishing.total", "($total total)").gray())
 	}
 
 	private fun modifyChatMessage(event: LateChatMessageEvent) {

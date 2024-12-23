@@ -13,7 +13,7 @@ class RepoObjectMap<T>(private val path: String, private val cls: Class<T>, priv
 	operator fun getValue(instance: Any, property: KProperty<*>): Map<String, T> = instances
 
 	override fun load() {
-		val files = Repo.REPO_DIRECTORY.toPath().resolve(this.path).listDirectoryEntries("*.json")
+		val files = RepoManager.REPO_DIRECTORY.toPath().resolve(this.path).listDirectoryEntries("*.json")
 		instances = files.associate { it.nameWithoutExtension to Repo.JSON.decodeFromString(serializer, it.readText()) }
 	}
 

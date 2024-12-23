@@ -28,18 +28,6 @@
   "nobaaddons.screen.keyBinds": "Key Binds",
   "nobaaddons.screen.keyBinds.command.tooltip": "The command to send when the key bind is pressed. The command must not start with a '/'",
 
-  "nobaaddons.repo.updateFailed": "Failed to update mod data repository! Some features may not work properly until this is fixed; you may be able to resolve this issue with %s. If this issue persists, please join the Discord and ask for support.",
-  "nobaaddons.repo.updateStarted": "Updating repository",
-  "nobaaddons.repo.updated": "Repository updated",
-  "nobaaddons.repo.version.notLoaded": "The repository hasn't been loaded yet!",
-  "nobaaddons.repo.version.unknown": "Can't determine the repository version!",
-  "nobaaddons.repo.version": "Current repository version: %s",
-  "nobaaddons.repo.version.hasChanges": "(with uncommitted changes)",
-
-  "nobaaddons.trophyFishing.prefix": "TROPHY FISH!",
-  "nobaaddons.trophyFishing.caught": "You caught your %s %s %s",
-  "nobaaddons.trophyFishing.total": "(%s total)",
-
   "nobaaddons.config.enabled": "Enabled",
   "nobaaddons.config.seconds": "%s seconds",
   "nobaaddons.config.notificationSound": "Notification Sound",
