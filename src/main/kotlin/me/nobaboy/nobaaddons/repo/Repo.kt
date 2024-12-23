@@ -3,6 +3,10 @@ package me.nobaboy.nobaaddons.repo
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonElement
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.repo.objects.IRepoObject
+import me.nobaboy.nobaaddons.repo.objects.RepoConstants
+import me.nobaboy.nobaaddons.repo.objects.RepoObject
+import me.nobaboy.nobaaddons.repo.objects.RepoObjectArray
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
@@ -43,7 +47,7 @@ object Repo {
 	}
 
 	/**
-	 * Creates a new [RepoObject] supplying a single instance of [T] loaded from the mod's repository
+	 * Creates a new [me.nobaboy.nobaaddons.repo.objects.RepoObject] supplying a single instance of [T] loaded from the mod's repository
 	 *
 	 * The supplied value may be null if the repository failed to load.
 	 *
@@ -61,7 +65,7 @@ object Repo {
 	}
 
 	/**
-	 * Creates a new [RepoObjectArray] supplying a list of [T] instances loaded from a JSON file containing an array
+	 * Creates a new [me.nobaboy.nobaaddons.repo.objects.RepoObjectArray] supplying a list of [T] instances loaded from a JSON file containing an array
 	 * of objects from the mod's repository
 	 *
 	 * The supplied list may be empty if the repository failed to load.
@@ -80,7 +84,7 @@ object Repo {
 	}
 
 	/**
-	 * Creates a new [RepoObjectMap] supplying a map of [String] file names to instances of [T]
+	 * Creates a new [me.nobaboy.nobaaddons.repo.objects.RepoObjectMap] supplying a map of [String] file names to instances of [T]
 	 *
 	 * The supplied map may be empty if the repository failed to load.
 	 *
@@ -98,7 +102,7 @@ object Repo {
 	}
 
 	/**
-	 * Returns an unmodifiable view of all registered [IRepoObject] instances
+	 * Returns an unmodifiable view of all registered [me.nobaboy.nobaaddons.repo.objects.IRepoObject] instances
 	 */
 	fun objects(): @UnmodifiableView Collection<IRepoObject> = Collections.unmodifiableCollection(RepoManager.objects)
 

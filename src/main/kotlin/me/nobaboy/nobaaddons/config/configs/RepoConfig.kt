@@ -13,6 +13,7 @@ class RepoConfig {
 	@SerialEntry
 	var branch: String = "main"
 
+	// development environments use the repo submodule, so we don't want them to be auto updating.
 	@SerialEntry
 	var autoUpdate: Boolean = !FabricLoader.getInstance().isDevelopmentEnvironment
 }

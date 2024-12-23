@@ -19,10 +19,8 @@ object RepoCommands : Group("repo") {
 
 	val info = Command("info") {
 		if(!RepoManager.loaded) {
-			ChatUtils.addMessage {
-				val command = buildLiteral("/noba repo update") { formatted(Formatting.AQUA) }
-				append(tr("nobaaddons.repo.notLoaded", "The repository hasn't been loaded yet! Try using $command to fix this.",))
-			}
+			val command = buildLiteral("/noba repo update") { formatted(Formatting.AQUA) }
+			ChatUtils.addMessage(tr("nobaaddons.repo.notLoaded", "The repository hasn't been loaded yet! Try using $command to fix this."))
 			ChatUtils.addMessage(tr("nobaaddons.repo.joinDiscord", "Please join the Discord for support if this persists."))
 			return@Command
 		}
@@ -39,7 +37,7 @@ object RepoCommands : Group("repo") {
 			return@Command
 		}
 
-		val url = "${RepoManager.githubUrl}/commit/${RepoManager.commit}"
+		val url = RepoManager.commitUrl(commit)
 		val commitText = buildLiteral(commit.take(8)) { openUrl(url).underline() }
 		ChatUtils.addMessage(tr("nobaaddons.repo.currentCommit", "Current repo version: $commitText"))
 	}

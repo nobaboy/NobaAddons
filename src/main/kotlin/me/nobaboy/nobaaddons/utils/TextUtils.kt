@@ -69,6 +69,9 @@ object TextUtils {
 	fun String.toText(): MutableText = Text.literal(this)
 	fun String.formatted(vararg formatting: Formatting): MutableText = toText().formatted(*formatting)
 	fun String.styled(styleUpdater: UnaryOperator<Style>): MutableText = toText().styled(styleUpdater)
+
+	operator fun MutableText.plus(other: Text): MutableText = this.append(other)
+	operator fun MutableText.plus(other: String): MutableText = this.append(other)
 }
 
 fun tr(key: String, default: String): MutableText = error("Compiler plugin did not run")

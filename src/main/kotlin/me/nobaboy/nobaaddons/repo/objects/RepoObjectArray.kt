@@ -1,7 +1,8 @@
-package me.nobaboy.nobaaddons.repo
+package me.nobaboy.nobaaddons.repo.objects
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonArray
+import me.nobaboy.nobaaddons.repo.Repo
 import kotlin.reflect.KProperty
 
 class RepoObjectArray<T : Any>(val path: String, private val serializer: KSerializer<T>) : IRepoObject {

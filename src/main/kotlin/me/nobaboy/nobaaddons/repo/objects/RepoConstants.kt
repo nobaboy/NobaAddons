@@ -1,9 +1,10 @@
-package me.nobaboy.nobaaddons.repo
+package me.nobaboy.nobaaddons.repo.objects
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.serializer
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.serializers.RegexKSerializer
 import net.fabricmc.loader.api.FabricLoader
 import kotlin.reflect.KProperty

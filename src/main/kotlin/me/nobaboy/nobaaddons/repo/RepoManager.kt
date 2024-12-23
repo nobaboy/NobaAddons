@@ -6,8 +6,8 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.repo.data.GithubCommitResponse
+import me.nobaboy.nobaaddons.repo.objects.IRepoObject
 import me.nobaboy.nobaaddons.utils.HTTPUtils
-import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
@@ -38,31 +38,38 @@ object RepoManager {
 	private val TEMPORARY_DIRECTORY = Files.createTempDirectory("nobaaddons")
 	private val ZIP_PATH get() = TEMPORARY_DIRECTORY.resolve("repo.zip").apply { toFile().createNewFile() }
 
+	/**
+	 * Set to `true` when the repository has first been loaded.
+	 */
 	@Volatile var loaded: Boolean = false
 		private set
-	var sendChatMessage: Boolean = false
+
+	/**
+	 * If `true`, downloading the repository has failed; we may be using the backup repository
+	 * (this can be checked through [commit] being `backup-repo`)
+	 */
 	var repoDownloadFailed: Boolean = false
 		private set
-	var usingBackup: Boolean = false
-		private set
 
+	private var sendChatMessage: Boolean = false
 	var commit: String? by PersistentCache::repoCommit
 
-	val username: String get() = config.username
-	val repository: String get() = config.repository
-	val branch: String get() = config.branch
+	private val username: String get() = config.username
+	private val repository: String get() = config.repository
+	private val branch: String get() = config.branch
 
 	val githubUrl: String get() = "https://github.com/$username/$repository"
 	val downloadUrl: String get() = "https://github.com/$username/$repository/archive/refs/heads/$branch.zip"
 	val commitApiUrl: String get() = "https://api.github.com/repos/$username/$repository/commits/$branch"
+	fun commitUrl(commit: String): String = "$githubUrl/commit/$commit"
 
 	fun init() {
 		NobaAddons.runAsync { update() }
 		ClientLifecycleEvents.CLIENT_STOPPING.register { cleanupTemporaryDirectory() }
 	}
 
-	private suspend fun getLatestCommit(): String? =
-		runCatching { HTTPUtils.fetchJson(commitApiUrl, GithubCommitResponse.serializer()).await() }.getOrNull()?.sha
+	private suspend fun getLatestCommit(): String =
+		HTTPUtils.fetchJson(commitApiUrl, GithubCommitResponse.serializer()).await().sha
 
 	suspend fun update(sendMessages: Boolean = false) {
 		this.sendChatMessage = sendMessages
@@ -80,11 +87,12 @@ object RepoManager {
 			return
 		}
 
-		val latestCommit: String? = try {
-			getLatestCommit()
+		val latestCommit: String
+		try {
+			latestCommit = getLatestCommit()
 		} catch(e: Exception) {
-			NobaAddons.LOGGER.error("Failed to get latest repo commit; assuming outdated", e)
-			null
+			NobaAddons.LOGGER.error("Failed to get latest repo commit", e)
+			return
 		}
 
 		if(commit == latestCommit && REPO_DIRECTORY.exists()) {
@@ -126,13 +134,12 @@ object RepoManager {
 			return
 		}
 
-		commit = latestCommit ?: StringUtils.randomAlphanumeric()
+		commit = latestCommit
 		if(sendChatMessage) {
 			ChatUtils.addMessage(tr("nobaaddons.repo.updated", "Updated repository"))
 		}
 		loaded = true
 		repoDownloadFailed = false
-		usingBackup = false
 	}
 
 	fun reload() {
@@ -155,7 +162,6 @@ object RepoManager {
 
 	// Code taken from NotEnoughUpdates
 	private fun switchToBackupRepo() {
-		usingBackup = true
 		NobaAddons.LOGGER.warn("Attempting to switch to backup repo")
 
 		try {
