@@ -14,7 +14,6 @@ import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
-import net.minecraft.text.Text
 
 object UIAndVisualsCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.uiAndVisuals", "UI & Visuals")) {
@@ -126,6 +125,16 @@ object UIAndVisualsCategory {
 
 			label(tr("nobaaddons.config.uiAndVisuals.slotInfo.label.items", "Items"))
 
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.attributeShardLevel", "Attribute Shard Level"),
+				default = defaults.uiAndVisuals.slotInfo.attributeShardLevel,
+				property = config.uiAndVisuals.slotInfo::attributeShardLevel
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.attributeShardName", "Attribute Shard Name"),
+				default = defaults.uiAndVisuals.slotInfo.attributeShardName,
+				property = config.uiAndVisuals.slotInfo::attributeShardName
+			)
 			tickBox(
 				tr("nobaaddons.config.uiAndVisuals.slotInfo.dungeonHeadTier", "Dungeon Boss Head Tier"),
 				default = defaults.uiAndVisuals.slotInfo.dungeonHeadTier,

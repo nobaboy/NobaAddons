@@ -56,6 +56,12 @@ class UIAndVisualsConfig {
 		var checkMarkIfMaxed: Boolean = false
 
 		@SerialEntry
+		var attributeShardLevel: Boolean = false
+
+		@SerialEntry
+		var attributeShardName: Boolean = false
+
+		@SerialEntry
 		var bestiaryMilestone: Boolean = false
 
 		@SerialEntry
