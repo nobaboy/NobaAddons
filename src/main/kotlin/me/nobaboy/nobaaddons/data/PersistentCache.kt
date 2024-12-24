@@ -17,6 +17,7 @@ object PersistentCache : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("cache.jso
 		default = mutableMapOf(),
 		serializer = Serializer.map<EnumMap<TrophyFishRarity, Int>>(Serializer.enumMap<TrophyFishRarity, Int>())
 	)
+	var repoCommit by Property.ofNullable<String>("repoCommit")
 
 	fun init() {
 		load()

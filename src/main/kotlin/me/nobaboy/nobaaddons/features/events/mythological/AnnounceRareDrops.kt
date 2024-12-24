@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import kotlin.time.Duration.Companion.seconds
@@ -36,7 +37,8 @@ object AnnounceRareDrops {
 		uuidCache.add(uuid)
 
 		val text = buildText {
-			append(Text.literal("RARE DROP! ").formatted(Formatting.GOLD, Formatting.BOLD))
+			append(tr("nobaaddons.chat.rareDrop", "RARE DROP!").formatted(Formatting.GOLD, Formatting.BOLD))
+			append(" ")
 			append(itemStack.name)
 		}
 

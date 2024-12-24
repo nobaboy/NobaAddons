@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.screens.infoboxes
 
 import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
+import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
@@ -100,7 +101,7 @@ class InfoBoxesListWidget(
 			changeTextMode()
 		}.size(50, 20).build()
 
-		private val deleteButton = ButtonWidget.builder(Text.translatable("nobaaddons.screen.button.delete")) {
+		private val deleteButton = ButtonWidget.builder(CommonText.SCREEN_DELETE) {
 			oldScrollAmount = /*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/
 			deleteEntry()
 		}.size(50, 20).build()

@@ -1,309 +1,319 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ButtonOption
-import dev.isxander.yacl3.api.ConfigCategory
-import dev.isxander.yacl3.api.Option
-import dev.isxander.yacl3.api.OptionDescription
-import dev.isxander.yacl3.api.OptionGroup
-import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.button
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.tickBox
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
+import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
-import net.minecraft.text.Text
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.tr
+import java.util.Calendar
+
+private val year = Calendar.getInstance().get(Calendar.YEAR)
 
 object UIAndVisualsCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
-		return ConfigCategory.createBuilder()
-			.name(Text.translatable("nobaaddons.config.uiAndVisuals"))
+	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.uiAndVisuals", "UI & Visuals")) {
+		button(tr("nobaaddons.screen.infoBoxes", "Info Boxes"), text = CommonText.SCREEN_OPEN) {
+			MCUtils.client.setScreen(InfoBoxesScreen(it))
+		}
 
-			.option(ButtonOption.createBuilder()
-				.name(Text.translatable("nobaaddons.screen.infoBoxes"))
-				.text(Text.translatable("nobaaddons.screen.button.open"))
-				.action { screen, option -> MCUtils.client.setScreen(InfoBoxesScreen(screen)) }
-				.build())
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints", "Temporary Waypoints")) {
+			boolean(
+				CommonText.Config.ENABLED,
+				default = defaults.uiAndVisuals.temporaryWaypoints.enabled,
+				property = config.uiAndVisuals.temporaryWaypoints::enabled
+			)
+			color(
+				tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints.waypointColor", "Waypoint Color"),
+				default = defaults.uiAndVisuals.temporaryWaypoints.waypointColor,
+				property = config.uiAndVisuals.temporaryWaypoints::waypointColor
+			)
+			slider(
+				tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime", "Expiration Time"),
+				tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime.tooltip", "Sets the duration after which a temporary waypoint disappears"),
+				default = defaults.uiAndVisuals.temporaryWaypoints.expirationTime,
+				property = config.uiAndVisuals.temporaryWaypoints::expirationTime,
+				min = 1,
+				max = 120,
+				step = 1
+			)
+		}
 
-			.buildGroup(Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints")) {
-				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
-					default = defaults.uiAndVisuals.temporaryWaypoints.enabled,
-					property = config.uiAndVisuals.temporaryWaypoints::enabled
-				)
-				color(
-					Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints.waypointColor"),
-					default = defaults.uiAndVisuals.temporaryWaypoints.waypointColor,
-					property = config.uiAndVisuals.temporaryWaypoints::waypointColor
-				)
-				slider(
-					Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime.tooltip"),
-					default = defaults.uiAndVisuals.temporaryWaypoints.expirationTime,
-					property = config.uiAndVisuals.temporaryWaypoints::expirationTime,
-					min = 1,
-					max = 120,
-					step = 1
-				)
-			}
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper", "Etherwarp Overlay")) {
+			boolean(
+				CommonText.Config.ENABLED,
+				default = defaults.uiAndVisuals.etherwarpHelper.enabled,
+				property = config.uiAndVisuals.etherwarpHelper::enabled
+			)
+			color(
+				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.highlightColor", "Block Highlight Color"),
+				default = defaults.uiAndVisuals.etherwarpHelper.highlightColor,
+				property = config.uiAndVisuals.etherwarpHelper::highlightColor
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText", "Show Fail Text"),
+				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText.tooltip", "Displays the reason for an Etherwarp failure below the crosshair"),
+				default = defaults.uiAndVisuals.etherwarpHelper.showFailText,
+				property = config.uiAndVisuals.etherwarpHelper::showFailText
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir", "Allow Overlay on Air"),
+				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip", "Enables the block overlay to render in the air if the nearest block is too far"),
+				default = defaults.uiAndVisuals.etherwarpHelper.allowOverlayOnAir,
+				property = config.uiAndVisuals.etherwarpHelper::allowOverlayOnAir
+			)
+		}
 
-			.buildGroup(Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper")) {
-				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
-					default = defaults.uiAndVisuals.etherwarpHelper.enabled,
-					property = config.uiAndVisuals.etherwarpHelper::enabled
-				)
-				color(
-					Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.highlightColor"),
-					default = defaults.uiAndVisuals.etherwarpHelper.highlightColor,
-					property = config.uiAndVisuals.etherwarpHelper::highlightColor
-				)
-				boolean(
-					Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText.tooltip"),
-					default = defaults.uiAndVisuals.etherwarpHelper.showFailText,
-					property = config.uiAndVisuals.etherwarpHelper::showFailText
-				)
-				boolean(
-					Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip"),
-					default = defaults.uiAndVisuals.etherwarpHelper.allowOverlayOnAir,
-					property = config.uiAndVisuals.etherwarpHelper::allowOverlayOnAir
-				)
-			}
+		buildGroup(
+			tr("nobaaddons.config.uiAndVisuals.slotInfo", "Slot Info"),
+			tr("nobaaddons.config.uiAndVisuals.slotInfo.tooltip", "Displays item details such as names and/or tiers on item slots")
+		) {
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.checkMarkIfMaxed", "Check Mark if Maxed"),
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.checkMarkIfMaxed.tooltip", "If applicable, display a check mark on the item slot instead of its tier/level when maxed"),
+				default = defaults.uiAndVisuals.slotInfo.checkMarkIfMaxed,
+				property = config.uiAndVisuals.slotInfo::checkMarkIfMaxed
+			)
 
-			.buildGroup(
-				Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo"),
-				Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.tooltip")
+			label(tr("nobaaddons.config.uiAndVisuals.slotInfo.label.uiElements", "UI Elements"))
+
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryMilestone", "Bestiary Milestone"),
+				default = defaults.uiAndVisuals.slotInfo.bestiaryMilestone,
+				property = config.uiAndVisuals.slotInfo::bestiaryMilestone
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryFamilyTier", "Bestiary Family Tier"),
+				default = defaults.uiAndVisuals.slotInfo.bestiaryFamilyTier,
+				property = config.uiAndVisuals.slotInfo::bestiaryFamilyTier
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.collectionTier", "Collection Tier"),
+				default = defaults.uiAndVisuals.slotInfo.collectionTier,
+				property = config.uiAndVisuals.slotInfo::collectionTier
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.gardenPlotPests", "Garden Plot Pests"),
+				default = defaults.uiAndVisuals.slotInfo.gardenPlotPests,
+				property = config.uiAndVisuals.slotInfo::gardenPlotPests
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.skillLevel", "Skill Level"),
+				default = defaults.uiAndVisuals.slotInfo.skillLevel,
+				property = config.uiAndVisuals.slotInfo::skillLevel
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.skyBlockLevel", "SkyBlock Level"),
+				default = defaults.uiAndVisuals.slotInfo.skyBlockLevel,
+				property = config.uiAndVisuals.slotInfo::skyBlockLevel
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.tuningPoints", "Tuning Points"),
+				default = defaults.uiAndVisuals.slotInfo.tuningPoints,
+				property = config.uiAndVisuals.slotInfo::tuningPoints
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.trophyFish", "Trophy Fish"),
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.trophyFish.tooltip", "Displays a count of how many of each trophy fish you've caught in Odger's menu"),
+				default = defaults.uiAndVisuals.slotInfo.trophyFish,
+				property = config.uiAndVisuals.slotInfo::trophyFish
+			)
+
+			label(tr("nobaaddons.config.uiAndVisuals.slotInfo.label.items", "Items"))
+
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.dungeonHeadTier", "Dungeon Boss Head Tier"),
+				default = defaults.uiAndVisuals.slotInfo.dungeonHeadTier,
+				property = config.uiAndVisuals.slotInfo::dungeonHeadTier
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.enchantedBookLevel", "Enchanted Book Level"),
+				default = defaults.uiAndVisuals.slotInfo.enchantedBookLevel,
+				property = config.uiAndVisuals.slotInfo::enchantedBookLevel
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.enchantedBookName", "Enchanted Book Name"),
+				default = defaults.uiAndVisuals.slotInfo.enchantedBookName,
+				property = config.uiAndVisuals.slotInfo::enchantedBookName
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.kuudraKeyTier", "Kuudra Key Tier"),
+				default = defaults.uiAndVisuals.slotInfo.kuudraKeyTier,
+				property = config.uiAndVisuals.slotInfo::kuudraKeyTier
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.masterSkullTier", "Master Skull Tier"),
+				default = defaults.uiAndVisuals.slotInfo.masterSkullTier,
+				property = config.uiAndVisuals.slotInfo::masterSkullTier
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.masterStarTier", "Master Star Tier"),
+				default = defaults.uiAndVisuals.slotInfo.masterStarTier,
+				property = config.uiAndVisuals.slotInfo::masterStarTier
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.minionTier", "Minion Tier"),
+				default = defaults.uiAndVisuals.slotInfo.minionTier,
+				property = config.uiAndVisuals.slotInfo::minionTier
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.newYearCake", "New Year Cake Year"),
+				default = defaults.uiAndVisuals.slotInfo.newYearCake,
+				property = config.uiAndVisuals.slotInfo::newYearCake
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.petLevel", "Pet Level"),
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.petLevel.tooltip", "Shows the level of a non-maxed pet"),
+				default = defaults.uiAndVisuals.slotInfo.petLevel,
+				property = config.uiAndVisuals.slotInfo::petLevel
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.petItem", "Pet Items"),
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.petItem.tooltip", "Shows an icon for certain pet items, like EXP Share or Lucky Clover"),
+				default = defaults.uiAndVisuals.slotInfo.petItem,
+				property = config.uiAndVisuals.slotInfo::petItem
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.petCandy", "Pet Candy"),
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.petCandy.tooltip", "Displays an icon when a pet has candies applied"),
+				default = defaults.uiAndVisuals.slotInfo.petCandy,
+				property = config.uiAndVisuals.slotInfo::petCandy
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.potionLevel", "Potion Level"),
+				default = defaults.uiAndVisuals.slotInfo.potionLevel,
+				property = config.uiAndVisuals.slotInfo::potionLevel
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.vacuumPests", "Vacuum Pests"),
+				default = defaults.uiAndVisuals.slotInfo.vacuumPests,
+				property = config.uiAndVisuals.slotInfo::vacuumPests
+			)
+		}
+
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.renderingTweaks", "Rendering Tweaks")) {
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt", "Hide Lightning Bolt"),
+				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt.tooltip", "Prevents lightning bolts from rendering"),
+				default = defaults.uiAndVisuals.renderingTweaks.hideLightningBolt,
+				property = config.uiAndVisuals.renderingTweaks::hideLightningBolt
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing", "Hide Other People Fishing"),
+				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing.tooltip", "Hides the fishing bobber of other players"),
+				default = defaults.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing,
+				property = config.uiAndVisuals.renderingTweaks::hideOtherPeopleFishing
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson", "Remove Front-Facing Third Person"),
+				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson.tooltip", "Removes the front-facing perspective from F5"),
+				default = defaults.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson,
+				property = config.uiAndVisuals.renderingTweaks::removeFrontFacingThirdPerson
+			)
+		}
+
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.swingAnimation", "Arm Swing Animation Tweaks")) {
+			slider(
+				tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration", "Swing Duration"),
+				tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip", "Controls how long your arm swing animation duration is, ignoring all effects like Haste"),
+				default = defaults.uiAndVisuals.swingAnimation.swingDuration,
+				property = config.uiAndVisuals.swingAnimation::swingDuration,
+				min = 1,
+				max = 60,
+				step = 1,
 			) {
-				boolean(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.checkMarkIfMaxed"),
-					default = defaults.uiAndVisuals.slotInfo.checkMarkIfMaxed,
-					property = config.uiAndVisuals.slotInfo::checkMarkIfMaxed
-				)
-
-				label(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.label.uiElements"))
-
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryMilestone"),
-					default = defaults.uiAndVisuals.slotInfo.bestiaryMilestone,
-					property = config.uiAndVisuals.slotInfo::bestiaryMilestone
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryFamilyTier"),
-					default = defaults.uiAndVisuals.slotInfo.bestiaryFamilyTier,
-					property = config.uiAndVisuals.slotInfo::bestiaryFamilyTier
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.collectionTier"),
-					default = defaults.uiAndVisuals.slotInfo.collectionTier,
-					property = config.uiAndVisuals.slotInfo::collectionTier
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.gardenPlotPests"),
-					default = defaults.uiAndVisuals.slotInfo.gardenPlotPests,
-					property = config.uiAndVisuals.slotInfo::gardenPlotPests
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.skillLevel"),
-					default = defaults.uiAndVisuals.slotInfo.skillLevel,
-					property = config.uiAndVisuals.slotInfo::skillLevel
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.skyBlockLevel"),
-					default = defaults.uiAndVisuals.slotInfo.skyBlockLevel,
-					property = config.uiAndVisuals.slotInfo::skyBlockLevel
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.tuningPoints"),
-					default = defaults.uiAndVisuals.slotInfo.tuningPoints,
-					property = config.uiAndVisuals.slotInfo::tuningPoints
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.trophyFish"),
-					default = defaults.uiAndVisuals.slotInfo.trophyFish,
-					property = config.uiAndVisuals.slotInfo::trophyFish
-				)
-
-				label(Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.label.items"))
-
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.dungeonHeadTier"),
-					default = defaults.uiAndVisuals.slotInfo.dungeonHeadTier,
-					property = config.uiAndVisuals.slotInfo::dungeonHeadTier
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.enchantedBookLevel"),
-					default = defaults.uiAndVisuals.slotInfo.enchantedBookLevel,
-					property = config.uiAndVisuals.slotInfo::enchantedBookLevel
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.enchantedBookName"),
-					default = defaults.uiAndVisuals.slotInfo.enchantedBookName,
-					property = config.uiAndVisuals.slotInfo::enchantedBookName
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.kuudraKeyTier"),
-					default = defaults.uiAndVisuals.slotInfo.kuudraKeyTier,
-					property = config.uiAndVisuals.slotInfo::kuudraKeyTier
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.masterSkullTier"),
-					default = defaults.uiAndVisuals.slotInfo.masterSkullTier,
-					property = config.uiAndVisuals.slotInfo::masterSkullTier
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.masterStarTier"),
-					default = defaults.uiAndVisuals.slotInfo.masterStarTier,
-					property = config.uiAndVisuals.slotInfo::masterStarTier
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.minionTier"),
-					default = defaults.uiAndVisuals.slotInfo.minionTier,
-					property = config.uiAndVisuals.slotInfo::minionTier
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.newYearCake"),
-					default = defaults.uiAndVisuals.slotInfo.newYearCake,
-					property = config.uiAndVisuals.slotInfo::newYearCake
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petLevel"),
-					default = defaults.uiAndVisuals.slotInfo.petLevel,
-					property = config.uiAndVisuals.slotInfo::petLevel
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petItem"),
-					default = defaults.uiAndVisuals.slotInfo.petItem,
-					property = config.uiAndVisuals.slotInfo::petItem
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.petCandy"),
-					default = defaults.uiAndVisuals.slotInfo.petCandy,
-					property = config.uiAndVisuals.slotInfo::petCandy
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.potionLevel"),
-					default = defaults.uiAndVisuals.slotInfo.potionLevel,
-					property = config.uiAndVisuals.slotInfo::potionLevel
-				)
-				tickBox(
-					Text.translatable("nobaaddons.config.uiAndVisuals.slotInfo.vacuumPests"),
-					default = defaults.uiAndVisuals.slotInfo.vacuumPests,
-					property = config.uiAndVisuals.slotInfo::vacuumPests
-				)
+				when(it) {
+					1 -> tr("nobaaddons.config.label.unmodified", "Unmodified")
+					6 -> tr("nobaaddons.config.label.default", "Default")
+					else -> it.toString().toText()
+				}
 			}
 
-			.buildGroup(Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks")) {
-				boolean(
-					Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt.tooltip"),
-					default = defaults.uiAndVisuals.renderingTweaks.hideLightningBolt,
-					property = config.uiAndVisuals.renderingTweaks::hideLightningBolt
-				)
-				boolean(
-					Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing.tooltip"),
-					default = defaults.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing,
-					property = config.uiAndVisuals.renderingTweaks::hideOtherPeopleFishing
-				)
-				boolean(
-					Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson.tooltip"),
-					default = defaults.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson,
-					property = config.uiAndVisuals.renderingTweaks::removeFrontFacingThirdPerson
-				)
-			}
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers", "Apply to All Players"),
+				tr("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip", "If enabled, the above swing duration will also apply to all players, insteada of only yourself"),
+				default = defaults.uiAndVisuals.swingAnimation.applyToAllPlayers,
+				property = config.uiAndVisuals.swingAnimation::applyToAllPlayers,
+			)
+		}
 
-			.group(OptionGroup.createBuilder()
-				.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation"))
-				.option(Option.createBuilder<Int>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip")))
-					.binding(defaults.uiAndVisuals.swingAnimation.swingDuration, config.uiAndVisuals.swingAnimation::swingDuration) { config.uiAndVisuals.swingAnimation.swingDuration = it }
-					.controller {
-						IntegerSliderControllerBuilder.create(it)
-							.step(1)
-							.range(1, 60)
-							.formatValue { when(it) {
-								1 -> Text.translatable("nobaaddons.config.label.unmodified")
-								6 -> Text.translatable("nobaaddons.config.label.default")
-								else -> Text.literal("$it")
-							} }
-					}
-					.build())
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.itemRendering", "First Person Item Rendering")) {
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip", "Cancel Re-equip Animation"),
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip.tooltip", "Prevents the item update animation from playing entirely, including when switching items"),
+				default = defaults.uiAndVisuals.itemPosition.cancelEquipAnimation,
+				property = config.uiAndVisuals.itemPosition::cancelEquipAnimation
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate", "Cancel Item Update Animation"),
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate.tooltip", "Prevents the item update animation from playing when your held item is updated"),
+				default = defaults.uiAndVisuals.itemPosition.cancelItemUpdateAnimation,
+				property = config.uiAndVisuals.itemPosition::cancelItemUpdateAnimation
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation", "Cancel Item Consume Animation"),
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip", "Prevents the item consume animation (such as from drinking potions) from playing"),
+				default = defaults.uiAndVisuals.itemPosition.cancelDrinkAnimation,
+				property = config.uiAndVisuals.itemPosition::cancelDrinkAnimation
+			)
+			slider(
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.xOffset", "Held Item X Offset"),
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.xOffset.tooltip", "Moves the held item model in first person left or right across the screen; note that this slider is inverted if your main hand is set to left handed"),
+				default = defaults.uiAndVisuals.itemPosition.x,
+				property = config.uiAndVisuals.itemPosition::x,
+				min = -150,
+				max = 150,
+				step = 1
+			)
+			slider(
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.yOffset", "Held Item Y Offset"),
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.yOffset.tooltip", "Moves the held item up and down across the screen"),
+				default = defaults.uiAndVisuals.itemPosition.y,
+				property = config.uiAndVisuals.itemPosition::y,
+				min = -150,
+				max = 150,
+				step = 1
+			)
+			slider(
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.zOffset", "Held Item Z Offset"),
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.zOffset.tooltip", "Moves the held item towards or away from the camera"),
+				default = defaults.uiAndVisuals.itemPosition.z,
+				property = config.uiAndVisuals.itemPosition::z,
+				min = -150,
+				max = 50,
+				step = 1
+			)
+			slider(
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.scale", "Held Item Scale"),
+				tr("nobaaddons.config.uiAndVisuals.itemRendering.scale.tooltip", "Controls how large the held item is rendered in first person"),
+				default = defaults.uiAndVisuals.itemPosition.scale,
+				property = config.uiAndVisuals.itemPosition::scale,
+				min = 0.1f,
+				max = 2.0f,
+				step = 0.1f
+			)
+		}
 
-				.option(Option.createBuilder<Boolean>()
-					.name(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers"))
-					.description(OptionDescription.of(Text.translatable("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip")))
-					.binding(defaults.uiAndVisuals.swingAnimation.applyToAllPlayers, config.uiAndVisuals.swingAnimation::applyToAllPlayers) { config.uiAndVisuals.swingAnimation.applyToAllPlayers = it }
-					.controller(NobaConfigUtils::createBooleanController)
-					.build())
-
-				.collapsed(true)
-				.build())
-
-			.buildGroup(Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering")) {
-				boolean(
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip.tooltip"),
-					default = defaults.uiAndVisuals.itemPosition.cancelEquipAnimation,
-					property = config.uiAndVisuals.itemPosition::cancelEquipAnimation
-				)
-				boolean(
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate.tooltip"),
-					default = defaults.uiAndVisuals.itemPosition.cancelItemUpdateAnimation,
-					property = config.uiAndVisuals.itemPosition::cancelItemUpdateAnimation
-				)
-				boolean(
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip"),
-					default = defaults.uiAndVisuals.itemPosition.cancelDrinkAnimation,
-					property = config.uiAndVisuals.itemPosition::cancelDrinkAnimation
-				)
-				slider(
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.xOffset"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.xOffset.tooltip"),
-					default = defaults.uiAndVisuals.itemPosition.x,
-					property = config.uiAndVisuals.itemPosition::x,
-					min = -150,
-					max = 150,
-					step = 1
-				)
-				slider(
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.yOffset"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.yOffset.tooltip"),
-					default = defaults.uiAndVisuals.itemPosition.y,
-					property = config.uiAndVisuals.itemPosition::y,
-					min = -150,
-					max = 150,
-					step = 1
-				)
-				slider(
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.zOffset"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.zOffset.tooltip"),
-					default = defaults.uiAndVisuals.itemPosition.z,
-					property = config.uiAndVisuals.itemPosition::z,
-					min = -150,
-					max = 50,
-					step = 1
-				)
-				slider(
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.scale"),
-					Text.translatable("nobaaddons.config.uiAndVisuals.itemRendering.scale.tooltip"),
-					default = defaults.uiAndVisuals.itemPosition.scale,
-					property = config.uiAndVisuals.itemPosition::scale,
-					min = 0.1f,
-					max = 2.0f,
-					step = 0.1f
-				)
-			}
-
-			.build()
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints"),
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "Adds missing enchantment glints on armor pieces, because it's $year and this is still an issue."),
+				default = defaults.uiAndVisuals.renderingTweaks.fixEnchantedArmorGlint,
+				property = config.uiAndVisuals.renderingTweaks::fixEnchantedArmorGlint
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.removeGlints", "Remove All Armor Enchant Glints"),
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.removeGlints.tooltip", "Removes enchantment glints from all armor pieces"),
+				default = defaults.uiAndVisuals.renderingTweaks.removeArmorGlints,
+				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
+			)
+		}
 	}
 }

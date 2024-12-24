@@ -1,12 +1,15 @@
 package me.nobaboy.nobaaddons.screens
 
+import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
+import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ConfirmLinkScreen
 import net.minecraft.client.gui.screen.Screen
@@ -14,32 +17,37 @@ import net.minecraft.client.gui.widget.ButtonWidget
 import net.minecraft.client.gui.widget.GridWidget
 import net.minecraft.client.gui.widget.ThreePartsLayoutWidget
 import net.minecraft.screen.ScreenTexts
-import net.minecraft.text.Text
-
-private val TITLE = Text.translatable("nobaaddons.screen.main")
 
 private const val SPACING = 8
 private const val BUTTON_WIDTH = 200
 private const val BUTTON_WIDTH_HALF = 96
 
-class NobaMainScreen : Screen(TITLE) {
+class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOBAADDONS) {
+	private var initialized = false
 	private var layout: ThreePartsLayoutWidget = ThreePartsLayoutWidget(this, 150, 20)
 
 	companion object {
 		private const val GITHUB_ROOT = "https://github.com/nobaboy/NobaAddons"
 
-		private val TITLE_TEXT = Text.translatable("nobaaddons.name")
+		private val TITLE_TEXT = CommonText.NOBAADDONS
 		private val VERSION_TEXT = "v${NobaAddons.VERSION}"
-		private val CONFIGURATION_TEXT = Text.translatable("nobaaddons.screen.main.button.config")
-		private val EDIT_LOCATIONS_TEXT = Text.translatable("nobaaddons.screen.main.button.hud")
-		private val EDIT_KEYBINDS_TEXT = Text.translatable("nobaaddons.screen.main.button.keyBinds")
-		private val SOURCE_TEXT = Text.translatable("nobaaddons.screen.main.button.github")
-		private val ISSUES_TEXT = Text.translatable("nobaaddons.screen.main.button.issues")
-		private val MODRINTH_TEXT = Text.translatable("nobaaddons.screen.main.button.modrinth")
-		private val LEGAL_TEXT = Text.translatable("nobaaddons.screen.main.button.legal")
+		private val CONFIGURATION_TEXT = tr("nobaaddons.screen.main.button.config", "Open Config")
+		private val EDIT_LOCATIONS_TEXT = tr("nobaaddons.screen.main.button.hud", "Edit HUD")
+		private val EDIT_KEYBINDS_TEXT = tr("nobaaddons.screen.main.button.keybinds", "Key Binds")
+		private val SOURCE_TEXT = tr("nobaaddons.screen.main.button.github", "GitHub")
+		private val ISSUES_TEXT = tr("nobaaddons.screen.main.button.issues", "Report Issue")
+		private val MODRINTH_TEXT = tr("nobaaddons.screen.main.button.modrinth", "Modrinth")
+		private val DISCORD_TEXT = tr("nobaaddons.screen.main.button.discord", "Discord")
 	}
 
 	override fun init() {
+		// allow bypassing this screen from mod menu by pressing shift
+		if(!initialized && hasShiftDown()) {
+			MCUtils.client.setScreen(NobaConfigManager.getConfigScreen(parent))
+			return
+		}
+		initialized = true
+
 		val gridWidget = layout.addBody(GridWidget()).setSpacing(SPACING)
 		gridWidget.mainPositioner.alignHorizontalCenter()
 		val adder = gridWidget.createAdder(2)
@@ -54,7 +62,7 @@ class NobaMainScreen : Screen(TITLE) {
 		adder.add(ButtonWidget.builder(SOURCE_TEXT, ConfirmLinkScreen.opening(this, GITHUB_ROOT)).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ISSUES_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/issues")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(MODRINTH_TEXT, ConfirmLinkScreen.opening(this, "https://modrinth.com/mod/nobaaddons")).width(BUTTON_WIDTH_HALF).build())
-		adder.add(ButtonWidget.builder(LEGAL_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/blob/master/LICENSE")).width(BUTTON_WIDTH_HALF).build())
+		adder.add(ButtonWidget.builder(DISCORD_TEXT, ConfirmLinkScreen.opening(this, "https://discord.gg/N9Db3NeWfU")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ScreenTexts.DONE) { close() }.width(BUTTON_WIDTH).build(), 2)
 
 		layout.refreshPositions()
@@ -82,11 +90,15 @@ class NobaMainScreen : Screen(TITLE) {
 
 	override fun close() {
 		ElementManager.loadElements()
-		super.close()
+		client!!.setScreen(parent)
 	}
 
 	private fun openConfig() {
-		client?.setScreen(NobaConfigManager.getConfigScreen(this))
+		if(parent is YACLScreen) {
+			client!!.setScreen(parent)
+		} else {
+			client!!.setScreen(NobaConfigManager.getConfigScreen(this))
+		}
 	}
 
 	private fun openKeybindsEditor() {

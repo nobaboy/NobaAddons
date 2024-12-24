@@ -21,6 +21,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.client.network.OtherClientPlayerEntity
 import kotlin.time.Duration.Companion.seconds
@@ -127,7 +128,7 @@ object InquisitorWaypoints {
 	fun tryRemove(inquisitor: Inquisitor) {
 		if(inquisitorsNearby.isNotEmpty()) return
 
-		ChatUtils.addMessage("Couldn't find ${inquisitor.spawner}'s Inquisitor.")
+		ChatUtils.addMessage(tr("nobaaddons.mythological.couldntFindInquisitor", "Couldn't find ${inquisitor.spawner}'s Inquisitor."))
 		waypoints.remove(inquisitor)
 	}
 

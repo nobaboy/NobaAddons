@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.tr
 
 object BurrowWarpLocations {
 	private val config get() = NobaConfigManager.config.events.mythological
@@ -21,7 +22,7 @@ object BurrowWarpLocations {
 	}
 
 	fun unlockAll() {
-		ChatUtils.addMessage("Unlocked all burrow warp locations.")
+		ChatUtils.addMessage(tr("nobaaddons.command.mythological.unlockedAllWaypoints", "Unlocked all burrow warp locations."))
 		WarpPoint.entries.forEach { it.unlocked = true }
 	}
 

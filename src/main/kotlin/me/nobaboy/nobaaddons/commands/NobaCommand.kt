@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands
 import me.nobaboy.nobaaddons.commands.internal.Command
+import me.nobaboy.nobaaddons.commands.internal.CommandBuilder
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.config.NobaConfigManager
@@ -24,6 +25,7 @@ import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.PingUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
@@ -38,28 +40,20 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 		return 0
 	}
 
-	val config = Command.command("config") {
-		executes {
-			NobaConfigManager.getConfigScreen(null).queueOpen()
-		}
+	val config = Command("config") {
+		NobaConfigManager.getConfigScreen(null).queueOpen()
 	}
 
-	val keybinds = Command.command("keybinds") {
-		executes {
-			KeyBindsScreen(null).queueOpen()
-		}
+	val keybinds = Command("keybinds") {
+		KeyBindsScreen(null).queueOpen()
 	}
 
-	val hud = Command.command("hud") {
-		executes {
-			NobaHudScreen(null).queueOpen()
-		}
+	val hud = Command("hud") {
+		NobaHudScreen(null).queueOpen()
 	}
 
-	val ping = Command.command("ping") {
-		executes {
-			PingUtils.sendPingPacket(sendMessage = true)
-		}
+	val ping = Command("ping") {
+		PingUtils.sendPingPacket(sendMessage = true)
 	}
 
 	object Refill : Group("refill") {
@@ -69,91 +63,69 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 			}
 		}
 
-		val superboom = Command.command("superboom") {
-			executes {
-				RefillFromSacks.refill("SUPERBOOM_TNT", 64)
-			}
+		val superboom = Command("superboom") {
+			RefillFromSacks.refill("SUPERBOOM_TNT", 64)
 		}
 
-		val leaps = Command.command("leaps") {
-			executes {
-				RefillFromSacks.refill("SPIRIT_LEAP", 16)
-			}
+		val leaps = Command("leaps") {
+			RefillFromSacks.refill("SPIRIT_LEAP", 16)
 		}
 
-		val item = Command.command("item") {
-			buildCommand {
-				it.then(ClientCommandManager.argument("id", StringArgumentType.string())
-					.executes(this::execute)
-					.then(ClientCommandManager.argument("count", IntegerArgumentType.integer(1))
-						.executes(this::execute)))
-			}
+		private val itemCommandBuilder: CommandBuilder = {
+			it.then(ClientCommandManager.argument("id", StringArgumentType.string())
+				.executes(this::execute)
+				.then(ClientCommandManager.argument("count", IntegerArgumentType.integer(1))
+					.executes(this::execute)))
+		}
 
-			executes {
-				val id = StringArgumentType.getString(this, "id")
-				val count = runCatching { IntegerArgumentType.getInteger(this, "count") }.getOrDefault(64)
-				RefillFromSacks.refill(id, count)
-			}
+		val item = Command("item", commandBuilder = itemCommandBuilder) {
+			val id = StringArgumentType.getString(it, "id")
+			val count = runCatching { IntegerArgumentType.getInteger(it, "count") }.getOrDefault(64)
+			RefillFromSacks.refill(id, count)
 		}
 	}
 
-	val sendCoords = Command.command("sendcoords") {
-		executes {
-			ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
-		}
+	val sendCoords = Command("sendcoords") {
+		ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
 	}
 
-	val waypoint = Command.command("waypoint") {
-		buildCommand {
-			it.then(ClientCommandManager.argument("x", DoubleArgumentType.doubleArg())
-				.then(ClientCommandManager.argument("y", DoubleArgumentType.doubleArg())
-					.then(ClientCommandManager.argument("z", DoubleArgumentType.doubleArg())
-						.executes(this::execute))))
-		}
-
-		executes(TemporaryWaypoint::addWaypoint)
+	private val waypointBuilder: CommandBuilder = {
+		it.then(ClientCommandManager.argument("x", DoubleArgumentType.doubleArg())
+			.then(ClientCommandManager.argument("y", DoubleArgumentType.doubleArg())
+				.then(ClientCommandManager.argument("z", DoubleArgumentType.doubleArg())
+					.executes(this::execute))))
 	}
 
-	val lockMouse = Command.command("lockmouse") {
-		executes {
-			MouseLock.lockMouse()
-		}
+	val waypoint = Command("waypoint", commandBuilder = waypointBuilder, callback = TemporaryWaypoint::addWaypoint)
+
+	val lockMouse = Command("lockmouse") {
+		MouseLock.lockMouse()
 	}
 
 	object Diana : Group("mythological", aliases = listOf("mytho")) {
-		val resetWarps = Command.command("resetwarps") {
-			executes {
-				BurrowWarpLocations.unlockAll()
-			}
+		val resetWarps = Command("resetwarps") {
+			BurrowWarpLocations.unlockAll()
 		}
 
-		val resetBurrows = Command.command("clearburrows") {
-			executes {
-				BurrowAPI.reset()
-				InquisitorWaypoints.reset()
-				BurrowWaypoints.reset()
-				ChatUtils.addMessage("Cleared all waypoints")
-			}
+		val resetBurrows = Command("clearburrows") {
+			BurrowAPI.reset()
+			InquisitorWaypoints.reset()
+			BurrowWaypoints.reset()
+			ChatUtils.addMessage(tr("nobaaddons.command.clearedBurrows", "Cleared all waypoints"))
 		}
 	}
 
 	object SimonSays : Group("simonsays", aliases = listOf("ss")) {
-		val clear = Command.command("clear") {
-			executes {
-				SimonSaysTimer.clearTimes()
-			}
+		val clear = Command("clear") {
+			SimonSaysTimer.clearTimes()
 		}
 
-		val average = Command.command("average") {
-			executes {
-				SimonSaysTimer.sendAverage()
-			}
+		val average = Command("average") {
+			SimonSaysTimer.sendAverage()
 		}
 
-		val personalBest = Command.command("personalbest", aliases = listOf("pb")) {
-			executes {
-				SimonSaysTimer.sendPersonalBest()
-			}
+		val personalBest = Command("personalbest", aliases = listOf("pb")) {
+			SimonSaysTimer.sendPersonalBest()
 		}
 	}
 

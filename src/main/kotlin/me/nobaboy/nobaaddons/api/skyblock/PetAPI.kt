@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
+import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.data.PersistentCache
@@ -7,8 +8,8 @@ import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.data.json.PetInfo
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.repo.RepoObject.Companion.fromRepository
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -19,7 +20,7 @@ import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
 
 object PetAPI {
-	val constants by PetConstants::class.fromRepository("pets/constants.json")
+	val constants by Repo.create("pets/constants.json", PetConstants.serializer())
 
 	private val petsMenuPattern by Regex("^Pets(?: \\(\\d+/\\d+\\) )?").fromRepo("pets.menu_title")
 	private val petNamePattern by Regex("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)").fromRepo("pets.name")
@@ -141,5 +142,6 @@ object PetAPI {
 		)
 	}
 
-	data class PetConstants(val petRarityOffset: Map<Rarity, Int>, val petLevels: List<Int>, val names: Map<String, String>)
+	@Serializable
+	data class PetConstants(val petRarityOffset: Map<Rarity, Int>, val petLevels: List<Int>)
 }

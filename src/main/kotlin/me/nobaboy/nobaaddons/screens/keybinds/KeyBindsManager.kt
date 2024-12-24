@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.screens.keybinds.impl.KeyBind
 import me.nobaboy.nobaaddons.screens.keybinds.impl.NobaKeyBind
 import me.nobaboy.nobaaddons.utils.CooldownManager
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import org.lwjgl.glfw.GLFW
 import kotlin.time.Duration.Companion.milliseconds
@@ -19,7 +20,7 @@ object KeyBindsManager {
 
 	internal val commandKeyBinds = mutableListOf<KeyBind>()
 	private val gameKeyBinds = listOf<NobaKeyBind>(
-		NobaKeyBind("nobaaddons.keyBind.mythologicalRitual.nearestWarp") { BurrowWaypoints.useNearestWarp() }
+		NobaKeyBind(tr("nobaaddons.keyBind.mythologicalRitual.nearestWarp", "Mythological Nearest Warp")) { BurrowWaypoints.useNearestWarp() }
 	)
 
 	fun init() {

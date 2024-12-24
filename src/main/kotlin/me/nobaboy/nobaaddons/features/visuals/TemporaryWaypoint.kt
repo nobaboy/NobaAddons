@@ -17,6 +17,7 @@ import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
@@ -56,7 +57,7 @@ object TemporaryWaypoint {
 
 			val text = "$username$info"
 			waypoints.add(Waypoint(location, text, Timestamp.now(), config.expirationTime.seconds))
-			ChatUtils.addMessage("Temporary Waypoint added at x: $x, y: $y, z: $z from $username")
+			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromChat", "Temporary Waypoint added at x: $x, y: $y, z: $z from $username"))
 		}
 	}
 
@@ -88,7 +89,7 @@ object TemporaryWaypoint {
 		val z = DoubleArgumentType.getDouble(ctx, "z")
 
 		waypoints.add(Waypoint(NobaVec(x, y, z), "Temporary Waypoint", Timestamp.now(), null))
-		ChatUtils.addMessage("Temporary Waypoint added at x: $x, y: $y, z: $z")
+		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Temporary Waypoint added at x: $x, y: $y, z: $z"))
 	}
 
 	data class Waypoint(val location: NobaVec, val text: String, val timestamp: Timestamp, val duration: Duration?) {

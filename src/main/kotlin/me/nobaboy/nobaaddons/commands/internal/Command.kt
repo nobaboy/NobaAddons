@@ -7,13 +7,14 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
 typealias CommandBuilder = Command.(LiteralArgumentBuilder<FabricClientCommandSource>) -> LiteralArgumentBuilder<FabricClientCommandSource>
+private val DEFAULT_BUILDER: CommandBuilder = { it.executes(this::execute) }
 
 class Command(
 	override val name: String,
 	override val aliases: List<String> = listOf(),
 	override val enabled: Boolean = true,
-	private val callback: CommandContext<FabricClientCommandSource>.() -> Unit,
-	private val commandBuilder: CommandBuilder,
+	private val commandBuilder: CommandBuilder = DEFAULT_BUILDER,
+	private val callback: (CommandContext<FabricClientCommandSource>) -> Unit,
 ) : ICommand {
 	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
 		runCatching {
@@ -35,12 +36,14 @@ class Command(
 			it.executes(this::execute)
 		}
 
-		fun buildCommand(builder: CommandBuilder) {
+		fun buildCommand(builder: CommandBuilder): Builder {
 			this.builder = builder
+			return this
 		}
 
-		fun executes(callback: CommandContext<FabricClientCommandSource>.() -> Unit) {
+		fun executes(callback: CommandContext<FabricClientCommandSource>.() -> Unit): Builder {
 			this.executes = callback
+			return this
 		}
 
 		fun build(): Command {
@@ -55,8 +58,24 @@ class Command(
 	}
 
 	companion object {
+		// TODO remove this
 		inline fun command(name: String, aliases: List<String> = listOf(), builder: Builder.() -> Unit): Command {
 			return Builder(name, aliases).also(builder).build()
+		}
+
+		/**
+		 * Utility method, creates a [Command] wrapping the provided [command] method with [NobaAddons.runAsync]
+		 */
+		fun async(
+			name: String,
+			aliases: List<String> = emptyList(),
+			enabled: Boolean = true,
+			commandBuilder: CommandBuilder = DEFAULT_BUILDER,
+			command: suspend (CommandContext<FabricClientCommandSource>) -> Unit
+		) = Command(name, aliases, enabled, commandBuilder) {
+			NobaAddons.runAsync {
+				runCatching { command(it) }.onFailure { NobaAddons.LOGGER.error("Command threw an unhandled error", it) }
+			}
 		}
 	}
 }

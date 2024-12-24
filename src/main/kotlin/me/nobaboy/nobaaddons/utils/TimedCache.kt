@@ -8,7 +8,7 @@ import kotlin.time.Duration
 
 class TimedCache<K : Any, V : Any>(
 	duration: Duration,
-	private val removalListener: (K?, V?, RemovalCause) -> Unit = { _, _, _ -> }
+	removalListener: (K?, V?, RemovalCause) -> Unit = { _, _, _ -> }
 ) : ForwardingMap<K, V>() {
 	private val cache = CacheBuilder.newBuilder()
 		.expireAfterWrite(duration.inWholeMilliseconds, TimeUnit.MILLISECONDS)
@@ -16,6 +16,5 @@ class TimedCache<K : Any, V : Any>(
 		.build<K, V>()
 
 	override fun delegate(): Map<K?, V?> = this.cache.asMap()
-
 	override fun toString(): String = "TimedCache(size=$size, entries=${cache.asMap()})"
 }
