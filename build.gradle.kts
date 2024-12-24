@@ -113,7 +113,6 @@ mcAutoTranslations {
 }
 
 val collectTranslations by tasks.registering(CollectTranslations::class) {
-	this.baseTranslations.from(rootProject.layout.projectDirectory.file("translations/en_us.json"))
 	this.classes.from(sourceSets.main.get().kotlin.classesDirectory)
 }
 
