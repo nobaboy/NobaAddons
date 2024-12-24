@@ -71,8 +71,6 @@ dependencies {
 
 	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
 	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
-	includeImplementation("io.ktor:ktor-client-core:${deps["ktor"]}")
-	includeImplementation("io.ktor:ktor-client-cio:${deps["ktor"]}")
 
 	implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
 	devEnvOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
