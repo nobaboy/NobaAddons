@@ -1,9 +1,10 @@
-package me.nobaboy.nobaaddons.repo
+package me.nobaboy.nobaaddons.repo.objects
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.serializer
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.serializers.RegexKSerializer
 import net.fabricmc.loader.api.FabricLoader
 import kotlin.reflect.KProperty
@@ -11,8 +12,8 @@ import kotlin.reflect.KProperty
 /**
  * Shared constants storage for common types like strings and regex patterns.
  */
-object RepoValues {
-	sealed class Values<T>(private val file: String, private val knownKeys: Set<String>?, private val valueSerializer: KSerializer<T>) : IRepoObject {
+object RepoConstants {
+	sealed class Handler<T>(private val file: String, private val knownKeys: Set<String>?, private val valueSerializer: KSerializer<T>) : IRepoObject {
 		@Volatile private var values: Map<String, T> = mutableMapOf()
 
 		override fun load() {
@@ -35,17 +36,17 @@ object RepoValues {
 	/**
 	 * Shared repo storage for [Regex] patterns
 	 */
-	object Regexes : Values<Regex>("data/regexes.json", Repo.knownRegexKeys, RegexKSerializer)
+	object Regexes : Handler<Regex>("data/regexes.json", Repo.knownRegexKeys, RegexKSerializer)
 
 	/**
 	 * Shared repo storage for [String]s
 	 */
-	object Strings : Values<String>("data/strings.json", Repo.knownStringKeys, serializer())
+	object Strings : Handler<String>("data/strings.json", Repo.knownStringKeys, serializer())
 
 	/**
-	 * Deferred property supplier of a field from a repository [Values] instance
+	 * Deferred property supplier of a field from a repository [Handler] instance
 	 */
-	class Entry<T>(private val key: String, private val fallback: T, private val supplier: Values<T>) {
+	class Entry<T>(private val key: String, private val fallback: T, private val supplier: Handler<T>) {
 		fun get(): T = supplier[key] ?: fallback
 		@Suppress("unused") operator fun getValue(instance: Any?, property: KProperty<*>): T = get()
 	}

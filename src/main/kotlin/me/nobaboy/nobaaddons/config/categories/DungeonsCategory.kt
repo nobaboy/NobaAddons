@@ -6,27 +6,28 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import net.minecraft.text.Text
+import me.nobaboy.nobaaddons.utils.CommonText
+import me.nobaboy.nobaaddons.utils.tr
 
 object DungeonsCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
 		return ConfigCategory.createBuilder()
-			.name(Text.translatable("nobaaddons.config.dungeons"))
+			.name(tr("nobaaddons.config.dungeons", "Dungeons"))
 
 			// region Highlight Starred Mobs
-			.buildGroup(Text.translatable("nobaaddons.config.dungeons.highlightStarredMobs")) {
+			.buildGroup(tr("nobaaddons.config.dungeons.highlightStarredMobs", "Highlight Starred Mobs")) {
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					default = defaults.dungeons.highlightStarredMobs.enabled,
 					property = config.dungeons.highlightStarredMobs::enabled
 				)
 				color(
-					Text.translatable("nobaaddons.config.dungeons.highlightStarredMobs.highlightColor"),
+					tr("nobaaddons.config.dungeons.highlightStarredMobs.highlightColor", "Highlight Color"),
 					default = defaults.dungeons.highlightStarredMobs.highlightColor,
 					property = config.dungeons.highlightStarredMobs::highlightColor
 				)
 				cycler(
-					Text.translatable("nobaaddons.config.dungeons.highlightStarredMobs.highlightMode"),
+					tr("nobaaddons.config.dungeons.highlightStarredMobs.highlightMode", "Highlight Mode"),
 					default = defaults.dungeons.highlightStarredMobs.highlightMode,
 					property = config.dungeons.highlightStarredMobs::highlightMode
 				)
@@ -34,15 +35,15 @@ object DungeonsCategory {
 			// endregion
 
 			// region Simon Says Timer
-			.buildGroup(Text.translatable("nobaaddons.config.dungeons.simonSaysTimer")) {
+			.buildGroup(tr("nobaaddons.config.dungeons.simonSaysTimer", "Simon Says Timer")) {
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
+					CommonText.Config.ENABLED,
 					default = defaults.dungeons.simonSaysTimer.enabled,
 					property = config.dungeons.simonSaysTimer::enabled
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat"),
-					Text.translatable("nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat.tooltip"),
+					tr("nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat", "Send Time in Party Chat"),
+					tr("nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat.tooltip", "Sends your Simon Says device completion time in party chat"),
 					default = defaults.dungeons.simonSaysTimer.timeInPartyChat,
 					property = config.dungeons.simonSaysTimer::timeInPartyChat
 				)

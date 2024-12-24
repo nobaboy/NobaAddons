@@ -31,7 +31,7 @@ object PingUtils {
 
 		if(sendPingMessage) {
 			sendPingMessage = false
-			ChatUtils.addMessage("Ping: ${ping}ms")
+			ChatUtils.addMessage(tr("nobaaddons.command.ping", "Ping: ${ping}ms"))
 		}
 	}
 }

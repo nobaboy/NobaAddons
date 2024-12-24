@@ -25,7 +25,7 @@ object RepoDebugCommands : Group("repo") {
 	val dumpObjects = Command.command("dumpobjects") {
 		executes {
 			println("--- KNOWN REPO OBJECTS ---")
-			Repo.objects().forEach(::println)
+			Repo.objects.forEach(::println)
 			println("--------------------------")
 		}
 	}

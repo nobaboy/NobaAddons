@@ -5,11 +5,15 @@ import net.fabricmc.loader.api.FabricLoader
 
 class RepoConfig {
 	@SerialEntry
-	var uri: String = "https://github.com/nobaboy/NobaAddons-REPO.git"
+	var username: String = "nobaboy"
+
+	@SerialEntry
+	var repository: String = "NobaAddons-REPO"
 
 	@SerialEntry
 	var branch: String = "main"
 
+	// development environments use the repo submodule, so we don't want them to be auto updating.
 	@SerialEntry
 	var autoUpdate: Boolean = !FabricLoader.getInstance().isDevelopmentEnvironment
 }

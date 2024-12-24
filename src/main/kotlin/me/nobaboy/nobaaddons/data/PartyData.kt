@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import java.util.UUID
 
-data class PartyData(var leaderUUID: UUID, var members: List<Member>) {
+data class PartyData(val leaderUUID: UUID, val members: List<Member>) {
 	val isLeader: Boolean
 		get() = MCUtils.player!!.uuid == leaderUUID
 

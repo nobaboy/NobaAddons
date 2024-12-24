@@ -9,14 +9,18 @@ import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.TextUtils.withColor
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
@@ -70,14 +74,10 @@ object CorpseLocator {
 			.forEach { checkCorpse(it) }
 
 		corpses.filter { !it.seen && player.canSee(it.entity) }.forEach { corpse ->
-			val article = if(corpse.type == CorpseType.UMBER) "an" else "a"
 			val (x, y, z) = corpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
 
-			val text = buildText {
-				append("Found $article ")
-				append(Text.literal("${corpse.type} Corpse").formatted(corpse.type.color.toFormatting()))
-				append(" at $x, $y, $z!")
-			}
+			val type = corpse.type.toString().toText().withColor(corpse.type.color)
+			val text = tr("nobaaddons.corpseLocator.found", "Found $type Corpse at $x, $y, $z")
 
 			ChatUtils.addMessage(text)
 			MineshaftWaypoints.waypoints.add(Waypoint(

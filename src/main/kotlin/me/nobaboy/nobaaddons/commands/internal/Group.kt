@@ -36,6 +36,7 @@ abstract class Group(
 		return root
 	}
 
+	// TODO remove the return value
 	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
 		return 0
 	}

@@ -1,8 +1,12 @@
+import moe.nea.mcautotranslations.gradle.CollectTranslations
+import nobaaddonsbuild.DownloadBackupRepo
+
 plugins {
 	id("fabric-loom")
 	kotlin("jvm") version("2.1.0")
 	kotlin("plugin.serialization") version "2.1.0"
 	id("me.modmuss50.mod-publish-plugin")
+	id("moe.nea.mc-auto-translations") version "0.1.0"
 }
 
 class ModData {
@@ -34,6 +38,7 @@ repositories {
 	maven("https://maven.celestialfault.dev/releases") // CelestialConfig
 	maven("https://repo.hypixel.net/repository/Hypixel/") // Hypixel Mod API
 	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
+	maven("https://repo.nea.moe/releases") // mc-auto-translations (which doesn't document anywhere that you need this!!!!)
 	exclusiveContent {
 		forRepository {
 			maven("https://api.modrinth.com/maven")
@@ -46,8 +51,7 @@ repositories {
 
 dependencies {
 	fun devEnvOnly(dependencyNotation: String) {
-		if(isCi) return
-		modRuntimeOnly(dependencyNotation)
+		if(!isCi) modRuntimeOnly(dependencyNotation)
 	}
 
 	fun includeImplementation(dependencyNotation: String, mod: Boolean = false, configuration: Action<ExternalModuleDependency> = Action { }) {
@@ -67,7 +71,8 @@ dependencies {
 
 	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
 	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
-	includeImplementation("org.eclipse.jgit:org.eclipse.jgit:${deps["jgit"]}")
+	includeImplementation("io.ktor:ktor-client-core:${deps["ktor"]}")
+	includeImplementation("io.ktor:ktor-client-cio:${deps["ktor"]}")
 
 	implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
 	devEnvOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
@@ -102,6 +107,22 @@ kotlin {
 	jvmToolchain(targetJava)
 }
 
+mcAutoTranslations {
+	translationFunction.set("me.nobaboy.nobaaddons.utils.tr")
+	translationFunctionResolved.set("me.nobaboy.nobaaddons.utils.trResolved")
+}
+
+val collectTranslations by tasks.registering(CollectTranslations::class) {
+	this.classes.from(sourceSets.main.get().kotlin.classesDirectory)
+}
+
+// require that this is registered on the root project to avoid running this multiple times per build
+val includeBackupRepo = runCatching { rootProject.tasks.withType<DownloadBackupRepo>().named("includeBackupRepo").get() }.getOrNull()
+	?: rootProject.tasks.create("includeBackupRepo", DownloadBackupRepo::class) {
+		this.outputDirectory = rootProject.layout.buildDirectory.dir("downloadedRepo")
+		this.branch = "main"
+	}
+
 tasks.processResources {
 	inputs.property("id", mod.id)
 	inputs.property("name", mod.name)
@@ -116,6 +137,10 @@ tasks.processResources {
 	)
 
 	filesMatching("fabric.mod.json") { expand(map) }
+	from(includeBackupRepo)
+	from(collectTranslations) {
+		into("assets/${mod.id}/lang")
+	}
 }
 
 tasks.register<Copy>("buildAndCollect") {
@@ -130,7 +155,7 @@ publishMods {
 	displayName = "${mod.version} for ${property("mod.mc_title")}"
 	version = "${mod.version}+$mcVersion"
 	changelog = runCatching {
-		// NOTE: this requires running .github/extract_changelog.py first
+		// NOTE: this requires that .github/extract_changelog.py is run first
 		rootProject.file("CHANGELOG.mini").readText()
 	}.getOrDefault("See the full changelog at https://github.com/nobaboy/NobaAddons/blob/master/CHANGELOG.md")
 	type = ALPHA

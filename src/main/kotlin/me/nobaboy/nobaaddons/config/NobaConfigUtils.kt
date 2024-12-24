@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.config
 
+import dev.isxander.yacl3.api.ButtonOption
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.Controller
 import dev.isxander.yacl3.api.LabelOption
@@ -17,10 +18,9 @@ import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import dev.isxander.yacl3.api.controller.ValueFormatter
+import dev.isxander.yacl3.gui.YACLScreen
 import dev.isxander.yacl3.gui.controllers.cycling.EnumController
 import net.minecraft.text.Text
-import net.minecraft.text.Texts
-import net.minecraft.text.TranslatableTextContent
 import net.minecraft.util.TranslatableOption
 import java.awt.Color
 import kotlin.reflect.KMutableProperty
@@ -56,16 +56,16 @@ object NobaConfigUtils {
 		return EnumControllerBuilder.create(option).enumClass(E::class.java)
 	}
 
-	fun createIntegerSliderController(option: Option<Int>, min: Int, max: Int, step: Int): ControllerBuilder<Int> {
-		return IntegerSliderControllerBuilder.create(option).range(min, max).step(step)
+	fun createIntegerSliderController(option: Option<Int>, min: Int, max: Int, step: Int, format: ((Int) -> Text)? = null): ControllerBuilder<Int> {
+		return IntegerSliderControllerBuilder.create(option).range(min, max).step(step).also { if(format != null) it.formatValue(format) }
 	}
 
-	fun createFloatSliderController(option: Option<Float>, min: Float, max: Float, step: Float): ControllerBuilder<Float> {
-		return FloatSliderControllerBuilder.create(option).range(min, max).step(step)
+	fun createFloatSliderController(option: Option<Float>, min: Float, max: Float, step: Float, format: ((Float) -> Text)? = null): ControllerBuilder<Float> {
+		return FloatSliderControllerBuilder.create(option).range(min, max).step(step).also { if(format != null) it.formatValue(format) }
 	}
 
-	fun createDoubleSliderController(option: Option<Double>, min: Double, max: Double, step: Double): ControllerBuilder<Double> {
-		return DoubleSliderControllerBuilder.create(option).range(min, max).step(step)
+	fun createDoubleSliderController(option: Option<Double>, min: Double, max: Double, step: Double, format: ((Double) -> Text)? = null): ControllerBuilder<Double> {
+		return DoubleSliderControllerBuilder.create(option).range(min, max).step(step).also { if(format != null) it.formatValue(format) }
 	}
 
 	fun createColorController(option: Option<Color>): ColorControllerBuilder {
@@ -78,15 +78,14 @@ object NobaConfigUtils {
 		}
 	}
 
-	fun findDescription(title: Text): Text? =
-		title.content
-			.takeIf { it is TranslatableTextContent }
-			?.let { Text.translatable("${(it as TranslatableTextContent).key}.tooltip") }
-			?.takeIf(Texts::hasTranslation)
+	inline fun buildCategory(name: Text, builder: ConfigCategory.Builder.() -> Unit): ConfigCategory = ConfigCategory.createBuilder()
+		.name(name)
+		.apply(builder)
+		.build()
 
 	inline fun ConfigCategory.Builder.buildGroup(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		collapsed: Boolean = true,
 		crossinline builder: OptionGroup.Builder.() -> Unit
 	): ConfigCategory.Builder {
@@ -102,7 +101,7 @@ object NobaConfigUtils {
 
 	fun <G : OptionAddable, T : Any> G.add(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		optionController: (Option<T>) -> ControllerBuilder<T>,
 		default: T,
 		property: KMutableProperty<T>
@@ -119,7 +118,7 @@ object NobaConfigUtils {
 
 	fun <G : OptionAddable> G.boolean(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		default: Boolean,
 		property: KMutableProperty<Boolean>
 	): G {
@@ -137,7 +136,7 @@ object NobaConfigUtils {
 
 	inline fun <G : OptionAddable, reified E : Enum<E>> G.cycler(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		default: E,
 		property: KMutableProperty<E>,
 		onlyInclude: Array<E>? = null,
@@ -152,22 +151,23 @@ object NobaConfigUtils {
 	@Suppress("UNCHECKED_CAST")
 	inline fun <G : OptionAddable, reified N : Number> G.slider(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		default: N,
 		property: KMutableProperty<N>,
 		min: N,
 		max: N,
-		step: N
+		step: N,
+		noinline format: ((N) -> Text)? = null,
 	): G {
 		val controller: (Option<N>) -> ControllerBuilder<N> = when(N::class) {
 			Integer::class -> { option ->
-				createIntegerSliderController(option as Option<Int>, min.toInt(), max.toInt(), step.toInt()) as ControllerBuilder<N>
+				createIntegerSliderController(option as Option<Int>, min.toInt(), max.toInt(), step.toInt(), format as ((Int) -> Text)?) as ControllerBuilder<N>
 			}
 			Float::class -> { option ->
-				createFloatSliderController(option as Option<Float>, min.toFloat(), max.toFloat(), step.toFloat()) as ControllerBuilder<N>
+				createFloatSliderController(option as Option<Float>, min.toFloat(), max.toFloat(), step.toFloat(), format as ((Float) -> Text)?) as ControllerBuilder<N>
 			}
 			Double::class -> { option ->
-				createDoubleSliderController(option as Option<Double>, min.toDouble(), max.toDouble(), step.toDouble()) as ControllerBuilder<N>
+				createDoubleSliderController(option as Option<Double>, min.toDouble(), max.toDouble(), step.toDouble(), format as ((Double) -> Text)?) as ControllerBuilder<N>
 			}
 			else -> throw IllegalArgumentException("${N::class.java} does not have a slider controller")
 		}
@@ -177,15 +177,22 @@ object NobaConfigUtils {
 
 	fun <G : OptionAddable> G.color(
 		name: Text,
-		description: Text? = findDescription(name),
+		description: Text? = null,
 		default: Color,
 		property: KMutableProperty<Color>
 	): G {
 		return add(name, description, ::createColorController, default, property)
 	}
 
-	fun <G : OptionAddable> G.label(vararg lines: Text): G {
-		option(createLabelController(*lines).build())
+	fun <G : OptionAddable> G.label(vararg lines: Text): G = this.apply { option(createLabelController(*lines).build()) }
+
+	fun <G : OptionAddable> G.button(name: Text, description: Text? = null, text: Text? = null, action: (YACLScreen) -> Unit): G {
+		option(ButtonOption.createBuilder()
+			.name(name)
+			.also { if(description != null) it.description(OptionDescription.of(description)) }
+			.also { if(text != null) it.text(text) }
+			.action { screen, _ -> action(screen) }
+			.build())
 		return this
 	}
 }

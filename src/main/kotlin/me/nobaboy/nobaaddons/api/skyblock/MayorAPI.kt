@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
+import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.data.json.MayorJson
@@ -11,14 +12,13 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.mapFullMatch
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.formatted
+import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.text.ClickEvent
-import net.minecraft.util.Formatting
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
@@ -46,6 +46,8 @@ object MayorAPI {
 	private var lastMayor: Mayor? = null
 
 	private var lastApiUpdate = Timestamp.distantPast()
+	private val shouldUpdateMayor: Boolean
+		get() = lastApiUpdate.elapsedSince() < 20.minutes
 
 	var nextMayorTimestamp = Timestamp.distantPast()
 		private set
@@ -59,7 +61,9 @@ object MayorAPI {
 	private fun onSecondPassed() {
 		if(!SkyBlockAPI.inSkyBlock) return
 
-		getCurrentMayor()
+		if(shouldUpdateMayor) {
+			NobaAddons.runAsync { getCurrentMayor() }
+		}
 		getNextMayorTimestamp()
 
 		if(!Mayor.JERRY.isElected()) return
@@ -67,12 +71,7 @@ object MayorAPI {
 
 		jerryMayor = Mayor.UNKNOWN to Timestamp.distantPast()
 
-		ChatUtils.addMessage {
-			append("The Perkpocalypse mayor has expired! ")
-			append("Click here".formatted(Formatting.YELLOW, Formatting.BOLD))
-			append(" to update the new mayor.")
-			styled { it.withClickEvent(ClickEvent(ClickEvent.Action.RUN_COMMAND, "calendar")) }
-		}
+		ChatUtils.addMessage(tr("nobaaddons.mayorApi.jerryMayorExpired", "The Perkpocalypse mayor has expired! Click here to get the new mayor").runCommand("/calendar"))
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
@@ -112,19 +111,18 @@ object MayorAPI {
 
 	fun Mayor.isElected(): Boolean = currentMayor == this
 
-	private fun getCurrentMayor() {
-		if(lastApiUpdate.elapsedSince() < 20.minutes) return
+	private suspend fun getCurrentMayor() {
+		if(!shouldUpdateMayor) return
 		lastApiUpdate = Timestamp.now()
 
-		HTTPUtils.fetchJson<MayorJson>(ELECTION_API_URL).thenAccept { mayorJson ->
-			val mayor = mayorJson.mayor
+		val mayorJson = HTTPUtils.fetchJson<MayorJson>(ELECTION_API_URL).await()
+		val mayor = mayorJson.mayor
 
-			val currentMayorName = mayor.name
-			if(lastMayor?.name != currentMayorName) {
-				MayorPerk.disableAll()
-				currentMayor = Mayor.getMayor(currentMayorName, mayor.perks)
-				currentMinister = mayor.minister?.let { Mayor.getMayor(it.name, listOf(it.perk)) } ?: Mayor.UNKNOWN
-			}
+		val currentMayorName = mayor.name
+		if(lastMayor?.name != currentMayorName) {
+			MayorPerk.disableAll()
+			currentMayor = Mayor.getMayor(currentMayorName, mayor.perks)
+			currentMinister = mayor.minister?.let { Mayor.getMayor(it.name, listOf(it.perk)) } ?: Mayor.UNKNOWN
 		}
 	}
 
