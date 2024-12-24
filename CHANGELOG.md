@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Armor Glint Tweaks - celeste
 - Trophy Fish slot info in Odger menu - celeste
 - Fishing Bobber Timer - celeste
 - Trophy Fish chat message counts - celeste
@@ -18,11 +19,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Support for 1.21.4 - celeste
 - Option to make Sea Creature Alert also notify when catching a Carrot King (since not many people fish for it) - celeste
 - Option to make Sea Creature Alert also send a message in party chat - celeste
+- Added a fix for Skyblocker's Correct Transparent Skin Pixels feature on 1.21.1 and 1.21.3 - celeste
 
 ### Changed
 
 - The mod will now pull some data from a repository - celeste
   - This is a fairly large internal change; if something doesn't load properly, please try `/noba repo update` (and report it in the Discord)
+- Most mod message strings are now translatable - celeste
+  - This does not include server messages though - the mod still requires that your Hypixel language is set to English to function properly
 - Redesigned keybind screen and moved info boxes to their own custom screen - nobaboy
 - Keybinds now allows use of mouse buttons (not including the primary Left, Right, and Middle mouse buttons) - nobaboy
 - `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
@@ -30,7 +34,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-- Added a fix for Skyblocker's transparent head item feature on 1.21.1 and 1.21.3 - celeste
 - Temporary Waypoints not getting parsed because of player emblems - nobaboy
 - MayorAPI not resetting once an election ends due to a typo - nobaboy
 - PetAPI resetting current pet upon clicking any item other than pets in the pets menu - nobaboy

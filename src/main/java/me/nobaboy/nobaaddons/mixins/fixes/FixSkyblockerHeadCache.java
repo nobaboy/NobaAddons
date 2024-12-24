@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 // further ensure that we only modify affected versions
 @IfModLoaded(value = "skyblocker", maxVersion = "1.23.0-beta.2")
 @Mixin(targets = "de.hysky.skyblocker.skyblock.item.PlayerHeadHashCache")
-abstract class FixSkyblockerHeadCacheMixin {
+abstract class FixSkyblockerHeadCache {
 	@Dynamic
 	@WrapOperation(
 		method = "loadSkins",
