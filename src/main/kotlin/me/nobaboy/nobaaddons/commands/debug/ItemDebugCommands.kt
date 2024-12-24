@@ -29,8 +29,12 @@ object ItemDebugCommands : Group("item", executeRoot = true) {
 			"Recombobulated" to itemData.recombobulated,
 			"Stars" to itemData.stars,
 			"Enchants" to itemData.enchantments,
+			"Runes" to itemData.runes,
 			"Gemstones" to itemData.gemstones,
 			"Power scroll" to itemData.powerScroll,
+			"Potion" to itemData.potion,
+			"Potion level" to itemData.potionLevel,
+			"Potion effects" to itemData.effects,
 			"Donated to Museum" to itemData.donatedToMuseum,
 		)
 		return 0

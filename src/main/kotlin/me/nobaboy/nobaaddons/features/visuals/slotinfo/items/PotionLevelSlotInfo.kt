@@ -12,7 +12,7 @@ object PotionLevelSlotInfo : ISlotInfo {
 		if(itemStack.name.string.startsWith("Healer")) return
 
 		val item = itemStack.getSkyBlockItem() ?: return
-		if(item.id != "POTION") return
+		if(item.id != "POTION" || item.effects.isEmpty()) return
 
 		val level = item.potionLevel.toString()
 		drawCount(event, level)

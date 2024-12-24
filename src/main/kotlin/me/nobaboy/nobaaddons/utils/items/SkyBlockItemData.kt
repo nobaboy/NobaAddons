@@ -78,6 +78,10 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 
 	val newYearsCake: Int by CacheOf(this::nbt) { nbt.getInt("new_years_cake") }
 
+	val runes: Map<String, Int> by CacheOf(this::nbt) {
+		nbt.getCompound("runes").let { compound -> compound.keys.associate { it to compound.getInt(it) } }
+	}
+
 	override operator fun equals(other: Any?): Boolean = other is SkyBlockItemData && id == other.id && uuid == other.uuid
 	override fun hashCode(): Int = item.get().hashCode()
 
