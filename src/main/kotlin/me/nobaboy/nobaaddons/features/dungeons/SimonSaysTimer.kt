@@ -19,6 +19,7 @@ import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.toNobaVec
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.entity.player.PlayerEntity
@@ -63,12 +64,12 @@ object SimonSaysTimer {
 		val times = SimonSaysTimes.times
 
 		if(times.isEmpty()) {
-			ChatUtils.addMessage("You have not completed a Simon Says device.")
+			ChatUtils.addMessage(tr("nobaaddons.command.ss.noTimes", "You have not completed a Simon Says device."))
 			return
 		}
 
 		try {
-			ChatUtils.addMessage("Successfully cleared Simon Says Times.")
+			ChatUtils.addMessage(tr("nobaaddons.command.ss.cleared", "Successfully cleared Simon Says Times."))
 			SimonSaysTimes.personalBest = null
 			SimonSaysTimes.times.clear()
 			SimonSaysTimes.save()
@@ -81,7 +82,7 @@ object SimonSaysTimer {
 		val times = SimonSaysTimes.times
 
 		if(times.isEmpty()) {
-			ChatUtils.addMessage("You have not completed a Simon Says device.")
+			ChatUtils.addMessage(tr("nobaaddons.command.ss.noTimes", "You have not completed a Simon Says device."))
 			return
 		}
 
@@ -90,16 +91,18 @@ object SimonSaysTimer {
 		val average = sum / size
 
 		val formattedAverage = "%.3f".format(average)
-		ChatUtils.addMessage("Your average time for Simon Says is: ${formattedAverage}s (Total Count: $size)")
+		ChatUtils.addMessage(tr("nobaaddons.command.ss.average", "Your average time for Simon Says is: ${formattedAverage}s (Total Count: $size)"))
 	}
 
 	fun sendPersonalBest() {
 		val personalBest = SimonSaysTimes.personalBest
 
-		val message = personalBest?.let {
-			"Your Simon Says Personal Best is: $personalBest"
-		} ?: "You have not completed a Simon Says device."
-		ChatUtils.addMessage(message)
+		if(personalBest == null) {
+			ChatUtils.addMessage(tr("nobaaddons.command.ss.noTimes", "You have not completed a Simon Says device."))
+			return
+		}
+
+		ChatUtils.addMessage(tr("nobaadons.command.ss.personalBest", "Your personal best Simon Says time is $personalBest"))
 	}
 
 	private fun onChatMessage(message: String) {

@@ -93,6 +93,7 @@ object PartyAPI {
 	}
 
 	// This method is only called from debug commands, and as such is fine being untranslated.
+	@OptIn(ChatUtils.UntranslatedMessage::class)
 	fun listMembers() {
 		val party = this.party
 		if(party == null || party.members.isEmpty()) {

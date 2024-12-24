@@ -46,6 +46,7 @@ object ChatUtils {
 		MCUtils.player?.sendMessage(text, overlay)
 	}
 
+	@UntranslatedMessage
 	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.GRAY) {
 		addMessage(Text.literal(message), prefix, overlay, color)
 	}
@@ -53,4 +54,13 @@ object ChatUtils {
 	inline fun addMessage(prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.GRAY, builder: MutableText.() -> Unit) {
 		addMessage(Text.empty().apply(builder), prefix, overlay, color)
 	}
+
+	/**
+	 * Methods annotated with this allow for untranslated messages; you should avoid using these outside of
+	 * messages that are only expected to be seen in a development environment, and instead use `tr`.
+	 */
+	@Target(AnnotationTarget.FUNCTION)
+	@Retention(AnnotationRetention.BINARY)
+	@RequiresOptIn
+	annotation class UntranslatedMessage
 }

@@ -143,6 +143,7 @@ object RepoManager {
 		repoDownloadFailed = false
 	}
 
+	@OptIn(ChatUtils.UntranslatedMessage::class)
 	fun reload() {
 		synchronized(LOCK) {
 			objects.forEach {

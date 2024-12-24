@@ -14,6 +14,7 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.toNobaVec
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
 
 object MouseLock {
@@ -80,7 +81,9 @@ object MouseLock {
 	fun lockMouse() {
 		locked = !locked
 
-		val text = if(locked) "Mouse locked" else "Mouse unlocked"
+		val text = if(locked) tr("nobaaddons.command.mouseLock.locked", "Mouse locked")
+		else tr("nobaaddons.command.mouseLock.unlocked", "Mouse unlocked")
+
 		ChatUtils.addMessage(text)
 	}
 }

@@ -16,6 +16,7 @@ import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
@@ -94,8 +95,8 @@ object BurrowWaypoints {
 			message == "Poof! You have cleared your griffin burrows!" -> reset()
 			message == "You haven't unlocked this fast travel destination!" -> {
 				nearestWarp?.let {
-					ChatUtils.addMessage("It appears as you don't have the ${it.warpPoint.displayName} warp location unlocked.")
-					ChatUtils.addMessage("Once you have unlocked that location, use '/noba mythological resetwarps'.")
+					ChatUtils.addMessage(tr("nobaaddons.mythological.warpNotUnlocked", "It appears as you don't have the ${it.warpPoint.displayName} warp location unlocked."))
+					ChatUtils.addMessage(tr("nobaaddons.mythological.resetCommandHint", "Once you have unlocked that location, use '/noba mythological resetwarps'."))
 					it.warpPoint.unlocked = false
 					nearestWarp = null
 				}

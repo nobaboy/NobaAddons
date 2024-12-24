@@ -13,7 +13,7 @@ import net.minecraft.util.Formatting
 @Suppress("unused")
 object RepoCommands : Group("repo") {
 	val update = Command.async("update") {
-		ChatUtils.addMessage("Updating repository...")
+		ChatUtils.addMessage(tr("nobaaddons.repo.updateStarted", "Updating repository..."))
 		RepoManager.update(true)
 	}
 

@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
@@ -13,14 +12,13 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.mapFullMatch
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.formatted
+import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.text.ClickEvent
-import net.minecraft.util.Formatting
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
@@ -73,12 +71,7 @@ object MayorAPI {
 
 		jerryMayor = Mayor.UNKNOWN to Timestamp.distantPast()
 
-		ChatUtils.addMessage {
-			append("The Perkpocalypse mayor has expired! ")
-			append("Click here".formatted(Formatting.YELLOW, Formatting.BOLD))
-			append(" to update the new mayor.")
-			styled { it.withClickEvent(ClickEvent(ClickEvent.Action.RUN_COMMAND, "calendar")) }
-		}
+		ChatUtils.addMessage(tr("nobaaddons.mayorApi.jerryMayorExpired", "The Perkpocalypse mayor has expired! Click here to get the new mayor").runCommand("/calendar"))
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
