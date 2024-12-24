@@ -24,6 +24,7 @@ object TextUtils {
 	fun MutableText.appendLine(line: String): MutableText = appendLine(Text.literal(line))
 
 	fun MutableText.withColor(formatting: Formatting): MutableText = this.formatted(formatting)
+	fun MutableText.withColor(color: NobaColor): MutableText = this.withColor(color.rgb)
 
 	fun MutableText.black() = withColor(Formatting.BLACK)
 	fun MutableText.darkBlue() = withColor(Formatting.DARK_BLUE)

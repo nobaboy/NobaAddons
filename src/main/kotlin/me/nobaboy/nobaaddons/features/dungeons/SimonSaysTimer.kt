@@ -14,7 +14,11 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.bold
+import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.TextUtils.gray
+import me.nobaboy.nobaaddons.utils.TextUtils.plus
+import me.nobaboy.nobaaddons.utils.TextUtils.lightPurple
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
@@ -23,7 +27,6 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Formatting
 import net.minecraft.util.hit.BlockHitResult
@@ -134,17 +137,19 @@ object SimonSaysTimer {
 		times.add(timeTaken)
 
 		val personalBest = SimonSaysTimes.personalBest?.takeIf { timeTaken >= it } ?: timeTaken.also { SimonSaysTimes.personalBest = it }
-		val classifier = if(timeTaken < personalBest) Text.literal("(PB)").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
-			else Text.literal("($personalBest)").formatted(Formatting.DARK_AQUA)
-		val message = buildText {
-			formatted(Formatting.AQUA)
-			append("Took ")
-			append(timeTaken.toString())
-			append("s to finish the Simon Says Device. ")
-			append(classifier)
+		val message = tr("nobaaddons.ssTimer.completion", "Simon Says took ${timeTaken}s to complete")
+		var chatMessage = message
+
+		if(timeTaken < personalBest) {
+			chatMessage = tr("nobaaddons.ssTimer.beatPb", "PERSONAL BEST!").lightPurple().bold() + " " + message
+		} else {
+			chatMessage = message + buildLiteral(" ($personalBest)") { gray() }
 		}
 
-		if(config.timeInPartyChat && PartyAPI.party != null) HypixelCommands.partyChat(message.string) else ChatUtils.addMessage(message)
+		ChatUtils.addMessage(chatMessage, color = Formatting.WHITE)
+		if(config.timeInPartyChat && PartyAPI.party != null) {
+			HypixelCommands.partyChat(message.string)
+		}
 
 		try {
 			SimonSaysTimes.save()
