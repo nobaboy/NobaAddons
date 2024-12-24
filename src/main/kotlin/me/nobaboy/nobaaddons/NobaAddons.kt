@@ -65,7 +65,7 @@ object NobaAddons : ClientModInitializer {
 
 	val PREFIX: Text get() = buildText {
 		append(CommonText.NOBAADDONS)
-		literal(" ⟫ ") { formatted(Formatting.DARK_GRAY) }
+		literal(" » ") { formatted(Formatting.DARK_GRAY) }
 		formatted(Formatting.BLUE, Formatting.BOLD)
 	}
 

@@ -1,6 +1,9 @@
 package me.nobaboy.nobaaddons.utils.items
 
 import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.attributes.Attribute
+import me.nobaboy.nobaaddons.core.enchants.EnchantBase
+import me.nobaboy.nobaaddons.core.enchants.Enchant
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
@@ -18,11 +21,12 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	private val nbt: NbtCompound get() = item.get()!!.nbtCompound.nbt
 	private val lore: LoreComponent get() = item.get()!!.lore
 
-	val enchantments: Map<String, Int> by CacheOf(this::nbt) {
-		buildMap {
-			val enchants = nbt.getCompound("enchantments")
-			enchants.keys.forEach { put(it, enchants.getInt(it)) }
-		}
+	val attributes: Map<Attribute, Int> by CacheOf(this::nbt) {
+		extractIntMap("attributes", Attribute::getById)
+	}
+
+	val enchantments: Map<EnchantBase, Int> by CacheOf(this::nbt) {
+		extractIntMap("enchantments", Enchant::getById)
 	}
 
 	// TODO: Fix this as Hypixel changed how gemstones are stored in the nbt
@@ -55,6 +59,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val timestamp: Timestamp? by CacheOf(this::nbt) { if(nbt.contains("timestamp")) Timestamp(nbt.getLong("timestamp")) else null }
 	val donatedToMuseum: Boolean by CacheOf(this::nbt) { nbt.getBoolean("donated_museum") }
 
+	// Potion
 	val potion: String? by CacheOf(this::nbt) { nbt.get("potion")?.asString() }
 	val potionLevel: Int by CacheOf(this::nbt) { nbt.getInt("potion_level") }
 	val effects: List<Potion> by CacheOf(this::nbt) {
@@ -70,6 +75,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 		}
 	}
 
+	// Transmission
 	val ethermerge: Boolean by CacheOf(this::nbt) { nbt.getBoolean("ethermerge") }
 	val tunedTransmission: Int by CacheOf(this::nbt) { nbt.getInt("tuned_transmission") }
 
@@ -77,6 +83,18 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val petInfo: String by CacheOf(this::nbt) { nbt.getString("petInfo") }
 
 	val newYearsCake: Int by CacheOf(this::nbt) { nbt.getInt("new_years_cake") }
+
+	val ranchersSpeed: Int by CacheOf(this::nbt) { nbt.getInt("ranchers_speed") }
+
+	private inline fun <T> extractIntMap(
+		compoundName: String,
+		getById: (String) -> T?
+	): Map<T, Int> {
+		val compound = nbt.getCompound(compoundName)
+		return compound.keys.mapNotNull { id ->
+			getById(id)?.let { it to compound.getInt(id) }
+		}.toMap()
+	}
 
 	override operator fun equals(other: Any?): Boolean = other is SkyBlockItemData && id == other.id && uuid == other.uuid
 	override fun hashCode(): Int = item.get().hashCode()
