@@ -1,5 +1,5 @@
-name: Run Gradle Build
-on: [push, pull_request]
+name: Run Gradle Build from Commit
+on: push
 
 jobs:
   gradle:
