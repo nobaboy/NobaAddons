@@ -1,13 +1,12 @@
 package me.nobaboy.nobaaddons.repo
 
-import io.ktor.client.request.get
-import io.ktor.client.statement.readRawBytes
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.repo.data.GithubCommitResponse
 import me.nobaboy.nobaaddons.repo.objects.IRepoObject
 import me.nobaboy.nobaaddons.utils.HTTPUtils
+import me.nobaboy.nobaaddons.utils.HTTPUtils.get
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
@@ -15,6 +14,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.util.Formatting
 import java.io.File
 import java.io.IOException
+import java.net.http.HttpResponse
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
@@ -107,8 +107,8 @@ object RepoManager {
 		val repoZip = ZIP_PATH
 		try {
 			val url = downloadUrl
-			val zip = client.get(url)
-			repoZip.writeBytes(zip.readRawBytes())
+			val zip = client.get(url, HttpResponse.BodyHandlers.ofByteArray())
+			repoZip.writeBytes(zip.body())
 		} catch(e: Exception) {
 			NobaAddons.LOGGER.error("Failed to download repo", e)
 			if(!REPO_DIRECTORY.exists()) {

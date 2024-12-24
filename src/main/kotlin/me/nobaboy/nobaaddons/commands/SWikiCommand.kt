@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.commands
 
+import com.mojang.authlib.HttpAuthenticationService
 import com.mojang.brigadier.arguments.StringArgumentType
-import io.ktor.http.encodeURLQueryComponent
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.CommandBuilder
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
@@ -32,7 +32,8 @@ object SWikiCommand {
 	private val command = Command("swiki", listOf("wikisearch"), commandBuilder = commandBuilder) {
 		val query = StringArgumentType.getString(it, "query").title()
 		val wikiName = tr("nobaaddons.officialWiki", "Official SkyBlock Wiki").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
-		val link = "https://wiki.hypixel.net/index.php?search=${query.encodeURLQueryComponent(spaceToPlus = true)}&scope=internal"
+		val queryString = HttpAuthenticationService.buildQuery(mapOf("search" to query, "scope" to "internal"))
+		val link = "https://wiki.hypixel.net/index.php?$queryString"
 
 		if(config.wikiCommandAutoOpen) {
 			val message = compileAutoOpenMessage(query, wikiName)
