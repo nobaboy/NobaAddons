@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.core.mayor.Mayor
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
@@ -81,5 +82,7 @@ object DebugCommands : Group("debug") {
 		ChatUtils.addMessageWithClickAction("Click me!") { ChatUtils.addMessage("You clicked me!") }
 	}
 
-	val error = Command("error") { throw Error("Debug error") }
+	val error = Command("error") {
+		ErrorManager.logError("Debug error", Error("Intentional debug error"), "THIS IS AN INTENTIONAL ERROR FOR DEBUGGING" to "DO NOT REPORT THIS IN THE DISCORD", ignorePreviousErrors = true)
+	}
 }

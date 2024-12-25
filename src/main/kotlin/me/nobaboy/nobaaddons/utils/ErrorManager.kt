@@ -14,9 +14,17 @@ object ErrorManager {
 	private val errors = TimedCache<String, String>(10.minutes) // id -> stack trace
 	private val erroredLines = TimedSet<Pair<String, Int>>(10.minutes) // file to line
 
+	fun logError(message: String, error: Throwable, ignorePreviousErrors: Boolean = false) {
+		logError(message, error, emptyList(), ignorePreviousErrors)
+	}
+
+	fun logError(message: String, error: Throwable, vararg info: Pair<String, Any?>, ignorePreviousErrors: Boolean = false) {
+		logError(message, error, info.toList(), ignorePreviousErrors)
+	}
+
 	// This does send a (partially) untranslated message, but this is something I'm personally fine with,
 	// as it's more worthwhile for this to be untranslated to help with support requests related to it.
-	fun logError(message: String, error: Throwable, ignorePreviousErrors: Boolean = false) {
+	private fun logError(message: String, error: Throwable, extraInfo: List<Pair<String, Any?>>, ignorePreviousErrors: Boolean = false) {
 		val stack = error.stackTrace
 		if(!ignorePreviousErrors) {
 			val cause: Pair<String, Int> = stack.firstOrNull()?.let { it.fileName to it.lineNumber } ?: (message to 0)
@@ -28,7 +36,13 @@ object ErrorManager {
 
 		val id = MathHelper.randomUuid().toString()
 		val trace = error.stackTraceToString()
-		errors[id] = trace
+		errors[id] = if(extraInfo.isNotEmpty()) buildString {
+			append(trace)
+			appendLine()
+			appendLine("---- Extra Info ----")
+			appendLine()
+			extraInfo.forEach { appendLine("${it.first}: ${it.second}") }
+		} else trace
 
 		ChatUtils.addMessage(buildText {
 			append(tr("nobaaddons.error", "NobaAddons ${NobaAddons.VERSION} encountered an error: $message"))
