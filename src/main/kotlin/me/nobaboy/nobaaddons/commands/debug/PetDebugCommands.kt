@@ -44,36 +44,34 @@ object PetDebugCommands : Group("pet") {
 		)
 	}
 
-	val level = Command.command("level") {
-		buildCommand {
+	val level = Command(
+		"level",
+		commandBuilder = {
 			it.then(ClientCommandManager.argument("xp", DoubleArgumentType.doubleArg())
 				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
 					.then(ClientCommandManager.argument("max", IntegerArgumentType.integer(100, 200))
 						.executes(this::execute))
 					.executes(this::execute)))
 		}
-
-		executes {
-			val xp = DoubleArgumentType.getDouble(this, "xp")
-			val rarity = Rarity.RarityArgumentType.getItemRarity(this, "rarity")
-			val maxLevel = runCatching { IntegerArgumentType.getInteger(this, "max") }.getOrDefault(100)
-			val level = PetAPI.levelFromXp(xp, rarity, maxLevel)
-			source.sendFeedback("$rarity XP ${xp.addSeparators()} -> $level".toText())
-		}
+	) {
+		val xp = DoubleArgumentType.getDouble(it, "xp")
+		val rarity = Rarity.RarityArgumentType.getItemRarity(it, "rarity")
+		val maxLevel = runCatching { IntegerArgumentType.getInteger(it, "max") }.getOrDefault(100)
+		val level = PetAPI.levelFromXp(xp, rarity, maxLevel)
+		it.source.sendFeedback("$rarity XP ${xp.addSeparators()} -> $level".toText())
 	}
 
-	val xp = Command.command("xp") {
-		buildCommand {
+	val xp = Command(
+		"xp",
+		commandBuilder = {
 			it.then(ClientCommandManager.argument("level", IntegerArgumentType.integer(1, 100))
 				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
 					.executes(this::execute)))
 		}
-
-		executes {
-			val level = IntegerArgumentType.getInteger(this, "level")
-			val rarity = Rarity.RarityArgumentType.getItemRarity(this, "rarity")
-			val xp = PetAPI.xpFromLevel(level, rarity, 200).addSeparators()
-			source.sendFeedback("$rarity LVL $level -> $xp".toText())
-		}
+	) {
+		val level = IntegerArgumentType.getInteger(it, "level")
+		val rarity = Rarity.RarityArgumentType.getItemRarity(it, "rarity")
+		val xp = PetAPI.xpFromLevel(level, rarity, 200).addSeparators()
+		it.source.sendFeedback("$rarity LVL $level -> $xp".toText())
 	}
 }

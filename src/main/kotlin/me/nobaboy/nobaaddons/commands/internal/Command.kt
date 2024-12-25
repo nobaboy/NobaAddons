@@ -30,40 +30,7 @@ class Command(
 		return commandBuilder(this, ClientCommandManager.literal(name))
 	}
 
-	class Builder(private val name: String, private val aliases: List<String>) {
-		private lateinit var executes: CommandContext<FabricClientCommandSource>.() -> Unit
-		var enabled = true
-		private var builder: CommandBuilder = {
-			it.executes(this::execute)
-		}
-
-		fun buildCommand(builder: CommandBuilder): Builder {
-			this.builder = builder
-			return this
-		}
-
-		fun executes(callback: CommandContext<FabricClientCommandSource>.() -> Unit): Builder {
-			this.executes = callback
-			return this
-		}
-
-		fun build(): Command {
-			return Command(
-				name = name,
-				aliases = aliases,
-				enabled = enabled,
-				callback = executes,
-				commandBuilder = builder,
-			)
-		}
-	}
-
 	companion object {
-		// TODO remove this
-		inline fun command(name: String, aliases: List<String> = listOf(), builder: Builder.() -> Unit): Command {
-			return Builder(name, aliases).also(builder).build()
-		}
-
 		/**
 		 * Utility method, creates a [Command] wrapping the provided [command] method with [NobaAddons.runAsync]
 		 */

@@ -54,10 +54,8 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 	}
 
 	object Refill : Group("refill") {
-		val pearls = Command.command("pearls") {
-			executes {
-				RefillFromSacks.refill("ENDER_PEARLS", 16)
-			}
+		val pearls = Command("pearls") {
+			RefillFromSacks.refill("ENDER_PEARLS", 16)
 		}
 
 		val superboom = Command("superboom") {

@@ -38,27 +38,25 @@ object ItemDebugCommands : Group("item") {
 		)
 	}
 
-	val dumpNbt = Command.command("nbt") {
-		executes {
-			val item = MCUtils.player!!.mainHandStack
-			if(item.isEmpty) {
-				source.sendError(Text.literal("You aren't holding an item"))
-				return@executes
-			}
-			println(item.get(DataComponentTypes.CUSTOM_DATA))
-			source.sendFeedback(Text.literal("Dumped item NBT to game logs"))
+	val dumpNbt = Command("nbt") {
+		val item = MCUtils.player!!.mainHandStack
+		if(item.isEmpty) {
+			it.source.sendError(Text.literal("You aren't holding an item"))
+			return@Command
 		}
+
+		println(item.get(DataComponentTypes.CUSTOM_DATA))
+		it.source.sendFeedback(Text.literal("Dumped item NBT to game logs"))
 	}
 
-	val dumpLore = Command.command("lore") {
-		executes {
-			val item = MCUtils.player!!.mainHandStack
-			if(item.isEmpty || !item.contains(DataComponentTypes.LORE)) {
-				source.sendError(Text.literal("You aren't holding an item with lore"))
-				return@executes
-			}
-			println(item.get(DataComponentTypes.LORE)!!.lines)
-			source.sendFeedback(Text.literal("Dumped item lore to game logs"))
+	val dumpLore = Command("lore") {
+		val item = MCUtils.player!!.mainHandStack
+		if(item.isEmpty || !item.contains(DataComponentTypes.LORE)) {
+			it.source.sendError(Text.literal("You aren't holding an item with lore"))
+			return@Command
 		}
+
+		println(item.get(DataComponentTypes.LORE)!!.lines)
+		it.source.sendFeedback(Text.literal("Dumped item lore to game logs"))
 	}
 }
