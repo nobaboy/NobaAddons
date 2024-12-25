@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.commands.internal
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
@@ -17,10 +18,10 @@ class Command(
 	private val callback: (CommandContext<FabricClientCommandSource>) -> Unit,
 ) : ICommand {
 	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
-		runCatching {
+		try {
 			callback(ctx)
-		}.onFailure {
-			NobaAddons.LOGGER.error("Failed to execute command", it)
+		} catch(e: Throwable) {
+			ErrorManager.logError("Command '$name' threw an unhandled exception", e, ignorePreviousErrors = true)
 		}
 		return 0
 	}
@@ -74,7 +75,11 @@ class Command(
 			command: suspend (CommandContext<FabricClientCommandSource>) -> Unit
 		) = Command(name, aliases, enabled, commandBuilder) {
 			NobaAddons.runAsync {
-				runCatching { command(it) }.onFailure { NobaAddons.LOGGER.error("Command threw an unhandled error", it) }
+				try {
+					command(it)
+				} catch(e: Throwable) {
+					ErrorManager.logError("Command '$name' threw an unhandled exception", e)
+				}
 			}
 		}
 	}

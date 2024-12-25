@@ -1,26 +1,25 @@
 package me.nobaboy.nobaaddons.commands.debug
 
-import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyblockItem
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.text.Text
 
 @Suppress("unused")
-object ItemDebugCommands : Group("item", executeRoot = true) {
-	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
+object ItemDebugCommands : Group("item") {
+	override val root = RootCommand {
 		val item = MCUtils.player!!.mainHandStack
 		if(item.isEmpty || !item.isSkyBlockItem) {
-			ctx.source.sendError(Text.literal("You aren't holding a valid SkyBlock item"))
-			return 0
+			it.source.sendError(Text.literal("You aren't holding a valid SkyBlock item"))
+			return@RootCommand
 		}
+
 		val itemData = item.skyblockItem()
-		ctx.dumpInfo(
+		it.dumpInfo(
 			"Item ID" to itemData.id,
 			"UUID" to itemData.uuid,
 			"Created" to itemData.timestamp?.elapsedSince(),
@@ -37,7 +36,6 @@ object ItemDebugCommands : Group("item", executeRoot = true) {
 			"Potion effects" to itemData.effects,
 			"Donated to Museum" to itemData.donatedToMuseum,
 		)
-		return 0
 	}
 
 	val dumpNbt = Command.command("nbt") {

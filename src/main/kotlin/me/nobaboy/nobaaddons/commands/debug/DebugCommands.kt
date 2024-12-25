@@ -10,6 +10,8 @@ import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
@@ -40,51 +42,44 @@ object DebugCommands : Group("debug") {
 	val pet = PetDebugCommands
 	val regex = RepoDebugCommands
 
-	val party = Command.command("party") {
-		executes {
-			PartyAPI.listMembers()
+	val party = Command("party") { PartyAPI.listMembers() }
+
+	val mayor = Command("mayor") {
+		val mayor = MayorAPI.currentMayor
+		val minister = MayorAPI.currentMinister
+
+		if(mayor == Mayor.UNKNOWN && minister == Mayor.UNKNOWN) {
+			it.source.sendError(Text.literal("Current Mayor and Minister are still unknown"))
+			return@Command
 		}
+
+		it.dumpInfo(
+			"Current Mayor" to mayor.mayorName,
+			"Mayor Perks" to mayor.activePerks,
+			"Current Minister" to minister.mayorName,
+			"Minister Perk" to minister.activePerks,
+		)
 	}
 
-	val mayor = Command.command("mayor") {
-		executes {
-			val mayor = MayorAPI.currentMayor
-			val minister = MayorAPI.currentMinister
+	val sounds = Command("sounds", enabled = DebugAPI.isAwtAvailable) { DebugAPI.openSoundDebugMenu() }
 
-			if(mayor == Mayor.UNKNOWN && minister == Mayor.UNKNOWN) {
-				source.sendError(Text.literal("Current Mayor and Minister are still unknown"))
-				return@executes
-			}
-
-			dumpInfo(
-				"Current Mayor" to mayor.mayorName,
-				"Mayor Perks" to mayor.activePerks,
-				"Current Minister" to minister.mayorName,
-				"Minister Perk" to minister.activePerks,
-			)
-		}
+	val location = Command("location") {
+		val location = DebugAPI.lastLocationPacket
+		it.dumpInfo(
+			"Server" to location.serverName,
+			"Type" to location.serverType.getOrNull(),
+			"Lobby" to location.lobbyName.getOrNull(),
+			"Mode" to location.mode.getOrNull(),
+			"Map" to location.map.getOrNull(),
+			"Detected Island" to SkyBlockAPI.currentIsland,
+			"Zone" to SkyBlockAPI.currentZone,
+		)
 	}
 
-	val sounds = Command.command("sounds") {
-		enabled = DebugAPI.isAwtAvailable
-
-		executes {
-			DebugAPI.openSoundDebugMenu()
-		}
+	@OptIn(UntranslatedMessage::class)
+	val clickaction = Command("clickaction") {
+		ChatUtils.addMessageWithClickAction("Click me!") { ChatUtils.addMessage("You clicked me!") }
 	}
 
-	val location = Command.command("location") {
-		executes {
-			val location = DebugAPI.lastLocationPacket
-			dumpInfo(
-				"Server" to location.serverName,
-				"Type" to location.serverType.getOrNull(),
-				"Lobby" to location.lobbyName.getOrNull(),
-				"Mode" to location.mode.getOrNull(),
-				"Map" to location.map.getOrNull(),
-				"Detected Island" to SkyBlockAPI.currentIsland,
-				"Zone" to SkyBlockAPI.currentZone,
-			)
-		}
-	}
+	val error = Command("error") { throw Error("Debug error") }
 }

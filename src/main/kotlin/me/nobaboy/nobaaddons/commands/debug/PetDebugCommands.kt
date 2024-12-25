@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.commands.debug
 
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.arguments.IntegerArgumentType
-import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
@@ -15,24 +14,23 @@ import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.text.Text
 
 @Suppress("unused")
-object PetDebugCommands : Group("pet", executeRoot = true) {
-	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
+object PetDebugCommands : Group("pet") {
+	override val root = RootCommand {
 		if(!SkyBlockAPI.inSkyBlock) {
-			ctx.source.sendError(Text.literal("You aren't in SkyBlock!"))
-			return 0
+			it.source.sendError(Text.literal("You aren't in SkyBlock!"))
+			return@RootCommand
 		}
 
 		val pet = PetAPI.currentPet
 		if(pet == null) {
-			ctx.source.sendError(Text.literal("You don't have a pet equipped"))
-			return 0
+			it.source.sendError(Text.literal("You don't have a pet equipped"))
+			return@RootCommand
 		}
 
-		ctx.dumpInfo(
+		it.dumpInfo(
 			"Pet" to buildText {
 				append(pet.rarity.name.toText().bold())
 				append(" ")
@@ -44,8 +42,6 @@ object PetDebugCommands : Group("pet", executeRoot = true) {
 			"Held Item" to pet.heldItem,
 			"UUID" to pet.uuid,
 		)
-
-		return 0
 	}
 
 	val level = Command.command("level") {

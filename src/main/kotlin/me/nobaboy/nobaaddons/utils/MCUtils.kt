@@ -6,6 +6,7 @@ import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.network.ClientPlayNetworkHandler
 import net.minecraft.client.option.GameOptions
 import net.minecraft.client.render.WorldRenderer
+import net.minecraft.client.util.Clipboard
 import net.minecraft.client.util.Window
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.player.PlayerEntity
@@ -13,6 +14,8 @@ import net.minecraft.network.packet.Packet
 import java.util.UUID
 
 object MCUtils {
+	private val clipboard = Clipboard()
+
 	val client: MinecraftClient get() = MinecraftClient.getInstance()
 
 	val world: ClientWorld? get() = client.world
@@ -37,5 +40,11 @@ object MCUtils {
 		}
 
 		client.networkHandler!!.sendPacket(packet)
+	}
+
+	// This would fit better in a different class (like OSUtils), but I didn't want to make a new
+	// class just for a single one-line method
+	fun copyToClipboard(text: String) {
+		clipboard.setClipboard(window.handle, text)
 	}
 }

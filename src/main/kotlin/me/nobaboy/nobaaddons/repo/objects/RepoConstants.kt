@@ -4,6 +4,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.serializer
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.events.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.serializers.RegexKSerializer
 import net.fabricmc.loader.api.FabricLoader
@@ -14,6 +15,10 @@ import kotlin.reflect.KProperty
  */
 object RepoConstants {
 	sealed class Handler<T>(private val file: String, private val knownKeys: Set<String>?, private val valueSerializer: KSerializer<T>) : IRepoObject {
+		init {
+			RepoReloadEvent.EVENT.register { this.load() }
+		}
+
 		@Volatile private var values: Map<String, T> = mutableMapOf()
 
 		override fun load() {
