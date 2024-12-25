@@ -22,11 +22,21 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	private val lore: LoreComponent get() = item.get()!!.lore
 
 	val attributes: Map<Attribute, Int> by CacheOf(this::nbt) {
-		extractIntMap("attributes", Attribute::getById)
+		val compound = nbt.getCompound("attributes")
+		buildMap {
+			compound.keys.forEach { key ->
+				Attribute.getById(key)?.let { put(it, compound.getInt(key)) }
+			}
+		}
 	}
 
 	val enchantments: Map<EnchantBase, Int> by CacheOf(this::nbt) {
-		extractIntMap("enchantments", Enchant::getById)
+		val compound = nbt.getCompound("enchantments")
+		buildMap {
+			compound.keys.forEach { key ->
+				Enchant.getById(key)?.let { put(it, compound.getInt(key)) }
+			}
+		}
 	}
 
 	// TODO: Fix this as Hypixel changed how gemstones are stored in the nbt
@@ -84,17 +94,11 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 
 	val newYearsCake: Int by CacheOf(this::nbt) { nbt.getInt("new_years_cake") }
 
-	val ranchersSpeed: Int by CacheOf(this::nbt) { nbt.getInt("ranchers_speed") }
-
-	private inline fun <T> extractIntMap(
-		compoundName: String,
-		getById: (String) -> T?
-	): Map<T, Int> {
-		val compound = nbt.getCompound(compoundName)
-		return compound.keys.mapNotNull { id ->
-			getById(id)?.let { it to compound.getInt(id) }
-		}.toMap()
+	val runes: Map<String, Int> by CacheOf(this::nbt) {
+		nbt.getCompound("runes").let { compound -> compound.keys.associate { it to compound.getInt(it) } }
 	}
+
+	val ranchersSpeed: Int by CacheOf(this::nbt) { nbt.getInt("ranchers_speed") }
 
 	override operator fun equals(other: Any?): Boolean = other is SkyBlockItemData && id == other.id && uuid == other.uuid
 	override fun hashCode(): Int = item.get().hashCode()

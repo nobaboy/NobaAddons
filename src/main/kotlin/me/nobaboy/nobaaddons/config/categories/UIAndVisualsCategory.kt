@@ -14,6 +14,9 @@ import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
+import java.util.Calendar
+
+private val year = Calendar.getInstance().get(Calendar.YEAR)
 
 object UIAndVisualsCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.uiAndVisuals", "UI & Visuals")) {
@@ -43,7 +46,7 @@ object UIAndVisualsCategory {
 			)
 		}
 
-		.buildGroup(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper", "Etherwarp Overlay")) {
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper", "Etherwarp Overlay")) {
 			boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.uiAndVisuals.etherwarpHelper.enabled,
@@ -68,7 +71,7 @@ object UIAndVisualsCategory {
 			)
 		}
 
-		.buildGroup(
+		buildGroup(
 			tr("nobaaddons.config.uiAndVisuals.slotInfo", "Slot Info"),
 			tr("nobaaddons.config.uiAndVisuals.slotInfo.tooltip", "Displays item details such as names and/or tiers on item slots")
 		) {
@@ -205,7 +208,7 @@ object UIAndVisualsCategory {
 			)
 		}
 
-		.buildGroup(tr("nobaaddons.config.uiAndVisuals.renderingTweaks", "Rendering Tweaks")) {
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.renderingTweaks", "Rendering Tweaks")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt", "Hide Lightning Bolt"),
 				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt.tooltip", "Prevents lightning bolts from rendering"),
@@ -226,7 +229,7 @@ object UIAndVisualsCategory {
 			)
 		}
 
-		.buildGroup(tr("nobaaddons.config.uiAndVisuals.swingAnimation", "Arm Swing Animation Tweaks")) {
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.swingAnimation", "Arm Swing Animation Tweaks")) {
 			slider(
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration", "Swing Duration"),
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip", "Controls how long your arm swing animation duration is, ignoring all effects like Haste"),
@@ -251,7 +254,7 @@ object UIAndVisualsCategory {
 			)
 		}
 
-		.buildGroup(tr("nobaaddons.config.uiAndVisuals.itemRendering", "First Person Item Rendering")) {
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.itemRendering", "First Person Item Rendering")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip", "Cancel Re-equip Animation"),
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip.tooltip", "Prevents the item update animation from playing entirely, including when switching items"),
@@ -305,6 +308,21 @@ object UIAndVisualsCategory {
 				min = 0.1f,
 				max = 2.0f,
 				step = 0.1f
+			)
+		}
+
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints"),
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "Adds missing enchantment glints on armor pieces, because it's $year and this is still an issue."),
+				default = defaults.uiAndVisuals.renderingTweaks.fixEnchantedArmorGlint,
+				property = config.uiAndVisuals.renderingTweaks::fixEnchantedArmorGlint
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.removeGlints", "Remove All Armor Enchant Glints"),
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.removeGlints.tooltip", "Removes enchantment glints from all armor pieces"),
+				default = defaults.uiAndVisuals.renderingTweaks.removeArmorGlints,
+				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
 			)
 		}
 	}

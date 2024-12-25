@@ -134,6 +134,12 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var removeFrontFacingThirdPerson: Boolean = false
+
+		@SerialEntry
+		var fixEnchantedArmorGlint: Boolean = false
+
+		@SerialEntry
+		var removeArmorGlints: Boolean = false
 	}
 
 	class SwingAnimation {
