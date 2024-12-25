@@ -78,7 +78,7 @@ class Command(
 				try {
 					command(it)
 				} catch(e: Throwable) {
-					ErrorManager.logError("Command '$name' threw an unhandled exception", e)
+					ErrorManager.logError("Command '$name' threw an unhandled exception", e, ignorePreviousErrors = true)
 				}
 			}
 		}
