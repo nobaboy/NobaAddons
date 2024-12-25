@@ -9,12 +9,9 @@ import me.nobaboy.nobaaddons.repo.objects.IRepoObject
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HTTPUtils.get
-import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
-import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.util.Formatting
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -140,7 +137,7 @@ object RepoManager {
 				obj.load()
 			} catch(_: FileNotFoundException) {
 			} catch(e: Throwable) {
-				ErrorManager.logError("Repo object ${obj::class.simpleName} failed initial load", e)
+				ErrorManager.logError("Repo object failed initial load", e)
 			}
 			objects.add(obj)
 		}

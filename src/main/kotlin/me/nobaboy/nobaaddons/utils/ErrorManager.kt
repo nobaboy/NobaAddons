@@ -3,16 +3,30 @@ package me.nobaboy.nobaaddons.utils
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
+import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import net.minecraft.util.Formatting
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
+import net.minecraft.text.Text
 import net.minecraft.util.math.MathHelper
+import java.util.LinkedList
+import java.util.Queue
 import kotlin.time.Duration.Companion.minutes
 
 object ErrorManager {
 	private val errors = TimedCache<String, String>(10.minutes) // id -> stack trace
 	private val erroredLines = TimedSet<Pair<String, Int>>(10.minutes) // file to line
+	private val queuedMessages: Queue<Text> = LinkedList()
+
+	init {
+		ClientTickEvents.END_CLIENT_TICK.register { attemptSendQueuedMessages() }
+	}
+
+	private fun attemptSendQueuedMessages() {
+		val player = MCUtils.player ?: return
+		player.sendMessage(queuedMessages.poll() ?: return, false)
+	}
 
 	fun logError(message: String, error: Throwable, ignorePreviousErrors: Boolean = false) {
 		logError(message, error, emptyList(), ignorePreviousErrors)
@@ -44,11 +58,14 @@ object ErrorManager {
 			extraInfo.forEach { appendLine("${it.first}: ${it.second}") }
 		} else trace
 
-		ChatUtils.addMessage(buildText {
+		// queue messages to prevent them from being lost if the player isn't in a world when an error occurs
+		queuedMessages.add(buildText {
+			append(NobaAddons.PREFIX)
 			append(tr("nobaaddons.error", "NobaAddons ${NobaAddons.VERSION} encountered an error: $message"))
 			runCommand("/nobaaddons internal copyerror $id")
 			hoverText(tr("nobaaddons.error.clickToCopy", "Click to copy the error to the clipboard").yellow())
-		}, color = Formatting.RED)
+			red()
+		})
 	}
 
 	fun copyError(id: String) {
