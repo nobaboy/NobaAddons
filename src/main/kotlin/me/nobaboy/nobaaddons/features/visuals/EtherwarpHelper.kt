@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.visuals.itemoverlays
+package me.nobaboy.nobaaddons.features.visuals
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
@@ -21,7 +21,7 @@ import net.minecraft.world.World
 
 object EtherwarpHelper {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.etherwarpHelper
-	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && config.enabled && MCUtils.options.sneakKey.isPressed
+	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && MCUtils.options.sneakKey.isPressed && config.enabled
 
 	private const val BASE_DISTANCE = 57
 	private val etherwarpItems = setOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")

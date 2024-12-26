@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.utils
 
-import me.nobaboy.nobaaddons.NobaAddons
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.handler.ClientboundPacketHandler
 import net.hypixel.modapi.packet.ClientboundHypixelPacket
@@ -12,7 +11,6 @@ import net.hypixel.modapi.packet.impl.serverbound.ServerboundPartyInfoPacket
 import net.hypixel.modapi.packet.impl.serverbound.ServerboundPingPacket
 import net.hypixel.modapi.packet.impl.serverbound.ServerboundPlayerInfoPacket
 import net.hypixel.modapi.packet.impl.serverbound.ServerboundVersionedPacket
-import java.lang.IllegalArgumentException
 
 object ModAPIUtils {
 	val oneOffListeners: MutableMap<Class<ClientboundHypixelPacket>, PacketListener<*>> = mutableMapOf()
@@ -27,7 +25,9 @@ object ModAPIUtils {
 			if(registered) return
 			HypixelModAPI.getInstance().createHandler(packet) { received ->
 				waiting.removeIf {
-					runCatching { it(received as T) }.onFailure { NobaAddons.LOGGER.error("Failed to call packet listener", it) }
+					runCatching { it(received as T) }.onFailure {
+						ErrorManager.logError("Mod API packet listener threw an unhandled error", it)
+					}
 					true
 				}
 			}

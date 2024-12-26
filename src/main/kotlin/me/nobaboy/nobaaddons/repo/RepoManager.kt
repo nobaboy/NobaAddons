@@ -3,16 +3,18 @@ package me.nobaboy.nobaaddons.repo
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.data.PersistentCache
+import me.nobaboy.nobaaddons.events.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.data.GithubCommitResponse
 import me.nobaboy.nobaaddons.repo.objects.IRepoObject
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HTTPUtils.get
+import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
-import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.util.Formatting
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
 import java.net.http.HttpResponse
 import java.nio.file.Files
@@ -36,22 +38,8 @@ object RepoManager {
 	}
 
 	private val TEMPORARY_DIRECTORY = Files.createTempDirectory("nobaaddons")
-	private val ZIP_PATH get() = TEMPORARY_DIRECTORY.resolve("repo.zip").apply { toFile().createNewFile() }
+	private val ZIP_PATH get() = TEMPORARY_DIRECTORY.resolve("repo_${StringUtils.randomAlphanumeric()}.zip").apply { toFile().createNewFile() }
 
-	/**
-	 * Set to `true` when the repository has first been loaded.
-	 */
-	@Volatile var loaded: Boolean = false
-		private set
-
-	/**
-	 * If `true`, downloading the repository has failed; we may be using the backup repository
-	 * (this can be checked through [commit] being `backup-repo`)
-	 */
-	var repoDownloadFailed: Boolean = false
-		private set
-
-	private var sendChatMessage: Boolean = false
 	var commit: String? by PersistentCache::repoCommit
 		private set
 
@@ -73,34 +61,26 @@ object RepoManager {
 		HTTPUtils.fetchJson<GithubCommitResponse>(commitApiUrl).await().sha
 
 	suspend fun update(sendMessages: Boolean = false) {
-		this.sendChatMessage = sendMessages
-		download()
-		reload()
-		this.sendChatMessage = false
-	}
-
-	private suspend fun download() {
 		if(!config.autoUpdate && REPO_DIRECTORY.exists()) {
-			if(sendChatMessage) {
+			if(sendMessages) {
 				ChatUtils.addMessage(tr("nobaaddons.repo.autoUpdateOff", "Auto updating has been disabled, not updating repository"))
 			}
-			loaded = true
+			RepoReloadEvent.invoke()
 			return
 		}
 
-		val latestCommit: String
-		try {
-			latestCommit = getLatestCommit()
+		val latestCommit: String = try {
+			getLatestCommit()
 		} catch(e: Exception) {
-			NobaAddons.LOGGER.error("Failed to get latest repo commit", e)
+			ErrorManager.logError("Failed to get latest repo commit", e, ignorePreviousErrors = true)
 			return
 		}
 
 		if(commit == latestCommit && REPO_DIRECTORY.exists()) {
-			loaded = true
-			if(sendChatMessage) {
+			if(sendMessages) {
 				ChatUtils.addMessage(tr("nobaaddons.repo.alreadyUpdated", "Repository is already up to date"))
 			}
+			RepoReloadEvent.invoke()
 			return
 		}
 
@@ -110,54 +90,41 @@ object RepoManager {
 			val zip = client.get(url, HttpResponse.BodyHandlers.ofByteArray())
 			repoZip.writeBytes(zip.body())
 		} catch(e: Exception) {
-			NobaAddons.LOGGER.error("Failed to download repo", e)
-			if(!REPO_DIRECTORY.exists()) {
-				switchToBackupRepo()
-			}
-			if(sendChatMessage) {
-				ChatUtils.addMessage(tr("nobaaddons.repo.downloadFailed", "Failed to download repository"), color = Formatting.RED)
-			}
-			repoDownloadFailed = true
+			ErrorManager.logError("Repository failed to download", e, ignorePreviousErrors = true)
+			if(!REPO_DIRECTORY.exists()) switchToBackupRepo()
 			return
 		}
 
-		loaded = false
-		val created = REPO_DIRECTORY.mkdirs()
+		REPO_DIRECTORY.mkdirs()
 		try {
 			RepoUtils.unzipIgnoreFirstFolder(repoZip.pathString, REPO_DIRECTORY.absolutePath)
 		} catch(e: Exception) {
-			NobaAddons.LOGGER.error("Failed to unzip repository", e)
-			if(sendChatMessage) {
-				ChatUtils.addMessage(tr("nobaaddons.repo.unpackFailed", "Failed to unpack downloaded repository"), color = Formatting.RED)
-			}
-			repoDownloadFailed = true
-			if(created) switchToBackupRepo()
+			ErrorManager.logError("Failed to unzip downloaded repository", e, ignorePreviousErrors = true)
+			// always attempt to switch to the backup repo at this point, as it's possible that the
+			// repo is in a broken state
+			switchToBackupRepo()
+			// backup repo will invoke RepoReloadEvent for us here
 			return
 		}
 
 		commit = latestCommit
-		if(sendChatMessage) {
+		if(sendMessages) {
 			ChatUtils.addMessage(tr("nobaaddons.repo.updated", "Updated repository"))
 		}
-		loaded = true
-		repoDownloadFailed = false
+		RepoReloadEvent.invoke()
 	}
 
-	@OptIn(ChatUtils.UntranslatedMessage::class)
-	fun reload() {
+	fun performInitialLoad(obj: IRepoObject) {
 		synchronized(LOCK) {
-			objects.forEach {
-				runCatching { it.load() }.onFailure { NobaAddons.LOGGER.error("Repo object failed to load", it) }
+			try {
+				obj.load()
+			} catch(e: FileNotFoundException) {
+				// This isn't enough of an issue to send a message over at this point in the load process
+				// (since it's expected that the repo won't exist on first startup)
+				NobaAddons.LOGGER.warn("Repo object couldn't find file", e)
+			} catch(e: Throwable) {
+				ErrorManager.logError("Repo object failed initial load", e, "Repo object class" to obj::class)
 			}
-		}
-		if(FabricLoader.getInstance().isDevelopmentEnvironment && sendChatMessage) {
-			ChatUtils.addMessage("Repo objects reloaded")
-		}
-	}
-
-	fun add(obj: IRepoObject) {
-		synchronized(LOCK) {
-			if(loaded) obj.load()
 			objects.add(obj)
 		}
 	}
@@ -177,10 +144,10 @@ object RepoManager {
 			RepoUtils.unzipIgnoreFirstFolder(destinationPath.toAbsolutePath().toString(), REPO_DIRECTORY.absolutePath)
 			commit = "backup-repo"
 
-			loaded = true
 			NobaAddons.LOGGER.warn("Successfully switched to backup repo")
+			RepoReloadEvent.invoke()
 		} catch(e: Exception) {
-			NobaAddons.LOGGER.error("Failed to switch to backup repo", e)
+			ErrorManager.logError("Failed to switch to backup repo", e, ignorePreviousErrors = true)
 		}
 	}
 
@@ -190,5 +157,9 @@ object RepoManager {
 		} catch(e: Exception) {
 			NobaAddons.LOGGER.warn("Failed to delete temporary directory", e)
 		}
+	}
+
+	private fun RepoReloadEvent.Companion.invoke() {
+		synchronized(LOCK) { EVENT.invoke(RepoReloadEvent()) }
 	}
 }

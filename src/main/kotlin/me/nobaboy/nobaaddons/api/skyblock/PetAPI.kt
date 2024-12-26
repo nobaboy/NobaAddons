@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -78,7 +79,9 @@ object PetAPI {
 			val id = name.uppercase().replace(" ", "_")
 			val level = groups["level"]?.value?.toInt() ?: return
 			val rarity = Rarity.getByColorCode(groups["rarity"]?.value?.first() ?: return)
-			if(rarity == Rarity.UNKNOWN) NobaAddons.LOGGER.warn("Failed to get pet rarity from Autopet chat message: '$message'")
+			if(rarity == Rarity.UNKNOWN) {
+				ErrorManager.logError("Failed to get pet rarity from Autopet chat message", Error(), "Full message" to message)
+			}
 			val xpRarity = if(id == "BINGO") Rarity.COMMON else rarity
 
 			val pet = PetData(name, id, xpFromLevel(level, xpRarity, if(id == "GOLDEN_DRAGON") 200 else 100), rarity, active = true)

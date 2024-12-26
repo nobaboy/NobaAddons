@@ -16,6 +16,7 @@ import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
+import dev.isxander.yacl3.api.controller.StringControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import dev.isxander.yacl3.api.controller.ValueFormatter
 import dev.isxander.yacl3.gui.YACLScreen
@@ -70,6 +71,10 @@ object NobaConfigUtils {
 
 	fun createColorController(option: Option<Color>): ColorControllerBuilder {
 		return ColorControllerBuilder.create(option)
+	}
+
+	fun createStringController(option: Option<String>): StringControllerBuilder {
+		return StringControllerBuilder.create(option)
 	}
 
 	fun createLabelController(vararg lines: Text): LabelOption.Builder {
@@ -132,6 +137,15 @@ object NobaConfigUtils {
 		property: KMutableProperty<Boolean>
 	): G {
 		return add(name, description, ::createTickBoxController, default, property)
+	}
+
+	fun <G : OptionAddable> G.string(
+		name: Text,
+		description: Text? = null,
+		default: String,
+		property: KMutableProperty<String>
+	): G {
+		return add(name, description, ::createStringController, default, property)
 	}
 
 	inline fun <G : OptionAddable, reified E : Enum<E>> G.cycler(

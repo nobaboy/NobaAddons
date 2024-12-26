@@ -37,7 +37,7 @@ object Scheduler {
 		}
 
 		fun run() {
-			runCatching { task() }.onFailure { NobaAddons.LOGGER.error("Failed to run scheduled method", it) }
+			runCatching { task() }.onFailure { ErrorManager.logError("Scheduled method failed", it) }
 			if(repeat && !cancelled) {
 				ticksRemaining = ticks
 			} else {

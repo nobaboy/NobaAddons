@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
+import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
 import net.minecraft.text.MutableText
@@ -21,6 +22,9 @@ object TextUtils {
 		return this
 	}
 
+	fun MutableText.appendLine(): MutableText = this.append("\n")
+
+	@UntranslatedMessage
 	fun MutableText.appendLine(line: String): MutableText = appendLine(Text.literal(line))
 
 	fun MutableText.withColor(formatting: Formatting): MutableText = this.formatted(formatting)
@@ -58,7 +62,9 @@ object TextUtils {
 	fun MutableText.hoverText(text: String): MutableText = hoverText(text.toText())
 	fun MutableText.hoverText(text: Text): MutableText = styled { it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, text)) }
 
-	fun String.toText(): MutableText = Text.literal(this)
+	fun MutableText.hoverText(builder: MutableText.() -> Unit): MutableText = hoverText(buildText(builder))
+
+	fun String.toText(): MutableText = if(this.isBlank()) Text.empty() else Text.literal(this)
 	fun String.formatted(vararg formatting: Formatting): MutableText = toText().formatted(*formatting)
 	fun String.styled(styleUpdater: UnaryOperator<Style>): MutableText = toText().styled(styleUpdater)
 
