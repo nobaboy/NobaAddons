@@ -50,7 +50,7 @@ object RepoUtils {
 					}
 					val fos = FileOutputStream(newFile)
 					var len: Int
-					while (zis.read(buffer).also { len = it } > 0) {
+					while(zis.read(buffer).also { len = it } > 0) {
 						fos.write(buffer, 0, len)
 					}
 					fos.close()
@@ -75,8 +75,8 @@ object RepoUtils {
 		var file: File? = file
 		file = file!!.canonicalFile
 		rootDirectory = rootDirectory.canonicalFile
-		while (file != null) {
-			if (file == rootDirectory) return true
+		while(file != null) {
+			if(file == rootDirectory) return true
 			file = file.parentFile
 		}
 		return false

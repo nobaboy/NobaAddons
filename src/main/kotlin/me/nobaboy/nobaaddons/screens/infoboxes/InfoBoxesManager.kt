@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.screens.infoboxes
 
 import kotlinx.io.IOException
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.screens.hud.elements.data.Element
 import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
 import me.nobaboy.nobaaddons.utils.ErrorManager
