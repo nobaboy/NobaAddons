@@ -1,13 +1,13 @@
 package me.nobaboy.nobaaddons.screens.keybinds
 
 import kotlinx.io.IOException
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.screens.keybinds.impl.KeyBind
 import me.nobaboy.nobaaddons.screens.keybinds.impl.NobaKeyBind
 import me.nobaboy.nobaaddons.utils.CooldownManager
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import org.lwjgl.glfw.GLFW
@@ -30,7 +30,7 @@ object KeyBindsManager {
 			KeyBindsConfig.load()
 			commandKeyBinds.addAll(KeyBindsConfig.keyBinds)
 		} catch(ex: IOException) {
-			NobaAddons.LOGGER.error("Failed to load key-binds.json", ex)
+			ErrorManager.logError("Failed to load keybinds", ex)
 		}
 	}
 
@@ -40,7 +40,7 @@ object KeyBindsManager {
 			KeyBindsConfig.keyBinds.addAll(commandKeyBinds)
 			KeyBindsConfig.save()
 		} catch(ex: IOException) {
-			NobaAddons.LOGGER.error("Failed to save key-binds.json", ex)
+			ErrorManager.logError("Failed to save keybinds", ex)
 		}
 	}
 

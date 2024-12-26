@@ -8,7 +8,6 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import java.lang.StackWalker.Option
 import java.nio.file.Path
@@ -57,6 +56,7 @@ object NobaConfigManager {
 				.category(DungeonsCategory.create(defaults, config))
 				.category(ChatCategory.create(defaults, config))
 				.category(QOLCategory.create(defaults, config))
+				.category(ApiCategory.create(defaults, config))
 		}.generateScreen(parent)
 	}
 }

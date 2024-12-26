@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.features.chat.alerts
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.MythicSeaCreatureAlert
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.VanquisherAlert
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
@@ -28,8 +28,8 @@ interface IAlert {
 				alerts.asSequence().filter { it.enabled }.forEach {
 					runCatching { it.shouldAlert(message.string.cleanFormatting()) }
 						.onFailure { error ->
-							NobaAddons.LOGGER.error(
-								"Alert {} threw an error while processing a chat message", it, error
+							ErrorManager.logError(
+								"${it::class.simpleName} threw an error while processing a chat message", error
 							)
 						}
 				}
