@@ -88,6 +88,9 @@ object DebugCommands : Group("debug") {
 			"Debug error",
 			Error("Intentional debug error"),
 			"THIS COMMAND INTENTIONALLY THROWS AN ERROR FOR DEBUGGING PURPOSES" to "DO NOT REPORT THIS IN THE DISCORD",
+			"Intentionally erroring value" to object {
+				override fun toString(): String = throw RuntimeException()
+			},
 			ignorePreviousErrors = true
 		)
 	}
