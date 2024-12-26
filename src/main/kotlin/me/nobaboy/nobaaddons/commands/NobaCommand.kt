@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.commands
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.arguments.IntegerArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands
 import me.nobaboy.nobaaddons.commands.internal.Command
@@ -27,17 +26,15 @@ import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
 @Suppress("unused")
-object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot = true) {
+object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 	fun init() {
 		CommandUtil.register(this)
 	}
 
-	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
+	override val root = RootCommand {
 		NobaMainScreen().queueOpen()
-		return 0
 	}
 
 	val config = Command("config") {
@@ -57,10 +54,8 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 	}
 
 	object Refill : Group("refill") {
-		val pearls = Command.command("pearls") {
-			executes {
-				RefillFromSacks.refill("ENDER_PEARLS", 16)
-			}
+		val pearls = Command("pearls") {
+			RefillFromSacks.refill("ENDER_PEARLS", 16)
 		}
 
 		val superboom = Command("superboom") {
@@ -131,4 +126,5 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba"), executeRoot =
 
 	val repo = RepoCommands
 	val debug = DebugCommands
+	val internal = InternalCommands
 }

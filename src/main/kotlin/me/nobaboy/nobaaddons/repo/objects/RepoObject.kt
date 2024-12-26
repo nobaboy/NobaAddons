@@ -1,10 +1,15 @@
 package me.nobaboy.nobaaddons.repo.objects
 
 import kotlinx.serialization.KSerializer
+import me.nobaboy.nobaaddons.events.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.Repo
 import kotlin.reflect.KProperty
 
 class RepoObject<T : Any>(private val path: String, private val serializer: KSerializer<T>) : IRepoObject {
+	init {
+		RepoReloadEvent.EVENT.register { this.load() }
+	}
+
 	@Volatile private var instance: T? = null
 
 	@Suppress("unused")

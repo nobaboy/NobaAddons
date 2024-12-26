@@ -35,6 +35,7 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 	fun isDistantPast(): Boolean = millis == 0L
 
 	fun toMillis(): Long = millis
+	override fun toString(): String = Instant.ofEpochMilli(toMillis()).toString()
 
 	override fun compareTo(other: Timestamp): Int = millis.compareTo(other.millis)
 

@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.repo.objects
 
 import kotlinx.serialization.KSerializer
+import me.nobaboy.nobaaddons.events.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.RepoManager
 import kotlin.io.path.listDirectoryEntries
@@ -9,6 +10,10 @@ import kotlin.io.path.readText
 import kotlin.reflect.KProperty
 
 class RepoObjectMap<T>(private val path: String, private val serializer: KSerializer<T>) : IRepoObject {
+	init {
+		RepoReloadEvent.EVENT.register { this.load() }
+	}
+
 	@Volatile private var instances: Map<String, T> = emptyMap()
 
 	@Suppress("unused")

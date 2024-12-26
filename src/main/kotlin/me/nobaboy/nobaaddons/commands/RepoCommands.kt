@@ -18,13 +18,6 @@ object RepoCommands : Group("repo") {
 	}
 
 	val info = Command("info") {
-		if(!RepoManager.loaded) {
-			val command = buildLiteral("/noba repo update") { formatted(Formatting.AQUA) }
-			ChatUtils.addMessage(tr("nobaaddons.repo.notLoaded", "The repository hasn't been loaded yet! Try using $command to fix this."))
-			ChatUtils.addMessage(tr("nobaaddons.repo.joinDiscord", "Please join the Discord for support if this persists."))
-			return@Command
-		}
-
 		val commit = RepoManager.commit
 		if(commit == "backup-repo") {
 			ChatUtils.addMessage(tr("nobaaddons.repo.usingBackup", "Using backup repository; some features might not work!"), color = Formatting.YELLOW)
@@ -33,7 +26,7 @@ object RepoCommands : Group("repo") {
 		}
 
 		if(commit == null) {
-			ChatUtils.addMessage(tr("nobaaddons.repo.unknownCommit", "I don't know what version I'm using(?!) (please report this in the Discord)"), color = Formatting.RED)
+			ChatUtils.addMessage(tr("nobaaddons.repo.unknownCommit", "I don't know what repo version I'm using; the repo may not have been properly loaded! (please report this in the Discord)"), color = Formatting.RED)
 			return@Command
 		}
 
