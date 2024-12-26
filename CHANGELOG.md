@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## 0.1.0-Alpha.11 - 2024-12-26
 
 ### Added
 
@@ -26,7 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The mod will now pull some data from a repository - celeste
   - This is a fairly large internal change; if something doesn't load properly, please try `/noba repo update` (and report it in the Discord)
 - Most mod message strings are now translatable - celeste
-  - This does not include server messages though - the mod still requires that your Hypixel language is set to English to function properly
+  - This does not include server messages - the mod still requires that your Hypixel language is set to English to function properly
 - Redesigned keybind screen and moved info boxes to their own custom screen - nobaboy
 - Keybinds now allows use of mouse buttons (not including the primary Left, Right, and Middle mouse buttons) - nobaboy
 - `/noba refillpearls` has been changed to `/noba refill pearls` - celeste

@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons
 
 import com.google.gson.Gson
 import com.mojang.logging.LogUtils
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -49,6 +50,7 @@ import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.utils.CommonText
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.literal
 import net.fabricmc.api.ClientModInitializer
@@ -88,7 +90,10 @@ object NobaAddons : ClientModInitializer {
 	}
 
 	private val supervisorJob = SupervisorJob()
-	val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
+	private val exceptionHandler = CoroutineExceptionHandler { ctx, error ->
+		ErrorManager.logError("Encountered an unhandled error in an async context", error)
+	}
+	val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob + exceptionHandler)
 
 	fun runAsync(runnable: suspend CoroutineScope.() -> Unit) = coroutineScope.launch(block = runnable)
 

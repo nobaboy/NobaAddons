@@ -21,7 +21,7 @@ object PersistentCache : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("cache.jso
 
 	fun init() {
 		load()
-		Scheduler.schedule(20, repeat = true) {
+		Scheduler.scheduleAsync(15 * 20, repeat = true) {
 			if(dirty) {
 				NobaAddons.LOGGER.info("Saving cached values")
 				save()
