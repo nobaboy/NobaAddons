@@ -18,8 +18,8 @@ import java.util.*
 object Repo {
 	val JSON by NobaAddons::JSON
 
-	val knownRegexKeys = mutableSetOf<String>()
-	val knownStringKeys = mutableSetOf<String>()
+	val knownRegexKeys by RepoConstants.Regexes.entries::keys
+	val knownStringKeys by RepoConstants.Strings.entries::keys
 
 	/**
 	 * Returns an unmodifiable view of all registered [IRepoObject] instances
@@ -93,13 +93,13 @@ object Repo {
 	 * Creates a [RepoConstants.Entry] object supplying a regex pattern from the mod repository,
 	 * falling back to [this] if none exists.
 	 */
-	fun Regex.fromRepo(key: String) = RepoConstants.Entry(key, this, RepoConstants.Regexes).also { knownRegexKeys.add(key) }
+	fun Regex.fromRepo(key: String) = RepoConstants.Entry(key, this, RepoConstants.Regexes)
 
 	/**
 	 * Creates a [RepoConstants.Entry] object supplying a string from the mod repository, falling
 	 * back to [this] if none exists.
 	 */
-	fun String.fromRepo(key: String) = RepoConstants.Entry(key, this, RepoConstants.Strings).also { knownStringKeys.add(key) }
+	fun String.fromRepo(key: String) = RepoConstants.Entry(key, this, RepoConstants.Strings)
 
 	/**
 	 * Reads the file located at the provided [path] relative to the repository directory root,

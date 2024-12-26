@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.repo.objects.IRepoObject
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HTTPUtils.get
+import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
@@ -37,7 +38,7 @@ object RepoManager {
 	}
 
 	private val TEMPORARY_DIRECTORY = Files.createTempDirectory("nobaaddons")
-	private val ZIP_PATH get() = TEMPORARY_DIRECTORY.resolve("repo.zip").apply { toFile().createNewFile() }
+	private val ZIP_PATH get() = TEMPORARY_DIRECTORY.resolve("repo_${StringUtils.randomAlphanumeric()}.zip").apply { toFile().createNewFile() }
 
 	var commit: String? by PersistentCache::repoCommit
 		private set
@@ -60,10 +61,6 @@ object RepoManager {
 		HTTPUtils.fetchJson<GithubCommitResponse>(commitApiUrl).await().sha
 
 	suspend fun update(sendMessages: Boolean = false) {
-		download(sendMessages)
-	}
-
-	private suspend fun download(sendMessages: Boolean = false) {
 		if(!config.autoUpdate && REPO_DIRECTORY.exists()) {
 			if(sendMessages) {
 				ChatUtils.addMessage(tr("nobaaddons.repo.autoUpdateOff", "Auto updating has been disabled, not updating repository"))
@@ -75,7 +72,7 @@ object RepoManager {
 		val latestCommit: String = try {
 			getLatestCommit()
 		} catch(e: Exception) {
-			ErrorManager.logError("Failed to get latest repo commit", e)
+			ErrorManager.logError("Failed to get latest repo commit", e, ignorePreviousErrors = true)
 			return
 		}
 
@@ -103,6 +100,8 @@ object RepoManager {
 			RepoUtils.unzipIgnoreFirstFolder(repoZip.pathString, REPO_DIRECTORY.absolutePath)
 		} catch(e: Exception) {
 			ErrorManager.logError("Failed to unzip downloaded repository", e, ignorePreviousErrors = true)
+			// always attempt to switch to the backup repo at this point, as it's possible that the
+			// repo is in a broken state
 			switchToBackupRepo()
 			// backup repo will invoke RepoReloadEvent for us here
 			return

@@ -17,6 +17,7 @@ import kotlin.reflect.KProperty
 object RepoConstants {
 	sealed class Handler<T>(private val file: String, private val knownKeys: Set<String>?, private val valueSerializer: KSerializer<T>) : IRepoObject {
 		@Volatile private var values: Map<String, T> = mutableMapOf()
+		val entries: MutableMap<String, Entry<T>> = mutableMapOf()
 
 		init {
 			RepoManager.performInitialLoad(this)
@@ -30,9 +31,11 @@ object RepoConstants {
 		}
 
 		private fun warnMissingRepoKeys() {
-			if(knownKeys == null) return
-			knownKeys.forEach {
+			knownKeys?.forEach {
 				if(it !in values) NobaAddons.LOGGER.error("Key {} isn't present in repo", it)
+			}
+			entries.forEach { id, it ->
+				if(it.overridenByRemote) NobaAddons.LOGGER.warn("Value for '{}' has been overriden by the repo", id)
 			}
 		}
 
@@ -50,10 +53,29 @@ object RepoConstants {
 	 */
 	object Strings : Handler<String>("data/strings.json", Repo.knownStringKeys, serializer())
 
+	private val LOCK = Any()
+
 	/**
 	 * Deferred property supplier of a field from a repository [Handler] instance
 	 */
-	class Entry<T>(private val key: String, private val fallback: T, private val supplier: Handler<T>) {
+	class Entry<T>(val key: String, val fallback: T, val supplier: Handler<T>) {
+		init {
+			synchronized(LOCK) {
+				if(key in supplier.entries && supplier.entries[key]!!.fallback != fallback) {
+					throw IllegalArgumentException("Detected invalid key reuse: $key has already been used with a different value")
+				}
+				supplier.entries[key] = this
+			}
+		}
+
+		val overridenByRemote: Boolean get() {
+			val current = supplier[key] ?: return false
+			if(current is Regex && fallback is Regex) {
+				return current.pattern != fallback.pattern
+			}
+			return current != fallback
+		}
+
 		fun get(): T = supplier[key] ?: fallback
 		@Suppress("unused") operator fun getValue(instance: Any?, property: KProperty<*>): T = get()
 	}
@@ -61,7 +83,7 @@ object RepoConstants {
 	/**
 	 * Deferred property supplier of a collection of [Entry] items
 	 */
-	class Entries<T>(private val entries: Collection<Entry<T>>) {
+	class Entries<T>(val entries: Collection<Entry<T>>) {
 		fun get(): List<T> = entries.map { it.get() }
 		@Suppress("unused") operator fun getValue(instance: Any?, property: KProperty<*>): List<T> = get()
 	}
