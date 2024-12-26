@@ -13,7 +13,6 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.IOException
 import java.net.http.HttpResponse
 import java.nio.file.Files
@@ -119,13 +118,9 @@ object RepoManager {
 	fun performInitialLoad(obj: IRepoObject) {
 		synchronized(LOCK) {
 			try {
-				obj.load()
-			} catch(e: FileNotFoundException) {
-				// This isn't enough of an issue to send a message over at this point in the load process
-				// (since it's expected that the repo won't exist on first startup)
-				NobaAddons.LOGGER.warn("Repo object couldn't read a file: {}", e.message)
+				if(REPO_DIRECTORY.exists()) obj.load()
 			} catch(e: Throwable) {
-				ErrorManager.logError("Repo object failed initial load", e, "Repo object class" to obj::class)
+				ErrorManager.logError("Repo object failed initial load", e, "Repo object" to obj)
 			}
 			objects.add(obj)
 		}

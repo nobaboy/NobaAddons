@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
+import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
@@ -89,5 +90,9 @@ object DebugCommands : Group("debug") {
 			"THIS COMMAND INTENTIONALLY THROWS AN ERROR FOR DEBUGGING PURPOSES" to "DO NOT REPORT THIS IN THE DISCORD",
 			ignorePreviousErrors = true
 		)
+	}
+
+	val updateNotification = Command("updatenotification") {
+		UpdateNotifier.sendUpdateNotification()
 	}
 }

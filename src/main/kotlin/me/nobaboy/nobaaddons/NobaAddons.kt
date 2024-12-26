@@ -23,6 +23,7 @@ import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
@@ -55,6 +56,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.literal
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
+import net.fabricmc.loader.api.Version
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import org.slf4j.Logger
@@ -62,7 +64,9 @@ import java.nio.file.Path
 
 object NobaAddons : ClientModInitializer {
 	const val MOD_ID = "nobaaddons"
-	val VERSION: String = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
+
+	val VERSION_INFO: Version = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version
+	val VERSION: String = VERSION_INFO.friendlyString
 
 	val PREFIX: Text get() = buildText {
 		append(CommonText.NOBAADDONS)
@@ -105,6 +109,8 @@ object NobaAddons : ClientModInitializer {
 		NobaConfigManager.init()
 		PersistentCache.init()
 		RepoManager.init()
+
+		UpdateNotifier.init()
 
 		/* region APIs */
 		InventoryAPI.init()
