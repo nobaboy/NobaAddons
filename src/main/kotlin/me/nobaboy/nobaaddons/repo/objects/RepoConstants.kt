@@ -15,7 +15,7 @@ import kotlin.reflect.KProperty
  * Shared constants storage for common types like strings and regex patterns.
  */
 object RepoConstants {
-	sealed class Handler<T>(private val file: String, private val knownKeys: Set<String>?, private val valueSerializer: KSerializer<T>) : IRepoObject {
+	sealed class Handler<T>(private val file: String, private val valueSerializer: KSerializer<T>) : IRepoObject {
 		@Volatile private var values: Map<String, T> = mutableMapOf()
 		val entries: MutableMap<String, Entry<T>> = mutableMapOf()
 
@@ -31,7 +31,7 @@ object RepoConstants {
 		}
 
 		private fun warnMissingRepoKeys() {
-			knownKeys?.forEach {
+			entries.keys.forEach {
 				if(it !in values) NobaAddons.LOGGER.error("Key {} isn't present in repo", it)
 			}
 			entries.forEach { id, it ->
@@ -46,12 +46,12 @@ object RepoConstants {
 	/**
 	 * Shared repo storage for [Regex] patterns
 	 */
-	object Regexes : Handler<Regex>("data/regexes.json", Repo.knownRegexKeys, RegexKSerializer)
+	object Regexes : Handler<Regex>("data/regexes.json", RegexKSerializer)
 
 	/**
 	 * Shared repo storage for [String]s
 	 */
-	object Strings : Handler<String>("data/strings.json", Repo.knownStringKeys, serializer())
+	object Strings : Handler<String>("data/strings.json", serializer())
 
 	private val LOCK = Any()
 
