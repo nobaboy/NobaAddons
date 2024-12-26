@@ -13,6 +13,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
 import java.net.http.HttpResponse
 import java.nio.file.Files
@@ -119,6 +120,8 @@ object RepoManager {
 		synchronized(LOCK) {
 			try {
 				if(REPO_DIRECTORY.exists()) obj.load()
+			} catch(e: FileNotFoundException) {
+				NobaAddons.LOGGER.warn("Repo object failed to load missing file: {}", e.message)
 			} catch(e: Throwable) {
 				ErrorManager.logError("Repo object failed initial load", e, "Repo object" to obj)
 			}
