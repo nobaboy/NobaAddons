@@ -39,13 +39,6 @@ object RepoManager {
 	private val TEMPORARY_DIRECTORY = Files.createTempDirectory("nobaaddons")
 	private val ZIP_PATH get() = TEMPORARY_DIRECTORY.resolve("repo.zip").apply { toFile().createNewFile() }
 
-	/**
-	 * If `true`, downloading the repository has failed; we may be using the backup repository
-	 * (this can be checked through [commit] being `backup-repo`)
-	 */
-	var repoDownloadFailed: Boolean = false
-		private set
-
 	var commit: String? by PersistentCache::repoCommit
 		private set
 
@@ -101,10 +94,7 @@ object RepoManager {
 			repoZip.writeBytes(zip.body())
 		} catch(e: Exception) {
 			ErrorManager.logError("Repository failed to download", e, ignorePreviousErrors = true)
-			if(!REPO_DIRECTORY.exists()) {
-				switchToBackupRepo()
-			}
-			repoDownloadFailed = true
+			if(!REPO_DIRECTORY.exists()) switchToBackupRepo()
 			return
 		}
 
@@ -113,7 +103,6 @@ object RepoManager {
 			RepoUtils.unzipIgnoreFirstFolder(repoZip.pathString, REPO_DIRECTORY.absolutePath)
 		} catch(e: Exception) {
 			ErrorManager.logError("Failed to unzip downloaded repository", e, ignorePreviousErrors = true)
-			repoDownloadFailed = true
 			switchToBackupRepo()
 			// backup repo will invoke RepoReloadEvent for us here
 			return
@@ -124,14 +113,16 @@ object RepoManager {
 			ChatUtils.addMessage(tr("nobaaddons.repo.updated", "Updated repository"))
 		}
 		RepoReloadEvent.invoke()
-		repoDownloadFailed = false
 	}
 
 	fun performInitialLoad(obj: IRepoObject) {
 		synchronized(LOCK) {
 			try {
 				obj.load()
-			} catch(_: FileNotFoundException) {
+			} catch(e: FileNotFoundException) {
+				// This isn't enough of an issue to send a message over at this point in the load process
+				// (since it's expected that the repo won't exist on first startup)
+				NobaAddons.LOGGER.warn("Repo object couldn't find file", e)
 			} catch(e: Throwable) {
 				ErrorManager.logError("Repo object failed initial load", e, "Repo object class" to obj::class)
 			}
@@ -167,5 +158,9 @@ object RepoManager {
 		} catch(e: Exception) {
 			NobaAddons.LOGGER.warn("Failed to delete temporary directory", e)
 		}
+	}
+
+	private fun RepoReloadEvent.Companion.invoke() {
+		synchronized(LOCK) { EVENT.invoke(RepoReloadEvent()) }
 	}
 }

@@ -8,13 +8,6 @@ import me.nobaboy.nobaaddons.repo.objects.RepoConstants
 import me.nobaboy.nobaaddons.repo.objects.RepoObject
 import me.nobaboy.nobaaddons.repo.objects.RepoObjectArray
 import me.nobaboy.nobaaddons.repo.objects.RepoObjectMap
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
-import net.minecraft.util.Formatting
 import org.jetbrains.annotations.Blocking
 import org.jetbrains.annotations.UnmodifiableView
 import java.util.*
@@ -25,9 +18,6 @@ import java.util.*
 object Repo {
 	val JSON by NobaAddons::JSON
 
-	private val updateFailed: Boolean by RepoManager::repoDownloadFailed
-	private var sentRepoWarning = false
-
 	val knownRegexKeys = mutableSetOf<String>()
 	val knownStringKeys = mutableSetOf<String>()
 
@@ -36,22 +26,6 @@ object Repo {
 	 */
 	val objects: @UnmodifiableView Collection<IRepoObject>
 		get() = Collections.unmodifiableCollection(RepoManager.objects)
-
-	fun init() {
-		RepoManager.performInitialLoad(RepoConstants.Regexes)
-		RepoManager.performInitialLoad(RepoConstants.Strings)
-		ClientTickEvents.END_CLIENT_TICK.register { onTick() }
-	}
-
-	private fun onTick() {
-		if(MCUtils.player == null) return
-		if(sentRepoWarning) return
-		if(!updateFailed) return
-
-		val command = buildLiteral("/noba repo update") { formatted(Formatting.AQUA).runCommand() }
-		ChatUtils.addMessage(tr("nobaaddons.repo.updateFailed", "Failed to update mod data repository! Some features may not work properly until this is fixed; you may be able to resolve this issue with $command. If this issue persists, please join the Discord and ask for support."), color = Formatting.RED)
-		sentRepoWarning = true
-	}
 
 	/**
 	 * Creates a new [RepoObject] supplying a single instance of [T] loaded from the mod's repository
