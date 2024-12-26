@@ -7,7 +7,6 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
-import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import kotlin.time.Duration.Companion.seconds
 

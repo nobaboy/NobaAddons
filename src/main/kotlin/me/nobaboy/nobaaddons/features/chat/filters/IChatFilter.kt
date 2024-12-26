@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.features.chat.filters
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chat.filters.ability.AbilityChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.BlessingChatFilter

@@ -1,11 +1,8 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 abstract class ChatCommandManager : CooldownManager() {
 	private val commands = mutableListOf<IChatCommand>()
