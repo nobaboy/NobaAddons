@@ -1,12 +1,12 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.dungeons.DungeonBoss
 import me.nobaboy.nobaaddons.core.dungeons.DungeonClass
 import me.nobaboy.nobaaddons.core.dungeons.DungeonFloor
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -59,7 +59,7 @@ object DungeonsAPI {
 		currentClass = dungeonClass?.let { clazz ->
 			runCatching { DungeonClass.valueOf(clazz) }
 				.getOrElse {
-					NobaAddons.LOGGER.error("Unexpected class type value '$clazz'", it)
+					ErrorManager.logError("Found unknown Dungeon class", it, "Class" to clazz)
 					DungeonClass.EMPTY
 				}
 		} ?: DungeonClass.EMPTY
@@ -74,7 +74,7 @@ object DungeonsAPI {
 		currentFloor = dungeonFloor?.let { floor ->
 			runCatching { DungeonFloor.valueOf(floor) }
 				.getOrElse {
-					NobaAddons.LOGGER.error("Unexpected floor type value '$floor'", it)
+					ErrorManager.logError("Found unknown Dungeon floor", it, "Floor" to floor)
 					DungeonFloor.NONE
 				}
 		} ?: DungeonFloor.NONE

@@ -83,6 +83,11 @@ object DebugCommands : Group("debug") {
 	}
 
 	val error = Command("error") {
-		ErrorManager.logError("Debug error", Error("Intentional debug error"), "THIS IS AN INTENTIONAL ERROR FOR DEBUGGING" to "DO NOT REPORT THIS IN THE DISCORD", ignorePreviousErrors = true)
+		ErrorManager.logError(
+			"Debug error",
+			Error("Intentional debug error"),
+			"THIS COMMAND INTENTIONALLY THROWS AN ERROR FOR DEBUGGING PURPOSES" to "DO NOT REPORT THIS IN THE DISCORD",
+			ignorePreviousErrors = true
+		)
 	}
 }

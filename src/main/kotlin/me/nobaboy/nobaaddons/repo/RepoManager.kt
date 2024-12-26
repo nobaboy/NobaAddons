@@ -79,11 +79,10 @@ object RepoManager {
 			return
 		}
 
-		val latestCommit: String
-		try {
-			latestCommit = getLatestCommit()
+		val latestCommit: String = try {
+			getLatestCommit()
 		} catch(e: Exception) {
-			NobaAddons.LOGGER.error("Failed to get latest repo commit", e)
+			ErrorManager.logError("Failed to get latest repo commit", e)
 			return
 		}
 
@@ -101,12 +100,9 @@ object RepoManager {
 			val zip = client.get(url, HttpResponse.BodyHandlers.ofByteArray())
 			repoZip.writeBytes(zip.body())
 		} catch(e: Exception) {
-			NobaAddons.LOGGER.error("Failed to download repo", e)
+			ErrorManager.logError("Repository failed to download", e, ignorePreviousErrors = true)
 			if(!REPO_DIRECTORY.exists()) {
 				switchToBackupRepo()
-			}
-			if(sendMessages) {
-				ErrorManager.logError("Repository failed to download", e, ignorePreviousErrors = true)
 			}
 			repoDownloadFailed = true
 			return
@@ -131,13 +127,13 @@ object RepoManager {
 		repoDownloadFailed = false
 	}
 
-	fun add(obj: IRepoObject) {
+	fun performInitialLoad(obj: IRepoObject) {
 		synchronized(LOCK) {
 			try {
 				obj.load()
 			} catch(_: FileNotFoundException) {
 			} catch(e: Throwable) {
-				ErrorManager.logError("Repo object failed initial load", e)
+				ErrorManager.logError("Repo object failed initial load", e, "Repo object class" to obj::class)
 			}
 			objects.add(obj)
 		}
@@ -161,7 +157,7 @@ object RepoManager {
 			NobaAddons.LOGGER.warn("Successfully switched to backup repo")
 			RepoReloadEvent.invoke()
 		} catch(e: Exception) {
-			NobaAddons.LOGGER.error("Failed to switch to backup repo", e)
+			ErrorManager.logError("Failed to switch to backup repo", e, ignorePreviousErrors = true)
 		}
 	}
 

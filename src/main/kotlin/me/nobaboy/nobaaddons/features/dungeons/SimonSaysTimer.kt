@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysTimes
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
@@ -59,7 +60,7 @@ object SimonSaysTimer {
 				}
 			}
 		} catch(ex: IOException) {
-			NobaAddons.LOGGER.error("Failed to load simon-says-timer.json", ex)
+			ErrorManager.logError("Failed to load Simon Says time data", ex)
 		}
 	}
 
@@ -77,7 +78,7 @@ object SimonSaysTimer {
 			SimonSaysTimes.times.clear()
 			SimonSaysTimes.save()
 		} catch(ex: IOException) {
-			NobaAddons.LOGGER.error("Failed to modify simon-says-timer.json", ex)
+			ErrorManager.logError("Failed to save Simon Says time data", ex)
 		}
 	}
 
@@ -140,10 +141,10 @@ object SimonSaysTimer {
 		val message = tr("nobaaddons.ssTimer.completion", "Simon Says took ${timeTaken}s to complete")
 		var chatMessage = message
 
-		if(timeTaken < personalBest) {
-			chatMessage = tr("nobaaddons.ssTimer.beatPb", "PERSONAL BEST!").lightPurple().bold() + " " + message
+		chatMessage = if(timeTaken < personalBest) {
+			tr("nobaaddons.ssTimer.beatPb", "PERSONAL BEST!").lightPurple().bold() + " " + message
 		} else {
-			chatMessage = message + buildLiteral(" ($personalBest)") { gray() }
+			message + buildLiteral(" ($personalBest)") { gray() }
 		}
 
 		ChatUtils.addMessage(chatMessage, color = Formatting.WHITE)
@@ -154,7 +155,7 @@ object SimonSaysTimer {
 		try {
 			SimonSaysTimes.save()
 		} catch(ex: IOException) {
-			NobaAddons.LOGGER.error("Failed to save simon-says-timer.json", ex)
+			ErrorManager.logError("Failed to save Simon Says time data", ex)
 		}
 	}
 

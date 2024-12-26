@@ -38,8 +38,8 @@ object Repo {
 		get() = Collections.unmodifiableCollection(RepoManager.objects)
 
 	fun init() {
-		RepoManager.add(RepoConstants.Regexes)
-		RepoManager.add(RepoConstants.Strings)
+		RepoManager.performInitialLoad(RepoConstants.Regexes)
+		RepoManager.performInitialLoad(RepoConstants.Strings)
 		ClientTickEvents.END_CLIENT_TICK.register { onTick() }
 	}
 
@@ -68,7 +68,7 @@ object Repo {
 	 * ```
 	 */
 	fun <T : Any> create(path: String, serializer: KSerializer<T>): RepoObject<T> {
-		return RepoObject(path, serializer).also(RepoManager::add)
+		return RepoObject(path, serializer).also(RepoManager::performInitialLoad)
 	}
 
 	/**
@@ -87,7 +87,7 @@ object Repo {
 	 * ```
 	 */
 	fun <T : Any> createList(path: String, serializer: KSerializer<T>): RepoObjectArray<T> {
-		return RepoObjectArray(path, serializer).also(RepoManager::add)
+		return RepoObjectArray(path, serializer).also(RepoManager::performInitialLoad)
 	}
 
 	/**
@@ -105,7 +105,7 @@ object Repo {
 	 * ```
 	 */
 	fun <T : Any> createMapFromDirectory(path: String, serializer: KSerializer<T>): RepoObjectMap<T> {
-		return RepoObjectMap(path, serializer).also(RepoManager::add)
+		return RepoObjectMap(path, serializer).also(RepoManager::performInitialLoad)
 	}
 
 	/**

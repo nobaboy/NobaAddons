@@ -28,16 +28,28 @@ object ErrorManager {
 		player.sendMessage(queuedMessages.poll() ?: return, false)
 	}
 
+	/**
+	 * Log an error message in chat and the game logs
+	 *
+	 * By default, this will avoid sending multiple messages for errors from the same line (within 10 minutes of each other);
+	 * this behavior can be suppressed by setting [ignorePreviousErrors] to `true`.
+	 */
+	@JvmStatic
 	fun logError(message: String, error: Throwable, ignorePreviousErrors: Boolean = false) {
 		logError(message, error, emptyList(), ignorePreviousErrors)
 	}
 
+	/**
+	 * Log an error message in chat and the game logs, along with extra information added to the stack trace
+	 * copied from the clickable chat message
+	 */
 	fun logError(message: String, error: Throwable, vararg info: Pair<String, Any?>, ignorePreviousErrors: Boolean = false) {
 		logError(message, error, info.toList(), ignorePreviousErrors)
 	}
 
-	// This does send a (partially) untranslated message, but this is something I'm personally fine with,
-	// as it's more worthwhile for this to be untranslated to help with support requests related to it.
+	// This does send a (partially) untranslated message, but it makes sense here as this message
+	// may be involved in support requests (and may be more technical than an actual user is intended
+	// to directly understand).
 	private fun logError(message: String, error: Throwable, extraInfo: List<Pair<String, Any?>>, ignorePreviousErrors: Boolean = false) {
 		val stack = error.stackTrace
 		if(!ignorePreviousErrors) {
@@ -59,6 +71,9 @@ object ErrorManager {
 		} else trace
 
 		// queue messages to prevent them from being lost if the player isn't in a world when an error occurs
+		// TODO is it worth deferring adding the stack trace when the message is sent to prevent it
+		//      from expiring if the player hasn't joined a world within 10 minutes? probably not, but still
+		//      a possible concern
 		queuedMessages.add(buildText {
 			append(NobaAddons.PREFIX)
 			append(tr("nobaaddons.error", "NobaAddons ${NobaAddons.VERSION} encountered an error: $message"))
