@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.features.dungeons
 
 import kotlinx.io.IOException
-import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
@@ -139,9 +138,8 @@ object SimonSaysTimer {
 
 		val personalBest = SimonSaysTimes.personalBest?.takeIf { timeTaken >= it } ?: timeTaken.also { SimonSaysTimes.personalBest = it }
 		val message = tr("nobaaddons.ssTimer.completion", "Simon Says took ${timeTaken}s to complete")
-		var chatMessage = message
 
-		chatMessage = if(timeTaken < personalBest) {
+		val chatMessage = if(timeTaken < personalBest) {
 			tr("nobaaddons.ssTimer.beatPb", "PERSONAL BEST!").lightPurple().bold() + " " + message
 		} else {
 			message + buildLiteral(" ($personalBest)") { gray() }
