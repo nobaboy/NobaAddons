@@ -48,8 +48,9 @@ object DungeonsAPI {
 		val playerName = MCUtils.playerName ?: return
 		val playerList = MCUtils.networkHandler?.playerList ?: return
 
-		val dungeonClass = playerList.mapNotNull { it?.displayName?.string?.cleanFormatting() }
+		val fullLine = playerList.mapNotNull { it?.displayName?.string?.cleanFormatting() }
 			.firstOrNull { it.contains(playerName) && it.contains("(") && !it.contains("($playerName)") }
+		val dungeonClass = fullLine
 			?.substringAfter("(")
 			?.substringBefore(")")
 			?.split(" ")
@@ -59,7 +60,7 @@ object DungeonsAPI {
 		currentClass = dungeonClass?.let { clazz ->
 			runCatching { DungeonClass.valueOf(clazz) }
 				.getOrElse {
-					ErrorManager.logError("Found unknown Dungeon class", it, "Class" to clazz)
+					ErrorManager.logError("Found unknown Dungeon class", it, "Detected class" to clazz, "In line" to fullLine)
 					DungeonClass.EMPTY
 				}
 		} ?: DungeonClass.EMPTY
@@ -68,13 +69,13 @@ object DungeonsAPI {
 	private fun getFloorType() {
 		val lines = ScoreboardUtils.getScoreboardLines()
 
-		val dungeonFloor = lines.firstOrNull { it.contains("The Catacombs (") }
-			?.substringAfter("(")?.substringBefore(")")
+		val fullLine = lines.firstOrNull { it.contains("The Catacombs (") }
+		val dungeonFloor = fullLine?.substringAfter("(")?.substringBefore(")")
 
 		currentFloor = dungeonFloor?.let { floor ->
 			runCatching { DungeonFloor.valueOf(floor) }
 				.getOrElse {
-					ErrorManager.logError("Found unknown Dungeon floor", it, "Floor" to floor)
+					ErrorManager.logError("Found unknown Dungeon floor", it, "Detected floor" to floor, "In line" to fullLine)
 					DungeonFloor.NONE
 				}
 		} ?: DungeonFloor.NONE
