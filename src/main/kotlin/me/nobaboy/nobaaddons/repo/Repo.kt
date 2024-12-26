@@ -18,8 +18,8 @@ import java.util.*
 object Repo {
 	val JSON by NobaAddons::JSON
 
-	val knownRegexKeys by RepoConstants.Regexes.entries::keys
-	val knownStringKeys by RepoConstants.Strings.entries::keys
+	val knownRegexKeys get() = RepoConstants.Regexes.entries.keys
+	val knownStringKeys get() = RepoConstants.Strings.entries.keys
 
 	/**
 	 * Returns an unmodifiable view of all registered [IRepoObject] instances
