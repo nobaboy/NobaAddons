@@ -61,9 +61,14 @@ object VoidgloomFeatures {
 
 		if(packet.state.block == Blocks.BEACON) {
 			val armorStand = flyingYangGlyphs.firstOrNull { it.getNobaVec().distance(location) < 3 } ?: return
+
+			if(config.yangGlyphAlert) {
+				RenderUtils.drawTitle("Yang Glyph!", config.alertColor)
+				SoundUtils.plingSound.play()
+			}
+
 			flyingYangGlyphs.remove(armorStand)
 			yangGlyphs[location] = Timestamp.now()
-			if(config.yangGlyphAlert) sendYangGlyphAlert()
 		} else {
 			if(location in yangGlyphs) yangGlyphs.remove(location)
 		}
@@ -114,11 +119,6 @@ object VoidgloomFeatures {
 
 			RenderUtils.renderOutline(context, location.add(x = -0.25, y = 0.5, z = -0.25), config.highlightColor, throughBlocks = true)
 		}
-	}
-
-	private fun sendYangGlyphAlert() {
-		RenderUtils.drawTitle("Yang Glyph!", config.alertColor)
-		SoundUtils.plingSound.play()
 	}
 
 	private fun reset() {
