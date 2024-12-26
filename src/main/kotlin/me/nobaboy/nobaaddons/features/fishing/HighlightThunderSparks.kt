@@ -44,12 +44,12 @@ object HighlightThunderSparks {
 
 		sparks.removeIf { !it.isAlive }
 		sparks.forEach {
-			val vec = it.getNobaVec()
-			val block = vec.roundToBlock().add(y = 1).getBlockStateAt()
-			val throughBlocks = vec.distanceToPlayer() < 6 && block.fluidState != null && block.fluidState.fluid is LavaFluid
+			val location = it.getNobaVec()
+			val block = location.roundToBlock().add(y = 1).getBlockStateAt()
+			val throughBlocks = location.distanceToPlayer() < 6 && block.fluidState != null && block.fluidState.fluid is LavaFluid
 
-			RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, z = -0.5), color, extraSize = -0.25, throughBlocks = throughBlocks)
-			if(config.showText && vec.distanceToPlayer() < 10) RenderUtils.renderText(vec.raise(1.25), "Thunder Spark", throughBlocks = throughBlocks)
+			RenderUtils.renderOutlinedFilledBox(context, location.add(x = -0.5, z = -0.5), color, extraSize = -0.25, throughBlocks = throughBlocks)
+			if(config.showText && location.distanceToPlayer() < 10) RenderUtils.renderText(location.raise(1.25), "Thunder Spark", throughBlocks = throughBlocks)
 		}
 	}
 }

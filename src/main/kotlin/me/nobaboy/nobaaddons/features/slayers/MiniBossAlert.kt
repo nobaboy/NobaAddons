@@ -23,7 +23,7 @@ object MiniBossAlert {
 		val distance = event.entity.getNobaVec().distanceToPlayer()
 		if(distance > 16) return
 
-		RenderUtils.drawTitle(config.alertText, config.alertColor, 1.seconds)
+		RenderUtils.drawTitle(config.alertText, config.alertColor, 1.5.seconds)
 		SoundUtils.dingSound.play()
 	}
 }

@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.tr
 
 object AnnounceBossKillTime {
 	private val config get() = NobaConfigManager.config.slayers.announceBossKillTime
@@ -17,7 +18,7 @@ object AnnounceBossKillTime {
 		if(!enabled) return
 		val seconds = getBossKillTime(event) ?: return
 
-		ChatUtils.addMessage("Slayer Boss took $seconds seconds to kill!")
+		ChatUtils.addMessage(tr("nobaaddons.slayer.bossKillTime", "Slayer Boss took $seconds seconds to kill!"))
 	}
 
 	private fun getBossKillTime(event: SlayerEvents.BossKill): Double? {

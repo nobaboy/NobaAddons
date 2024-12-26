@@ -15,6 +15,9 @@ class SlayersConfig {
 	@SerialEntry
 	val highlightMiniBosses: HighlightMiniBosses = HighlightMiniBosses()
 
+	@SerialEntry
+	val voidgloom: Voidgloom = Voidgloom()
+
 	class AnnounceBossKillTime {
 		@SerialEntry
 		var enabled: Boolean = false
@@ -40,5 +43,22 @@ class SlayersConfig {
 
 		@SerialEntry
 		var highlightColor: Color = NobaColor.BLUE.toColor()
+	}
+
+	class Voidgloom {
+		@SerialEntry
+		var yangGlyphAlert: Boolean = false
+
+		@SerialEntry
+		var alertColor: Color = NobaColor.RED.toColor()
+
+		@SerialEntry
+		var highlightYangGlyph: Boolean = false
+
+		@SerialEntry
+		var highlightNukekubi: Boolean = false
+
+		@SerialEntry
+		var highlightColor: Color = NobaColor.RED.toColor()
 	}
 }

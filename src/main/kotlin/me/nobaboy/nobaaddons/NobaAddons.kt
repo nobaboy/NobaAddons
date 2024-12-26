@@ -44,6 +44,7 @@ import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.slayers.AnnounceBossKillTime
 import me.nobaboy.nobaaddons.features.slayers.MiniBossAlert
+import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomFeatures
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
@@ -151,6 +152,7 @@ object NobaAddons : ClientModInitializer {
 		// region Slayers
 		AnnounceBossKillTime.init()
 		MiniBossAlert.init()
+		VoidgloomFeatures.init()
 		// endregion
 
 		// region Fishing

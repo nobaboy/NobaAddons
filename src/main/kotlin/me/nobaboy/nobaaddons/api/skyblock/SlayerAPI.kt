@@ -3,20 +3,20 @@ package me.nobaboy.nobaaddons.api.skyblock
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
 import me.nobaboy.nobaaddons.core.slayer.SlayerMiniBoss
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.entity.Entity
 import net.minecraft.entity.decoration.ArmorStandEntity
-import java.util.regex.Pattern
 
 object SlayerAPI {
-	private val slayerNamePattern = Pattern.compile("^☠ (?<name>[A-z ]+?)(?: (?<tier>[IV]+))? (?<hp>[\\d/BMk.,❤]+)\$")
+	private val slayerNamePattern by Regex("^☠ (?<name>[A-z ]+?)(?: (?<tier>[IV]+))? (?<hp>[\\d/BMk.,❤]+)\$").fromRepo("slayer.name")
 
 	var currentQuest: SlayerQuest? = null
 		private set
@@ -44,7 +44,7 @@ object SlayerAPI {
 
 				val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return@forEach
 
-				slayerNamePattern.matchMatcher(armorStand.name.string) {
+				slayerNamePattern.onFullMatch(armorStand.name.string) {
 					val ownerArmorStand = EntityUtils.getNextEntity(armorStand, 2) as? ArmorStandEntity ?: return@forEach
 					val playerName = MCUtils.playerName ?: return@forEach
 
@@ -73,7 +73,7 @@ object SlayerAPI {
 
 		when(message.trim()) {
 			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest = null
-			"SLAYER QUEST COMPLETE!" -> {
+			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
 				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerEntity))
 				currentQuest?.spawned = false
 			}
