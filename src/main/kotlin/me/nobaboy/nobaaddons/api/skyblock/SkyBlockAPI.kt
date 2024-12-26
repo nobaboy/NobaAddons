@@ -33,7 +33,7 @@ object SkyBlockAPI {
 
 	val prefixedZone: String?
 		get() = currentZone?.let {
-			val symbol = if (currentIsland == SkyBlockIsland.RIFT) "ф" else "⏣"
+			val symbol = if(currentIsland == SkyBlockIsland.RIFT) "ф" else "⏣"
 			"$symbol $it"
 		}
 

@@ -8,7 +8,6 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHa
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import java.util.regex.Pattern
 
 object GuildCommands : ChatCommandManager() {
 	private val config get() = NobaConfigManager.config.chat.chatCommands.guild

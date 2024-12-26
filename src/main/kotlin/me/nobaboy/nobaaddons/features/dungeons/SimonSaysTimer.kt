@@ -17,8 +17,8 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.gray
-import me.nobaboy.nobaaddons.utils.TextUtils.plus
 import me.nobaboy.nobaaddons.utils.TextUtils.lightPurple
+import me.nobaboy.nobaaddons.utils.TextUtils.plus
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
