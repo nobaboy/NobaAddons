@@ -33,4 +33,7 @@ class NobaConfig {
 
 	@SerialEntry
 	val qol: QOLConfig = QOLConfig()
+
+	@SerialEntry
+	val repo: RepoConfig = RepoConfig()
 }

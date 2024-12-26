@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
+import kotlinx.serialization.Serializable
 import java.time.Instant
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -7,9 +8,11 @@ import kotlin.time.Duration.Companion.milliseconds
 /**
  * This is taken and adapted from SkyHanni, which is licensed under the LGPL-2.1.
  *
- * [Original source](https://github.com/hannibal002/SkyHanni/blob/beta/src/main/java/at/hannibal2/skyhanni/utils/SkyBlockTime.kt)
+ * [Original source](https://github.com/hannibal002/SkyHanni/blob/beta/src/main/java/at/hannibal2/skyhanni/utils/SimpleTimeMark.kt)
  */
+// TODO use kotlinx.datetime.Instant instead?
 @JvmInline
+@Serializable
 value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 	operator fun unaryMinus() = Timestamp(-millis)
 

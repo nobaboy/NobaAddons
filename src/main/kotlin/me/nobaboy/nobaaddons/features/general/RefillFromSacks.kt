@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
+import me.nobaboy.nobaaddons.utils.tr
 
 object RefillFromSacks {
 	fun count(id: String): Int {
@@ -21,13 +22,13 @@ object RefillFromSacks {
 
 	fun refill(id: String, target: Int = 64) {
 		if(!SkyBlockAPI.inSkyBlock) {
-			ChatUtils.addMessage("This is only usable while in SkyBlock")
+			ChatUtils.addMessage(tr("nobaaddons.command.refill.onlyInSkyBlock", "This is only usable while in SkyBlock"))
 			return
 		}
 
 		val inInventory = count(id)
 		if(inInventory >= target) {
-			ChatUtils.addMessage("Already at the requested amount of items")
+			ChatUtils.addMessage(tr("nobaaddons.command.refill.alreadyAtTarget", "Already at the requested amount of items"))
 			return
 		}
 

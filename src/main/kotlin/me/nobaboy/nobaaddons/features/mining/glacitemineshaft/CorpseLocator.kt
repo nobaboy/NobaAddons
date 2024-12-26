@@ -6,30 +6,31 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.RegexUtils.findMatcher
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.TextUtils.withColor
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.text.Text
-import java.util.regex.Pattern
 
 object CorpseLocator {
 	private val config get() = NobaConfigManager.config.mining.glaciteMineshaft
 	private val enabled: Boolean get() = SkyBlockIsland.MINESHAFT.inIsland() && config.corpseLocator
 
-	private val chatCoordsPattern = Pattern.compile(
+	private val chatCoordsPattern by Regex(
 		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
-	)
+	).fromRepo("chat_coordinates")
 
 	private val corpses = mutableListOf<Corpse>()
 
@@ -50,14 +51,14 @@ object CorpseLocator {
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
 
-		chatCoordsPattern.findMatcher(message) {
-			val username = group("username")
+		chatCoordsPattern.onFullMatch(message) {
+			val username = groups["username"]!!.value
 			if(username == MCUtils.playerName) return
 
 			val vec = NobaVec(
-				group("x").toInt(),
-				group("y").toInt(),
-				group("z").toInt()
+				groups["x"]!!.value.toInt(),
+				groups["y"]!!.value.toInt(),
+				groups["z"]!!.value.toInt()
 			)
 
 			corpses.firstOrNull { it.entity.getNobaVec().distance(vec) <= 5 }?.shared = true
@@ -70,14 +71,10 @@ object CorpseLocator {
 			.forEach { checkCorpse(it) }
 
 		corpses.filter { !it.seen && player.canSee(it.entity) }.forEach { corpse ->
-			val article = if(corpse.type == CorpseType.UMBER) "an" else "a"
 			val (x, y, z) = corpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
 
-			val text = buildText {
-				append("Found $article ")
-				append(Text.literal("${corpse.type} Corpse").formatted(corpse.type.color.toFormatting()))
-				append(" at $x, $y, $z!")
-			}
+			val type = corpse.type.toString().toText().withColor(corpse.type.color)
+			val text = tr("nobaaddons.corpseLocator.found", "Found $type Corpse at $x, $y, $z")
 
 			ChatUtils.addMessage(text)
 			MineshaftWaypoints.waypoints.add(Waypoint(

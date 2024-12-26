@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.core.MobRarity
+import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 import java.awt.Color
 
@@ -42,7 +42,7 @@ class FishingConfig {
 		var nameInsteadOfRarity: Boolean = false
 
 		@SerialEntry
-		var minimumRarity: MobRarity = MobRarity.LEGENDARY
+		var minimumRarity: Rarity = Rarity.LEGENDARY
 
 		@SerialEntry
 		var carrotKingIsRare: Boolean = false

@@ -6,37 +6,37 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.StatType
-import me.nobaboy.nobaaddons.utils.RegexUtils.findAllMatcher
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.startsWith
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.TextUtils.formatted
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import java.util.regex.Pattern
 
 object BlessingChatFilter : IChatFilter {
-	private val blessingFindPattern = Pattern.compile(
+	private val blessingFindPattern by Regex(
 		"^DUNGEON BUFF! ([A-z0-9_]+ found a|A) Blessing of (?<blessing>[A-z]+) [IV]+( was found)?!( \\([A-z0-9 ]+\\))?"
-	)
-	private val blessingStatsPattern = Pattern.compile(
+	).fromRepo("filter.blessings.find")
+	private val blessingStatsPattern by Regex(
 		"(?<value>\\+[\\d.]+x?(?: & \\+[\\d.]+x?)?) (?<stat>❁ Strength|☠ Crit Damage|❈ Defense|❁ Damage|HP|❣ Health Regen|✦ Speed|✎ Intelligence)"
-	)
+	).fromRepo("filter.blessings.stats")
 	private val statMessages = listOf("     Granted you", "     Also granted you")
 
 	private lateinit var blessingType: BlessingType
 	private val stats = mutableListOf<Stat>()
 
-	override val enabled = SkyBlockIsland.DUNGEONS.inIsland() && config.blessingMessage.enabled
+	override val enabled: Boolean get() = SkyBlockIsland.DUNGEONS.inIsland() && config.blessingMessage.enabled
 
 	override fun shouldFilter(message: String): Boolean {
 		val filterMode = config.blessingMessage
 
-		blessingFindPattern.matchMatcher(message) {
+		blessingFindPattern.onFullMatch(message) {
 			if(filterMode == ChatFilterOption.COMPACT) {
-				blessingType = BlessingType.valueOf(group("blessing").uppercase())
+				blessingType = BlessingType.valueOf(groups["blessing"]!!.value.uppercase())
 				stats.clear()
 			}
 			return true
@@ -45,9 +45,11 @@ object BlessingChatFilter : IChatFilter {
 		if(message.startsWith(statMessages)) {
 			check(this::blessingType.isInitialized) { "Blessing type is not set!" }
 			if(filterMode == ChatFilterOption.COMPACT) {
-				blessingStatsPattern.findAllMatcher(message) {
-					val statType = StatType.entries.firstOrNull { group("stat") == it.text || group("stat") == it.identifier } ?: return@findAllMatcher
-					stats.add(Stat(statType, group("value")))
+				blessingStatsPattern.forEachMatch(message) {
+					val statType = StatType.entries.firstOrNull {
+						groups["stat"]!!.value == it.text || groups["stat"]!!.value == it.identifier
+					} ?: return@forEachMatch
+					stats.add(Stat(statType, groups["value"]!!.value))
 				}
 
 				when {
@@ -101,6 +103,6 @@ object BlessingChatFilter : IChatFilter {
 		LIFE("LIFE BUFF!", Formatting.LIGHT_PURPLE, 2),
 		TIME("TIME BUFF!", Formatting.DARK_GREEN, 4);
 
-		fun toText(): Text = text.toText().setStyle(color.bold())
+		fun toText(): Text = text.formatted(color).bold()
 	}
 }

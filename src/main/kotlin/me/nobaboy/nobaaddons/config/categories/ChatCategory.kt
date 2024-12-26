@@ -6,27 +6,31 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
+import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
+import me.nobaboy.nobaaddons.utils.CommonText
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
 object ChatCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig): ConfigCategory {
 		return ConfigCategory.createBuilder()
-			.name(Text.translatable("nobaaddons.config.chat"))
+			.name(tr("nobaaddons.config.chat", "Chat"))
 
 			// region Alerts
-			.buildGroup(Text.translatable("nobaaddons.config.chat.alerts")) {
+			.buildGroup(tr("nobaaddons.config.chat.alerts", "Alerts")) {
 				// region Crimson Isle
-				label(Text.translatable("nobaaddons.config.label.crimsonIsle")).build()
+				label(CommonText.Config.LABEL_CRIMSON_ISLE)
 
 				boolean(
-					Text.translatable("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn"),
-					Text.translatable("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip"),
+					tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn", "Alert Mythic Sea Creature Catches"),
+					tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip", "Sends your current location in all chat when catching a mythic sea creature"),
 					default = defaults.chat.alerts.mythicSeaCreatureSpawn,
 					property = config.chat.alerts::mythicSeaCreatureSpawn
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.alerts.vanquisherSpawn"),
-					Text.translatable("nobaaddons.config.chat.alerts.vanquisherSpawn.tooltip"),
+					tr("nobaaddons.config.chat.alerts.vanquisherSpawn", "Alert Vanquisher Spawn"),
+					tr("nobaaddons.config.chat.alerts.vanquisherSpawn.tooltip", "Sends your current location in all chat when you spawn a Vanquisher"),
 					default = defaults.chat.alerts.vanquisherSpawn,
 					property = config.chat.alerts::vanquisherSpawn
 				)
@@ -35,114 +39,118 @@ object ChatCategory {
 			// endregion
 
 			// region Filters
-			.buildGroup(Text.translatable("nobaaddons.config.chat.filters")) {
+			.buildGroup(tr("nobaaddons.config.chat.filters", "Filters")) {
 				// region Crimson Isle
-				label(Text.translatable("nobaaddons.config.label.crimsonIsle"))
+				label(CommonText.Config.LABEL_CRIMSON_ISLE)
+
+				fun abilityDamageTitle(source: Text) = tr("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Hide $source Damage")
+				fun abilityDamageDescription(source: Text) = tr("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Hides the ability damage message from $source")
 
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage"),
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityCooldownMessage.tooltip"),
+					tr("nobaaddons.config.chat.filters.hideAbilityCooldownMessage", "Hide Ability Cooldown Messages"),
+					tr("nobaaddons.config.chat.filters.hideAbilityCooldownMessage.tooltip", "Hides the 'This ability is on cooldown for Xs.' message from chat"),
 					default = defaults.chat.filters.hideAbilityCooldownMessage,
 					property = config.chat.filters::hideAbilityCooldownMessage
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Implosion"),
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Wither Blade"),
+					abilityDamageTitle(tr("nobaaddons.label.ability.implosion", "Implosion")),
+					abilityDamageDescription(tr("nobaaddons.label.ability.implosionOrImpact", "Implosion/Wither Impact")),
 					default = defaults.chat.filters.hideImplosionDamageMessage,
 					property = config.chat.filters::hideImplosionDamageMessage
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Molten Wave"),
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Midas Staff"),
+					abilityDamageTitle(tr("nobaaddons.label.ability.moltenWave", "Molten Wave")),
+					abilityDamageDescription(tr("nobaaddons.label.item.midasStaff", "Midas Staff")),
 					default = defaults.chat.filters.hideMoltenWaveDamageMessage,
 					property = config.chat.filters::hideMoltenWaveDamageMessage
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Guided Bat"),
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Spirit Sceptre"),
+					abilityDamageTitle(tr("nobaaddons.label.ability.guidedBat", "Guided Bat")),
+					abilityDamageDescription(tr("nobaaddons.label.item.spiritSceptre", "Spirit Sceptre")),
 					default = defaults.chat.filters.hideGuidedBatDamageMessage,
 					property = config.chat.filters::hideGuidedBatDamageMessage
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Giant's Slam"),
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Giant's Sword"),
+					abilityDamageTitle(tr("nobaaddons.label.ability.giantsSlam", "Giant's Slam")),
+					abilityDamageDescription(tr("nobaaddons.label.item.giantsSword", "Giant's Sword")),
 					default = defaults.chat.filters.hideGiantsSlamDamageMessage,
 					property = config.chat.filters::hideGiantsSlamDamageMessage
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Throw"),
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Livid Dagger"),
+					abilityDamageTitle(tr("nobaaddons.label.item.lividDagger", "Livid Dagger")),
+					abilityDamageDescription(tr("nobaaddons.label.item.lividDagger", "Livid Dagger")),
 					default = defaults.chat.filters.hideThrowDamageMessage,
 					property = config.chat.filters::hideThrowDamageMessage
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Ray of Hope"),
-					Text.translatable("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Staff of the Rising Sun"),
+					abilityDamageTitle(tr("nobaaddons.label.ability.rayOfHope", "Ray of Hope")),
+					abilityDamageDescription(tr("nobaaddons.label.item.staffOfRisingSun", "Staff of the Rising Sun")),
 					default = defaults.chat.filters.hideRayOfHopeDamageMessage,
 					property = config.chat.filters::hideRayOfHopeDamageMessage
 				)
 				// endregion
 
 				// region Mobs
-				label(Text.translatable("nobaaddons.config.label.mobs"))
+				label(CommonText.Config.LABEL_MOBS)
 
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage"),
-					Text.translatable("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip"),
+					tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage", "Hide Sea Creature Catch Message"),
+					tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip", "Hides the catch message for sea creatures of the below set rarity and under"),
 					default = defaults.chat.filters.hideSeaCreatureSpawnMessage,
 					property = config.chat.filters::hideSeaCreatureSpawnMessage
 				)
 				cycler(
-					Text.translatable("nobaaddons.config.chat.filters.seaCreatureMaximumRarity"),
+					tr("nobaaddons.config.chat.filters.seaCreatureMaximumRarity", "Hide Rarity and Below"),
 					default = defaults.chat.filters.seaCreatureMaximumRarity,
-					property = config.chat.filters::seaCreatureMaximumRarity
+					property = config.chat.filters::seaCreatureMaximumRarity,
+					onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray()
 				)
 				// endregion
 
 				// region Dungeons
-				label(Text.translatable("nobaaddons.config.label.dungeons"))
+				label(CommonText.Config.LABEL_DUNGEONS)
 
 				cycler(
-					Text.translatable("nobaaddons.config.chat.filters.blessingMessage"),
+					tr("nobaaddons.config.chat.filters.blessingMessage", "Blessing Message"),
 					default = defaults.chat.filters.blessingMessage,
 					property = config.chat.filters::blessingMessage
 				)
 				cycler(
-					Text.translatable("nobaaddons.config.chat.filters.healerOrbMessage"),
+					tr("nobaaddons.config.chat.filters.healerOrbMessage", "Healer Orb Message"),
 					default = defaults.chat.filters.healerOrbMessage,
 					property = config.chat.filters::healerOrbMessage
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.pickupObtainMessage"),
+					tr("nobaaddons.config.chat.filters.pickupObtainMessage", "Hide Item Obtain Messages"),
 					default = defaults.chat.filters.pickupObtainMessage,
 					property = config.chat.filters::pickupObtainMessage
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.allowKeyMessage"),
-					Text.translatable("nobaaddons.config.chat.filters.allowKeyMessage.tooltip"),
+					tr("nobaaddons.config.chat.filters.allowKeyMessage", "Allow Key Message"),
+					tr("nobaaddons.config.chat.filters.allowKeyMessage.tooltip", "Allows key messages even when item obtain messages are hidden"),
 					default = defaults.chat.filters.allowKeyMessage,
 					property = config.chat.filters::allowKeyMessage
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.allow5050ItemMessage"),
-					Text.translatable("nobaaddons.config.chat.filters.allow5050ItemMessage.tooltip"),
+					tr("nobaaddons.config.chat.filters.allow5050ItemMessage", "Allow 50/50 Item Messages"),
+					tr("nobaaddons.config.chat.filters.allow5050ItemMessage.tooltip", "Allows 50/50 item quality pickups to be shown even when item obtain messages are hidden"),
 					default = defaults.chat.filters.allow5050ItemMessage,
 					property = config.chat.filters::allow5050ItemMessage
 				)
 				// endregion
 
 				// region Miscellaneous
-				label(Text.translatable("nobaaddons.config.label.miscellaneous"))
+				label(CommonText.Config.LABEL_MISC)
 
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideTipMessages"),
-					Text.translatable("nobaaddons.config.chat.filters.hideTipMessages.tooltip"),
+					tr("nobaaddons.config.chat.filters.hideTipMessages", "Hide Tip Messages"),
+					tr("nobaaddons.config.chat.filters.hideTipMessages.tooltip", "Hides messages related to /tip"),
 					default = defaults.chat.filters.hideTipMessages,
 					property = config.chat.filters::hideTipMessages
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.filters.hideProfileInfo"),
-					Text.translatable("nobaaddons.config.chat.filters.hideProfileInfo.tooltip"),
+					tr("nobaaddons.config.chat.filters.hideProfileInfo", "Hide Profile Info Messages"),
+					tr("nobaaddons.config.chat.filters.hideProfileInfo.tooltip", "Hides messages showing the active profile and profile ID"),
 					default = defaults.chat.filters.hideProfileInfo,
 					property = config.chat.filters::hideProfileInfo
 				)
@@ -151,101 +159,102 @@ object ChatCategory {
 			// endregion
 
 			// region Chat Commands
-			.buildGroup(Text.translatable("nobaaddons.config.chat.chatCommands")) {
+			.buildGroup(tr("nobaaddons.config.chat.chatCommands", "Chat Commands")) {
 				// region DM
-				label(Text.translatable("nobaaddons.config.chat.chatCommands.label.dm"))
+				label(tr("nobaaddons.config.chat.chatCommands.label.dm", "DM Commands"))
+
+				val helpTitle = tr("nobaaddons.config.chat.chatCommands.help", "!help Command")
+				val helpDescription = tr("nobaaddons.config.chat.chatCommands.help.tooltip", "Responds with a list of available commands")
+
+				val warpOutTitle = tr("nobaaddons.config.chat.chatCommands.warpOut", "!warpout Command")
+				val warpOutDescription = tr("nobaaddons.config.chat.chatCommands.warpOut.tooltip", "Warps the specified player to your lobby when used")
 
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.dm.enabled.tooltip"),
+					CommonText.Config.ENABLED,
+					tr("nobaaddons.config.chat.chatCommands.dm.enabled.tooltip", "Enables chat commands when other players /msg you"),
 					default = defaults.chat.chatCommands.dm.enabled,
 					property = config.chat.chatCommands.dm::enabled
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.help"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip"),
+					helpTitle, helpDescription,
 					default = defaults.chat.chatCommands.dm.help,
 					property = config.chat.chatCommands.dm::help
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.dm.warpMe"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip"),
+					tr("nobaaddons.config.chat.chatCommands.dm.warpMe", "!warpme Command"),
+					tr("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip", "Warps the messaging player to your lobby"),
 					default = defaults.chat.chatCommands.dm.warpMe,
 					property = config.chat.chatCommands.dm::warpMe
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.dm.partyMe"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.dm.partyMe.tooltip"),
+					tr("nobaaddons.config.chat.chatCommands.dm.partyMe", "!partyme Command"),
+					tr("nobaaddons.config.chat.chatCommands.dm.partyMe.tooltip", "Invites the messaging player to your party"),
 					default = defaults.chat.chatCommands.dm.partyMe,
 					property = config.chat.chatCommands.dm::partyMe
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.warpOut"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.warpOut.tooltip"),
+					warpOutTitle, warpOutDescription,
 					default = defaults.chat.chatCommands.dm.warpOut,
 					property = config.chat.chatCommands.dm::warpOut
 				)
 				// endregion
 
 				// region Party
-				label(Text.translatable("nobaaddons.config.chat.chatCommands.label.party"))
+				label(tr("nobaaddons.config.chat.chatCommands.label.party", "Party Commands"))
 
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.party.enabled.tooltip"),
+					CommonText.Config.ENABLED,
+					tr("nobaaddons.config.chat.chatCommands.party.enabled.tooltip", "Enables chat commands in party chat"),
 					default = defaults.chat.chatCommands.party.enabled,
 					property = config.chat.chatCommands.party::enabled
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.help"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip"),
+					helpTitle, helpDescription,
 					default = defaults.chat.chatCommands.party.help,
 					property = config.chat.chatCommands.party::help
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.party.allInvite"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip"),
+					tr("nobaaddons.config.chat.chatCommands.party.allInvite", "!allinvite Command"),
+					tr("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip", "Runs '/p settings allinvite' when used if you're the party leader"),
 					default = defaults.chat.chatCommands.party.allInvite,
 					property = config.chat.chatCommands.party::allInvite
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.party.transfer"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.party.transfer.tooltip"),
+					tr("nobaaddons.config.chat.chatCommands.party.transfer", "!transfer Command"),
+					tr("nobaaddons.config.chat.chatCommands.party.transfer.tooltip", "Transfers the party to the player using the command (or the specified player, if any) if you're the party leader"),
 					default = defaults.chat.chatCommands.party.transfer,
 					property = config.chat.chatCommands.party::transfer
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.party.warp"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.party.warp.tooltip"),
+					tr("nobaaddons.config.chat.chatCommands.party.warp", "!warp Command"),
+					tr("nobaaddons.config.chat.chatCommands.party.warp.tooltip", "Warps the party to your current lobby (with an optional seconds delay) if you're the leader"),
 					default = defaults.chat.chatCommands.party.warp,
 					property = config.chat.chatCommands.party::warp
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.party.coords"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.party.coords.tooltip"),
+					tr("nobaaddons.config.chat.chatCommands.party.coords", "!coords Command"),
+					tr("nobaaddons.config.chat.chatCommands.party.coords.tooltip", "Responds with your current in-game coordinates"),
 					default = defaults.chat.chatCommands.party.coords,
 					property = config.chat.chatCommands.party::coords
 				)
 				// endregion
 
 				// region Guild
-				label(Text.translatable("nobaaddons.config.chat.chatCommands.label.guild"))
+				label(tr("nobaaddons.config.chat.chatCommands.label.guild", "Guild Command"))
 
 				boolean(
-					Text.translatable("nobaaddons.config.enabled"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.guild.enabled.tooltip"),
+					CommonText.Config.ENABLED,
+					tr("nobaaddons.config.chat.chatCommands.guild.enabled.tooltip", "Enables chat commands in guild chat"),
 					default = defaults.chat.chatCommands.guild.enabled,
 					property = config.chat.chatCommands.guild::enabled
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.help"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.help.tooltip"),
+					helpTitle, helpDescription,
 					default = defaults.chat.chatCommands.guild.help,
 					property = config.chat.chatCommands.guild::help
 				)
 				boolean(
-					Text.translatable("nobaaddons.config.chat.chatCommands.guild.warpOut"),
-					Text.translatable("nobaaddons.config.chat.chatCommands.guild.warpOut.tooltip"),
+					warpOutTitle, warpOutDescription,
 					default = defaults.chat.chatCommands.guild.warpOut,
 					property = config.chat.chatCommands.guild::warpOut
 				)

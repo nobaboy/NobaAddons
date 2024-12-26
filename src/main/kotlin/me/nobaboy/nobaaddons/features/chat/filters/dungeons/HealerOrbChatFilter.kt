@@ -5,31 +5,32 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.StatType
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.NumberUtils.formatDouble
-import me.nobaboy.nobaaddons.utils.RegexUtils.matchMatcher
-import me.nobaboy.nobaaddons.utils.RegexUtils.matches
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import java.util.regex.Pattern
 
 object HealerOrbChatFilter : IChatFilter {
-	private val otherPickupUserOrbPattern = Pattern.compile("◕ [A-z0-9_]+ picked up your [A-z ]+!")
-	private val userPickupHealerOrbPattern = Pattern.compile(
+	private val otherPickupUserOrbPattern by Regex("◕ [A-z0-9_]+ picked up your [A-z ]+!").fromRepo("filter.healer_orb.other_pickup")
+	private val userPickupHealerOrbPattern by Regex(
 		"^◕ You picked up a (?<orb>[A-z ]+) from (?<player>[A-z0-9_]+) healing you for (?<health>[0-9.]+)❤ and granting you (?<buff>[0-9+%]+) (?<stat>[A-z ]+) for (?<duration>[0-9]+) seconds\\."
-	)
+	).fromRepo("filter.healer_orb.pickup")
 
-	override val enabled = SkyBlockIsland.DUNGEONS.inIsland() && config.healerOrbMessage.enabled
+	override val enabled: Boolean get() = SkyBlockIsland.DUNGEONS.inIsland() && config.healerOrbMessage.enabled
 
 	override fun shouldFilter(message: String): Boolean {
 		val filterMode = config.healerOrbMessage
 
-		userPickupHealerOrbPattern.matchMatcher(message) {
+		userPickupHealerOrbPattern.onFullMatch(message) {
 			if(filterMode == ChatFilterOption.COMPACT) {
-				val statType = StatType.entries.firstOrNull { group("stat") == it.text || group("stat") == it.identifier } ?: return@matchMatcher
+				val statType = StatType.entries.firstOrNull {
+					groups["stat"]!!.value == it.text || groups["stat"]!!.value == it.identifier
+				} ?: return@onFullMatch
 				val message = compileHealerOrbMessage(
-					group("orb"), group("player"), group("health"), group("buff"), statType, group("duration")
+					groups["orb"]!!.value, groups["player"]!!.value, groups["health"]!!.value, groups["buff"]!!.value, statType, groups["duration"]!!.value
 				)
 				ChatUtils.addMessage(message, false)
 			}

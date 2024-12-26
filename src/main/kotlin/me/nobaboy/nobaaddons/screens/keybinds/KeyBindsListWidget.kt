@@ -1,7 +1,9 @@
 package me.nobaboy.nobaaddons.screens.keybinds
 
 import me.nobaboy.nobaaddons.screens.keybinds.impl.KeyBind
+import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.Element
@@ -74,10 +76,11 @@ class KeyBindsListWidget(
 		private val keyBind = keyBinds[keyBindIndex]
 		private var duplicate = false
 
+		@Suppress("UsePropertyAccessSyntax") // maxLength can't be used as property despite intellij claiming it can be
 		private val textField = TextFieldWidget(client.textRenderer, 210, 20, Text.empty()).apply {
 			setMaxLength(128)
 			text = keyBind.command
-			tooltip = Tooltip.of(Text.translatable("nobaaddons.screen.keyBinds.command.tooltip"))
+			tooltip = Tooltip.of(tr("nobaaddons.screen.keyBinds.command.tooltip", "The command to send when the key bind is pressed. The command must not start with a '/'"))
 			setChangedListener { newText ->
 				keyBind.command = newText
 				hasChanges = true
@@ -89,7 +92,7 @@ class KeyBindsListWidget(
 			update()
 		}.size(75, 20).build()
 
-		private val deleteButton = ButtonWidget.builder(Text.translatable("nobaaddons.screen.button.delete")) {
+		private val deleteButton = ButtonWidget.builder(CommonText.SCREEN_DELETE) {
 			oldScrollAmount = /*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/
 			deleteEntry()
 		}.size(50, 20).build()

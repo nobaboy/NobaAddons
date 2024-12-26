@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.fishing
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.core.fishing.SeaCreature
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -32,14 +33,10 @@ object SeaCreatureAlert {
 			HypixelCommands.partyChat("[NobaAddons] Caught a ${seaCreature.displayName}!")
 		}
 
-		RenderUtils.drawTitle(text, seaCreature.rarity.color)
+		RenderUtils.drawTitle(text, (seaCreature.rarity.color ?: NobaColor.GOLD).toColor())
 		config.notificationSound.play()
 	}
 
 	private val SeaCreature.isRare: Boolean
-		get() {
-			if(rarity.isAtLeast(config.minimumRarity)) return true
-			if(this == SeaCreature.CARROT_KING && config.carrotKingIsRare) return true
-			return false
-		}
+		get() = rarity >= config.minimumRarity || (id == "CARROT_KING" && config.carrotKingIsRare)
 }

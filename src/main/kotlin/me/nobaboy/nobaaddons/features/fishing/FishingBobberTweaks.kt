@@ -16,8 +16,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.minecraft.entity.Entity
 import net.minecraft.entity.projectile.FishingBobberEntity
 import net.minecraft.text.Text
-import net.minecraft.util.math.ColorHelper
-import net.minecraft.util.math.MathHelper
 import kotlin.time.DurationUnit
 
 object FishingBobberTweaks {
@@ -65,14 +63,7 @@ object FishingBobberTweaks {
 			20.0 - it.level * 0.1
 		} ?: 20.0
 
-		val color: Int
-		if(fishingConfig.bobberTimer.lerpColor) {
-			val delta = MathHelper.clamp(seconds / slugTime.toDouble(), 0.0, 1.0).toFloat()
-			color = ColorHelper/*? if <1.21.2 {*//*.Argb*//*?}*/.lerp(delta, GREEN, GOLD)
-		} else {
-			color = if(seconds >= slugTime) GOLD else GREEN
-		}
-
+		val color: Int = if(seconds >= slugTime) GOLD else GREEN
 		event.renderEntityName = false
 		event.tags.add(Text.literal(seconds.roundTo(1).toString()).withColor(color))
 	}

@@ -2,6 +2,12 @@ package me.nobaboy.nobaaddons
 
 import com.google.gson.Gson
 import com.mojang.logging.LogUtils
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
@@ -38,15 +44,19 @@ import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.slayers.AnnounceBossKillTime
 import me.nobaboy.nobaaddons.features.slayers.MiniBossAlert
+import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
-import me.nobaboy.nobaaddons.features.visuals.itemoverlays.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
+import me.nobaboy.nobaaddons.repo.Repo
+import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager
+import me.nobaboy.nobaaddons.utils.CommonText
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.literal
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import org.slf4j.Logger
@@ -56,15 +66,35 @@ object NobaAddons : ClientModInitializer {
 	const val MOD_ID = "nobaaddons"
 	val VERSION: String = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata.version.friendlyString
 
-	val PREFIX: MutableText get() = Text.empty()
-		.append(Text.translatable("nobaaddons.name"))
-		.append(" > ")
-		.formatted(Formatting.BLUE, Formatting.BOLD)
+	val PREFIX: Text get() = buildText {
+		append(CommonText.NOBAADDONS)
+		literal(" » ") { formatted(Formatting.DARK_GRAY) }
+		formatted(Formatting.BLUE, Formatting.BOLD)
+	}
 
 	val LOGGER: Logger = LogUtils.getLogger()
 	val CONFIG_DIR: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
 
 	val GSON = Gson()
+
+	@OptIn(ExperimentalSerializationApi::class)
+	val JSON = Json {
+		ignoreUnknownKeys = true
+		allowStructuredMapKeys = true
+
+		// allow some quality of life
+		allowComments = true
+		allowTrailingComma = true
+
+		// encoding related
+		encodeDefaults = true
+		prettyPrint = true
+	}
+
+	private val supervisorJob = SupervisorJob()
+	val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob)
+
+	fun runAsync(runnable: suspend CoroutineScope.() -> Unit) = coroutineScope.launch(block = runnable)
 
 	// Note: utility object classes should avoid calling a dedicated `init` method here where possible, and instead
 	// rely on 'init {}' to run setup when first used, unless absolutely necessary for functionality (such as
@@ -73,6 +103,8 @@ object NobaAddons : ClientModInitializer {
 	override fun onInitializeClient() {
 		NobaConfigManager.init()
 		PersistentCache.init()
+		RepoManager.init()
+		Repo.init()
 
 		/* region APIs */
 		InventoryAPI.init()

@@ -6,8 +6,8 @@ import dev.isxander.yacl3.config.v2.api.ConfigClassHandler
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.categories.*
+import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import java.lang.StackWalker.Option
 import java.nio.file.Path
@@ -47,7 +47,7 @@ object NobaConfigManager {
 
 	fun getConfigScreen(parent: Screen?): Screen {
 		return YetAnotherConfigLib.create(HANDLER) { defaults, config, builder ->
-			builder.title(Text.translatable("nobaaddons.name"))
+			builder.title(CommonText.NOBAADDONS)
 				.category(GeneralCategory.create(defaults, config))
 				.category(UIAndVisualsCategory.create(defaults, config))
 				.category(EventsCategory.create(defaults, config))

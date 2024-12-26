@@ -2,12 +2,16 @@ package me.nobaboy.nobaaddons.features.fishing
 
 import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.events.LateChatMessageEvent
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.NumberUtils.ordinalSuffix
+import me.nobaboy.nobaaddons.utils.TextUtils.aqua
+import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.gold
+import me.nobaboy.nobaaddons.utils.TextUtils.gray
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
@@ -18,28 +22,24 @@ object TrophyFishChat {
 		LateChatMessageEvent.EVENT.register(this::modifyChatMessage)
 	}
 
-	fun format(fish: TrophyFish, rarity: TrophyFishRarity, count: Int, total: Int) = buildText {
-		append(Text.translatable("nobaaddons.trophyFishing.prefix").formatted(Formatting.GOLD, Formatting.BOLD))
+	fun format(name: Text, rarity: TrophyFishRarity, count: Int, total: Int) = buildText {
+		append(tr("nobaaddons.trophyFishing.prefix", "TROPHY FISH!").gold().bold())
 		append(" ")
-		append(
-			Text.translatable(
-				"nobaaddons.trophyFishing.caught",
-				"${count.addSeparators()}${count.ordinalSuffix()}",
-				fish.displayName,
-				Text.literal(rarity.name).formatted(rarity.formatting, Formatting.BOLD),
-			).formatted(Formatting.AQUA)
-		)
+		val count = "${count.addSeparators()}${count.ordinalSuffix()}"
+		val rarity = Text.literal(rarity.name).formatted(rarity.formatting, Formatting.BOLD)
+		append(tr("nobaaddons.trophyFishing.caught", "You caught your $count $name $rarity").aqua())
 		append(" ")
-		append(Text.translatable("nobaaddons.trophyFishing.total", "${total.addSeparators()}${total.ordinalSuffix()}").formatted(Formatting.GRAY))
+		val total = "${total.addSeparators()}${total.ordinalSuffix()}"
+		append(tr("nobaaddons.trophyFishing.total", "($total total)").gray())
 	}
 
 	private fun modifyChatMessage(event: LateChatMessageEvent) {
 		if(!config.modifyChatMessages) return
 		val (fish, rarity) = TrophyFishAPI.parseFromChatMessage(event.message.string) ?: return
 
-		val count: Int = TrophyFishAPI.trophyFish[fish]?.let { it[rarity] } ?: -1
-		val total: Int = TrophyFishAPI.trophyFish[fish]?.values?.sum() ?: -1
+		val count: Int = TrophyFishAPI.trophyFish[fish.id]?.let { it[rarity] } ?: -1
+		val total: Int = TrophyFishAPI.trophyFish[fish.id]?.values?.sum() ?: -1
 
-		event.message = format(fish, rarity, count, total)
+		event.message = format(fish.displayName, rarity, count, total)
 	}
 }

@@ -4,7 +4,6 @@ import dev.celestialfault.celestialconfig.AbstractConfig
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.enumMap
@@ -15,9 +14,10 @@ object PersistentCache : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("cache.jso
 	var pet by Property.ofNullable("pet", Serializer.expose<PetData>())
 	val trophyFish by Property.of(
 		key = "trophyFish",
-		default = EnumMap(TrophyFish::class.java),
-		serializer = Serializer.enumMap<TrophyFish, EnumMap<TrophyFishRarity, Int>>(Serializer.enumMap<TrophyFishRarity, Int>())
+		default = mutableMapOf(),
+		serializer = Serializer.map<EnumMap<TrophyFishRarity, Int>>(Serializer.enumMap<TrophyFishRarity, Int>())
 	)
+	var repoCommit by Property.ofNullable<String>("repoCommit")
 
 	fun init() {
 		load()

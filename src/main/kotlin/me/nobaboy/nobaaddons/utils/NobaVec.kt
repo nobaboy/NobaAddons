@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
+import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import net.minecraft.entity.Entity
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket
@@ -15,6 +16,7 @@ import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
 
+@Serializable
 data class NobaVec(
 	val x: Double,
 	val y: Double,

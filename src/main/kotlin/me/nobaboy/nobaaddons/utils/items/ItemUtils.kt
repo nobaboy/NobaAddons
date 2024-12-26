@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.utils.items
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.cache.LoadingCache
+import me.nobaboy.nobaaddons.config.NobaConfigManager
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.LoreComponent
 import net.minecraft.component.type.NbtComponent
@@ -45,5 +46,17 @@ object ItemUtils {
 	fun isEqual(first: ItemStack, second: ItemStack): Boolean {
 		if(first.item !== second.item) return false
 		return first.getSkyBlockItem() == second.getSkyBlockItem()
+	}
+
+	@JvmStatic
+	fun shouldArmorHaveEnchantGlint(item: ItemStack, original: Boolean): Boolean {
+		var config = NobaConfigManager.config.uiAndVisuals.renderingTweaks
+
+		if(config.removeArmorGlints) return false
+		if(!config.fixEnchantedArmorGlint) return original
+		if(original) return true // don't remove enchant glints past this point, only add missing ones
+
+		var data = item.getSkyBlockItem() ?: return false
+		return data.enchantments.isNotEmpty() || data.runes.isNotEmpty()
 	}
 }
