@@ -81,6 +81,10 @@ object NobaConfigUtils {
 		return ColorControllerBuilder.create(option)
 	}
 
+	fun createStringController(option: Option<String>): StringControllerBuilder {
+		return StringControllerBuilder.create(option)
+	}
+
 	fun createLabelController(vararg lines: Text): LabelOption.Builder {
 		return LabelOption.createBuilder().apply {
 			if(lines.size == 1) line(lines[0]) else lines(lines.toList())

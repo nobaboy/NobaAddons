@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.CooldownManager
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 
 abstract class ChatCommandManager : CooldownManager() {
@@ -50,7 +51,7 @@ abstract class ChatCommandManager : CooldownManager() {
 			}.onSuccess {
 				if(!cmd.bypassCooldown) startCooldown()
 			}.onFailure { ex ->
-				NobaAddons.LOGGER.error("Failed to run chat command '${cmd.name}' | Command: '$cmd'.", ex)
+				ErrorManager.logError("Chat command '${cmd.name}' threw an error", ex, "Command" to ctx.fullMessage)
 			}
 		}
 	}

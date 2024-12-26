@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.dungeons.PickupObtainChatFilt
 import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.ProfileInfoChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessagesChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.mobs.SeaCreatureSpawnMessageChatFilter
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
@@ -42,7 +43,7 @@ interface IChatFilter {
 				filters.asSequence().filter { it.enabled }.none {
 					runCatching { it.shouldFilter(message.string.cleanFormatting()) }
 						.onFailure { error ->
-							NobaAddons.LOGGER.error("Filter {} threw an error while processing a chat message", it, error)
+							ErrorManager.logError("${it::class.simpleName} threw an error while processing a chat message", error)
 						}
 						.getOrDefault(false)
 				}

@@ -105,7 +105,6 @@ object NobaAddons : ClientModInitializer {
 		NobaConfigManager.init()
 		PersistentCache.init()
 		RepoManager.init()
-		Repo.init()
 
 		/* region APIs */
 		InventoryAPI.init()

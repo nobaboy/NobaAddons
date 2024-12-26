@@ -16,7 +16,7 @@ data class KeyBind(
 		if(cooldownManager.isOnCooldown()) return
 		cooldownManager.startCooldown()
 
-		MCUtils.networkHandler!!.sendChatCommand(command)
+		MCUtils.networkHandler!!.sendChatCommand(command.removePrefix("/"))
 		cooldownManager.startCooldown()
 	}
 }

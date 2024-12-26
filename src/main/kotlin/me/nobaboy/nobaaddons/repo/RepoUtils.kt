@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.repo
 
-import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -64,7 +64,7 @@ object RepoUtils {
 			zis.close()
 			fis.close()
 		} catch(e: IOException) {
-			NobaAddons.LOGGER.error("Failed to unzip repository", e)
+			ErrorManager.logError("Failed to unzip repository", e, ignorePreviousErrors = true)
 		}
 	}
 

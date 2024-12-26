@@ -57,6 +57,7 @@ object NobaConfigManager {
 				.category(DungeonsCategory.create(defaults, config))
 				.category(ChatCategory.create(defaults, config))
 				.category(QOLCategory.create(defaults, config))
+				.category(ApiCategory.create(defaults, config))
 		}.generateScreen(parent)
 	}
 }

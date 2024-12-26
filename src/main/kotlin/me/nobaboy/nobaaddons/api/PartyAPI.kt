@@ -11,7 +11,9 @@ import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.request
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
@@ -93,7 +95,7 @@ object PartyAPI {
 	}
 
 	// This method is only called from debug commands, and as such is fine being untranslated.
-	@OptIn(ChatUtils.UntranslatedMessage::class)
+	@OptIn(UntranslatedMessage::class)
 	fun listMembers() {
 		val party = this.party
 		if(party == null || party.members.isEmpty()) {
@@ -104,7 +106,7 @@ object PartyAPI {
 		val partySize = party.members.size
 		ChatUtils.addMessage("Party Members ($partySize):")
 		party.members.forEach { member ->
-			ChatUtils.addMessage(prefix = false) {
+			val text = buildText {
 				append(" - ".toText().formatted(Formatting.AQUA))
 				append(member.name.toText().styled {
 					val uuid = member.uuid.toString().toText().formatted(Formatting.GRAY)
@@ -116,6 +118,7 @@ object PartyAPI {
 					append(" (Mod)".toText().formatted(Formatting.BLUE))
 				}
 			}
+			ChatUtils.addMessage(text, prefix = false)
 		}
 	}
 }

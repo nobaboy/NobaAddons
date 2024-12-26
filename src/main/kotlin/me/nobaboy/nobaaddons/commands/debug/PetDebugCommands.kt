@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.commands.debug
 
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.arguments.IntegerArgumentType
-import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
@@ -15,24 +14,23 @@ import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.text.Text
 
 @Suppress("unused")
-object PetDebugCommands : Group("pet", executeRoot = true) {
-	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
+object PetDebugCommands : Group("pet") {
+	override val root = RootCommand {
 		if(!SkyBlockAPI.inSkyBlock) {
-			ctx.source.sendError(Text.literal("You aren't in SkyBlock!"))
-			return 0
+			it.source.sendError(Text.literal("You aren't in SkyBlock!"))
+			return@RootCommand
 		}
 
 		val pet = PetAPI.currentPet
 		if(pet == null) {
-			ctx.source.sendError(Text.literal("You don't have a pet equipped"))
-			return 0
+			it.source.sendError(Text.literal("You don't have a pet equipped"))
+			return@RootCommand
 		}
 
-		ctx.dumpInfo(
+		it.dumpInfo(
 			"Pet" to buildText {
 				append(pet.rarity.name.toText().bold())
 				append(" ")
@@ -44,40 +42,36 @@ object PetDebugCommands : Group("pet", executeRoot = true) {
 			"Held Item" to pet.heldItem,
 			"UUID" to pet.uuid,
 		)
-
-		return 0
 	}
 
-	val level = Command.command("level") {
-		buildCommand {
+	val level = Command(
+		"level",
+		commandBuilder = {
 			it.then(ClientCommandManager.argument("xp", DoubleArgumentType.doubleArg())
 				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
 					.then(ClientCommandManager.argument("max", IntegerArgumentType.integer(100, 200))
 						.executes(this::execute))
 					.executes(this::execute)))
 		}
-
-		executes {
-			val xp = DoubleArgumentType.getDouble(this, "xp")
-			val rarity = Rarity.RarityArgumentType.getItemRarity(this, "rarity")
-			val maxLevel = runCatching { IntegerArgumentType.getInteger(this, "max") }.getOrDefault(100)
-			val level = PetAPI.levelFromXp(xp, rarity, maxLevel)
-			source.sendFeedback("$rarity XP ${xp.addSeparators()} -> $level".toText())
-		}
+	) {
+		val xp = DoubleArgumentType.getDouble(it, "xp")
+		val rarity = Rarity.RarityArgumentType.getItemRarity(it, "rarity")
+		val maxLevel = runCatching { IntegerArgumentType.getInteger(it, "max") }.getOrDefault(100)
+		val level = PetAPI.levelFromXp(xp, rarity, maxLevel)
+		it.source.sendFeedback("$rarity XP ${xp.addSeparators()} -> $level".toText())
 	}
 
-	val xp = Command.command("xp") {
-		buildCommand {
+	val xp = Command(
+		"xp",
+		commandBuilder = {
 			it.then(ClientCommandManager.argument("level", IntegerArgumentType.integer(1, 100))
 				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
 					.executes(this::execute)))
 		}
-
-		executes {
-			val level = IntegerArgumentType.getInteger(this, "level")
-			val rarity = Rarity.RarityArgumentType.getItemRarity(this, "rarity")
-			val xp = PetAPI.xpFromLevel(level, rarity, 200).addSeparators()
-			source.sendFeedback("$rarity LVL $level -> $xp".toText())
-		}
+	) {
+		val level = IntegerArgumentType.getInteger(it, "level")
+		val rarity = Rarity.RarityArgumentType.getItemRarity(it, "rarity")
+		val xp = PetAPI.xpFromLevel(level, rarity, 200).addSeparators()
+		it.source.sendFeedback("$rarity LVL $level -> $xp".toText())
 	}
 }

@@ -4,6 +4,7 @@ import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.screens.hud.elements.data.Element
 import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
+import me.nobaboy.nobaaddons.utils.ErrorManager
 
 object InfoBoxesManager {
 	internal val infoBoxes = mutableListOf<TextElement>()
@@ -13,7 +14,7 @@ object InfoBoxesManager {
 			InfoBoxesConfig.load()
 			infoBoxes.addAll(InfoBoxesConfig.infoBoxes)
 		} catch(ex: IOException) {
-			NobaAddons.LOGGER.error("Failed to load infoboxes.json", ex)
+			ErrorManager.logError("Failed to load info boxes", ex)
 		}
 	}
 
@@ -23,7 +24,7 @@ object InfoBoxesManager {
 			InfoBoxesConfig.infoBoxes.addAll(infoBoxes)
 			InfoBoxesConfig.save()
 		} catch(ex: IOException) {
-			NobaAddons.LOGGER.error("Failed to save infoboxes.json", ex)
+			ErrorManager.logError("Failed to save info boxes", ex)
 		}
 	}
 
