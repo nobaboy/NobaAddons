@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean

@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
@@ -8,7 +7,6 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
-import net.minecraft.text.Text
 
 object MiningCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.mining", "Mining")) {

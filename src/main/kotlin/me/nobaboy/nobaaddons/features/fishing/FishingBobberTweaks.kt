@@ -16,8 +16,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.minecraft.entity.Entity
 import net.minecraft.entity.projectile.FishingBobberEntity
 import net.minecraft.text.Text
-import net.minecraft.util.math.ColorHelper
-import net.minecraft.util.math.MathHelper
 import kotlin.time.DurationUnit
 
 object FishingBobberTweaks {

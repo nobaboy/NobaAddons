@@ -123,7 +123,7 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 		System.out.println("Trying to find mixins from jar file");
 		try(ZipInputStream zis = new ZipInputStream(Files.newInputStream(file))) {
 			ZipEntry next;
-			while ((next = zis.getNextEntry()) != null) {
+			while((next = zis.getNextEntry()) != null) {
 				tryAddMixinClass(next.getName());
 				zis.closeEntry();
 			}

@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.utils
 
-import me.nobaboy.nobaaddons.NobaAddons
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 
 /**
