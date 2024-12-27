@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Attribute Shard and Rancher's Boots Speed Slot Infos - nobaboy
 - Armor Glint Tweaks - celeste
 - Trophy Fish slot info in Odger menu - celeste
 - Fishing Bobber Timer - celeste
@@ -31,6 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Keybinds now allows use of mouse buttons (not including the primary Left, Right, and Middle mouse buttons) - nobaboy
 - `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
 - Mod chat message prefix & colors - celeste
+- Enchanted Book Slot Info now uses repo data instead of getting the name from the id - nobaboy
 
 ### Fixed
 
