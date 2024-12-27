@@ -53,7 +53,7 @@ interface ISlotInfo {
 			NewYearCakeSlotInfo,
 			PetSlotInfo,
 			PotionLevelSlotInfo,
-			RanchersBootsSlotInfo,
+			RanchersBootsSpeedSlotInfo,
 			VacuumPestsSlotInfo,
 		)
 

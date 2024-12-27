@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import net.minecraft.entity.EquipmentSlot
 
-object RanchersBootsSlotInfo : ISlotInfo {
+object RanchersBootsSpeedSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.ranchersBootsSpeed
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
