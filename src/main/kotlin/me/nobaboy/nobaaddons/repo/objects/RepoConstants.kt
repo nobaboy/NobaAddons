@@ -35,7 +35,7 @@ object RepoConstants {
 				if(it !in values) NobaAddons.LOGGER.error("Key {} isn't present in repo", it)
 			}
 			entries.forEach { id, it ->
-				if(it.overridenByRemote) NobaAddons.LOGGER.warn("Value for '{}' has been overriden by the repo", id)
+				if(it.overriddenByRemote) NobaAddons.LOGGER.warn("Value for '{}' has been overridden by the repo", id)
 			}
 		}
 
@@ -73,7 +73,7 @@ object RepoConstants {
 			}
 		}
 
-		val overridenByRemote: Boolean get() {
+		val overriddenByRemote: Boolean get() {
 			val current = supplier[key] ?: return false
 			if(current is Regex && fallback is Regex) {
 				return current.pattern != fallback.pattern

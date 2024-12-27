@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.commands
 
+import com.mojang.brigadier.arguments.BoolArgumentType
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.repo.RepoManager
@@ -8,13 +9,22 @@ import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
 import me.nobaboy.nobaaddons.utils.TextUtils.underline
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.minecraft.util.Formatting
 
 @Suppress("unused")
 object RepoCommands : Group("repo") {
-	val update = Command.async("update") {
+	val update = Command.async(
+		"update",
+		commandBuilder = {
+			it
+				.then(ClientCommandManager.argument("force", BoolArgumentType.bool())
+					.executes(this::execute))
+				.executes(this::execute)
+		}
+	) {
 		ChatUtils.addMessage(tr("nobaaddons.repo.updateStarted", "Updating repository..."))
-		RepoManager.update(true)
+		RepoManager.update(true, runCatching { BoolArgumentType.getBool(it, "force") }.getOrDefault(false))
 	}
 
 	val info = Command("info") {

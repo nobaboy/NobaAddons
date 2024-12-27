@@ -20,5 +20,12 @@ object GeneralCategory {
 			default = defaults.general.wikiCommandAutoOpen,
 			property = config.general::wikiCommandAutoOpen
 		)
+
+		boolean(
+			tr("nobaaddons.config.general.updateNotifier", "Update Notifier"),
+			tr("nobaaddons.config.general.updateNotifier.tooltip", "Sends a message in chat when a new update is available"),
+			default = defaults.general.updateNotifier,
+			property = config.general::updateNotifier
+		)
 	}
 }

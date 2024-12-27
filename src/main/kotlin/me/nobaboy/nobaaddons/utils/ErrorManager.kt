@@ -62,13 +62,32 @@ object ErrorManager {
 
 		val id = MathHelper.randomUuid().toString()
 		val trace = error.stackTraceToString()
-		errors[id] = if(extraInfo.isNotEmpty()) buildString {
+		errors[id] = (if(extraInfo.isNotEmpty()) buildString {
+			val extraValueErrors = mutableListOf<Throwable>()
+
 			append(trace)
 			appendLine()
 			appendLine("---- Extra Info ----")
 			appendLine()
-			extraInfo.forEach { appendLine("${it.first}: ${it.second}") }
-		} else trace
+			extraInfo.forEach {
+				val value = runCatching {
+					it.second.toString()
+				}.getOrElse { e ->
+					extraValueErrors.add(e)
+					"<TO STRING FOR ${it.second!!::class} FAILED: ${e.message}>"
+				}
+				appendLine("${it.first}: $value")
+			}
+
+			if(extraValueErrors.isNotEmpty()) {
+				appendLine()
+				appendLine("---- Extra Info Errors ----")
+				extraValueErrors.forEach {
+					appendLine()
+					appendLine(it.stackTraceToString())
+				}
+			}
+		} else trace).removeSuffix("\n")
 
 		// queue messages to prevent them from being lost if the player isn't in a world when an error occurs
 		// TODO is it worth deferring adding the stack trace when the message is sent to prevent it

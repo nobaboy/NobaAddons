@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.visuals
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -11,7 +12,7 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -30,7 +31,7 @@ object TemporaryWaypoint {
 	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && config.enabled
 
 	private val chatCoordsPattern by Regex(
-		"^\\[[0-9]+](?: .)? ?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
+		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
 	).fromRepo("temporary_waypoints.coordinates")
 
 	private val waypoints = mutableListOf<Waypoint>()
@@ -43,8 +44,9 @@ object TemporaryWaypoint {
 
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
+		if(DianaAPI.isActive) return
 
-		chatCoordsPattern.onFullMatch(message) {
+		chatCoordsPattern.onPartialMatch(message) {
 			val username = groups["username"]!!.value
 			if(username == MCUtils.playerName) return
 
@@ -89,7 +91,7 @@ object TemporaryWaypoint {
 		val z = DoubleArgumentType.getDouble(ctx, "z")
 
 		waypoints.add(Waypoint(NobaVec(x, y, z), "Temporary Waypoint", Timestamp.now(), null))
-		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Temporary Waypoint added at x: $x, y: $y, z: $z"))
+		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will last until you walk near it."))
 	}
 
 	data class Waypoint(val location: NobaVec, val text: String, val timestamp: Timestamp, val duration: Duration?) {

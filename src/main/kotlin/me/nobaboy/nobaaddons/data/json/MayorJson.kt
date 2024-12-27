@@ -42,5 +42,5 @@ data class MayorCandidate(
 	val key: String,
 	val name: String,
 	val perks: List<Perk>,
-	val votes: Int,
+	val votes: Int? = null
 )

@@ -145,7 +145,7 @@ object SimonSaysTimer {
 			message + buildLiteral(" ($personalBest)") { gray() }
 		}
 
-		ChatUtils.addMessage(chatMessage, color = Formatting.WHITE)
+		ChatUtils.addMessage(chatMessage)
 		if(config.timeInPartyChat && PartyAPI.party != null) {
 			HypixelCommands.partyChat(message.string)
 		}

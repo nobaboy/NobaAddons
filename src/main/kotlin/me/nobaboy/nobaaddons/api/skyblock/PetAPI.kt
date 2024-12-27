@@ -31,7 +31,7 @@ object PetAPI {
 		"^§cAutopet §eequipped your §7\\[Lvl (?<level>\\d+)] (?:§.\\[.*] )?§(?<rarity>.)(?<name>[A-z ]+)(?:§. ✦)?§e! §a§lVIEW RULE"
 	).fromRepo("pets.autopet")
 
-	private val petUnequipPattern by Regex("^You despawned your (?<name>[A-z ]+)(?: ✦|\$)").fromRepo("pets.despawn")
+	private val petUnequipPattern by Regex("^You despawned your (?<name>[A-z ]+)(?: ✦)?!").fromRepo("pets.despawn")
 
 	private var inPetsMenu = false
 

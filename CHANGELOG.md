@@ -4,10 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## 0.1.0-Alpha.11 - 2024-12-26
 
 ### Added
 
+- Attribute Shard and Rancher's Boots Speed Slot Infos - nobaboy
 - Armor Glint Tweaks - celeste
 - Trophy Fish slot info in Odger menu - celeste
 - Fishing Bobber Timer - celeste
@@ -15,30 +16,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - This requires that you open Odger's menu at least once for accurate counts
 - Ping On Burrow Find - nobaboy
 - `/noba refill` any item from sacks - celeste
-  - This is primarily useful when paired with command keybinds
 - Support for 1.21.4 - celeste
 - Option to make Sea Creature Alert also notify when catching a Carrot King (since not many people fish for it) - celeste
 - Option to make Sea Creature Alert also send a message in party chat - celeste
 - Added a fix for Skyblocker's Correct Transparent Skin Pixels feature on 1.21.1 and 1.21.3 - celeste
+- Update notifications for new versions - celeste
 
 ### Changed
 
 - The mod will now pull some data from a repository - celeste
   - This is a fairly large internal change; if something doesn't load properly, please try `/noba repo update` (and report it in the Discord)
 - Most mod message strings are now translatable - celeste
-  - This does not include server messages though - the mod still requires that your Hypixel language is set to English to function properly
+  - This does not include server messages - the mod still requires that your Hypixel language is set to English to function properly
 - Redesigned keybind screen and moved info boxes to their own custom screen - nobaboy
 - Keybinds now allows use of mouse buttons (not including the primary Left, Right, and Middle mouse buttons) - nobaboy
-- `/noba refillpearls` has been changed to `/noba refill pearls` - celeste
+- `/noba refillpearls` has been changed to `/noba refill pearls`, along with adding `superboom` and `leaps` - celeste
 - Mod chat message prefix & colors - celeste
+- Enchanted Book Slot Info now uses repo data instead of getting the name from the id - nobaboy
 
 ### Fixed
 
-- Temporary Waypoints not getting parsed because of player emblems - nobaboy
+- Temporary Waypoints not getting parsed in all chat because of player emblems - nobaboy
 - MayorAPI not resetting once an election ends due to a typo - nobaboy
 - PetAPI resetting current pet upon clicking any item other than pets in the pets menu - nobaboy
-- PetAPI thinking you don't have a pet spawned until opening the pets menu once - celeste
-- Announce Rare Drops announcing the same item more than once if it is moved around your inventory or swap islands - nobaboy
+- PetAPI thinking you don't have a pet spawned until opening the pets menu at least once per session - celeste
+- Announce Rare Drops announcing the same item more than once if it is moved around your inventory or when swapping islands - nobaboy
 
 ## 0.1.0-Alpha.10 - 2024-12-02
 

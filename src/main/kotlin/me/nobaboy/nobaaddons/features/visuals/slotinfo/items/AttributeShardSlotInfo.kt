@@ -1,0 +1,20 @@
+package me.nobaboy.nobaaddons.features.visuals.slotinfo.items
+
+import me.nobaboy.nobaaddons.events.ScreenRenderEvents
+import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+
+object AttributeShardSlotInfo : ISlotInfo {
+	override val enabled: Boolean get() = config.attributeShardLevel || config.attributeShardName
+
+	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+		val item = event.itemStack.getSkyBlockItem() ?: return
+		if(item.id != "ATTRIBUTE_SHARD" || item.attributes.size != 1) return
+
+		item.attributes.let {
+			if(config.attributeShardLevel) drawCount(event, it.values.first().toString())
+			if(config.attributeShardName) drawInfo(event, it.keys.first().abbreviation.toText())
+		}
+	}
+}

@@ -43,6 +43,7 @@ interface ISlotInfo {
 			TuningPointsSlotInfo,
 			TrophyFishSlotInfo,
 			// Items
+			AttributeShardSlotInfo,
 			DungeonHeadTierSlotInfo,
 			EnchantedBookSlotInfo,
 			KuudraKeyTierInfoSlot,
@@ -52,7 +53,7 @@ interface ISlotInfo {
 			NewYearCakeSlotInfo,
 			PetSlotInfo,
 			PotionLevelSlotInfo,
-//			RancherBootsSlotInfo,
+			RanchersBootsSpeedSlotInfo,
 			VacuumPestsSlotInfo,
 		)
 
