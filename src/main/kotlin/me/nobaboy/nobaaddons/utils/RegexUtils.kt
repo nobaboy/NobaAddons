@@ -7,6 +7,13 @@ object RegexUtils {
 	inline fun Regex.onFullMatch(text: String, consumer: MatchResult.() -> Unit) = matchEntire(text)?.let(consumer)
 
 	/**
+	 * Executes [consumer] with the resulting [MatchResult] if the provided [text] partially matches the current pattern
+	 *
+	 * Note that this only returns the first partial match; if you need *all* matches, you should use [forEachMatch] instead.
+	 */
+	inline fun Regex.onPartialMatch(text: String, consumer: MatchResult.() -> Unit) = find(text)?.let(consumer)
+
+	/**
 	 * Same as [onFullMatch], but returns the return value of [consumer]
 	 */
 	inline fun <T> Regex.mapFullMatch(text: String, consumer: MatchResult.() -> T): T? = matchEntire(text)?.let(consumer)
@@ -33,6 +40,12 @@ object RegexUtils {
 	 */
 	inline fun Iterable<Regex>.firstFullMatch(text: String, consumer: MatchResult.() -> Unit) =
 		this.firstNotNullOfOrNull { it.matchEntire(text) }?.let(consumer)
+
+	/**
+	 * Executes [consumer] with the first partial match from any of the patterns in the current iterable
+	 */
+	inline fun Iterable<Regex>.firstPartialMatch(text: String, consumer: MatchResult.() -> Unit) =
+		this.firstNotNullOfOrNull { it.find(text) }?.let(consumer)
 
 	/**
 	 * Returns `true` if any pattern in the current iterable fully matches the provided string

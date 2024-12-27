@@ -25,7 +25,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object BurrowWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
-	private val enabled: Boolean get() = DianaAPI.isActive()
+	private val enabled: Boolean get() = DianaAPI.isActive
 
 	private val playerLocation get() = LocationUtils.playerLocation()
 
@@ -121,7 +121,7 @@ object BurrowWaypoints {
 
 		InquisitorWaypoints.waypoints.toList().forEach { inquisitor ->
 			val location = inquisitor.location
-			val distance = location.distanceSq(playerLocation)
+			val distance = location.distance(playerLocation)
 			val yOffset = if(config.showInquisitorDespawnTime) -20.0f else -10.0f
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
@@ -135,7 +135,7 @@ object BurrowWaypoints {
 				RenderUtils.renderText(location.center().raise(), "Despawns in ${formattedTime}s", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 
-			if(distance < 10) InquisitorWaypoints.tryRemove(inquisitor)
+			if(distance < 5) InquisitorWaypoints.tryRemove(inquisitor)
 		}
 	}
 
