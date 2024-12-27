@@ -62,7 +62,7 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.etherwarpHelper::enabled
 			)
 			color(
-				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.highlightColor", "Block Highlight Color"),
+				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.highlightColor", "Highlight Color"),
 				default = defaults.uiAndVisuals.etherwarpHelper.highlightColor,
 				property = config.uiAndVisuals.etherwarpHelper::highlightColor
 			)
@@ -74,7 +74,7 @@ object UIAndVisualsCategory {
 			)
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir", "Allow Overlay on Air"),
-				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip", "Enables the block overlay to render in the air if the nearest block is too far"),
+				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip", "Allows the overlay to render on air blocks displaying how far you're allowed to teleport"),
 				default = defaults.uiAndVisuals.etherwarpHelper.allowOverlayOnAir,
 				property = config.uiAndVisuals.etherwarpHelper::allowOverlayOnAir
 			)
@@ -209,6 +209,11 @@ object UIAndVisualsCategory {
 				tr("nobaaddons.config.uiAndVisuals.slotInfo.potionLevel", "Potion Level"),
 				default = defaults.uiAndVisuals.slotInfo.potionLevel,
 				property = config.uiAndVisuals.slotInfo::potionLevel
+			)
+			tickBox(
+				tr("nobaaddons.config.uiAndVisuals.slotInfo.ranchersBootsSpeed", "Rancher's Boots Speed"),
+				default = defaults.uiAndVisuals.slotInfo.ranchersBootsSpeed,
+				property = defaults.uiAndVisuals.slotInfo::ranchersBootsSpeed
 			)
 			tickBox(
 				tr("nobaaddons.config.uiAndVisuals.slotInfo.vacuumPests", "Vacuum Pests"),

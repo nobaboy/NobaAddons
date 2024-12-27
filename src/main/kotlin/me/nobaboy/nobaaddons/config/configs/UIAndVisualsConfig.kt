@@ -110,6 +110,9 @@ class UIAndVisualsConfig {
 		var potionLevel: Boolean = false
 
 		@SerialEntry
+		var ranchersBootsSpeed: Boolean = false
+
+		@SerialEntry
 		var skillLevel: Boolean = false
 
 		@SerialEntry

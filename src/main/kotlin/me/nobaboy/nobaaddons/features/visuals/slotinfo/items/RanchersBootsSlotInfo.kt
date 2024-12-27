@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import net.minecraft.entity.EquipmentSlot
 
 object RanchersBootsSlotInfo : ISlotInfo {
-	override val enabled: Boolean get() = config.attributeShardLevel
+	override val enabled: Boolean get() = config.ranchersBootsSpeed
 
 	override fun handle(event: ScreenRenderEvents.DrawSlot) {
 		val item = event.itemStack.getSkyBlockItem() ?: return
@@ -32,7 +32,7 @@ object RanchersBootsSlotInfo : ISlotInfo {
 		val color = if(item.ranchersSpeed > speedLimit) {
 			NobaColor.RED.toColor().rgb
 		} else {
-			NobaColor.GREEN.toColor().rgb
+			NobaColor.WHITE.toColor().rgb
 		}
 
 		drawCount(event, item.ranchersSpeed.toString(), color)
