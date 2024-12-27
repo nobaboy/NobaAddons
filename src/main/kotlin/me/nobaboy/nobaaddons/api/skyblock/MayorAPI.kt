@@ -47,7 +47,7 @@ object MayorAPI {
 
 	private var lastApiUpdate = Timestamp.distantPast()
 	private val shouldUpdateMayor: Boolean
-		get() = lastApiUpdate.elapsedSince() < 20.minutes
+		get() = lastApiUpdate.elapsedSince() > 20.minutes
 
 	var nextMayorTimestamp = Timestamp.distantPast()
 		private set
