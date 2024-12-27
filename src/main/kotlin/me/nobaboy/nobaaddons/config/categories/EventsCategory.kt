@@ -107,5 +107,16 @@ object EventsCategory {
 			)
 		}
 		// endregion
+
+		// region Chocolate Factory
+		buildGroup(tr("nobaadons.config.events.chocolateFactory", "Chocolate Factory")) {
+			boolean(
+				tr("nobaadons.config.events.chocolateFactory.requireMythicRabbit", "Require Mythic Rabbit"),
+				tr("nobaadons.config.events.chocolateFactory.requireMythicRabbit.tooltip", "Blocks opening the Chocolate Factory (through commands only) without a mythic Rabbit pet spawned, and sends a warning when using an Egglocator"),
+				default = defaults.events.chocolateFactory.requireMythicRabbit,
+				property = config.events.chocolateFactory::requireMythicRabbit
+			)
+		}
+		// endregion
 	}
 }

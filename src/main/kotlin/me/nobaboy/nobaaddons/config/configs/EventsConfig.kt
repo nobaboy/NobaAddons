@@ -7,6 +7,9 @@ class EventsConfig {
 	@SerialEntry
 	var mythological: Mythological = Mythological()
 
+	@SerialEntry
+	var chocolateFactory: ChocolateFactory = ChocolateFactory()
+
 	class Mythological {
 		@SerialEntry
 		var burrowGuess: Boolean = false
@@ -49,5 +52,14 @@ class EventsConfig {
 
 		@SerialEntry
 		var ignoreStonks: Boolean = false
+	}
+
+	class ChocolateFactory {
+		@SerialEntry
+		var requireMythicRabbit = false
+	}
+
+	class Hoppity {
+		// TODO
 	}
 }
