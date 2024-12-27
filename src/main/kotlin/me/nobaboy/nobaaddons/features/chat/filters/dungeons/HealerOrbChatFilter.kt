@@ -32,7 +32,7 @@ object HealerOrbChatFilter : IChatFilter {
 				val message = compileHealerOrbMessage(
 					groups["orb"]!!.value, groups["player"]!!.value, groups["health"]!!.value, groups["buff"]!!.value, statType, groups["duration"]!!.value
 				)
-				ChatUtils.addMessage(message, false)
+				ChatUtils.addMessage(message, prefix = false)
 			}
 			return true
 		}

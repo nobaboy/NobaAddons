@@ -1,6 +1,8 @@
 package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.NobaAddons
+import net.fabricmc.loader.api.FabricLoader
+import net.fabricmc.loader.api.Version
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.network.ClientPlayNetworkHandler
@@ -15,6 +17,8 @@ import java.util.UUID
 
 object MCUtils {
 	private val clipboard = Clipboard()
+
+	val VERSION_INFO: Version = FabricLoader.getInstance().getModContainer("minecraft").orElseThrow().metadata.version
 
 	val client: MinecraftClient get() = MinecraftClient.getInstance()
 
