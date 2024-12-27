@@ -8,4 +8,7 @@ class GeneralConfig {
 
 	@SerialEntry
 	var allowKeybindsOutsideSkyBlock: Boolean = false
+
+	@SerialEntry
+	var updateNotifier: Boolean = true
 }

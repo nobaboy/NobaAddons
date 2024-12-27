@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
+import me.nobaboy.nobaaddons.NobaAddons
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 
 /**
@@ -16,7 +17,12 @@ object Scheduler {
 
 	fun schedule(delay: Int, repeat: Boolean = false, task: ScheduledTask.() -> Unit): ScheduledTask {
 		require(delay >= 0) { "Delay must be a positive number of ticks" }
-		return ScheduledTask(task, delay, repeat).also(tasks::add)
+		return ScheduledTask(delay, repeat, task).also(tasks::add)
+	}
+
+	fun scheduleAsync(delay: Int, repeat: Boolean = false, task: suspend ScheduledTask.() -> Unit): ScheduledTask {
+		require(delay >= 0) { "Delay must be a positive number of ticks" }
+		return ScheduledTask(delay, repeat) { NobaAddons.runAsync { task(this@ScheduledTask) } }.also(tasks::add)
 	}
 
 	private fun tick() {
@@ -24,9 +30,9 @@ object Scheduler {
 	}
 
 	class ScheduledTask internal constructor(
-		private val task: ScheduledTask.() -> Unit,
 		private val ticks: Int,
-		private val repeat: Boolean = false
+		private val repeat: Boolean = false,
+		private val task: ScheduledTask.() -> Unit,
 	) {
 		private var cancelled = false
 		internal var ticksRemaining = ticks

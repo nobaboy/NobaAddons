@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.StatType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.startsWith
@@ -26,7 +27,7 @@ object BlessingChatFilter : IChatFilter {
 	).fromRepo("filter.blessings.stats")
 	private val statMessages = listOf("     Granted you", "     Also granted you")
 
-	private lateinit var blessingType: BlessingType
+	private var blessingType: BlessingType? = null
 	private val stats = mutableListOf<Stat>()
 
 	override val enabled: Boolean get() = SkyBlockIsland.DUNGEONS.inIsland() && config.blessingMessage.enabled
@@ -43,7 +44,11 @@ object BlessingChatFilter : IChatFilter {
 		}
 
 		if(message.startsWith(statMessages)) {
-			check(this::blessingType.isInitialized) { "Blessing type is not set!" }
+			val blessingType = this.blessingType
+			if(blessingType == null) {
+				ErrorManager.logError("Found blessing stats messages before the blessing type", Error())
+				return false
+			}
 			if(filterMode == ChatFilterOption.COMPACT) {
 				blessingStatsPattern.forEachMatch(message) {
 					val statType = StatType.entries.firstOrNull {
@@ -53,12 +58,20 @@ object BlessingChatFilter : IChatFilter {
 				}
 
 				when {
-					stats.size == blessingType.expectedStats -> ChatUtils.addMessage(compileBlessingMessage(), false)
-					stats.size > blessingType.expectedStats -> NobaAddons.LOGGER.warn(
-						"Found more stats than expected from {} blessing! Expected {}, but got {}",
-						blessingType, blessingType.expectedStats, stats.size
+					stats.size == blessingType.expectedStats -> {
+						ChatUtils.addMessage(compileBlessingMessage(), prefix = false)
+						this.blessingType = null
+					}
+					stats.size > blessingType.expectedStats -> ErrorManager.logError(
+						"Found more stats from a blessing than expected", Error(),
+						"Blessing type" to blessingType,
+						"Expected stats" to blessingType.expectedStats,
+						"Found stats" to stats
 					)
 					else -> NobaAddons.LOGGER.warn(
+						// this doesn't use ErrorManager as it's possible that this is a blessing
+						// which splits its stats into two messages, and we don't want to be overly noisy with
+						// such blessings.
 						"Found less stats than expected from {} blessing! Expected {}, but got {}",
 						blessingType, blessingType.expectedStats, stats.size
 					)
@@ -71,6 +84,7 @@ object BlessingChatFilter : IChatFilter {
 	}
 
 	private fun compileBlessingMessage() = buildText {
+		val blessingType = this@BlessingChatFilter.blessingType ?: throw IllegalStateException("blessingType is null")
 		var previousValue: String? = null
 
 		formatted(Formatting.GRAY)
@@ -94,7 +108,9 @@ object BlessingChatFilter : IChatFilter {
 		}
 	}
 
-	private class Stat(val statType: StatType, val value: String)
+	private class Stat(val statType: StatType, val value: String) {
+		override fun toString(): String = "$statType: $value"
+	}
 
 	private enum class BlessingType(val text: String, val color: Formatting, val expectedStats: Int) {
 		POWER("POWER BUFF!", Formatting.RED, 2),

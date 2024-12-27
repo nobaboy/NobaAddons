@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.repo.objects.IRepoObject
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HTTPUtils.get
-import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
@@ -22,6 +21,7 @@ import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import kotlin.io.path.pathString
 import kotlin.io.path.writeBytes
+import kotlin.random.Random
 
 /**
  * The repository manager which controls downloading the mod's data repository.
@@ -38,7 +38,7 @@ object RepoManager {
 	}
 
 	private val TEMPORARY_DIRECTORY = Files.createTempDirectory("nobaaddons")
-	private val ZIP_PATH get() = TEMPORARY_DIRECTORY.resolve("repo_${StringUtils.randomAlphanumeric()}.zip").apply { toFile().createNewFile() }
+	private val ZIP_PATH get() = TEMPORARY_DIRECTORY.resolve("repo_${Random.nextInt(0, 10000)}.zip").apply { toFile().createNewFile() }
 
 	var commit: String? by PersistentCache::repoCommit
 		private set
@@ -60,7 +60,7 @@ object RepoManager {
 	private suspend fun getLatestCommit(): String =
 		HTTPUtils.fetchJson<GithubCommitResponse>(commitApiUrl).await().sha
 
-	suspend fun update(sendMessages: Boolean = false) {
+	suspend fun update(sendMessages: Boolean = false, force: Boolean = false) {
 		if(!config.autoUpdate && REPO_DIRECTORY.exists()) {
 			if(sendMessages) {
 				ChatUtils.addMessage(tr("nobaaddons.repo.autoUpdateOff", "Auto updating has been disabled, not updating repository"))
@@ -73,10 +73,11 @@ object RepoManager {
 			getLatestCommit()
 		} catch(e: Exception) {
 			ErrorManager.logError("Failed to get latest repo commit", e, ignorePreviousErrors = true)
+			if(!REPO_DIRECTORY.exists()) switchToBackupRepo() else RepoReloadEvent.invoke()
 			return
 		}
 
-		if(commit == latestCommit && REPO_DIRECTORY.exists()) {
+		if(commit == latestCommit && REPO_DIRECTORY.exists() && !force) {
 			if(sendMessages) {
 				ChatUtils.addMessage(tr("nobaaddons.repo.alreadyUpdated", "Repository is already up to date"))
 			}
@@ -84,8 +85,9 @@ object RepoManager {
 			return
 		}
 
-		val repoZip = ZIP_PATH
+		val repoZip: Path
 		try {
+			repoZip = ZIP_PATH
 			val url = downloadUrl
 			val zip = client.get(url, HttpResponse.BodyHandlers.ofByteArray())
 			repoZip.writeBytes(zip.body())
@@ -95,8 +97,8 @@ object RepoManager {
 			return
 		}
 
-		REPO_DIRECTORY.mkdirs()
 		try {
+			REPO_DIRECTORY.mkdirs()
 			RepoUtils.unzipIgnoreFirstFolder(repoZip.pathString, REPO_DIRECTORY.absolutePath)
 		} catch(e: Exception) {
 			ErrorManager.logError("Failed to unzip downloaded repository", e, ignorePreviousErrors = true)
@@ -117,13 +119,11 @@ object RepoManager {
 	fun performInitialLoad(obj: IRepoObject) {
 		synchronized(LOCK) {
 			try {
-				obj.load()
+				if(REPO_DIRECTORY.exists()) obj.load()
 			} catch(e: FileNotFoundException) {
-				// This isn't enough of an issue to send a message over at this point in the load process
-				// (since it's expected that the repo won't exist on first startup)
-				NobaAddons.LOGGER.warn("Repo object couldn't find file", e)
+				NobaAddons.LOGGER.warn("Repo object failed to load missing file: {}", e.message)
 			} catch(e: Throwable) {
-				ErrorManager.logError("Repo object failed initial load", e, "Repo object class" to obj::class)
+				ErrorManager.logError("Repo object failed initial load", e, "Repo object" to obj)
 			}
 			objects.add(obj)
 		}
