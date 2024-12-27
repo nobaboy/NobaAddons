@@ -56,6 +56,12 @@ class UIAndVisualsConfig {
 		var checkMarkIfMaxed: Boolean = false
 
 		@SerialEntry
+		var attributeShardLevel: Boolean = false
+
+		@SerialEntry
+		var attributeShardName: Boolean = false
+
+		@SerialEntry
 		var bestiaryMilestone: Boolean = false
 
 		@SerialEntry
@@ -102,6 +108,9 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var potionLevel: Boolean = false
+
+		@SerialEntry
+		var ranchersBootsSpeed: Boolean = false
 
 		@SerialEntry
 		var skillLevel: Boolean = false
