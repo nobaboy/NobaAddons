@@ -9,9 +9,10 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import kotlin.time.Duration.Companion.seconds
 
-object MiniBossAlert {
-	private val config get() = NobaConfigManager.config.slayers.miniBossAlert
-	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false && config.enabled
+// TODO: Add miniboss highlighting
+object MiniBossFeatures {
+	private val config get() = NobaConfigManager.config.slayers
+	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false
 
 	fun init() {
 		SlayerEvents.MINI_BOSS_SPAWN.register(this::onMiniBossSpawn)
@@ -23,7 +24,7 @@ object MiniBossAlert {
 		val distance = event.entity.getNobaVec().distanceToPlayer()
 		if(distance > 16) return
 
-		RenderUtils.drawTitle(config.alertText, config.alertColor, 1.5.seconds)
+		RenderUtils.drawTitle(config.miniBossAlert.alertText, config.miniBossAlert.alertColor, 1.5.seconds)
 		SoundUtils.dingSound.play()
 	}
 }

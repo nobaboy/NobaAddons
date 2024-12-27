@@ -42,8 +42,8 @@ import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
-import me.nobaboy.nobaaddons.features.slayers.AnnounceBossKillTime
-import me.nobaboy.nobaaddons.features.slayers.MiniBossAlert
+import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
+import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomFeatures
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
@@ -148,8 +148,8 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Slayers
-		AnnounceBossKillTime.init()
-		MiniBossAlert.init()
+		MiniBossFeatures.init()
+		SlayerBossFeatures.init()
 		VoidgloomFeatures.init()
 		// endregion
 

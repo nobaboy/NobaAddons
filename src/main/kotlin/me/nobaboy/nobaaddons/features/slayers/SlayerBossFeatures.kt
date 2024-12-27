@@ -6,9 +6,9 @@ import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 
-object AnnounceBossKillTime {
-	private val config get() = NobaConfigManager.config.slayers.announceBossKillTime
-	private val enabled: Boolean get() = SlayerAPI.currentQuest != null && config.enabled
+object SlayerBossFeatures {
+	private val config get() = NobaConfigManager.config.slayers
+	private val enabled: Boolean get() = SlayerAPI.currentQuest != null
 
 	fun init() {
 		SlayerEvents.BOSS_KILL.register(this::onBossKill)
@@ -25,7 +25,7 @@ object AnnounceBossKillTime {
 		if(event.entity == null) return null
 		val killTime = event.entity.age / 20.0
 
-		when(config.timeSource) {
+		when(config.announceBossKillTime.timeSource) {
 			BossTimeSource.REAL_TIME -> return killTime
 			BossTimeSource.BOSS_TIME_REMAINING -> {
 				val timer = event.timerEntity?.name?.string

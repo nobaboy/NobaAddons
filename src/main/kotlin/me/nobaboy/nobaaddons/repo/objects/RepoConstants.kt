@@ -53,6 +53,11 @@ object RepoConstants {
 	 */
 	object Strings : Handler<String>("data/strings.json", serializer())
 
+	/**
+	 * Shared repo storage for Skull Textures
+	 */
+	object SkullTextures : Handler<String>("data/skull_textures.json", serializer())
+
 	private val LOCK = Any()
 
 	/**

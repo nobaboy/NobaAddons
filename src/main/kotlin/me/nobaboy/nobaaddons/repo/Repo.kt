@@ -102,6 +102,12 @@ object Repo {
 	fun String.fromRepo(key: String) = RepoConstants.Entry(key, this, RepoConstants.Strings)
 
 	/**
+	 * Creates a [RepoConstants.Entry] object supplying a skull texture from the mod repository,
+	 * falling back to [this] if none exists.
+	 */
+	fun String.skullFromRepo(key: String) = RepoConstants.Entry(key, this, RepoConstants.SkullTextures)
+
+	/**
 	 * Reads the file located at the provided [path] relative to the repository directory root,
 	 * and returns its contents as a [String]
 	 */

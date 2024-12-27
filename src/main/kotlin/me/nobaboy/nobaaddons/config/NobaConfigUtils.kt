@@ -35,10 +35,6 @@ object NobaConfigUtils {
 		return TickBoxControllerBuilder.create(option)
 	}
 
-	fun createStringController(option: Option<String>): StringControllerBuilder {
-		return StringControllerBuilder.create(option)
-	}
-
 	@Suppress("UnstableApiUsage")
 	fun <E : Enum<E>> createLimitedCyclerController(option: Option<E>, onlyInclude: Array<E>) = object : EnumControllerBuilder<E> {
 		// I couldn't get EnumController.createDefaultFormatter() to work, so we're just reimplementing
