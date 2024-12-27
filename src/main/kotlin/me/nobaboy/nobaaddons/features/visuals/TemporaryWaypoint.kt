@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.visuals
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -43,6 +44,7 @@ object TemporaryWaypoint {
 
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
+		if(DianaAPI.isActive) return
 
 		chatCoordsPattern.onFullMatch(message) {
 			val username = groups["username"]!!.value

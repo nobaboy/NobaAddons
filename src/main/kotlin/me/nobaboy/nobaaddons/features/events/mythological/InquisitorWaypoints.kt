@@ -13,7 +13,7 @@ import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
@@ -28,14 +28,14 @@ import kotlin.time.Duration.Companion.seconds
 
 object InquisitorWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
-	private val enabled: Boolean get() = DianaAPI.isActive() && config.alertInquisitor
+	private val enabled: Boolean get() = DianaAPI.isActive && config.alertInquisitor
 
 	private val inquisitorDigUpPattern by Regex("^[A-z ]+! You dug out a Minos Inquisitor!").fromRepo("mythological.inquisitor")
 	private val inquisitorDeadPattern by Regex("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): Inquisitor dead!").fromRepo("mythological.inquisitor_dead")
 
 	private val inquisitorSpawnPatterns by Repo.list(
-		Regex("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+).*").fromRepo("mythological.inquisitor_spawn.coords"),
-		Regex("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): A MINOS INQUISITOR has spawned near \\[.*] at Coords (?<x>[0-9.-]+) (?<y>[0-9.-]+) (?<z>[0-9.-]+)").fromRepo("mythological.inquisitor_spawn.inquisitorchecker"),
+		Regex("(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+).*").fromRepo("mythological.inquisitor_spawn.coords"),
+		Regex("(?<username>[A-z0-9_]+): A MINOS INQUISITOR has spawned near \\[.*] at Coords (?<x>[0-9.-]+) (?<y>[0-9.-]+) (?<z>[0-9.-]+)").fromRepo("mythological.inquisitor_spawn.inquisitorchecker"),
 	)
 
 	private val inquisitorsNearby = mutableListOf<OtherClientPlayerEntity>()
@@ -73,7 +73,7 @@ object InquisitorWaypoints {
 
 		if(inquisitorDigUpPattern matches message) checkInquisitor()
 
-		inquisitorSpawnPatterns.firstFullMatch(message) {
+		inquisitorSpawnPatterns.firstPartialMatch(message) {
 			val username = groups["username"]!!.value
 
 			if(username == MCUtils.playerName) return

@@ -16,6 +16,8 @@ import net.minecraft.entity.player.PlayerEntity
 object DianaAPI {
 	private const val SPADE = "ANCESTRAL_SPADE"
 
+	val isActive: Boolean get() = SkyBlockIsland.HUB.inIsland() && isRitualActive() && hasSpadeInHotbar()
+
 	fun init() {
 		ClientEntityEvents.ENTITY_LOAD.register { entity, _ -> onEntityLoad(entity) }
 	}
@@ -36,6 +38,4 @@ object DianaAPI {
 
 	private fun isRitualActive() = MayorAPI.currentMayor.activePerks.contains(MayorPerk.MYTHOLOGICAL_RITUAL) ||
 		MayorAPI.currentMinister.activePerks.contains(MayorPerk.MYTHOLOGICAL_RITUAL)
-
-	fun isActive(): Boolean = SkyBlockIsland.HUB.inIsland() && isRitualActive() && hasSpadeInHotbar()
 }
