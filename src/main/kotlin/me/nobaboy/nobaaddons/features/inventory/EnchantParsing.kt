@@ -49,9 +49,8 @@ object EnchantParsing {
 		if(!item.isSkyBlockItem || item.getSkyBlockItem()?.enchantments?.isEmpty() != false) return
 
 		// Find the first line with an enchantment
-		val firstEnchant = lines.toMutableList()
-			.indexOfFirst { ENCHANT_LINE matches it.string.cleanFormatting() }.takeIf { it > -1 }
-			?: return
+		val firstEnchant = lines.indexOfFirst { ENCHANT_LINE matches it.string.cleanFormatting() }
+		if(firstEnchant == -1) return
 
 		val enchants = mutableListOf<ParsedEnchant>()
 		var lastEnchant: ParsedEnchant? = null
