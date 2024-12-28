@@ -184,7 +184,7 @@ class UIAndVisualsConfig {
 		var parseItemEnchants: Boolean = true
 
 		@SerialEntry
-		var useRomanNumerals: Boolean = true
+		var replaceRomanNumerals: Boolean = false
 
 		@SerialEntry
 		var alwaysCompact: Boolean = false

@@ -348,14 +348,14 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.enchantments::parseItemEnchants
 			)
 			boolean(
-				tr("nobaaddons.config.uiAndVisuals.enchants.useRomanNumerals", "Use Roman Numerals"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.useRomanNumerals.tooltip", "While disabled, the enchant tier will be replaced to use numbers instead of the original roman numerals"),
-				default = defaults.uiAndVisuals.enchantments.useRomanNumerals,
-				property = config.uiAndVisuals.enchantments::useRomanNumerals
+				tr("nobaaddons.config.uiAndVisuals.enchants.replaceRomanNumerals", "Replace Roman Numerals"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.replaceRomanNumerals.tooltip", "Enchantment tiers will be replaced with their number representation instead of the original roman numerals used"),
+				default = defaults.uiAndVisuals.enchantments.replaceRomanNumerals,
+				property = config.uiAndVisuals.enchantments::replaceRomanNumerals
 			)
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.enchants.alwaysCompact", "Always Compact"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.alwaysCompact.tooltip", "While enabled, enchanted items will always display their enchants in the most compact form possible; this still won't apply to single-enchant enchanted books (to allow for reading the enchant description)."),
+				tr("nobaaddons.config.uiAndVisuals.enchants.alwaysCompact.tooltip", "Makes enchanted items always display their enchants in the most compact form possible; this still won't apply to enchanted books with a single enchant (to allow for reading the description)."),
 				default = defaults.uiAndVisuals.enchantments.alwaysCompact,
 				property = config.uiAndVisuals.enchantments::alwaysCompact
 			)
@@ -368,7 +368,7 @@ object UIAndVisualsCategory {
 			)
 			color(
 				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor", "Good Enchant Color"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor.tooltip", "The color used for enchantments above what you can normally get from the enchantment table, or their max if no tier 6/7 exists for it."),
+				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor.tooltip", "The color used for enchantments above what you can normally get from the enchantment table"),
 				default = defaults.uiAndVisuals.enchantments.goodColor,
 				property = config.uiAndVisuals.enchantments::goodColor
 			)

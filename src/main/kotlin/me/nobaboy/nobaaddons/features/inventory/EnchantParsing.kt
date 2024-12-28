@@ -39,7 +39,7 @@ object EnchantParsing {
 			try {
 				parseEnchants(item, lines)
 			} catch(e: Throwable) {
-				ErrorManager.logError("Failed to parse enchants on item", e)
+				ErrorManager.logError("Failed to parse enchants on item tooltip", e)
 			}
 		}
 	}
@@ -59,9 +59,9 @@ object EnchantParsing {
 		for(line in lines.slice(firstEnchant until lines.size)) {
 			val string = line.string.takeIf { it.isNotBlank() } ?: break
 			val lineEnchants = ENCHANT_LINE.findAll(string).toList()
-				// Split commas (since regex-ing that requires more workshopping on this regex pattern)
+				// Split commas (since properly doing that with a regex requires more workshopping on this regex pattern)
 				.flatMap { it.groups[0]!!.value.split(", ") }
-				// And then rerun it through the regex to get the groups
+				// And then rerun it through the regex to get the groups back
 				.mapNotNull { ENCHANT_LINE.find(it) }
 				.associate { it.groups["name"]!!.value to it.groups["tier"]!!.value }
 			if(lineEnchants.isEmpty()) {
@@ -85,10 +85,10 @@ object EnchantParsing {
 			lines.removeAt(firstEnchant)
 		}
 
-		// Then chunk the enchantments up, either into lines of 3 if >=5 enchants or the config option
-		// is enabled (and the item isn't an enchanted book), otherwise give them their own lines
 		val shouldCompact = when {
+			// Always compact at 5 or more enchants, similar to Hypixel
 			enchants.size > 5 -> true
+			// alwaysCompact shouldn't affect enchanted books that only have a single enchantment on them
 			config.alwaysCompact -> item.getSkyBlockItemId() != "ENCHANTED_BOOK" || enchants.size > 1
 			else -> false
 		}
@@ -118,7 +118,7 @@ object EnchantParsing {
 	}
 
 	private fun Pair<EnchantBase, Pair<String, Int>>.toText(): Text {
-		val tier = if(config.useRomanNumerals) second.first else second.second
+		val tier = if(config.replaceRomanNumerals) second.second else second.first
 		return "${first.name} $tier".toText().colorize(first, second.second)
 	}
 
