@@ -14,6 +14,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
@@ -63,7 +64,13 @@ object DebugCommands : Group("debug") {
 		)
 	}
 
-	val sounds = Command("sounds", enabled = DebugAPI.isAwtAvailable) { DebugAPI.openSoundDebugMenu() }
+	object Sounds : Group("sounds") {
+		override val root = RootCommand { if(DebugAPI.isAwtAvailable) DebugAPI.openSoundDebugMenu() }
+
+		val playRareDrop = Command("raredrop") {
+			SoundUtils.rareDropSound.play()
+		}
+	}
 
 	val location = Command("location") {
 		val location = DebugAPI.lastLocationPacket

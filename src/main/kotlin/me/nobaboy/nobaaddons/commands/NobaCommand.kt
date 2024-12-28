@@ -20,6 +20,7 @@ import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.screens.NobaHudScreen
 import me.nobaboy.nobaaddons.screens.NobaMainScreen
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
+import me.nobaboy.nobaaddons.screens.notifications.ChatNotificationsScreen
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.PingUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
@@ -43,6 +44,10 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 
 	val keybinds = Command("keybinds") {
 		KeyBindsScreen(null).queueOpen()
+	}
+
+	val notifications = Command("notifications") {
+		ChatNotificationsScreen(null).queueOpen()
 	}
 
 	val hud = Command("hud") {

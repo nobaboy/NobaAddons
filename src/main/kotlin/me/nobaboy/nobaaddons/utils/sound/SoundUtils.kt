@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.utils.sound
 
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
+import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
 import net.minecraft.sound.SoundEvents
 import kotlin.math.pow
@@ -29,8 +30,9 @@ object SoundUtils {
 		delay = 4
 	)
 
-	private fun playSound(soundEvent: SoundEvent, pitch: Float, volume: Float) {
-		MCUtils.player?.playSound(soundEvent, volume, pitch)
+	fun playSound(soundEvent: SoundEvent, volume: Float = 1f, pitch: Float = 1f, category: SoundCategory = SoundCategory.MASTER) {
+		val player = MCUtils.player ?: return
+		MCUtils.world?.playSound(player, player.x, player.y, player.z, soundEvent, category, volume, pitch)
 	}
 
 	class SoundSequence(
@@ -38,10 +40,10 @@ object SoundUtils {
 		val steps: List<SoundStep>,
 		val delay: Int
 	) : PlayableSound {
-		override fun play() {
+		override fun play(category: SoundCategory) {
 			steps.forEachIndexed { index, step ->
 				val delay = index * delay
-				Scheduler.schedule(delay) { playSound(soundEvent, step.pitch, step.volume) }
+				Scheduler.schedule(delay) { playSound(soundEvent, step.volume, step.pitch, category) }
 			}
 		}
 
@@ -63,8 +65,8 @@ object SoundUtils {
 		val pitch: Float = 1.0f,
 		val volume: Float = 1.0f
 	) : PlayableSound {
-		override fun play() {
-			playSound(soundEvent, pitch, volume)
+		override fun play(category: SoundCategory) {
+			playSound(soundEvent, volume, pitch, category)
 		}
 	}
 
