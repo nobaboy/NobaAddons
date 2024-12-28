@@ -20,7 +20,6 @@ import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.nbtCompound
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
 import net.minecraft.client.util.InputUtil
 import net.minecraft.item.ItemStack
@@ -131,13 +130,12 @@ object EnchantParsing {
 	) {
 		private val stackingProgress: MutableText? get() {
 			if(enchant is StackingEnchant) {
-				val progress = item.nbtCompound.copyNbt().getInt(enchant.nbtKey)
-				val nextTier = enchant.tiers.lastOrNull { it >= progress }
+				val (_, progress) = item.getSkyBlockItem()?.stackingEnchantProgress[enchant] ?: return null
 				return buildText {
 					append("(")
-					append(progress.toAbbreviatedString(millionPrecision = 1))
-					if(nextTier != null) {
-						append("/${nextTier.toAbbreviatedString(millionPrecision = 1)}")
+					append(progress.first.toAbbreviatedString(millionPrecision = 1))
+					progress.second?.let {
+						append("/${it.toAbbreviatedString(millionPrecision = 1)}")
 					}
 					append(")")
 					darkGray()

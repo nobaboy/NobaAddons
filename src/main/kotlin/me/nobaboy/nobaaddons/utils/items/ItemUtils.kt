@@ -8,6 +8,7 @@ import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.LoreComponent
 import net.minecraft.component.type.NbtComponent
 import net.minecraft.item.ItemStack
+import org.jetbrains.annotations.ApiStatus.Obsolete
 import java.lang.ref.WeakReference
 
 object ItemUtils {
@@ -17,8 +18,8 @@ object ItemUtils {
 			override fun load(key: ItemStack) = SkyBlockItemData(WeakReference(key))
 		})
 
-	val ItemStack.nbtCompound get() = this.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT)
-	val ItemStack.lore get() = this.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT)
+	val ItemStack.nbt: NbtComponent get() = this.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT)
+	val ItemStack.lore: LoreComponent get() = this.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT)
 
 	val LoreComponent.stringLines get() = this.lines.map { it.string }
 
@@ -26,27 +27,28 @@ object ItemUtils {
 	val ItemStack.isSkyBlockItem: Boolean
 		get() = !isEmpty && getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).contains("id")
 
-	fun ItemStack.skyblockItem(): SkyBlockItemData {
-		require(isSkyBlockItem) { "Stack is not a valid SkyBlock item" }
+	val ItemStack.asSkyBlockItem: SkyBlockItemData? get() {
+		if(!isSkyBlockItem) return null
 		return ITEM_CACHE.getUnchecked(this)
 	}
+
+	val ItemStack.skyBlockId: String? get() = asSkyBlockItem?.id
 
 	fun ItemStack.getSkullTexture(): String? {
 		val component = this.get(DataComponentTypes.PROFILE) ?: return null
 		return component.properties["textures"].firstOrNull()?.value
 	}
 
-	fun ItemStack.getSkyBlockItem(): SkyBlockItemData? {
-		if(!isSkyBlockItem) return null
-		return skyblockItem()
-	}
+	@Obsolete
+	fun ItemStack.getSkyBlockItem(): SkyBlockItemData? = asSkyBlockItem
 
-	fun ItemStack.getSkyBlockItemId(): String? = getSkyBlockItem()?.id
+	@Obsolete
+	fun ItemStack.getSkyBlockItemId(): String? = skyBlockId
 
 	@JvmStatic
 	fun isEqual(first: ItemStack, second: ItemStack): Boolean {
 		if(first.item !== second.item) return false
-		return first.getSkyBlockItem() == second.getSkyBlockItem()
+		return first.asSkyBlockItem == second.asSkyBlockItem
 	}
 
 	@JvmStatic

@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
 import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyblockItem
 import net.minecraft.component.DataComponentTypes
@@ -18,7 +19,7 @@ object ItemDebugCommands : Group("item") {
 			return@RootCommand
 		}
 
-		val itemData = item.skyblockItem()
+		val itemData = item.asSkyBlockItem!!
 		it.dumpInfo(
 			"Item ID" to itemData.id,
 			"UUID" to itemData.uuid,

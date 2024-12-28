@@ -38,7 +38,7 @@ data class StackingEnchant(
 	override val abbreviation: String? = null
 ) : EnchantBase {
 	override val good: Int = -1
-	override val max: Int = tiers.size
+	override val max: Int = tiers.size + 1
 }
 
 @Serializable
