@@ -106,7 +106,8 @@ object EnchantParsing {
 		if(enchant is UltimateEnchant) return lightPurple().bold()
 
 		if(tier >= enchant.max) return withColor(config.maxColor.rgb)
-		// if enchants have a good value of -1 then assume that they never have a proper "good" tier
+		// if enchants have a good value of -1 then assume that they never have a proper "good" or "bad" tier, only
+		// average and max
 		if(tier > enchant.good) return withColor(if(enchant.good == -1) config.averageColor.rgb else config.goodColor.rgb)
 		if(tier == enchant.good) return withColor(config.averageColor.rgb)
 		return withColor(config.badColor.rgb)
