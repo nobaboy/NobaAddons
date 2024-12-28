@@ -56,16 +56,17 @@ object EnchantParsing {
 		var lastEnchant: ParsedEnchant? = null
 		for(line in lines.slice(firstEnchant until lines.size)) {
 			val string = line.string.takeIf { it.isNotBlank() } ?: break
-			val lineEnchants = ENCHANT_LINE.findAll(string).toList()
-				// Split commas (since properly doing that with a regex requires more workshopping on this regex pattern)
-				.flatMap { it.groups[0]!!.value.split(", ") }
-				// And then rerun it through the regex to get the groups back
-				.mapNotNull { ENCHANT_LINE.find(it) }
-				.associate { it.groups["name"]!!.value to it.groups["tier"]!!.value }
-			if(lineEnchants.isEmpty()) {
+
+			val lineEnchants: Map<String, String>
+			if(ENCHANT_LINE matches string) {
+				lineEnchants = string.split(", ")
+					.mapNotNull { ENCHANT_LINE.find(it) }
+					.associate { it.groups["name"]!!.value to it.groups["tier"]!!.value }
+			} else {
 				lastEnchant?.description?.add(line)
 				continue
 			}
+
 			lineEnchants.forEach {
 				val enchant = ParsedEnchant(
 					item,
