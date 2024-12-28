@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MojangProfile(val id: String, val name: String, val properties: List<Properties>) {
 	@Serializable
-	data class Properties(val name: String, val value: String, val signature: String?)
+	data class Properties(val name: String, val value: String, val signature: String? = null)
 }
