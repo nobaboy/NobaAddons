@@ -87,7 +87,11 @@ object EnchantParsing {
 
 		// Then chunk the enchantments up, either into lines of 3 if >=5 enchants or the config option
 		// is enabled (and the item isn't an enchanted book), otherwise give them their own lines
-		val shouldCompact = enchants.size > 5 || (config.alwaysCompact && item.getSkyBlockItemId() != "ENCHANTED_BOOK")
+		val shouldCompact = when {
+			enchants.size > 5 -> true
+			config.alwaysCompact -> item.getSkyBlockItemId() != "ENCHANTED_BOOK" || enchants.size > 1
+			else -> false
+		}
 		val enchantText: List<Text> = if(shouldCompact) {
 			enchants.chunked(3) {
 				Texts.join(it.flatMap { it.toText(false) }, Text.literal(", ").blue())
