@@ -6,6 +6,8 @@ import me.nobaboy.nobaaddons.core.SkyBlockItemType
 interface EnchantBase {
 	val id: String
 	val name: String
+	val good: Int
+	val max: Int
 	val items: List<SkyBlockItemType>?
 	val exclusiveToItems: List<String>?
 	val conflicts: List<String>?
@@ -16,8 +18,8 @@ interface EnchantBase {
 data class StandardEnchant(
 	override val id: String,
 	override val name: String,
-	val good: Int,
-	val max: Int,
+	override val good: Int,
+	override val max: Int,
 	override val items: List<SkyBlockItemType>? = null,
 	override val exclusiveToItems: List<String>? = null,
 	override val conflicts: List<String>? = null,
@@ -34,15 +36,20 @@ data class StackingEnchant(
 	override val exclusiveToItems: List<String>? = null,
 	override val conflicts: List<String>? = null,
 	override val abbreviation: String? = null
-) : EnchantBase
+) : EnchantBase {
+	override val good: Int = -1
+	override val max: Int = tiers.size
+}
 
 @Serializable
 data class UltimateEnchant(
 	override val id: String,
 	override val name: String,
-	val max: Int,
+	override val max: Int,
 	override val items: List<SkyBlockItemType>? = null,
 	override val exclusiveToItems: List<String>? = null,
 	override val conflicts: List<String>? = null,
 	override val abbreviation: String? = null
-) : EnchantBase
+) : EnchantBase {
+	override val good: Int = -1
+}

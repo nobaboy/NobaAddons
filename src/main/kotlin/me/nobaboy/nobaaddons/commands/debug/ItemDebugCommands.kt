@@ -27,7 +27,7 @@ object ItemDebugCommands : Group("item") {
 			"Rarity" to itemData.rarity,
 			"Recombobulated" to itemData.recombobulated,
 			"Stars" to itemData.stars,
-			"Enchants" to itemData.enchantments,
+			"Enchants" to itemData.enchantments.mapKeys { it.key.id },
 			"Runes" to itemData.runes,
 			"Gemstones" to itemData.gemstones,
 			"Power scroll" to itemData.powerScroll,

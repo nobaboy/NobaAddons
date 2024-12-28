@@ -22,6 +22,7 @@ object ItemUtils {
 
 	val LoreComponent.stringLines get() = this.lines.map { it.string }
 
+	@JvmStatic
 	val ItemStack.isSkyBlockItem: Boolean
 		get() = !isEmpty && getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).contains("id")
 

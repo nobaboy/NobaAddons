@@ -339,5 +339,23 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
 			)
 		}
+
+		buildGroup(tr("nobaaddons.config.uiAndVisuals.enchants", "Enchantment Tooltips")) {
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.enchants.parseEnchants", "Modify Enchant Tooltips"),
+				default = defaults.uiAndVisuals.enchantments.parseItemEnchants,
+				property = config.uiAndVisuals.enchantments::parseItemEnchants
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.enchants.useRomanNumerals", "Use Roman Numerals"),
+				default = defaults.uiAndVisuals.enchantments.useRomanNumerals,
+				property = config.uiAndVisuals.enchantments::useRomanNumerals
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.enchants.alwaysCompact", "Always Compact"),
+				default = defaults.uiAndVisuals.enchantments.alwaysCompact,
+				property = config.uiAndVisuals.enchantments::alwaysCompact
+			)
+		}
 	}
 }

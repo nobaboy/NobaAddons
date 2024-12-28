@@ -23,6 +23,9 @@ class UIAndVisualsConfig {
 	@SerialEntry
 	val itemPosition = FirstPersonItemPosition()
 
+	@SerialEntry
+	val enchantments = Enchantments()
+
 	class TemporaryWaypoints {
 		@SerialEntry
 		var enabled: Boolean = false
@@ -174,5 +177,16 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var cancelDrinkAnimation: Boolean = false
+	}
+
+	class Enchantments {
+		@SerialEntry
+		var parseItemEnchants: Boolean = true
+
+		@SerialEntry
+		var useRomanNumerals: Boolean = true
+
+		@SerialEntry
+		var alwaysCompact: Boolean = false
 	}
 }

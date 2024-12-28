@@ -26,11 +26,15 @@ object StringUtils {
 			.joinToString("")
 	}
 
-	fun Int.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2): String {
+	fun Double.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String {
 		return when {
-			this.toInt() > 1_000 -> "${(this / 1_000.0).roundTo(thousandPrecision)}k"
-			this.toInt() > 1_000_000 -> "${(this / 1_000_000.0).roundTo(millionPrecision)}m"
+			this.toDouble() > 1_000_000_000 -> "${(this / 1_000_000_000.0).roundTo(billionPrecision)}b"
+			this.toDouble() > 1_000_000 -> "${(this / 1_000_000.0).roundTo(millionPrecision)}m"
+			this.toDouble() > 1_000 -> "${(this / 1_000.0).roundTo(thousandPrecision)}k"
 			else -> this.toString()
 		}
 	}
+
+	fun Int.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String =
+		this.toDouble().toAbbreviatedString(thousandPrecision, millionPrecision, billionPrecision)
 }
