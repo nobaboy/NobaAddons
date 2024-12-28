@@ -15,7 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 @Pseudo
-@IfMinecraftVersion(maxVersion = "1.21.4")
+@IfMinecraftVersion(maxVersion = "1.21.3")
 @IfModLoaded(value = "skyblocker", maxVersion = "1.23.0-beta.2")
 @Mixin(targets = "de.hysky.skyblocker.skyblock.item.PlayerHeadHashCache")
 abstract class FixSkyblockerHeadCache {
