@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.mixins.fixes;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.moulberry.mixinconstraints.annotations.IfMinecraftVersion;
 import com.moulberry.mixinconstraints.annotations.IfModLoaded;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,10 +14,8 @@ import java.util.Base64;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-// only target versions that are definitely affected by this issue
-//? if <1.21.4 {
 @Pseudo
-// further ensure that we only modify affected versions
+@IfMinecraftVersion(maxVersion = "1.21.4")
 @IfModLoaded(value = "skyblocker", maxVersion = "1.23.0-beta.2")
 @Mixin(targets = "de.hysky.skyblocker.skyblock.item.PlayerHeadHashCache")
 abstract class FixSkyblockerHeadCache {
@@ -39,4 +38,3 @@ abstract class FixSkyblockerHeadCache {
 		});
 	}
 }
-//?}

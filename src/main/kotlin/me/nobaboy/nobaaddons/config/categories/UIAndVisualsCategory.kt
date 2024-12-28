@@ -343,18 +343,46 @@ object UIAndVisualsCategory {
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.enchants", "Enchantment Tooltips")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.enchants.parseEnchants", "Modify Enchant Tooltips"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.parseEnchants.tooltip", "Reformats the enchantment list on items in a style similar to the same feature from Skyblock Addons"),
 				default = defaults.uiAndVisuals.enchantments.parseItemEnchants,
 				property = config.uiAndVisuals.enchantments::parseItemEnchants
 			)
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.enchants.useRomanNumerals", "Use Roman Numerals"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.useRomanNumerals.tooltip", "While disabled, the enchant tier will be replaced to use numbers instead of the original roman numerals"),
 				default = defaults.uiAndVisuals.enchantments.useRomanNumerals,
 				property = config.uiAndVisuals.enchantments::useRomanNumerals
 			)
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.enchants.alwaysCompact", "Always Compact"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.alwaysCompact.tooltip", "While enabled, enchanted items will always display their enchants in the most compact form possible; this still won't apply to single-enchant enchanted books (to allow for reading the enchant description)."),
 				default = defaults.uiAndVisuals.enchantments.alwaysCompact,
 				property = config.uiAndVisuals.enchantments::alwaysCompact
+			)
+
+			color(
+				tr("nobaaddons.config.uiAndVisuals.enchants.maxColor", "Max Enchant Color"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.maxColor.tooltip", "The color used for max tier enchantments"),
+				default = defaults.uiAndVisuals.enchantments.maxColor,
+				property = config.uiAndVisuals.enchantments::maxColor
+			)
+			color(
+				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor", "Good Enchant Color"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor.tooltip", "The color used for enchantments above what you can normally get from the enchantment table, or their max if no tier 6/7 exists for it."),
+				default = defaults.uiAndVisuals.enchantments.goodColor,
+				property = config.uiAndVisuals.enchantments::goodColor
+			)
+			color(
+				tr("nobaaddons.config.uiAndVisuals.enchants.averageColor", "Max Enchant Table Enchant Color"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.averageColor.tooltip", "The color used for enchantments at the max level you can get them from the enchantment table"),
+				default = defaults.uiAndVisuals.enchantments.averageColor,
+				property = config.uiAndVisuals.enchantments::averageColor
+			)
+			color(
+				tr("nobaaddons.config.uiAndVisuals.enchants.badColor", "Bad Enchant Color"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.badColor.tooltip", "The color used for enchantments that aren't at any of the above tiers"),
+				default = defaults.uiAndVisuals.enchantments.badColor,
+				property = config.uiAndVisuals.enchantments::badColor
 			)
 		}
 	}

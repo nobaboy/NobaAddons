@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.mixins.render;
 
 /*? if <1.21.2 {*/
-/*import net.minecraft.item.ArmorItem;*/
-/*?}*/
+/*import net.minecraft.item.ArmorItem;
+*//*?}*/
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
@@ -33,7 +33,6 @@ abstract class ItemStackMixin {
 		return ItemUtils.shouldArmorHaveEnchantGlint(item, original);
 	}
 
-	// TODO making this work on 1.21 is not going to be fun
 	@WrapWithCondition(
 		method = "getTooltip",
 		at = @At(

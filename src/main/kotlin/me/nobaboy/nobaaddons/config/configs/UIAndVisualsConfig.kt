@@ -188,5 +188,17 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var alwaysCompact: Boolean = false
+
+		@SerialEntry
+		var maxColor: Color = NobaColor.GOLD.toColor()
+
+		@SerialEntry
+		var goodColor: Color = NobaColor.GOLD.toColor()
+
+		@SerialEntry
+		var averageColor: Color = NobaColor.BLUE.toColor()
+
+		@SerialEntry
+		var badColor: Color = NobaColor.GRAY.toColor()
 	}
 }

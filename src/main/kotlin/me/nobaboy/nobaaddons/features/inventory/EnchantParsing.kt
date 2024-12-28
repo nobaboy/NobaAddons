@@ -15,8 +15,6 @@ import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
 import me.nobaboy.nobaaddons.utils.TextUtils.darkRed
-import me.nobaboy.nobaaddons.utils.TextUtils.gold
-import me.nobaboy.nobaaddons.utils.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.TextUtils.lightPurple
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
@@ -33,7 +31,8 @@ import org.lwjgl.glfw.GLFW
 
 object EnchantParsing {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.enchantments
-	private val ENCHANT_LINE = Regex("^(?:(?<name>.+) (?<tier>[IVX]+)(?:$|,))+")
+	// the extra [\d,]+ is to account for stacking enchants adding their value
+	private val ENCHANT_LINE = Regex("^(?:(?<name>.+) (?<tier>[IVX]+)(?: [\\d,]+)?(?:$|,))+")
 
 	fun init() {
 		ItemTooltipCallback.EVENT.register { item, _, _, lines ->
@@ -103,11 +102,14 @@ object EnchantParsing {
 	}
 
 	private fun MutableText.colorize(enchant: EnchantBase, tier: Int): MutableText {
+		// ult enchants should always match the vanilla tooltip
 		if(enchant is UltimateEnchant) return lightPurple().bold()
-		if(tier >= enchant.max) return gold() // TODO make this chroma whenever we have support for that
-		if(tier > enchant.good) return if(enchant.good == -1) blue() else gold()
-		if(tier == enchant.good) return blue()
-		return gray()
+
+		if(tier >= enchant.max) return withColor(config.maxColor.rgb)
+		// if enchants have a good value of -1 then assume that they never have a proper "good" tier
+		if(tier > enchant.good) return withColor(if(enchant.good == -1) config.averageColor.rgb else config.goodColor.rgb)
+		if(tier == enchant.good) return withColor(config.averageColor.rgb)
+		return withColor(config.badColor.rgb)
 	}
 
 	private fun Pair<EnchantBase, Pair<String, Int>>.toText(): Text {
@@ -122,7 +124,7 @@ object EnchantParsing {
 		val enchant: EnchantBase?,
 		val description: MutableList<Text> = mutableListOf(),
 	) {
-		val stackingProgress: MutableText? get() {
+		private val stackingProgress: MutableText? get() {
 			if(enchant is StackingEnchant) {
 				val progress = item.nbtCompound.copyNbt().getInt(enchant.nbtKey)
 				val nextTier = enchant.tiers.lastOrNull { it >= progress }
@@ -134,20 +136,22 @@ object EnchantParsing {
 					}
 					append(")")
 					darkGray()
-				}.copy()
+				} as MutableText
 			}
 			return null
 		}
 
-		fun nameText(includeStacking: Boolean = true) = buildText {
+		private fun nameText(includeStacking: Boolean) = buildText {
 			if(enchant == null) {
 				append("$name ${tier.first}".toText().darkRed())
 			} else {
 				append((enchant to tier).toText())
 			}
-			stackingProgress?.let {
-				append(" ")
-				append(it)
+			if(includeStacking) {
+				stackingProgress?.let {
+					append(" ")
+					append(it)
+				}
 			}
 		}
 
