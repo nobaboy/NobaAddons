@@ -6,7 +6,6 @@ import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyblockItem
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.text.Text
 
