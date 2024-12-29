@@ -15,5 +15,6 @@ data class Enchant(
 		val ENCHANTS by Repo.create("item_modifiers/enchants.json", serializer())
 
 		fun getById(id: String): EnchantBase? = ENCHANTS?.all?.firstOrNull { it.id == id }
+		fun getByName(name: String): EnchantBase? = ENCHANTS?.all?.firstOrNull { it.name == name }
 	}
 }

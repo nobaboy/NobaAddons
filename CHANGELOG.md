@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+### Added
+
+- Enchantment Tooltips - celeste
+
 ### Fixed
 
 - MayorAPI and PartyAPI not working due to internal changes in Alpha 11 - celeste
