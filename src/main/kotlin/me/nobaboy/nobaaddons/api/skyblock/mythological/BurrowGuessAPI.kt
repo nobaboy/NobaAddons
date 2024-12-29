@@ -27,7 +27,7 @@ import kotlin.math.sin
  */
 object BurrowGuessAPI {
 	private val config get() = NobaConfigManager.config.events.mythological
-	private val enabled: Boolean get() = DianaAPI.isActive && config.burrowGuess
+	private val enabled: Boolean get() = config.burrowGuess && DianaAPI.isActive
 
 	private var dingIndex = 0
 	private var hasDinged = false

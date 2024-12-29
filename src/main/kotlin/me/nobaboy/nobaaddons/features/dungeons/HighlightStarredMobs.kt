@@ -17,7 +17,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 // TODO: Rework and implement Entity outlines
 object HighlightStarredMobs {
 	private val config get() = NobaConfigManager.config.dungeons.highlightStarredMobs
-	private val enabled: Boolean get() = !DungeonsAPI.inBoss() && config.enabled
+	private val enabled: Boolean get() = config.enabled && !DungeonsAPI.inBoss()
 
 	private val starredMobs = mutableListOf<ArmorStandEntity>()
 

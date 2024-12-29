@@ -21,7 +21,7 @@ import net.minecraft.world.World
 
 object EtherwarpHelper {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.etherwarpHelper
-	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && MCUtils.options.sneakKey.isPressed && config.enabled
+	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock && MCUtils.options.sneakKey.isPressed
 
 	private const val BASE_DISTANCE = 57
 	private val etherwarpItems = setOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")

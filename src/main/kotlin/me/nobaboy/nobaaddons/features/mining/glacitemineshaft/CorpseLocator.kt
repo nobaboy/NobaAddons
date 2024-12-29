@@ -26,7 +26,7 @@ import net.minecraft.entity.player.PlayerEntity
 
 object CorpseLocator {
 	private val config get() = NobaConfigManager.config.mining.glaciteMineshaft
-	private val enabled: Boolean get() = SkyBlockIsland.MINESHAFT.inIsland() && config.corpseLocator
+	private val enabled: Boolean get() = config.corpseLocator && SkyBlockIsland.MINESHAFT.inIsland()
 
 	private val chatCoordsPattern by Regex(
 		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"

@@ -10,7 +10,7 @@ object GoneWithTheWindSoundFilter : ISoundFilter {
 	private val WIND_CHANGE_DING = Identifier.ofVanilla("block.note_block.pling")
 	private val WIND_CHANGE_ELYTRA = Identifier.ofVanilla("item.elytra.flying")
 
-	override val enabled: Boolean get() = SkyBlockIsland.DWARVEN_MINES.inIsland() && config.muteGoneWithTheWind
+	override val enabled: Boolean get() = config.muteGoneWithTheWind && SkyBlockIsland.DWARVEN_MINES.inIsland()
 
 	override fun onSound(sound: SoundEvents.AllowSound) {
 		val shouldFilter = when(sound.id) {

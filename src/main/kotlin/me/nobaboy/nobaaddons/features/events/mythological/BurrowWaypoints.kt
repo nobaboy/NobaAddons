@@ -95,7 +95,7 @@ object BurrowWaypoints {
 			message == "Poof! You have cleared your griffin burrows!" -> reset()
 			message == "You haven't unlocked this fast travel destination!" -> {
 				nearestWarp?.let {
-					ChatUtils.addMessage(tr("nobaaddons.mythological.warpNotUnlocked", "It appears as you don't have the ${it.warpPoint.displayName} warp location unlocked."))
+					ChatUtils.addMessage(tr("nobaaddons.mythological.warpNotUnlocked", "It appears as you don't have the ${it.warpPoint} warp location unlocked."))
 					ChatUtils.addMessage(tr("nobaaddons.mythological.resetCommandHint", "Once you have unlocked that location, use '/noba mythological resetwarps'."))
 					it.warpPoint.unlocked = false
 					nearestWarp = null
@@ -169,7 +169,7 @@ object BurrowWaypoints {
 		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
 
 		lastWarpSuggestTime = Timestamp.now()
-		RenderUtils.drawTitle("Warp to ${nearestWarp!!.warpPoint.displayName}", NobaColor.GRAY, 1.seconds, 2.0f, 1.7)
+		RenderUtils.drawTitle("Warp to ${nearestWarp!!.warpPoint}", NobaColor.GRAY, 2.0f, 20, 1.seconds)
 	}
 
 	private fun getTargetLocation(): NobaVec? {

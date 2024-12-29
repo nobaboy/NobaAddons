@@ -28,7 +28,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object TemporaryWaypoint {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.temporaryWaypoints
-	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && config.enabled
+	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
 	private val chatCoordsPattern by Regex(
 		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"

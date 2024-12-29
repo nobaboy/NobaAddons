@@ -9,7 +9,7 @@ import net.minecraft.text.Text
 import kotlin.time.Duration
 
 object TitleManager {
-	private val titles = mutableListOf<Title>()
+	private val titles = mutableMapOf<String, Title>()
 
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { titles.clear() }
@@ -21,19 +21,38 @@ object TitleManager {
 
 		val (width, height) = MCUtils.window.let { it.scaledWidth to it.scaledHeight }
 
-		titles.removeIf { it.expired }
-		titles.forEach {
-			val y = (height / it.height - 9 * (it.scale + 1)).toInt()
+		titles.values.removeIf { it.expired }
+		titles.values.forEach {
+			val textHeight = 9 * it.scale.toInt() + it.offset
+			val y = height / 2 - textHeight
 			RenderUtils.drawCenteredText(context, it.text, width / 2, y, it.scale, it.color)
+			if(it.subtext != null) RenderUtils.drawCenteredText(context, it.subtext, width / 2, y + textHeight, it.scale - 1.5f, it.color)
 		}
 	}
 
-	fun draw(text: Text, color: Int, duration: Duration, scale: Float, height: Double) {
-		val title = Title(text, color, Timestamp.now(), duration, scale, height)
-		titles.add(title)
+
+	fun draw(
+		text: Text,
+		color: Int,
+		scale: Float,
+		offset: Int,
+		duration: Duration,
+		id: String,
+		subtext: Text?
+	) {
+		val title = Title(text, color, scale, offset, duration, Timestamp.now(), subtext)
+		titles[id] = title
 	}
 
-	data class Title(val text: Text, val color: Int, val timestamp: Timestamp, val duration: Duration, val scale: Float, val height: Double) {
+	data class Title(
+		val text: Text,
+		val color: Int,
+		val scale: Float,
+		val offset: Int,
+		val duration: Duration,
+		val timestamp: Timestamp,
+		val subtext: Text?
+	) {
 		val expired: Boolean get() = timestamp.elapsedSince() >= duration
 	}
 }

@@ -10,7 +10,6 @@ import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 
-// TODO: Implement last slot info (not really last, but planned one)
 interface ISlotInfo {
 	val config get() = NobaConfigManager.config.uiAndVisuals.slotInfo
 

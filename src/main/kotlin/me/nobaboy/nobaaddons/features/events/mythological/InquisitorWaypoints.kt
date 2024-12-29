@@ -16,6 +16,8 @@ import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.TextUtils.gold
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
@@ -28,7 +30,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object InquisitorWaypoints {
 	private val config get() = NobaConfigManager.config.events.mythological
-	private val enabled: Boolean get() = DianaAPI.isActive && config.alertInquisitor
+	private val enabled: Boolean get() = config.alertInquisitor && DianaAPI.isActive
 
 	private val inquisitorDigUpPattern by Regex("^[A-z ]+! You dug out a Minos Inquisitor!").fromRepo("mythological.inquisitor")
 	private val inquisitorDeadPattern by Regex("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): Inquisitor dead!").fromRepo("mythological.inquisitor_dead")
@@ -87,8 +89,7 @@ object InquisitorWaypoints {
 			val inquisitor = Inquisitor(username, location, Timestamp.now())
 			waypoints.add(inquisitor)
 
-			RenderUtils.drawTitle("INQUISITOR!", NobaColor.DARK_RED)
-			RenderUtils.drawTitle(username, NobaColor.GOLD, scale = 3.0f, height = 1.7)
+			RenderUtils.drawTitle("INQUISITOR!", NobaColor.DARK_RED, subtext = username.toText().gold())
 			config.notificationSound.play()
 		}
 
