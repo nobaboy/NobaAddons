@@ -6,13 +6,11 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.util.Formatting
 import net.minecraft.util.Util
 import java.io.IOException
 import java.util.regex.PatternSyntaxException
 
 object ChatNotifications {
-	private val COLOR_REGEX = Regex("&([a-z0-9])", RegexOption.IGNORE_CASE)
 	private val GROUP = Regex("(?<!\\\\)\\\$(\\d+)")
 
 	private val regex = Util.memoize<String, Regex?> {
@@ -43,15 +41,23 @@ object ChatNotifications {
 	private fun onChatMessage(message: String) {
 		ChatNotificationsConfig.notifications.filter { it.enabled }.forEach {
 			if(it.message.isBlank() || it.display.isBlank()) return@forEach
+			var display: String? = null
 
 			when(it.mode) {
-				NotificationMode.CONTAINS -> {}
-				NotificationMode.STARTS_WITH -> {}
-				NotificationMode.REGEX -> {}
+				NotificationMode.CONTAINS -> if(!message.contains(it.message)) return@forEach
+				NotificationMode.STARTS_WITH -> if(!message.startsWith(it.message)) return@forEach
+				NotificationMode.REGEX -> {
+					val regex = this.regex.apply(it.message) ?: return@forEach
+					val match = regex.find(message) ?: return@forEach
+					display = it.colorFormattedDisplay
+					display = display.replace(GROUP) {
+						val group = it.groups[1]?.value?.toInt() ?: return@replace it.value
+						match.groups[group]?.value ?: it.value
+					}
+				}
 			}
 
-			var display = it.display.replace(COLOR_REGEX, "${Formatting.FORMATTING_CODE_PREFIX}$1")
-
+			if(display == null) display = it.colorFormattedDisplay
 			SoundUtils.dingHighSound.play()
 			RenderUtils.drawTitle(display, NobaColor.WHITE, scale = 2.75f)
 			return
