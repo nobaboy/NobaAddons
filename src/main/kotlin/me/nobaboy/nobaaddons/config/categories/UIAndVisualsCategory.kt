@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.button
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.tickBox
@@ -353,11 +354,23 @@ object UIAndVisualsCategory {
 				default = defaults.uiAndVisuals.enchantments.replaceRomanNumerals,
 				property = config.uiAndVisuals.enchantments::replaceRomanNumerals
 			)
+			cycler(
+				tr("nobaaddons.config.uiAndVisuals.enchants.displayMode", "Display Mode"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.displayMode.tooltip", "Changes how enchantments are displayed on items; Default will follow roughly the same behavior as Hypixel and compact at 6 or more enchants, while Compact will always condense them into as few lines as possible."),
+				default = defaults.uiAndVisuals.enchantments.displayMode,
+				property = config.uiAndVisuals.enchantments::displayMode
+			)
 			boolean(
-				tr("nobaaddons.config.uiAndVisuals.enchants.alwaysCompact", "Always Compact"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.alwaysCompact.tooltip", "Makes enchanted items always display their enchants in the most compact form possible; this still won't apply to enchanted books with a single enchant (to allow for reading the description)."),
-				default = defaults.uiAndVisuals.enchantments.alwaysCompact,
-				property = config.uiAndVisuals.enchantments::alwaysCompact
+				tr("nobaaddons.config.uiAndVisuals.enchants.showDescriptions", "Show Descriptions"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.showDescriptions.tooltip", "Controls whether enchant descriptions will be shown when enchantments aren't compacted; this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."),
+				default = defaults.uiAndVisuals.enchantments.showDescriptions,
+				property = config.uiAndVisuals.enchantments::showDescriptions
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.enchants.showStacking", "Show Stacking Enchant Progress"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.showStacking.tooltip", "Shows the total value (and progress to next tier if applicable) on stacking enchantments like Champion, Expertise, etc."),
+				default = defaults.uiAndVisuals.enchantments.showStackingProgress,
+				property = config.uiAndVisuals.enchantments::showStackingProgress
 			)
 
 			color(

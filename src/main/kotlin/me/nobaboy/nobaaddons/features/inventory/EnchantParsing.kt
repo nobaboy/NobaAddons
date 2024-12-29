@@ -31,6 +31,10 @@ import org.lwjgl.glfw.GLFW
 object EnchantParsing {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.enchantments
 	// the extra [\d,]+ is to account for stacking enchants adding their value
+	// TODO it'd be nice to .findAll() with this, but this globs every prior enchantment
+	//      into the last one's name, so we're just extracting from groups this after splitting on `, `,
+	//      meaning we're matching each line up to 4 times total; this should be fine
+	//      for now, but ideally this would be changed in the future to not do this.
 	private val ENCHANT_LINE = Regex("^(?:(?<name>.+) (?<tier>[IVX]+)(?: [\\d,]+)?(?:$|,))+")
 
 	fun init() {
@@ -84,19 +88,18 @@ object EnchantParsing {
 			lines.removeAt(firstEnchant)
 		}
 
-		val shouldCompact = when {
-			// Always compact at 5 or more enchants, similar to Hypixel
-			enchants.size > 5 -> true
-			// alwaysCompact shouldn't affect enchanted books that only have a single enchantment on them
-			config.alwaysCompact -> item.getSkyBlockItemId() != "ENCHANTED_BOOK" || enchants.size > 1
-			else -> false
+		val isSingleEnchantBook = item.getSkyBlockItemId() == "ENCHANTED_BOOK" && enchants.size == 1
+		val shouldCompact = when(config.displayMode) {
+			EnchantDisplayMode.NORMAL -> enchants.size > 5
+			EnchantDisplayMode.COMPACT -> !isSingleEnchantBook
+			EnchantDisplayMode.LINES -> false
 		}
 		val enchantText: List<Text> = if(shouldCompact) {
 			enchants.chunked(3) {
 				Texts.join(it.flatMap { it.toText(false) }, Text.literal(", ").blue())
 			}
 		} else {
-			enchants.flatMap { it.toText(true) }
+			enchants.flatMap { it.toText(isSingleEnchantBook || config.showDescriptions) }
 		}
 
 		// And finally, add them back to the tooltip. asReversed() is important here, as we're always appending at
@@ -150,7 +153,7 @@ object EnchantParsing {
 			} else {
 				append((enchant to tier).toText())
 			}
-			if(includeStacking) {
+			if(includeStacking && config.showStackingProgress) {
 				stackingProgress?.let {
 					append(" ")
 					append(it)

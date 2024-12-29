@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
+import me.nobaboy.nobaaddons.features.inventory.EnchantDisplayMode
 import me.nobaboy.nobaaddons.utils.NobaColor
 import java.awt.Color
 
@@ -187,7 +188,13 @@ class UIAndVisualsConfig {
 		var replaceRomanNumerals: Boolean = false
 
 		@SerialEntry
-		var alwaysCompact: Boolean = false
+		var displayMode: EnchantDisplayMode = EnchantDisplayMode.NORMAL
+
+		@SerialEntry
+		var showDescriptions: Boolean = true
+
+		@SerialEntry
+		var showStackingProgress: Boolean = true
 
 		@SerialEntry
 		var maxColor: Color = NobaColor.GOLD.toColor()
