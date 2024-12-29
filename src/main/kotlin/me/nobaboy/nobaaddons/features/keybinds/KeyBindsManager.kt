@@ -1,11 +1,11 @@
-package me.nobaboy.nobaaddons.screens.keybinds
+package me.nobaboy.nobaaddons.features.keybinds
 
 import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
-import me.nobaboy.nobaaddons.screens.keybinds.impl.KeyBind
-import me.nobaboy.nobaaddons.screens.keybinds.impl.NobaKeyBind
+import me.nobaboy.nobaaddons.features.keybinds.impl.KeyBind
+import me.nobaboy.nobaaddons.features.keybinds.impl.NobaKeyBind
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.tr

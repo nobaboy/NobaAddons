@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.screens
 import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.screens.hud.ElementManager
+import me.nobaboy.nobaaddons.ui.ElementManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils

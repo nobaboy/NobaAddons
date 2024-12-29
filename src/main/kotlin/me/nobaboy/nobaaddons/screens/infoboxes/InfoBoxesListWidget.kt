@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.screens.infoboxes
 
-import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
+import me.nobaboy.nobaaddons.ui.elements.data.TextElement
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.MinecraftClient

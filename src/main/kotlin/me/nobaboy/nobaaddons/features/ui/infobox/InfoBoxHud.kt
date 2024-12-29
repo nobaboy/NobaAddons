@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.screens.hud.elements.TextMode
-import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
-import me.nobaboy.nobaaddons.screens.hud.elements.impl.TextHud
+import me.nobaboy.nobaaddons.ui.elements.TextMode
+import me.nobaboy.nobaaddons.ui.elements.data.TextElement
+import me.nobaboy.nobaaddons.ui.elements.impl.TextHud
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch

@@ -1,8 +1,8 @@
-package me.nobaboy.nobaaddons.screens.hud.elements
+package me.nobaboy.nobaaddons.ui.elements
 
 import me.nobaboy.nobaaddons.screens.NobaHudScreen
-import me.nobaboy.nobaaddons.screens.hud.elements.data.Element
-import me.nobaboy.nobaaddons.screens.hud.elements.data.ElementBounds
+import me.nobaboy.nobaaddons.ui.elements.data.Element
+import me.nobaboy.nobaaddons.ui.elements.data.ElementBounds
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.render.RenderUtils

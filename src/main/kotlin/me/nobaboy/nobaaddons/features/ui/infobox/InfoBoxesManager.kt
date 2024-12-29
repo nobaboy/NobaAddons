@@ -1,12 +1,12 @@
-package me.nobaboy.nobaaddons.screens.infoboxes
+package me.nobaboy.nobaaddons.features.ui.infobox
 
 import kotlinx.io.IOException
-import me.nobaboy.nobaaddons.screens.hud.elements.data.Element
-import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
+import me.nobaboy.nobaaddons.ui.elements.data.Element
+import me.nobaboy.nobaaddons.ui.elements.data.TextElement
 import me.nobaboy.nobaaddons.utils.ErrorManager
 
 object InfoBoxesManager {
-	internal val infoBoxes = mutableListOf<TextElement>()
+	val infoBoxes = mutableListOf<TextElement>()
 
 	fun init() {
 		try {

@@ -1,27 +1,33 @@
-package me.nobaboy.nobaaddons.screens.hud
+package me.nobaboy.nobaaddons.ui
 
+import com.google.common.collect.ForwardingMap
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
-import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
-import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
+import me.nobaboy.nobaaddons.ui.elements.HudElement
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
-import java.util.LinkedHashMap
+import net.minecraft.client.gui.DrawContext
 import kotlin.collections.set
 
-object ElementManager : LinkedHashMap<String, HudElement>() {
+object ElementManager : ForwardingMap<String, HudElement>() {
+	private val map = mutableMapOf<String, HudElement>()
+
 	fun init() {
 		loadElements()
+		HudRenderCallback.EVENT.register { context, _ -> render(context) }
+	}
 
-		HudRenderCallback.EVENT.register { context, _ ->
-			values.asSequence().filter { it.enabled }.forEach {
-				runCatching { it.render(context) }
+	private fun render(ctx: DrawContext) {
+		values.asSequence()
+			.filter { it.enabled }
+			.forEach {
+				runCatching { it.render(ctx) }
 					.onFailure { error ->
 						ErrorManager.logError(
 							"HUD element threw an error while attempting to render", error, "Element" to it::class
 						)
 					}
 			}
-		}
 	}
 
 	fun add(element: HudElement) {
@@ -38,4 +44,6 @@ object ElementManager : LinkedHashMap<String, HudElement>() {
 	private fun save() {
 		InfoBoxesManager.saveInfoBoxes()
 	}
+
+	override fun delegate(): Map<String, HudElement> = map
 }

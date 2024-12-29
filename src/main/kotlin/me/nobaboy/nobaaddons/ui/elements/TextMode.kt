@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.screens.hud.elements
+package me.nobaboy.nobaaddons.ui.elements
 
 import me.nobaboy.nobaaddons.utils.EnumUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.title

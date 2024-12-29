@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.screens.hud.elements.data
+package me.nobaboy.nobaaddons.ui.elements.data
 
 class ElementBounds (
 	val x: Int,
