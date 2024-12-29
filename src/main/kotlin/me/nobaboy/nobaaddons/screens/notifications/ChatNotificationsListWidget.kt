@@ -2,6 +2,9 @@ package me.nobaboy.nobaaddons.screens.notifications
 
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsConfig
 import me.nobaboy.nobaaddons.utils.CommonText
+import me.nobaboy.nobaaddons.utils.TextUtils.green
+import me.nobaboy.nobaaddons.utils.TextUtils.red
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
@@ -19,17 +22,17 @@ class ChatNotificationsListWidget(
 	y: Int,
 	itemHeight: Int
 ) : ElementListWidget<ChatNotificationsListWidget.NotificationEntry>(client, width, height, y, itemHeight) {
-	private val notifs = mutableListOf<ChatNotificationsConfig.Notification>()
+	private val notifications = mutableListOf<ChatNotificationsConfig.Notification>()
 	var hasChanges = false
 
 	init {
-		ChatNotificationsConfig.notifications.forEach { notifs.add(it.copy()) }
+		ChatNotificationsConfig.notifications.forEach { notifications.add(it.copy()) }
 		refreshEntries()
 	}
 
 	fun refreshEntries() {
 		clearEntries()
-		notifs.forEachIndexed { index, keyBind ->
+		notifications.forEachIndexed { index, keyBind ->
 			addEntry(NotificationEntry(index))
 		}
 
@@ -41,15 +44,15 @@ class ChatNotificationsListWidget(
 	}
 
 	fun create() {
-		notifs.add(ChatNotificationsConfig.Notification())
+		notifications.add(ChatNotificationsConfig.Notification())
 		refreshEntries()
 		hasChanges = true
 	}
 
 	fun saveChanges() {
-		notifs.removeIf { it.message.isBlank() }
+		notifications.removeIf { it.message.isBlank() }
 		ChatNotificationsConfig.notifications.clear()
-		ChatNotificationsConfig.notifications.addAll(notifs)
+		ChatNotificationsConfig.notifications.addAll(notifications)
 		ChatNotificationsConfig.save()
 		hasChanges = false
 	}
@@ -58,45 +61,73 @@ class ChatNotificationsListWidget(
 		return super.removeEntry(entry)
 	}
 
-	override fun getRowWidth(): Int = super.rowWidth + 140
+	override fun getRowWidth(): Int = super.rowWidth + 80
 	override fun getScrollbarX(): Int = super.scrollbarX + 20
 
 	inner class NotificationEntry(private val index: Int) : Entry<NotificationEntry>() {
+		private val notification = notifications[index]
 		private var oldScrollAmount = 0.0
-		private val notif = notifs[index]
 
-		private val messageField = TextFieldWidget(client.textRenderer, 200, 20, Text.empty()).apply {
+		private val toggleText: Text
+			get() = if(notification.enabled) "Enabled".toText().green() else "Disabled".toText().red()
+
+		private val messageField = TextFieldWidget(client.textRenderer, 158, 20, Text.empty()).apply {
+			text = notification.message
 			setMaxLength(256)
-			text = notif.message
-			setPlaceholder(tr("nobaaddons.screen.chatNotifications.chatMessage", "Chat message (regex)"))
+			setPlaceholder(tr("nobaaddons.screen.chatNotifications.chatMessage", "Chat Message"))
 			setChangedListener { newText ->
-				notif.message = newText
+				notification.message = newText
 				hasChanges = true
 			}
 		}
 
-		private val displayMessageField = TextFieldWidget(client.textRenderer, 200, 20, Text.empty()).apply {
+		private val displayField = TextFieldWidget(client.textRenderer, 158, 20, Text.empty()).apply {
+			text = notification.display
 			setMaxLength(256)
-			text = notif.displayMessage
 			setPlaceholder(tr("nobaaddons.screen.chatNotifications.displayMessage", "Notification"))
 			setChangedListener { newText ->
-				notif.displayMessage = newText
+				notification.display = newText
 				hasChanges = true
 			}
 		}
 
+		private val toggleButton = ButtonWidget.builder(toggleText) {
+			changeToggle()
+		}.size(104, 20).build()
+
+		private val modeButton = ButtonWidget.builder(notification.mode.toString().toText()) {
+			changeMode()
+		}.size(104, 20).build()
+
 		private val deleteButton = ButtonWidget.builder(CommonText.SCREEN_DELETE) {
-			// FIXME this isn't clickable and I don't know why someone please fix this for me
 			oldScrollAmount = /*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/
 			deleteEntry()
-		}.size(50, 20).build()
+		}.size(104, 20).build()
 
 		init {
 			update()
 		}
 
+		private fun changeToggle() {
+			notification.enabled = !notification.enabled
+			toggleButton.message = toggleText
+
+			refreshEntries()
+			hasChanges = true
+		}
+
+		private fun changeMode() {
+			val newMode = notification.mode.next
+			notification.mode = newMode
+			modeButton.message = newMode.toString().toText()
+
+			refreshEntries()
+			hasChanges = true
+		}
+
+
 		private fun deleteEntry() {
-			notifs.removeAt(index)
+			notifications.removeAt(index)
 			removeEntry(this)
 
 			/*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/ = oldScrollAmount
@@ -105,8 +136,8 @@ class ChatNotificationsListWidget(
 			hasChanges = true
 		}
 
-		override fun children(): List<Element> = listOf(messageField, displayMessageField, deleteButton)
-		override fun selectableChildren(): List<Selectable> = listOf(messageField, displayMessageField, deleteButton)
+		override fun children(): List<Element> = listOf(messageField, displayField, toggleButton, modeButton, deleteButton)
+		override fun selectableChildren(): List<Selectable> = listOf(messageField, displayField, toggleButton, modeButton, deleteButton)
 
 		override fun render(
 			context: DrawContext,
@@ -123,17 +154,25 @@ class ChatNotificationsListWidget(
 			messageField.y = y
 			messageField.render(context, mouseX, mouseY, tickDelta)
 
-			displayMessageField.y = y
-			displayMessageField.render(context, mouseX, mouseY, tickDelta)
+			displayField.y = y
+			displayField.render(context, mouseX, mouseY, tickDelta)
 
-			deleteButton.y = y
+			toggleButton.y = y + 24
+			toggleButton.render(context, mouseX, mouseY, tickDelta)
+
+			modeButton.y = y + 24
+			modeButton.render(context, mouseX, mouseY, tickDelta)
+
+			deleteButton.y = y + 24
 			deleteButton.render(context, mouseX, mouseY, tickDelta)
 		}
 
 		fun update() {
-			messageField.x = width / 2 - 180 - 50
-			displayMessageField.x = width / 2 - 25
-			deleteButton.x = width / 2 + 130 + 60
+			messageField.x = width / 2 - 160
+			displayField.x = width / 2 + 2
+			toggleButton.x = width / 2 - 160
+			modeButton.x = width / 2 - 52
+			deleteButton.x = width / 2 + 56
 		}
 	}
 }

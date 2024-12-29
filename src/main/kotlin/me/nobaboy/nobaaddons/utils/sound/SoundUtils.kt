@@ -9,22 +9,24 @@ import kotlin.math.pow
 
 // TODO: Either drop this or expand on this so complex sequences are allowed (basically multiple sound events)
 object SoundUtils {
-	private val experienceOrbPickup = SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP
-	private val noteBlockPling = SoundEvents.BLOCK_NOTE_BLOCK_PLING.value()
-	private val noteBlockFlute = SoundEvents.BLOCK_NOTE_BLOCK_HARP.value()
+	private val ARROW_HIT_PLAYER = SoundEvents.ENTITY_ARROW_HIT_PLAYER
+	private val EXPERIENCE_ORB_PICKUP = SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP
+	private val NOTE_BLOCK_PLING = SoundEvents.BLOCK_NOTE_BLOCK_PLING.value()
+	private val NOTE_BLOCK_FLUTE = SoundEvents.BLOCK_NOTE_BLOCK_HARP.value()
 
-	val plingSound = SimpleSound(noteBlockPling, pitch = 2.0f)
-	val dingSound = SimpleSound(experienceOrbPickup, pitch = 0.5f)
+	val dingHighSound = SimpleSound(ARROW_HIT_PLAYER)
+	val dingLowSound = SimpleSound(EXPERIENCE_ORB_PICKUP, pitch = 0.5f)
+	val plingSound = SimpleSound(NOTE_BLOCK_PLING, pitch = 2.0f)
 
 	val zeldaSecretSound = SoundSequence.uniformVolume(
-		soundEvent = noteBlockFlute,
+		soundEvent = NOTE_BLOCK_FLUTE,
 		semitones = listOf(1, 0, -3, -9, -10, -2, 2, 6),
 		volume = 1.0f,
 		delay = 3
 	)
 
 	val rareDropSound = SoundSequence.uniformVolume(
-		soundEvent = noteBlockPling,
+		soundEvent = NOTE_BLOCK_PLING,
 		semitones = listOf(-9, -2, 1, 3),
 		volume = 0.8f,
 		delay = 4

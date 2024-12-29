@@ -25,7 +25,7 @@ class ChatNotificationsScreen(private val parent: Screen?) : Screen(tr("nobaaddo
 		super.init()
 
 		if(!initialized) {
-			notificationsList = ChatNotificationsListWidget(client!!, width, height - 96, 33, 32)
+			notificationsList = ChatNotificationsListWidget(client!!, width, height - 96, 33, 56)
 			initialized = true
 		}
 
