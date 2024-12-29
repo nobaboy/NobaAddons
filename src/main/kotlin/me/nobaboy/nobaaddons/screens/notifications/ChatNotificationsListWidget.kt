@@ -10,6 +10,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.Element
 import net.minecraft.client.gui.Selectable
+import net.minecraft.client.gui.tooltip.Tooltip
 import net.minecraft.client.gui.widget.ButtonWidget
 import net.minecraft.client.gui.widget.ElementListWidget
 import net.minecraft.client.gui.widget.TextFieldWidget
@@ -75,6 +76,7 @@ class ChatNotificationsListWidget(
 			text = notification.message
 			setMaxLength(256)
 			setPlaceholder(tr("nobaaddons.screen.chatNotifications.chatMessage", "Chat Message"))
+			tooltip = Tooltip.of(tr("nobaaddons.screen.chatNotifications.chatMessage.tooltip", "The chat message to display a notification for upon receiving"))
 			setChangedListener { newText ->
 				notification.message = newText
 				hasChanges = true
@@ -85,6 +87,7 @@ class ChatNotificationsListWidget(
 			text = notification.display
 			setMaxLength(256)
 			setPlaceholder(tr("nobaaddons.screen.chatNotifications.displayMessage", "Notification"))
+			tooltip = Tooltip.of(tr("nobaaddons.screen.chatNotifications.displayMessage.tooltip", "The notification to display on screen; supports color codes (and regex groups when using Regex)"))
 			setChangedListener { newText ->
 				notification.display = newText
 				hasChanges = true
@@ -96,7 +99,7 @@ class ChatNotificationsListWidget(
 		}.size(104, 20).build()
 
 		private val modeButton = ButtonWidget.builder(notification.mode.toString().toText()) {
-			changeMode()
+			changeMode(it)
 		}.size(104, 20).build()
 
 		private val deleteButton = ButtonWidget.builder(CommonText.SCREEN_DELETE) {
@@ -116,7 +119,7 @@ class ChatNotificationsListWidget(
 			hasChanges = true
 		}
 
-		private fun changeMode() {
+		private fun changeMode(button: ButtonWidget) {
 			val newMode = notification.mode.next
 			notification.mode = newMode
 			modeButton.message = newMode.toString().toText()

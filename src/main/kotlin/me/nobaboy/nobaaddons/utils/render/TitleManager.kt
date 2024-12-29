@@ -9,7 +9,7 @@ import net.minecraft.text.Text
 import kotlin.time.Duration
 
 object TitleManager {
-	private val titles = mutableListOf<Title>()
+	private val titles = mutableMapOf<String, Title>()
 
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { titles.clear() }
@@ -21,16 +21,16 @@ object TitleManager {
 
 		val (width, height) = MCUtils.window.let { it.scaledWidth to it.scaledHeight }
 
-		titles.removeIf { it.expired }
-		titles.forEach {
+		titles.entries.removeIf { it.value.expired }
+		titles.values.forEach {
 			val y = (height / it.height - 9 * (it.scale + 1)).toInt()
 			RenderUtils.drawCenteredText(context, it.text, width / 2, y, it.scale, it.color)
 		}
 	}
 
-	fun draw(text: Text, color: Int, duration: Duration, scale: Float, height: Double) {
+	fun draw(slot: String, text: Text, color: Int, duration: Duration, scale: Float, height: Double) {
 		val title = Title(text, color, Timestamp.now(), duration, scale, height)
-		titles.add(title)
+		titles[slot] = title
 	}
 
 	data class Title(val text: Text, val color: Int, val timestamp: Timestamp, val duration: Duration, val scale: Float, val height: Double) {

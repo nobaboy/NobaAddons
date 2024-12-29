@@ -14,6 +14,7 @@ import me.nobaboy.nobaaddons.mixins.accessors.BeaconBlockEntityRendererInvoker
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
+import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.expand
 import me.nobaboy.nobaaddons.utils.toNobaVec
@@ -193,8 +194,9 @@ object RenderUtils {
 		rightY: Double
 	): Boolean = pointX in leftX..rightX && pointY in leftY..rightY
 
-	fun drawTitle(text: Text, color: Int, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
-		TitleManager.draw(text, color, duration, scale, height)
+	// TODO add slot to the others (I didn't feel like doing that)
+	fun drawTitle(text: Text, color: Int, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0, slot: String = StringUtils.randomAlphanumeric()) {
+		TitleManager.draw(slot, text, color, duration, scale, height)
 	}
 	fun drawTitle(text: Text, color: Color, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
 		drawTitle(text, color.rgb, duration, scale, height)
