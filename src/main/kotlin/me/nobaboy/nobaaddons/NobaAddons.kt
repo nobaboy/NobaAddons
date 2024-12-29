@@ -40,6 +40,7 @@ import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
+import me.nobaboy.nobaaddons.features.inventory.EnchantParsing
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
@@ -143,6 +144,7 @@ object NobaAddons : ClientModInitializer {
 
 		/* region Features */
 		// region Visuals
+		EnchantParsing.init()
 		TemporaryWaypoint.init()
 		EtherwarpHelper.init()
 		ISlotInfo.init()
