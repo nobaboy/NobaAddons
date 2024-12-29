@@ -46,6 +46,7 @@ object UpdateNotifier {
 	}
 
 	private fun onJoin() {
+		if(MCUtils.player == null) return
 		if(notifiedUpdate) return
 		if(!config.updateNotifier) return
 		val update = UPDATE_INFO ?: return
