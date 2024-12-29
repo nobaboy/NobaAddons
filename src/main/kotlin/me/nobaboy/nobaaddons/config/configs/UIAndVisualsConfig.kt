@@ -182,7 +182,7 @@ class UIAndVisualsConfig {
 
 	class Enchantments {
 		@SerialEntry
-		var parseItemEnchants: Boolean = true
+		var parseItemEnchants: Boolean = false
 
 		@SerialEntry
 		var replaceRomanNumerals: Boolean = false
