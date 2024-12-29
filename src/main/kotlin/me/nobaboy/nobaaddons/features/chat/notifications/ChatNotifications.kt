@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.util.Util
 import java.io.IOException
 import java.util.regex.PatternSyntaxException
+import kotlin.time.Duration.Companion.seconds
 
 object ChatNotifications {
 	private val GROUP = Regex("(?<!\\\\)\\\$(\\d+)")
@@ -60,7 +61,7 @@ object ChatNotifications {
 
 			if(display == null) display = it.colorFormattedDisplay
 			SoundUtils.dingHighSound.play()
-			RenderUtils.drawTitle(display.toText(), NobaColor.WHITE.rgb, scale = 2.75f, slot = "notifications")
+			RenderUtils.drawTitle(display.toText(), NobaColor.WHITE.rgb, scale = 2.75f, duration = 2.seconds, slot = "userDefinedNotification")
 			return
 		}
 	}
