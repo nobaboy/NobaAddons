@@ -362,7 +362,7 @@ object UIAndVisualsCategory {
 			)
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.enchants.showDescriptions", "Show Descriptions"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.showDescriptions.tooltip", "Controls whether enchant descriptions will be shown when enchantments aren't compacted; this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."),
+				tr("nobaaddons.config.uiAndVisuals.enchants.showDescriptions.tooltip", "Controls whether enchant descriptions will be shown when enchantments aren't compacted (only when Hypixel adds the descriptions); this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."),
 				default = defaults.uiAndVisuals.enchantments.showDescriptions,
 				property = config.uiAndVisuals.enchantments::showDescriptions
 			)
@@ -375,19 +375,23 @@ object UIAndVisualsCategory {
 
 			color(
 				tr("nobaaddons.config.uiAndVisuals.enchants.maxColor", "Max Enchant Color"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.maxColor.tooltip", "The color used for max tier enchantments"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.maxColor.tooltip", "The color used for enchantments at their maximum level"),
 				default = defaults.uiAndVisuals.enchantments.maxColor,
 				property = config.uiAndVisuals.enchantments::maxColor
 			)
 			color(
 				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor", "Good Enchant Color"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor.tooltip", "The color used for enchantments above what you can normally get from the enchantment table"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor.tooltip", "The color used for enchantments that are above their max normally obtainable level"),
 				default = defaults.uiAndVisuals.enchantments.goodColor,
 				property = config.uiAndVisuals.enchantments::goodColor
 			)
 			color(
-				tr("nobaaddons.config.uiAndVisuals.enchants.averageColor", "Max Enchant Table Enchant Color"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.averageColor.tooltip", "The color used for enchantments at the max level you can get them from the enchantment table"),
+				tr("nobaaddons.config.uiAndVisuals.enchants.averageColor", "Max Normally Obtainable Enchant Color"),
+				// if only mc-auto-translations supported splitting strings onto multiple lines :(
+				tr(
+					"nobaaddons.config.uiAndVisuals.enchants.averageColor.tooltip",
+					"The color used for enchantments at the max level you can normally obtain them at (either through drops, combining lower tiers, or the enchanting table)\n\nNote that this does not apply to enchants that only have this \"tier 5\" level, and will use Max Enchant Color instead"
+				),
 				default = defaults.uiAndVisuals.enchantments.averageColor,
 				property = config.uiAndVisuals.enchantments::averageColor
 			)
