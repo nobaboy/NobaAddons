@@ -5,6 +5,9 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawContext
 
+/**
+ * UI manager, handles rendering all added [HudElement]s
+ */
 object UIManager : ForwardingSet<HudElement>() {
 	private val elements = mutableSetOf<HudElement>()
 
@@ -13,16 +16,16 @@ object UIManager : ForwardingSet<HudElement>() {
 	}
 
 	private fun render(ctx: DrawContext) {
-		asSequence()
-			.filter { it.shouldRender() }
-			.forEach {
-				runCatching { it.render(ctx) }
-					.onFailure { error ->
-						ErrorManager.logError(
-							"HUD element threw an error while attempting to render", error, "Element" to it::class
-						)
-					}
+		for(element in this) {
+			try {
+				if(!element.shouldRender()) continue
+				element.render(ctx)
+			} catch(error: Throwable) {
+				ErrorManager.logError(
+					"HUD element threw an error while attempting to render", error, "Element" to element::class
+				)
 			}
+		}
 	}
 
 	override fun delegate(): Set<HudElement> = elements

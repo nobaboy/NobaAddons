@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.ui.TextHud
+import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 
-class InfoBoxHud(val textElement: InfoBoxElement) : TextHud(textElement) {
+class InfoBoxHudElement(val textElement: InfoBoxElement) : TextHudElement(textElement) {
 	private val functionPattern = Regex("(?<function>\\{[A-z0-9]+})")
 	private val colorCodePattern = Regex("&&[0-9a-fk-orz]", RegexOption.IGNORE_CASE)
 

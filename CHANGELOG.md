@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Rewrote the HUD internals to make adding new elements easier - celeste
 - Changed how HUD elements render to properly handle different window sizes - celeste
-  - This will cause existing info boxes to be in the bottom right corner when updating
+  - This will cause existing info boxes to be in the top left corner when updating
 
 ## 0.1.0-Alpha.12 - 2024-12-29
 

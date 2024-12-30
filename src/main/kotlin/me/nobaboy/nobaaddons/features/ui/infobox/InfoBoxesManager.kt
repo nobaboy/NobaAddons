@@ -28,7 +28,7 @@ object InfoBoxesManager {
 	}
 
 	fun recreateUIElements() {
-		UIManager.removeIf { it is InfoBoxHud }
-		infoBoxes.forEach { UIManager.add(InfoBoxHud(it))}
+		UIManager.removeIf { it is InfoBoxHudElement }
+		infoBoxes.forEach { UIManager.add(InfoBoxHudElement(it))}
 	}
 }

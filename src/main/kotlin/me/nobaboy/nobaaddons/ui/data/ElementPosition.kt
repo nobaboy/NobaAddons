@@ -5,6 +5,9 @@ import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
 
+/**
+ * Basic HUD element positioning data used by [me.nobaboy.nobaaddons.ui.HudElement]
+ */
 class ElementPosition(key: String = "") : ObjectProperty<ElementPosition>(key) {
 	constructor(key: String = "", x: Double = 0.0, y: Double = 0.0, scale: Float = 1f) : this(key) {
 		this.x = x

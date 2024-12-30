@@ -16,8 +16,11 @@ private val migrations = Migrations.create {
 			if(mode == "PURE") box.addProperty("textMode", "NONE")
 			val position = box.remove("element").asJsonObject // pop element to rename later
 			position.remove("identifier") // remove identifier
+			// reset positioning to top left corner to account for change from pixels to a 0..1 double range
+			position.addProperty("x", 0.0)
+			position.addProperty("y", 0.0)
 			box.add("color", position.remove("color")) // element.color -> color
-			box.add("position", position) // element -> position
+			box.add("position", position) // finally, rename element -> position
 		}
 	}
 }

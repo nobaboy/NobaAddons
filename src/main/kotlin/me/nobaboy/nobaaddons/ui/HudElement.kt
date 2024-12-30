@@ -10,31 +10,74 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import kotlin.math.roundToInt
 
+/**
+ * Abstract HUD element
+ *
+ * @see TextHudElement
+ */
 abstract class HudElement(protected val elementPosition: ElementPosition) {
+	/**
+	 * Returns an absolute pixel value for the top left corner of this element
+	 */
 	var x: Int
 		get() = scale(MCUtils.window.scaledWidth, elementPosition.x)
 		set(value) { elementPosition.x = value.toDouble() / MCUtils.window.scaledWidth }
 
+	/**
+	 * Returns an absolute pixel value for the top left corner of this element
+	 */
 	var y: Int
 		get() = scale(MCUtils.window.scaledHeight, elementPosition.y)
 		set(value) { elementPosition.y = value.toDouble() / MCUtils.window.scaledHeight }
 
+	/**
+	 * Shorthand for:
+	 *
+	 * ```kt
+	 * if(elementPosition.x > 0.5) ElementAlignment.RIGHT else ElementAlignment.LEFT
+	 * ```
+	 */
 	val alignment: ElementAlignment
 		get() = if(elementPosition.x > 0.5) ElementAlignment.RIGHT else ElementAlignment.LEFT
 
-	private fun scale(of: Int, from: Double): Int = (of * from).toInt().coerceIn(0, of)
+	private fun scale(pixels: Int, scale: Double): Int = (pixels * scale).toInt().coerceIn(0, pixels)
 
-	open var scale: Float by elementPosition::scale
+	/**
+	 * The current element scale as determined by the user
+	 *
+	 * @see RenderUtils.scaled
+	 */
+	var scale: Float by elementPosition::scale
 
+	/**
+	 * Minimum scale for this element when using the scroll wheel on it in the HUD editor screen
+	 *
+	 * Note that this is capped at `0.5f` in [ElementPosition]
+	 */
 	open val minScale: Float = 0.5f
+
+	/**
+	 * Maximum scale for this element when using the scroll wheel on it in the HUD editor screen
+	 *
+	 * Note that this is capped at `3f` in [ElementPosition]
+	 */
 	open val maxScale: Float = 3.0f
 
+	/**
+	 * Name used in place of this element in the HUD editor screen
+	 */
 	abstract val name: Text
+
+	/**
+	 * How large this element is on screen in pixels
+	 */
+	// TODO does this need to be manually scaled for different GUI scales for custom values?
 	abstract val size: Pair<Int, Int>
 
+	/**
+	 * Implement this method with your element's rendering logic
+	 */
 	abstract fun render(context: DrawContext)
-
-	open fun getBounds(): ElementBounds = ElementBounds(x, y, size)
 
 	private val scaleOffset: Int get() = (1 * scale).roundToInt().coerceAtLeast(1)
 
@@ -49,12 +92,19 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 			return xMax to yMax
 		}
 
+	/**
+	 * Override this to control when this should render; you should still `&&` the result of `super.shouldRender()`
+	 * with your additional checks.
+	 */
 	open fun shouldRender(): Boolean {
 		val client = MCUtils.client
 		return !client.options.hudHidden && client.currentScreen !is NobaHudScreen
 	}
 
-	open fun renderBackground(context: DrawContext, hovered: Boolean) {
+	/**
+	 * Renders the background for this element in the HUD editor screen
+	 */
+	fun renderGUIBackground(context: DrawContext, hovered: Boolean) {
 		val color = if(hovered) 0xFF85858A else 0xFF343738
 
 		val offset = (1 * scale).roundToInt().coerceAtLeast(1)
@@ -66,6 +116,11 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 		val yOffset = if(scale < 1.0f) 10 else 0
 		RenderUtils.drawCenteredText(context, name, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2 - 4 - yOffset)
 	}
+
+	/**
+	 * Internal method, returns the element's [ElementBounds] used by the HUD editor screen
+	 */
+	fun getBounds(): ElementBounds = ElementBounds(x, y, size)
 
 	open fun moveTo(x: Int, y: Int) {
 		val offset = scaleOffset + 1

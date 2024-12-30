@@ -9,7 +9,7 @@ import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
-import me.nobaboy.nobaaddons.ui.TextHud
+import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.ui.data.TextElement
 import me.nobaboy.nobaaddons.utils.ErrorManager
@@ -107,7 +107,7 @@ object DebugCommands : Group("debug") {
 	val uiElement = Command("adduielement") {
 		// TextElement would normally be in an AbstractConfig, but this is a debug command,
 		// so we don't care if it doesn't have any persistent position state.
-		UIManager.add(object : TextHud(TextElement(color = listOf(
+		UIManager.add(object : TextHudElement(TextElement(color = listOf(
 			Colors.WHITE, Colors.GREEN, Colors.LIGHT_RED, Colors.GRAY,
 			Colors.ALTERNATE_WHITE, Colors.BLUE, Colors.LIGHT_YELLOW,
 			Colors.YELLOW

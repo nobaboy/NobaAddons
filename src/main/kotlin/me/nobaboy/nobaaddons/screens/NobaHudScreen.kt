@@ -29,12 +29,10 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 		tr("nobaaddons.screen.hudEditor.usage.line1", "Left-click and drag, or use arrows to move (Ctrl moves further)"),
 		tr("nobaaddons.screen.hudEditor.usage.line2", "Scroll or use +/- to resize an element"),
 		tr("nobaaddons.screen.hudEditor.usage.line3", "Middle-click to reset an element"),
-		tr("nobaaddons.screen.hudEditor.usage.line4", "Right-click for context menu (coming soon)"),
+//		tr("nobaaddons.screen.hudEditor.usage.line4", "Right-click for context menu (coming soon)"),
 	)
 
 	override fun init() {
-		super.init()
-
 		elements = UIManager.toSet()
 	}
 
@@ -53,7 +51,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 		var hovered: HudElement? = null
 		elements.forEach { element ->
 			val isHovered = clickInBounds(element, mouseX.toDouble(), mouseY.toDouble())
-			element.renderBackground(context, isHovered)
+			element.renderGUIBackground(context, isHovered)
 			if(isHovered) hovered = element
 		}
 
