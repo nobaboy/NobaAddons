@@ -10,16 +10,16 @@ import net.minecraft.text.Text
 
 abstract class TextHud(element: AbstractTextElement<*>) : HudElement(element.position) {
 	open val color: Int by element::color
-	open val textMode: TextMode by element::textMode
+	open val textShadow: TextShadow by element::textShadow
 	open val outlineColor: Int by element::outlineColor
 
 	protected fun renderLine(context: DrawContext, text: Text, x: Int = 0, y: Int = 0) {
 		val x = this.x + x
 		val y = this.y + y
-		when(textMode) {
-			TextMode.OUTLINE -> RenderUtils.drawOutlinedText(context, text, x, y, scale, color, outlineColor, applyScaling = false)
-			TextMode.PURE, TextMode.SHADOW -> {
-				val shadow = textMode == TextMode.SHADOW
+		when(textShadow) {
+			TextShadow.OUTLINE -> RenderUtils.drawOutlinedText(context, text, x, y, scale, color, outlineColor, applyScaling = false)
+			TextShadow.NONE, TextShadow.SHADOW -> {
+				val shadow = textShadow == TextShadow.SHADOW
 				RenderUtils.drawText(context, text, x, y, scale, color, shadow, applyScaling = false)
 			}
 		}

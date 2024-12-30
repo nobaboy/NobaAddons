@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
+import com.google.gson.JsonPrimitive
 import dev.celestialfault.celestialconfig.AbstractConfig
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
@@ -11,6 +12,8 @@ private val migrations = Migrations.create {
 		val infoBoxes = it["infoboxes"]?.asJsonArray ?: return@add
 		for(box in infoBoxes) {
 			val box = box.asJsonObject
+			val mode = box["textMode"].let { it as? JsonPrimitive }?.takeIf { it.isString }?.asString
+			if(mode == "PURE") box.addProperty("textMode", "NONE")
 			val position = box.remove("element").asJsonObject // pop element to rename later
 			position.remove("identifier") // remove identifier
 			box.add("color", position.remove("color")) // element.color -> color

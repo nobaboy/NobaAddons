@@ -78,7 +78,7 @@ class InfoBoxesListWidget(
 			}
 		}
 
-		private val textModeButton = ButtonWidget.builder(Text.literal(infoBox.textMode.toString())) {
+		private val textModeButton = ButtonWidget.builder(Text.literal(infoBox.textShadow.toString())) {
 			changeTextMode()
 		}.size(50, 20).build()
 
@@ -92,8 +92,8 @@ class InfoBoxesListWidget(
 		}
 
 		private fun changeTextMode() {
-			val newTextMode = infoBox.textMode.next
-			infoBox.textMode = newTextMode
+			val newTextMode = infoBox.textShadow.next
+			infoBox.textShadow = newTextMode
 			textModeButton.message = Text.literal(newTextMode.toString())
 
 			refreshEntries()
