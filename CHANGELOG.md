@@ -4,17 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 0.1.0-Alpha.12 - 2024-12-29
-
-### Added
-
-- Enchantment Tooltips - celeste
+## Unreleased
 
 ### Changed
 
 - Rewrote the HUD internals to make adding new elements easier - celeste
 - Changed how HUD elements render to properly handle different window sizes - celeste
   - This will cause existing info boxes to be in the bottom right corner when updating
+
+## 0.1.0-Alpha.12 - 2024-12-29
+
+### Added
+
+- Enchantment Tooltips - celeste
 
 ### Fixed
 
