@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.screens.keybinds.impl
+package me.nobaboy.nobaaddons.features.keybinds.impl
 
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import net.minecraft.client.option.KeyBinding

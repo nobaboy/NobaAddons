@@ -2,6 +2,8 @@ package me.nobaboy.nobaaddons.features.ui.infobox
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.MCUtils.day
+import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.PingUtils
 import kotlin.math.sqrt
 
@@ -19,10 +21,13 @@ enum class InfoBoxFunctions(val aliases: List<String>, val runnable: () -> Strin
 	BPS(listOf("{bps}"), { getBPS() }),
 	PING(listOf("{ping}"), { getPing() }),
 //	TPS(listOf("{tps}"), { getTPS() }),
+	DAY(listOf("{day}"), { MCUtils.world?.day?.addSeparators() ?: "?" }),
 
 	// Scoreboard Functions
 	PURSE(listOf("{purse}"), { getPurse() }),
-	BITS(listOf("{bits}"), { getBits() });
+	BITS(listOf("{bits}"), { getBits() }),
+
+	;
 
 	companion object {
 		val client = MCUtils.client

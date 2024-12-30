@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.mixins.io;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import me.nobaboy.nobaaddons.config.NobaConfigManager;
 import me.nobaboy.nobaaddons.features.qol.MouseLock;
-import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager;
+import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import org.spongepowered.asm.mixin.Final;
