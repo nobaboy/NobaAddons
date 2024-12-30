@@ -10,6 +10,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Enchantment Tooltips - celeste
 
+### Changed
+
+- Rewrote the HUD internals to make adding new elements easier - celeste
+- Changed how HUD elements render to properly handle different window sizes - celeste
+  - This will cause existing info boxes to be in the bottom right corner when updating
+
 ### Fixed
 
 - MayorAPI and PartyAPI not working due to internal changes in Alpha 11 - celeste

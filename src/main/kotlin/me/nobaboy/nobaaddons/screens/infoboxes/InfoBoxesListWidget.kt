@@ -1,6 +1,8 @@
 package me.nobaboy.nobaaddons.screens.infoboxes
 
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxElement
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
+import me.nobaboy.nobaaddons.ui.data.ElementPosition
 import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
@@ -39,7 +41,7 @@ class InfoBoxesListWidget(
 	}
 
 	fun addInfoBox() {
-		val newInfoBox = InfoBoxesManager.create()
+		val newInfoBox = InfoBoxElement(ElementPosition(x = 0.025, y = 0.025))
 		infoBoxes.add(newInfoBox)
 
 		screen.addButton.active = infoBoxes.size < 20

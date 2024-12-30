@@ -48,7 +48,7 @@ import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.RepoManager
-import me.nobaboy.nobaaddons.ui.ElementManager
+import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -138,7 +138,7 @@ object NobaAddons : ClientModInitializer {
 		/* endregion */
 
 		/* region User Interface */
-		ElementManager.init()
+		UIManager.init()
 		/* endregion */
 
 		/* region Features */

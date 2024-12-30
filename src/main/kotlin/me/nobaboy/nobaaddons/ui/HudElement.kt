@@ -1,8 +1,8 @@
-package me.nobaboy.nobaaddons.ui.elements
+package me.nobaboy.nobaaddons.ui
 
 import me.nobaboy.nobaaddons.screens.NobaHudScreen
-import me.nobaboy.nobaaddons.ui.elements.data.ElementPosition
-import me.nobaboy.nobaaddons.ui.elements.data.ElementBounds
+import me.nobaboy.nobaaddons.ui.data.ElementBounds
+import me.nobaboy.nobaaddons.ui.data.ElementPosition
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -11,17 +11,30 @@ import net.minecraft.text.Text
 import kotlin.math.roundToInt
 
 abstract class HudElement(protected val elementPosition: ElementPosition) {
-	open var x: Int by elementPosition::x
-	open var y: Int by elementPosition::y
+	var x: Int
+		get() = scale(MCUtils.window.scaledWidth, elementPosition.x)
+		set(value) { elementPosition.x = value.toDouble() / MCUtils.window.scaledWidth }
+
+	var y: Int
+		get() = scale(MCUtils.window.scaledHeight, elementPosition.y)
+		set(value) { elementPosition.y = value.toDouble() / MCUtils.window.scaledHeight }
+
+	val alignment: ElementAlignment
+		get() = if(elementPosition.x > 0.5) ElementAlignment.RIGHT else ElementAlignment.LEFT
+
+	private fun scale(of: Int, from: Double): Int = (of * from).toInt().coerceIn(0, of)
+
 	open var scale: Float by elementPosition::scale
 
 	open val minScale: Float = 0.5f
 	open val maxScale: Float = 3.0f
 
 	abstract val name: Text
-	abstract val enabled: Boolean
+	abstract val size: Pair<Int, Int>
+
 	abstract fun render(context: DrawContext)
-	abstract fun getBounds(): ElementBounds
+
+	open fun getBounds(): ElementBounds = ElementBounds(x, y, size)
 
 	private val scaleOffset: Int get() = (1 * scale).roundToInt().coerceAtLeast(1)
 
@@ -38,7 +51,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 
 	open fun shouldRender(): Boolean {
 		val client = MCUtils.client
-		return enabled && !client.options.hudHidden && client.currentScreen !is NobaHudScreen
+		return !client.options.hudHidden && client.currentScreen !is NobaHudScreen
 	}
 
 	open fun renderBackground(context: DrawContext, hovered: Boolean) {

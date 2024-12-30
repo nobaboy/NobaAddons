@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.screens.infoboxes
 
-import me.nobaboy.nobaaddons.ui.ElementManager
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.utils.ScreenUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
@@ -54,7 +54,7 @@ class InfoBoxesScreen(private val parent: Screen?) : Screen(tr("nobaaddons.scree
 	}
 
 	private fun actuallyClose() {
-		ElementManager.loadElements()
+		InfoBoxesManager.recreateUIElements()
 		client!!.setScreen(parent)
 		initialized = false
 	}

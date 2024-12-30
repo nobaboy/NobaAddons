@@ -1,7 +1,8 @@
 package me.nobaboy.nobaaddons.screens
 
-import me.nobaboy.nobaaddons.ui.ElementManager
-import me.nobaboy.nobaaddons.ui.elements.HudElement
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
+import me.nobaboy.nobaaddons.ui.UIManager
+import me.nobaboy.nobaaddons.ui.HudElement
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
@@ -34,7 +35,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	override fun init() {
 		super.init()
 
-		elements = ElementManager.toSet()
+		elements = UIManager.toSet()
 	}
 
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
@@ -125,8 +126,8 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	}
 
 	override fun close() {
-		ElementManager.saveAll()
-		ElementManager.loadElements()
+		InfoBoxesManager.save()
+		InfoBoxesManager.recreateUIElements()
 		client!!.setScreen(parent)
 	}
 
