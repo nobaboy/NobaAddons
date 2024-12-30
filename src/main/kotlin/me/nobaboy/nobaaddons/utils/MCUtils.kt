@@ -33,6 +33,7 @@ object MCUtils {
 	val options: GameOptions get() = client.options
 
 	val window: Window get() = client.window
+	val Window.scaledSize: Pair<Int, Int> get() = scaledWidth to scaledHeight
 
 	val textRenderer: TextRenderer get() = client.textRenderer
 	val worldRenderer: WorldRenderer get() = client.worldRenderer

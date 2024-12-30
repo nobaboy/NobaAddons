@@ -1,16 +1,15 @@
 package me.nobaboy.nobaaddons.ui
 
-import com.google.common.collect.ForwardingMap
+import com.google.common.collect.ForwardingSet
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxHud
 import me.nobaboy.nobaaddons.ui.elements.HudElement
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawContext
-import kotlin.collections.set
 
-object ElementManager : ForwardingMap<String, HudElement>() {
-	private val map = mutableMapOf<String, HudElement>()
+object ElementManager : ForwardingSet<HudElement>() {
+	private val elements = mutableSetOf<HudElement>()
 
 	fun init() {
 		loadElements()
@@ -18,7 +17,7 @@ object ElementManager : ForwardingMap<String, HudElement>() {
 	}
 
 	private fun render(ctx: DrawContext) {
-		values.asSequence()
+		asSequence()
 			.filter { it.enabled }
 			.forEach {
 				runCatching { it.render(ctx) }
@@ -30,20 +29,14 @@ object ElementManager : ForwardingMap<String, HudElement>() {
 			}
 	}
 
-	fun add(element: HudElement) {
-		this[element.identifier] = element
+	fun saveAll() {
+		InfoBoxesManager.save()
 	}
 
 	fun loadElements() {
 		clear()
-		save()
-
 		InfoBoxesManager.infoBoxes.forEach { add(InfoBoxHud(it))}
 	}
 
-	private fun save() {
-		InfoBoxesManager.saveInfoBoxes()
-	}
-
-	override fun delegate(): Map<String, HudElement> = map
+	override fun delegate(): Set<HudElement> = elements
 }

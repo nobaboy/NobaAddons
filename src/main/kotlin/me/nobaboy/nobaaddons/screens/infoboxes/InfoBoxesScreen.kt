@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.screens.infoboxes
 
+import me.nobaboy.nobaaddons.ui.ElementManager
 import me.nobaboy.nobaaddons.utils.ScreenUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
@@ -52,15 +53,18 @@ class InfoBoxesScreen(private val parent: Screen?) : Screen(tr("nobaaddons.scree
 		RenderUtils.drawCenteredText(context, this.title.copy().append(" (${infoBoxesList.size}/20)"), this.width / 2, 12)
 	}
 
+	private fun actuallyClose() {
+		ElementManager.loadElements()
+		client!!.setScreen(parent)
+		initialized = false
+	}
+
 	override fun close() {
 		if(!infoBoxesList.hasChanges) {
-			client!!.setScreen(parent)
+			actuallyClose()
 			return
 		}
 
-		ScreenUtils.confirmClose(this) {
-			client!!.setScreen(parent)
-			initialized = false
-		}
+		ScreenUtils.confirmClose(this, this::actuallyClose)
 	}
 }

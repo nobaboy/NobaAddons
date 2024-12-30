@@ -12,7 +12,7 @@ import org.lwjgl.glfw.GLFW
 import kotlin.math.roundToInt
 
 class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.hudEditor", "HUD Editor")) {
-	private lateinit var elements: LinkedHashMap<String, HudElement>
+	private lateinit var elements: Set<HudElement>
 //	private var contextMenu: ContextMenu? = null
 
 	private var editingMode: EditingMode = EditingMode.IDLE
@@ -34,7 +34,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	override fun init() {
 		super.init()
 
-		elements = LinkedHashMap(ElementManager)
+		elements = ElementManager.toSet()
 	}
 
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
@@ -50,7 +50,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 		}
 
 		var hovered: HudElement? = null
-		elements.values.forEach { element ->
+		elements.forEach { element ->
 			val isHovered = clickInBounds(element, mouseX.toDouble(), mouseY.toDouble())
 			element.renderBackground(context, isHovered)
 			if(isHovered) hovered = element
@@ -66,7 +66,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	}
 
 	override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
-		elements.values.forEach { element ->
+		elements.forEach { element ->
 			if(!clickInBounds(element, mouseX, mouseY)) return@forEach
 
 			when(button) {
@@ -125,6 +125,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	}
 
 	override fun close() {
+		ElementManager.saveAll()
 		ElementManager.loadElements()
 		client!!.setScreen(parent)
 	}
