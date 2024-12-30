@@ -45,7 +45,7 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 		KeyBindsScreen(null).queueOpen()
 	}
 
-	val hud = Command("hud") {
+	val hud = Command("hud", aliases = listOf("gui")) {
 		NobaHudScreen(null).queueOpen()
 	}
 
