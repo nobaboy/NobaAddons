@@ -108,8 +108,9 @@ object DebugCommands : Group("debug") {
 		// TextElement would normally be in an AbstractConfig, but this is a debug command,
 		// so we don't care if it doesn't have any persistent position state.
 		UIManager.add(object : TextHud(TextElement(color = listOf(
-			Colors.WHITE, Colors.GREEN, Colors.LIGHT_RED, Colors.GRAY, Colors.ALTERNATE_WHITE,
-			Colors.BLUE, Colors.CYAN, Colors.LIGHT_YELLOW, Colors.PURPLE, Colors.YELLOW
+			Colors.WHITE, Colors.GREEN, Colors.LIGHT_RED, Colors.GRAY,
+			Colors.ALTERNATE_WHITE, Colors.BLUE, Colors.LIGHT_YELLOW,
+			Colors.YELLOW
 		).random())) {
 			override fun renderText(context: DrawContext) {
 				renderLine(context, "Zoop!".toText())
