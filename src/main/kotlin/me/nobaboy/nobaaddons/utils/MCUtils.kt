@@ -24,6 +24,7 @@ object MCUtils {
 	val client: MinecraftClient get() = MinecraftClient.getInstance()
 
 	val world: ClientWorld? get() = client.world
+	val World.day: Long? get() = world?.timeOfDay?.let { it / 24000 }
 
 	val player: PlayerEntity? get() = client.player
 	val playerName: String? get() = player?.name?.string
@@ -51,6 +52,4 @@ object MCUtils {
 	fun copyToClipboard(text: String) {
 		clipboard.setClipboard(window.handle, text)
 	}
-
-	val World.day get(): Long? = world?.timeOfDay?.let { it / 24000 }
 }

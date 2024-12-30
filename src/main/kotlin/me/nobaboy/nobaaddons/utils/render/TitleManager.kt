@@ -31,7 +31,6 @@ object TitleManager {
 		}
 	}
 
-
 	fun draw(
 		text: Text,
 		color: NobaColor,

@@ -12,6 +12,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 object VacuumPestsSlotInfo : ISlotInfo {
 	private val vacuumPestsPattern by Regex("Vacuum Bag: (?<amount>\\d+) Pests").fromRepo("slot_info.vacuum_pests")
 
+	// TODO: Could move to repo
 	private val gardenVacuums = listOf(
 		"SKYMART_VACUUM",
 		"SKYMART_TURBO_VACUUM",
