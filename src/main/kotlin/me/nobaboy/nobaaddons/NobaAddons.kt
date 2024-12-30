@@ -128,7 +128,7 @@ object NobaAddons : ClientModInitializer {
 		/* endregion */
 
 		/* region Screens */
-		InfoBoxesManager.load()
+		InfoBoxesManager.init()
 		KeyBindsManager.init()
 		/* endregion */
 

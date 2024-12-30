@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 object InfoBoxesManager {
 	val infoBoxes by InfoBoxesConfig::infoBoxes
 
-	fun load() {
+	fun init() {
 		try {
 			InfoBoxesConfig.load()
 		} catch(ex: IOException) {

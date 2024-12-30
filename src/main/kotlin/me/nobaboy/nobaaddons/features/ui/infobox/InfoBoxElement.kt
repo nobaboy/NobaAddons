@@ -9,7 +9,7 @@ class InfoBoxElement() : AbstractTextElement<InfoBoxElement>() {
 		load(json)
 	}
 
-	var text by Property.of("text", "what?")
+	var text by Property.of("text", "Info Box")
 
 	fun copy() = InfoBoxElement(save() as JsonObject)
 }

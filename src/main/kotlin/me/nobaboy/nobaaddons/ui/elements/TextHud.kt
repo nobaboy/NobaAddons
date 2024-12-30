@@ -8,8 +8,8 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils.getWidth
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 
-abstract class TextHud<T : AbstractTextElement<*>>(element: T) : HudElement(element.position) {
-	open var color: Int by element::color
+abstract class TextHud(element: AbstractTextElement<*>) : HudElement(element.position) {
+	open val color: Int by element::color
 	open val textMode: TextMode by element::textMode
 	open val outlineColor: Int by element::outlineColor
 

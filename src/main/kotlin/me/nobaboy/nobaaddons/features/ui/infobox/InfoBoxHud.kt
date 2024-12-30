@@ -7,21 +7,26 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.properties.CacheOf
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 
-class InfoBoxHud(val textElement: InfoBoxElement) : TextHud<InfoBoxElement>(textElement) {
+class InfoBoxHud(val textElement: InfoBoxElement) : TextHud(textElement) {
 	private val functionPattern = Regex("(?<function>\\{[A-z0-9]+})")
 	private val colorCodePattern = Regex("&&[0-9a-fk-orz]", RegexOption.IGNORE_CASE)
 
 	override val name: Text = tr("nobaaddons.infoBox", "Info Box")
 	override val enabled: Boolean get() = MCUtils.client.currentScreen !is InfoBoxesScreen
 
-	val text: List<Text> get() = textElement.text.split("\\n").map { compileText(it).toText() }
+	val text: List<Text> by CacheOf(textElement::text) {
+		textElement.text.replace("\\n", "\n").split("\n").map { compileText(it).toText() }
+	}
 
 	override fun renderText(context: DrawContext) {
-		text.forEachIndexed { i, line -> renderLine(context, line, y = i * MCUtils.textRenderer.fontHeight) }
+		text.forEachIndexed { i, line ->
+			renderLine(context, line, y = i * MCUtils.textRenderer.fontHeight)
+		}
 	}
 
 	override fun getBounds(): ElementBounds = getBoundsFrom(text)
