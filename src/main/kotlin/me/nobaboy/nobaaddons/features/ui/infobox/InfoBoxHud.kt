@@ -7,7 +7,6 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.properties.CacheOf
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
@@ -19,9 +18,8 @@ class InfoBoxHud(val textElement: InfoBoxElement) : TextHud(textElement) {
 	override val name: Text = tr("nobaaddons.infoBox", "Info Box")
 	override val enabled: Boolean get() = MCUtils.client.currentScreen !is InfoBoxesScreen
 
-	val text: List<Text> by CacheOf(textElement::text) {
+	val text: List<Text> get() =
 		textElement.text.replace("\\n", "\n").split("\n").map { compileText(it).toText() }
-	}
 
 	override fun renderText(context: DrawContext) {
 		text.forEachIndexed { i, line ->
