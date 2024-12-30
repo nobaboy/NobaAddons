@@ -58,7 +58,7 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 
 	object Refill : Group("refill") {
 		val pearls = Command("pearls") {
-			RefillFromSacks.refill("ENDER_PEARLS", 16)
+			RefillFromSacks.refill("ENDER_PEARL", 16)
 		}
 
 		val superboom = Command("superboom") {
@@ -77,7 +77,7 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 		}
 
 		val item = Command("item", commandBuilder = itemCommandBuilder) {
-			val id = StringArgumentType.getString(it, "id")
+			val id = StringArgumentType.getString(it, "id").uppercase()
 			val count = runCatching { IntegerArgumentType.getInteger(it, "count") }.getOrDefault(64)
 			RefillFromSacks.refill(id, count)
 		}
