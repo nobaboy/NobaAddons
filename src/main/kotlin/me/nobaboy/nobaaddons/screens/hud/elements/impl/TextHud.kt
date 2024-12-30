@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.screens.hud.elements.TextMode
 import me.nobaboy.nobaaddons.screens.hud.elements.data.Element
 import me.nobaboy.nobaaddons.screens.hud.elements.data.ElementBounds
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.getWidth
 import net.minecraft.client.gui.DrawContext
@@ -14,7 +15,11 @@ abstract class TextHud(element: Element) : HudElement(element) {
 	abstract val textMode: TextMode
 	abstract val outlineColor: Int
 
+	// FIXME: Temporary fix until hud refactor merge
 	private fun renderLine(context: DrawContext) {
+		val color = NobaColor(color)
+		val outlineColor = NobaColor(outlineColor)
+
 		when(textMode) {
 			TextMode.OUTLINE -> RenderUtils.drawOutlinedText(context, text, x, y, scale, color, outlineColor, applyScaling = false)
 			TextMode.PURE, TextMode.SHADOW -> {

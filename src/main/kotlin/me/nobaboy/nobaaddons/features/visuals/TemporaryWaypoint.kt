@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
@@ -67,7 +68,7 @@ object TemporaryWaypoint {
 		if(!enabled) return
 
 		val cameraPos = context.camera().pos.toNobaVec()
-		val color = config.waypointColor
+		val color = config.waypointColor.toNobaColor()
 
 		waypoints.removeIf { it.expired || it.location.distance(cameraPos) < 5.0 }
 		waypoints.forEach { waypoint ->

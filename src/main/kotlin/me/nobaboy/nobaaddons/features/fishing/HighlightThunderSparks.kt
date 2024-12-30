@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.EntityUtils.heldSkullTexture
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -40,7 +41,7 @@ object HighlightThunderSparks {
 	private fun renderHighlights(context: WorldRenderContext) {
 		if(!enabled) return
 
-		val color = config.highlightColor
+		val color = config.highlightColor.toNobaColor()
 
 		sparks.removeIf { !it.isAlive }
 		sparks.forEach {

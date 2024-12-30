@@ -8,7 +8,7 @@ enum class TrophyFishRarity(val color: NobaColor, val pityAt: Int?) {
 	GOLD(NobaColor.GOLD, 100),
 	DIAMOND(NobaColor.AQUA, 600);
 
-	val formatting = color.toFormatting()
+	val formatting = color.formatting
 
 	companion object {
 		fun get(rarity: String) = entries.firstOrNull { it.name.equals(rarity, ignoreCase = true) }

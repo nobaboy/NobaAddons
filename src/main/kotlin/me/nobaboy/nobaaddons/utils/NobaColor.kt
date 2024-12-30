@@ -3,31 +3,48 @@ package me.nobaboy.nobaaddons.utils
 import net.minecraft.util.Formatting
 import java.awt.Color
 
-enum class NobaColor(val colorCode: Char, private val color: Color, private val formatting: Formatting) {
-	BLACK('0', Color(0, 0, 0), Formatting.BLACK),
-	DARK_BLUE('1', Color(0, 0, 170), Formatting.DARK_BLUE),
-	DARK_GREEN('2', Color(0, 170, 0), Formatting.DARK_GREEN),
-	DARK_AQUA('3', Color(0, 170, 170), Formatting.DARK_AQUA),
-	DARK_RED('4', Color(170, 0, 0), Formatting.DARK_RED),
-	DARK_PURPLE('5', Color(170, 0, 170), Formatting.DARK_PURPLE),
-	GOLD('6', Color(255, 170, 0), Formatting.GOLD),
-	GRAY('7', Color(170, 170, 170), Formatting.GRAY),
-	DARK_GRAY('8', Color(85, 85, 85), Formatting.DARK_GRAY),
-	BLUE('9', Color(85, 85, 255), Formatting.BLUE),
-	GREEN('a', Color(85, 255, 85), Formatting.GREEN),
-	AQUA('b', Color(85, 255, 255), Formatting.AQUA),
-	RED('c', Color(255, 85, 85), Formatting.RED),
-	LIGHT_PURPLE('d', Color(255, 85, 255), Formatting.LIGHT_PURPLE),
-	YELLOW('e', Color(255, 255, 85), Formatting.YELLOW),
-	WHITE('f', Color(255, 255, 255), Formatting.WHITE);
+data class NobaColor(val rgb: Int, val formatting: Formatting? = null) {
+	constructor(formatting: Formatting) : this(formatting.colorValue!!, formatting)
 
-	val next: NobaColor by lazy { BY_ID.apply(ordinal + 1) }
-	val rgb: Int get() = toColor().rgb
+	val red: Int get() = (rgb shr 16) and 0xFF
+	val green: Int get() = (rgb shr 8) and 0xFF
+	val blue: Int get() = rgb and 0xFF
 
-	fun toColor(): Color = color
-	fun toFormatting(): Formatting = formatting
+	val colorCode: Char? get() = formatting?.code
+
+	val next: NobaColor
+		get() {
+			val index = allColors.indexOfFirst { it == this }
+			return if(index != -1) allColors[(index + 1) % allColors.size] else this
+		}
+
+	fun toColor(): Color = Color(rgb)
 
 	companion object {
-		val BY_ID = EnumUtils.ordinalMapper<NobaColor>()
+		private val allColors = mutableListOf<NobaColor>()
+
+		val BLACK = register(NobaColor(Formatting.BLACK))
+		val DARK_BLUE = register(NobaColor(Formatting.DARK_BLUE))
+		val DARK_GREEN = register(NobaColor(Formatting.DARK_GREEN))
+		val DARK_AQUA = register(NobaColor(Formatting.DARK_AQUA))
+		val DARK_RED = register(NobaColor(Formatting.DARK_RED))
+		val DARK_PURPLE = register(NobaColor(Formatting.DARK_PURPLE))
+		val GOLD = register(NobaColor(Formatting.GOLD))
+		val GRAY = register(NobaColor(Formatting.GRAY))
+		val DARK_GRAY = register(NobaColor(Formatting.DARK_GRAY))
+		val BLUE = register(NobaColor(Formatting.BLUE))
+		val GREEN = register(NobaColor(Formatting.GREEN))
+		val AQUA = register(NobaColor(Formatting.AQUA))
+		val RED = register(NobaColor(Formatting.RED))
+		val LIGHT_PURPLE = register(NobaColor(Formatting.LIGHT_PURPLE))
+		val YELLOW = register(NobaColor(Formatting.YELLOW))
+		val WHITE = register(NobaColor(Formatting.WHITE))
+
+		private fun register(color: NobaColor): NobaColor {
+			allColors.add(color)
+			return color
+		}
+
+		fun Color.toNobaColor(): NobaColor = NobaColor(rgb)
 	}
 }

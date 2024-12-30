@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.utils.render
 
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawContext
@@ -33,7 +34,7 @@ object TitleManager {
 
 	fun draw(
 		text: Text,
-		color: Int,
+		color: NobaColor,
 		scale: Float,
 		offset: Int,
 		duration: Duration,
@@ -46,7 +47,7 @@ object TitleManager {
 
 	data class Title(
 		val text: Text,
-		val color: Int,
+		val color: NobaColor,
 		val scale: Float,
 		val offset: Int,
 		val duration: Duration,

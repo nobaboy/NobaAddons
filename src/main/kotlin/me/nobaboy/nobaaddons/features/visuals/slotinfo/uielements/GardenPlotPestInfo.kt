@@ -27,7 +27,7 @@ object GardenPlotPestInfo : ISlotInfo {
 
 		val lore = itemStack.lore.stringLines
 		pestsPattern.firstFullMatch(lore) {
-			drawCount(event, groups["count"]!!.value, NobaColor.RED.toColor().rgb)
+			drawCount(event, groups["count"]!!.value, NobaColor.RED)
 		}
 
 		if(lore.any { it.startsWith(sprayedWith) }) {

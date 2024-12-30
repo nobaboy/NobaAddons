@@ -24,7 +24,7 @@ object SkyBlockLevelSlotInfo : ISlotInfo {
 		val lore = itemStack.lore.stringLines
 		skyBlockLevelPattern.firstFullMatch(lore) {
 			val level = groups["level"]!!.value
-			val color = getSkyBlockLevelColor(level.toInt()).toColor().rgb
+			val color = getSkyBlockLevelColor(level.toInt())
 
 			drawCount(event, level, color)
 		}

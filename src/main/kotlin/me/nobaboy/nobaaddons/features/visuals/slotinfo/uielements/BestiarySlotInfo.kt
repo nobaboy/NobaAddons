@@ -22,7 +22,7 @@ object BestiarySlotInfo : ISlotInfo {
 
 		if(config.bestiaryFamilyTier && lore.any { it.endsWith("Bonuses") }) {
 			if(config.checkMarkIfMaxed && lore.any { it == "Overall Progress: 100% (MAX!)" }) {
-				drawCount(event, "✔", NobaColor.GREEN.toColor().rgb)
+				drawCount(event, "✔", NobaColor.GREEN)
 			} else {
 				val tier = getTier(itemStack.name.string)
 				drawCount(event, tier)
