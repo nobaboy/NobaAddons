@@ -1,8 +1,9 @@
 package me.nobaboy.nobaaddons.screens.infoboxes
 
-import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxElement
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
+import me.nobaboy.nobaaddons.ui.data.ElementPosition
 import me.nobaboy.nobaaddons.utils.CommonText
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.Element
@@ -20,25 +21,18 @@ class InfoBoxesListWidget(
 	y: Int,
 	itemHeight: Int
 ) : ElementListWidget<InfoBoxesListWidget.AbstractInfoBoxEntry>(client, width, height, y, itemHeight) {
-	private val infoBoxes = mutableListOf<TextElement>()
+	private val infoBoxes = InfoBoxesManager.infoBoxes.map { it.copy() }.toMutableList()
 	val size: Int get() = infoBoxes.size
 
 	var hasChanges = false
 
 	init {
-		InfoBoxesManager.infoBoxes.forEach {
-			infoBoxes.add(it.copy())
-		}
-
 		refreshEntries()
 	}
 
 	fun refreshEntries() {
 		clearEntries()
-		infoBoxes.forEachIndexed { index, _ ->
-			addEntry(InfoBoxConfigEntry(index))
-		}
-
+		infoBoxes.forEachIndexed { index, _ -> addEntry(InfoBoxConfigEntry(index)) }
 		update()
 	}
 
@@ -47,7 +41,7 @@ class InfoBoxesListWidget(
 	}
 
 	fun addInfoBox() {
-		val newInfoBox = InfoBoxesManager.getNewInfoBox(infoBoxes.size + 1)
+		val newInfoBox = InfoBoxElement(ElementPosition(x = 0.025, y = 0.025))
 		infoBoxes.add(newInfoBox)
 
 		screen.addButton.active = infoBoxes.size < 20
@@ -56,23 +50,12 @@ class InfoBoxesListWidget(
 		hasChanges = true
 	}
 
-	private fun regenerateIdentifiers() {
-		val updatedInfoBoxes = infoBoxes.mapIndexed { index, infoBox ->
-			val updatedElement = infoBox.element.copy(identifier = "Info Box ${index + 1}")
-			infoBox.copy(element = updatedElement)
-		}
-
-		infoBoxes.clear()
-		infoBoxes.addAll(updatedInfoBoxes)
-	}
-
 	fun saveChanges() {
 		infoBoxes.removeIf { it.text.isBlank() }
-		regenerateIdentifiers()
 
 		InfoBoxesManager.infoBoxes.clear()
 		InfoBoxesManager.infoBoxes.addAll(infoBoxes)
-		InfoBoxesManager.saveInfoBoxes()
+		InfoBoxesManager.save()
 
 		hasChanges = false
 	}
@@ -97,7 +80,7 @@ class InfoBoxesListWidget(
 			}
 		}
 
-		private val textModeButton = ButtonWidget.builder(Text.literal(infoBox.textMode.toString())) {
+		private val textModeButton = ButtonWidget.builder(Text.literal(infoBox.textShadow.toString())) {
 			changeTextMode()
 		}.size(50, 20).build()
 
@@ -111,8 +94,8 @@ class InfoBoxesListWidget(
 		}
 
 		private fun changeTextMode() {
-			val newTextMode = infoBox.textMode.next
-			infoBox.textMode = newTextMode
+			val newTextMode = infoBox.textShadow.next
+			infoBox.textShadow = newTextMode
 			textModeButton.message = Text.literal(newTextMode.toString())
 
 			refreshEntries()
@@ -126,7 +109,6 @@ class InfoBoxesListWidget(
 			screen.addButton.active = size < 20
 			/*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/ = oldScrollAmount
 
-			regenerateIdentifiers()
 			refreshEntries()
 
 			hasChanges = true
@@ -155,8 +137,6 @@ class InfoBoxesListWidget(
 
 			deleteButton.y = y
 			deleteButton.render(context, mouseX, mouseY, tickDelta)
-
-			RenderUtils.drawCenteredText(context, infoBox.element.identifier, width / 2 - 180 - 35, y + 6)
 		}
 
 		override fun update() {

@@ -43,6 +43,7 @@ object DebugCommands : Group("debug") {
 	val item = ItemDebugCommands
 	val pet = PetDebugCommands
 	val regex = RepoDebugCommands
+	val hud = HudDebugCommands
 
 	val party = Command("party") { PartyAPI.listMembers() }
 

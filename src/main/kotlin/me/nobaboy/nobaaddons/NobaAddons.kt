@@ -39,17 +39,18 @@ import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
+import me.nobaboy.nobaaddons.features.inventory.EnchantParsing
+import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.RepoManager
-import me.nobaboy.nobaaddons.screens.hud.ElementManager
-import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
-import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager
+import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
@@ -137,11 +138,12 @@ object NobaAddons : ClientModInitializer {
 		/* endregion */
 
 		/* region User Interface */
-		ElementManager.init()
+		UIManager.init()
 		/* endregion */
 
 		/* region Features */
 		// region Visuals
+		EnchantParsing.init()
 		TemporaryWaypoint.init()
 		EtherwarpHelper.init()
 		ISlotInfo.init()

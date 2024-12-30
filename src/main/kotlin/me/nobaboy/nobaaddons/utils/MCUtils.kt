@@ -13,6 +13,7 @@ import net.minecraft.client.util.Window
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.network.packet.Packet
+import net.minecraft.world.World
 import java.util.UUID
 
 object MCUtils {
@@ -33,6 +34,7 @@ object MCUtils {
 	val options: GameOptions get() = client.options
 
 	val window: Window get() = client.window
+	val Window.scaledSize: Pair<Int, Int> get() = scaledWidth to scaledHeight
 
 	val textRenderer: TextRenderer get() = client.textRenderer
 	val worldRenderer: WorldRenderer get() = client.worldRenderer
@@ -46,9 +48,9 @@ object MCUtils {
 		client.networkHandler!!.sendPacket(packet)
 	}
 
-	// This would fit better in a different class (like OSUtils), but I didn't want to make a new
-	// class just for a single one-line method
 	fun copyToClipboard(text: String) {
 		clipboard.setClipboard(window.handle, text)
 	}
+
+	val World.day get(): Long? = world?.timeOfDay?.let { it / 24000 }
 }

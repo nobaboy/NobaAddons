@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.screens.keybinds
 
-import me.nobaboy.nobaaddons.screens.keybinds.impl.KeyBind
+import me.nobaboy.nobaaddons.features.keybinds.impl.KeyBind
 import me.nobaboy.nobaaddons.utils.ScreenUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
@@ -19,7 +19,7 @@ class KeyBindsScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen
 	var selectedKeyBind: KeyBind? = null
 
 	private val cancelButton = ButtonWidget.builder(ScreenTexts.CANCEL) { close() }.build()
-	val addButton = ButtonWidget.builder(tr("nobaaddons.screen.button.newKeybind", "New Key Bind")) { keyBindsList.addKeyBind() }.build()
+	private val addButton = ButtonWidget.builder(tr("nobaaddons.screen.button.newKeybind", "New Key Bind")) { keyBindsList.addKeyBind() }.build()
 	private val doneButton = ButtonWidget.builder(ScreenTexts.DONE) {
 		keyBindsList.saveChanges()
 		close()

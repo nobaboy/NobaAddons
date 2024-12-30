@@ -1,7 +1,8 @@
 package me.nobaboy.nobaaddons.screens
 
-import me.nobaboy.nobaaddons.screens.hud.ElementManager
-import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
+import me.nobaboy.nobaaddons.ui.HudElement
+import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
@@ -12,7 +13,7 @@ import org.lwjgl.glfw.GLFW
 import kotlin.math.roundToInt
 
 class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.hudEditor", "HUD Editor")) {
-	private lateinit var elements: LinkedHashMap<String, HudElement>
+	private lateinit var elements: Set<HudElement>
 //	private var contextMenu: ContextMenu? = null
 
 	private var editingMode: EditingMode = EditingMode.IDLE
@@ -28,13 +29,11 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 		tr("nobaaddons.screen.hudEditor.usage.line1", "Left-click and drag, or use arrows to move (Ctrl moves further)"),
 		tr("nobaaddons.screen.hudEditor.usage.line2", "Scroll or use +/- to resize an element"),
 		tr("nobaaddons.screen.hudEditor.usage.line3", "Middle-click to reset an element"),
-		tr("nobaaddons.screen.hudEditor.usage.line4", "Right-click for context menu (coming soon)"),
+//		tr("nobaaddons.screen.hudEditor.usage.line4", "Right-click for context menu (coming soon)"),
 	)
 
 	override fun init() {
-		super.init()
-
-		elements = LinkedHashMap(ElementManager)
+		elements = UIManager.toSet()
 	}
 
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
@@ -50,9 +49,9 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 		}
 
 		var hovered: HudElement? = null
-		elements.values.forEach { element ->
+		elements.forEach { element ->
 			val isHovered = clickInBounds(element, mouseX.toDouble(), mouseY.toDouble())
-			element.renderBackground(context, isHovered)
+			element.renderGUIBackground(context, isHovered)
 			if(isHovered) hovered = element
 		}
 
@@ -66,7 +65,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	}
 
 	override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
-		elements.values.forEach { element ->
+		elements.forEach { element ->
 			if(!clickInBounds(element, mouseX, mouseY)) return@forEach
 
 			when(button) {
@@ -125,7 +124,8 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	}
 
 	override fun close() {
-		ElementManager.loadElements()
+		InfoBoxesManager.save()
+		InfoBoxesManager.recreateUIElements()
 		client!!.setScreen(parent)
 	}
 

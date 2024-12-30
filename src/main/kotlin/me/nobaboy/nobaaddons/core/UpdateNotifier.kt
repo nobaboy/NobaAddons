@@ -11,6 +11,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.TextUtils.appendLine
 import me.nobaboy.nobaaddons.utils.TextUtils.aqua
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
@@ -45,12 +46,13 @@ object UpdateNotifier {
 	}
 
 	private fun onJoin() {
+		if(MCUtils.player == null) return
 		if(notifiedUpdate) return
 		if(!config.updateNotifier) return
 		val update = UPDATE_INFO ?: return
 		if(update.latest > CURRENT) {
 			notifiedUpdate = true
-			sendUpdateNotification()
+			Scheduler.schedule(10) { sendUpdateNotification() }
 		}
 	}
 
@@ -58,13 +60,17 @@ object UpdateNotifier {
 		val update = UPDATE_INFO ?: return
 		if(MCUtils.VERSION_INFO !in update.forMinecraft) return
 		ChatUtils.addMessage(buildText {
-			appendLine(tr("nobaaddons.updateAvailable", "A new update is available: ${update.latest}:").gold())
+			appendLine()
+			append(NobaAddons.PREFIX)
+			append(tr("nobaaddons.updateAvailable", "A new update is available: ${update.latest}:").gold())
+			appendLine()
 			appendLine(buildLiteral(update.releaseNotes.prependIndent(" ")) { gray() })
 			append(tr("nobaaddons.updateAvailable.download", "Click here to download the update from Modrinth")
 				.aqua()
 				.openUrl("https://modrinth.com/mod/nobaaddons/versions")
 				.underline())
-		})
+			appendLine()
+		}, prefix = false)
 	}
 
 	@Serializable
