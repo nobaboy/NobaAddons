@@ -9,14 +9,19 @@ import me.nobaboy.nobaaddons.commands.internal.Command
 import me.nobaboy.nobaaddons.commands.internal.Group
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
+import me.nobaboy.nobaaddons.ui.TextHud
+import me.nobaboy.nobaaddons.ui.UIManager
+import me.nobaboy.nobaaddons.ui.data.TextElement
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
+import net.minecraft.util.Colors
 import net.minecraft.util.Formatting
 import kotlin.jvm.optionals.getOrNull
 
@@ -97,5 +102,21 @@ object DebugCommands : Group("debug") {
 
 	val updateNotification = Command("updatenotification") {
 		UpdateNotifier.sendUpdateNotification()
+	}
+
+	val uiElement = Command("adduielement") {
+		// TextElement would normally be in an AbstractConfig, but this is a debug command,
+		// so we don't care if it doesn't have any persistent position state.
+		UIManager.add(object : TextHud(TextElement(color = listOf(
+			Colors.WHITE, Colors.GREEN, Colors.LIGHT_RED, Colors.GRAY, Colors.ALTERNATE_WHITE,
+			Colors.BLUE, Colors.CYAN, Colors.LIGHT_YELLOW, Colors.PURPLE, Colors.YELLOW
+		).random())) {
+			override fun renderText(context: DrawContext) {
+				renderLine(context, "Zoop!".toText())
+			}
+
+			override val name: Text = Text.literal("Debug HUD")
+			override val size: Pair<Int, Int> = 100 to 25
+		})
 	}
 }

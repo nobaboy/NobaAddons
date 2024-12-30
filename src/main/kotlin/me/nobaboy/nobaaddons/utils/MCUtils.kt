@@ -13,6 +13,7 @@ import net.minecraft.client.util.Window
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.network.packet.Packet
+import net.minecraft.world.World
 import java.util.UUID
 
 object MCUtils {
@@ -52,4 +53,6 @@ object MCUtils {
 	fun copyToClipboard(text: String) {
 		clipboard.setClipboard(window.handle, text)
 	}
+
+	val World.day get(): Long? = world?.timeOfDay?.let { it / 24000 }
 }
