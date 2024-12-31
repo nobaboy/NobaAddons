@@ -1,15 +1,15 @@
 package me.nobaboy.nobaaddons.commands.debug
 
 import com.mojang.brigadier.context.CommandContext
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.EnabledIf
+import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.commands.impl.AnnotatedGroup
-import me.nobaboy.nobaaddons.commands.annotations.Command
 import me.nobaboy.nobaaddons.commands.impl.Context
-import me.nobaboy.nobaaddons.commands.annotations.EnabledIf
-import me.nobaboy.nobaaddons.commands.annotations.Group
+import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.ui.TextHudElement
@@ -134,7 +134,7 @@ object DebugCommands {
 		})
 	}
 
-	val item = AnnotatedGroup(ItemDebugCommands)
-	val pet = AnnotatedGroup(PetDebugCommands)
-	val regex = AnnotatedGroup(RepoDebugCommands)
+	val item = NobaClientCommandGroup(ItemDebugCommands)
+	val pet = NobaClientCommandGroup(PetDebugCommands)
+	val regex = NobaClientCommandGroup(RepoDebugCommands)
 }

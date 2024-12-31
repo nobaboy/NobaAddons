@@ -1,8 +1,7 @@
 package me.nobaboy.nobaaddons.commands
 
-import me.nobaboy.nobaaddons.commands.annotations.Command
-import me.nobaboy.nobaaddons.commands.impl.Context
-import me.nobaboy.nobaaddons.commands.annotations.Group
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 
@@ -10,12 +9,12 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 @Group("internal")
 object InternalCommands {
 	@Command
-	fun action(ctx: Context, id: String) {
+	fun action(id: String) {
 		ChatUtils.processClickAction(id)
 	}
 
 	@Command
-	fun copyError(ctx: Context, id: String) {
+	fun copyError(id: String) {
 		ErrorManager.copyError(id)
 	}
 }

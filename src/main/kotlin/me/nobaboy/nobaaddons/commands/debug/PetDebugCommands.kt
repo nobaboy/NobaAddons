@@ -1,11 +1,11 @@
 package me.nobaboy.nobaaddons.commands.debug
 
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.Group
+import dev.celestialfault.commander.annotations.RootCommand
+import dev.celestialfault.commander.annotations.AllowedRange
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.commands.annotations.Command
-import me.nobaboy.nobaaddons.commands.annotations.Group
-import me.nobaboy.nobaaddons.commands.annotations.IntRange
-import me.nobaboy.nobaaddons.commands.annotations.RootCommand
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
 import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.core.Rarity
@@ -47,13 +47,13 @@ object PetDebugCommands {
 	}
 
 	@Command
-	fun level(ctx: Context, xp: Double, rarity: Rarity, maxLevel: @IntRange(100, 200) Int = 100) {
+	fun level(ctx: Context, xp: Double, rarity: Rarity, maxLevel: @AllowedRange.Int(100, 200) Int = 100) {
 		val level = PetAPI.levelFromXp(xp, rarity, maxLevel)
 		ctx.source.sendFeedback("$rarity XP ${xp.addSeparators()} -> $level".toText())
 	}
 
 	@Command
-	fun xp(ctx: Context, level: @IntRange(1, 100) Int, rarity: Rarity) {
+	fun xp(ctx: Context, level: @AllowedRange.Int(100, 200) Int, rarity: Rarity) {
 		val xp = PetAPI.xpFromLevel(level, rarity, 200).addSeparators()
 		ctx.source.sendFeedback("$rarity LVL $level -> $xp".toText())
 	}

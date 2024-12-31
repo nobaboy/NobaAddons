@@ -1,10 +1,10 @@
 package me.nobaboy.nobaaddons.commands.debug
 
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.Group
+import dev.celestialfault.commander.annotations.RootCommand
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
-import me.nobaboy.nobaaddons.commands.annotations.Command
 import me.nobaboy.nobaaddons.commands.impl.Context
-import me.nobaboy.nobaaddons.commands.annotations.Group
-import me.nobaboy.nobaaddons.commands.annotations.RootCommand
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.darkAqua

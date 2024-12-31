@@ -1,12 +1,12 @@
 package me.nobaboy.nobaaddons.commands
 
 import com.mojang.authlib.HttpAuthenticationService
-import me.nobaboy.nobaaddons.commands.impl.AnnotatedCommand
-import me.nobaboy.nobaaddons.commands.annotations.Command
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.Greedy
 import me.nobaboy.nobaaddons.commands.impl.CommandUtil
-import me.nobaboy.nobaaddons.commands.impl.Context
-import me.nobaboy.nobaaddons.commands.annotations.GreedyString
+import me.nobaboy.nobaaddons.commands.impl.NobaClientCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -20,11 +20,12 @@ object SWikiCommand {
 	private val config get() = NobaConfigManager.config.general
 
 	fun init() {
-		CommandUtil.register(AnnotatedCommand(this::swiki, this))
+		CommandUtil.register(NobaClientCommand(this::swiki, this))
 	}
 
 	@Command(aliases = ["wikisearch"])
-	fun swiki(@Suppress("unused") ctx: Context, query: @GreedyString String) {
+	fun swiki(query: @Greedy String) {
+		val query = query.title()
 		val wikiName = tr("nobaaddons.officialWiki", "Official SkyBlock Wiki").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
 		val queryString = HttpAuthenticationService.buildQuery(mapOf("search" to query, "scope" to "internal"))
 		val link = "https://wiki.hypixel.net/index.php?$queryString"

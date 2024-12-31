@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.commands
 
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.Group
+import dev.celestialfault.commander.annotations.RootCommand
 import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.commands.annotations.Command
-import me.nobaboy.nobaaddons.commands.annotations.Group
-import me.nobaboy.nobaaddons.commands.annotations.RootCommand
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands
 import me.nobaboy.nobaaddons.commands.impl.*
 import me.nobaboy.nobaaddons.config.NobaConfigManager
@@ -35,60 +35,60 @@ object NobaCommand {
 	}
 
 	@RootCommand
-	fun root(ctx: Context) {
+	fun root() {
 		NobaMainScreen().queueOpen()
 	}
 
 	@Command
-	fun config(ctx: Context) {
+	fun config() {
 		NobaConfigManager.getConfigScreen(null).queueOpen()
 	}
 
 	@Command
-	fun keybinds(ctx: Context) {
+	fun keybinds() {
 		KeyBindsScreen(null).queueOpen()
 	}
 
 	@Command
-	fun hud(ctx: Context) {
+	fun hud() {
 		NobaHudScreen(null).queueOpen()
 	}
 
 	@Command
-	fun ping(ctx: Context) {
+	fun ping() {
 		PingUtils.sendPingPacket(sendMessage = true)
 	}
 
 	@Group
 	object Refill {
 		@Command
-		fun pearls(ctx: Context) {
-			RefillFromSacks.refill("ENDER_PEARL", 16)
+		fun pearls(count: Int = 16) {
+			RefillFromSacks.refill("ENDER_PEARL", count)
 		}
 
 		@Command
-		fun superboom(ctx: Context) {
-			RefillFromSacks.refill("SUPERBOOM_TNT", 64)
+		fun superboom(count: Int = 64) {
+			RefillFromSacks.refill("SUPERBOOM_TNT", count)
 		}
 
 		@Command
-		fun leaps(ctx: Context) {
-			RefillFromSacks.refill("SPIRIT_LEAP", 16)
+		fun leaps(count: Int = 16) {
+			RefillFromSacks.refill("SPIRIT_LEAP", count)
 		}
 
 		@Command
-		fun item(ctx: Context, item: String, count: Int = 64) {
+		fun item(item: String, count: Int = 64) {
 			RefillFromSacks.refill(item, count)
 		}
 	}
 
 	@Command
-	fun sendCoords(ctx: Context) {
+	fun sendCoords() {
 		ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
 	}
 
 	@Command
-	fun waypoint(ctx: Context, x: Double, y: Double, z: Double) {
+	fun waypoint(x: Double, y: Double, z: Double) {
 		if(!TemporaryWaypoint.enabled) {
 			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.notEnabled", "Temporary Waypoints are not enabled in the mod config"), color = Formatting.RED)
 			return
@@ -98,19 +98,19 @@ object NobaCommand {
 	}
 
 	@Command
-	fun lockMouse(ctx: Context) {
+	fun lockMouse() {
 		MouseLock.lockMouse()
 	}
 
 	@Group("mythological", "mytho")
 	object Diana {
 		@Command
-		fun resetWarps(ctx: Context) {
+		fun resetWarps() {
 			BurrowWarpLocations.unlockAll()
 		}
 
 		@Command
-		fun clearBurrows(ctx: Context) {
+		fun clearBurrows() {
 			BurrowAPI.reset()
 			InquisitorWaypoints.reset()
 			BurrowWaypoints.reset()
@@ -121,23 +121,23 @@ object NobaCommand {
 	@Group(aliases = ["ss"])
 	object SimonSays {
 		@Command
-		fun clear(ctx: Context) {
+		fun clear() {
 			SimonSaysTimer.clearTimes()
 		}
 
 		@Command
-		fun average(ctx: Context) {
+		fun average() {
 			SimonSaysTimer.sendAverage()
 		}
 
 		@Command(aliases = ["pb"])
-		fun personalBest(ctx: Context) {
+		fun personalBest() {
 			SimonSaysTimer.sendPersonalBest()
 		}
 	}
 
 	@Command
-	fun day(ctx: Context) {
+	fun day() {
 		val day = MCUtils.world?.day?.addSeparators()
 		if(day == null) {
 			ChatUtils.addMessage(tr("nobaaddons.command.currentDay.unknown", "I can't figure out what the current lobby day is!"))
@@ -146,7 +146,7 @@ object NobaCommand {
 		ChatUtils.addMessage(tr("nobaaddons.command.currentDay", "This lobby is at day $day"))
 	}
 
-	val repo = AnnotatedGroup(RepoCommands)
-	val debug = AnnotatedGroup(DebugCommands)
-	val internal = AnnotatedGroup(InternalCommands)
+	val repo = NobaClientCommandGroup(RepoCommands)
+	val debug = NobaClientCommandGroup(DebugCommands)
+	val internal = NobaClientCommandGroup(InternalCommands)
 }

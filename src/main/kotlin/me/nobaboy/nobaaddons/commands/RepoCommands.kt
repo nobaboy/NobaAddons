@@ -1,8 +1,7 @@
 package me.nobaboy.nobaaddons.commands
 
-import me.nobaboy.nobaaddons.commands.annotations.Command
-import me.nobaboy.nobaaddons.commands.impl.Context
-import me.nobaboy.nobaaddons.commands.annotations.Group
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
@@ -15,13 +14,13 @@ import net.minecraft.util.Formatting
 @Group("repo")
 object RepoCommands {
 	@Command
-	suspend fun update(ctx: Context, force: Boolean = false) {
+	suspend fun update(force: Boolean = false) {
 		ChatUtils.addMessage(tr("nobaaddons.repo.updateStarted", "Updating repository..."))
 		RepoManager.update(true, force)
 	}
 
 	@Command
-	fun info(ctx: Context) {
+	fun info() {
 		val commit = RepoManager.commit
 		if(commit == "backup-repo") {
 			ChatUtils.addMessage(tr("nobaaddons.repo.usingBackup", "Using backup repository; some features might not work!"), color = Formatting.YELLOW)
