@@ -63,18 +63,18 @@ object NobaCommand {
 	@Group
 	object Refill {
 		@Command
-		fun pearls(count: Int = 16) {
-			RefillFromSacks.refill("ENDER_PEARL", count)
+		fun pearls() {
+			RefillFromSacks.refill("ENDER_PEARL", 16)
 		}
 
 		@Command
-		fun superboom(count: Int = 64) {
-			RefillFromSacks.refill("SUPERBOOM_TNT", count)
+		fun superboom() {
+			RefillFromSacks.refill("SUPERBOOM_TNT", 64)
 		}
 
 		@Command
-		fun leaps(count: Int = 16) {
-			RefillFromSacks.refill("SPIRIT_LEAP", count)
+		fun leaps() {
+			RefillFromSacks.refill("SPIRIT_LEAP", 16)
 		}
 
 		@Command
