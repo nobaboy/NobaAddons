@@ -22,13 +22,16 @@ abstract class AbstractEventDispatcher<T : Event, R : Any?>(
 	 */
 	protected val gracefulExceptions: Boolean = true,
 ) {
-	protected val listeners: MutableList<(T) -> Unit> = mutableListOf()
+	private val lock = Any()
+	private var listeners: Array<(T) -> Unit> = emptyArray()
 
 	open fun register(listener: (T) -> Unit) {
-		listeners.add(listener)
+		synchronized(lock) {
+			listeners = listeners.plus(listener)
+		}
 	}
 
-	protected open fun executeListeners(event: T) {
+	protected fun executeListeners(event: T) {
 		listeners.forEach {
 			try {
 				it(event)
