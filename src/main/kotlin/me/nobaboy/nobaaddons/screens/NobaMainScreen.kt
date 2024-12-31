@@ -4,6 +4,7 @@ import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
+import me.nobaboy.nobaaddons.screens.notifications.ChatNotificationsScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -33,6 +34,7 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 		private val CONFIGURATION_TEXT = tr("nobaaddons.screen.main.button.config", "Open Config")
 		private val EDIT_LOCATIONS_TEXT = tr("nobaaddons.screen.main.button.hud", "Edit HUD")
 		private val EDIT_KEYBINDS_TEXT = tr("nobaaddons.screen.main.button.keybinds", "Key Binds")
+		private val EDIT_NOTIFICATIONS_TEXT = tr("nobaaddons.screen.main.button.chatNotifications", "Chat Notifications")
 		private val SOURCE_TEXT = tr("nobaaddons.screen.main.button.github", "GitHub")
 		private val ISSUES_TEXT = tr("nobaaddons.screen.main.button.issues", "Report Issue")
 		private val MODRINTH_TEXT = tr("nobaaddons.screen.main.button.modrinth", "Modrinth")
@@ -52,12 +54,9 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 		val adder = gridWidget.createAdder(2)
 
 		adder.add(ButtonWidget.builder(CONFIGURATION_TEXT) { openConfig() }.width(BUTTON_WIDTH).build(), 2)
-		if(MCUtils.world != null) {
-			adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openHudEditor() }.width(BUTTON_WIDTH_HALF).build())
-			adder.add(ButtonWidget.builder(EDIT_KEYBINDS_TEXT) { openKeybindsEditor() }.width(BUTTON_WIDTH_HALF).build())
-		} else {
-			adder.add(ButtonWidget.builder(EDIT_KEYBINDS_TEXT) { openKeybindsEditor() }.width(BUTTON_WIDTH).build(), 2)
-		}
+		if(MCUtils.world != null) adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openHudEditor() }.width(BUTTON_WIDTH).build(), 2)
+		adder.add(ButtonWidget.builder(EDIT_NOTIFICATIONS_TEXT) { openNotificationsEditor() }.width(BUTTON_WIDTH_HALF).build())
+		adder.add(ButtonWidget.builder(EDIT_KEYBINDS_TEXT) { openKeybindsEditor() }.width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(SOURCE_TEXT, ConfirmLinkScreen.opening(this, GITHUB_ROOT)).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ISSUES_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/issues")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(MODRINTH_TEXT, ConfirmLinkScreen.opening(this, "https://modrinth.com/mod/nobaaddons")).width(BUTTON_WIDTH_HALF).build())
@@ -105,5 +104,9 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 
 	private fun openHudEditor() {
 		client?.setScreen(NobaHudScreen(this))
+	}
+
+	private fun openNotificationsEditor() {
+		client?.setScreen(ChatNotificationsScreen(this))
 	}
 }

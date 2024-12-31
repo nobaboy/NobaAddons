@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.commands.debug
 
-import me.nobaboy.nobaaddons.commands.internal.Command
-import me.nobaboy.nobaaddons.commands.internal.Group
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.ui.data.TextElement
@@ -11,8 +11,10 @@ import net.minecraft.text.Text
 import net.minecraft.util.Colors
 
 @Suppress("unused")
-object HudDebugCommands : Group("hud") {
-	val addElement = Command("addelement") {
+@Group("hud")
+object HudDebugCommands {
+	@Command
+	fun addElement() {
 		UIManager.add(object : TextHudElement(TextElement(color = listOf(
 			Colors.WHITE, Colors.GREEN, Colors.LIGHT_RED, Colors.GRAY,
 			Colors.ALTERNATE_WHITE, Colors.BLUE, Colors.LIGHT_YELLOW,
@@ -27,7 +29,8 @@ object HudDebugCommands : Group("hud") {
 		})
 	}
 
-	val clear = Command("clear") {
+	@Command
+	fun clear() {
 		UIManager.removeAll { it.name.string == "Debug HUD" }
 	}
 }

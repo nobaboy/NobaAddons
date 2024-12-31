@@ -1,7 +1,5 @@
 package me.nobaboy.nobaaddons.features.visuals
 
-import com.mojang.brigadier.arguments.DoubleArgumentType
-import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
@@ -20,16 +18,15 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-object TemporaryWaypoint {
+object TemporaryWaypoints {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.temporaryWaypoints
-	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
+	val enabled: Boolean get() = config.enabled
 
 	private val chatCoordsPattern by Regex(
 		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
@@ -45,6 +42,7 @@ object TemporaryWaypoint {
 
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
+		if(!SkyBlockAPI.inSkyBlock) return
 		if(DianaAPI.isActive) return
 
 		chatCoordsPattern.onPartialMatch(message) {
@@ -74,25 +72,17 @@ object TemporaryWaypoint {
 		waypoints.forEach { waypoint ->
 			waypoint.location.let {
 				val distance = it.distanceToPlayer()
+				val formattedDistance = distance.toInt().addSeparators()
 
 				RenderUtils.renderWaypoint(context, it, color, throughBlocks = true)
 				RenderUtils.renderText(it.center().raise(), waypoint.text, color, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
-
-				val formattedDistance = distance.toInt().addSeparators()
 				RenderUtils.renderText(it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 		}
 	}
 
-	fun addWaypoint(ctx: CommandContext<FabricClientCommandSource>) {
-		if(!enabled) return
-
-		val x = DoubleArgumentType.getDouble(ctx, "x")
-		val y = DoubleArgumentType.getDouble(ctx, "y")
-		val z = DoubleArgumentType.getDouble(ctx, "z")
-
-		waypoints.add(Waypoint(NobaVec(x, y, z), "Temporary Waypoint", Timestamp.now(), null))
-		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will last until you walk near it."))
+	fun addWaypoint(x: Double, y: Double, z: Double, name: String) {
+		waypoints.add(Waypoint(NobaVec(x, y, z), name, Timestamp.now(), null))
 	}
 
 	data class Waypoint(val location: NobaVec, val text: String, val timestamp: Timestamp, val duration: Duration?) {

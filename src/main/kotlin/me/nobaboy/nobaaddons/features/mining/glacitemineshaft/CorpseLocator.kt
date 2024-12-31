@@ -41,11 +41,12 @@ object CorpseLocator {
 	}
 
 	private fun onSecondPassed(event: SecondPassedEvent) {
-		val client = event.client
-		if(!enabled || client.player == null) return
+		if(!enabled) return
 
-		getCorpses(client.player!!)
-		shareCorpse(client.player!!)
+		event.client.player?.let {
+			getCorpses(it)
+			shareCorpse(it)
+		}
 	}
 
 	private fun onChatMessage(message: String) {
@@ -109,10 +110,10 @@ object CorpseLocator {
 		if(PartyAPI.party == null) return
 		if(MineshaftWaypoints.waypoints.isEmpty()) return
 
-		val vec = player.getNobaVec()
+		val location = player.getNobaVec()
 		val closestCorpse = corpses
-			.filter { !it.shared && it.entity.getNobaVec().distance(vec) <= 5 }
-			.minByOrNull { it.entity.getNobaVec().distance(vec) } ?: return
+			.filter { !it.shared && it.entity.getNobaVec().distance(location) <= 5 }
+			.minByOrNull { it.entity.getNobaVec().distance(location) } ?: return
 
 		val (x, y, z) = closestCorpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
 

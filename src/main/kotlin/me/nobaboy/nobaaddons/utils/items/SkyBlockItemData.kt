@@ -40,14 +40,14 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 		}
 	}
 
-	// (level to (currentValue to nextTier?))
-	// e.g. { stackingEnchant = (1 to (0 to 100_000)) }
-	val stackingEnchantProgress: Map<StackingEnchant, Pair<Int, Pair<Int, Int?>>> by CacheOf(this::nbt) {
+	// (level, currentValue, nextTier?)
+	// e.g. { stackingEnchant = (1, 0, 100_000) }
+	val stackingEnchantProgress: Map<StackingEnchant, Triple<Int, Int, Int?>> by CacheOf(this::nbt) {
 		enchantments.mapNotNull {
 			val enchant = it.key as? StackingEnchant ?: return@mapNotNull null
 			val progress = nbt.getInt(enchant.nbtKey)
 			val nextTier = enchant.tiers.firstOrNull { it > progress }
-			enchant to (it.value to (progress to nextTier))
+			enchant to Triple(it.value, progress, nextTier)
 		}.toMap()
 	}
 
