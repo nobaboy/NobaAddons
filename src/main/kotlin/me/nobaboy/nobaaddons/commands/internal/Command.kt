@@ -1,9 +1,7 @@
 package me.nobaboy.nobaaddons.commands.internal
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import com.mojang.brigadier.context.CommandContext
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
@@ -14,20 +12,16 @@ class Command(
 	override val name: String,
 	override val aliases: List<String> = listOf(),
 	override val enabled: Boolean = true,
-	private val commandBuilder: CommandBuilder = DEFAULT_BUILDER,
-	private val callback: (CommandContext<FabricClientCommandSource>) -> Unit,
+	private val builder: CommandBuilder = DEFAULT_BUILDER,
+	private val callback: (Context) -> Unit,
 ) : ICommand {
-	override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int {
-		try {
-			callback(ctx)
-		} catch(e: Throwable) {
-			ErrorManager.logError("Command '$name' threw an unhandled exception", e, ignorePreviousErrors = true)
-		}
+	override fun execute(ctx: Context): Int {
+		ICommand.executeCatching(name, ctx, callback)
 		return 0
 	}
 
 	override fun create(name: String): LiteralArgumentBuilder<FabricClientCommandSource> {
-		return commandBuilder(this, ClientCommandManager.literal(name))
+		return builder(this, ClientCommandManager.literal(name))
 	}
 
 	companion object {
@@ -39,13 +33,13 @@ class Command(
 			aliases: List<String> = emptyList(),
 			enabled: Boolean = true,
 			commandBuilder: CommandBuilder = DEFAULT_BUILDER,
-			command: suspend (CommandContext<FabricClientCommandSource>) -> Unit
+			command: suspend (Context) -> Unit
 		) = Command(name, aliases, enabled, commandBuilder) {
 			NobaAddons.runAsync {
 				try {
 					command(it)
 				} catch(e: Throwable) {
-					ErrorManager.logError("Command '$name' threw an unhandled exception", e, ignorePreviousErrors = true)
+					ICommand.handleCaught(name, e)
 				}
 			}
 		}

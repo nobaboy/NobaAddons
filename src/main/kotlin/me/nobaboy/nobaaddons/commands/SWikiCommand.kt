@@ -29,7 +29,7 @@ object SWikiCommand {
 		CommandUtil.register(command)
 	}
 
-	private val command = Command("swiki", listOf("wikisearch"), commandBuilder = commandBuilder) {
+	private val command = Command("swiki", listOf("wikisearch"), builder = commandBuilder) {
 		val query = StringArgumentType.getString(it, "query").title()
 		val wikiName = tr("nobaaddons.officialWiki", "Official SkyBlock Wiki").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
 		val queryString = HttpAuthenticationService.buildQuery(mapOf("search" to query, "scope" to "internal"))

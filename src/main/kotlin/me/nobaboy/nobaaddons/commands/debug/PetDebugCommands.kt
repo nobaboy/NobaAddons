@@ -46,7 +46,7 @@ object PetDebugCommands : Group("pet") {
 
 	val level = Command(
 		"level",
-		commandBuilder = {
+		builder = {
 			it.then(ClientCommandManager.argument("xp", DoubleArgumentType.doubleArg())
 				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
 					.then(ClientCommandManager.argument("max", IntegerArgumentType.integer(100, 200))
@@ -63,7 +63,7 @@ object PetDebugCommands : Group("pet") {
 
 	val xp = Command(
 		"xp",
-		commandBuilder = {
+		builder = {
 			it.then(ClientCommandManager.argument("level", IntegerArgumentType.integer(1, 100))
 				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
 					.executes(this::execute)))

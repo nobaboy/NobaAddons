@@ -1,8 +1,6 @@
 package me.nobaboy.nobaaddons.commands.internal
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import com.mojang.brigadier.context.CommandContext
-import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import kotlin.reflect.full.isSubclassOf
@@ -33,22 +31,15 @@ abstract class Group(
 		val root = ClientCommandManager.literal(name)
 		CommandUtil.addAll(root, commands)
 		this.root?.let { command ->
-			root.executes { ctx ->
-				try {
-					command.invoke(ctx)
-				} catch(e: Throwable) {
-					ErrorManager.logError("Command '$name' threw an unhandled exception", e, ignorePreviousErrors = true)
-				}
-				0
-			}
+			root.executes { ctx -> ICommand.executeCatching(name, ctx, command::invoke) }
 		}
 		return root
 	}
 
 	open val root: RootCommand? = null
-	final override fun execute(ctx: CommandContext<FabricClientCommandSource>): Int = throw UnsupportedOperationException()
+	final override fun execute(ctx: Context): Int = throw UnsupportedOperationException()
 
 	fun interface RootCommand {
-		fun invoke(ctx: CommandContext<FabricClientCommandSource>)
+		fun invoke(ctx: Context)
 	}
 }
