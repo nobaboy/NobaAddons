@@ -9,6 +9,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Chat Notifications - celeste
+- `/noba day` to display the lobby day count (since Hypixel doesn't send the information for the line F3 shows this on) - celeste
+
+### Changed
+
+- Added `/noba gui` as an alias to `/noba hud` - celeste
+- Reworked commands to use [commander](https://github.com/celestialfault/commander) - celeste
+- Rewrote the HUD internals to make adding new elements easier - celeste
+- Changed how HUD elements render to properly handle different window sizes - celeste
+  - This will cause existing info boxes to be in the top left corner when updating
+
+## 0.1.0-Alpha.12 - 2024-12-29
+
+### Added
+
 - Enchantment Tooltips - celeste
 
 ### Fixed

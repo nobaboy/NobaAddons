@@ -1,22 +1,31 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.screens.hud.elements.TextMode
-import me.nobaboy.nobaaddons.screens.hud.elements.data.TextElement
-import me.nobaboy.nobaaddons.screens.hud.elements.impl.TextHud
+import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.tr
+import net.minecraft.client.gui.DrawContext
+import net.minecraft.text.Text
 
-class InfoBoxHud(val textElement: TextElement) : TextHud(textElement.element) {
+class InfoBoxHudElement(val textElement: InfoBoxElement) : TextHudElement(textElement) {
 	private val functionPattern = Regex("(?<function>\\{[A-z0-9]+})")
-	private val colorCodePattern = Regex("&&[0-9a-fk-or]", RegexOption.IGNORE_CASE)
+	private val colorCodePattern = Regex("&&[0-9a-fk-orz]", RegexOption.IGNORE_CASE)
 
-	override val enabled: Boolean get() = MCUtils.client.currentScreen !is InfoBoxesScreen
+	override val name: Text = tr("nobaaddons.infoBox", "Info Box")
+	override val size: Pair<Int, Int> get() = getBoundsFrom(text)
 
-	override val text: String get() = compileText(textElement.text)
-	override val textMode: TextMode get() = textElement.textMode
-	override val outlineColor: Int get() = textElement.outlineColor
+	override fun shouldRender(): Boolean =
+		super.shouldRender() && MCUtils.client.currentScreen !is InfoBoxesScreen
+
+	val text: List<Text> get() =
+		textElement.text.replace("\\n", "\n").split("\n").map { compileText(it).toText() }
+
+	override fun renderText(context: DrawContext) {
+		renderLines(context, text)
+	}
 
 	private fun replaceColorCodes(text: String): String {
 		return colorCodePattern.replace(text) { matchResult ->

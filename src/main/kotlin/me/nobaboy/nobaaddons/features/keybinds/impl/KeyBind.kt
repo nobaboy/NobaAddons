@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.screens.keybinds.impl
+package me.nobaboy.nobaaddons.features.keybinds.impl
 
 import com.google.gson.annotations.Expose
 import me.nobaboy.nobaaddons.utils.CooldownManager

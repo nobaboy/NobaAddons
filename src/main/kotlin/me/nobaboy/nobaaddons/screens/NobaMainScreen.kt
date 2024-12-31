@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.screens
 import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.screens.hud.ElementManager
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
 import me.nobaboy.nobaaddons.screens.notifications.ChatNotificationsScreen
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -92,7 +91,6 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 	}
 
 	override fun close() {
-		ElementManager.loadElements()
 		client!!.setScreen(parent)
 	}
 

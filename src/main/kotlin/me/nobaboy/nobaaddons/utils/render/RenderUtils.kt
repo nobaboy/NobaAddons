@@ -38,6 +38,19 @@ import kotlin.time.Duration.Companion.seconds
 object RenderUtils {
 	val ALLOCATOR = BufferAllocator(1536)
 
+	/**
+	 * Runs [withScale] with the provided [scale]; this is shorthand for wrapping `withScale` in a try-finally
+	 * using [startScale] and [endScale].
+	 */
+	inline fun scaled(context: DrawContext, scale: Float, withScale: () -> Unit) {
+		startScale(context, scale)
+		try {
+			withScale()
+		} finally {
+			endScale(context)
+		}
+	}
+
 	fun startScale(context: DrawContext, scale: Float) {
 		context.matrices.push()
 		context.matrices.scale(scale, scale, 1.0f)
@@ -57,9 +70,9 @@ object RenderUtils {
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
 	) {
-		if(applyScaling) startScale(context, scale)
+		if(applyScaling && scale != 1f) startScale(context, scale)
 		context.drawText(MCUtils.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color, shadow)
-		if(applyScaling) endScale(context)
+		if(applyScaling && scale != 1f) endScale(context)
 	}
 	fun drawText(
 		context: DrawContext,
