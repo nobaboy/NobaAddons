@@ -41,6 +41,7 @@ object TemporaryWaypoint {
 
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
+		if(!SkyBlockAPI.inSkyBlock) return
 		if(DianaAPI.isActive) return
 
 		chatCoordsPattern.onPartialMatch(message) {
