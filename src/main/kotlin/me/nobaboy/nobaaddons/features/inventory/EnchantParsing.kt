@@ -133,11 +133,11 @@ object EnchantParsing {
 	) {
 		private val stackingProgress: MutableText? get() {
 			if(enchant is StackingEnchant) {
-				val (_, progress) = item.getSkyBlockItem()?.stackingEnchantProgress[enchant] ?: return null
+				val (_, current, progress) = item.getSkyBlockItem()?.stackingEnchantProgress[enchant] ?: return null
 				return buildText {
 					append("(")
-					append(progress.first.toAbbreviatedString(millionPrecision = 1))
-					progress.second?.let {
+					append(current.toAbbreviatedString(millionPrecision = 1))
+					progress?.let {
 						append("/${it.toAbbreviatedString(millionPrecision = 1)}")
 					}
 					append(")")
