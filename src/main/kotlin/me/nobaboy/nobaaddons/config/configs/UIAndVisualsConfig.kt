@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
+import me.nobaboy.nobaaddons.features.inventory.EnchantDisplayMode
 import me.nobaboy.nobaaddons.utils.NobaColor
 import java.awt.Color
 
@@ -22,6 +23,9 @@ class UIAndVisualsConfig {
 
 	@SerialEntry
 	val itemPosition = FirstPersonItemPosition()
+
+	@SerialEntry
+	val enchantments = Enchantments()
 
 	class TemporaryWaypoints {
 		@SerialEntry
@@ -174,5 +178,34 @@ class UIAndVisualsConfig {
 
 		@SerialEntry
 		var cancelDrinkAnimation: Boolean = false
+	}
+
+	class Enchantments {
+		@SerialEntry
+		var parseItemEnchants: Boolean = false
+
+		@SerialEntry
+		var replaceRomanNumerals: Boolean = false
+
+		@SerialEntry
+		var displayMode: EnchantDisplayMode = EnchantDisplayMode.NORMAL
+
+		@SerialEntry
+		var showDescriptions: Boolean = true
+
+		@SerialEntry
+		var showStackingProgress: Boolean = true
+
+		@SerialEntry
+		var maxColor: Color = NobaColor.GOLD.toColor()
+
+		@SerialEntry
+		var goodColor: Color = NobaColor.GOLD.toColor()
+
+		@SerialEntry
+		var averageColor: Color = NobaColor.BLUE.toColor()
+
+		@SerialEntry
+		var badColor: Color = NobaColor.GRAY.toColor()
 	}
 }

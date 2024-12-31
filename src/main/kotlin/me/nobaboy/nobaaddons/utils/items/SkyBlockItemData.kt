@@ -4,10 +4,11 @@ import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.attributes.Attribute
 import me.nobaboy.nobaaddons.core.enchants.EnchantBase
 import me.nobaboy.nobaaddons.core.enchants.Enchant
+import me.nobaboy.nobaaddons.core.enchants.StackingEnchant
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.nbtCompound
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.nbt
 import me.nobaboy.nobaaddons.utils.properties.CacheOf
 import net.minecraft.component.type.LoreComponent
 import net.minecraft.item.ItemStack
@@ -18,7 +19,7 @@ import java.lang.ref.WeakReference
 private val RARITY_PATTERN by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("item_tag")
 
 class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
-	private val nbt: NbtCompound get() = item.get()!!.nbtCompound.nbt
+	private val nbt: NbtCompound get() = item.get()!!.nbt.nbt
 	private val lore: LoreComponent get() = item.get()!!.lore
 
 	val attributes: Map<Attribute, Int> by CacheOf(this::nbt) {
@@ -37,6 +38,17 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 				Enchant.getById(key)?.let { put(it, compound.getInt(key)) }
 			}
 		}
+	}
+
+	// (level to (currentValue to nextTier?))
+	// e.g. { stackingEnchant = (1 to (0 to 100_000)) }
+	val stackingEnchantProgress: Map<StackingEnchant, Pair<Int, Pair<Int, Int?>>> by CacheOf(this::nbt) {
+		enchantments.mapNotNull {
+			val enchant = it.key as? StackingEnchant ?: return@mapNotNull null
+			val progress = nbt.getInt(enchant.nbtKey)
+			val nextTier = enchant.tiers.firstOrNull { it > progress }
+			enchant to (it.value to (progress to nextTier))
+		}.toMap()
 	}
 
 	// TODO: Fix this as Hypixel changed how gemstones are stored in the nbt
