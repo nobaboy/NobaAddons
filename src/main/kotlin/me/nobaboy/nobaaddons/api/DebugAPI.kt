@@ -8,6 +8,7 @@ import net.minecraft.sound.SoundCategory
 import net.minecraft.util.Identifier
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
+import java.util.function.Supplier
 import javax.swing.JFrame
 import javax.swing.JTextArea
 
@@ -42,6 +43,10 @@ object DebugAPI {
 	fun openSoundDebugMenu() {
 		debugWindow?.let { if(it.isVisible) return }
 		debugWindow = SoundHistory()
+	}
+
+	object RequiresAWT : Supplier<Boolean> {
+		override fun get(): Boolean = isAwtAvailable
 	}
 
 	data class Sound(val id: Identifier, val category: SoundCategory, val pitch: Float, val volume: Float, val canceled: Boolean) {

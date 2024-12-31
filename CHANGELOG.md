@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Added `/noba gui` as an alias to `/noba hud` - celeste
+- Reworked commands to use [commander](https://github.com/celestialfault/commander) - celeste
 - Rewrote the HUD internals to make adding new elements easier - celeste
 - Changed how HUD elements render to properly handle different window sizes - celeste
   - This will cause existing info boxes to be in the top left corner when updating

@@ -35,7 +35,7 @@ repositories {
 	mavenCentral()
 	maven("https://maven.isxander.dev/releases") // YACL
 	maven("https://maven.terraformersmc.com/") // ModMenu
-	maven("https://maven.celestialfault.dev/releases") // CelestialConfig
+	maven("https://maven.celestialfault.dev/releases") // CelestialConfig, Commander
 	maven("https://repo.hypixel.net/repository/Hypixel/") // Hypixel Mod API
 	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
 	maven("https://repo.nea.moe/releases") // mc-auto-translations (which doesn't document anywhere that you need this!!!!)
@@ -69,6 +69,7 @@ dependencies {
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
+	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true)
 	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
 	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
 

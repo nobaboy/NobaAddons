@@ -1,24 +1,28 @@
 package me.nobaboy.nobaaddons.commands.debug
 
-import me.nobaboy.nobaaddons.commands.internal.Command
-import me.nobaboy.nobaaddons.commands.internal.Group
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.repo.Repo
 
 @Suppress("unused")
-object RepoDebugCommands : Group("repo") {
-	val dumpKnownStrings = Command("dumpstrings") {
+@Group("repo")
+object RepoDebugCommands {
+	@Command
+	fun dumpStrings() {
 		println("--- KNOWN STRING KEYS ---")
 		Repo.knownStringKeys.forEach(::println)
 		println("-------------------------")
 	}
 
-	val dumpKnownRegex = Command("dumpregex") {
+	@Command
+	fun dumpRegex() {
 		println("--- KNOWN REGEX KEYS ---")
 		Repo.knownRegexKeys.forEach(::println)
 		println("------------------------")
 	}
 
-	val dumpObjects = Command("dumpobjects") {
+	@Command
+	fun dumpObjects() {
 		println("--- KNOWN REPO OBJECTS ---")
 		Repo.objects.forEach(::println)
 		println("--------------------------")

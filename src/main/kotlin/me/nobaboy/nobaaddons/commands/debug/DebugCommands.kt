@@ -1,12 +1,15 @@
 package me.nobaboy.nobaaddons.commands.debug
 
 import com.mojang.brigadier.context.CommandContext
+import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.EnabledIf
+import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.commands.internal.Command
-import me.nobaboy.nobaaddons.commands.internal.Group
+import me.nobaboy.nobaaddons.commands.impl.Context
+import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.ui.TextHudElement
@@ -26,7 +29,8 @@ import net.minecraft.util.Formatting
 import kotlin.jvm.optionals.getOrNull
 
 @Suppress("unused")
-object DebugCommands : Group("debug") {
+@Group("debug")
+object DebugCommands {
 	internal fun MutableText.data(vararg items: Pair<String, Any?>) {
 		items.forEach {
 			append(Text.literal("${it.first}: ").formatted(Formatting.BLUE))
@@ -45,22 +49,22 @@ object DebugCommands : Group("debug") {
 		source.sendFeedback(text)
 	}
 
-	val item = ItemDebugCommands
-	val pet = PetDebugCommands
-	val regex = RepoDebugCommands
+	@Command
+	fun party(ctx: Context) {
+		PartyAPI.listMembers()
+	}
 
-	val party = Command("party") { PartyAPI.listMembers() }
-
-	val mayor = Command("mayor") {
+	@Command
+	fun mayor(ctx: Context) {
 		val mayor = MayorAPI.currentMayor
 		val minister = MayorAPI.currentMinister
 
 		if(mayor == Mayor.UNKNOWN && minister == Mayor.UNKNOWN) {
-			it.source.sendError(Text.literal("Current Mayor and Minister are still unknown"))
-			return@Command
+			ctx.source.sendError(Text.literal("Current Mayor and Minister are still unknown"))
+			return
 		}
 
-		it.dumpInfo(
+		ctx.dumpInfo(
 			"Current Mayor" to mayor.mayorName,
 			"Mayor Perks" to mayor.activePerks,
 			"Current Minister" to minister.mayorName,
@@ -68,11 +72,16 @@ object DebugCommands : Group("debug") {
 		)
 	}
 
-	val sounds = Command("sounds", enabled = DebugAPI.isAwtAvailable) { DebugAPI.openSoundDebugMenu() }
+	@Command
+	@EnabledIf(DebugAPI.RequiresAWT::class)
+	fun sounds(ctx: Context) {
+		DebugAPI.openSoundDebugMenu()
+	}
 
-	val location = Command("location") {
+	@Command
+	fun location(ctx: Context) {
 		val location = DebugAPI.lastLocationPacket
-		it.dumpInfo(
+		ctx.dumpInfo(
 			"Server" to location.serverName,
 			"Type" to location.serverType.getOrNull(),
 			"Lobby" to location.lobbyName.getOrNull(),
@@ -83,12 +92,14 @@ object DebugCommands : Group("debug") {
 		)
 	}
 
+	@Command
 	@OptIn(UntranslatedMessage::class)
-	val clickaction = Command("clickaction") {
+	fun clickAction(ctx: Context) {
 		ChatUtils.addMessageWithClickAction("Click me!") { ChatUtils.addMessage("You clicked me!") }
 	}
 
-	val error = Command("error") {
+	@Command
+	fun error(ctx: Context) {
 		ErrorManager.logError(
 			"Debug error",
 			Error("Intentional debug error"),
@@ -100,11 +111,13 @@ object DebugCommands : Group("debug") {
 		)
 	}
 
-	val updateNotification = Command("updatenotification") {
+	@Command
+	fun updateNotification(ctx: Context) {
 		UpdateNotifier.sendUpdateNotification()
 	}
 
-	val uiElement = Command("adduielement") {
+	@Command
+	fun addUiElement(ctx: Context) {
 		// TextElement would normally be in an AbstractConfig, but this is a debug command,
 		// so we don't care if it doesn't have any persistent position state.
 		UIManager.add(object : TextHudElement(TextElement(color = listOf(
@@ -120,4 +133,8 @@ object DebugCommands : Group("debug") {
 			override val size: Pair<Int, Int> = 100 to 25
 		})
 	}
+
+	val item = NobaClientCommandGroup(ItemDebugCommands)
+	val pet = NobaClientCommandGroup(PetDebugCommands)
+	val regex = NobaClientCommandGroup(RepoDebugCommands)
 }
