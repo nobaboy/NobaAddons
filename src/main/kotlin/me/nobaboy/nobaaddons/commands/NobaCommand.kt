@@ -78,7 +78,7 @@ object NobaCommand {
 
 		@Command
 		fun item(item: String, count: Int = 64) {
-			RefillFromSacks.refill(item, count)
+			RefillFromSacks.refill(item.uppercase(), count)
 		}
 	}
 
