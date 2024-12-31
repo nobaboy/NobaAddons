@@ -39,7 +39,7 @@ abstract class TextHudElement(element: AbstractTextElement<*>) : HudElement(elem
 		val x = this.x + x + let {
 			if(alignment == ElementAlignment.RIGHT) this.size.first - text.getWidth() else 0
 		}
-		val y = this.y + y + line * (MCUtils.textRenderer.fontHeight + 1)
+		val y = (this.y + y + line * (MCUtils.textRenderer.fontHeight + 1) * scale).toInt()
 
 		when(textShadow) {
 			TextShadow.OUTLINE -> RenderUtils.drawOutlinedText(context, text, x, y, scale, NobaColor(color), NobaColor(outlineColor), applyScaling = false)
