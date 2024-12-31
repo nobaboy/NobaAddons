@@ -99,7 +99,7 @@ class ChatNotificationsListWidget(
 		}.size(104, 20).build()
 
 		private val modeButton = ButtonWidget.builder(notification.mode.toString().toText()) {
-			changeMode(it)
+			changeMode()
 		}.size(104, 20).build()
 
 		private val deleteButton = ButtonWidget.builder(CommonText.SCREEN_DELETE) {
@@ -119,7 +119,7 @@ class ChatNotificationsListWidget(
 			hasChanges = true
 		}
 
-		private fun changeMode(button: ButtonWidget) {
+		private fun changeMode() {
 			val newMode = notification.mode.next
 			notification.mode = newMode
 			modeButton.message = newMode.toString().toText()
