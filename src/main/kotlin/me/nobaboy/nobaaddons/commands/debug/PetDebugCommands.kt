@@ -5,8 +5,8 @@ import com.mojang.brigadier.arguments.IntegerArgumentType
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
-import me.nobaboy.nobaaddons.commands.internal.Command
-import me.nobaboy.nobaaddons.commands.internal.Group
+import me.nobaboy.nobaaddons.commands.internal.ExecutableCommand
+import me.nobaboy.nobaaddons.commands.internal.CommandGroup
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.rarityFormatted
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
@@ -17,7 +17,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.minecraft.text.Text
 
 @Suppress("unused")
-object PetDebugCommands : Group("pet") {
+object PetDebugCommands : CommandGroup("pet") {
 	override val root = RootCommand {
 		if(!SkyBlockAPI.inSkyBlock) {
 			it.source.sendError(Text.literal("You aren't in SkyBlock!"))
@@ -44,7 +44,7 @@ object PetDebugCommands : Group("pet") {
 		)
 	}
 
-	val level = Command(
+	val level = ExecutableCommand(
 		"level",
 		builder = {
 			it.then(ClientCommandManager.argument("xp", DoubleArgumentType.doubleArg())
@@ -61,7 +61,7 @@ object PetDebugCommands : Group("pet") {
 		it.source.sendFeedback("$rarity XP ${xp.addSeparators()} -> $level".toText())
 	}
 
-	val xp = Command(
+	val xp = ExecutableCommand(
 		"xp",
 		builder = {
 			it.then(ClientCommandManager.argument("level", IntegerArgumentType.integer(1, 100))

@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.commands.debug
 
 import com.mojang.brigadier.arguments.IntegerArgumentType
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
-import me.nobaboy.nobaaddons.commands.internal.Command
-import me.nobaboy.nobaaddons.commands.internal.Group
+import me.nobaboy.nobaaddons.commands.internal.ExecutableCommand
+import me.nobaboy.nobaaddons.commands.internal.CommandGroup
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.aqua
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
@@ -22,7 +22,7 @@ import net.minecraft.nbt.NbtString
 import net.minecraft.text.Text
 
 @Suppress("unused")
-object ItemDebugCommands : Group("item") {
+object ItemDebugCommands : CommandGroup("item") {
 	override val root = RootCommand {
 		val item = MCUtils.player!!.mainHandStack
 		if(item.isEmpty || !item.isSkyBlockItem) {
@@ -50,7 +50,7 @@ object ItemDebugCommands : Group("item") {
 		)
 	}
 
-	val nbt = Command(
+	val nbt = ExecutableCommand(
 		"nbt",
 		builder = {
 			it.executes(this::execute)
@@ -61,7 +61,7 @@ object ItemDebugCommands : Group("item") {
 		val item = MCUtils.player!!.mainHandStack
 		if(item.isEmpty) {
 			it.source.sendError(Text.literal("You aren't holding an item"))
-			return@Command
+			return@ExecutableCommand
 		}
 
 		// .getNbtPath() expects a server context, so we have to do this the slightly longer way around
@@ -77,7 +77,7 @@ object ItemDebugCommands : Group("item") {
 		})
 	}
 
-	val dumpLore = Command(
+	val dumpLore = ExecutableCommand(
 		"lore",
 		builder = {
 			it.executes(this::execute)
@@ -88,7 +88,7 @@ object ItemDebugCommands : Group("item") {
 		val item = MCUtils.player!!.mainHandStack
 		if(item.isEmpty || !item.contains(DataComponentTypes.LORE)) {
 			it.source.sendError(Text.literal("You aren't holding an item with lore"))
-			return@Command
+			return@ExecutableCommand
 		}
 
 		val line = runCatching { IntegerArgumentType.getInteger(it, "line") }.getOrNull()

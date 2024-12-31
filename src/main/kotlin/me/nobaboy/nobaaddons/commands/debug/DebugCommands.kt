@@ -5,8 +5,8 @@ import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.commands.internal.Command
-import me.nobaboy.nobaaddons.commands.internal.Group
+import me.nobaboy.nobaaddons.commands.internal.ExecutableCommand
+import me.nobaboy.nobaaddons.commands.internal.CommandGroup
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.ui.TextHudElement
@@ -26,7 +26,7 @@ import net.minecraft.util.Formatting
 import kotlin.jvm.optionals.getOrNull
 
 @Suppress("unused")
-object DebugCommands : Group("debug") {
+object DebugCommands : CommandGroup("debug") {
 	internal fun MutableText.data(vararg items: Pair<String, Any?>) {
 		items.forEach {
 			append(Text.literal("${it.first}: ").formatted(Formatting.BLUE))
@@ -49,15 +49,15 @@ object DebugCommands : Group("debug") {
 	val pet = PetDebugCommands
 	val regex = RepoDebugCommands
 
-	val party = Command("party") { PartyAPI.listMembers() }
+	val party = ExecutableCommand("party") { PartyAPI.listMembers() }
 
-	val mayor = Command("mayor") {
+	val mayor = ExecutableCommand("mayor") {
 		val mayor = MayorAPI.currentMayor
 		val minister = MayorAPI.currentMinister
 
 		if(mayor == Mayor.UNKNOWN && minister == Mayor.UNKNOWN) {
 			it.source.sendError(Text.literal("Current Mayor and Minister are still unknown"))
-			return@Command
+			return@ExecutableCommand
 		}
 
 		it.dumpInfo(
@@ -68,9 +68,9 @@ object DebugCommands : Group("debug") {
 		)
 	}
 
-	val sounds = Command("sounds", enabled = DebugAPI.isAwtAvailable) { DebugAPI.openSoundDebugMenu() }
+	val sounds = ExecutableCommand("sounds", enabled = DebugAPI.isAwtAvailable) { DebugAPI.openSoundDebugMenu() }
 
-	val location = Command("location") {
+	val location = ExecutableCommand("location") {
 		val location = DebugAPI.lastLocationPacket
 		it.dumpInfo(
 			"Server" to location.serverName,
@@ -84,11 +84,11 @@ object DebugCommands : Group("debug") {
 	}
 
 	@OptIn(UntranslatedMessage::class)
-	val clickaction = Command("clickaction") {
+	val clickaction = ExecutableCommand("clickaction") {
 		ChatUtils.addMessageWithClickAction("Click me!") { ChatUtils.addMessage("You clicked me!") }
 	}
 
-	val error = Command("error") {
+	val error = ExecutableCommand("error") {
 		ErrorManager.logError(
 			"Debug error",
 			Error("Intentional debug error"),
@@ -100,11 +100,11 @@ object DebugCommands : Group("debug") {
 		)
 	}
 
-	val updateNotification = Command("updatenotification") {
+	val updateNotification = ExecutableCommand("updatenotification") {
 		UpdateNotifier.sendUpdateNotification()
 	}
 
-	val uiElement = Command("adduielement") {
+	val uiElement = ExecutableCommand("adduielement") {
 		// TextElement would normally be in an AbstractConfig, but this is a debug command,
 		// so we don't care if it doesn't have any persistent position state.
 		UIManager.add(object : TextHudElement(TextElement(color = listOf(

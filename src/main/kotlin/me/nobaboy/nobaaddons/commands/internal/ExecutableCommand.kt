@@ -5,10 +5,10 @@ import me.nobaboy.nobaaddons.NobaAddons
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
-typealias CommandBuilder = Command.(LiteralArgumentBuilder<FabricClientCommandSource>) -> LiteralArgumentBuilder<FabricClientCommandSource>
+typealias CommandBuilder = ExecutableCommand.(LiteralArgumentBuilder<FabricClientCommandSource>) -> LiteralArgumentBuilder<FabricClientCommandSource>
 private val DEFAULT_BUILDER: CommandBuilder = { it.executes(this::execute) }
 
-class Command(
+class ExecutableCommand(
 	override val name: String,
 	override val aliases: List<String> = listOf(),
 	override val enabled: Boolean = true,
@@ -26,7 +26,7 @@ class Command(
 
 	companion object {
 		/**
-		 * Utility method, creates a [Command] wrapping the provided [command] method with [NobaAddons.runAsync]
+		 * Utility method, creates a [ExecutableCommand] wrapping the provided [command] method with [NobaAddons.runAsync]
 		 */
 		fun async(
 			name: String,
@@ -34,7 +34,7 @@ class Command(
 			enabled: Boolean = true,
 			commandBuilder: CommandBuilder = DEFAULT_BUILDER,
 			command: suspend (Context) -> Unit
-		) = Command(name, aliases, enabled, commandBuilder) {
+		) = ExecutableCommand(name, aliases, enabled, commandBuilder) {
 			NobaAddons.runAsync {
 				try {
 					command(it)

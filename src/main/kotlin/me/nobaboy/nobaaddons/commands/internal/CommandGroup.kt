@@ -8,22 +8,22 @@ import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.starProjectedType
 
-abstract class Group(
+abstract class CommandGroup(
 	override val name: String,
 	override val enabled: Boolean = true,
 	override val aliases: List<String> = listOf(),
 ) : ICommand {
 	private val commands: List<ICommand> by lazy {
 		buildList<ICommand> {
-			addAll(this@Group::class.memberProperties
+			addAll(this@CommandGroup::class.memberProperties
 				.asSequence()
 				.filter { it.returnType.isSubtypeOf(ICommand::class.starProjectedType) }
-				.map { it.getter.call(this@Group) as ICommand })
-			addAll(this@Group::class.nestedClasses
+				.map { it.getter.call(this@CommandGroup) as ICommand })
+			addAll(this@CommandGroup::class.nestedClasses
 				.asSequence()
-				.filter { it.isSubclassOf(Group::class) }
+				.filter { it.isSubclassOf(CommandGroup::class) }
 				.filter { it.objectInstance != null }
-				.map { it.objectInstance!! as Group })
+				.map { it.objectInstance!! as CommandGroup })
 		}
 	}
 

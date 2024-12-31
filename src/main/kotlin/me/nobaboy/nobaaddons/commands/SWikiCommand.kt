@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.commands
 
 import com.mojang.authlib.HttpAuthenticationService
 import com.mojang.brigadier.arguments.StringArgumentType
-import me.nobaboy.nobaaddons.commands.internal.Command
+import me.nobaboy.nobaaddons.commands.internal.ExecutableCommand
 import me.nobaboy.nobaaddons.commands.internal.CommandBuilder
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
 import me.nobaboy.nobaaddons.config.NobaConfigManager
@@ -29,7 +29,7 @@ object SWikiCommand {
 		CommandUtil.register(command)
 	}
 
-	private val command = Command("swiki", listOf("wikisearch"), builder = commandBuilder) {
+	private val command = ExecutableCommand("swiki", listOf("wikisearch"), builder = commandBuilder) {
 		val query = StringArgumentType.getString(it, "query").title()
 		val wikiName = tr("nobaaddons.officialWiki", "Official SkyBlock Wiki").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
 		val queryString = HttpAuthenticationService.buildQuery(mapOf("search" to query, "scope" to "internal"))
@@ -39,7 +39,7 @@ object SWikiCommand {
 			val message = compileAutoOpenMessage(query, wikiName)
 			ChatUtils.addMessage(message)
 			Util.getOperatingSystem().open(link)
-			return@Command
+			return@ExecutableCommand
 		}
 
 		val hoverText = tr("nobaaddons.command.swiki.hover", "View '$query' on the SkyBlock Wiki").formatted(Formatting.GRAY)

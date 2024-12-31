@@ -5,10 +5,10 @@ import com.mojang.brigadier.arguments.IntegerArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType
 import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands
-import me.nobaboy.nobaaddons.commands.internal.Command
+import me.nobaboy.nobaaddons.commands.internal.ExecutableCommand
 import me.nobaboy.nobaaddons.commands.internal.CommandBuilder
 import me.nobaboy.nobaaddons.commands.internal.CommandUtil
-import me.nobaboy.nobaaddons.commands.internal.Group
+import me.nobaboy.nobaaddons.commands.internal.CommandGroup
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWarpLocations
@@ -31,7 +31,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 
 @Suppress("unused")
-object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
+object NobaCommand : CommandGroup("nobaaddons", aliases = listOf("noba")) {
 	fun init() {
 		CommandUtil.register(this)
 	}
@@ -40,32 +40,32 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 		NobaMainScreen().queueOpen()
 	}
 
-	val config = Command("config") {
+	val config = ExecutableCommand("config") {
 		NobaConfigManager.getConfigScreen(null).queueOpen()
 	}
 
-	val keybinds = Command("keybinds") {
+	val keybinds = ExecutableCommand("keybinds") {
 		KeyBindsScreen(null).queueOpen()
 	}
 
-	val hud = Command("hud", aliases = listOf("gui")) {
+	val hud = ExecutableCommand("hud", aliases = listOf("gui")) {
 		NobaHudScreen(null).queueOpen()
 	}
 
-	val ping = Command("ping") {
+	val ping = ExecutableCommand("ping") {
 		PingUtils.sendPingPacket(sendMessage = true)
 	}
 
-	object Refill : Group("refill") {
-		val pearls = Command("pearls") {
+	object Refill : CommandGroup("refill") {
+		val pearls = ExecutableCommand("pearls") {
 			RefillFromSacks.refill("ENDER_PEARL", 16)
 		}
 
-		val superboom = Command("superboom") {
+		val superboom = ExecutableCommand("superboom") {
 			RefillFromSacks.refill("SUPERBOOM_TNT", 64)
 		}
 
-		val leaps = Command("leaps") {
+		val leaps = ExecutableCommand("leaps") {
 			RefillFromSacks.refill("SPIRIT_LEAP", 16)
 		}
 
@@ -76,14 +76,14 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 					.executes(this::execute)))
 		}
 
-		val item = Command("item", builder = itemCommandBuilder) {
+		val item = ExecutableCommand("item", builder = itemCommandBuilder) {
 			val id = StringArgumentType.getString(it, "id").uppercase()
 			val count = runCatching { IntegerArgumentType.getInteger(it, "count") }.getOrDefault(64)
 			RefillFromSacks.refill(id, count)
 		}
 	}
 
-	val sendCoords = Command("sendcoords") {
+	val sendCoords = ExecutableCommand("sendcoords") {
 		ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
 	}
 
@@ -94,18 +94,18 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 					.executes(this::execute))))
 	}
 
-	val waypoint = Command("waypoint", builder = waypointBuilder, callback = TemporaryWaypoint::addWaypoint)
+	val waypoint = ExecutableCommand("waypoint", builder = waypointBuilder, callback = TemporaryWaypoint::addWaypoint)
 
-	val lockMouse = Command("lockmouse") {
+	val lockMouse = ExecutableCommand("lockmouse") {
 		MouseLock.lockMouse()
 	}
 
-	object Diana : Group("mythological", aliases = listOf("mytho")) {
-		val resetWarps = Command("resetwarps") {
+	object Diana : CommandGroup("mythological", aliases = listOf("mytho")) {
+		val resetWarps = ExecutableCommand("resetwarps") {
 			BurrowWarpLocations.unlockAll()
 		}
 
-		val resetBurrows = Command("clearburrows") {
+		val resetBurrows = ExecutableCommand("clearburrows") {
 			BurrowAPI.reset()
 			InquisitorWaypoints.reset()
 			BurrowWaypoints.reset()
@@ -113,25 +113,25 @@ object NobaCommand : Group("nobaaddons", aliases = listOf("noba")) {
 		}
 	}
 
-	object SimonSays : Group("simonsays", aliases = listOf("ss")) {
-		val clear = Command("clear") {
+	object SimonSays : CommandGroup("simonsays", aliases = listOf("ss")) {
+		val clear = ExecutableCommand("clear") {
 			SimonSaysTimer.clearTimes()
 		}
 
-		val average = Command("average") {
+		val average = ExecutableCommand("average") {
 			SimonSaysTimer.sendAverage()
 		}
 
-		val personalBest = Command("personalbest", aliases = listOf("pb")) {
+		val personalBest = ExecutableCommand("personalbest", aliases = listOf("pb")) {
 			SimonSaysTimer.sendPersonalBest()
 		}
 	}
 
-	val day = Command("day") {
+	val day = ExecutableCommand("day") {
 		val day = MCUtils.world?.day?.addSeparators()
 		if(day == null) {
 			ChatUtils.addMessage(tr("nobaaddons.command.currentDay.unknown", "I can't figure out what the current lobby day is!"))
-			return@Command
+			return@ExecutableCommand
 		}
 		ChatUtils.addMessage(tr("nobaaddons.command.currentDay", "This lobby is at day $day"))
 	}
