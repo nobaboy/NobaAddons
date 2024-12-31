@@ -1,36 +1,38 @@
 package me.nobaboy.nobaaddons.commands.debug
 
-import com.mojang.brigadier.arguments.DoubleArgumentType
-import com.mojang.brigadier.arguments.IntegerArgumentType
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.commands.annotations.Command
+import me.nobaboy.nobaaddons.commands.annotations.Group
+import me.nobaboy.nobaaddons.commands.annotations.IntRange
+import me.nobaboy.nobaaddons.commands.annotations.RootCommand
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
-import me.nobaboy.nobaaddons.commands.internal.ExecutableCommand
-import me.nobaboy.nobaaddons.commands.internal.CommandGroup
+import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.rarityFormatted
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.minecraft.text.Text
 
 @Suppress("unused")
-object PetDebugCommands : CommandGroup("pet") {
-	override val root = RootCommand {
+@Group("pet")
+object PetDebugCommands {
+	@RootCommand
+	fun root(ctx: Context) {
 		if(!SkyBlockAPI.inSkyBlock) {
-			it.source.sendError(Text.literal("You aren't in SkyBlock!"))
-			return@RootCommand
+			ctx.source.sendError(Text.literal("You aren't in SkyBlock!"))
+			return
 		}
 
 		val pet = PetAPI.currentPet
 		if(pet == null) {
-			it.source.sendError(Text.literal("You don't have a pet equipped"))
-			return@RootCommand
+			ctx.source.sendError(Text.literal("You don't have a pet equipped"))
+			return
 		}
 
-		it.dumpInfo(
+		ctx.dumpInfo(
 			"Pet" to buildText {
 				append(pet.rarity.name.toText().bold())
 				append(" ")
@@ -44,34 +46,15 @@ object PetDebugCommands : CommandGroup("pet") {
 		)
 	}
 
-	val level = ExecutableCommand(
-		"level",
-		builder = {
-			it.then(ClientCommandManager.argument("xp", DoubleArgumentType.doubleArg())
-				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
-					.then(ClientCommandManager.argument("max", IntegerArgumentType.integer(100, 200))
-						.executes(this::execute))
-					.executes(this::execute)))
-		}
-	) {
-		val xp = DoubleArgumentType.getDouble(it, "xp")
-		val rarity = Rarity.RarityArgumentType.getItemRarity(it, "rarity")
-		val maxLevel = runCatching { IntegerArgumentType.getInteger(it, "max") }.getOrDefault(100)
+	@Command
+	fun level(ctx: Context, xp: Double, rarity: Rarity, maxLevel: @IntRange(100, 200) Int = 100) {
 		val level = PetAPI.levelFromXp(xp, rarity, maxLevel)
-		it.source.sendFeedback("$rarity XP ${xp.addSeparators()} -> $level".toText())
+		ctx.source.sendFeedback("$rarity XP ${xp.addSeparators()} -> $level".toText())
 	}
 
-	val xp = ExecutableCommand(
-		"xp",
-		builder = {
-			it.then(ClientCommandManager.argument("level", IntegerArgumentType.integer(1, 100))
-				.then(ClientCommandManager.argument("rarity", Rarity.RarityArgumentType)
-					.executes(this::execute)))
-		}
-	) {
-		val level = IntegerArgumentType.getInteger(it, "level")
-		val rarity = Rarity.RarityArgumentType.getItemRarity(it, "rarity")
+	@Command
+	fun xp(ctx: Context, level: @IntRange(1, 100) Int, rarity: Rarity) {
 		val xp = PetAPI.xpFromLevel(level, rarity, 200).addSeparators()
-		it.source.sendFeedback("$rarity LVL $level -> $xp".toText())
+		ctx.source.sendFeedback("$rarity LVL $level -> $xp".toText())
 	}
 }

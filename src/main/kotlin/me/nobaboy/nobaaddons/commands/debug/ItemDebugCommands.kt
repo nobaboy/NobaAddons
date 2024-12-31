@@ -1,16 +1,16 @@
 package me.nobaboy.nobaaddons.commands.debug
 
-import com.mojang.brigadier.arguments.IntegerArgumentType
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
-import me.nobaboy.nobaaddons.commands.internal.ExecutableCommand
-import me.nobaboy.nobaaddons.commands.internal.CommandGroup
+import me.nobaboy.nobaaddons.commands.annotations.Command
+import me.nobaboy.nobaaddons.commands.impl.Context
+import me.nobaboy.nobaaddons.commands.annotations.Group
+import me.nobaboy.nobaaddons.commands.annotations.RootCommand
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.aqua
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.darkAqua
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.minecraft.command.argument.NbtPathArgumentType
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.LoreComponent
@@ -22,16 +22,18 @@ import net.minecraft.nbt.NbtString
 import net.minecraft.text.Text
 
 @Suppress("unused")
-object ItemDebugCommands : CommandGroup("item") {
-	override val root = RootCommand {
+@Group("item")
+object ItemDebugCommands {
+	@RootCommand
+	fun root(ctx: Context) {
 		val item = MCUtils.player!!.mainHandStack
 		if(item.isEmpty || !item.isSkyBlockItem) {
-			it.source.sendError(Text.literal("You aren't holding a valid SkyBlock item"))
-			return@RootCommand
+			ctx.source.sendError(Text.literal("You aren't holding a valid SkyBlock item"))
+			return
 		}
 
 		val itemData = item.asSkyBlockItem!!
-		it.dumpInfo(
+		ctx.dumpInfo(
 			"Item ID" to itemData.id,
 			"UUID" to itemData.uuid,
 			"Created" to itemData.timestamp?.elapsedSince(),
@@ -50,61 +52,45 @@ object ItemDebugCommands : CommandGroup("item") {
 		)
 	}
 
-	val nbt = ExecutableCommand(
-		"nbt",
-		builder = {
-			it.executes(this::execute)
-				.then(ClientCommandManager.argument("path", NbtPathArgumentType.nbtPath())
-					.executes(this::execute))
-		}
-	) {
+	@Command
+	fun nbt(ctx: Context, path: NbtPathArgumentType.NbtPath? = null) {
 		val item = MCUtils.player!!.mainHandStack
 		if(item.isEmpty) {
-			it.source.sendError(Text.literal("You aren't holding an item"))
-			return@ExecutableCommand
+			ctx.source.sendError(Text.literal("You aren't holding an item"))
+			return
 		}
 
-		// .getNbtPath() expects a server context, so we have to do this the slightly longer way around
-		val path = runCatching { it.getArgument("path", NbtPathArgumentType.NbtPath::class.java) }.getOrNull()
 		var nbt: NbtElement = item.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt()
 		if(path != null) {
 			nbt = path.get(nbt).first()
 		}
 
-		it.source.sendFeedback(buildText {
-			append("Item NBT: ".toText().aqua())
+		ctx.source.sendFeedback(buildText {
+			append("Item NBT: ".toText().darkAqua())
 			append(NbtHelper.toPrettyPrintedText(nbt))
 		})
 	}
 
-	val dumpLore = ExecutableCommand(
-		"lore",
-		builder = {
-			it.executes(this::execute)
-				.then(ClientCommandManager.argument("line", IntegerArgumentType.integer(0))
-					.executes(this::execute))
-		}
-	) {
+	@Command
+	fun lore(ctx: Context, line: Int? = null) {
 		val item = MCUtils.player!!.mainHandStack
 		if(item.isEmpty || !item.contains(DataComponentTypes.LORE)) {
-			it.source.sendError(Text.literal("You aren't holding an item with lore"))
-			return@ExecutableCommand
+			ctx.source.sendError(Text.literal("You aren't holding an item with lore"))
+			return
 		}
-
-		val line = runCatching { IntegerArgumentType.getInteger(it, "line") }.getOrNull()
-		val path = line?.let { NbtPathArgumentType.NbtPath.parse("[$it]") }
 
 		var nbt: NbtElement = NbtList().apply {
 			item.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines.forEach {
 				add(NbtString.of(it.string))
 			}
 		}
-		if(path != null) {
+		if(line != null) {
+			val path = NbtPathArgumentType.NbtPath.parse("[$line]")
 			nbt = path.get(nbt).first()
 		}
 
-		it.source.sendFeedback(buildText {
-			append("Item lore: ".toText().aqua())
+		ctx.source.sendFeedback(buildText {
+			append("Item lore: ".toText().darkAqua())
 			append(NbtHelper.toPrettyPrintedText(nbt))
 		})
 	}

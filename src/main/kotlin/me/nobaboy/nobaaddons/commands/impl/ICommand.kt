@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.commands.internal
+package me.nobaboy.nobaaddons.commands.impl
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
@@ -12,21 +12,11 @@ interface ICommand {
 	val name: String
 	val aliases: List<String>
 	val enabled: Boolean
+
 	fun create(name: String): LiteralArgumentBuilder<FabricClientCommandSource>
 	fun execute(ctx: Context): Int
 
 	companion object {
-		@Suppress("SameReturnValue")
-		fun executeCatching(name: String, context: Context, command: (Context) -> Unit): Int {
-			try {
-				command(context)
-				return 0
-			} catch(e: Throwable) {
-				handleCaught(name, e)
-				return 0
-			}
-		}
-
 		fun handleCaught(name: String, error: Throwable) {
 			when(error) {
 				// rethrow syntax errors, as the game will send a better message for these

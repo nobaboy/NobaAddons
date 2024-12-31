@@ -1,14 +1,11 @@
 package me.nobaboy.nobaaddons.commands
 
-import com.mojang.brigadier.arguments.DoubleArgumentType
-import com.mojang.brigadier.arguments.IntegerArgumentType
-import com.mojang.brigadier.arguments.StringArgumentType
 import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.commands.annotations.Command
+import me.nobaboy.nobaaddons.commands.annotations.Group
+import me.nobaboy.nobaaddons.commands.annotations.RootCommand
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands
-import me.nobaboy.nobaaddons.commands.internal.ExecutableCommand
-import me.nobaboy.nobaaddons.commands.internal.CommandBuilder
-import me.nobaboy.nobaaddons.commands.internal.CommandUtil
-import me.nobaboy.nobaaddons.commands.internal.CommandGroup
+import me.nobaboy.nobaaddons.commands.impl.*
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWarpLocations
@@ -28,84 +25,92 @@ import me.nobaboy.nobaaddons.utils.PingUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
+import net.minecraft.util.Formatting
 
 @Suppress("unused")
-object NobaCommand : CommandGroup("nobaaddons", aliases = listOf("noba")) {
+@Group("nobaaddons", "noba")
+object NobaCommand {
 	fun init() {
-		CommandUtil.register(this)
+		CommandUtil.registerRoot(this)
 	}
 
-	override val root = RootCommand {
+	@RootCommand
+	fun root(ctx: Context) {
 		NobaMainScreen().queueOpen()
 	}
 
-	val config = ExecutableCommand("config") {
+	@Command
+	fun config(ctx: Context) {
 		NobaConfigManager.getConfigScreen(null).queueOpen()
 	}
 
-	val keybinds = ExecutableCommand("keybinds") {
+	@Command
+	fun keybinds(ctx: Context) {
 		KeyBindsScreen(null).queueOpen()
 	}
 
-	val hud = ExecutableCommand("hud", aliases = listOf("gui")) {
+	@Command
+	fun hud(ctx: Context) {
 		NobaHudScreen(null).queueOpen()
 	}
 
-	val ping = ExecutableCommand("ping") {
+	@Command
+	fun ping(ctx: Context) {
 		PingUtils.sendPingPacket(sendMessage = true)
 	}
 
-	object Refill : CommandGroup("refill") {
-		val pearls = ExecutableCommand("pearls") {
+	@Group
+	object Refill {
+		@Command
+		fun pearls(ctx: Context) {
 			RefillFromSacks.refill("ENDER_PEARL", 16)
 		}
 
-		val superboom = ExecutableCommand("superboom") {
+		@Command
+		fun superboom(ctx: Context) {
 			RefillFromSacks.refill("SUPERBOOM_TNT", 64)
 		}
 
-		val leaps = ExecutableCommand("leaps") {
+		@Command
+		fun leaps(ctx: Context) {
 			RefillFromSacks.refill("SPIRIT_LEAP", 16)
 		}
 
-		private val itemCommandBuilder: CommandBuilder = {
-			it.then(ClientCommandManager.argument("id", StringArgumentType.string())
-				.executes(this::execute)
-				.then(ClientCommandManager.argument("count", IntegerArgumentType.integer(1))
-					.executes(this::execute)))
-		}
-
-		val item = ExecutableCommand("item", builder = itemCommandBuilder) {
-			val id = StringArgumentType.getString(it, "id").uppercase()
-			val count = runCatching { IntegerArgumentType.getInteger(it, "count") }.getOrDefault(64)
-			RefillFromSacks.refill(id, count)
+		@Command
+		fun item(ctx: Context, item: String, count: Int = 64) {
+			RefillFromSacks.refill(item, count)
 		}
 	}
 
-	val sendCoords = ExecutableCommand("sendcoords") {
+	@Command
+	fun sendCoords(ctx: Context) {
 		ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
 	}
 
-	private val waypointBuilder: CommandBuilder = {
-		it.then(ClientCommandManager.argument("x", DoubleArgumentType.doubleArg())
-			.then(ClientCommandManager.argument("y", DoubleArgumentType.doubleArg())
-				.then(ClientCommandManager.argument("z", DoubleArgumentType.doubleArg())
-					.executes(this::execute))))
+	@Command
+	fun waypoint(ctx: Context, x: Double, y: Double, z: Double) {
+		if(!TemporaryWaypoint.enabled) {
+			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.notEnabled", "Temporary Waypoints are not enabled in the mod config"), color = Formatting.RED)
+			return
+		}
+		TemporaryWaypoint.addWaypoint(x, y, z, "Temporary Waypoint")
+		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will last until you walk near it."))
 	}
 
-	val waypoint = ExecutableCommand("waypoint", builder = waypointBuilder, callback = TemporaryWaypoint::addWaypoint)
-
-	val lockMouse = ExecutableCommand("lockmouse") {
+	@Command
+	fun lockMouse(ctx: Context) {
 		MouseLock.lockMouse()
 	}
 
-	object Diana : CommandGroup("mythological", aliases = listOf("mytho")) {
-		val resetWarps = ExecutableCommand("resetwarps") {
+	@Group("mythological", "mytho")
+	object Diana {
+		@Command
+		fun resetWarps(ctx: Context) {
 			BurrowWarpLocations.unlockAll()
 		}
 
-		val resetBurrows = ExecutableCommand("clearburrows") {
+		@Command
+		fun clearBurrows(ctx: Context) {
 			BurrowAPI.reset()
 			InquisitorWaypoints.reset()
 			BurrowWaypoints.reset()
@@ -113,30 +118,35 @@ object NobaCommand : CommandGroup("nobaaddons", aliases = listOf("noba")) {
 		}
 	}
 
-	object SimonSays : CommandGroup("simonsays", aliases = listOf("ss")) {
-		val clear = ExecutableCommand("clear") {
+	@Group(aliases = ["ss"])
+	object SimonSays {
+		@Command
+		fun clear(ctx: Context) {
 			SimonSaysTimer.clearTimes()
 		}
 
-		val average = ExecutableCommand("average") {
+		@Command
+		fun average(ctx: Context) {
 			SimonSaysTimer.sendAverage()
 		}
 
-		val personalBest = ExecutableCommand("personalbest", aliases = listOf("pb")) {
+		@Command(aliases = ["pb"])
+		fun personalBest(ctx: Context) {
 			SimonSaysTimer.sendPersonalBest()
 		}
 	}
 
-	val day = ExecutableCommand("day") {
+	@Command
+	fun day(ctx: Context) {
 		val day = MCUtils.world?.day?.addSeparators()
 		if(day == null) {
 			ChatUtils.addMessage(tr("nobaaddons.command.currentDay.unknown", "I can't figure out what the current lobby day is!"))
-			return@ExecutableCommand
+			return
 		}
 		ChatUtils.addMessage(tr("nobaaddons.command.currentDay", "This lobby is at day $day"))
 	}
 
-	val repo = RepoCommands
-	val debug = DebugCommands
-	val internal = InternalCommands
+	val repo = AnnotatedGroup(RepoCommands)
+	val debug = AnnotatedGroup(DebugCommands)
+	val internal = AnnotatedGroup(InternalCommands)
 }

@@ -1,17 +1,16 @@
 package me.nobaboy.nobaaddons.commands
 
 import com.mojang.authlib.HttpAuthenticationService
-import com.mojang.brigadier.arguments.StringArgumentType
-import me.nobaboy.nobaaddons.commands.internal.ExecutableCommand
-import me.nobaboy.nobaaddons.commands.internal.CommandBuilder
-import me.nobaboy.nobaaddons.commands.internal.CommandUtil
+import me.nobaboy.nobaaddons.commands.impl.AnnotatedCommand
+import me.nobaboy.nobaaddons.commands.annotations.Command
+import me.nobaboy.nobaaddons.commands.impl.CommandUtil
+import me.nobaboy.nobaaddons.commands.impl.Context
+import me.nobaboy.nobaaddons.commands.annotations.GreedyString
 import me.nobaboy.nobaaddons.config.NobaConfigManager
-import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
@@ -20,17 +19,12 @@ import net.minecraft.util.Util
 object SWikiCommand {
 	private val config get() = NobaConfigManager.config.general
 
-	private val commandBuilder: CommandBuilder = {
-		it.then(ClientCommandManager.argument("query", StringArgumentType.greedyString())
-			.executes(this::execute))
-	}
-
 	fun init() {
-		CommandUtil.register(command)
+		CommandUtil.register(AnnotatedCommand(this::swiki, this))
 	}
 
-	private val command = ExecutableCommand("swiki", listOf("wikisearch"), builder = commandBuilder) {
-		val query = StringArgumentType.getString(it, "query").title()
+	@Command(aliases = ["wikisearch"])
+	fun swiki(@Suppress("unused") ctx: Context, query: @GreedyString String) {
 		val wikiName = tr("nobaaddons.officialWiki", "Official SkyBlock Wiki").formatted(Formatting.DARK_AQUA, Formatting.BOLD)
 		val queryString = HttpAuthenticationService.buildQuery(mapOf("search" to query, "scope" to "internal"))
 		val link = "https://wiki.hypixel.net/index.php?$queryString"
@@ -39,7 +33,7 @@ object SWikiCommand {
 			val message = compileAutoOpenMessage(query, wikiName)
 			ChatUtils.addMessage(message)
 			Util.getOperatingSystem().open(link)
-			return@ExecutableCommand
+			return
 		}
 
 		val hoverText = tr("nobaaddons.command.swiki.hover", "View '$query' on the SkyBlock Wiki").formatted(Formatting.GRAY)
