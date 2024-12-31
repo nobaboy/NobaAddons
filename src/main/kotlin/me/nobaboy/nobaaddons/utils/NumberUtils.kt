@@ -60,19 +60,23 @@ object NumberUtils {
 	private fun String.formatDoubleOrNull(): Double? {
 		var text = lowercase().replace(",", "")
 
-		val multiplier = if(text.endsWith("k")) {
-			text = text.substring(0, text.length - 1)
-			1_000.0
-		} else if(text.endsWith("m")) {
-			text = text.substring(0, text.length - 1)
-			1.million
-		} else if(text.endsWith("b")) {
-			text = text.substring(0, text.length - 1)
-			1.billion
-		} else 1.0
-		return text.toDoubleOrNull()?.let {
-			it * multiplier
+		val multiplier = when {
+			text.endsWith("k") -> {
+				text = text.substring(0, text.length - 1)
+				1_000.0
+			}
+			text.endsWith("m") -> {
+				text = text.substring(0, text.length - 1)
+				1.million
+			}
+			text.endsWith("b") -> {
+				text = text.substring(0, text.length - 1)
+				1.billion
+			}
+			else -> 1.0
 		}
+
+		return text.toDoubleOrNull()?.let { it * multiplier }
 	}
 
 	fun String.formatDouble(): Double =
@@ -85,6 +89,6 @@ object NumberUtils {
 		formatDoubleOrNull()?.toInt() ?: throw NumberFormatException("formatInt failed for '$this'")
 
 	val Int.million get() = this * 1_000_000.0
-	private val Int.billion get() = this * 1_000_000_000.0
 	val Double.million get() = (this * 1_000_000.0).toLong()
+	private val Int.billion get() = this * 1_000_000_000.0
 }

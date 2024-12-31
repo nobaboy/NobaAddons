@@ -9,11 +9,10 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 // TODO: could do with logical functions? well formatting is priority right now
 object FunctionsManager {
 	private val functionPattern = Regex("\\{(?<function>[A-z]+)}")
-
-	private val functions = mutableSetOf<InfoBoxFunction<*>>()
+	private val functions = mutableMapOf<String, InfoBoxFunction<*>>()
 
 	init {
-	    arrayOf(
+		listOf(
 			MinecraftFunctions.PingFunction,
 			MinecraftFunctions.FpsFunction,
 			MinecraftFunctions.DayFunction,
@@ -26,11 +25,17 @@ object FunctionsManager {
 			PlayerFunctions.BpsFunction,
 
 			SkyBlockFunctions.LevelFunction,
+			SkyBlockFunctions.LevelColorFunction,
 			SkyBlockFunctions.XPFunction,
 			SkyBlockFunctions.CoinsFunction,
 			SkyBlockFunctions.BitsFunction,
 			SkyBlockFunctions.ZoneFunction
-		).forEach(functions::add)
+		).forEach { function ->
+			functions[function.name] = function
+			function.aliases.forEach { alias ->
+				functions[alias] = function
+			}
+		}
 	}
 
 	fun processText(text: String): String {
@@ -38,10 +43,7 @@ object FunctionsManager {
 
 		functionPattern.forEachMatch(result) {
 			val functionName = groups["function"]?.value?.lowercase() ?: return@forEachMatch
-
-			val function = functions.firstOrNull { it.name == functionName }
-				?: functions.firstOrNull { functionName in it.aliases }
-				?: return@forEachMatch
+			val function = functions[functionName] ?: return@forEachMatch
 
 			var replacement = function.execute() ?: return@forEachMatch
 			if(replacement is Number) replacement = replacement.addSeparators() // Extract into number formatting function

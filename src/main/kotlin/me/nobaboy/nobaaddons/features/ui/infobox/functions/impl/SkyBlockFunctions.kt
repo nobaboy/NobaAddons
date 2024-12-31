@@ -10,6 +10,12 @@ object SkyBlockFunctions {
 		override fun execute(): Int = SkyBlockAPI.level ?: 0
 	}
 
+	object LevelColorFunction : InfoBoxFunction<Char> {
+		override val name: String = "level_color"
+		override val aliases: List<String> = listOf("skyblock_level_color")
+		override fun execute(): Char = SkyBlockAPI.getSkyBlockLevelColor().colorCode!!
+	}
+
 	object XPFunction : InfoBoxFunction<Int> {
 		override val name: String = "xp"
 		override val aliases: List<String> = listOf("skyblock_xp")

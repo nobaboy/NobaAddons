@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
@@ -20,8 +21,8 @@ import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacke
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
-	private val levelPattern by Regex("").fromRepo("skyblock.level")
-	private val xpPattern by Regex("").fromRepo("skyblock.xp")
+	private val levelPattern by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("skyblock.level")
+	private val xpPattern by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
 	private val currencyPattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
 	private val zonePattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
 
@@ -111,6 +112,27 @@ object SkyBlockAPI {
 				"Purse", "Piggy" -> coins = amount
 				"Bits" -> bits = amount
 			}
+		}
+	}
+
+	fun getSkyBlockLevelColor(level: Int? = null): NobaColor {
+		val level = level ?: this.level ?: 0
+
+		return when(level) {
+			in 0 until 40 -> NobaColor.GRAY
+			in 40 until 80 -> NobaColor.WHITE
+			in 80 until 120 -> NobaColor.YELLOW
+			in 120 until 160 -> NobaColor.GREEN
+			in 160 until 200 -> NobaColor.DARK_GREEN
+			in 200 until 240 -> NobaColor.AQUA
+			in 240 until 280 -> NobaColor.DARK_AQUA
+			in 280 until 320 -> NobaColor.BLUE
+			in 320 until 360 -> NobaColor.LIGHT_PURPLE
+			in 360 until 400 -> NobaColor.DARK_PURPLE
+			in 400 until 440 -> NobaColor.GOLD
+			in 440 until 480 -> NobaColor.RED
+			in 480 until 520 -> NobaColor.DARK_RED
+			else -> NobaColor.BLACK
 		}
 	}
 }
