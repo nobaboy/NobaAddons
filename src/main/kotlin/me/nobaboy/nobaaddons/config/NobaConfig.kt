@@ -14,6 +14,9 @@ class NobaConfig {
 	val uiAndVisuals: UIAndVisualsConfig = UIAndVisualsConfig()
 
 	@SerialEntry
+	val inventory: InventoryConfig = InventoryConfig()
+
+	@SerialEntry
 	val events: EventsConfig = EventsConfig()
 
 	@SerialEntry

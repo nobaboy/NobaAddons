@@ -29,7 +29,7 @@ import net.minecraft.text.Texts
 import org.lwjgl.glfw.GLFW
 
 object EnchantParsing {
-	private val config get() = NobaConfigManager.config.uiAndVisuals.enchantments
+	private val config get() = NobaConfigManager.config.inventory.enchantmentTooltips
 	// the extra [\d,]+ is to account for stacking enchants adding their value
 	// TODO it'd be nice to .findAll() with this, but this globs every prior enchantment
 	//      into the last one's name, so we're just extracting from groups this after splitting on `, `,

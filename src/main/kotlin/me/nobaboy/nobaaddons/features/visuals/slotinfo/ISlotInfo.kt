@@ -12,7 +12,7 @@ import net.minecraft.text.Text
 
 // TODO: Implement last slot info (not really last, but planned one)
 interface ISlotInfo {
-	val config get() = NobaConfigManager.config.uiAndVisuals.slotInfo
+	val config get() = NobaConfigManager.config.inventory.slotInfo
 
 	val enabled: Boolean
 	fun handle(event: ScreenRenderEvents.DrawSlot)

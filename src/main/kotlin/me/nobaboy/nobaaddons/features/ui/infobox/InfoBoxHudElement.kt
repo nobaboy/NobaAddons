@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
+import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals

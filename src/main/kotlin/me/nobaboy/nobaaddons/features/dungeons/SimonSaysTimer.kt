@@ -28,7 +28,6 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.ActionResult
-import net.minecraft.util.Formatting
 import net.minecraft.util.hit.BlockHitResult
 
 // TODO: Requires actual testing in dungeons
