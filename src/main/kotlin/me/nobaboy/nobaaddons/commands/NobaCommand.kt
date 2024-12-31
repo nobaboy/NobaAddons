@@ -18,6 +18,7 @@ import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
 import me.nobaboy.nobaaddons.screens.NobaHudScreen
 import me.nobaboy.nobaaddons.screens.NobaMainScreen
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
+import me.nobaboy.nobaaddons.screens.notifications.ChatNotificationsScreen
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.MCUtils.day
@@ -48,6 +49,11 @@ object NobaCommand {
 	@Command
 	fun keybinds() {
 		KeyBindsScreen(null).queueOpen()
+	}
+
+	@Command
+	fun notifications() {
+		ChatNotificationsScreen(null).queueOpen()
 	}
 
 	@Command

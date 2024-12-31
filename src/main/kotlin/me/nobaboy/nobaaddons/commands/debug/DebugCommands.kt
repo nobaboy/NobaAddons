@@ -4,6 +4,7 @@ import com.mojang.brigadier.context.CommandContext
 import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.EnabledIf
 import dev.celestialfault.commander.annotations.Group
+import dev.celestialfault.commander.annotations.RootCommand
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
@@ -20,6 +21,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.MutableText
@@ -72,10 +74,18 @@ object DebugCommands {
 		)
 	}
 
-	@Command
-	@EnabledIf(DebugAPI.RequiresAWT::class)
-	fun sounds(ctx: Context) {
-		DebugAPI.openSoundDebugMenu()
+	@Group
+	object Sounds {
+		@RootCommand
+		@EnabledIf(DebugAPI.RequiresAWT::class)
+		fun root() {
+			DebugAPI.openSoundDebugMenu()
+		}
+
+		@Command
+		fun rareDrop() {
+			SoundUtils.rareDropSound.play()
+		}
 	}
 
 	@Command

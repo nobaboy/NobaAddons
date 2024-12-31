@@ -30,6 +30,7 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
+import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
 import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
@@ -180,6 +181,7 @@ object NobaAddons : ClientModInitializer {
 		// region Chat
 		IAlert.init()
 		IChatFilter.init()
+		ChatNotifications.init()
 		// endregion
 
 		// region Chat Commands
