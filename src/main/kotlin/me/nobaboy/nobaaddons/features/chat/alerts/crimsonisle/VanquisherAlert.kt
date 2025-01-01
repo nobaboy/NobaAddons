@@ -13,7 +13,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 object VanquisherAlert : IAlert {
 	private val vanquisherSpawnMessage by "A Vanquisher is spawning nearby!".fromRepo("crimson_isle.vanquisher_spawn")
 
-	override val enabled: Boolean get() = SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.vanquisherSpawn
+	override val enabled: Boolean get() = config.vanquisherSpawn && SkyBlockIsland.CRIMSON_ISLE.inIsland()
 
 	override fun shouldAlert(message: String): Boolean {
 		if(!message.lowercaseEquals(vanquisherSpawnMessage)) return false

@@ -42,8 +42,9 @@ object BurrowWarpLocations {
 		STONKS(NobaVec(-52.5, 71.0, -52.5), 5, { config.ignoreStonks });
 
 		val warpName = warpName ?: name.lowercase()
-		val displayName = name.replace("_", " ").title()
 
 		fun distance(other: NobaVec): Double = other.distance(location) + extraBlocks
+
+		override fun toString(): String = name.replace("_", " ").title()
 	}
 }

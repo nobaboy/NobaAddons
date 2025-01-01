@@ -2,11 +2,11 @@ package me.nobaboy.nobaaddons.utils.render
 
 //? if >=1.21.2 {
 import me.nobaboy.nobaaddons.mixins.accessors.DrawContextAccessor
-import net.minecraft.client.render.VertexRendering
 import net.minecraft.client.gl.ShaderProgramKeys
+import net.minecraft.client.render.VertexRendering
 //?} else {
-/*import net.minecraft.client.render.WorldRenderer
-import net.minecraft.client.render.GameRenderer
+/*import net.minecraft.client.render.GameRenderer
+import net.minecraft.client.render.WorldRenderer
 *///?}
 
 import com.mojang.blaze3d.systems.RenderSystem
@@ -31,7 +31,6 @@ import net.minecraft.text.Text
 import net.minecraft.util.math.Box
 import org.joml.Matrix4f
 import org.lwjgl.opengl.GL11
-import java.awt.Color
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -66,13 +65,13 @@ object RenderUtils {
 		x: Int,
 		y: Int,
 		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
+		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
 	) {
-		if(applyScaling && scale != 1f) startScale(context, scale)
-		context.drawText(MCUtils.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color, shadow)
-		if(applyScaling && scale != 1f) endScale(context)
+		if(applyScaling && scale != 1.0f) startScale(context, scale)
+		context.drawText(MCUtils.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color.rgb, shadow)
+		if(applyScaling && scale != 1.0f) endScale(context)
 	}
 	fun drawText(
 		context: DrawContext,
@@ -80,7 +79,7 @@ object RenderUtils {
 		x: Int,
 		y: Int,
 		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
+		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
 	) {
@@ -93,8 +92,8 @@ object RenderUtils {
 		x: Int,
 		y: Int,
 		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
-		outlineColor: Int = 0x000000,
+		color: NobaColor = NobaColor.WHITE,
+		outlineColor: NobaColor = NobaColor.BLACK,
 		applyScaling: Boolean = true
 	) {
 		if(applyScaling) startScale(context, scale)
@@ -105,8 +104,8 @@ object RenderUtils {
 			text.asOrderedText(),
 			(x / scale).toFloat(),
 			(y / scale).toFloat(),
-			color,
-			outlineColor,
+			color.rgb,
+			outlineColor.rgb,
 			context.matrices.peek().positionMatrix,
 			vertexConsumerProvider,
 			15728880
@@ -119,8 +118,8 @@ object RenderUtils {
 		x: Int,
 		y: Int,
 		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
-		outlineColor: Int = 0x000000,
+		color: NobaColor = NobaColor.WHITE,
+		outlineColor: NobaColor = NobaColor.BLACK,
 		applyScaling: Boolean = true
 	) {
 		drawOutlinedText(context, text.toText(), x, y, scale, color, outlineColor, applyScaling)
@@ -132,7 +131,7 @@ object RenderUtils {
 		x: Int,
 		y: Int,
 		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
+		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
 	) {
@@ -145,57 +144,12 @@ object RenderUtils {
 		x: Int,
 		y: Int,
 		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
+		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
 	) {
-		drawCenteredText(context, text.toText(), x, y, scale, color, shadow, applyScaling)
-	}
-
-	fun Text.draw(
-		context: DrawContext,
-		x: Int,
-		y: Int,
-		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
-		shadow: Boolean = true,
-		applyScaling: Boolean = true
-	) {
-		drawText(context, this, x, y, scale, color, shadow, applyScaling)
-	}
-	fun Text.drawCentered(
-		context: DrawContext,
-		x: Int,
-		y: Int,
-		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
-		shadow: Boolean = true,
-		applyScaling: Boolean = true
-	) {
-		drawCenteredText(context, this, x, y, scale, color, shadow, applyScaling)
-	}
-
-	fun String.draw(
-		context: DrawContext,
-		x: Int,
-		y: Int,
-		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
-		shadow: Boolean = true,
-		applyScaling: Boolean = true
-	) {
-		drawText(context, this.toText(), x, y, scale, color, shadow, applyScaling)
-	}
-	fun String.drawCentered(
-		context: DrawContext,
-		x: Int,
-		y: Int,
-		scale: Float = 1.0f,
-		color: Int = 0xFFFFFF,
-		shadow: Boolean = true,
-		applyScaling: Boolean = true
-	) {
-		drawCenteredText(context, this.toText(), x, y, scale, color, shadow, applyScaling)
+		val width = (text.getWidth() * scale).toInt()
+		drawText(context, text.toText(), x - width / 2, y, scale, color, shadow, applyScaling)
 	}
 
 	fun isPointInArea(
@@ -207,42 +161,32 @@ object RenderUtils {
 		rightY: Double
 	): Boolean = pointX in leftX..rightX && pointY in leftY..rightY
 
-	// TODO add slot to the others (I didn't feel like doing that)
-	fun drawTitle(text: Text, color: Int, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0, slot: String = StringUtils.randomAlphanumeric()) {
-		TitleManager.draw(slot, text, color, duration, scale, height)
+	fun drawTitle(
+		text: Text,
+		color: NobaColor = NobaColor.WHITE,
+		scale: Float = 4.0f,
+		offset: Int = 0,
+		duration: Duration = 3.seconds,
+		id: String = StringUtils.randomAlphanumeric(),
+		subtext: Text? = null
+	) {
+		TitleManager.draw(text, color, scale, offset, duration, id, subtext)
 	}
-	fun drawTitle(text: Text, color: Color, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
-		drawTitle(text, color.rgb, duration, scale, height)
-	}
-	fun drawTitle(text: Text, color: NobaColor, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
-		drawTitle(text, color.toColor().rgb, duration, scale, height)
-	}
-	fun drawTitle(text: String, color: Int, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
-		drawTitle(Text.literal(text), color, duration, scale, height)
-	}
-	fun drawTitle(text: String, color: Color, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
-		drawTitle(Text.literal(text), color.rgb, duration, scale, height)
-	}
-	fun drawTitle(text: String, color: NobaColor, duration: Duration = 3.seconds, scale: Float = 4.0f, height: Double = 2.0) {
-		drawTitle(Text.literal(text), color.toColor().rgb, duration, scale, height)
+	fun drawTitle(
+		text: String,
+		color: NobaColor = NobaColor.WHITE,
+		scale: Float = 4.0f,
+		offset: Int = 0,
+		duration: Duration = 3.seconds,
+		id: String = StringUtils.randomAlphanumeric(),
+		subtext: Text? = null
+	) {
+		TitleManager.draw(text.toText(), color, scale, offset, duration, id, subtext)
 	}
 
 	fun Box.expandBlock(n: Int = 1) = expand(NobaVec.expandVector * n)
 	fun Box.shrinkBlock(n: Int = 1) = expand(NobaVec.expandVector * -n)
 
-	fun renderWaypoint(
-		context: WorldRenderContext,
-		location: NobaVec,
-		color: Color,
-		extraSize: Double = 0.0,
-		extraSizeTopY: Double = extraSize,
-		extraSizeBottomY: Double = extraSize,
-		beaconThreshold: Double = 5.0,
-		throughBlocks: Boolean = false
-	) {
-		renderBeaconBeam(context, location.raise(), color.rgb, beaconThreshold)
-		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-	}
 	fun renderWaypoint(
 		context: WorldRenderContext,
 		location: NobaVec,
@@ -253,14 +197,14 @@ object RenderUtils {
 		beaconThreshold: Double = 5.0,
 		throughBlocks: Boolean = false
 	) {
-		renderBeaconBeam(context, location.raise(), color.toColor().rgb, beaconThreshold)
+		renderBeaconBeam(context, location.raise(), color, beaconThreshold)
 		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
 	fun renderOutlinedFilledBox(
 		context: WorldRenderContext,
 		location: NobaVec,
-		color: Color,
+		color: NobaColor,
 		lineWidth: Float = 3.0f,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
@@ -270,21 +214,8 @@ object RenderUtils {
 		renderOutline(context, location, color, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
-	fun renderOutlinedFilledBox(
-		context: WorldRenderContext,
-		location: NobaVec,
-		color: NobaColor,
-		lineWidth: Float = 3.0f,
-		extraSize: Double = 0.0,
-		extraSizeTopY: Double = extraSize,
-		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
-	) {
-		renderOutline(context, location, color.toColor(), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-		renderFilledBox(context, location, color.toColor(), extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-	}
 
-	fun renderBeaconBeam(context: WorldRenderContext, location: NobaVec, color: Int, hideThreshold: Double = 5.0) {
+	fun renderBeaconBeam(context: WorldRenderContext, location: NobaVec, color: NobaColor, hideThreshold: Double = 5.0) {
 		if(!FrustumUtils.isVisible(location, toWorldHeight = true)) return
 
 		val matrices = context.matrixStack() ?: return
@@ -295,30 +226,14 @@ object RenderUtils {
 
 		matrices.push()
 		matrices.translate(location.x - cameraPos.x, location.y - cameraPos.y, location.z - cameraPos.z)
-
-		BeaconBlockEntityRendererInvoker.invokeRenderBeam(
-			matrices,
-			context.consumers(),
-			context.tickCounter().getTickDelta(true),
-			context.world().time,
-			0,
-			319,
-			color
-		)
-
+		BeaconBlockEntityRendererInvoker.invokeRenderBeam(matrices, context.consumers(), context.tickCounter().getTickDelta(true), context.world().time, 0, 319, color.rgb)
 		matrices.pop()
-	}
-	fun renderBeaconBeam(context: WorldRenderContext, location: NobaVec, color: Color, hideThreshold: Double = 5.0) {
-		renderBeaconBeam(context, location, color.rgb, hideThreshold)
-	}
-	fun renderBeaconBeam(context: WorldRenderContext, location: NobaVec, color: NobaColor, hideThreshold: Double = 5.0) {
-		renderBeaconBeam(context, location, color.toColor().rgb, hideThreshold)
 	}
 
 	fun renderOutline(
 		context: WorldRenderContext,
 		location: NobaVec,
-		color: Color,
+		color: NobaColor,
 		lineWidth: Float = 3.0f,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
@@ -380,35 +295,11 @@ object RenderUtils {
 		RenderSystem.disableDepthTest()
 		RenderSystem.depthFunc(GL11.GL_LEQUAL)
 	}
-	fun renderOutline(
-		context: WorldRenderContext,
-		location: NobaVec,
-		color: Int,
-		lineWidth: Float = 3.0f,
-		extraSize: Double = 0.0,
-		extraSizeTopY: Double = extraSize,
-		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
-	) {
-		renderOutline(context, location, Color(color), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-	}
-	fun renderOutline(
-		context: WorldRenderContext,
-		location: NobaVec,
-		color: NobaColor,
-		lineWidth: Float = 3.0f,
-		extraSize: Double = 0.0,
-		extraSizeTopY: Double = extraSize,
-		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
-	) {
-		renderOutline(context, location, color.toColor(), lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-	}
 
 	fun renderFilledBox(
 		context: WorldRenderContext,
 		location: NobaVec,
-		color: Color,
+		color: NobaColor,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
@@ -451,33 +342,11 @@ object RenderUtils {
 
 		matrices.pop()
 	}
-	fun renderFilledBox(
-		context: WorldRenderContext,
-		location: NobaVec,
-		color: Int,
-		extraSize: Double = 0.0,
-		extraSizeTopY: Double = extraSize,
-		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
-	) {
-		renderFilledBox(context, location, Color(color), extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-	}
-	fun renderFilledBox(
-		context: WorldRenderContext,
-		location: NobaVec,
-		color: NobaColor,
-		extraSize: Double = 0.0,
-		extraSizeTopY: Double = extraSize,
-		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
-	) {
-		renderFilledBox(context, location, color.toColor(), extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-	}
 
 	fun renderText(
 		location: NobaVec,
-		text: String,
-		color: Int = 0xFFFFFF,
+		text: Text,
+		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
@@ -512,7 +381,7 @@ object RenderUtils {
 
 		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
 
-		textRenderer.draw(text, xOffset, yOffset, color, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0,
+		textRenderer.draw(text, xOffset, yOffset, color.rgb, shadow, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0,
 			LightmapTextureManager.MAX_LIGHT_COORDINATE)
 		consumers.draw()
 
@@ -521,25 +390,13 @@ object RenderUtils {
 	fun renderText(
 		location: NobaVec,
 		text: String,
-		color: Color,
+		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
 		yOffset: Float = 0.0f,
 		scaleMultiplier: Float = 1.0f,
 		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {
-		renderText(location, text, color.rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
-	}
-	fun renderText(
-		location: NobaVec,
-		text: String,
-		color: NobaColor,
-		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
-		yOffset: Float = 0.0f,
-		scaleMultiplier: Float = 1.0f,
-		hideThreshold: Double = 0.0,
-		throughBlocks: Boolean = false
-	) {
-		renderText(location, text, color.toColor().rgb, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
+		renderText(location, text.toText(), color, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
 	}
 }

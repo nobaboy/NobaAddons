@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.utils.items
 
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.attributes.Attribute
-import me.nobaboy.nobaaddons.core.enchants.EnchantBase
 import me.nobaboy.nobaaddons.core.enchants.Enchant
+import me.nobaboy.nobaaddons.core.enchants.EnchantBase
 import me.nobaboy.nobaaddons.core.enchants.StackingEnchant
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.Timestamp

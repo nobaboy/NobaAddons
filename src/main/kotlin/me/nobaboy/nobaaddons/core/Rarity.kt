@@ -26,7 +26,7 @@ enum class Rarity(val color: NobaColor? = null) : StringIdentifiable, NameableEn
 	ADMIN(NobaColor.RED),
 	UNKNOWN;
 
-	val formatting: Formatting? by lazy { color?.toFormatting() }
+	val formatting: Formatting? by lazy { color?.formatting }
 	val colorCode: Char? by lazy { color?.colorCode }
 
 	override fun getDisplayName(): Text = Text.literal(name).rarityFormatted(this)

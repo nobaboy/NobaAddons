@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.commands.debug
 
+import dev.celestialfault.commander.annotations.AllowedRange
 import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Group
 import dev.celestialfault.commander.annotations.RootCommand
-import dev.celestialfault.commander.annotations.AllowedRange
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo

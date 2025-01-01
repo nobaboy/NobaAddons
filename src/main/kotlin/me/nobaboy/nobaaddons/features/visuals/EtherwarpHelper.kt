@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -21,7 +22,7 @@ import net.minecraft.world.World
 
 object EtherwarpHelper {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.etherwarpHelper
-	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && MCUtils.options.sneakKey.isPressed && config.enabled
+	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock && MCUtils.options.sneakKey.isPressed
 
 	private const val BASE_DISTANCE = 57
 	private val etherwarpItems = setOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")
@@ -73,7 +74,7 @@ object EtherwarpHelper {
 		targetBlock = validateTargetBlock(world, target)
 		if(targetBlock == ValidationType.TOO_FAR && !config.allowOverlayOnAir) return
 
-		var color = targetBlock?.let { NobaColor.GRAY.toColor() } ?: config.highlightColor
+		var color = targetBlock?.let { NobaColor.GRAY } ?: config.highlightColor.toNobaColor()
 		RenderUtils.renderOutlinedFilledBox(context, target.blockPos.toNobaVec(), color, throughBlocks = true)
 	}
 

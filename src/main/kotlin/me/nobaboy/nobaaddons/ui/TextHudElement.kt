@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.ui
 
 import me.nobaboy.nobaaddons.ui.data.AbstractTextElement
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.getWidth
 import net.minecraft.client.gui.DrawContext
@@ -34,15 +35,17 @@ abstract class TextHudElement(element: AbstractTextElement<*>) : HudElement(elem
 	 */
 	protected fun renderLine(context: DrawContext, text: Text, x: Int = 0, y: Int = 0, line: Int = 0) {
 		require(line >= 0) { "line must not be negative" }
+
 		val x = this.x + x + let {
 			if(alignment == ElementAlignment.RIGHT) this.size.first - text.getWidth() else 0
 		}
-		val y = this.y + y + (line * MCUtils.textRenderer.fontHeight)
+		val y = (this.y + y + line * (MCUtils.textRenderer.fontHeight + 1) * scale).toInt()
+
 		when(textShadow) {
-			TextShadow.OUTLINE -> RenderUtils.drawOutlinedText(context, text, x, y, scale, color, outlineColor, applyScaling = false)
+			TextShadow.OUTLINE -> RenderUtils.drawOutlinedText(context, text, x, y, scale, NobaColor(color), NobaColor(outlineColor), applyScaling = false)
 			TextShadow.NONE, TextShadow.SHADOW -> {
 				val shadow = textShadow == TextShadow.SHADOW
-				RenderUtils.drawText(context, text, x, y, scale, color, shadow, applyScaling = false)
+				RenderUtils.drawText(context, text, x, y, scale, NobaColor(color), shadow, applyScaling = false)
 			}
 		}
 	}
@@ -68,7 +71,7 @@ abstract class TextHudElement(element: AbstractTextElement<*>) : HudElement(elem
 	fun getBoundsFrom(text: List<Text>): Pair<Int, Int> {
 		val toCompare = text + listOf(name)
 		val width = toCompare.maxOf { it.getWidth() }
-		val height = text.count().coerceAtLeast(1) * MCUtils.textRenderer.fontHeight
+		val height = text.count().coerceAtLeast(1) * (MCUtils.textRenderer.fontHeight + 1)
 		return (width * scale).toInt() to (height * scale).toInt()
 	}
 }

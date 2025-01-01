@@ -137,8 +137,6 @@ class InfoBoxesListWidget(
 
 			deleteButton.y = y
 			deleteButton.render(context, mouseX, mouseY, tickDelta)
-
-//			RenderUtils.drawCenteredText(context, infoBox.name, width / 2 - 180 - 35, y + 6)
 		}
 
 		override fun update() {

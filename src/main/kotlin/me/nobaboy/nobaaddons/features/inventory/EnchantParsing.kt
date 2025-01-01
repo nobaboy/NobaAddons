@@ -28,6 +28,7 @@ import net.minecraft.text.Text
 import net.minecraft.text.Texts
 import org.lwjgl.glfw.GLFW
 
+// TODO: Could do with caching the lore
 object EnchantParsing {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.enchantments
 	// the extra [\d,]+ is to account for stacking enchants adding their value
