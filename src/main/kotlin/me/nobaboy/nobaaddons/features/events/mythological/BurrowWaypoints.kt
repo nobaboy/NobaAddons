@@ -169,7 +169,7 @@ object BurrowWaypoints {
 		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
 
 		lastWarpSuggestTime = Timestamp.now()
-		RenderUtils.drawTitle("Warp to ${nearestWarp!!.warpPoint}", NobaColor.GRAY, 2.0f, 20, 1.seconds)
+		RenderUtils.drawTitle(tr("nobaaddons.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2.0f, 30, 1.seconds)
 	}
 
 	private fun getTargetLocation(): NobaVec? {

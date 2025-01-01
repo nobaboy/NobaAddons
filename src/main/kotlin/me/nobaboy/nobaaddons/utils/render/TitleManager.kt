@@ -24,8 +24,8 @@ object TitleManager {
 
 		titles.values.removeIf { it.expired }
 		titles.values.forEach {
-			val textHeight = 9 * it.scale.toInt() + it.offset
-			val y = height / 2 - textHeight
+			val textHeight = (9 * it.scale).toInt()
+			val y = height / 2 - textHeight + it.offset
 			RenderUtils.drawCenteredText(context, it.text, width / 2, y, it.scale, it.color)
 			if(it.subtext != null) RenderUtils.drawCenteredText(context, it.subtext, width / 2, y + textHeight, it.scale - 1.5f, it.color)
 		}
