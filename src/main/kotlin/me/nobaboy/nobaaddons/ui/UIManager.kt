@@ -18,7 +18,7 @@ object UIManager : ForwardingSet<HudElement>() {
 	private fun render(ctx: DrawContext) {
 		for(element in this) {
 			try {
-				if(!element.shouldRender()) continue
+				if(!element.enabled || !element.shouldRender()) continue
 				element.render(ctx)
 			} catch(error: Throwable) {
 				ErrorManager.logError(

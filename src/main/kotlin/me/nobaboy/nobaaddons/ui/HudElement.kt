@@ -40,6 +40,13 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	val alignment: ElementAlignment
 		get() = if(elementPosition.x > 0.5) ElementAlignment.RIGHT else ElementAlignment.LEFT
 
+	/**
+	 * If `false`, this UI element is entirely skipped - both in rendering and HUD editor screen.
+	 *
+	 * This should ideally be the value of the relevant config option.
+	 */
+	open val enabled: Boolean = true
+
 	private fun scale(pixels: Int, scale: Double): Int = (pixels * scale).toInt().coerceIn(0, pixels)
 
 	/**
@@ -62,6 +69,8 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	 * Note that this is capped at `3f` in [ElementPosition]
 	 */
 	open val maxScale: Float = 3.0f
+
+	open val allowScaling: Boolean = true
 
 	/**
 	 * Name used in place of this element in the HUD editor screen
@@ -133,6 +142,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	open fun moveBy(dx: Int = 0, dy: Int = 0) = moveTo(x + dx, y + dy)
 
 	open fun adjustScale(delta: Float) {
+		if(!allowScaling) return
 		scale = (scale + delta).roundTo(1).coerceIn(minScale, maxScale)
 	}
 

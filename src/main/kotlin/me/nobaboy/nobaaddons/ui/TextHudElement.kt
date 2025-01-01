@@ -55,8 +55,6 @@ abstract class TextHudElement(element: AbstractTextElement<*>) : HudElement(elem
 	protected abstract fun renderText(context: DrawContext)
 
 	override fun render(context: DrawContext) {
-		if(!shouldRender()) return
-
 		RenderUtils.scaled(context, scale) {
 			renderText(context)
 		}

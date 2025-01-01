@@ -41,6 +41,7 @@ import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import me.nobaboy.nobaaddons.features.inventory.EnchantParsing
+import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
@@ -139,6 +140,7 @@ object NobaAddons : ClientModInitializer {
 		/* endregion */
 
 		/* region User Interface */
+		ItemPickupLog.init()
 		UIManager.init()
 		/* endregion */
 
