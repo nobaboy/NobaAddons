@@ -22,7 +22,7 @@ object SkillLevelSlotInfo : ISlotInfo {
 		if(lore.none { it == "Click to view!" }) return
 
 		if(config.checkMarkIfMaxed && lore.none { it.startsWith("Progress to") }) {
-			drawCount(event, "✔", NobaColor.GREEN.toColor().rgb)
+			drawCount(event, ISlotInfo.CHECK, NobaColor.GREEN)
 		} else {
 			val tier = itemStack.name.string.split(" ").lastOrNull()?.tryRomanToArabic()?.toString() ?: "0"
 			drawCount(event, tier)

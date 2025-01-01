@@ -33,7 +33,7 @@ import net.minecraft.util.hit.BlockHitResult
 // TODO: Requires actual testing in dungeons
 object SimonSaysTimer {
 	private val config get() = NobaConfigManager.config.dungeons.simonSaysTimer
-	private val enabled: Boolean get() = SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7) && config.enabled
+	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7)
 
 	private val completionPattern by Regex("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)").fromRepo("dungeons.complete_device")
 	private val buttonVec = NobaVec(110, 121, 91)

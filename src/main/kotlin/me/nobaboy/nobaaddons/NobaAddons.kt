@@ -49,7 +49,7 @@ import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
-import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
+import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.ui.UIManager
@@ -146,7 +146,7 @@ object NobaAddons : ClientModInitializer {
 		/* region Features */
 		// region Visuals
 		EnchantParsing.init()
-		TemporaryWaypoint.init()
+		TemporaryWaypoints.init()
 		EtherwarpHelper.init()
 		ISlotInfo.init()
 		// endregion

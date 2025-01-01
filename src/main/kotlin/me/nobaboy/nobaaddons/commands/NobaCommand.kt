@@ -14,7 +14,7 @@ import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
 import me.nobaboy.nobaaddons.features.general.RefillFromSacks
 import me.nobaboy.nobaaddons.features.qol.MouseLock
-import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
+import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
 import me.nobaboy.nobaaddons.screens.NobaHudScreen
 import me.nobaboy.nobaaddons.screens.NobaMainScreen
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
@@ -96,11 +96,11 @@ object NobaCommand {
 
 	@Command
 	fun waypoint(x: Double, y: Double, z: Double) {
-		if(!TemporaryWaypoint.enabled) {
+		if(!TemporaryWaypoints.enabled) {
 			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.notEnabled", "Temporary Waypoints are not enabled in the mod config"), color = Formatting.RED)
 			return
 		}
-		TemporaryWaypoint.addWaypoint(x, y, z, "Temporary Waypoint")
+		TemporaryWaypoints.addWaypoint(x, y, z, "Temporary Waypoint")
 		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will last until you walk near it."))
 	}
 

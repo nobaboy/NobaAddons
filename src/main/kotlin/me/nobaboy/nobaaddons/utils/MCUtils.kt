@@ -24,6 +24,7 @@ object MCUtils {
 	val client: MinecraftClient get() = MinecraftClient.getInstance()
 
 	val world: ClientWorld? get() = client.world
+	val World.day: Long? get() = world?.timeOfDay?.let { it / 24000 }
 
 	val player: PlayerEntity? get() = client.player
 	val playerName: String? get() = player?.name?.string
@@ -48,11 +49,7 @@ object MCUtils {
 		client.networkHandler!!.sendPacket(packet)
 	}
 
-	// This would fit better in a different class (like OSUtils), but I didn't want to make a new
-	// class just for a single one-line method
 	fun copyToClipboard(text: String) {
 		clipboard.setClipboard(window.handle, text)
 	}
-
-	val World.day get(): Long? = world?.timeOfDay?.let { it / 24000 }
 }

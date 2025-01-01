@@ -5,12 +5,12 @@ import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.items.*
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements.*
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 
-// TODO: Implement last slot info (not really last, but planned one)
 interface ISlotInfo {
 	val config get() = NobaConfigManager.config.inventory.slotInfo
 
@@ -21,11 +21,11 @@ interface ISlotInfo {
 		renderSlotInfo(event.context, event.textRenderer, event.x, event.y, text, position)
 	}
 
-	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: Text, color: Int = -1) {
+	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: Text, color: NobaColor = NobaColor.WHITE) {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
 
-	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: String, color: Int = -1) {
+	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: String, color:NobaColor = NobaColor.WHITE) {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
 
@@ -85,17 +85,17 @@ interface ISlotInfo {
 			context.matrices.pop()
 		}
 
-		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: Text, color: Int = -1) {
+		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: Text, color: NobaColor = NobaColor.WHITE) {
 			context.matrices.push()
 			context.matrices.translate(0.0F, 0.0F, 200.0F)
-			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color, true)
+			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color.rgb, true)
 			context.matrices.pop()
 		}
 
-		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: String, color: Int = -1) {
+		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: String, color: NobaColor = NobaColor.WHITE) {
 			context.matrices.push()
 			context.matrices.translate(0.0F, 0.0F, 200.0F)
-			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color, true)
+			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color.rgb, true)
 			context.matrices.pop()
 		}
 	}

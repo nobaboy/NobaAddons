@@ -98,7 +98,7 @@ public class EntityRenderEventMixin {
 		double x, double y, double z,
 		//? if <1.21.2 {
 		/*float yaw,
-		 *///?}
+		*///?}
 		float tickDelta,
 		MatrixStack matrices,
 		VertexConsumerProvider vertexConsumers,
