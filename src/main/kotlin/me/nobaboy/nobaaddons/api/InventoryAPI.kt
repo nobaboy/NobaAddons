@@ -29,12 +29,11 @@ object InventoryAPI {
 	private var currentInventory: InventoryData? = null
 	private var currentWindow: Window? = null
 
-	private var inventoryLogDebounce = Timestamp.distantPast()
+	private var inventorySuppressTime = Timestamp.distantPast()
 	private var previousItemCounts: Map<Text, Int>? = null
 	val itemLog = ConcurrentHashMap<Text, ItemDiff>()
 
-	private val suppressItemLogUpdate: Boolean
-		get() = inventoryLogDebounce.elapsedSeconds() < 2
+	private fun shouldSuppressItemLogUpdate(): Boolean = inventorySuppressTime.elapsedSeconds() < 2
 
 	fun init() {
 		PacketEvents.SEND.register(this::onPacketSend)
@@ -45,7 +44,7 @@ object InventoryAPI {
 
 	private fun debounceItemLog() {
 		previousItemCounts = null
-		inventoryLogDebounce = Timestamp.now()
+		inventorySuppressTime = Timestamp.now()
 	}
 
 	private fun onPacketSend(event: PacketEvents.Send) {
@@ -125,7 +124,7 @@ object InventoryAPI {
 
 		if(event.client.currentScreen == null) {
 			val current = player.inventory.itemNamesToCount()
-			previousItemCounts?.takeIf { !suppressItemLogUpdate }?.let { updateItemLog(it, current) }
+			previousItemCounts?.takeIf { !shouldSuppressItemLogUpdate() }?.let { updateItemLog(it, current) }
 			previousItemCounts = current
 		}
 
@@ -181,9 +180,9 @@ object InventoryAPI {
 			if(item.isEmpty) continue
 			val name = item.name.removeMerchantCount()
 
-			merge(name, item.count) { a, b -> a + b }
+			merge(name, item.count, Int::plus)
 		}
-		offHand.firstOrNull()?.let { merge(name, it.count) { a, b -> a + b } }
+		offHand.firstOrNull()?.let { merge(name, it.count, Int::plus) }
 	}
 
 	data class Window(val id: Int, val title: String)

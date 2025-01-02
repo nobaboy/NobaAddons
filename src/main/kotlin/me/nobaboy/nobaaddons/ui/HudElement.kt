@@ -20,14 +20,14 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	 * Returns an absolute pixel value for the top left corner of this element
 	 */
 	var x: Int
-		get() = scale(MCUtils.window.scaledWidth, elementPosition.x)
+		get() = convertToAbsolutePixel(MCUtils.window.scaledWidth, elementPosition.x)
 		set(value) { elementPosition.x = value.toDouble() / MCUtils.window.scaledWidth }
 
 	/**
 	 * Returns an absolute pixel value for the top left corner of this element
 	 */
 	var y: Int
-		get() = scale(MCUtils.window.scaledHeight, elementPosition.y)
+		get() = convertToAbsolutePixel(MCUtils.window.scaledHeight, elementPosition.y)
 		set(value) { elementPosition.y = value.toDouble() / MCUtils.window.scaledHeight }
 
 	/**
@@ -47,7 +47,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	 */
 	open val enabled: Boolean = true
 
-	private fun scale(pixels: Int, scale: Double): Int = (pixels * scale).toInt().coerceIn(0, pixels)
+	private fun convertToAbsolutePixel(pixels: Int, scale: Double): Int = (pixels * scale).toInt().coerceIn(0, pixels)
 
 	/**
 	 * The current element scale as determined by the user

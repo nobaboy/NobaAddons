@@ -26,6 +26,7 @@ object ItemPickupLog {
 		override val size: Pair<Int, Int> = 120 to 225
 		override val enabled: Boolean get() = config.enabled
 		override val allowScaling: Boolean = false
+		override val color: Int = 0xFFFFFF
 
 		override fun renderText(context: DrawContext) {
 			renderLines(context, InventoryAPI.itemLog.filter { (_, diff) -> diff.change != 0 }.map { (name, diff) ->
