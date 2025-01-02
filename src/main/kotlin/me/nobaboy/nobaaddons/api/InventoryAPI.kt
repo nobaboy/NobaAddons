@@ -125,7 +125,7 @@ object InventoryAPI {
 
 		if(event.client.currentScreen == null) {
 			val current = player.inventory.itemNamesToCount()
-			previousItemCounts?.takeIf { suppressItemLogUpdate }?.let { updateItemLog(it, current) }
+			previousItemCounts?.takeIf { !suppressItemLogUpdate }?.let { updateItemLog(it, current) }
 			previousItemCounts = current
 		}
 
