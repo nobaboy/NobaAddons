@@ -110,12 +110,15 @@ object NobaAddons : ClientModInitializer {
 	// if the object class is never referenced anywhere else, or if it relies on chat data for a feature that isn't
 	// immediately ran).
 	override fun onInitializeClient() {
+		/* region Core */
 		NobaConfigManager.init()
 		PersistentCache.init()
 		UISettings.init()
 		RepoManager.init()
+		UIManager.init()
 
 		UpdateNotifier.init()
+		/* endregion */
 
 		/* region APIs */
 		InventoryAPI.init()
@@ -143,7 +146,6 @@ object NobaAddons : ClientModInitializer {
 
 		/* region User Interface */
 		ItemPickupLog.init()
-		UIManager.init()
 		/* endregion */
 
 		/* region Features */
