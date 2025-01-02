@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.api
 
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.events.InventoryEvents
@@ -7,12 +8,13 @@ import me.nobaboy.nobaaddons.events.PacketEvents
 import me.nobaboy.nobaaddons.events.QuarterSecondPassedEvent
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
+import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import net.minecraft.client.gui.screen.ChatScreen
-import net.minecraft.inventory.Inventory
+import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket
 import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket
@@ -20,9 +22,11 @@ import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket
 import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import java.util.concurrent.ConcurrentHashMap
 
 object InventoryAPI {
+	private val MERCHANT_COUNT = Regex("x\\d+")
 	private const val SKYBLOCK_MENU_SLOT = 8
 
 	private var currentInventory: InventoryData? = null
@@ -87,9 +91,7 @@ object InventoryAPI {
 			.associate { it.index to it.value }
 			.toMutableMap()
 
-		currentInventory = InventoryData(currentWindow!!.id, currentWindow!!.title, slotCount, items).also {
-			ready(it)
-		}
+		currentInventory = InventoryData(currentWindow!!.id, currentWindow!!.title, slotCount, items).also(::ready)
 	}
 
 	private fun onSlotUpdate(packet: ScreenHandlerSlotUpdateS2CPacket) {
@@ -115,23 +117,18 @@ object InventoryAPI {
 	private fun close(sameName: Boolean = false) {
 		if(MCUtils.client.currentScreen is ChatScreen) return
 		InventoryEvents.CLOSE.invoke(InventoryEvents.Close(sameName))
-		currentInventory = null
-		inventoryLogDebounce = Timestamp.now()
 	}
 
 	private fun onQuarterSecond(event: QuarterSecondPassedEvent) {
 		val player = event.client.player
-		if(/*!SkyBlockAPI.inSkyBlock || */player == null) {
+		if(!SkyBlockAPI.inSkyBlock || player == null) {
 			previousItemCounts = null
 			itemLog.clear()
 			return
 		}
 
 		if(event.client.currentScreen == null) {
-			// note that we're intentionally using the full inventory (which also includes armor items)
-			// as it's easier to also account for hypixel using the offhand with it. it does mean you'll get
-			// item logs when (un)equipping sets in the wardrobe, but oh well, live with it.
-			val current = player.inventory.toCounts()
+			val current = player.inventory.itemNamesToCount()
 			previousItemCounts?.takeIf { suppressItemLogUpdate }?.let { updateItemLog(it, current) }
 			previousItemCounts = current
 		}
@@ -161,16 +158,36 @@ object InventoryAPI {
 		}
 	}
 
-	private fun Inventory.toCounts(): Map<Text, Int> = buildMap {
-		for(slot in 0 until size()) {
-			if(slot == SKYBLOCK_MENU_SLOT) continue
+	private fun Text.removeMerchantCount(): Text {
+		if(siblings.size <= 1) return this
+		val last = siblings.last()
+		// celeste — Today at 01:19
+		// i have reworded this comment like 10 times now
+		// i cannot figure out a way to properly express how much i hate having to do this
+		if(last.string.matches(MERCHANT_COUNT) && last.style.color?.rgb == Formatting.DARK_GRAY.colorValue!!) {
+			val copy = copy()
+			copy.siblings.removeLast()
+			val name = copy.siblings.removeLast()
+			val content = name.string.removeSuffix(" ")
+			copy.append(buildLiteral(content) { style = name.style })
+			return copy
+		}
+		return this
+	}
 
-			val item = this@toCounts.getStack(slot)
+	private fun PlayerInventory.itemNamesToCount(): Map<Text, Int> = buildMap {
+		for(slot in 0 until main.size) {
+			if(slot == SKYBLOCK_MENU_SLOT) {
+				continue
+			}
+
+			val item = main[slot]
 			if(item.isEmpty) continue
-			val name = item.name
+			val name = item.name.removeMerchantCount()
 
 			merge(name, item.count) { a, b -> a + b }
 		}
+		offHand.firstOrNull()?.let { merge(name, it.count) { a, b -> a + b } }
 	}
 
 	data class Window(val id: Int, val title: String)
