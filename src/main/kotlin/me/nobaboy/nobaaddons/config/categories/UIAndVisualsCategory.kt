@@ -6,14 +6,13 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.button
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.tickBox
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.strikethrough
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
@@ -24,8 +23,10 @@ import java.util.Calendar
 private val year = Calendar.getInstance().get(Calendar.YEAR)
 
 private fun societyIsCrumbling(@Suppress("SameParameterValue") fromYear: Int): Text {
-	val years = (fromYear until year).map { buildLiteral(it.toString()) { strikethrough() } } + listOf(year.toString().toText())
-	return Texts.join(years, " ".toText())
+	return Texts.join(buildList {
+		addAll((fromYear until year).map { it.toText().strikethrough() })
+		add(year.toText())
+	}, " ".toText())
 }
 
 object UIAndVisualsCategory {
@@ -255,7 +256,7 @@ object UIAndVisualsCategory {
 				step = 1,
 			) {
 				when(it) {
-					1 -> tr("nobaaddons.config.label.unmodified", "Unmodified")
+					1 -> tr("nobaaddons.config.label.off", "Off").red()
 					6 -> tr("nobaaddons.config.label.default", "Default")
 					else -> it.toString().toText()
 				}
@@ -329,7 +330,7 @@ object UIAndVisualsCategory {
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints"),
-				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "It's ${societyIsCrumbling(2019)}. Society has progressed little in the past 5 years. The world is falling apart. Hypixel still has yet to figure out how to consistently add an enchantment glint to armor."),
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "It's ${societyIsCrumbling(2019)}. Society has progressed little in the past 20 years. The world is falling apart. Hypixel still has yet to figure out how to consistently add an enchantment glint to armor."),
 				default = defaults.uiAndVisuals.renderingTweaks.fixEnchantedArmorGlint,
 				property = config.uiAndVisuals.renderingTweaks::fixEnchantedArmorGlint
 			)
@@ -338,68 +339,6 @@ object UIAndVisualsCategory {
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.removeGlints.tooltip", "Removes enchantment glints from all armor pieces"),
 				default = defaults.uiAndVisuals.renderingTweaks.removeArmorGlints,
 				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
-			)
-		}
-
-		buildGroup(tr("nobaaddons.config.uiAndVisuals.enchants", "Enchantment Tooltips")) {
-			boolean(
-				tr("nobaaddons.config.uiAndVisuals.enchants.parseEnchants", "Modify Enchant Tooltips"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.parseEnchants.tooltip", "Reformats the enchantment list on items in a style similar to the same feature from Skyblock Addons"),
-				default = defaults.uiAndVisuals.enchantments.parseItemEnchants,
-				property = config.uiAndVisuals.enchantments::parseItemEnchants
-			)
-			boolean(
-				tr("nobaaddons.config.uiAndVisuals.enchants.replaceRomanNumerals", "Replace Roman Numerals"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.replaceRomanNumerals.tooltip", "Enchantment tiers will be replaced with their number representation instead of the original roman numerals used"),
-				default = defaults.uiAndVisuals.enchantments.replaceRomanNumerals,
-				property = config.uiAndVisuals.enchantments::replaceRomanNumerals
-			)
-			cycler(
-				tr("nobaaddons.config.uiAndVisuals.enchants.displayMode", "Display Mode"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.displayMode.tooltip", "Changes how enchantments are displayed on items; Default will follow roughly the same behavior as Hypixel and compact at 6 or more enchants, while Compact will always condense them into as few lines as possible."),
-				default = defaults.uiAndVisuals.enchantments.displayMode,
-				property = config.uiAndVisuals.enchantments::displayMode
-			)
-			boolean(
-				tr("nobaaddons.config.uiAndVisuals.enchants.showDescriptions", "Show Descriptions"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.showDescriptions.tooltip", "Controls whether enchant descriptions will be shown when enchantments aren't compacted (only when Hypixel adds the descriptions); this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."),
-				default = defaults.uiAndVisuals.enchantments.showDescriptions,
-				property = config.uiAndVisuals.enchantments::showDescriptions
-			)
-			boolean(
-				tr("nobaaddons.config.uiAndVisuals.enchants.showStacking", "Show Stacking Enchant Progress"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.showStacking.tooltip", "Shows the total value (and progress to next tier if applicable) on stacking enchantments like Champion, Expertise, etc."),
-				default = defaults.uiAndVisuals.enchantments.showStackingProgress,
-				property = config.uiAndVisuals.enchantments::showStackingProgress
-			)
-
-			color(
-				tr("nobaaddons.config.uiAndVisuals.enchants.maxColor", "Max Enchant Color"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.maxColor.tooltip", "The color used for enchantments at their maximum level"),
-				default = defaults.uiAndVisuals.enchantments.maxColor,
-				property = config.uiAndVisuals.enchantments::maxColor
-			)
-			color(
-				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor", "Good Enchant Color"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.goodColor.tooltip", "The color used for enchantments that are above their max normally obtainable level"),
-				default = defaults.uiAndVisuals.enchantments.goodColor,
-				property = config.uiAndVisuals.enchantments::goodColor
-			)
-			color(
-				tr("nobaaddons.config.uiAndVisuals.enchants.averageColor", "Max Normally Obtainable Enchant Color"),
-				// if only mc-auto-translations supported splitting strings onto multiple lines :(
-				tr(
-					"nobaaddons.config.uiAndVisuals.enchants.averageColor.tooltip",
-					"The color used for enchantments at the max level you can normally obtain them at (either through drops, combining lower tiers, or the enchanting table)\n\nNote that this does not apply to enchants that only have this \"tier 5\" level, and will use Max Enchant Color instead"
-				),
-				default = defaults.uiAndVisuals.enchantments.averageColor,
-				property = config.uiAndVisuals.enchantments::averageColor
-			)
-			color(
-				tr("nobaaddons.config.uiAndVisuals.enchants.badColor", "Bad Enchant Color"),
-				tr("nobaaddons.config.uiAndVisuals.enchants.badColor.tooltip", "The color used for enchantments that aren't at any of the above tiers"),
-				default = defaults.uiAndVisuals.enchantments.badColor,
-				property = config.uiAndVisuals.enchantments::badColor
 			)
 		}
 	}
