@@ -23,7 +23,7 @@ object ItemPickupLog {
 
 	private object PickupLogHudElement : TextHudElement(UISettings.pickupLog) {
 		override val name: Text = tr("nobaaddons.ui.pickupLog", "Item Pickup Log")
-		override val size: Pair<Int, Int> = 120 to 225
+		override val size: Pair<Int, Int> = 125 to 175
 		override val enabled: Boolean get() = config.enabled
 		override val allowScaling: Boolean = false
 		override val color: Int = 0xFFFFFF

@@ -27,7 +27,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 
 	private val usageTexts = listOf<Text>(
 		tr("nobaaddons.screen.hudEditor.usage.line1", "Left-click and drag, or use arrows to move (Ctrl moves further)"),
-		tr("nobaaddons.screen.hudEditor.usage.line2", "Scroll or use +/- to resize an element"),
+		tr("nobaaddons.screen.hudEditor.usage.line2", "Scroll or use +/- to resize an element (if supported)"),
 		tr("nobaaddons.screen.hudEditor.usage.line3", "Middle-click to reset an element"),
 //		tr("nobaaddons.screen.hudEditor.usage.line4", "Right-click for context menu (coming soon)"),
 	)
