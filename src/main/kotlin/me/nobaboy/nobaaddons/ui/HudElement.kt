@@ -54,7 +54,9 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	 *
 	 * @see RenderUtils.scaled
 	 */
-	var scale: Float by elementPosition::scale
+	open var scale: Float
+		get() = if(allowScaling) elementPosition.scale else 1f
+		set(value) { if(allowScaling) elementPosition.scale = value }
 
 	/**
 	 * Minimum scale for this element when using the scroll wheel on it in the HUD editor screen
