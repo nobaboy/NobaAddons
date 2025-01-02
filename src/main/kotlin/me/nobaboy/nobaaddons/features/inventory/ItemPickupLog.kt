@@ -25,8 +25,9 @@ object ItemPickupLog {
 		override val name: Text = tr("nobaaddons.ui.pickupLog", "Item Pickup Log")
 		override val size: Pair<Int, Int> = 125 to 175
 		override val enabled: Boolean get() = config.enabled
-		override val allowScaling: Boolean = false
 		override val color: Int = 0xFFFFFF
+		// FIXME this causes the visual scaling in the hud editor to break?
+		override val maxScale: Float = 1f
 
 		override fun renderText(context: DrawContext) {
 			renderLines(context, InventoryAPI.itemLog.filter { (_, diff) -> diff.change != 0 }.map { (name, diff) ->

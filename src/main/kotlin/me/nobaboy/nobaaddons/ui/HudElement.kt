@@ -144,7 +144,6 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	open fun moveBy(dx: Int = 0, dy: Int = 0) = moveTo(x + dx, y + dy)
 
 	open fun adjustScale(delta: Float) {
-		if(!allowScaling) return
 		scale = (scale + delta).roundTo(1).coerceIn(minScale, maxScale)
 	}
 
