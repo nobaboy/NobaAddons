@@ -50,6 +50,7 @@ object NobaConfigManager {
 			builder.title(CommonText.NOBAADDONS)
 				.category(GeneralCategory.create(defaults, config))
 				.category(UIAndVisualsCategory.create(defaults, config))
+				.category(InventoryCategory.create(defaults, config))
 				.category(EventsCategory.create(defaults, config))
 				.category(FishingCategory.create(defaults, config))
 				.category(MiningCategory.create(defaults, config))

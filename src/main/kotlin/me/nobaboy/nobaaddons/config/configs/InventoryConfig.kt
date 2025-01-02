@@ -8,7 +8,7 @@ class InventoryConfig {
 
 	class PickupLog {
 		@SerialEntry
-		var enabled: Boolean = true // TODO disable by default
+		var enabled: Boolean = false
 
 		@SerialEntry
 		var timeoutSeconds: Int = 5
