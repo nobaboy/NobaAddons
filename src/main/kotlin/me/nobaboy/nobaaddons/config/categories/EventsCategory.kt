@@ -89,7 +89,7 @@ object EventsCategory {
 
 			boolean(
 				tr("nobaaddons.config.events.mythological.ignoreCrypt", "Ignore /warp crypt"),
-				tr("nobaaddons.config.events.mythological.ignoreCrypt.tooltip", "Because leaving of the crypts may be inconvenient"),
+				tr("nobaaddons.config.events.mythological.ignoreCrypt.tooltip", "Because leaving the crypts may be inconvenient"),
 				default = defaults.events.mythological.ignoreCrypt,
 				property = config.events.mythological::ignoreCrypt
 			)
