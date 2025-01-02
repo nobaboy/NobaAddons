@@ -6,13 +6,10 @@ import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.PacketEvents
 import me.nobaboy.nobaaddons.events.QuarterSecondPassedEvent
+import me.nobaboy.nobaaddons.events.WorldEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.Timestamp
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents
-import net.hypixel.modapi.HypixelModAPI
-import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
@@ -43,8 +40,7 @@ object InventoryAPI {
 		PacketEvents.SEND.register(this::onPacketSend)
 		PacketEvents.RECEIVE.register(this::onPacketReceive)
 		QuarterSecondPassedEvent.EVENT.register(this::onQuarterSecond)
-		ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register { _, _ -> debounceItemLog() }
-		HypixelModAPI.getInstance().listen<ClientboundLocationPacket> { debounceItemLog() }
+		WorldEvents.POST_LOAD.register { debounceItemLog() }
 	}
 
 	private fun debounceItemLog() {
