@@ -54,13 +54,9 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 		val adder = gridWidget.createAdder(2)
 
 		adder.add(ButtonWidget.builder(CONFIGURATION_TEXT) { openConfig() }.width(BUTTON_WIDTH).build(), 2)
-		adder.add(ButtonWidget.builder(EDIT_NOTIFICATIONS_TEXT) { openNotificationsEditor() }.width(BUTTON_WIDTH).build(), 2)
-		if(MCUtils.world != null) {
-			adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openHudEditor() }.width(BUTTON_WIDTH_HALF).build())
-			adder.add(ButtonWidget.builder(EDIT_KEYBINDS_TEXT) { openKeybindsEditor() }.width(BUTTON_WIDTH_HALF).build())
-		} else {
-			adder.add(ButtonWidget.builder(EDIT_KEYBINDS_TEXT) { openKeybindsEditor() }.width(BUTTON_WIDTH).build(), 2)
-		}
+		if(MCUtils.world != null) adder.add(ButtonWidget.builder(EDIT_LOCATIONS_TEXT) { openHudEditor() }.width(BUTTON_WIDTH).build(), 2)
+		adder.add(ButtonWidget.builder(EDIT_NOTIFICATIONS_TEXT) { openNotificationsEditor() }.width(BUTTON_WIDTH_HALF).build())
+		adder.add(ButtonWidget.builder(EDIT_KEYBINDS_TEXT) { openKeybindsEditor() }.width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(SOURCE_TEXT, ConfirmLinkScreen.opening(this, GITHUB_ROOT)).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(ISSUES_TEXT, ConfirmLinkScreen.opening(this, "$GITHUB_ROOT/issues")).width(BUTTON_WIDTH_HALF).build())
 		adder.add(ButtonWidget.builder(MODRINTH_TEXT, ConfirmLinkScreen.opening(this, "https://modrinth.com/mod/nobaaddons")).width(BUTTON_WIDTH_HALF).build())
@@ -86,8 +82,8 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 
 		val centerX = MCUtils.window.scaledWidth / 2
 
-		RenderUtils.drawCenteredText(context, TITLE_TEXT, centerX, height / 6 - 10, 4.0f, NobaColor.BLUE.toColor().rgb, true)
-		RenderUtils.drawCenteredText(context, VERSION_TEXT, centerX, height / 6 + 25, 1.5f, 0xFFFFFF, true)
+		RenderUtils.drawCenteredText(context, TITLE_TEXT, centerX, height / 6 - 10, 4.0f, NobaColor.BLUE, true)
+		RenderUtils.drawCenteredText(context, VERSION_TEXT, centerX, height / 6 + 25, 1.5f, NobaColor.WHITE, true)
 	}
 
 	override fun close() {

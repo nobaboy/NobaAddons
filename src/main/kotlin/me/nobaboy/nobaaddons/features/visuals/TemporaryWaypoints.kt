@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
@@ -23,7 +24,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-object TemporaryWaypoint {
+object TemporaryWaypoints {
 	private val config get() = NobaConfigManager.config.uiAndVisuals.temporaryWaypoints
 	val enabled: Boolean get() = config.enabled
 
@@ -65,17 +66,16 @@ object TemporaryWaypoint {
 		if(!enabled) return
 
 		val cameraPos = context.camera().pos.toNobaVec()
-		val color = config.waypointColor
+		val color = config.waypointColor.toNobaColor()
 
 		waypoints.removeIf { it.expired || it.location.distance(cameraPos) < 5.0 }
 		waypoints.forEach { waypoint ->
 			waypoint.location.let {
 				val distance = it.distanceToPlayer()
+				val formattedDistance = distance.toInt().addSeparators()
 
 				RenderUtils.renderWaypoint(context, it, color, throughBlocks = true)
 				RenderUtils.renderText(it.center().raise(), waypoint.text, color, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
-
-				val formattedDistance = distance.toInt().addSeparators()
 				RenderUtils.renderText(it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 		}

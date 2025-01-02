@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object SeaCreatureAlert {
 	private val config get() = NobaConfigManager.config.fishing.seaCreatureAlert
-	private val enabled: Boolean get() = SkyBlockAPI.inSkyBlock && config.enabled
+	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
 	fun init() {
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
@@ -33,7 +33,7 @@ object SeaCreatureAlert {
 			HypixelCommands.partyChat("[NobaAddons] Caught a ${seaCreature.displayName}!")
 		}
 
-		RenderUtils.drawTitle(text, (seaCreature.rarity.color ?: NobaColor.GOLD).toColor())
+		RenderUtils.drawTitle(text, (seaCreature.rarity.color ?: NobaColor.GOLD))
 		config.notificationSound.play()
 	}
 

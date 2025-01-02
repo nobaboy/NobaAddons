@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 
+// TODO: Add cap option of 40 (which is max fortune), and consider red !!! if >=100k
 object VacuumPestsSlotInfo : ISlotInfo {
 	private val vacuumPestsPattern by Regex("Vacuum Bag: (?<amount>\\d+) Pests").fromRepo("slot_info.vacuum_pests")
 
@@ -29,8 +30,11 @@ object VacuumPestsSlotInfo : ISlotInfo {
 		if(item.id !in gardenVacuums) return
 
 		val lore = itemStack.lore.stringLines
+
+		// This doesn't use toAbbreviatedString() here since 4 characters would extend past the slot,
+		// so we're compacting down to millions at >=100k
 		vacuumPestsPattern.firstFullMatch(lore) {
-			var pests = groups["amount"]!!.value.formatLong()
+			val pests = groups["amount"]!!.value.formatLong()
 			val count = when {
 				pests < 1_000 -> "$pests"
 				pests < 100_000 -> "${pests / 1_000}k"

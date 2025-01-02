@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chat.chatcommands.IChatCommand
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -16,7 +15,7 @@ class WarpCommand : IChatCommand {
 	private var delay = 0
 	private var isWarping = false
 
-	override val enabled: Boolean get() = NobaConfigManager.config.chat.chatCommands.party.warp
+	override val enabled: Boolean get() = config.party.warp
 
 	override val name: String = "warp"
 
