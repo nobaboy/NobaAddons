@@ -12,11 +12,11 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
@@ -71,13 +71,10 @@ object CorpseLocator {
 
 		corpses.filter { !it.seen && player.canSee(it.entity) }.forEach { corpse ->
 			val location = corpse.entity.getNobaVec().roundToBlock()
-			val article = if(corpse.type == CorpseType.UMBER) "an" else "a"
+			val (x, y, z) = location.toDoubleArray().map { it.toInt() }
 
-			val text = buildText {
-				append("Found $article ")
-				append(corpse.type.formattedDisplayName)
-				append(" at ${location.x.toInt()}, ${location.y.toInt()}, ${location.z.toInt()}")
-			}
+			val article = if(corpse.type == CorpseType.UMBER) "an" else "a"
+			val text = tr("nobaaddons.corpseLocator.found", "Found $article ${corpse.type.formattedDisplayName} Corpse at $x, $y, $z")
 
 			ChatUtils.addMessage(text)
 			MineshaftWaypoints.addWaypoint(location, corpse.type.displayName, corpse.type.color, MineshaftWaypointType.CORPSE)
@@ -103,7 +100,7 @@ object CorpseLocator {
 	}
 
 	private fun shareCorpse(player: PlayerEntity) {
-		if(!config.autoShareCorpses) return
+		if(!config.autoShareCorpseCoords) return
 		if(PartyAPI.party == null) return
 		if(MineshaftWaypoints.waypoints.isEmpty()) return
 
