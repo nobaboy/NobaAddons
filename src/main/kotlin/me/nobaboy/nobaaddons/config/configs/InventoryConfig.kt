@@ -1,6 +1,8 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
+import me.nobaboy.nobaaddons.config.configs.InventoryConfig.EnchantmentTooltips
+import me.nobaboy.nobaaddons.config.configs.InventoryConfig.SlotInfo
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentDisplayMode
 import me.nobaboy.nobaaddons.utils.NobaColor
 import java.awt.Color
@@ -11,6 +13,9 @@ class InventoryConfig {
 
 	@SerialEntry
 	val enchantmentTooltips = EnchantmentTooltips()
+
+	@SerialEntry
+	val itemPickupLog = PickupLog()
 
 	class SlotInfo {
 		@SerialEntry
@@ -119,5 +124,13 @@ class InventoryConfig {
 
 		@SerialEntry
 		var badColor: Color = NobaColor.GRAY.toColor()
+	}
+
+	class PickupLog {
+		@SerialEntry
+		var enabled: Boolean = false
+
+		@SerialEntry
+		var timeoutSeconds: Int = 5
 	}
 }

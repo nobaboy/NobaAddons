@@ -16,5 +16,7 @@ object CommonText {
 		val LABEL_ITEM_ABILITIES get() = tr("nobaaddons.config.label.itemAbilities", "Item Abilities")
 		val LABEL_RIFT get() = tr("nobaaddons.config.label.rift", "Rift")
 		val LABEL_DUNGEONS get() = tr("nobaaddons.config.label.dungeons", "Dungeons")
+
+		fun seconds(value: Int) = tr("nobaaddons.config.label.seconds", "$value seconds")
 	}
 }

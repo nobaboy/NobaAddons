@@ -20,14 +20,14 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	 * Returns an absolute pixel value for the top left corner of this element
 	 */
 	var x: Int
-		get() = scale(MCUtils.window.scaledWidth, elementPosition.x)
+		get() = convertToAbsolutePixel(MCUtils.window.scaledWidth, elementPosition.x)
 		set(value) { elementPosition.x = value.toDouble() / MCUtils.window.scaledWidth }
 
 	/**
 	 * Returns an absolute pixel value for the top left corner of this element
 	 */
 	var y: Int
-		get() = scale(MCUtils.window.scaledHeight, elementPosition.y)
+		get() = convertToAbsolutePixel(MCUtils.window.scaledHeight, elementPosition.y)
 		set(value) { elementPosition.y = value.toDouble() / MCUtils.window.scaledHeight }
 
 	/**
@@ -40,14 +40,23 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	val alignment: ElementAlignment
 		get() = if(elementPosition.x > 0.5) ElementAlignment.RIGHT else ElementAlignment.LEFT
 
-	private fun scale(pixels: Int, scale: Double): Int = (pixels * scale).toInt().coerceIn(0, pixels)
+	/**
+	 * If `false`, this UI element is entirely skipped - both in rendering and HUD editor screen.
+	 *
+	 * This should ideally be the value of the relevant config option.
+	 */
+	open val enabled: Boolean = true
+
+	private fun convertToAbsolutePixel(pixels: Int, scale: Double): Int = (pixels * scale).toInt().coerceIn(0, pixels)
 
 	/**
 	 * The current element scale as determined by the user
 	 *
 	 * @see RenderUtils.scaled
 	 */
-	var scale: Float by elementPosition::scale
+	open var scale: Float
+		get() = if(allowScaling) elementPosition.scale else 1f
+		set(value) { if(allowScaling) elementPosition.scale = value }
 
 	/**
 	 * Minimum scale for this element when using the scroll wheel on it in the HUD editor screen
@@ -62,6 +71,8 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	 * Note that this is capped at `3f` in [ElementPosition]
 	 */
 	open val maxScale: Float = 3.0f
+
+	open val allowScaling: Boolean = true
 
 	/**
 	 * Name used in place of this element in the HUD editor screen
