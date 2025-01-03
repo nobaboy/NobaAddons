@@ -29,9 +29,6 @@ class FishingConfig {
 
 		@SerialEntry
 		var crimsonIsleOnly: Boolean = true
-
-		@SerialEntry
-		var lerpColor: Boolean = false
 	}
 
 	class SeaCreatureAlert {

@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class EventsConfig {
 	@SerialEntry
-	var mythological: Mythological = Mythological()
+	val mythological: Mythological = Mythological()
 
 	@SerialEntry
 	var chocolateFactory: ChocolateFactory = ChocolateFactory()
@@ -54,12 +54,9 @@ class EventsConfig {
 		var ignoreStonks: Boolean = false
 	}
 
+	// TODO: Merge into Hoppity
 	class ChocolateFactory {
 		@SerialEntry
 		var requireMythicRabbit = false
-	}
-
-	class Hoppity {
-		// TODO
 	}
 }

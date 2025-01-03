@@ -2,11 +2,11 @@ package me.nobaboy.nobaaddons.features.mining.glacitemineshaft
 
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
+import net.minecraft.text.Text
 
-data class Waypoint(
+data class MineshaftWaypoint(
 	val location: NobaVec,
-	// TODO Text
-	val text: String,
+	val text: Text,
 	val color: NobaColor,
-	var isCorpse: Boolean = false
+	val type: MineshaftWaypointType
 )

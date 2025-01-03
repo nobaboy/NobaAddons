@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.api.skyblock.mythological
+package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.ParticleEvents

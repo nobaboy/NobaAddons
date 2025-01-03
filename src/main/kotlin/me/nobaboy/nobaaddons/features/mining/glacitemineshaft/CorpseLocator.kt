@@ -12,13 +12,11 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.TextUtils.withColor
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
-import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
@@ -72,18 +70,17 @@ object CorpseLocator {
 			.forEach { checkCorpse(it) }
 
 		corpses.filter { !it.seen && player.canSee(it.entity) }.forEach { corpse ->
-			val (x, y, z) = corpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
+			val location = corpse.entity.getNobaVec().roundToBlock()
+			val article = if(corpse.type == CorpseType.UMBER) "an" else "a"
 
-			val type = corpse.type.toString().toText().withColor(corpse.type.color)
-			val text = tr("nobaaddons.corpseLocator.found", "Found $type Corpse at $x, $y, $z")
+			val text = buildText {
+				append("Found $article ")
+				append(corpse.type.formattedDisplayName)
+				append(" at ${location.x.toInt()}, ${location.y.toInt()}, ${location.z.toInt()}")
+			}
 
 			ChatUtils.addMessage(text)
-			MineshaftWaypoints.waypoints.add(Waypoint(
-				corpse.entity.getNobaVec().roundToBlock(),
-				"${corpse.type} Corpse",
-				corpse.type.color,
-				true
-			))
+			MineshaftWaypoints.addWaypoint(location, corpse.type.displayName, corpse.type.color, MineshaftWaypointType.CORPSE)
 
 			corpse.seen = true
 		}
@@ -106,7 +103,7 @@ object CorpseLocator {
 	}
 
 	private fun shareCorpse(player: PlayerEntity) {
-		if(!config.autoShareCorpseCoords) return
+		if(!config.autoShareCorpses) return
 		if(PartyAPI.party == null) return
 		if(MineshaftWaypoints.waypoints.isEmpty()) return
 
@@ -117,7 +114,7 @@ object CorpseLocator {
 
 		val (x, y, z) = closestCorpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
 
-		HypixelCommands.partyChat("x: $x, y: $y, z: $z | (${closestCorpse.type} Corpse)")
+		HypixelCommands.partyChat("x: $x, y: $y, z: $z | (${closestCorpse.type.displayName.string})")
 		closestCorpse.shared = true
 	}
 

@@ -11,7 +11,7 @@ class MiningConfig {
 		var corpseLocator: Boolean = false
 
 		@SerialEntry
-		var autoShareCorpseCoords: Boolean = false
+		var autoShareCorpses: Boolean = false
 
 		@SerialEntry
 		var entranceWaypoint: Boolean = false

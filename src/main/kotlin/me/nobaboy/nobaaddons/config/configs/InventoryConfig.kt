@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.isxander.yacl3.config.v2.api.SerialEntry
-import me.nobaboy.nobaaddons.features.inventory.EnchantDisplayMode
+import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentDisplayMode
 import me.nobaboy.nobaaddons.utils.NobaColor
 import java.awt.Color
 
@@ -100,7 +100,7 @@ class InventoryConfig {
 		var replaceRomanNumerals: Boolean = false
 
 		@SerialEntry
-		var displayMode: EnchantDisplayMode = EnchantDisplayMode.NORMAL
+		var displayMode: EnchantmentDisplayMode = EnchantmentDisplayMode.NORMAL
 
 		@SerialEntry
 		var showDescriptions: Boolean = true

@@ -6,16 +6,16 @@ import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.util.Formatting
+import net.minecraft.text.Text
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.world.World
@@ -36,7 +36,7 @@ object EtherwarpHelper {
 	private fun renderFailText(context: DrawContext) {
 		targetBlock.takeIf { config.showFailText }?.let {
 			val (x, y) = MCUtils.window.let { it.scaledWidth / 2 to it.scaledHeight / 2 + 10 }
-			RenderUtils.drawCenteredText(context, it.text.toText().formatted(Formatting.RED), x, y)
+			RenderUtils.drawCenteredText(context, it.displayName, x, y, color = NobaColor.RED)
 		}
 	}
 
@@ -91,9 +91,9 @@ object EtherwarpHelper {
 		return if(stateAbove.isSolid && !stateAbove.isAir || !stateTwoAbove.isAir) ValidationType.NO_AIR_ABOVE else null
 	}
 
-	private enum class ValidationType(val text: String) {
-		TOO_FAR("Too far!"),
-		NOT_SOLID("Not solid!"),
-		NO_AIR_ABOVE("No air above!")
+	private enum class ValidationType(val displayName: Text) {
+		TOO_FAR(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.validationType.tooFar", "Too far!")),
+		NOT_SOLID(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.validationType.notSolid", "Not solid!")),
+		NO_AIR_ABOVE(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.validationType.noAirAbove", "No air above!"))
 	}
 }

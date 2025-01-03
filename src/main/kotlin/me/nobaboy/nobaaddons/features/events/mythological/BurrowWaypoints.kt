@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
-import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
@@ -142,7 +142,7 @@ object BurrowWaypoints {
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
 		burrows.forEach { location, type ->
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), type.text, type.color, yOffset = -5.0f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), type.displayName, type.color, yOffset = -5.0f, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 

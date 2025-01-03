@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.commands
 import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Group
 import dev.celestialfault.commander.annotations.RootCommand
-import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands
 import me.nobaboy.nobaaddons.commands.impl.CommandUtil
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
