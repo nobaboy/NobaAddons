@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 object SkillLevelSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.skillLevel
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val inventoryName = InventoryUtils.openInventoryName() ?: return
 		if(inventoryName != "Your Skills") return
 

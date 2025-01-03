@@ -20,8 +20,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeldItemRenderer.class)
-public class HeldItemRendererMixin {
-	@ModifyExpressionValue(method = "updateHeldItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"))
+abstract class HeldItemRendererMixin {
+	@ModifyExpressionValue(
+		method = "updateHeldItems",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"
+		)
+	)
 	public float nobaaddons$cancelAttackCooldown(float original) {
 		if(NobaConfigManager.getConfig().getUiAndVisuals().getSwingAnimation().getSwingDuration() > 1) {
 			return 1f;

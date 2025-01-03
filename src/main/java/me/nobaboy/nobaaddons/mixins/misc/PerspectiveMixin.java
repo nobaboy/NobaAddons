@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Perspective.class)
-public class PerspectiveMixin {
+abstract class PerspectiveMixin {
 	@ModifyReturnValue(method = "next", at = @At("RETURN"))
 	public Perspective nobaaddons$removeFrontFacingThirdPerson(Perspective original) {
 		var config = NobaConfigManager.getConfig().getUiAndVisuals().getRenderingTweaks();

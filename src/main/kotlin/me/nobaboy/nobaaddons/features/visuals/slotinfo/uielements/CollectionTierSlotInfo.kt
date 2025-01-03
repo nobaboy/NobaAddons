@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 object CollectionTierSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.collectionTier
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val inventoryName = InventoryUtils.openInventoryName() ?: return
 		if(!inventoryName.endsWith(" Collections")) return
 

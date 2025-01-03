@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Keyboard.class)
-public class KeyboardMixin {
+abstract class KeyboardMixin {
 	@Shadow @Final private MinecraftClient client;
 
 	@Inject(method = "onKey", at = @At("TAIL"))

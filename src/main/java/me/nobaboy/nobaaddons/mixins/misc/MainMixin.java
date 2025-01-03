@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Locale;
 
 @Mixin(Main.class)
-public class MainMixin {
+abstract class MainMixin {
 	// https://github.com/comp500/ScreenshotToClipboard/blob/8ea71318/common/src/main/java/link/infra/screenshotclipboard/common/mixin/AWTHackMixin.java
 	@Inject(method = "main", at = @At("HEAD"))
 	private static void nobaaddons$forceHeadlessToFalse(String[] args, CallbackInfo ci) {

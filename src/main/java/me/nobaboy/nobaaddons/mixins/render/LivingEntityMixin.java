@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.Objects;
 
 @Mixin(LivingEntity.class)
-public class LivingEntityMixin {
+abstract class LivingEntityMixin {
 	@ModifyReturnValue(method = "getHandSwingDuration", at = @At("RETURN"))
 	public int nobaaddons$modifySwingDuration(int original) {
 		var entity = (LivingEntity)(Object)this;

@@ -15,16 +15,19 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ClientPlayNetworkHandler.class)
-public class SoundEventsMixin {
+abstract class SoundEventsMixin {
 	@WrapWithCondition(
 		method = "onPlaySound",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/sound/SoundCategory;FFJ)V")
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/world/ClientWorld;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/sound/SoundCategory;FFJ)V"
+		)
 	)
-	public boolean nobaaddons$onPlaySound(ClientWorld instance, @Nullable PlayerEntity source, double x, double y, double z, RegistryEntry<SoundEvent> soundKey, SoundCategory category, float volume, float pitch, long seed) {
-		var sound = soundKey.getKeyOrValue();
-		var id = sound.left()
+	public boolean nobaaddons$onPlaySound(ClientWorld instance, @Nullable PlayerEntity source, double x, double y, double z, RegistryEntry<SoundEvent> sound, SoundCategory category, float volume, float pitch, long seed) {
+		var key = sound.getKeyOrValue();
+		var id = key.left()
 			.map(RegistryKey::getValue)
-			.orElseGet(() -> sound.right()
+			.orElseGet(() -> key.right()
 				//? if >=1.21.2 {
 				.map(SoundEvent::id)
 				//?} else {
@@ -34,10 +37,11 @@ public class SoundEventsMixin {
 
 		var location = new NobaVec(x, y, z);
 
-		var allow = new SoundEvents.AllowSound(id, location, pitch, volume);
+		var allowEvent = new SoundEvents.AllowSound(id, location, pitch, volume);
 		var soundEvent = new SoundEvents.Sound(id, category, location, pitch, volume);
-		SoundEvents.ALLOW_SOUND.invoke(allow);
-		if(allow.isCanceled()) {
+
+		SoundEvents.ALLOW_SOUND.invoke(allowEvent);
+		if(allowEvent.isCanceled()) {
 			SoundEvents.SOUND_CANCELED.invoke(soundEvent);
 			return false;
 		}
