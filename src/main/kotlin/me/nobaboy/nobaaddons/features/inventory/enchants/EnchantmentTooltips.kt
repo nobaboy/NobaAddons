@@ -30,7 +30,7 @@ import org.lwjgl.glfw.GLFW
 
 // TODO: Could do with caching the lore
 object EnchantmentTooltips {
-	private val config get() = NobaConfigManager.config.inventory.enchantmentTooltips
+	private val config get() = NobaConfigManager.config.uiAndVisuals.enchantmentTooltips
 	// the extra [\d,]+ is to account for stacking enchants adding their value
 	// TODO it'd be nice to .findAll() with this, but this globs every prior enchantment
 	//      into the last one's name, so we're just extracting from groups this after splitting on `, `,

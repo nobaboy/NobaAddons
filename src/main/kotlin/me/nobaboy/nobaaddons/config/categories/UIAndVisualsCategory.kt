@@ -33,6 +33,7 @@ object UIAndVisualsCategory {
 			MCUtils.client.setScreen(InfoBoxesScreen(it))
 		}
 
+		// region Temporary Waypoints
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints", "Temporary Waypoints")) {
 			boolean(
 				CommonText.Config.ENABLED,
@@ -54,7 +55,9 @@ object UIAndVisualsCategory {
 				step = 1
 			)
 		}
+		// endregion
 
+		// region Etherwarp Helper
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper", "Etherwarp Overlay")) {
 			boolean(
 				CommonText.Config.ENABLED,
@@ -79,7 +82,9 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.etherwarpHelper::allowOverlayOnAir
 			)
 		}
+		// endregion
 
+		// region Rendering Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.renderingTweaks", "Rendering Tweaks")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt", "Hide Lightning Bolt"),
@@ -100,7 +105,9 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::removeFrontFacingThirdPerson
 			)
 		}
+		// endregion
 
+		// region Arm Swing Animation Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.swingAnimation", "Arm Swing Animation Tweaks")) {
 			slider(
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration", "Swing Duration"),
@@ -125,7 +132,9 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.swingAnimation::applyToAllPlayers,
 			)
 		}
+		// endregion
 
+		// region First Person Item Rendering
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.itemRendering", "First Person Item Rendering")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip", "Cancel Re-equip Animation"),
@@ -182,7 +191,9 @@ object UIAndVisualsCategory {
 				step = 0.1f
 			)
 		}
+		// endregion
 
+		// region Armor Glint Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints"),
@@ -197,5 +208,6 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
 			)
 		}
+		// endregion
 	}
 }

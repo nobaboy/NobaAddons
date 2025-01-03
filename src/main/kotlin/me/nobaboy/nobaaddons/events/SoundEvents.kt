@@ -10,7 +10,7 @@ object SoundEvents {
 	/**
 	 * Event invoked to determine whether a given sound should be allowed to play.
 	 */
-	@JvmField val ALLOW_SOUND = EventDispatcher<AllowSound>()
+	@JvmField val ALLOW_SOUND = EventDispatcher.cancelable<AllowSound>()
 
 	/**
 	 * Event invoked after a sound is canceled.
