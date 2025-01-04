@@ -161,7 +161,7 @@ object VoidgloomFeatures {
 
 	data class BrokenHeartRadiation(val bossEntity: Entity, val timestamp: Timestamp) {
 		val isValid: Boolean
-			get() = timestamp.timeRemaining() >= 0.seconds && (bossEntity.vehicle != null || timestamp.timeRemaining() >= 5.seconds)
+			get() = timestamp.timeRemaining() > 0.seconds && (bossEntity.vehicle != null || timestamp.timeRemaining() >= 5.seconds)
 
 		val remainingTime: String get() = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
 	}
