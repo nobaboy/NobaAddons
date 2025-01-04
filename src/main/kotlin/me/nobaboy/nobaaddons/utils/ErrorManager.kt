@@ -23,6 +23,10 @@ object ErrorManager {
 		ClientTickEvents.END_CLIENT_TICK.register { attemptSendQueuedMessages() }
 	}
 
+	fun clearPreviousErrors() {
+		erroredLines.clear()
+	}
+
 	private fun attemptSendQueuedMessages() {
 		val player = MCUtils.player ?: return
 		player.sendMessage(queuedMessages.poll() ?: return, false)

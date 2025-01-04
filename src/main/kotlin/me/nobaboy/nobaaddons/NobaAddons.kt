@@ -24,6 +24,7 @@ import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
@@ -31,6 +32,7 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
+import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
@@ -40,20 +42,22 @@ import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
+import me.nobaboy.nobaaddons.features.inventory.EnchantParsing
+import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
+import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomFeatures
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
-import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoint
+import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.RepoManager
-import me.nobaboy.nobaaddons.screens.hud.ElementManager
-import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesManager
-import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager
+import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
@@ -110,11 +114,15 @@ object NobaAddons : ClientModInitializer {
 	// if the object class is never referenced anywhere else, or if it relies on chat data for a feature that isn't
 	// immediately ran).
 	override fun onInitializeClient() {
+		/* region Core */
 		NobaConfigManager.init()
 		PersistentCache.init()
+		UISettings.init()
 		RepoManager.init()
+		UIManager.init()
 
 		UpdateNotifier.init()
+		/* endregion */
 
 		/* region APIs */
 		InventoryAPI.init()
@@ -142,12 +150,13 @@ object NobaAddons : ClientModInitializer {
 		/* endregion */
 
 		/* region User Interface */
-		ElementManager.init()
+		ItemPickupLog.init()
 		/* endregion */
 
 		/* region Features */
 		// region Visuals
-		TemporaryWaypoint.init()
+		EnchantParsing.init()
+		TemporaryWaypoints.init()
 		EtherwarpHelper.init()
 		ISlotInfo.init()
 		// endregion
@@ -187,6 +196,7 @@ object NobaAddons : ClientModInitializer {
 		// region Chat
 		IAlert.init()
 		IChatFilter.init()
+		ChatNotifications.init()
 		// endregion
 
 		// region Chat Commands

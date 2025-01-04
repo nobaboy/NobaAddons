@@ -21,7 +21,7 @@ object TrophyFishSlotInfo : ISlotInfo {
 		if(rarities.isEmpty()) return
 
 		if(config.checkMarkIfMaxed && TrophyFishRarity.entries.all { rarities[it]?.let { it > 0 } == true }) {
-			drawCount(event, ISlotInfo.CHECK, NobaColor.GREEN.rgb)
+			drawCount(event, ISlotInfo.CHECK, NobaColor.GREEN)
 			return
 		}
 
@@ -33,6 +33,6 @@ object TrophyFishSlotInfo : ISlotInfo {
 			text.formatted(Formatting.BOLD)
 		}
 
-		drawCount(event, text, highestRarity.color.rgb)
+		drawCount(event, text, highestRarity.color)
 	}
 }

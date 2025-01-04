@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.io;
 
-import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsManager;
+import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Final;

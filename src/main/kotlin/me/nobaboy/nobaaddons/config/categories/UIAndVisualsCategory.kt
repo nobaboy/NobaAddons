@@ -12,7 +12,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.tickBox
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.strikethrough
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
@@ -23,8 +23,10 @@ import java.util.Calendar
 private val year = Calendar.getInstance().get(Calendar.YEAR)
 
 private fun societyIsCrumbling(@Suppress("SameParameterValue") fromYear: Int): Text {
-	val years = (fromYear until year).map { buildLiteral(it.toString()) { strikethrough() } } + listOf(year.toString().toText())
-	return Texts.join(years, " ".toText())
+	return Texts.join(buildList {
+		addAll((fromYear until year).map { it.toText().strikethrough() })
+		add(year.toText())
+	}, " ".toText())
 }
 
 object UIAndVisualsCategory {
@@ -254,7 +256,7 @@ object UIAndVisualsCategory {
 				step = 1,
 			) {
 				when(it) {
-					1 -> tr("nobaaddons.config.label.unmodified", "Unmodified")
+					1 -> tr("nobaaddons.config.label.off", "Off").red()
 					6 -> tr("nobaaddons.config.label.default", "Default")
 					else -> it.toString().toText()
 				}
@@ -328,7 +330,7 @@ object UIAndVisualsCategory {
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints"),
-				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "It's ${societyIsCrumbling(2019)}. Society has progressed little in the past 5 years. The world is falling apart. Hypixel still has yet to figure out how to consistently add an enchantment glint to armor."),
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "It's ${societyIsCrumbling(2019)}. Society has progressed little in the past 20 years. The world is falling apart. Hypixel still has yet to figure out how to consistently add an enchantment glint to armor."),
 				default = defaults.uiAndVisuals.renderingTweaks.fixEnchantedArmorGlint,
 				property = config.uiAndVisuals.renderingTweaks::fixEnchantedArmorGlint
 			)

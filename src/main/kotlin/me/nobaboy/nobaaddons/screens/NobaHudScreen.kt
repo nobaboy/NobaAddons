@@ -1,7 +1,8 @@
 package me.nobaboy.nobaaddons.screens
 
-import me.nobaboy.nobaaddons.screens.hud.ElementManager
-import me.nobaboy.nobaaddons.screens.hud.elements.HudElement
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
+import me.nobaboy.nobaaddons.ui.HudElement
+import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
@@ -12,7 +13,7 @@ import org.lwjgl.glfw.GLFW
 import kotlin.math.roundToInt
 
 class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.hudEditor", "HUD Editor")) {
-	private lateinit var elements: LinkedHashMap<String, HudElement>
+	private lateinit var elements: Set<HudElement>
 //	private var contextMenu: ContextMenu? = null
 
 	private var editingMode: EditingMode = EditingMode.IDLE
@@ -26,15 +27,13 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 
 	private val usageTexts = listOf<Text>(
 		tr("nobaaddons.screen.hudEditor.usage.line1", "Left-click and drag, or use arrows to move (Ctrl moves further)"),
-		tr("nobaaddons.screen.hudEditor.usage.line2", "Scroll or use +/- to resize an element"),
+		tr("nobaaddons.screen.hudEditor.usage.line2", "Scroll or use +/- to resize an element (if supported)"),
 		tr("nobaaddons.screen.hudEditor.usage.line3", "Middle-click to reset an element"),
-		tr("nobaaddons.screen.hudEditor.usage.line4", "Right-click for context menu (coming soon)"),
+//		tr("nobaaddons.screen.hudEditor.usage.line4", "Right-click for context menu (coming soon)"),
 	)
 
 	override fun init() {
-		super.init()
-
-		elements = LinkedHashMap(ElementManager)
+		elements = UIManager.filter { it.enabled }.toSet()
 	}
 
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
@@ -50,9 +49,9 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 		}
 
 		var hovered: HudElement? = null
-		elements.values.forEach { element ->
+		elements.forEach { element ->
 			val isHovered = clickInBounds(element, mouseX.toDouble(), mouseY.toDouble())
-			element.renderBackground(context, isHovered)
+			element.renderGUIBackground(context, isHovered)
 			if(isHovered) hovered = element
 		}
 
@@ -66,9 +65,8 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	}
 
 	override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
-		elements.values.forEach { element ->
-			if(!clickInBounds(element, mouseX, mouseY)) return@forEach
-
+		val element = elements.firstOrNull { clickInBounds(it, mouseX, mouseY) }
+		element?.let {
 			when(button) {
 				GLFW.GLFW_MOUSE_BUTTON_1 -> {
 					updateOffset(element, mouseX, mouseY)
@@ -79,8 +77,10 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 //					openContextMenu(element)
 //					setEditingMode(EditingMode.MENU)
 //				}
-				GLFW.GLFW_MOUSE_BUTTON_3 -> element.reset()
+				GLFW.GLFW_MOUSE_BUTTON_3 -> it.reset()
+				else -> return@let
 			}
+			return true
 		}
 
 		return super.mouseClicked(mouseX, mouseY, button)
@@ -96,12 +96,20 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	}
 
 	override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
-		selectedElement.takeIf { editingMode == EditingMode.DRAG }?.moveTo((mouseX - offsetX).toInt(), (mouseY - offsetY).toInt())
+		val hovered = selectedElement.takeIf { editingMode == EditingMode.DRAG }
+		if(hovered != null) {
+			hovered.moveTo((mouseX - offsetX).toInt(), (mouseY - offsetY).toInt())
+			return true
+		}
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
 	}
 
 	override fun mouseScrolled(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {
-		hoveredElement.takeIf { editingMode != EditingMode.MENU }?.adjustScale((verticalAmount / 10).toFloat())
+		val hovered = hoveredElement.takeIf { editingMode != EditingMode.MENU }
+		if(hovered?.allowScaling == true) {
+			hovered.adjustScale((verticalAmount / 10).toFloat())
+			return true
+		}
 		return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)
 	}
 
@@ -118,14 +126,17 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 				GLFW.GLFW_KEY_RIGHT -> it.moveBy(dx = movementAmount)
 				GLFW.GLFW_KEY_EQUAL -> it.adjustScale(0.1f)
 				GLFW.GLFW_KEY_MINUS -> it.adjustScale(-0.1f)
+				else -> return@let
 			}
+			return true
 		}
 
 		return super.keyPressed(keyCode, scanCode, modifiers)
 	}
 
 	override fun close() {
-		ElementManager.loadElements()
+		InfoBoxesManager.save()
+		InfoBoxesManager.recreateUIElements()
 		client!!.setScreen(parent)
 	}
 
