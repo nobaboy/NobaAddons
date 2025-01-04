@@ -60,5 +60,8 @@ class SlayersConfig {
 
 		@SerialEntry
 		var highlightColor: Color = NobaColor.RED.toColor()
+
+		@SerialEntry
+		var brokenHeartRadiationTimer: Boolean = false
 	}
 }

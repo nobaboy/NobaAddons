@@ -36,28 +36,40 @@ object InventoryAPI {
 	private fun shouldSuppressItemLogUpdate(): Boolean = inventorySuppressTime.elapsedSeconds() < 2
 
 	fun init() {
+		QuarterSecondPassedEvent.EVENT.register(this::onQuarterSecond)
 		PacketEvents.SEND.register(this::onPacketSend)
 		PacketEvents.RECEIVE.register(this::onPacketReceive)
-		QuarterSecondPassedEvent.EVENT.register(this::onQuarterSecond)
 		WorldEvents.POST_LOAD.register { debounceItemLog() }
 	}
 
-	private fun debounceItemLog() {
-		previousItemCounts = null
-		inventorySuppressTime = Timestamp.now()
+	private fun onQuarterSecond(event: QuarterSecondPassedEvent) {
+		val player = event.client.player
+		if(!SkyBlockAPI.inSkyBlock || player == null) {
+			previousItemCounts = null
+			itemLog.clear()
+			return
+		}
+
+		if(event.client.currentScreen == null) {
+			val current = player.inventory.itemNamesToCount()
+			previousItemCounts?.takeIf { !shouldSuppressItemLogUpdate() }?.let { updateItemLog(it, current) }
+			previousItemCounts = current
+		}
+
+		itemLog.entries.removeIf { (_, diff) ->
+			diff.timestamp.elapsedSeconds() > NobaConfigManager.config.inventory.pickupLog.timeoutSeconds
+		}
 	}
 
 	private fun onPacketSend(event: PacketEvents.Send) {
-		val packet = event.packet
-		when(packet) {
+		when(val packet = event.packet) {
 			is ClickSlotC2SPacket -> onClickSlot(packet)
 			is CloseHandledScreenC2SPacket -> close()
 		}
 	}
 
 	private fun onPacketReceive(event: PacketEvents.Receive) {
-		val packet = event.packet
-		when(packet) {
+		when(val packet = event.packet) {
 			is OpenScreenS2CPacket -> onScreenOpen(packet)
 			is InventoryS2CPacket -> onInventory(packet)
 			is ScreenHandlerSlotUpdateS2CPacket -> onSlotUpdate(packet)
@@ -109,28 +121,14 @@ object InventoryAPI {
 		InventoryEvents.UPDATE.invoke(InventoryEvents.Update(inventory))
 	}
 
+	private fun debounceItemLog() {
+		previousItemCounts = null
+		inventorySuppressTime = Timestamp.now()
+	}
+
 	private fun close(sameName: Boolean = false) {
 		if(MCUtils.client.currentScreen is ChatScreen) return
 		InventoryEvents.CLOSE.invoke(InventoryEvents.Close(sameName))
-	}
-
-	private fun onQuarterSecond(event: QuarterSecondPassedEvent) {
-		val player = event.client.player
-		if(!SkyBlockAPI.inSkyBlock || player == null) {
-			previousItemCounts = null
-			itemLog.clear()
-			return
-		}
-
-		if(event.client.currentScreen == null) {
-			val current = player.inventory.itemNamesToCount()
-			previousItemCounts?.takeIf { !shouldSuppressItemLogUpdate() }?.let { updateItemLog(it, current) }
-			previousItemCounts = current
-		}
-
-		itemLog.entries.removeIf { (_, diff) ->
-			diff.timestamp.elapsedSeconds() > NobaConfigManager.config.inventory.pickupLog.timeoutSeconds
-		}
 	}
 
 	private fun updateItemLog(previous: Map<Text, Int>, current: Map<Text, Int>) {

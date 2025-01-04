@@ -12,6 +12,7 @@ import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.skullFromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.getNobaVec
@@ -22,21 +23,27 @@ import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.block.Blocks
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.EndermanEntity
 import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket
+import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
 
 object VoidgloomFeatures {
 	private val config get() = NobaConfigManager.config.slayers.voidgloom
-	private val enabled: Boolean get() = SkyBlockIsland.THE_END.inIsland() && SlayerAPI.currentQuest?.let { it.boss == SlayerBoss.VOIDGLOOM && it.spawned == true } == true
+	private val enabled: Boolean
+		get() = SkyBlockIsland.THE_END.inIsland() &&
+			SlayerAPI.currentQuest?.let { it.boss == SlayerBoss.VOIDGLOOM && it.spawned == true } == true
 
 	private val NUKEKUBI_FIXATION_TEXTURE by "eyJ0aW1lc3RhbXAiOjE1MzQ5NjM0MzU5NjIsInByb2ZpbGVJZCI6ImQzNGFhMmI4MzFkYTRkMjY5NjU1ZTMzYzE0M2YwOTZjIiwicHJvZmlsZU5hbWUiOiJFbmRlckRyYWdvbiIsInNpZ25hdHVyZVJlcXVpcmVkIjp0cnVlLCJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWIwNzU5NGUyZGYyNzM5MjFhNzdjMTAxZDBiZmRmYTExMTVhYmVkNWI5YjIwMjllYjQ5NmNlYmE5YmRiYjRiMyJ9fX0=".skullFromRepo("nukekubi_fixatiion")
 
 	private val yangGlyphs = mutableMapOf<NobaVec, Timestamp>()
 	private val flyingYangGlyphs = mutableListOf<ArmorStandEntity>()
 	private val nukekubiFixations = mutableListOf<ArmorStandEntity>()
+	private var brokenHeartRadiation: BrokenHeartRadiation? = null
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
@@ -55,23 +62,35 @@ object VoidgloomFeatures {
 	private fun onPacketReceive(event: PacketEvents.Receive) {
 		if(!enabled) return
 
-		val packet = event.packet
-		if(packet !is BlockUpdateS2CPacket) return
+		when(val packet = event.packet) {
+			is BlockUpdateS2CPacket -> onBlockUpdate(packet)
+			is EntityPassengersSetS2CPacket -> onEntityPassengersSet(packet)
+		}
+	}
+
+	private fun onBlockUpdate(packet: BlockUpdateS2CPacket) {
+		if(!config.yangGlyphAlert) return
 
 		val location = packet.pos.toNobaVec()
-
 		if(packet.state.block == Blocks.BEACON) {
 			val armorStand = flyingYangGlyphs.firstOrNull { it.getNobaVec().distance(location) < 3 } ?: return
 
-			if(config.yangGlyphAlert) {
-				RenderUtils.drawTitle("Yang Glyph!", config.alertColor)
-				SoundUtils.plingSound.play()
-			}
-
 			flyingYangGlyphs.remove(armorStand)
 			yangGlyphs[location] = Timestamp.now()
+
+			RenderUtils.drawTitle("Yang Glyph!", config.alertColor.toNobaColor())
+			SoundUtils.plingSound.play()
 		} else {
 			if(location in yangGlyphs) yangGlyphs.remove(location)
+		}
+	}
+
+	private fun onEntityPassengersSet(packet: EntityPassengersSetS2CPacket) {
+		if (!config.brokenHeartRadiationTimer) return
+
+		val bossEntity = SlayerAPI.currentQuest?.entity ?: return
+		if (bossEntity.id in packet.passengerIds && brokenHeartRadiation == null) {
+			brokenHeartRadiation = BrokenHeartRadiation(bossEntity, Timestamp.now() + 8.seconds)
 		}
 	}
 
@@ -102,13 +121,14 @@ object VoidgloomFeatures {
 
 		if(config.highlightYangGlyph) highlightYangGlyphs(context)
 		if(config.highlightNukekubi) highlightNukekubiFixations(context)
+		if(config.brokenHeartRadiationTimer) renderBrokenHeartRadiationTimer()
 	}
 
 	private fun highlightYangGlyphs(context: WorldRenderContext) {
 		yangGlyphs.forEach { (location, _) ->
 			if(location.distanceToPlayer() > 20) return@forEach
-			RenderUtils.renderOutlinedFilledBox(context, location, config.highlightColor, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), "Yang Glyph", config.highlightColor, yOffset = -10.0f, throughBlocks = true)
+			RenderUtils.renderOutlinedFilledBox(context, location, config.highlightColor.toNobaColor(), throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), "Yang Glyph", yOffset = -10.0f, throughBlocks = true)
 		}
 	}
 
@@ -117,8 +137,18 @@ object VoidgloomFeatures {
 		nukekubiFixations.forEach { armorStand ->
 			val location = armorStand.pos.toNobaVec()
 			if(location.distanceToPlayer() > 20) return@forEach
+			RenderUtils.renderOutline(context, location.add(x = -0.5, y = 0.65, z = -0.5), config.highlightColor.toNobaColor(), throughBlocks = true)
+		}
+	}
 
-			RenderUtils.renderOutline(context, location.add(x = -0.25, y = 0.5, z = -0.25), config.highlightColor, throughBlocks = true)
+	private fun renderBrokenHeartRadiationTimer() {
+		brokenHeartRadiation?.let {
+			if(!it.isValid) {
+				brokenHeartRadiation = null
+				return
+			}
+
+			RenderUtils.renderText(it.bossEntity.getNobaVec().raise(1.5), it.remainingTime)
 		}
 	}
 
@@ -126,5 +156,13 @@ object VoidgloomFeatures {
 		yangGlyphs.clear()
 		flyingYangGlyphs.clear()
 		nukekubiFixations.clear()
+		brokenHeartRadiation = null
+	}
+
+	data class BrokenHeartRadiation(val bossEntity: Entity, val timestamp: Timestamp) {
+		val isValid: Boolean
+			get() = timestamp.timeRemaining() >= 0.seconds && (bossEntity.vehicle != null || timestamp.timeRemaining() >= 5.seconds)
+
+		val remainingTime: String get() = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
 	}
 }

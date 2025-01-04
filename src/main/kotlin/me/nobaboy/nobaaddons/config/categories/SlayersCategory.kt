@@ -83,6 +83,11 @@ object SlayersCategory {
 				default = defaults.slayers.voidgloom.highlightColor,
 				property = config.slayers.voidgloom::highlightColor
 			)
+			boolean(
+				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer"),
+				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
+				property = config.slayers.voidgloom::brokenHeartRadiationTimer
+			)
 		}
 	}
 }
