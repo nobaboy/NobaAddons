@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
 
 /*
- * Migrations MUST be added at the end of this block, otherwise; they will NOT run. Executed migrations are
+ * Migrations MUST be added at the end of this block, otherwise they will NOT run. Executed migrations are
  * skipped, so new changes must be added as separate migrations. Removing pre-existing migrations is NOT supported
  * and will cause player configs to completely break, so avoid doing so.
  */
