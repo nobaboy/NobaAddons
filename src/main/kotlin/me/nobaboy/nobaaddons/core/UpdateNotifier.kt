@@ -8,7 +8,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -26,7 +26,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.loader.api.Version
 
 object UpdateNotifier {
-	private val config get() = NobaConfigManager.config.general
+	private val config get() = NobaConfig.INSTANCE.general
 
 	private var inWorld: Boolean = false
 	private var notifiedUpdate: Boolean = false

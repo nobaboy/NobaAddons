@@ -13,7 +13,7 @@ import net.minecraft.entity.EquipmentSlot
 object RanchersBootsSpeedSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.ranchersBootsSpeed
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val item = event.itemStack.getSkyBlockItem() ?: return
 		if(item.id != "RANCHERS_BOOTS") return
 

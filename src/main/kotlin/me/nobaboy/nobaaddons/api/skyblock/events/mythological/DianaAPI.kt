@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.api.skyblock.mythological
+package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland

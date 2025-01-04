@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.inventory
 
 import me.nobaboy.nobaaddons.api.InventoryAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
@@ -15,14 +15,14 @@ import net.minecraft.text.Text
 import kotlin.math.abs
 
 object ItemPickupLog {
-	private val config get() = NobaConfigManager.config.inventory.pickupLog
+	private val config get() = NobaConfig.INSTANCE.inventory.itemPickupLog
 
 	fun init() {
 		UIManager.add(PickupLogHudElement)
 	}
 
-	private object PickupLogHudElement : TextHudElement(UISettings.pickupLog) {
-		override val name: Text = tr("nobaaddons.ui.pickupLog", "Item Pickup Log")
+	private object PickupLogHudElement : TextHudElement(UISettings.itemPickupLog) {
+		override val name: Text = tr("nobaaddons.ui.itemPickupLog", "Item Pickup Log")
 		override val size: Pair<Int, Int> = 125 to 175
 		override val enabled: Boolean get() = config.enabled
 		override val color: Int = 0xFFFFFF

@@ -5,7 +5,7 @@ import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Greedy
 import me.nobaboy.nobaaddons.commands.impl.CommandUtil
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommand
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
@@ -17,7 +17,7 @@ import net.minecraft.util.Util
 
 // TODO change this to replace the response of /wiki if invalid
 object SWikiCommand {
-	private val config get() = NobaConfigManager.config.general
+	private val config get() = NobaConfig.INSTANCE.general
 
 	fun init() {
 		CommandUtil.register(NobaClientCommand(this::swiki, this))

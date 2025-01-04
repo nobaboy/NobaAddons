@@ -11,10 +11,15 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.startsWith
+import me.nobaboy.nobaaddons.utils.TextUtils.blue
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.formatted
+import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
+import me.nobaboy.nobaaddons.utils.TextUtils.darkGreen
+import me.nobaboy.nobaaddons.utils.TextUtils.lightPurple
+import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
@@ -88,7 +93,7 @@ object BlessingChatFilter : IChatFilter {
 		var previousValue: String? = null
 
 		formatted(Formatting.GRAY)
-		append(blessingType.toText())
+		append(blessingType.displayName)
 		append(" ")
 		stats.forEachIndexed { i, stat ->
 			if(previousValue != stat.value) {
@@ -108,17 +113,13 @@ object BlessingChatFilter : IChatFilter {
 		}
 	}
 
-	private class Stat(val statType: StatType, val value: String) {
-		override fun toString(): String = "$statType: $value"
+	private enum class BlessingType(val displayName: Text, val expectedStats: Int) {
+		POWER(tr("nobaaddons.label.blessingType.power", "POWER BUFF!").red().bold(), 2),
+		WISDOM(tr("nobaaddons.label.blessingType.wisdom", "WISDOM BUFF!").blue().bold(), 2),
+		STONE(tr("nobaaddons.label.blessingType.stone", "STONE BUFF!").darkGray().bold(), 2),
+		LIFE(tr("nobaaddons.label.blessingType.life", "LIFE BUFF!").lightPurple().bold(), 2),
+		TIME(tr("nobaaddons.label.blessingType.time", "TIME BUFF!").darkGreen().bold(), 4);
 	}
 
-	private enum class BlessingType(val text: String, val color: Formatting, val expectedStats: Int) {
-		POWER("POWER BUFF!", Formatting.RED, 2),
-		WISDOM("WISDOM BUFF!", Formatting.BLUE, 2),
-		STONE("STONE BUFF!", Formatting.DARK_GRAY, 2),
-		LIFE("LIFE BUFF!", Formatting.LIGHT_PURPLE, 2),
-		TIME("TIME BUFF!", Formatting.DARK_GREEN, 4);
-
-		fun toText(): Text = text.formatted(color).bold()
-	}
+	private class Stat(val statType: StatType, val value: String)
 }

@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 object PotionLevelSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.potionLevel
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val itemStack = event.itemStack
 		if(itemStack.name.string.startsWith("Healer")) return
 

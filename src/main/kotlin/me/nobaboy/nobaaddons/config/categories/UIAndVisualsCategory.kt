@@ -6,9 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.button
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.tickBox
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -35,6 +33,7 @@ object UIAndVisualsCategory {
 			MCUtils.client.setScreen(InfoBoxesScreen(it))
 		}
 
+		// region Temporary Waypoints
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints", "Temporary Waypoints")) {
 			boolean(
 				CommonText.Config.ENABLED,
@@ -56,7 +55,9 @@ object UIAndVisualsCategory {
 				step = 1
 			)
 		}
+		// endregion
 
+		// region Etherwarp Helper
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper", "Etherwarp Overlay")) {
 			boolean(
 				CommonText.Config.ENABLED,
@@ -81,149 +82,9 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.etherwarpHelper::allowOverlayOnAir
 			)
 		}
+		// endregion
 
-		buildGroup(
-			tr("nobaaddons.config.uiAndVisuals.slotInfo", "Slot Info"),
-			tr("nobaaddons.config.uiAndVisuals.slotInfo.tooltip", "Displays item details such as names and/or tiers on item slots")
-		) {
-			boolean(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.checkMarkIfMaxed", "Check Mark if Maxed"),
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.checkMarkIfMaxed.tooltip", "If applicable, display a check mark on the item slot instead of its tier/level when maxed"),
-				default = defaults.uiAndVisuals.slotInfo.checkMarkIfMaxed,
-				property = config.uiAndVisuals.slotInfo::checkMarkIfMaxed
-			)
-
-			label(tr("nobaaddons.config.uiAndVisuals.slotInfo.label.uiElements", "UI Elements"))
-
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryMilestone", "Bestiary Milestone"),
-				default = defaults.uiAndVisuals.slotInfo.bestiaryMilestone,
-				property = config.uiAndVisuals.slotInfo::bestiaryMilestone
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.bestiaryFamilyTier", "Bestiary Family Tier"),
-				default = defaults.uiAndVisuals.slotInfo.bestiaryFamilyTier,
-				property = config.uiAndVisuals.slotInfo::bestiaryFamilyTier
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.collectionTier", "Collection Tier"),
-				default = defaults.uiAndVisuals.slotInfo.collectionTier,
-				property = config.uiAndVisuals.slotInfo::collectionTier
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.gardenPlotPests", "Garden Plot Pests"),
-				default = defaults.uiAndVisuals.slotInfo.gardenPlotPests,
-				property = config.uiAndVisuals.slotInfo::gardenPlotPests
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.skillLevel", "Skill Level"),
-				default = defaults.uiAndVisuals.slotInfo.skillLevel,
-				property = config.uiAndVisuals.slotInfo::skillLevel
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.skyBlockLevel", "SkyBlock Level"),
-				default = defaults.uiAndVisuals.slotInfo.skyBlockLevel,
-				property = config.uiAndVisuals.slotInfo::skyBlockLevel
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.tuningPoints", "Tuning Points"),
-				default = defaults.uiAndVisuals.slotInfo.tuningPoints,
-				property = config.uiAndVisuals.slotInfo::tuningPoints
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.trophyFish", "Trophy Fish"),
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.trophyFish.tooltip", "Displays a count of how many of each trophy fish you've caught in Odger's menu"),
-				default = defaults.uiAndVisuals.slotInfo.trophyFish,
-				property = config.uiAndVisuals.slotInfo::trophyFish
-			)
-
-			label(tr("nobaaddons.config.uiAndVisuals.slotInfo.label.items", "Items"))
-
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.attributeShardLevel", "Attribute Shard Level"),
-				default = defaults.uiAndVisuals.slotInfo.attributeShardLevel,
-				property = config.uiAndVisuals.slotInfo::attributeShardLevel
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.attributeShardName", "Attribute Shard Name"),
-				default = defaults.uiAndVisuals.slotInfo.attributeShardName,
-				property = config.uiAndVisuals.slotInfo::attributeShardName
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.dungeonHeadTier", "Dungeon Boss Head Tier"),
-				default = defaults.uiAndVisuals.slotInfo.dungeonHeadTier,
-				property = config.uiAndVisuals.slotInfo::dungeonHeadTier
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.enchantedBookLevel", "Enchanted Book Level"),
-				default = defaults.uiAndVisuals.slotInfo.enchantedBookLevel,
-				property = config.uiAndVisuals.slotInfo::enchantedBookLevel
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.enchantedBookName", "Enchanted Book Name"),
-				default = defaults.uiAndVisuals.slotInfo.enchantedBookName,
-				property = config.uiAndVisuals.slotInfo::enchantedBookName
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.kuudraKeyTier", "Kuudra Key Tier"),
-				default = defaults.uiAndVisuals.slotInfo.kuudraKeyTier,
-				property = config.uiAndVisuals.slotInfo::kuudraKeyTier
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.masterSkullTier", "Master Skull Tier"),
-				default = defaults.uiAndVisuals.slotInfo.masterSkullTier,
-				property = config.uiAndVisuals.slotInfo::masterSkullTier
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.masterStarTier", "Master Star Tier"),
-				default = defaults.uiAndVisuals.slotInfo.masterStarTier,
-				property = config.uiAndVisuals.slotInfo::masterStarTier
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.minionTier", "Minion Tier"),
-				default = defaults.uiAndVisuals.slotInfo.minionTier,
-				property = config.uiAndVisuals.slotInfo::minionTier
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.newYearCake", "New Year Cake Year"),
-				default = defaults.uiAndVisuals.slotInfo.newYearCake,
-				property = config.uiAndVisuals.slotInfo::newYearCake
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.petLevel", "Pet Level"),
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.petLevel.tooltip", "Shows the level of a non-maxed pet"),
-				default = defaults.uiAndVisuals.slotInfo.petLevel,
-				property = config.uiAndVisuals.slotInfo::petLevel
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.petItem", "Pet Items"),
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.petItem.tooltip", "Shows an icon for certain pet items, like EXP Share or Lucky Clover"),
-				default = defaults.uiAndVisuals.slotInfo.petItem,
-				property = config.uiAndVisuals.slotInfo::petItem
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.petCandy", "Pet Candy"),
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.petCandy.tooltip", "Displays an icon when a pet has candies applied"),
-				default = defaults.uiAndVisuals.slotInfo.petCandy,
-				property = config.uiAndVisuals.slotInfo::petCandy
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.potionLevel", "Potion Level"),
-				default = defaults.uiAndVisuals.slotInfo.potionLevel,
-				property = config.uiAndVisuals.slotInfo::potionLevel
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.ranchersBootsSpeed", "Rancher's Boots Speed"),
-				default = defaults.uiAndVisuals.slotInfo.ranchersBootsSpeed,
-				property = defaults.uiAndVisuals.slotInfo::ranchersBootsSpeed
-			)
-			tickBox(
-				tr("nobaaddons.config.uiAndVisuals.slotInfo.vacuumPests", "Vacuum Pests"),
-				default = defaults.uiAndVisuals.slotInfo.vacuumPests,
-				property = config.uiAndVisuals.slotInfo::vacuumPests
-			)
-		}
-
+		// region Rendering Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.renderingTweaks", "Rendering Tweaks")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt", "Hide Lightning Bolt"),
@@ -244,7 +105,9 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::removeFrontFacingThirdPerson
 			)
 		}
+		// endregion
 
+		// region Arm Swing Animation Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.swingAnimation", "Arm Swing Animation Tweaks")) {
 			slider(
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration", "Swing Duration"),
@@ -269,7 +132,9 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.swingAnimation::applyToAllPlayers,
 			)
 		}
+		// endregion
 
+		// region First Person Item Rendering
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.itemRendering", "First Person Item Rendering")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip", "Cancel Re-equip Animation"),
@@ -326,7 +191,9 @@ object UIAndVisualsCategory {
 				step = 0.1f
 			)
 		}
+		// endregion
 
+		// region Armor Glint Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints"),
@@ -341,5 +208,6 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
 			)
 		}
+		// endregion
 	}
 }

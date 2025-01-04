@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 @SuppressWarnings("unused")
 @Mixin(EntityRenderState.class)
-public class EntityStateCaptureDuckImpl implements EntityStateCaptureDuck {
+abstract class EntityStateCaptureDuckImpl implements EntityStateCaptureDuck {
 	private @Unique @Nullable Entity nobaaddons$entity;
 
 	@Override

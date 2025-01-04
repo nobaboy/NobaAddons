@@ -5,7 +5,7 @@ package me.nobaboy.nobaaddons.features.qol
 *///?}
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.PacketEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
@@ -18,7 +18,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
 
 object MouseLock {
-	val config = NobaConfigManager.config.qol.garden
+	val config = NobaConfig.INSTANCE.qol.garden
 
 	private val FARMING_TOOLS: List<String> = buildList {
 		val gardeningTools = listOf("HOE", "AXE")

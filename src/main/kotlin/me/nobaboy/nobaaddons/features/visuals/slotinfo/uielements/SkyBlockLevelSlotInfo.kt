@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.InventoryUtils
 object SkyBlockLevelSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.skyBlockLevel
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val inventoryName = InventoryUtils.openInventoryName() ?: return
 		if(inventoryName != "SkyBlock Menu") return
 		if(event.itemStack.name.string != "SkyBlock Leveling") return

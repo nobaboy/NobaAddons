@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.qol.sound.filters
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ability.WitherSkullAbilitiesSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.dwarvenmines.GoneWithTheWindSoundFilter
@@ -9,7 +9,7 @@ import me.nobaboy.nobaaddons.features.qol.sound.filters.mobs.ReindrakeSoundFilte
 import me.nobaboy.nobaaddons.features.qol.sound.filters.rift.KillerSpringSoundFilter
 
 interface ISoundFilter {
-	val config get() = NobaConfigManager.config.qol.soundFilters
+	val config get() = NobaConfig.INSTANCE.qol.soundFilters
 
 	val enabled: Boolean
 	fun onSound(sound: SoundEvents.AllowSound)

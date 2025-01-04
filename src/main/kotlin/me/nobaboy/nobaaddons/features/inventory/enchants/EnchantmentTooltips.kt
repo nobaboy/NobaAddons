@@ -1,6 +1,6 @@
-package me.nobaboy.nobaaddons.features.inventory
+package me.nobaboy.nobaaddons.features.inventory.enchants
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.enchants.Enchant
 import me.nobaboy.nobaaddons.core.enchants.EnchantBase
 import me.nobaboy.nobaaddons.core.enchants.StackingEnchant
@@ -29,8 +29,8 @@ import net.minecraft.text.Texts
 import org.lwjgl.glfw.GLFW
 
 // TODO: Could do with caching the lore
-object EnchantParsing {
-	private val config get() = NobaConfigManager.config.uiAndVisuals.enchantments
+object EnchantmentTooltips {
+	private val config get() = NobaConfig.INSTANCE.inventory.enchantmentTooltips
 	// the extra [\d,]+ is to account for stacking enchants adding their value
 	// TODO it'd be nice to .findAll() with this, but this globs every prior enchantment
 	//      into the last one's name, so we're just extracting from groups this after splitting on `, `,
@@ -49,7 +49,7 @@ object EnchantParsing {
 	}
 
 	private fun parseEnchants(item: ItemStack, lines: MutableList<Text>) {
-		if(!config.parseItemEnchants) return
+		if(!config.modifyTooltips) return
 		if(InputUtil.isKeyPressed(MCUtils.window.handle, GLFW.GLFW_KEY_RIGHT_SHIFT)) return
 		if(!item.isSkyBlockItem || item.getSkyBlockItem()?.enchantments?.isEmpty() != false) return
 
@@ -91,9 +91,9 @@ object EnchantParsing {
 
 		val isSingleEnchantBook = item.getSkyBlockItemId() == "ENCHANTED_BOOK" && enchants.size == 1
 		val shouldCompact = when(config.displayMode) {
-			EnchantDisplayMode.NORMAL -> enchants.size > 5
-			EnchantDisplayMode.COMPACT -> !isSingleEnchantBook
-			EnchantDisplayMode.LINES -> false
+			EnchantmentDisplayMode.NORMAL -> enchants.size > 5
+			EnchantmentDisplayMode.COMPACT -> !isSingleEnchantBook
+			EnchantmentDisplayMode.LINES -> false
 		}
 		val enchantText: List<Text> = if(shouldCompact) {
 			enchants.chunked(3) {

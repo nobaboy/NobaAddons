@@ -9,7 +9,7 @@ import java.time.Instant;
 
 @SuppressWarnings("unused")
 @Mixin(FishingBobberEntity.class)
-public class FishingBobberTimerDuckImpl implements FishingBobberTimerDuck {
+abstract class FishingBobberTimerDuckImpl implements FishingBobberTimerDuck {
 	private @Unique Instant nobaaddons$spawnedAt;
 
 	@Override

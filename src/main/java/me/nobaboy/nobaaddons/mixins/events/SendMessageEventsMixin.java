@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPlayNetworkHandler.class)
-abstract class SendMessageEventMixin {
+abstract class SendMessageEventsMixin {
 	@Inject(method = "sendChatCommand", at = @At("HEAD"), cancellable = true)
 	public void nobaaddons$onChatCommand(String command, CallbackInfo ci) {
 		if(SendMessageEvents.SEND_COMMAND.invoke(new SendMessageEvents.SendCommand(command))) {

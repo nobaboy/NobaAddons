@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HandledScreen.class)
-public abstract class ScreenRenderEventsMixin extends Screen {
-	protected ScreenRenderEventsMixin(Text title) {
+abstract class ScreenRenderEventsHandledScreenMixin extends Screen {
+	protected ScreenRenderEventsHandledScreenMixin(Text title) {
 		super(title);
 	}
 
@@ -29,7 +29,7 @@ public abstract class ScreenRenderEventsMixin extends Screen {
 		)
 	)
 	public void nobaaddons$onDrawSlot(DrawContext context, Slot slot, CallbackInfo ci) {
-		var event = new ScreenRenderEvents.DrawSlot(context, textRenderer, slot);
-		ScreenRenderEvents.DRAW_SLOT.invoke(event);
+		var event = new ScreenRenderEvents.DrawItem(context, textRenderer, slot.getStack(), slot.x, slot.y);
+		ScreenRenderEvents.DRAW_ITEM.invoke(event);
 	}
 }

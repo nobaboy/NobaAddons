@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI;
-import me.nobaboy.nobaaddons.config.NobaConfigManager;
+import me.nobaboy.nobaaddons.config.NobaConfig;
 import me.nobaboy.nobaaddons.utils.items.ItemUtils;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -20,12 +20,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeldItemRenderer.class)
-public class HeldItemRendererMixin {
-	@ModifyExpressionValue(method = "updateHeldItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"))
+abstract class HeldItemRendererMixin {
+	@ModifyExpressionValue(
+		method = "updateHeldItems",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"
+		)
+	)
 	public float nobaaddons$cancelAttackCooldown(float original) {
-		if(NobaConfigManager.getConfig().getUiAndVisuals().getSwingAnimation().getSwingDuration() > 1) {
-			return 1f;
+		if(NobaConfig.INSTANCE.getUiAndVisuals().getSwingAnimation().getSwingDuration() > 1) {
+			return 1.0f;
 		}
+
 		return original;
 	}
 
@@ -44,7 +51,7 @@ public class HeldItemRendererMixin {
 											  float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices,
 											  VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
 		var arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-		var config = NobaConfigManager.getConfig().getUiAndVisuals().getItemPosition();
+		var config = NobaConfig.INSTANCE.getUiAndVisuals().getItemPosition();
 		float x = config.getX() / 100f;
 		float y = config.getY() / 100f;
 		float z = config.getZ() / 100f;
@@ -73,19 +80,19 @@ public class HeldItemRendererMixin {
 		)
 	)
 	public boolean nobaaddons$cancelItemUpdateAnimation(/*? if >=1.21.4 {*/HeldItemRenderer renderer,/*?}*/ ItemStack left, ItemStack right, Operation<Boolean> original) {
-		var config = NobaConfigManager.getConfig().getUiAndVisuals().getItemPosition();
-		if(config.getCancelEquipAnimation()) {
-			return true;
-		}
+		var config = NobaConfig.INSTANCE.getUiAndVisuals().getItemPosition();
+		if(config.getCancelEquipAnimation()) return true;
+
 		if(SkyBlockAPI.inSkyBlock() && config.getCancelItemUpdateAnimation()) {
 			return ItemUtils.isEqual(left, right);
 		}
+
 		return original.call(/*? if >=1.21.4 {*/renderer,/*?}*/ left, right);
 	}
 
 	@Inject(method = "applyEatOrDrinkTransformation", at = @At(value = "INVOKE", target = "Ljava/lang/Math;pow(DD)D"), cancellable = true)
 	public void nobaaddons$cancelDrinkAnimation(MatrixStack matrices, float tickDelta, Arm arm, ItemStack stack, PlayerEntity player, CallbackInfo ci) {
-		if(NobaConfigManager.getConfig().getUiAndVisuals().getItemPosition().getCancelDrinkAnimation()) {
+		if(NobaConfig.INSTANCE.getUiAndVisuals().getItemPosition().getCancelDrinkAnimation()) {
 			ci.cancel();
 		}
 	}

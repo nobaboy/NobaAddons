@@ -23,7 +23,7 @@ object VacuumPestsSlotInfo : ISlotInfo {
 
 	override val enabled: Boolean get() = config.vacuumPests
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val itemStack = event.itemStack
 
 		val item = itemStack.getSkyBlockItem() ?: return

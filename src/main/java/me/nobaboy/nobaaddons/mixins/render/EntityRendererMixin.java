@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityRenderer.class)
-public class EntityRendererMixin {
+abstract class EntityRendererMixin {
 	@Inject(method = "updateRenderState", at = @At("TAIL"))
 	public void nobaaddons$captureEntity(Entity entity, EntityRenderState state, float tickDelta, CallbackInfo ci) {
 		var duck = (EntityStateCaptureDuck) state;

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.fishing
 
 import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.events.LateChatMessageEvent
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
@@ -16,7 +16,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object TrophyFishChat {
-	private val config get() = NobaConfigManager.config.fishing.trophyFishing
+	private val config get() = NobaConfig.INSTANCE.fishing.trophyFishing
 
 	fun init() {
 		LateChatMessageEvent.EVENT.register(this::modifyChatMessage)

@@ -1,133 +1,69 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
+import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 
-class ChatConfig {
-	@SerialEntry
-	val alerts: Alerts = Alerts()
+class ChatConfig : ObjectProperty<ChatConfig>("chat") {
+	val alerts by Alerts()
+	val filters by Filters()
+	val chatCommands by ChatCommands()
 
-	@SerialEntry
-	val filters: Filters = Filters()
-
-	@SerialEntry
-	val chatCommands: ChatCommands = ChatCommands()
-
-	class Alerts {
-		@SerialEntry
-		var mythicSeaCreatureSpawn: Boolean = false
-
-		@SerialEntry
-		var vanquisherSpawn: Boolean = false
+	class Alerts : ObjectProperty<Alerts>("alerts") {
+		var mythicSeaCreatureSpawn by Property.of<Boolean>("mythicSeaCreatureSpawn", false)
+		var vanquisherSpawn by Property.of<Boolean>("mythicSeaCreatureSpawn", false)
 	}
 
-	class Filters {
-		@SerialEntry
-		var hideAbilityCooldownMessage: Boolean = false
+	class Filters : ObjectProperty<Filters>("filters") {
+		var hideAbilityCooldownMessage by Property.of<Boolean>("hideAbilityCooldownMessage", false)
+		var hideImplosionDamageMessage by Property.of<Boolean>("hideImplosionDamageMessage", false)
+		var hideMoltenWaveDamageMessage by Property.of<Boolean>("hideMoltenWaveDamageMessage", false)
+		var hideGuidedBatDamageMessage by Property.of<Boolean>("hideGuidedBatDamageMessage", false)
+		var hideGiantsSlamDamageMessage by Property.of<Boolean>("hideGiantsSlamDamageMessage", false)
+		var hideThrowDamageMessage by Property.of<Boolean>("hideThrowDamageMessage", false)
+		var hideRayOfHopeDamageMessage by Property.of<Boolean>("hideRayOfHopeDamageMessage", false)
 
-		@SerialEntry
-		var hideImplosionDamageMessage: Boolean = false
+		var hideSeaCreatureSpawnMessage by Property.of<Boolean>("hideSeaCreatureSpawnMessage", false)
+		var seaCreatureMaximumRarity by Property.of("seaCreatureMaximumRarity", Serializer.enum(), Rarity.RARE)
 
-		@SerialEntry
-		var hideMoltenWaveDamageMessage: Boolean = false
+		var blessingMessage by Property.of("blessingMessage", Serializer.enum(), ChatFilterOption.SHOWN)
+		var healerOrbMessage by Property.of("healerOrbMessage",Serializer.enum(), ChatFilterOption.SHOWN)
+		var pickupObtainMessage by Property.of<Boolean>("pickupObtainMessage", false)
+		var allowKeyMessage by Property.of<Boolean>("allowKeyMessage", false)
+		var allow5050ItemMessage by Property.of<Boolean>("allow5050ItemMessage", false)
 
-		@SerialEntry
-		var hideGuidedBatDamageMessage: Boolean = false
-
-		@SerialEntry
-		var hideGiantsSlamDamageMessage: Boolean = false
-
-		@SerialEntry
-		var hideThrowDamageMessage: Boolean = false
-
-		@SerialEntry
-		var hideRayOfHopeDamageMessage: Boolean = false
-
-		@SerialEntry
-		var hideSeaCreatureSpawnMessage: Boolean = false
-
-		@SerialEntry
-		var seaCreatureMaximumRarity: Rarity = Rarity.RARE
-
-		@SerialEntry
-		var blessingMessage: ChatFilterOption = ChatFilterOption.SHOWN
-
-		@SerialEntry
-		var healerOrbMessage: ChatFilterOption = ChatFilterOption.SHOWN
-
-		@SerialEntry
-		var pickupObtainMessage: Boolean = false
-
-		@SerialEntry
-		var allowKeyMessage: Boolean = false
-
-		@SerialEntry
-		var allow5050ItemMessage: Boolean = false
-
-		@SerialEntry
-		var hideProfileInfo: Boolean = false
-
-		@SerialEntry
-		var hideTipMessages: Boolean = false
+		var hideProfileInfo by Property.of<Boolean>("hideProfileInfo", false)
+		var hideTipMessages by Property.of<Boolean>("hideTipMessages", false)
 	}
 
-	class ChatCommands {
-		@SerialEntry
-		val dm: DMCommandsConfig = DMCommandsConfig()
+	class ChatCommands : ObjectProperty<ChatCommands>("chatCommands") {
+		val dm by DMCommands()
+		val party by PartyCommands()
+		val guild by GuildCommands()
 
-		@SerialEntry
-		val party: PartyCommandsConfig = PartyCommandsConfig()
+		class DMCommands : ObjectProperty<DMCommands>("dm") {
+			var enabled by Property.of<Boolean>("enabled", false)
+			var help by Property.of<Boolean>("help", false)
+			var warpMe by Property.of<Boolean>("warpMe", false)
+			var partyMe by Property.of<Boolean>("partyMe", false)
+			var warpOut by Property.of<Boolean>("warpOut", false)
+		}
 
-		@SerialEntry
-		val guild: GuildCommandsConfig = GuildCommandsConfig()
-	}
+		class PartyCommands : ObjectProperty<PartyCommands>("party") {
+			var enabled by Property.of<Boolean>("enabled", false)
+			var help by Property.of<Boolean>("help", false)
+			var allInvite by Property.of<Boolean>("allInvite", false)
+			var transfer by Property.of<Boolean>("transfer", false)
+			var warp by Property.of<Boolean>("warp", false)
+			var coords by Property.of<Boolean>("coords", false)
+		}
 
-	class DMCommandsConfig {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var help: Boolean = false
-
-		@SerialEntry
-		var warpMe: Boolean = false
-
-		@SerialEntry
-		var partyMe: Boolean = false
-
-		@SerialEntry
-		var warpOut: Boolean = false
-	}
-
-	class PartyCommandsConfig {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var help: Boolean = false
-
-		@SerialEntry
-		var allInvite: Boolean = false
-
-		@SerialEntry
-		var transfer: Boolean = false
-
-		@SerialEntry
-		var warp: Boolean = false
-
-		@SerialEntry
-		var coords: Boolean = false
-	}
-
-	class GuildCommandsConfig {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var help: Boolean = false
-
-		@SerialEntry
-		var warpOut: Boolean = false
+		class GuildCommands : ObjectProperty<GuildCommands>("guild") {
+			var enabled by Property.of<Boolean>("enabled", false)
+			var help by Property.of<Boolean>("help", false)
+			var warpOut by Property.of<Boolean>("warpOut", false)
+		}
 	}
 }

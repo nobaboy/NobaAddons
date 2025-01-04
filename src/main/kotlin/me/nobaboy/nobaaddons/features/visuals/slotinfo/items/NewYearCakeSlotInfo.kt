@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 object NewYearCakeSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.newYearCake
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val item = event.itemStack.getSkyBlockItem() ?: return
 		if(item.id != "NEW_YEAR_CAKE") return
 

@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.features.events.mythological
 
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
@@ -29,7 +29,7 @@ import net.minecraft.client.network.OtherClientPlayerEntity
 import kotlin.time.Duration.Companion.seconds
 
 object InquisitorWaypoints {
-	private val config get() = NobaConfigManager.config.events.mythological
+	private val config get() = NobaConfig.INSTANCE.events.mythological
 	private val enabled: Boolean get() = config.alertInquisitor && DianaAPI.isActive
 
 	private val inquisitorDigUpPattern by Regex("^[A-z ]+! You dug out a Minos Inquisitor!").fromRepo("mythological.inquisitor")

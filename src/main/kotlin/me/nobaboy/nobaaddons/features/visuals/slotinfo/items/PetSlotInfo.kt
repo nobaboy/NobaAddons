@@ -10,7 +10,7 @@ import net.minecraft.util.Formatting
 object PetSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.petLevel || config.petItem || config.petCandy
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val pet = PetAPI.getPetData(event.itemStack) ?: return
 
 		if(config.petLevel && pet.level != pet.maxLevel) drawCount(event, pet.level.toString())

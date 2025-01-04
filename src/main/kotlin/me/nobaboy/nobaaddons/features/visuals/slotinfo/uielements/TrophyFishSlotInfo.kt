@@ -14,7 +14,7 @@ import net.minecraft.util.Formatting
 object TrophyFishSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.trophyFish && SkyBlockAPI.inSkyBlock
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		if(InventoryUtils.openInventoryName() != "Trophy Fishing") return
 
 		val rarities = TrophyFishAPI.getCountFromOdgerStack(event.itemStack)

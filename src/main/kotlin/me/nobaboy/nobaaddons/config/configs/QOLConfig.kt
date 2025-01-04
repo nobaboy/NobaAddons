@@ -1,45 +1,29 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
 
-class QOLConfig {
-	@SerialEntry
-	val soundFilters: SoundFilters = SoundFilters()
+class QOLConfig : ObjectProperty<QOLConfig>("qol") {
+	val soundFilters by SoundFilters()
+	val garden by Garden()
 
-	@SerialEntry
-	val garden: Garden = Garden()
+	class SoundFilters : ObjectProperty<SoundFilters>("soundFilters") {
+		var muteWitherSkullAbilities by Property.of<Boolean>("muteWitherSkullAbilities", false)
 
-	class SoundFilters {
-		@SerialEntry
-		var muteWitherSkullAbilities: Boolean = false
+		var muteReindrakeSpawn by Property.of<Boolean>("muteReindrakeSpawn", false)
+		var muteReindrakeGiftDrop by Property.of<Boolean>("muteReindrakeGiftDrop", false)
 
-		@SerialEntry
-		var muteReindrakeSpawn: Boolean = false
+		var muteGoneWithTheWind by Property.of<Boolean>("muteGoneWithTheWind", false)
 
-		@SerialEntry
-		var muteReindrakeGiftDrop: Boolean = false
+		var muteKillerSpring by Property.of<Boolean>("muteKillerSpring", false)
 
-		@SerialEntry
-		var muteGoneWithTheWind: Boolean = false
-
-		@SerialEntry
-		var muteKillerSpring: Boolean = false
-
-		@SerialEntry
-		var mutePunch: Boolean = false
+		var mutePunch by Property.of<Boolean>("mutePunch", false)
 	}
 
-	class Garden {
-		@SerialEntry
-		var reduceMouseSensitivity: Boolean = false
-
-		@SerialEntry
-		var reductionMultiplier: Int = 6
-
-		@SerialEntry
-		var isDaedalusFarmingTool: Boolean = false
-
-		@SerialEntry
-		var autoUnlockMouseOnTeleport: Boolean = false
+	class Garden : ObjectProperty<Garden>("garden") {
+		var reduceMouseSensitivity by Property.of<Boolean>("reduceMouseSensitivity", false)
+		var reductionMultiplier by Property.of<Int>("reductionMultiplier", 6)
+		var isDaedalusFarmingTool by Property.of<Boolean>("isDaedalusFarmingTool", false)
+		var autoUnlockMouseOnTeleport by Property.of<Boolean>("autoUnlockMouseOnTeleport", false)
 	}
 }

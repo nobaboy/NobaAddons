@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.render;
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager;
+import me.nobaboy.nobaaddons.config.NobaConfig;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.LightningEntityRenderer;
 import org.joml.Matrix4f;
@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LightningEntityRenderer.class)
-public class LightningEntityRendererMixin {
+abstract class LightningEntityRendererMixin {
 	@Inject(method = "drawBranch", at = @At("HEAD"), cancellable = true)
 	private static void nobaaddons$hideLightningBolt(
 		Matrix4f matrix,
@@ -31,6 +31,6 @@ public class LightningEntityRendererMixin {
 		boolean shiftSouth2,
 		CallbackInfo ci
 	) {
-		if(NobaConfigManager.getConfig().getUiAndVisuals().getRenderingTweaks().getHideLightningBolt()) ci.cancel();
+		if(NobaConfig.INSTANCE.getUiAndVisuals().getRenderingTweaks().getHideLightningBolt()) ci.cancel();
 	}
 }

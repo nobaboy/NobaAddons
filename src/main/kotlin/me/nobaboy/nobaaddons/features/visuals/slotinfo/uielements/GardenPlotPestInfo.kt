@@ -19,7 +19,7 @@ object GardenPlotPestInfo : ISlotInfo {
 
 	override val enabled: Boolean get() = config.gardenPlotPests
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		if(InventoryUtils.openInventoryName() != "Configure Plots") return
 
 		val itemStack = event.itemStack

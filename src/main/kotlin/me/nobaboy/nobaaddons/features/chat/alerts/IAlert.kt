@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.alerts
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.MythicSeaCreatureAlert
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.VanquisherAlert
 import me.nobaboy.nobaaddons.utils.ErrorManager
@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 interface IAlert {
-	val config get() = NobaConfigManager.config.chat.alerts
+	val config get() = NobaConfig.INSTANCE.chat.alerts
 
 	val enabled: Boolean
 	fun shouldAlert(message: String): Boolean

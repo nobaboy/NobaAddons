@@ -12,7 +12,7 @@ import net.minecraft.util.Formatting
 object EnchantedBookSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.enchantedBookLevel || config.enchantedBookName
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val item = event.itemStack.getSkyBlockItem() ?: return
 		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return
 

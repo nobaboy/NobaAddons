@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.utils.items
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.cache.LoadingCache
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.LoreComponent
 import net.minecraft.component.type.NbtComponent
@@ -53,7 +53,7 @@ object ItemUtils {
 
 	@JvmStatic
 	fun shouldArmorHaveEnchantGlint(item: ItemStack, original: Boolean): Boolean {
-		var config = NobaConfigManager.config.uiAndVisuals.renderingTweaks
+		var config = NobaConfig.INSTANCE.uiAndVisuals.renderingTweaks
 
 		if(config.removeArmorGlints) return false
 		if(!config.fixEnchantedArmorGlint) return original
