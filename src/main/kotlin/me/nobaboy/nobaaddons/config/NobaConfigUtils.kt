@@ -1,8 +1,5 @@
 package me.nobaboy.nobaaddons.config
 
-import com.google.gson.JsonElement
-import com.google.gson.JsonPrimitive
-import dev.celestialfault.celestialconfig.Serializer
 import dev.isxander.yacl3.api.ButtonOption
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.Controller
@@ -211,13 +208,5 @@ object NobaConfigUtils {
 			.action { screen, _ -> action(screen) }
 			.build())
 		return this
-	}
-
-	// TODO: Swap to NobaColor
-	val Serializer.Companion.color get() = object : Serializer<Color> {
-		override fun serialize(value: Color): JsonElement = JsonPrimitive(value.rgb)
-
-		override fun deserialize(element: JsonElement): Color? =
-			if(element is JsonPrimitive && element.isNumber) Color(element.asInt) else null
 	}
 }

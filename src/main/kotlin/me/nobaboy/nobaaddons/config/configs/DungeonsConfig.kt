@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.HighlightMode
 

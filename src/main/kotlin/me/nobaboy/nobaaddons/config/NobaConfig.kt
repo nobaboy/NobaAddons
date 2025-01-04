@@ -3,11 +3,15 @@ package me.nobaboy.nobaaddons.config
 import dev.celestialfault.celestialconfig.AbstractConfig
 import dev.celestialfault.celestialconfig.migrations.Migrations
 import dev.isxander.yacl3.api.YetAnotherConfigLib
+import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.config.configs.*
 import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /*
  * Migrations MUST be added at the end of this block, otherwise they will NOT run. Executed migrations are
@@ -35,6 +39,41 @@ class NobaConfig private constructor() : AbstractConfig(NobaAddons.CONFIG_DIR.re
 	companion object {
 		@JvmField
 		val INSTANCE = NobaConfig()
+
+		// This is very crude, I wanted to save a backup on client stop, on failure, load that backup, send a message
+		// in game saying that the config got rolled back to whatever date due to failure
+		fun init() {
+			val configFilePath = NobaAddons.CONFIG_DIR.resolve("config.json")
+			val backupFilePath = configFilePath.resolveSibling("config.json.bak")
+			val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
+			try {
+				val configFile = configFilePath.toFile()
+
+				// so do I keep this
+				configFile.takeIf { it.exists() }?.let {
+					val backupFile = backupFilePath.toFile()
+
+					backupFile.takeIf { it.exists() }?.delete()
+					it.copyTo(backupFile, overwrite = true)
+				}
+
+				INSTANCE.load()
+			} catch(e: IOException) {
+				NobaAddons.LOGGER.error("Failed to load config", e)
+
+				val configFile = configFilePath.toFile()
+				if(configFile.exists()) {
+					val date = dateFormat.format(Date())
+					val newFileName = generateSequence(1) { it + 1 }
+						.map { "config-$date-$it.json" }
+						.first { !configFilePath.resolveSibling(it).toFile().exists() }
+
+					configFile.renameTo(configFilePath.resolveSibling(newFileName).toFile())
+					NobaAddons.LOGGER.info("Renamed config file to $newFileName due to failure")
+				}
+			}
+		}
 
 		fun getConfigScreen(parent: Screen?): Screen {
 			val defaults = NobaConfig()

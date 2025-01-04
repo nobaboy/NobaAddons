@@ -28,11 +28,6 @@ fun `002_inventoryCategory`(json: JsonObject) {
 }
 
 fun `003_renameGlaciteMineshaftShareCorpses`(json: JsonObject) {
-	json["mining"]?.asJsonObject?.let { mining ->
-		mining["glaciteMineshaft"]?.asJsonObject?.let { glaciteMineshaft ->
-			glaciteMineshaft.remove("autoShareCorpseCoords")?.asBoolean?.let { autoShareCorpseCoords ->
-				glaciteMineshaft.addProperty("autoShareCorpses", autoShareCorpseCoords)
-			}
-		}
-	}
+	val glaciteMineshaft = json["mining"]?.asJsonObject["glaciteMineshaft"]?.asJsonObject ?: return
+	glaciteMineshaft.add("autoShareCorpses", glaciteMineshaft.remove("autoShareCorpseCoords") ?: return)
 }
