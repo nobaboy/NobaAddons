@@ -73,8 +73,7 @@ object CorpseLocator {
 			val location = corpse.entity.getNobaVec().roundToBlock()
 			val (x, y, z) = location.toDoubleArray().map { it.toInt() }
 
-			val article = if(corpse.type == CorpseType.UMBER) "an" else "a"
-			val text = tr("nobaaddons.corpseLocator.found", "Found $article ${corpse.type.formattedDisplayName} at $x, $y, $z!")
+			val text = tr("nobaaddons.corpseLocator.found", "Found ${corpse.type.formattedDisplayName} at $x, $y, $z!")
 
 			ChatUtils.addMessage(text)
 			MineshaftWaypoints.addWaypoint(location, corpse.type.displayName, corpse.type.color, MineshaftWaypointType.CORPSE)
