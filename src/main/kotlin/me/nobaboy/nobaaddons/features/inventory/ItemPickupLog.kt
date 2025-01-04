@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.inventory
 
 import me.nobaboy.nobaaddons.api.InventoryAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
@@ -15,7 +15,7 @@ import net.minecraft.text.Text
 import kotlin.math.abs
 
 object ItemPickupLog {
-	private val config get() = NobaConfigManager.config.inventory.itemPickupLog
+	private val config get() = NobaConfig.INSTANCE.inventory.itemPickupLog
 
 	fun init() {
 		UIManager.add(PickupLogHudElement)

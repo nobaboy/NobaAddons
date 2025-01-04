@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.render;
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager;
+import me.nobaboy.nobaaddons.config.NobaConfig;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.LightningEntityRenderer;
 import org.joml.Matrix4f;
@@ -31,6 +31,6 @@ abstract class LightningEntityRendererMixin {
 		boolean shiftSouth2,
 		CallbackInfo ci
 	) {
-		if(NobaConfigManager.getConfig().getUiAndVisuals().getRenderingTweaks().getHideLightningBolt()) ci.cancel();
+		if(NobaConfig.INSTANCE.getUiAndVisuals().getRenderingTweaks().getHideLightningBolt()) ci.cancel();
 	}
 }

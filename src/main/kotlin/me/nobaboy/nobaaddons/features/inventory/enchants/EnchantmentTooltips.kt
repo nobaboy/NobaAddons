@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.inventory.enchants
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.enchants.Enchant
 import me.nobaboy.nobaaddons.core.enchants.EnchantBase
 import me.nobaboy.nobaaddons.core.enchants.StackingEnchant
@@ -30,7 +30,7 @@ import org.lwjgl.glfw.GLFW
 
 // TODO: Could do with caching the lore
 object EnchantmentTooltips {
-	private val config get() = NobaConfigManager.config.uiAndVisuals.enchantmentTooltips
+	private val config get() = NobaConfig.INSTANCE.inventory.enchantmentTooltips
 	// the extra [\d,]+ is to account for stacking enchants adding their value
 	// TODO it'd be nice to .findAll() with this, but this globs every prior enchantment
 	//      into the last one's name, so we're just extracting from groups this after splitting on `, `,
@@ -49,7 +49,7 @@ object EnchantmentTooltips {
 	}
 
 	private fun parseEnchants(item: ItemStack, lines: MutableList<Text>) {
-		if(!config.parseItemEnchants) return
+		if(!config.modifyTooltips) return
 		if(InputUtil.isKeyPressed(MCUtils.window.handle, GLFW.GLFW_KEY_RIGHT_SHIFT)) return
 		if(!item.isSkyBlockItem || item.getSkyBlockItem()?.enchantments?.isEmpty() != false) return
 

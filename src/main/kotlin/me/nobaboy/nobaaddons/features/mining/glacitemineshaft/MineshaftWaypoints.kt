@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.mining.glacitemineshaft
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils
@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.text.Text
 
 object MineshaftWaypoints {
-	private val config get() = NobaConfigManager.config.mining.glaciteMineshaft
+	private val config get() = NobaConfig.INSTANCE.mining.glaciteMineshaft
 
 	val waypoints = mutableListOf<MineshaftWaypoint>()
 

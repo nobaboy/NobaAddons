@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.SoundEvents
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
@@ -26,7 +26,7 @@ import kotlin.math.sin
  * This should've been in [BurrowAPI], but since it's a separate module I'll keep it as is
  */
 object BurrowGuessAPI {
-	private val config get() = NobaConfigManager.config.events.mythological
+	private val config get() = NobaConfig.INSTANCE.events.mythological
 	private val enabled: Boolean get() = config.burrowGuess && DianaAPI.isActive
 
 	private var dingIndex = 0

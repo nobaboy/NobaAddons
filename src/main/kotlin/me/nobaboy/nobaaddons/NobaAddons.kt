@@ -22,7 +22,7 @@ import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowGuessAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.data.PersistentCache
@@ -32,7 +32,6 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
-import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
@@ -112,10 +111,10 @@ object NobaAddons : ClientModInitializer {
 	// immediately ran).
 	override fun onInitializeClient() {
 		/* region Core */
-		NobaConfigManager.init()
+		NobaConfig.INSTANCE.load()
 		PersistentCache.init()
-		UISettings.init()
 		RepoManager.init()
+		UISettings.init()
 		UIManager.init()
 
 		UpdateNotifier.init()
@@ -161,7 +160,6 @@ object NobaAddons : ClientModInitializer {
 		AnnounceRareDrops.init()
 		BurrowWaypoints.init()
 		InquisitorWaypoints.init()
-		ChocolateFactoryFeatures.init()
 		// endregion
 
 		// region Fishing

@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.filters
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.features.chat.filters.ability.AbilityChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.BlessingChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.HealerOrbChatFilter
@@ -13,7 +13,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 interface IChatFilter {
-	val config get() = NobaConfigManager.config.chat.filters
+	val config get() = NobaConfig.INSTANCE.chat.filters
 
 	val enabled: Boolean
 	fun shouldFilter(message: String): Boolean

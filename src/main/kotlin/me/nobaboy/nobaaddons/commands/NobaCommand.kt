@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands
 import me.nobaboy.nobaaddons.commands.impl.CommandUtil
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWarpLocations
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
@@ -43,17 +43,7 @@ object NobaCommand {
 
 	@Command
 	fun config() {
-		NobaConfigManager.getConfigScreen(null).queueOpen()
-	}
-
-	@Command
-	fun keybinds() {
-		KeyBindsScreen(null).queueOpen()
-	}
-
-	@Command
-	fun notifications() {
-		ChatNotificationsScreen(null).queueOpen()
+		NobaConfig.getConfigScreen(null).queueOpen()
 	}
 
 	@Command
@@ -62,8 +52,38 @@ object NobaCommand {
 	}
 
 	@Command
+	fun notifications() {
+		ChatNotificationsScreen(null).queueOpen()
+	}
+
+	@Command
+	fun keybinds() {
+		KeyBindsScreen(null).queueOpen()
+	}
+
+	@Command
 	fun ping() {
 		PingUtils.sendPingPacket(sendMessage = true)
+	}
+
+	@Command
+	fun sendCoords() {
+		ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
+	}
+
+	@Command
+	fun waypoint(x: Double, y: Double, z: Double) {
+		if(!TemporaryWaypoints.enabled) {
+			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.notEnabled", "Temporary Waypoints are not enabled in the mod config"), color = Formatting.RED)
+			return
+		}
+		TemporaryWaypoints.addWaypoint(x, y, z, "Temporary Waypoint")
+		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will last until you walk near it."))
+	}
+
+	@Command
+	fun lockMouse() {
+		MouseLock.lockMouse()
 	}
 
 	@Group
@@ -87,26 +107,6 @@ object NobaCommand {
 		fun item(item: String, count: Int = 64) {
 			RefillFromSacks.refill(item.uppercase(), count)
 		}
-	}
-
-	@Command
-	fun sendCoords() {
-		ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
-	}
-
-	@Command
-	fun waypoint(x: Double, y: Double, z: Double) {
-		if(!TemporaryWaypoints.enabled) {
-			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.notEnabled", "Temporary Waypoints are not enabled in the mod config"), color = Formatting.RED)
-			return
-		}
-		TemporaryWaypoints.addWaypoint(x, y, z, "Temporary Waypoint")
-		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will last until you walk near it."))
-	}
-
-	@Command
-	fun lockMouse() {
-		MouseLock.lockMouse()
 	}
 
 	@Group("mythological", "mytho")

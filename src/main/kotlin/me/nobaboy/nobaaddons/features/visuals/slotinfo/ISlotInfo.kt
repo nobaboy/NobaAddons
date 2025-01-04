@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.visuals.slotinfo
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.items.*
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements.*
@@ -12,7 +12,7 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 
 interface ISlotInfo {
-	val config get() = NobaConfigManager.config.uiAndVisuals.slotInfo
+	val config get() = NobaConfig.INSTANCE.inventory.slotInfo
 
 	val enabled: Boolean
 	fun handle(event: ScreenRenderEvents.DrawItem)

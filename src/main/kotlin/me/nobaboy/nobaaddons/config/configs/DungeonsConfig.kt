@@ -1,33 +1,24 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
+import dev.celestialfault.celestialconfig.Serializer
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.HighlightMode
-import java.awt.Color
 
-class DungeonsConfig {
-	@SerialEntry
-	val simonSaysTimer: SimonSaysTimerConfig = SimonSaysTimerConfig()
+class DungeonsConfig : ObjectProperty<DungeonsConfig>("dungeons") {
+	val simonSaysTimer by SimonSaysTimerConfig()
+	val highlightStarredMobs by HighlightStarredMobs()
 
-	@SerialEntry
-	val highlightStarredMobs: HighlightStarredMobs = HighlightStarredMobs()
-
-	class SimonSaysTimerConfig {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var timeInPartyChat: Boolean = false
+	class SimonSaysTimerConfig : ObjectProperty<SimonSaysTimerConfig>("simonSaysTimer") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var timeInPartyChat by Property.of<Boolean>("timeInPartyChat", false)
 	}
 
-	class HighlightStarredMobs {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var highlightColor: Color = NobaColor.YELLOW.toColor()
-
-		@SerialEntry
-		var highlightMode: HighlightMode = HighlightMode.FILLED_OUTLINE
+	class HighlightStarredMobs : ObjectProperty<HighlightStarredMobs>("highlightStarredMobs") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.YELLOW.toColor())
+		var highlightMode by Property.of("highlightMode", Serializer.enum(), HighlightMode.FILLED_OUTLINE)
 	}
 }

@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.mining.glacitemineshaft
 
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
@@ -23,7 +23,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
 
 object CorpseLocator {
-	private val config get() = NobaConfigManager.config.mining.glaciteMineshaft
+	private val config get() = NobaConfig.INSTANCE.mining.glaciteMineshaft
 	private val enabled: Boolean get() = config.corpseLocator && SkyBlockIsland.MINESHAFT.inIsland()
 
 	private val chatCoordsPattern by Regex(
@@ -100,7 +100,7 @@ object CorpseLocator {
 	}
 
 	private fun shareCorpse(player: PlayerEntity) {
-		if(!config.autoShareCorpseCoords) return
+		if(!config.autoShareCorpses) return
 		if(PartyAPI.party == null) return
 		if(MineshaftWaypoints.waypoints.isEmpty()) return
 

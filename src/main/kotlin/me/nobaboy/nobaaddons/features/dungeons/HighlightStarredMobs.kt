@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.dungeons
 
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -17,7 +17,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 
 // TODO: Rework and implement Entity outlines
 object HighlightStarredMobs {
-	private val config get() = NobaConfigManager.config.dungeons.highlightStarredMobs
+	private val config get() = NobaConfig.INSTANCE.dungeons.highlightStarredMobs
 	private val enabled: Boolean get() = config.enabled && !DungeonsAPI.inBoss()
 
 	private val starredMobs = mutableListOf<ArmorStandEntity>()

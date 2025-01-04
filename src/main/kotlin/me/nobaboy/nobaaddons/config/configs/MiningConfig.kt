@@ -1,22 +1,15 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
 
-class MiningConfig {
-	@SerialEntry
-	val glaciteMineshaft: GlaciteMineshaft = GlaciteMineshaft()
+class MiningConfig : ObjectProperty<MiningConfig>("mining") {
+	val glaciteMineshaft by GlaciteMineshaft()
 
-	class GlaciteMineshaft {
-		@SerialEntry
-		var corpseLocator: Boolean = false
-
-		@SerialEntry
-		var autoShareCorpseCoords: Boolean = false
-
-		@SerialEntry
-		var entranceWaypoint: Boolean = false
-
-		@SerialEntry
-		var ladderWaypoint: Boolean = false
+	class GlaciteMineshaft : ObjectProperty<GlaciteMineshaft>("glaciteMineshaft") {
+		var corpseLocator by Property.of<Boolean>("corpseLocator", false)
+		var autoShareCorpses by Property.of<Boolean>("autoShareCorpses", false)
+		var entranceWaypoint by Property.of<Boolean>("entranceWaypoint", false)
+		var ladderWaypoint by Property.of<Boolean>("ladderWaypoint", false)
 	}
 }

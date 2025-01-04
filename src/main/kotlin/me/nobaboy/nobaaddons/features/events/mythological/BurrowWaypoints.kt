@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.events.mythological
 
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
@@ -24,7 +24,7 @@ import net.minecraft.block.Blocks
 import kotlin.time.Duration.Companion.seconds
 
 object BurrowWaypoints {
-	private val config get() = NobaConfigManager.config.events.mythological
+	private val config get() = NobaConfig.INSTANCE.events.mythological
 	private val enabled: Boolean get() = DianaAPI.isActive
 
 	private val playerLocation get() = LocationUtils.playerLocation()

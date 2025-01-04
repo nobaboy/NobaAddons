@@ -1,14 +1,10 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
 
-class GeneralConfig {
-	@SerialEntry
-	var wikiCommandAutoOpen: Boolean = false
-
-	@SerialEntry
-	var allowKeybindsOutsideSkyBlock: Boolean = false
-
-	@SerialEntry
-	var updateNotifier: Boolean = true
+class GeneralConfig : ObjectProperty<GeneralConfig>("general") {
+	var wikiCommandAutoOpen by Property.of<Boolean>("wikiCommandAutoOpen", false)
+	var allowKeybindsOutsideSkyBlock by Property.of<Boolean>("allowKeybindsOutsideSkyBlock", false)
+	var updateNotifier by Property.of<Boolean>("updateNotifier", false)
 }

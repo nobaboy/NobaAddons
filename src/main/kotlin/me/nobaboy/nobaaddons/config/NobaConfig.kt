@@ -1,39 +1,60 @@
 package me.nobaboy.nobaaddons.config
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.AbstractConfig
+import dev.celestialfault.celestialconfig.migrations.Migrations
+import dev.isxander.yacl3.api.YetAnotherConfigLib
+import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.config.configs.*
+import me.nobaboy.nobaaddons.utils.CommonText
+import net.minecraft.client.gui.screen.Screen
 
-class NobaConfig {
-	@SerialEntry
-	val version: Int = NobaConfigManager.CONFIG_VERSION
+/*
+ * Migrations MUST be added at the end of this block, otherwise; they will NOT run. Executed migrations are
+ * skipped, so new changes must be added as separate migrations. Removing pre-existing migrations is NOT supported
+ * and will cause player configs to completely break, so avoid doing so.
+ */
+private val migrations = Migrations.create {
+	add(migration = ::`001_removeYaclVersion`)
+	add(migration = ::`002_inventoryCategory`)
+	add(migration = ::`003_renameGlaciteMineshaftShareCorpses`)
+}
 
-	@SerialEntry
-	val general: GeneralConfig = GeneralConfig()
+class NobaConfig private constructor() : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("config.json"), migrations = migrations) {
+	val general by GeneralConfig()
+	val uiAndVisuals by UIAndVisualsConfig()
+	val inventory by InventoryConfig()
+	val events by EventsConfig()
+	val fishing by FishingConfig()
+	val mining by MiningConfig()
+	val dungeons by DungeonsConfig()
+	val chat by ChatConfig()
+	val qol by QOLConfig()
+	val repo by RepoConfig()
 
-	@SerialEntry
-	val uiAndVisuals: UIAndVisualsConfig = UIAndVisualsConfig()
+	companion object {
+		@JvmField
+		val INSTANCE = NobaConfig()
 
-	@SerialEntry
-	val inventory: InventoryConfig = InventoryConfig()
+		fun getConfigScreen(parent: Screen?): Screen {
+			val defaults = NobaConfig()
 
-	@SerialEntry
-	val events: EventsConfig = EventsConfig()
+			return YetAnotherConfigLib.createBuilder().apply {
+				title(CommonText.NOBAADDONS)
 
-	@SerialEntry
-	val fishing: FishingConfig = FishingConfig()
+				category(GeneralCategory.create(defaults, INSTANCE))
+				category(UIAndVisualsCategory.create(defaults, INSTANCE))
+				category(InventoryCategory.create(defaults, INSTANCE))
+				category(EventsCategory.create(defaults, INSTANCE))
+				category(FishingCategory.create(defaults, INSTANCE))
+				category(MiningCategory.create(defaults, INSTANCE))
+				category(DungeonsCategory.create(defaults, INSTANCE))
+				category(ChatCategory.create(defaults, INSTANCE))
+				category(QOLCategory.create(defaults, INSTANCE))
+				category(ApiCategory.create(defaults, INSTANCE))
 
-	@SerialEntry
-	val mining: MiningConfig = MiningConfig()
-
-	@SerialEntry
-	val dungeons: DungeonsConfig = DungeonsConfig()
-
-	@SerialEntry
-	val chat: ChatConfig = ChatConfig()
-
-	@SerialEntry
-	val qol: QOLConfig = QOLConfig()
-
-	@SerialEntry
-	val repo: RepoConfig = RepoConfig()
+				save(INSTANCE::save)
+			}.build().generateScreen(parent)
+		}
+	}
 }
