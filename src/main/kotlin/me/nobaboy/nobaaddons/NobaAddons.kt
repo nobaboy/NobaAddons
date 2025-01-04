@@ -150,10 +150,13 @@ object NobaAddons : ClientModInitializer {
 
 		/* region Features */
 		// region Visuals
-		EnchantmentTooltips.init()
 		TemporaryWaypoints.init()
 		EtherwarpHelper.init()
+		// endregion
+
+		// region Inventory
 		ISlotInfo.init()
+		EnchantmentTooltips.init()
 		// endregion
 
 		// region Events
