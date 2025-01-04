@@ -13,17 +13,17 @@ object UISettings : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("ui.json")) {
 	fun init() {
 		try {
 			load()
-		} catch(e: IOException) {
-			ErrorManager.logError("Failed to load UI settings", e)
+		} catch(ex: IOException) {
+			ErrorManager.logError("Failed to load UI settings", ex)
 		}
 
 		ClientLifecycleEvents.CLIENT_STOPPING.register {
 			try {
 				save()
-			} catch(e: IOException) {
+			} catch(ex: IOException) {
 				// Using ErrorManager here is largely pointless, as the chat won't exist to see the error message in,
 				// so just print it directly to the logs.
-				NobaAddons.LOGGER.error("Failed to save UI settings", e)
+				NobaAddons.LOGGER.error("Failed to save UI settings", ex)
 			}
 		}
 	}

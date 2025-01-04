@@ -40,8 +40,6 @@ class NobaConfig private constructor() : AbstractConfig(NobaAddons.CONFIG_DIR.re
 		@JvmField
 		val INSTANCE = NobaConfig()
 
-		// This is very crude, I wanted to save a backup on client stop, on failure, load that backup, send a message
-		// in game saying that the config got rolled back to whatever date due to failure
 		fun init() {
 			val configFilePath = NobaAddons.CONFIG_DIR.resolve("config.json")
 			val backupFilePath = configFilePath.resolveSibling("config.json.bak")
@@ -50,27 +48,33 @@ class NobaConfig private constructor() : AbstractConfig(NobaAddons.CONFIG_DIR.re
 			try {
 				val configFile = configFilePath.toFile()
 
-				// so do I keep this
 				configFile.takeIf { it.exists() }?.let {
 					val backupFile = backupFilePath.toFile()
-
 					backupFile.takeIf { it.exists() }?.delete()
 					it.copyTo(backupFile, overwrite = true)
 				}
 
 				INSTANCE.load()
-			} catch(e: IOException) {
-				NobaAddons.LOGGER.error("Failed to load config", e)
+			} catch(ex: IOException) {
+				NobaAddons.LOGGER.error("Failed to load config", ex)
 
 				val configFile = configFilePath.toFile()
-				if(configFile.exists()) {
-					val date = dateFormat.format(Date())
-					val newFileName = generateSequence(1) { it + 1 }
-						.map { "config-$date-$it.json" }
-						.first { !configFilePath.resolveSibling(it).toFile().exists() }
+				if(!configFile.exists()) return
 
-					configFile.renameTo(configFilePath.resolveSibling(newFileName).toFile())
-					NobaAddons.LOGGER.info("Renamed config file to $newFileName due to failure")
+				val date = dateFormat.format(Date())
+				val newFileName = generateSequence(1) { it + 1 }
+					.map { "config-$date-$it.json" }
+					.first { !configFilePath.resolveSibling(it).toFile().exists() }
+
+				try {
+					val renamedFile = configFilePath.resolveSibling(newFileName).toFile()
+					if(configFile.renameTo(renamedFile)) {
+						NobaAddons.LOGGER.info("Renamed config file to $newFileName")
+					} else {
+						NobaAddons.LOGGER.error("Failed to rename config file")
+					}
+				} catch(ex: IOException) {
+					NobaAddons.LOGGER.error("Error renaming config file", ex)
 				}
 			}
 		}

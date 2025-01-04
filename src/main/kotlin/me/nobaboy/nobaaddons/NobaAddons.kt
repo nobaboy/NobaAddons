@@ -111,7 +111,7 @@ object NobaAddons : ClientModInitializer {
 	// immediately ran).
 	override fun onInitializeClient() {
 		/* region Core */
-		NobaConfig.INSTANCE.load() // Swap to `init()` once it's properly done :I
+		NobaConfig.init()
 		PersistentCache.init()
 		RepoManager.init()
 		UISettings.init()

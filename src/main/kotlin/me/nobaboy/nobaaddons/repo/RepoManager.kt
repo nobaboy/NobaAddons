@@ -120,10 +120,10 @@ object RepoManager {
 		synchronized(LOCK) {
 			try {
 				if(REPO_DIRECTORY.exists()) obj.load()
-			} catch(e: FileNotFoundException) {
-				NobaAddons.LOGGER.warn("Repo object failed to load missing file: {}", e.message)
-			} catch(e: Throwable) {
-				ErrorManager.logError("Repo object failed initial load", e, "Repo object" to obj)
+			} catch(ex: FileNotFoundException) {
+				NobaAddons.LOGGER.warn("Repo object failed to load missing file: {}", ex.message)
+			} catch(ex: Throwable) {
+				ErrorManager.logError("Repo object failed initial load", ex, "Repo object" to obj)
 			}
 			objects.add(obj)
 		}
