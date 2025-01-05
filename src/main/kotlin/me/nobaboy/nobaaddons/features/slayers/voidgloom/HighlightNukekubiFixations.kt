@@ -42,8 +42,7 @@ object HighlightNukekubiFixations {
 
 		val bossEntity = SlayerAPI.currentQuest?.entity ?: return
 
-		val entity = event.entity
-		if(entity !is ArmorStandEntity) return
+		val entity = event.entity as? ArmorStandEntity ?: return
 		if(entity in nukekubiFixations) return
 
 		val helmet = entity.getEquippedStack(EquipmentSlot.HEAD)
