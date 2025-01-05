@@ -13,21 +13,10 @@ class SlayersConfig {
 	val miniBossAlert: MiniBossAlert = MiniBossAlert()
 
 	@SerialEntry
-	val highlightMiniBosses: HighlightMiniBosses = HighlightMiniBosses()
-
-	@SerialEntry
 	val announceBossKillTime: AnnounceBossKillTime = AnnounceBossKillTime()
 
 	@SerialEntry
 	val voidgloom: Voidgloom = Voidgloom()
-
-	class AnnounceBossKillTime {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var timeSource: BossTimeSource = BossTimeSource.REAL_TIME
-	}
 
 	class BossAlert {
 		@SerialEntry
@@ -45,12 +34,12 @@ class SlayersConfig {
 		var alertColor: Color = NobaColor.RED.toColor()
 	}
 
-	class HighlightMiniBosses {
+	class AnnounceBossKillTime {
 		@SerialEntry
 		var enabled: Boolean = false
 
 		@SerialEntry
-		var highlightColor: Color = NobaColor.BLUE.toColor()
+		var timeSource: BossTimeSource = BossTimeSource.REAL_TIME
 	}
 
 	class Voidgloom {
@@ -61,15 +50,18 @@ class SlayersConfig {
 		var yangGlyphAlert: Boolean = false
 
 		@SerialEntry
-		var alertColor: Color = NobaColor.RED.toColor()
+		var yangGlyphAlertColor: Color = NobaColor.RED.toColor()
 
 		@SerialEntry
-		var highlightYangGlyph: Boolean = false
+		var highlightYangGlyphs: Boolean = false
 
 		@SerialEntry
-		var highlightNukekubi: Boolean = false
+		var yangGlyphHighlightColor: Color = NobaColor.RED.toColor()
 
 		@SerialEntry
-		var highlightColor: Color = NobaColor.RED.toColor()
+		var highlightNukekubiFixations: Boolean = false
+
+		@SerialEntry
+		var nukekubiFixationHighlightColor: Color = NobaColor.RED.toColor()
 	}
 }

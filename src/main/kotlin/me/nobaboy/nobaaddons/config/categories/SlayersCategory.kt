@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.string
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
@@ -18,13 +18,8 @@ object SlayersCategory {
 				default = defaults.slayers.bossAlert.enabled,
 				property = config.slayers.bossAlert::enabled
 			)
-			string(
-				tr("nobaaddons.config.slayers.bossAlert.alertText", "Alert Text"),
-				default = defaults.slayers.bossAlert.alertText,
-				property = config.slayers.bossAlert::alertText
-			)
 			color(
-				tr("nobaaddons.config.slayers.bossAlert.alertColor", "Alert Color"),
+				CommonText.Config.ALERT_COLOR,
 				default = defaults.slayers.bossAlert.alertColor,
 				property = config.slayers.bossAlert::alertColor
 			)
@@ -36,28 +31,10 @@ object SlayersCategory {
 				default = defaults.slayers.miniBossAlert.enabled,
 				property = config.slayers.miniBossAlert::enabled
 			)
-			string(
-				tr("nobaaddons.config.slayers.miniBossAlert.alertText", "Alert Text"),
-				default = defaults.slayers.miniBossAlert.alertText,
-				property = config.slayers.miniBossAlert::alertText
-			)
 			color(
-				tr("nobaaddons.config.slayers.miniBossAlert.alertColor", "Alert Color"),
+				CommonText.Config.ALERT_COLOR,
 				default = defaults.slayers.miniBossAlert.alertColor,
 				property = config.slayers.miniBossAlert::alertColor
-			)
-		}
-
-		buildGroup(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
-			boolean(
-				CommonText.Config.ENABLED,
-				default = defaults.slayers.highlightMiniBosses.enabled,
-				property = config.slayers.highlightMiniBosses::enabled
-			)
-			color(
-				tr("nobaaddons.config.slayers.highlightMiniBosses.highlightColor", "Highlight Color"),
-				default = defaults.slayers.highlightMiniBosses.highlightColor,
-				property = config.slayers.highlightMiniBosses::highlightColor
 			)
 		}
 
@@ -81,30 +58,41 @@ object SlayersCategory {
 				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
 				property = config.slayers.voidgloom::brokenHeartRadiationTimer
 			)
+
+			label(tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs"))
+
 			boolean(
 				tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert", "Yang Glyph Alert"),
 				default = defaults.slayers.voidgloom.yangGlyphAlert,
 				property = config.slayers.voidgloom::yangGlyphAlert
 			)
 			color(
-				tr("nobaaddons.config.slayers.voidgloom.alertColor", "Alert Color"),
-				default = defaults.slayers.voidgloom.alertColor,
-				property = config.slayers.voidgloom::alertColor
+				CommonText.Config.ALERT_COLOR,
+				default = defaults.slayers.voidgloom.yangGlyphAlertColor,
+				property = config.slayers.voidgloom::yangGlyphAlertColor
 			)
 			boolean(
-				tr("nobaaddons.config.slayers.voidgloom.highlightYangGlyph", "Highlight Yang Glyph"),
-				default = defaults.slayers.voidgloom.highlightYangGlyph,
-				property = config.slayers.voidgloom::highlightYangGlyph
-			)
-			boolean(
-				tr("nobaaddons.config.slayers.voidgloom.highlightNukekubi", "Highlight Nukekubi"),
-				default = defaults.slayers.voidgloom.highlightNukekubi,
-				property = config.slayers.voidgloom::highlightNukekubi
+				tr("nobaaddons.config.slayers.voidgloom.highlightYangGlyph", "Highlight Yang Glyphs"),
+				default = defaults.slayers.voidgloom.highlightYangGlyphs,
+				property = config.slayers.voidgloom::highlightYangGlyphs
 			)
 			color(
-				tr("nobaaddons.config.slayers.voidgloom.highlightColor", "Highlight Color"),
-				default = defaults.slayers.voidgloom.highlightColor,
-				property = config.slayers.voidgloom::highlightColor
+				CommonText.Config.HIGHLIGHT_COLOR,
+				default = defaults.slayers.voidgloom.yangGlyphHighlightColor,
+				property = config.slayers.voidgloom::yangGlyphHighlightColor
+			)
+
+			label(tr("nobaaddons.config.slayers.voidgloom.label.nukekubiFixations", "Nukekubi Fixations"))
+
+			boolean(
+				tr("nobaaddons.config.slayers.voidgloom.highlightNukekubi", "Highlight Nukekubi Fixations"),
+				default = defaults.slayers.voidgloom.highlightNukekubiFixations,
+				property = config.slayers.voidgloom::highlightNukekubiFixations
+			)
+			color(
+				CommonText.Config.HIGHLIGHT_COLOR,
+				default = defaults.slayers.voidgloom.nukekubiFixationHighlightColor,
+				property = config.slayers.voidgloom::nukekubiFixationHighlightColor
 			)
 		}
 	}

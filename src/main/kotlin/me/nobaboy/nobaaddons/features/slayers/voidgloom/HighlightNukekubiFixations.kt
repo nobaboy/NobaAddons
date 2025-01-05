@@ -24,7 +24,7 @@ import net.minecraft.entity.mob.EndermanEntity
 object HighlightNukekubiFixations {
 	private val config get() = NobaConfigManager.config.slayers.voidgloom
 	private val enabled: Boolean
-		get() = config.highlightNukekubi && SkyBlockIsland.THE_END.inIsland() &&
+		get() = config.highlightNukekubiFixations && SkyBlockIsland.THE_END.inIsland() &&
 			SlayerAPI.currentQuest?.let { it.boss == SlayerBoss.VOIDGLOOM && it.spawned } == true
 
 	private val NUKEKUBI_FIXATION_TEXTURE by "eyJ0aW1lc3RhbXAiOjE1MzQ5NjM0MzU5NjIsInByb2ZpbGVJZCI6ImQzNGFhMmI4MzFkYTRkMjY5NjU1ZTMzYzE0M2YwOTZjIiwicHJvZmlsZU5hbWUiOiJFbmRlckRyYWdvbiIsInNpZ25hdHVyZVJlcXVpcmVkIjp0cnVlLCJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWIwNzU5NGUyZGYyNzM5MjFhNzdjMTAxZDBiZmRmYTExMTVhYmVkNWI5YjIwMjllYjQ5NmNlYmE5YmRiYjRiMyJ9fX0=".skullFromRepo("nukekubi_fixatiion")
@@ -60,7 +60,7 @@ object HighlightNukekubiFixations {
 			val location = armorStand.pos.toNobaVec()
 			if(location.distanceToPlayer() > 20) return@forEach
 
-			RenderUtils.renderOutline(context, location.add(x = -0.5, y = 0.65, z = -0.5), config.highlightColor.toNobaColor(), throughBlocks = true)
+			RenderUtils.renderOutline(context, location.add(x = -0.5, y = 0.65, z = -0.5), config.nukekubiFixationHighlightColor.toNobaColor(), throughBlocks = true)
 		}
 	}
 }

@@ -56,7 +56,7 @@ object YangGlyphAlert {
 			flyingYangGlyphs.remove(armorStand)
 			yangGlyphs[location] = Timestamp.now() + 5.seconds
 
-			RenderUtils.drawTitle("Yang Glyph!", config.alertColor.toNobaColor())
+			RenderUtils.drawTitle("Yang Glyph!", config.yangGlyphAlertColor.toNobaColor())
 			SoundUtils.plingSound.play()
 		} else {
 			if(location in yangGlyphs) yangGlyphs.remove(location)
@@ -82,14 +82,14 @@ object YangGlyphAlert {
 	}
 
 	private fun onWorldRender(context: WorldRenderContext) {
-		if(!config.highlightYangGlyph) return
+		if(!config.highlightYangGlyphs) return
 
 		yangGlyphs.forEach { (location, timestamp) ->
 			if(location.distanceToPlayer() > 20) return@forEach
 
 			val seconds = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
-			RenderUtils.renderOutlinedFilledBox(context, location, config.highlightColor.toNobaColor(), throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), "Yang Glyph", config.highlightColor.toNobaColor(), yOffset = -10.0f, throughBlocks = true)
+			RenderUtils.renderOutlinedFilledBox(context, location, config.yangGlyphHighlightColor.toNobaColor(), throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), "Yang Glyph", config.yangGlyphHighlightColor.toNobaColor(), yOffset = -10.0f, throughBlocks = true)
 			RenderUtils.renderText(location.center().raise(), seconds, NobaColor.WHITE, throughBlocks = true)
 		}
 	}
