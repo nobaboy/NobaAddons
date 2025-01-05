@@ -35,12 +35,15 @@ object BrokenHeartRadiationTimer {
 	private fun onPacketReceive(event: PacketEvents.Receive) {
 		if(!enabled) return
 
-		val packet = event.packet
-		if(packet !is EntityPassengersSetS2CPacket) return
+		val packet = event.packet as? EntityPassengersSetS2CPacket ?: return
 
 		val bossEntity = SlayerAPI.currentQuest?.entity ?: return
-		if(bossEntity.id in packet.passengerIds && brokenHeartRadiation == null) {
+		if(bossEntity.id !in packet.passengerIds) return
+
+		if(brokenHeartRadiation == null) {
 			brokenHeartRadiation = BrokenHeartRadiation(bossEntity, Timestamp.now() + 8.seconds)
+		} else {
+			if(brokenHeartRadiation!!.timestamp.timeRemaining() < 5.seconds) brokenHeartRadiation = null
 		}
 	}
 
@@ -59,7 +62,7 @@ object BrokenHeartRadiationTimer {
 
 	data class BrokenHeartRadiation(val bossEntity: Entity, val timestamp: Timestamp) {
 		val isValid: Boolean
-			get() = timestamp.timeRemaining() > 0.seconds && (bossEntity.vehicle != null || timestamp.timeRemaining() >= 5.seconds)
+			get() = timestamp.timeRemaining() > 0.seconds && bossEntity.vehicle != null
 
 		val remainingTime: String get() = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
 	}

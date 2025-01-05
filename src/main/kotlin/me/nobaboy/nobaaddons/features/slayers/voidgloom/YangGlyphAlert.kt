@@ -48,10 +48,9 @@ object YangGlyphAlert {
 		if(!config.yangGlyphAlert) return
 		if(!enabled) return
 
-		val packet = event.packet
-		if(packet !is BlockUpdateS2CPacket) return
-
+		val packet = event.packet as? BlockUpdateS2CPacket ?: return
 		val location = packet.pos.toNobaVec()
+
 		if(packet.state.block == Blocks.BEACON) {
 			val armorStand = flyingYangGlyphs.firstOrNull { it.getNobaVec().distance(location) < 3 } ?: return
 
