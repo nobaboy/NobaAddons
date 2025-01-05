@@ -11,7 +11,6 @@ import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 /*
  * Migrations MUST be added at the end of this block, otherwise they will NOT run. Executed migrations are
@@ -24,7 +23,9 @@ private val migrations = Migrations.create {
 	add(migration = ::`003_renameGlaciteMineshaftShareCorpses`)
 }
 
-class NobaConfig private constructor() : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("config.json"), migrations = migrations) {
+private val CONFIG_PATH = NobaAddons.CONFIG_DIR.resolve("config.json")
+
+class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations = migrations) {
 	val general by GeneralConfig()
 	val uiAndVisuals by UIAndVisualsConfig()
 	val inventory by InventoryConfig()
@@ -41,40 +42,23 @@ class NobaConfig private constructor() : AbstractConfig(NobaAddons.CONFIG_DIR.re
 		val INSTANCE = NobaConfig()
 
 		fun init() {
-			val configFilePath = NobaAddons.CONFIG_DIR.resolve("config.json")
-			val backupFilePath = configFilePath.resolveSibling("config.json.bak")
-			val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
-
 			try {
-				val configFile = configFilePath.toFile()
-
-				configFile.takeIf { it.exists() }?.let {
-					val backupFile = backupFilePath.toFile()
-					backupFile.takeIf { it.exists() }?.delete()
-					it.copyTo(backupFile, overwrite = true)
-				}
-
 				INSTANCE.load()
 			} catch(ex: IOException) {
+				val configPath = NobaAddons.CONFIG_DIR.resolve("config.json")
+
+				val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+				val date = dateFormatter.format(Date())
+
+				val backupFileName = generateSequence(1) { it + 1 }
+					.map { "config-$date-$it.json.bak" }
+					.first { !configPath.resolveSibling(it).toFile().exists() }
+
+				val backupFile = configPath.resolveSibling(backupFileName).toFile()
+
 				NobaAddons.LOGGER.error("Failed to load config", ex)
-
-				val configFile = configFilePath.toFile()
-				if(!configFile.exists()) return
-
-				val date = dateFormat.format(Date())
-				val newFileName = generateSequence(1) { it + 1 }
-					.map { "config-$date-$it.json" }
-					.first { !configFilePath.resolveSibling(it).toFile().exists() }
-
-				try {
-					val renamedFile = configFilePath.resolveSibling(newFileName).toFile()
-					if(configFile.renameTo(renamedFile)) {
-						NobaAddons.LOGGER.info("Renamed config file to $newFileName")
-					} else {
-						NobaAddons.LOGGER.error("Failed to rename config file")
-					}
-				} catch(ex: IOException) {
-					NobaAddons.LOGGER.error("Error renaming config file", ex)
+				if(configPath.toFile().renameTo(backupFile)) {
+					NobaAddons.LOGGER.error("Config file has been moved to $backupFile")
 				}
 			}
 		}
