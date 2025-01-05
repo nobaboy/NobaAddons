@@ -1,67 +1,40 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
+import dev.celestialfault.celestialconfig.Serializer
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 import java.awt.Color
 
-class FishingConfig {
-	@SerialEntry
-	val bobberTimer: BobberTimer = BobberTimer()
+class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
+	val seaCreatureAlert by SeaCreatureAlert()
+	val bobberTimer by BobberTimer()
+	val trophyFishing by TrophyFishing()
+	val highlightThunderSparks by HighlightThunderSparks()
 
-	@SerialEntry
-	val trophyFishing: TrophyFishing = TrophyFishing()
-
-	@SerialEntry
-	val seaCreatureAlert: SeaCreatureAlert = SeaCreatureAlert()
-
-	@SerialEntry
-	val highlightThunderSparks: HighlightThunderSparks = HighlightThunderSparks()
-
-	class TrophyFishing {
-		@SerialEntry
-		var modifyChatMessages: Boolean = false
+	class SeaCreatureAlert : ObjectProperty<SeaCreatureAlert>("seaCreatureAlert") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var nameInsteadOfRarity by Property.of<Boolean>("nameInsteadOfRarity", false)
+		var minimumRarity by Property.of("minimumRarity", Serializer.enum(), Rarity.LEGENDARY)
+		var carrotKingIsRare by Property.of<Boolean>("carrotKingIsRare", false)
+		var announceInPartyChat by Property.of<Boolean>("announceInPartyChat", false)
+		var notificationSound by Property.of("notificationSound", Serializer.enum(), NotificationSound.DING)
 	}
 
-	class BobberTimer {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var crimsonIsleOnly: Boolean = true
-
-		@SerialEntry
-		var lerpColor: Boolean = false
+	class BobberTimer : ObjectProperty<BobberTimer>("bobberTimer") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var crimsonIsleOnly by Property.of<Boolean>("crimsonIsleOnly", true)
 	}
 
-	class SeaCreatureAlert {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var nameInsteadOfRarity: Boolean = false
-
-		@SerialEntry
-		var minimumRarity: Rarity = Rarity.LEGENDARY
-
-		@SerialEntry
-		var carrotKingIsRare: Boolean = false
-
-		@SerialEntry
-		var announceInPartyChat: Boolean = false
-
-		@SerialEntry
-		var notificationSound: NotificationSound = NotificationSound.DING
+	class TrophyFishing() : ObjectProperty<TrophyFishing>("trophyFishing") {
+		var modifyChatMessages by Property.of<Boolean>("modifyChatMessages", false)
 	}
 
-	class HighlightThunderSparks {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var highlightColor: Color = Color(0x24DDE5)
-
-		@SerialEntry
-		var showText: Boolean = false
+	class HighlightThunderSparks : ObjectProperty<HighlightThunderSparks>("highlightThunderSparks") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var highlightColor by Property.of("highlightColor", Serializer.color, Color(0x24DDE5))
+		var showText by Property.of<Boolean>("showText", false)
 	}
 }

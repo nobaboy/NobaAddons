@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.keybinds
 
 import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.keybinds.impl.KeyBind
 import me.nobaboy.nobaaddons.features.keybinds.impl.NobaKeyBind
@@ -14,7 +14,7 @@ import org.lwjgl.glfw.GLFW
 import kotlin.time.Duration.Companion.milliseconds
 
 object KeyBindsManager {
-	private val config = NobaConfigManager.config.general
+	private val config = NobaConfig.INSTANCE.general
 
 	private val cooldownManager = CooldownManager(100.milliseconds)
 

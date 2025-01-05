@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.PacketEvents
@@ -129,7 +129,7 @@ object InventoryAPI {
 		}
 
 		itemLog.entries.removeIf { (_, diff) ->
-			diff.timestamp.elapsedSeconds() > NobaConfigManager.config.inventory.pickupLog.timeoutSeconds
+			diff.timestamp.elapsedSeconds() > NobaConfig.INSTANCE.inventory.itemPickupLog.timeoutSeconds
 		}
 	}
 

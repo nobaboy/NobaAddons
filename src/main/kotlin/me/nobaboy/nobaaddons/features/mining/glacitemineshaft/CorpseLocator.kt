@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.mining.glacitemineshaft
 
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
@@ -12,8 +12,6 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.TextUtils.withColor
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
@@ -25,7 +23,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
 
 object CorpseLocator {
-	private val config get() = NobaConfigManager.config.mining.glaciteMineshaft
+	private val config get() = NobaConfig.INSTANCE.mining.glaciteMineshaft
 	private val enabled: Boolean get() = config.corpseLocator && SkyBlockIsland.MINESHAFT.inIsland()
 
 	private val chatCoordsPattern by Regex(
@@ -72,18 +70,13 @@ object CorpseLocator {
 			.forEach { checkCorpse(it) }
 
 		corpses.filter { !it.seen && player.canSee(it.entity) }.forEach { corpse ->
-			val (x, y, z) = corpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
+			val location = corpse.entity.getNobaVec().roundToBlock()
+			val (x, y, z) = location.toDoubleArray().map { it.toInt() }
 
-			val type = corpse.type.toString().toText().withColor(corpse.type.color)
-			val text = tr("nobaaddons.mining.corpseLocator.found", "Found $type Corpse at $x, $y, $z")
+			val text = tr("nobaaddons.mining.corpseLocator.found", "Found ${corpse.type.formattedDisplayName} at $x, $y, $z!")
 
 			ChatUtils.addMessage(text)
-			MineshaftWaypoints.waypoints.add(Waypoint(
-				corpse.entity.getNobaVec().roundToBlock(),
-				"${corpse.type} Corpse",
-				corpse.type.color,
-				true
-			))
+			MineshaftWaypoints.addWaypoint(location, corpse.type.displayName, corpse.type.color, MineshaftWaypointType.CORPSE)
 
 			corpse.seen = true
 		}
@@ -106,7 +99,7 @@ object CorpseLocator {
 	}
 
 	private fun shareCorpse(player: PlayerEntity) {
-		if(!config.autoShareCorpseCoords) return
+		if(!config.autoShareCorpses) return
 		if(PartyAPI.party == null) return
 		if(MineshaftWaypoints.waypoints.isEmpty()) return
 
@@ -117,7 +110,7 @@ object CorpseLocator {
 
 		val (x, y, z) = closestCorpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
 
-		HypixelCommands.partyChat("x: $x, y: $y, z: $z | (${closestCorpse.type} Corpse)")
+		HypixelCommands.partyChat("x: $x, y: $y, z: $z | (${closestCorpse.type.displayName.string})")
 		closestCorpse.shared = true
 	}
 

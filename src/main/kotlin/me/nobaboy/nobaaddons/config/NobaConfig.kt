@@ -1,39 +1,87 @@
 package me.nobaboy.nobaaddons.config
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.AbstractConfig
+import dev.celestialfault.celestialconfig.migrations.Migrations
+import dev.isxander.yacl3.api.YetAnotherConfigLib
+import kotlinx.io.IOException
+import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.config.configs.*
+import me.nobaboy.nobaaddons.utils.CommonText
+import net.minecraft.client.gui.screen.Screen
+import java.text.SimpleDateFormat
+import java.util.Date
 
-class NobaConfig {
-	@SerialEntry
-	val version: Int = NobaConfigManager.CONFIG_VERSION
+/*
+ * Migrations MUST be added at the end of this block, otherwise they will NOT run. Executed migrations are
+ * skipped, so new changes must be added as separate migrations. Removing pre-existing migrations is NOT supported
+ * and will cause player configs to completely break, so avoid doing so.
+ */
+private val migrations = Migrations.create {
+	add(migration = ::`001_removeYaclVersion`)
+	add(migration = ::`002_inventoryCategory`)
+	add(migration = ::`003_renameGlaciteMineshaftShareCorpses`)
+}
 
-	@SerialEntry
-	val general: GeneralConfig = GeneralConfig()
+private val CONFIG_PATH = NobaAddons.CONFIG_DIR.resolve("config.json")
 
-	@SerialEntry
-	val uiAndVisuals: UIAndVisualsConfig = UIAndVisualsConfig()
+class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations = migrations) {
+	val general by GeneralConfig()
+	val uiAndVisuals by UIAndVisualsConfig()
+	val inventory by InventoryConfig()
+	val events by EventsConfig()
+	val fishing by FishingConfig()
+	val mining by MiningConfig()
+	val dungeons by DungeonsConfig()
+	val chat by ChatConfig()
+	val qol by QOLConfig()
+	val repo by RepoConfig()
 
-	@SerialEntry
-	val inventory: InventoryConfig = InventoryConfig()
+	companion object {
+		@JvmField
+		val INSTANCE = NobaConfig()
 
-	@SerialEntry
-	val events: EventsConfig = EventsConfig()
+		fun init() {
+			try {
+				INSTANCE.load()
+			} catch(ex: IOException) {
+				val configPath = NobaAddons.CONFIG_DIR.resolve("config.json")
 
-	@SerialEntry
-	val fishing: FishingConfig = FishingConfig()
+				val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+				val date = dateFormatter.format(Date())
 
-	@SerialEntry
-	val mining: MiningConfig = MiningConfig()
+				val backupFileName = generateSequence(1) { it + 1 }
+					.map { "config-$date-$it.json.bak" }
+					.first { !configPath.resolveSibling(it).toFile().exists() }
 
-	@SerialEntry
-	val dungeons: DungeonsConfig = DungeonsConfig()
+				val backupFile = configPath.resolveSibling(backupFileName).toFile()
 
-	@SerialEntry
-	val chat: ChatConfig = ChatConfig()
+				NobaAddons.LOGGER.error("Failed to load config", ex)
+				if(configPath.toFile().renameTo(backupFile)) {
+					NobaAddons.LOGGER.error("Config file has been moved to $backupFile")
+				}
+			}
+		}
 
-	@SerialEntry
-	val qol: QOLConfig = QOLConfig()
+		fun getConfigScreen(parent: Screen?): Screen {
+			val defaults = NobaConfig()
 
-	@SerialEntry
-	val repo: RepoConfig = RepoConfig()
+			return YetAnotherConfigLib.createBuilder().apply {
+				title(CommonText.NOBAADDONS)
+
+				category(GeneralCategory.create(defaults, INSTANCE))
+				category(UIAndVisualsCategory.create(defaults, INSTANCE))
+				category(InventoryCategory.create(defaults, INSTANCE))
+				category(EventsCategory.create(defaults, INSTANCE))
+				category(FishingCategory.create(defaults, INSTANCE))
+				category(MiningCategory.create(defaults, INSTANCE))
+				category(DungeonsCategory.create(defaults, INSTANCE))
+				category(ChatCategory.create(defaults, INSTANCE))
+				category(QOLCategory.create(defaults, INSTANCE))
+				category(ApiCategory.create(defaults, INSTANCE))
+
+				save(INSTANCE::save)
+			}.build().generateScreen(parent)
+		}
+	}
 }
