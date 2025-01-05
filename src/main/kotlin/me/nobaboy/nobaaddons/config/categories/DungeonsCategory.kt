@@ -19,7 +19,7 @@ object DungeonsCategory {
 				property = config.dungeons.highlightStarredMobs::enabled
 			)
 			color(
-				tr("nobaaddons.config.dungeons.highlightStarredMobs.highlightColor", "Highlight Color"),
+				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.dungeons.highlightStarredMobs.highlightColor,
 				property = config.dungeons.highlightStarredMobs::highlightColor
 			)

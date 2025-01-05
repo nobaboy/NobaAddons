@@ -64,7 +64,7 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.etherwarpHelper::enabled
 			)
 			color(
-				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.highlightColor", "Highlight Color"),
+				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.uiAndVisuals.etherwarpHelper.highlightColor,
 				property = config.uiAndVisuals.etherwarpHelper::highlightColor
 			)

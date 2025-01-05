@@ -75,7 +75,7 @@ object CorpseLocator {
 			val (x, y, z) = corpse.entity.getNobaVec().toDoubleArray().map { it.toInt() }
 
 			val type = corpse.type.toString().toText().withColor(corpse.type.color)
-			val text = tr("nobaaddons.corpseLocator.found", "Found $type Corpse at $x, $y, $z")
+			val text = tr("nobaaddons.mining.corpseLocator.found", "Found $type Corpse at $x, $y, $z")
 
 			ChatUtils.addMessage(text)
 			MineshaftWaypoints.waypoints.add(Waypoint(

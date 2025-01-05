@@ -129,7 +129,7 @@ object InquisitorWaypoints {
 	fun tryRemove(inquisitor: Inquisitor) {
 		if(inquisitorsNearby.isNotEmpty()) return
 
-		ChatUtils.addMessage(tr("nobaaddons.mythological.couldntFindInquisitor", "Couldn't find ${inquisitor.spawner}'s Inquisitor."))
+		ChatUtils.addMessage(tr("nobaaddons.events.mythological.couldntFindInquisitor", "Couldn't find ${inquisitor.spawner}'s Inquisitor."))
 		waypoints.remove(inquisitor)
 	}
 
