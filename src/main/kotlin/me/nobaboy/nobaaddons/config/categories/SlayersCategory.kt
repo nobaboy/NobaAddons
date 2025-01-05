@@ -69,7 +69,7 @@ object SlayersCategory {
 			)
 			cycler(
 				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource", "Time Source"),
-				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource.tooltip", "Determines the source for the boss kill time\\n\\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag"),
+				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource.tooltip", "Determines the source for the boss kill time\n\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag"),
 				default = defaults.slayers.announceBossKillTime.timeSource,
 				property = config.slayers.announceBossKillTime::timeSource
 			)
