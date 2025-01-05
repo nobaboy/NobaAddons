@@ -34,18 +34,12 @@ class SlayersConfig {
 		var enabled: Boolean = false
 
 		@SerialEntry
-		var alertText: String = "Boss Spawned!"
-
-		@SerialEntry
 		var alertColor: Color = NobaColor.RED.toColor()
 	}
 
 	class MiniBossAlert {
 		@SerialEntry
 		var enabled: Boolean = false
-
-		@SerialEntry
-		var alertText: String = "MiniBoss Spawned!"
 
 		@SerialEntry
 		var alertColor: Color = NobaColor.RED.toColor()

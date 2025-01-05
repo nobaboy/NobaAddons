@@ -23,7 +23,7 @@ object SlayerBossFeatures {
 		if(!config.bossAlert.enabled) return
 		if(!enabled) return
 
-		RenderUtils.drawTitle(config.bossAlert.alertText, config.bossAlert.alertColor.toNobaColor(), duration = 1.5.seconds)
+		RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor.toNobaColor(), duration = 1.5.seconds)
 		SoundUtils.dingLowSound.play()
 	}
 
@@ -32,7 +32,7 @@ object SlayerBossFeatures {
 		if(!enabled) return
 
 		val seconds = getBossKillTime(event) ?: return
-		ChatUtils.addMessage(tr("nobaaddons.slayer.bossKillTime", "Slayer Boss took $seconds seconds to kill!"))
+		ChatUtils.addMessage(tr("nobaaddons.slayers.announceBossKillTime.kill", "Slayer Boss took $seconds seconds to kill!"))
 	}
 
 	private fun getBossKillTime(event: SlayerEvents.BossKill): Double? {

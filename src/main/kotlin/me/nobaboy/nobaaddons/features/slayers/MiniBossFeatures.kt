@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
+import me.nobaboy.nobaaddons.utils.tr
 import kotlin.time.Duration.Companion.seconds
 
 // TODO: Add miniboss highlighting
@@ -25,7 +26,7 @@ object MiniBossFeatures {
 		val distance = event.entity.getNobaVec().distanceToPlayer()
 		if(distance > 16) return
 
-		RenderUtils.drawTitle(config.miniBossAlert.alertText, config.miniBossAlert.alertColor.toNobaColor(), duration = 1.5.seconds)
+		RenderUtils.drawTitle(tr("nobaaddons.slayers.miniBossAlert.spawned", "MiniBoss Spawned!"), config.miniBossAlert.alertColor.toNobaColor(), duration = 1.5.seconds)
 		SoundUtils.dingLowSound.play()
 	}
 }
