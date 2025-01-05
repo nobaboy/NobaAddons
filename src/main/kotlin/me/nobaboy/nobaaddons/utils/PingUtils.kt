@@ -14,7 +14,7 @@ object PingUtils {
 
 	init {
 		Scheduler.schedule(10 * 20, repeat = true) { sendPingPacket() }
-		PacketEvents.RECEIVE.register { it.packet.let { if(it is PingResultS2CPacket) onPingPacket(it) } }
+		PacketEvents.POST_RECEIVE.register { it.packet.let { if(it is PingResultS2CPacket) onPingPacket(it) } }
 	}
 
 	fun sendPingPacket(sendMessage: Boolean = false) {

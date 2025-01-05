@@ -37,7 +37,7 @@ object SlayerAPI {
 
 		if(currentQuest?.boss != boss) currentQuest = SlayerQuest(boss)
 
-		var previousState = currentQuest?.spawned
+		val previousState = currentQuest?.spawned
 		currentQuest?.spawned = lines.any { it == "Slay the boss!" }
 		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn())
 

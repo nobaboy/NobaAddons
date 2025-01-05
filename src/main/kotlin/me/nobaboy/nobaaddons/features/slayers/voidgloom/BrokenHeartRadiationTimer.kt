@@ -28,7 +28,7 @@ object BrokenHeartRadiationTimer {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { brokenHeartRadiation = null }
-		PacketEvents.RECEIVE.register(this::onPacketReceive)
+		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::onWorldRender)
 	}
 
@@ -40,13 +40,10 @@ object BrokenHeartRadiationTimer {
 		val bossEntity = SlayerAPI.currentQuest?.entity ?: return
 		if(bossEntity.id !in packet.passengerIds) return
 
-		if(brokenHeartRadiation == null) {
-			brokenHeartRadiation = BrokenHeartRadiation(bossEntity, Timestamp.now() + 8.seconds)
-		} else {
-			if(brokenHeartRadiation!!.timestamp.timeRemaining() < 5.seconds) brokenHeartRadiation = null
-		}
+		if(brokenHeartRadiation == null) brokenHeartRadiation = BrokenHeartRadiation(bossEntity, Timestamp.now() + 8.seconds)
 	}
 
+	@Suppress("unused")
 	private fun onWorldRender(context: WorldRenderContext) {
 		if(!enabled) return
 
@@ -62,7 +59,7 @@ object BrokenHeartRadiationTimer {
 
 	data class BrokenHeartRadiation(val bossEntity: Entity, val timestamp: Timestamp) {
 		val isValid: Boolean
-			get() = timestamp.timeRemaining() > 0.seconds && bossEntity.vehicle != null
+			get() = timestamp.timeRemaining() > 0.seconds && (bossEntity.vehicle != null || timestamp.timeRemaining() > 5.seconds)
 
 		val remainingTime: String get() = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
 	}

@@ -31,18 +31,18 @@ public class PacketEventsMixin {
 		method = "handlePacket",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/Packet;apply(Lnet/minecraft/network/listener/PacketListener;)V")
 	)
-	private static void nobaaddons$onEarlyPacketReceive(Packet<?> packet, PacketListener listener, CallbackInfo ci) {
-		PacketEvents.EARLY_RECEIVE.invoke(new PacketEvents.EarlyReceive(packet));
+	private static void nobaaddons$prePacketReceive(Packet<?> packet, PacketListener listener, CallbackInfo ci) {
+		PacketEvents.PRE_RECEIVE.invoke(new PacketEvents.Receive(packet));
 	}
 
 	@Inject(
 		method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V",
 		at = @At("RETURN")
 	)
-	private void nobaaddons$onPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
+	private void nobaaddons$postPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
 		if(!this.channel.isOpen()) return;
 		if(this.side != NetworkSide.CLIENTBOUND) return;
 
-		PacketEvents.RECEIVE.invoke(new PacketEvents.Receive(packet));
+		PacketEvents.POST_RECEIVE.invoke(new PacketEvents.Receive(packet));
 	}
 }

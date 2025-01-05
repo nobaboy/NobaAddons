@@ -38,7 +38,7 @@ object InventoryAPI {
 	fun init() {
 		QuarterSecondPassedEvent.EVENT.register(this::onQuarterSecond)
 		PacketEvents.SEND.register(this::onPacketSend)
-		PacketEvents.RECEIVE.register(this::onPacketReceive)
+		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		WorldEvents.POST_LOAD.register { debounceItemLog() }
 	}
 

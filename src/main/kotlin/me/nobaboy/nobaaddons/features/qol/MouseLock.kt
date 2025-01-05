@@ -59,10 +59,10 @@ object MouseLock {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { locked = false }
-		PacketEvents.EARLY_RECEIVE.register(this::onEarlyPacketReceive)
+		PacketEvents.PRE_RECEIVE.register(this::onEarlyPacketReceive)
 	}
 
-	private fun onEarlyPacketReceive(event: PacketEvents.EarlyReceive) {
+	private fun onEarlyPacketReceive(event: PacketEvents.Receive) {
 		if(!config.autoUnlockMouseOnTeleport) return
 		if(!locked) return
 
