@@ -28,7 +28,7 @@ import kotlin.reflect.KMutableProperty
 
 object NobaConfigUtils {
 	fun createBooleanController(option: Option<Boolean>): BooleanControllerBuilder {
-		return BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true)
+		return BooleanControllerBuilder.create(option).onOffFormatter().coloured(true)
 	}
 
 	fun createTickBoxController(option: Option<Boolean>): TickBoxControllerBuilder {

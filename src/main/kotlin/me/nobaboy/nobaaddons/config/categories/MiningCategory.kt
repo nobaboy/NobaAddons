@@ -16,7 +16,7 @@ object MiningCategory {
 			label(tr("nobaaddons.config.mining.glaciteMineshaft.label.corpses", "Corpses"))
 
 			boolean(
-				tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator", "Locate Corpses"),
+				tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator", "Corpse Locator"),
 				tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator.tooltip", "Marks corpses with a waypoint when they're in your line of sight"),
 				default = defaults.mining.glaciteMineshaft.corpseLocator,
 				property = config.mining.glaciteMineshaft::corpseLocator
