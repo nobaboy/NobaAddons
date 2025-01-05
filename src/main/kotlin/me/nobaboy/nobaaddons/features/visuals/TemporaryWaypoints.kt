@@ -58,7 +58,7 @@ object TemporaryWaypoints {
 
 			val text = "$username$info"
 			waypoints.add(Waypoint(location, text, Timestamp.now(), config.expirationTime.seconds))
-			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromChat", "Temporary Waypoint added at x: $x, y: $y, z: $z from $username"))
+			ChatUtils.addMessage(tr("nobaaddons.uiAndVisuals.temporaryWaypoints.fromChat", "Temporary Waypoint added at x: $x, y: $y, z: $z from $username"))
 		}
 	}
 
