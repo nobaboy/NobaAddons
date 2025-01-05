@@ -13,7 +13,7 @@ object BestiarySlotInfo : ISlotInfo {
 
 	override val enabled: Boolean get() = config.bestiaryFamilyTier || config.bestiaryMilestone
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val inventoryName = InventoryUtils.openInventoryName() ?: return
 		val itemStack = event.itemStack
 		val lore = itemStack.lore.stringLines

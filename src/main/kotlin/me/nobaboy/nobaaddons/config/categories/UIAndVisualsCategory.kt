@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.strikethrough
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
@@ -21,8 +21,10 @@ import java.util.Calendar
 private val year = Calendar.getInstance().get(Calendar.YEAR)
 
 private fun societyIsCrumbling(@Suppress("SameParameterValue") fromYear: Int): Text {
-	val years = (fromYear until year).map { buildLiteral(it.toString()) { strikethrough() } } + listOf(year.toString().toText())
-	return Texts.join(years, " ".toText())
+	return Texts.join(buildList {
+		addAll((fromYear until year).map { it.toText().strikethrough() })
+		add(year.toText())
+	}, " ".toText())
 }
 
 object UIAndVisualsCategory {
@@ -31,6 +33,7 @@ object UIAndVisualsCategory {
 			MCUtils.client.setScreen(InfoBoxesScreen(it))
 		}
 
+		// region Temporary Waypoints
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints", "Temporary Waypoints")) {
 			boolean(
 				CommonText.Config.ENABLED,
@@ -52,7 +55,9 @@ object UIAndVisualsCategory {
 				step = 1
 			)
 		}
+		// endregion
 
+		// region Etherwarp Helper
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper", "Etherwarp Overlay")) {
 			boolean(
 				CommonText.Config.ENABLED,
@@ -60,7 +65,7 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.etherwarpHelper::enabled
 			)
 			color(
-				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.highlightColor", "Highlight Color"),
+				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.uiAndVisuals.etherwarpHelper.highlightColor,
 				property = config.uiAndVisuals.etherwarpHelper::highlightColor
 			)
@@ -77,7 +82,9 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.etherwarpHelper::allowOverlayOnAir
 			)
 		}
+		// endregion
 
+		// region Rendering Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.renderingTweaks", "Rendering Tweaks")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt", "Hide Lightning Bolt"),
@@ -98,7 +105,9 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::removeFrontFacingThirdPerson
 			)
 		}
+		// endregion
 
+		// region Arm Swing Animation Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.swingAnimation", "Arm Swing Animation Tweaks")) {
 			slider(
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration", "Swing Duration"),
@@ -110,7 +119,7 @@ object UIAndVisualsCategory {
 				step = 1,
 			) {
 				when(it) {
-					1 -> tr("nobaaddons.config.label.unmodified", "Unmodified")
+					1 -> tr("nobaaddons.config.label.off", "Off").red()
 					6 -> tr("nobaaddons.config.label.default", "Default")
 					else -> it.toString().toText()
 				}
@@ -123,7 +132,9 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.swingAnimation::applyToAllPlayers,
 			)
 		}
+		// endregion
 
+		// region First Person Item Rendering
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.itemRendering", "First Person Item Rendering")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip", "Cancel Re-equip Animation"),
@@ -180,11 +191,13 @@ object UIAndVisualsCategory {
 				step = 0.1f
 			)
 		}
+		// endregion
 
+		// region Armor Glint Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints"),
-				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "It's ${societyIsCrumbling(2019)}. Society has progressed little in the past 5 years. The world is falling apart. Hypixel still has yet to figure out how to consistently add an enchantment glint to armor."),
+				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "It's ${societyIsCrumbling(2019)}. Society has progressed little in the past 20 years. The world is falling apart. Hypixel still has yet to figure out how to consistently add an enchantment glint to armor."),
 				default = defaults.uiAndVisuals.renderingTweaks.fixEnchantedArmorGlint,
 				property = config.uiAndVisuals.renderingTweaks::fixEnchantedArmorGlint
 			)
@@ -195,5 +208,6 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
 			)
 		}
+		// endregion
 	}
 }

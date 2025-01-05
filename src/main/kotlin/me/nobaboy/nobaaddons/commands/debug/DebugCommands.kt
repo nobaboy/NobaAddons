@@ -117,6 +117,12 @@ object DebugCommands {
 	}
 
 	@Command
+	fun clearSuppressedErrors(ctx: Context) {
+		ErrorManager.clearPreviousErrors()
+		ctx.source.sendFeedback("ok".toText())
+	}
+
+	@Command
 	fun updateNotification(ctx: Context) {
 		UpdateNotifier.sendUpdateNotification()
 	}

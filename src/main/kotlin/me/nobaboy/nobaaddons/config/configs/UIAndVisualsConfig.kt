@@ -1,95 +1,51 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
+import dev.celestialfault.celestialconfig.Serializer
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.utils.NobaColor
-import java.awt.Color
 
-class UIAndVisualsConfig {
-	@SerialEntry
-	val temporaryWaypoints: TemporaryWaypoints = TemporaryWaypoints()
+class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
+	val temporaryWaypoints by TemporaryWaypoints()
+	val etherwarpHelper by EtherwarpHelper()
+	val renderingTweaks by RenderingTweaks()
+	val swingAnimation by SwingAnimation()
+	val itemPosition by FirstPersonItemPosition()
 
-	@SerialEntry
-	val etherwarpHelper: EtherwarpHelper = EtherwarpHelper()
-
-	@SerialEntry
-	val renderingTweaks: RenderingTweaks = RenderingTweaks()
-
-	@SerialEntry
-	val swingAnimation = SwingAnimation()
-
-	@SerialEntry
-	val itemPosition = FirstPersonItemPosition()
-
-	class TemporaryWaypoints {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var waypointColor: Color = NobaColor.YELLOW.toColor()
-
-		@SerialEntry
-		var expirationTime: Int = 15
+	class TemporaryWaypoints : ObjectProperty<TemporaryWaypoints>("temporaryWaypoints") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var waypointColor by Property.of("waypointColor", Serializer.color, NobaColor.YELLOW.toColor())
+		var expirationTime by Property.of<Int>("expirationTime", 30)
 	}
 
-	class EtherwarpHelper {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var highlightColor: Color = NobaColor.BLUE.toColor()
-
-		@SerialEntry
-		var showFailText: Boolean = false
-
-		@SerialEntry
-		var allowOverlayOnAir: Boolean = false
+	class EtherwarpHelper : ObjectProperty<EtherwarpHelper>("etherwarpHelper") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.BLUE.toColor())
+		var showFailText by Property.of<Boolean>("showFailText", false)
+		var allowOverlayOnAir by Property.of<Boolean>("allowOverlayOnAir", false)
 	}
 
-	class RenderingTweaks {
-		@SerialEntry
-		var hideOtherPeopleFishing: Boolean = false
-
-		@SerialEntry
-		var hideLightningBolt: Boolean = false
-
-		@SerialEntry
-		var removeFrontFacingThirdPerson: Boolean = false
-
-		@SerialEntry
-		var fixEnchantedArmorGlint: Boolean = false
-
-		@SerialEntry
-		var removeArmorGlints: Boolean = false
+	class RenderingTweaks : ObjectProperty<RenderingTweaks>("renderingTweaks") {
+		var hideOtherPeopleFishing by Property.of<Boolean>("hideOtherPeopleFishing", false)
+		var hideLightningBolt by Property.of<Boolean>("hideLightningBolt", false)
+		var removeFrontFacingThirdPerson by Property.of<Boolean>("removeFrontFacingThirdPerson", false)
+		var fixEnchantedArmorGlint by Property.of<Boolean>("fixEnchantedArmorGlint", false)
+		var removeArmorGlints by Property.of<Boolean>("removeArmorGlints", false)
 	}
 
-	class SwingAnimation {
-		@SerialEntry
-		var swingDuration: Int = 1
-
-		@SerialEntry
-		var applyToAllPlayers: Boolean = false
+	class SwingAnimation : ObjectProperty<SwingAnimation>("swingAnimation") {
+		var swingDuration by Property.of<Int>("swingDuration", 1)
+		var applyToAllPlayers by Property.of<Boolean>("applyToAllPlayers", false)
 	}
 
-	class FirstPersonItemPosition {
-		@SerialEntry
-		var scale: Float = 1f // [0.1f, 2f]
-
-		@SerialEntry
-		var x: Int = 0 // [-150, 150]
-
-		@SerialEntry
-		var y: Int = 0 // [-150, 150]
-
-		@SerialEntry
-		var z: Int = 0 // [-150, 50]
-
-		@SerialEntry
-		var cancelEquipAnimation: Boolean = false
-
-		@SerialEntry
-		var cancelItemUpdateAnimation: Boolean = false
-
-		@SerialEntry
-		var cancelDrinkAnimation: Boolean = false
+	class FirstPersonItemPosition : ObjectProperty<FirstPersonItemPosition>("itemPosition") {
+		var cancelEquipAnimation by Property.of<Boolean>("applyToAllPlayers", false)
+		var cancelItemUpdateAnimation by Property.of<Boolean>("cancelItemUpdateAnimation", false)
+		var cancelDrinkAnimation by Property.of<Boolean>("cancelDrinkAnimation", false)
+		var x by Property.of("x", Serializer.number<Int>(min = -150, max = 150), 0)
+		var y by Property.of("y", Serializer.number<Int>(min = -150, max = 150), 0)
+		var z by Property.of("z", Serializer.number<Int>(min = -150, max = 50), 0)
+		var scale by Property.of("scale", Serializer.number<Float>(min = 0.1f, max = 2f), 1f)
 	}
 }

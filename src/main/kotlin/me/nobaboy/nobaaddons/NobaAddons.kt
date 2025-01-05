@@ -17,12 +17,13 @@ import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowGuessAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowGuessAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
@@ -41,8 +42,10 @@ import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
-import me.nobaboy.nobaaddons.features.inventory.EnchantParsing
+import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
+import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentTooltips
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
+import me.nobaboy.nobaaddons.features.mining.WormAlert
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
@@ -109,11 +112,15 @@ object NobaAddons : ClientModInitializer {
 	// if the object class is never referenced anywhere else, or if it relies on chat data for a feature that isn't
 	// immediately ran).
 	override fun onInitializeClient() {
-		NobaConfigManager.init()
+		/* region Core */
+		NobaConfig.init()
 		PersistentCache.init()
 		RepoManager.init()
+		UISettings.init()
+		UIManager.init()
 
 		UpdateNotifier.init()
+		/* endregion */
 
 		/* region APIs */
 		InventoryAPI.init()
@@ -140,15 +147,18 @@ object NobaAddons : ClientModInitializer {
 		/* endregion */
 
 		/* region User Interface */
-		UIManager.init()
+		ItemPickupLog.init()
 		/* endregion */
 
 		/* region Features */
 		// region Visuals
-		EnchantParsing.init()
 		TemporaryWaypoints.init()
 		EtherwarpHelper.init()
+		// endregion
+
+		// region Inventory
 		ISlotInfo.init()
+		EnchantmentTooltips.init()
 		// endregion
 
 		// region Events
@@ -165,6 +175,7 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Mining
+		WormAlert.init()
 		CorpseLocator.init()
 		MineshaftWaypoints.init()
 		// endregion

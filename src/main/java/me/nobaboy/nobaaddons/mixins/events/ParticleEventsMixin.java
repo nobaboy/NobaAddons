@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
-public class ParticleEventsMixin {
+abstract class ParticleEventsMixin {
 	@Inject(method = "onParticle", at = @At("RETURN"), cancellable = true)
 	private void onParticle(ParticleS2CPacket packet, CallbackInfo ci) {
 		var location = new NobaVec(packet.getX(), packet.getY(), packet.getZ());

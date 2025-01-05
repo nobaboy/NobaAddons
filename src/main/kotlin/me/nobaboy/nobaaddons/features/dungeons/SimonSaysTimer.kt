@@ -4,7 +4,7 @@ import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysTimes
@@ -32,7 +32,7 @@ import net.minecraft.util.hit.BlockHitResult
 
 // TODO: Requires actual testing in dungeons
 object SimonSaysTimer {
-	private val config get() = NobaConfigManager.config.dungeons.simonSaysTimer
+	private val config get() = NobaConfig.INSTANCE.dungeons.simonSaysTimer
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7)
 
 	private val completionPattern by Regex("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)").fromRepo("dungeons.complete_device")
@@ -136,10 +136,10 @@ object SimonSaysTimer {
 		times.add(timeTaken)
 
 		val personalBest = SimonSaysTimes.personalBest?.takeIf { timeTaken >= it } ?: timeTaken.also { SimonSaysTimes.personalBest = it }
-		val message = tr("nobaaddons.ssTimer.completion", "Simon Says took ${timeTaken}s to complete")
+		val message = tr("nobaaddons.dungeons.ssTimer.completion", "Simon Says took ${timeTaken}s to complete")
 
 		val chatMessage = if(timeTaken < personalBest) {
-			tr("nobaaddons.ssTimer.beatPb", "PERSONAL BEST!").lightPurple().bold() + " " + message
+			tr("nobaaddons.dungeons.ssTimer.beatPb", "PERSONAL BEST!").lightPurple().bold() + " " + message
 		} else {
 			message + buildLiteral(" ($personalBest)") { gray() }
 		}

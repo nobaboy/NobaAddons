@@ -1,19 +1,12 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
 import net.fabricmc.loader.api.FabricLoader
 
-class RepoConfig {
-	@SerialEntry
-	var username: String = "nobaboy"
-
-	@SerialEntry
-	var repository: String = "NobaAddons-REPO"
-
-	@SerialEntry
-	var branch: String = "main"
-
-	// development environments use the repo submodule, so we don't want them to be auto updating.
-	@SerialEntry
-	var autoUpdate: Boolean = !FabricLoader.getInstance().isDevelopmentEnvironment
+class RepoConfig : ObjectProperty<RepoConfig>("repo") {
+	var username by Property.of<String>("username", "nobaboy")
+	var repository by Property.of<String>("repository", "NobaAddons-REPO")
+	var branch by Property.of<String>("branch", "main")
+	var autoUpdate by Property.of<Boolean>("autoUpdate", !FabricLoader.getInstance().isDevelopmentEnvironment)
 }

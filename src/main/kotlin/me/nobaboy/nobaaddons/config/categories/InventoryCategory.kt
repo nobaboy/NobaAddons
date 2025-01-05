@@ -7,7 +7,11 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.tickBox
+import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.ui.TextShadow
+import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
 object InventoryCategory {
@@ -157,76 +161,89 @@ object InventoryCategory {
 		// endregion
 
 		// region Enchantment Tooltips
-		buildGroup(tr("nobaaddons.config.inventory.enchants", "Enchantment Tooltips")) {
+		buildGroup(tr("nobaaddons.config.inventory.enchantmentTooltips", "Enchantment Tooltips")) {
 			boolean(
-				tr("nobaaddons.config.inventory.enchants.parseEnchants", "Modify Enchant Tooltips"),
-				tr("nobaaddons.config.inventory.enchants.parseEnchants.tooltip", "Reformats the enchantment list on items in a style similar to the same feature from Skyblock Addons"),
-				default = defaults.inventory.enchantmentTooltips.parseItemEnchants,
-				property = config.inventory.enchantmentTooltips::parseItemEnchants
+				tr("nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips", "Modify Enchant Tooltips"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips.tooltip", "Reformats the enchantment list on items in a style similar to the same feature from Skyblock Addons"),
+				default = defaults.inventory.enchantmentTooltips.modifyTooltips,
+				property = config.inventory.enchantmentTooltips::modifyTooltips
 			)
 			boolean(
-				tr("nobaaddons.config.inventory.enchants.replaceRomanNumerals", "Replace Roman Numerals"),
-				tr("nobaaddons.config.inventory.enchants.replaceRomanNumerals.tooltip", "Enchantment tiers will be replaced with their number representation instead of the original roman numerals used"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.replaceRomanNumerals", "Replace Roman Numerals"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.replaceRomanNumerals.tooltip", "Enchantment tiers will be replaced with their number representation instead of the original roman numerals used"),
 				default = defaults.inventory.enchantmentTooltips.replaceRomanNumerals,
 				property = config.inventory.enchantmentTooltips::replaceRomanNumerals
 			)
 			cycler(
-				tr("nobaaddons.config.inventory.enchants.displayMode", "Display Mode"),
-				tr("nobaaddons.config.inventory.enchants.displayMode.tooltip", "Changes how enchantments are displayed on items; Default will follow roughly the same behavior as Hypixel and compact at 6 or more enchants, while Compact will always condense them into as few lines as possible."),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.displayMode", "Display Mode"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.displayMode.tooltip", "Changes how enchantments are displayed on items; Default will follow roughly the same behavior as Hypixel and compact at 6 or more enchants, while Compact will always condense them into as few lines as possible."),
 				default = defaults.inventory.enchantmentTooltips.displayMode,
 				property = config.inventory.enchantmentTooltips::displayMode
 			)
 			boolean(
-				tr("nobaaddons.config.inventory.enchants.showDescriptions", "Show Descriptions"),
-				tr("nobaaddons.config.inventory.enchants.showDescriptions.tooltip", "Controls whether enchant descriptions will be shown when enchantments aren't compacted (only when Hypixel adds the descriptions); this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.showDescriptions", "Show Descriptions"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.showDescriptions.tooltip", "Controls whether enchant descriptions will be shown when enchantments aren't compacted (only when Hypixel adds the descriptions); this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."),
 				default = defaults.inventory.enchantmentTooltips.showDescriptions,
 				property = config.inventory.enchantmentTooltips::showDescriptions
 			)
 			boolean(
-				tr("nobaaddons.config.inventory.enchants.showStacking", "Show Stacking Enchant Progress"),
-				tr("nobaaddons.config.inventory.enchants.showStacking.tooltip", "Shows the total value (and progress to next tier if applicable) on stacking enchantments like Champion, Expertise, etc."),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.showStacking", "Show Stacking Enchant Progress"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.showStacking.tooltip", "Shows the total value (and progress to next tier if applicable) on stacking enchantments like Champion, Expertise, etc."),
 				default = defaults.inventory.enchantmentTooltips.showStackingProgress,
 				property = config.inventory.enchantmentTooltips::showStackingProgress
 			)
 
 			color(
-				tr("nobaaddons.config.inventory.enchants.maxColor", "Max Enchant Color"),
-				tr("nobaaddons.config.inventory.enchants.maxColor.tooltip", "The color used for enchantments at their maximum level"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.maxColor", "Max Enchant Color"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.maxColor.tooltip", "The color used for enchantments at their maximum level"),
 				default = defaults.inventory.enchantmentTooltips.maxColor,
 				property = config.inventory.enchantmentTooltips::maxColor
 			)
 			color(
-				tr("nobaaddons.config.inventory.enchants.goodColor", "Good Enchant Color"),
-				tr("nobaaddons.config.inventory.enchants.goodColor.tooltip", "The color used for enchantments that are above their max normally obtainable level"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.goodColor", "Good Enchant Color"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.goodColor.tooltip", "The color used for enchantments that are above their max normally obtainable level"),
 				default = defaults.inventory.enchantmentTooltips.goodColor,
 				property = config.inventory.enchantmentTooltips::goodColor
 			)
 			color(
-				tr("nobaaddons.config.inventory.enchants.averageColor", "Max Normally Obtainable Enchant Color"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.averageColor", "Max Normally Obtainable Enchant Color"),
 				// if only mc-auto-translations supported splitting strings onto multiple lines :(
 				tr(
-					"nobaaddons.config.inventory.enchants.averageColor.tooltip",
+					"nobaaddons.config.inventory.enchantmentTooltips.averageColor.tooltip",
 					"The color used for enchantments at the max level you can normally obtain them at (either through drops, combining lower tiers, or the enchanting table)\n\nNote that this does not apply to enchants that only have this \"tier 5\" level, and will use Max Enchant Color instead"
 				),
 				default = defaults.inventory.enchantmentTooltips.averageColor,
 				property = config.inventory.enchantmentTooltips::averageColor
 			)
 			color(
-				tr("nobaaddons.config.inventory.enchants.badColor", "Bad Enchant Color"),
-				tr("nobaaddons.config.inventory.enchants.badColor.tooltip", "The color used for enchantments that aren't at any of the above tiers"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.badColor", "Bad Enchant Color"),
+				tr("nobaaddons.config.inventory.enchantmentTooltips.badColor.tooltip", "The color used for enchantments that aren't at any of the above tiers"),
 				default = defaults.inventory.enchantmentTooltips.badColor,
 				property = config.inventory.enchantmentTooltips::badColor
 			)
 		}
 		// endregion
 
-		// region Chocolate Factory
-		buildGroup(tr("nobaadons.config.events.chocolateFactory", "Chocolate Factory")) {
+		// region Item Pickup Log
+		buildGroup(tr("nobaaddons.config.inventory.itemPickupLog", "Item Pickup Log")) {
 			boolean(
-				tr("nobaadons.config.events.chocolateFactory.requireMythicRabbit", "Require Mythic Rabbit"),
-				tr("nobaadons.config.events.chocolateFactory.requireMythicRabbit.tooltip", "Blocks opening the Chocolate Factory (through commands only) without a mythic Rabbit pet spawned, and sends a warning when using an Egglocator"),
-				default = defaults.events.chocolateFactory.requireMythicRabbit,
-				property = config.events.chocolateFactory::requireMythicRabbit
+				CommonText.Config.ENABLED,
+				default = defaults.inventory.itemPickupLog.enabled,
+				property = config.inventory.itemPickupLog::enabled
+			)
+			slider(
+				tr("nobaaddons.config.inventory.itemPickupLog.timeout", "Expire After"),
+				min = 2,
+				max = 10,
+				step = 1,
+				default = defaults.inventory.itemPickupLog.timeoutSeconds,
+				property = defaults.inventory.itemPickupLog::timeoutSeconds,
+				format = CommonText.Config::seconds
+			)
+			cycler(
+				tr("nobaaddons.config.inventory.itemPickupLog.style", "Text Style"),
+				default = TextShadow.SHADOW,
+				property = UISettings.itemPickupLog::textShadow
 			)
 		}
 		// endregion

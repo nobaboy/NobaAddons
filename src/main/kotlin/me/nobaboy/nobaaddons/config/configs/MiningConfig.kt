@@ -1,22 +1,26 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
+import dev.celestialfault.celestialconfig.Serializer
+import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
+import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
-class MiningConfig {
-	@SerialEntry
-	val glaciteMineshaft: GlaciteMineshaft = GlaciteMineshaft()
+class MiningConfig : ObjectProperty<MiningConfig>("mining") {
+	val wormAlert by WormAlert()
+	val glaciteMineshaft by GlaciteMineshaft()
 
-	class GlaciteMineshaft {
-		@SerialEntry
-		var corpseLocator: Boolean = false
+	class WormAlert : ObjectProperty<WormAlert>("wormAlert") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.YELLOW.toColor())
+		var notificationSound by Property.of("notificationSound", Serializer.enum(), NotificationSound.DING)
+	}
 
-		@SerialEntry
-		var autoShareCorpseCoords: Boolean = false
-
-		@SerialEntry
-		var entranceWaypoint: Boolean = false
-
-		@SerialEntry
-		var ladderWaypoint: Boolean = false
+	class GlaciteMineshaft : ObjectProperty<GlaciteMineshaft>("glaciteMineshaft") {
+		var corpseLocator by Property.of<Boolean>("corpseLocator", false)
+		var autoShareCorpses by Property.of<Boolean>("autoShareCorpses", false)
+		var entranceWaypoint by Property.of<Boolean>("entranceWaypoint", false)
+		var ladderWaypoint by Property.of<Boolean>("ladderWaypoint", false)
 	}
 }

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.visuals.slotinfo
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.items.*
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements.*
@@ -12,20 +12,20 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 
 interface ISlotInfo {
-	val config get() = NobaConfigManager.config.inventory.slotInfo
+	val config get() = NobaConfig.INSTANCE.inventory.slotInfo
 
 	val enabled: Boolean
-	fun handle(event: ScreenRenderEvents.DrawSlot)
+	fun handle(event: ScreenRenderEvents.DrawItem)
 
-	fun drawInfo(event: ScreenRenderEvents.DrawSlot, text: Text, position: Position = Position.TOP_LEFT) {
+	fun drawInfo(event: ScreenRenderEvents.DrawItem, text: Text, position: Position = Position.TOP_LEFT) {
 		renderSlotInfo(event.context, event.textRenderer, event.x, event.y, text, position)
 	}
 
-	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: Text, color: NobaColor = NobaColor.WHITE) {
+	fun drawCount(event: ScreenRenderEvents.DrawItem, text: Text, color: NobaColor = NobaColor.WHITE) {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
 
-	fun drawCount(event: ScreenRenderEvents.DrawSlot, text: String, color:NobaColor = NobaColor.WHITE) {
+	fun drawCount(event: ScreenRenderEvents.DrawItem, text: String, color:NobaColor = NobaColor.WHITE) {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
 
@@ -62,7 +62,7 @@ interface ISlotInfo {
 			init = true
 
 			slotInfos.forEach { handler ->
-				ScreenRenderEvents.DRAW_SLOT.register {
+				ScreenRenderEvents.DRAW_ITEM.register {
 					if(SkyBlockAPI.inSkyBlock && handler.enabled) handler.handle(it)
 				}
 			}

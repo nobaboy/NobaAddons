@@ -9,7 +9,7 @@ object ParticleEvents {
 	/**
 	 * Event invoked to determine whether a given [ParticleType] should be allowed to render.
 	 */
-	@JvmField val ALLOW_PARTICLE = EventDispatcher<AllowParticle>()
+	@JvmField val ALLOW_PARTICLE = EventDispatcher.cancelable<AllowParticle>()
 
 	/**
 	 * Event invoked after a [ParticleType] is rendered.

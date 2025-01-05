@@ -8,6 +8,10 @@ object CommonText {
 
 	object Config {
 		val ENABLED get() = tr("nobaaddons.config.enabled", "Enabled")
+
+		val ALERT_COLOR get() = tr("nobaaddons.config.alertColor", "Alert Color")
+		val HIGHLIGHT_COLOR get() = tr("nobaaddons.config.highlightColor", "Highlight Color")
+
 		val NOTIFICATION_SOUND get() = tr("nobaaddons.config.notificationSound", "Notification Sound")
 
 		val LABEL_MISC get() = tr("nobaaddons.config.label.miscellaneous", "Miscellaneous")
@@ -16,5 +20,7 @@ object CommonText {
 		val LABEL_ITEM_ABILITIES get() = tr("nobaaddons.config.label.itemAbilities", "Item Abilities")
 		val LABEL_RIFT get() = tr("nobaaddons.config.label.rift", "Rift")
 		val LABEL_DUNGEONS get() = tr("nobaaddons.config.label.dungeons", "Dungeons")
+
+		fun seconds(value: Int) = tr("nobaaddons.config.label.seconds", "$value seconds")
 	}
 }

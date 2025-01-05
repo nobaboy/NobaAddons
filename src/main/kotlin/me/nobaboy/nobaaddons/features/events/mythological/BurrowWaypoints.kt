@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
-import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
@@ -24,7 +24,7 @@ import net.minecraft.block.Blocks
 import kotlin.time.Duration.Companion.seconds
 
 object BurrowWaypoints {
-	private val config get() = NobaConfigManager.config.events.mythological
+	private val config get() = NobaConfig.INSTANCE.events.mythological
 	private val enabled: Boolean get() = DianaAPI.isActive
 
 	private val playerLocation get() = LocationUtils.playerLocation()
@@ -95,8 +95,8 @@ object BurrowWaypoints {
 			message == "Poof! You have cleared your griffin burrows!" -> reset()
 			message == "You haven't unlocked this fast travel destination!" -> {
 				nearestWarp?.let {
-					ChatUtils.addMessage(tr("nobaaddons.mythological.warpNotUnlocked", "It appears as you don't have the ${it.warpPoint} warp location unlocked."))
-					ChatUtils.addMessage(tr("nobaaddons.mythological.resetCommandHint", "Once you have unlocked that location, use '/noba mythological resetwarps'."))
+					ChatUtils.addMessage(tr("nobaaddons.events.mythological.warpNotUnlocked", "It appears as you don't have the ${it.warpPoint} warp location unlocked."))
+					ChatUtils.addMessage(tr("nobaaddons.events.mythological.resetCommandHint", "Once you have unlocked that location, use '/noba mythological resetwarps'."))
 					it.warpPoint.unlocked = false
 					nearestWarp = null
 				}
@@ -142,7 +142,7 @@ object BurrowWaypoints {
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
 		burrows.forEach { location, type ->
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), type.text, type.color, yOffset = -5.0f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), type.displayName, type.color, yOffset = -5.0f, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 
@@ -169,7 +169,7 @@ object BurrowWaypoints {
 		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
 
 		lastWarpSuggestTime = Timestamp.now()
-		RenderUtils.drawTitle(tr("nobaaddons.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2.0f, 30, 1.seconds)
+		RenderUtils.drawTitle(tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2.0f, 30, 1.seconds)
 	}
 
 	private fun getTargetLocation(): NobaVec? {

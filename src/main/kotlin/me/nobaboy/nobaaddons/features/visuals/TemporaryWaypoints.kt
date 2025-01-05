@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.visuals
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
@@ -25,7 +25,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 object TemporaryWaypoints {
-	private val config get() = NobaConfigManager.config.uiAndVisuals.temporaryWaypoints
+	private val config get() = NobaConfig.INSTANCE.uiAndVisuals.temporaryWaypoints
 	val enabled: Boolean get() = config.enabled
 
 	private val chatCoordsPattern by Regex(
@@ -58,7 +58,7 @@ object TemporaryWaypoints {
 
 			val text = "$username$info"
 			waypoints.add(Waypoint(location, text, Timestamp.now(), config.expirationTime.seconds))
-			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromChat", "Temporary Waypoint added at x: $x, y: $y, z: $z from $username"))
+			ChatUtils.addMessage(tr("nobaaddons.uiAndVisuals.temporaryWaypoints.fromChat", "Temporary Waypoint added at x: $x, y: $y, z: $z from $username"))
 		}
 	}
 

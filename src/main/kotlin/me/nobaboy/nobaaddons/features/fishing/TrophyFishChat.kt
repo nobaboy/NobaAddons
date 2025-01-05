@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.fishing
 
 import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.events.LateChatMessageEvent
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
@@ -16,21 +16,21 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object TrophyFishChat {
-	private val config get() = NobaConfigManager.config.fishing.trophyFishing
+	private val config get() = NobaConfig.INSTANCE.fishing.trophyFishing
 
 	fun init() {
 		LateChatMessageEvent.EVENT.register(this::modifyChatMessage)
 	}
 
 	fun format(name: Text, rarity: TrophyFishRarity, count: Int, total: Int) = buildText {
-		append(tr("nobaaddons.trophyFishing.prefix", "TROPHY FISH!").gold().bold())
+		append(tr("nobaaddons.fishing.trophyFishing.prefix", "TROPHY FISH!").gold().bold())
 		append(" ")
 		val count = "${count.addSeparators()}${count.ordinalSuffix()}"
 		val rarity = Text.literal(rarity.name).formatted(rarity.formatting, Formatting.BOLD)
-		append(tr("nobaaddons.trophyFishing.caught", "You caught your $count $name $rarity").aqua())
+		append(tr("nobaaddons.fishing.trophyFishing.caught", "You caught your $count $name $rarity").aqua())
 		append(" ")
 		val total = "${total.addSeparators()}${total.ordinalSuffix()}"
-		append(tr("nobaaddons.trophyFishing.total", "($total total)").gray())
+		append(tr("nobaaddons.fishing.trophyFishing.total", "($total total)").gray())
 	}
 
 	private fun modifyChatMessage(event: LateChatMessageEvent) {

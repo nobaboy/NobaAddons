@@ -13,7 +13,7 @@ import net.minecraft.util.Formatting
 class InfoBoxHudElement(val textElement: InfoBoxElement) : TextHudElement(textElement) {
 	private val COLOR_REGEX = Regex("&([0-9a-fk-orz])", RegexOption.IGNORE_CASE)
 
-	override val name: Text = tr("nobaaddons.infoBox", "Info Box")
+	override val name: Text = tr("nobaaddons.ui.infoBox", "Info Box")
 	override val size: Pair<Int, Int> get() = getBoundsFrom(text)
 
 	override fun shouldRender(): Boolean =

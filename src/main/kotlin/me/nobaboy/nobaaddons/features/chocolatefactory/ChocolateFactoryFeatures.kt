@@ -1,7 +1,8 @@
 package me.nobaboy.nobaaddons.features.chocolatefactory
 
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.events.PacketEvents
 import me.nobaboy.nobaaddons.events.SendMessageEvents
@@ -19,7 +20,8 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket
 import net.minecraft.util.Formatting
 
 object ChocolateFactoryFeatures {
-	val config get() = NobaConfigManager.config.events.chocolateFactory
+	private val config get() = NobaConfig.INSTANCE.events.hoppity
+	private val enabled: Boolean get() = config.requireMythicRabbit && SkyBlockAPI.inSkyBlock
 
 	fun init() {
 		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
@@ -27,9 +29,11 @@ object ChocolateFactoryFeatures {
 	}
 
 	private fun onSendCommand(event: SendMessageEvents.SendCommand) {
-		if(!config.requireMythicRabbit) return
+		if(!enabled) return
+
 		val command = event.command.split(" ")[0].lowercase()
 		if(command != "cf" && command != "chocolatefactory") return
+
 		if(!hasMythicRabbitSpawned()) {
 			event.cancel()
 			ChatUtils.addMessageWithClickAction(
@@ -41,7 +45,8 @@ object ChocolateFactoryFeatures {
 	}
 
 	private fun onSendPacket(event: PacketEvents.Send) {
-		if(!config.requireMythicRabbit) return
+		if(!enabled) return
+
 		val packet = event.packet
 		if(packet !is PlayerInteractItemC2SPacket && packet !is PlayerInteractBlockC2SPacket && packet !is PlayerInteractEntityC2SPacket) return
 
@@ -54,7 +59,6 @@ object ChocolateFactoryFeatures {
 		}
 	}
 
-	fun hasMythicRabbitSpawned(): Boolean {
-		return PetAPI.currentPet?.id == "RABBIT" && PetAPI.currentPet?.rarity == Rarity.MYTHIC
-	}
+	private fun hasMythicRabbitSpawned(): Boolean =
+		PetAPI.currentPet?.id == "RABBIT" && PetAPI.currentPet?.rarity == Rarity.MYTHIC
 }
