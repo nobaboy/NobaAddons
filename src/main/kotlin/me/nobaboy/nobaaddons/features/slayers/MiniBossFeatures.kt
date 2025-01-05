@@ -13,7 +13,7 @@ import kotlin.time.Duration.Companion.seconds
 // TODO: Add miniboss highlighting
 object MiniBossFeatures {
 	private val config get() = NobaConfigManager.config.slayers
-	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false
+	private val enabled: Boolean get() = config.miniBossAlert.enabled && SlayerAPI.currentQuest?.spawned == false
 
 	fun init() {
 		SlayerEvents.MINI_BOSS_SPAWN.register(this::onMiniBossSpawn)

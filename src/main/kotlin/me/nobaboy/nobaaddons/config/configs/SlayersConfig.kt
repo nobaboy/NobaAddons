@@ -7,13 +7,16 @@ import java.awt.Color
 
 class SlayersConfig {
 	@SerialEntry
-	val announceBossKillTime: AnnounceBossKillTime = AnnounceBossKillTime()
+	val bossAlert: BossAlert = BossAlert()
 
 	@SerialEntry
 	val miniBossAlert: MiniBossAlert = MiniBossAlert()
 
 	@SerialEntry
 	val highlightMiniBosses: HighlightMiniBosses = HighlightMiniBosses()
+
+	@SerialEntry
+	val announceBossKillTime: AnnounceBossKillTime = AnnounceBossKillTime()
 
 	@SerialEntry
 	val voidgloom: Voidgloom = Voidgloom()
@@ -24,6 +27,17 @@ class SlayersConfig {
 
 		@SerialEntry
 		var timeSource: BossTimeSource = BossTimeSource.REAL_TIME
+	}
+
+	class BossAlert {
+		@SerialEntry
+		var enabled: Boolean = false
+
+		@SerialEntry
+		var alertText: String = "Boss Spawned!"
+
+		@SerialEntry
+		var alertColor: Color = NobaColor.RED.toColor()
 	}
 
 	class MiniBossAlert {
@@ -47,6 +61,9 @@ class SlayersConfig {
 
 	class Voidgloom {
 		@SerialEntry
+		var brokenHeartRadiationTimer: Boolean = false
+
+		@SerialEntry
 		var yangGlyphAlert: Boolean = false
 
 		@SerialEntry
@@ -60,8 +77,5 @@ class SlayersConfig {
 
 		@SerialEntry
 		var highlightColor: Color = NobaColor.RED.toColor()
-
-		@SerialEntry
-		var brokenHeartRadiationTimer: Boolean = false
 	}
 }

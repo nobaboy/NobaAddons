@@ -3,21 +3,35 @@ package me.nobaboy.nobaaddons.features.slayers
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfigManager
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
+import kotlin.time.Duration.Companion.seconds
 
 object SlayerBossFeatures {
 	private val config get() = NobaConfigManager.config.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest != null
 
 	fun init() {
+		SlayerEvents.BOSS_SPAWN.register(this::onBossSpawn)
 		SlayerEvents.BOSS_KILL.register(this::onBossKill)
 	}
 
-	private fun onBossKill(event: SlayerEvents.BossKill) {
+	private fun onBossSpawn(event: SlayerEvents.BossSpawn) {
+		if(!config.bossAlert.enabled) return
 		if(!enabled) return
-		val seconds = getBossKillTime(event) ?: return
 
+		RenderUtils.drawTitle(config.bossAlert.alertText, config.bossAlert.alertColor.toNobaColor(), duration = 1.5.seconds)
+		SoundUtils.dingLowSound.play()
+	}
+
+	private fun onBossKill(event: SlayerEvents.BossKill) {
+		if(!config.announceBossKillTime.enabled) return
+		if(!enabled) return
+
+		val seconds = getBossKillTime(event) ?: return
 		ChatUtils.addMessage(tr("nobaaddons.slayer.bossKillTime", "Slayer Boss took $seconds seconds to kill!"))
 	}
 

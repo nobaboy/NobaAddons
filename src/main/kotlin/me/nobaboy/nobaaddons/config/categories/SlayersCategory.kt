@@ -12,17 +12,21 @@ import me.nobaboy.nobaaddons.utils.tr
 
 object SlayersCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.slayers", "Slayers")) {
-		buildGroup(tr("nobaaddons.config.slayers.announceBossKillTime", "Announce Boss Kill Time")) {
+		buildGroup(tr("nobaaddons.config.slayers.bossAlert", "Boss Alert")) {
 			boolean(
 				CommonText.Config.ENABLED,
-				default = defaults.slayers.announceBossKillTime.enabled,
-				property = config.slayers.announceBossKillTime::enabled
+				default = defaults.slayers.bossAlert.enabled,
+				property = config.slayers.bossAlert::enabled
 			)
-			cycler(
-				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource", "Time Source"),
-				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource.tooltip", "Determines the source for the boss kill time\\n\\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag"),
-				default = defaults.slayers.announceBossKillTime.timeSource,
-				property = config.slayers.announceBossKillTime::timeSource
+			string(
+				tr("nobaaddons.config.slayers.bossAlert.alertText", "Alert Text"),
+				default = defaults.slayers.bossAlert.alertText,
+				property = config.slayers.bossAlert::alertText
+			)
+			color(
+				tr("nobaaddons.config.slayers.bossAlert.alertColor", "Alert Color"),
+				default = defaults.slayers.bossAlert.alertColor,
+				property = config.slayers.bossAlert::alertColor
 			)
 		}
 
@@ -57,7 +61,26 @@ object SlayersCategory {
 			)
 		}
 
-		buildGroup(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom")) {
+		buildGroup(tr("nobaaddons.config.slayers.announceBossKillTime", "Announce Boss Kill Time")) {
+			boolean(
+				CommonText.Config.ENABLED,
+				default = defaults.slayers.announceBossKillTime.enabled,
+				property = config.slayers.announceBossKillTime::enabled
+			)
+			cycler(
+				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource", "Time Source"),
+				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource.tooltip", "Determines the source for the boss kill time\\n\\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag"),
+				default = defaults.slayers.announceBossKillTime.timeSource,
+				property = config.slayers.announceBossKillTime::timeSource
+			)
+		}
+
+		buildGroup(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
+			boolean(
+				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer"),
+				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
+				property = config.slayers.voidgloom::brokenHeartRadiationTimer
+			)
 			boolean(
 				tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert", "Yang Glyph Alert"),
 				default = defaults.slayers.voidgloom.yangGlyphAlert,
@@ -82,11 +105,6 @@ object SlayersCategory {
 				tr("nobaaddons.config.slayers.voidgloom.highlightColor", "Highlight Color"),
 				default = defaults.slayers.voidgloom.highlightColor,
 				property = config.slayers.voidgloom::highlightColor
-			)
-			boolean(
-				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer"),
-				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
-				property = config.slayers.voidgloom::brokenHeartRadiationTimer
 			)
 		}
 	}

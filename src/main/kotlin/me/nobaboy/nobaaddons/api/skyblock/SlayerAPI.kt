@@ -36,7 +36,10 @@ object SlayerAPI {
 		val boss = SlayerBoss.getByName(questLine) ?: return
 
 		if(currentQuest?.boss != boss) currentQuest = SlayerQuest(boss)
+
+		var previousState = currentQuest?.spawned
 		currentQuest?.spawned = lines.any { it == "Slay the boss!" }
+		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn())
 
 		currentQuest?.boss?.entity?.let { entityClass ->
 			EntityUtils.getEntities(entityClass).forEach { entity ->

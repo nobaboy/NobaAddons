@@ -49,10 +49,12 @@ import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
-import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
-import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomFeatures
+import me.nobaboy.nobaaddons.features.slayers.voidgloom.BrokenHeartRadiationTimer
+import me.nobaboy.nobaaddons.features.slayers.voidgloom.HighlightNukekubiFixations
+import me.nobaboy.nobaaddons.features.slayers.voidgloom.YangGlyphAlert
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
@@ -170,7 +172,10 @@ object NobaAddons : ClientModInitializer {
 		// region Slayers
 		MiniBossFeatures.init()
 		SlayerBossFeatures.init()
-		VoidgloomFeatures.init()
+
+		BrokenHeartRadiationTimer.init()
+		YangGlyphAlert.init()
+		HighlightNukekubiFixations.init()
 		// endregion
 
 		// region Fishing
