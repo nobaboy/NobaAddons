@@ -45,6 +45,7 @@ import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import me.nobaboy.nobaaddons.features.inventory.EnchantParsing
 import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
+import me.nobaboy.nobaaddons.features.mining.WormAlert
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
@@ -185,6 +186,7 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Mining
+		WormAlert.init()
 		CorpseLocator.init()
 		MineshaftWaypoints.init()
 		// endregion

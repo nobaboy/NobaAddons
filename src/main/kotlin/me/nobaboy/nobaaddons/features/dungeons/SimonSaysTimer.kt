@@ -136,10 +136,10 @@ object SimonSaysTimer {
 		times.add(timeTaken)
 
 		val personalBest = SimonSaysTimes.personalBest?.takeIf { timeTaken >= it } ?: timeTaken.also { SimonSaysTimes.personalBest = it }
-		val message = tr("nobaaddons.ssTimer.completion", "Simon Says took ${timeTaken}s to complete")
+		val message = tr("nobaaddons.dungeons.ssTimer.completion", "Simon Says took ${timeTaken}s to complete")
 
 		val chatMessage = if(timeTaken < personalBest) {
-			tr("nobaaddons.ssTimer.beatPb", "PERSONAL BEST!").lightPurple().bold() + " " + message
+			tr("nobaaddons.dungeons.ssTimer.beatPb", "PERSONAL BEST!").lightPurple().bold() + " " + message
 		} else {
 			message + buildLiteral(" ($personalBest)") { gray() }
 		}

@@ -93,7 +93,7 @@ object FishingCategory {
 				property = config.fishing.highlightThunderSparks::enabled
 			)
 			color(
-				tr("nobaaddons.config.fishing.highlightThunderSparks.highlightColor", "Highlight Color"),
+				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.fishing.highlightThunderSparks.highlightColor,
 				property = config.fishing.highlightThunderSparks::highlightColor
 			)
