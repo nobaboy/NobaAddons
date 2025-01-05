@@ -23,14 +23,14 @@ object TrophyFishChat {
 	}
 
 	fun format(name: Text, rarity: TrophyFishRarity, count: Int, total: Int) = buildText {
-		append(tr("nobaaddons.trophyFishing.prefix", "TROPHY FISH!").gold().bold())
+		append(tr("nobaaddons.fishing.trophyFishing.prefix", "TROPHY FISH!").gold().bold())
 		append(" ")
 		val count = "${count.addSeparators()}${count.ordinalSuffix()}"
 		val rarity = Text.literal(rarity.name).formatted(rarity.formatting, Formatting.BOLD)
-		append(tr("nobaaddons.trophyFishing.caught", "You caught your $count $name $rarity").aqua())
+		append(tr("nobaaddons.fishing.trophyFishing.caught", "You caught your $count $name $rarity").aqua())
 		append(" ")
 		val total = "${total.addSeparators()}${total.ordinalSuffix()}"
-		append(tr("nobaaddons.trophyFishing.total", "($total total)").gray())
+		append(tr("nobaaddons.fishing.trophyFishing.total", "($total total)").gray())
 	}
 
 	private fun modifyChatMessage(event: LateChatMessageEvent) {

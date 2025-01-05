@@ -97,11 +97,12 @@ object NobaCommand {
 	@Command
 	fun waypoint(x: Double, y: Double, z: Double) {
 		if(!TemporaryWaypoints.enabled) {
-			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.notEnabled", "Temporary Waypoints are not enabled in the mod config"), color = Formatting.RED)
+			ChatUtils.addMessage(tr("nobaaddons.uiAndVisuals.temporaryWaypoints.notEnabled", "Temporary Waypoints are not enabled in the mod config"), color = Formatting.RED)
 			return
 		}
+
 		TemporaryWaypoints.addWaypoint(x, y, z, "Temporary Waypoint")
-		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will last until you walk near it."))
+		ChatUtils.addMessage(tr("nobaaddons.uiAndVisuals.temporaryWaypoints.fromCommand", "Added a waypoint at $x, $y, $z. This waypoint will last until you walk near it."))
 	}
 
 	@Command
