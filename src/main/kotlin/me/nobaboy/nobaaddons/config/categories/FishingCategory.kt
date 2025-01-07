@@ -18,6 +18,14 @@ import net.minecraft.text.Text
 
 object FishingCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.fishing", "Fishing")) {
+		boolean(
+			tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing", "Hide Other People Fishing"),
+			tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing.tooltip", "Hides the fishing bobber of other players"),
+			// TODO move this to fishing in config, I don't feel like writing a migration for this right now
+			default = defaults.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing,
+			property = config.uiAndVisuals.renderingTweaks::hideOtherPeopleFishing
+		)
+
 		// region Bobber Timer
 		buildGroup(tr("nobaaddons.config.fishing.bobberTimer", "Bobber Timer")) {
 			val enabled = boolean(

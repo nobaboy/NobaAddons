@@ -96,12 +96,6 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::hideLightningBolt
 			)
 			boolean(
-				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing", "Hide Other People Fishing"),
-				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing.tooltip", "Hides the fishing bobber of other players"),
-				default = defaults.uiAndVisuals.renderingTweaks.hideOtherPeopleFishing,
-				property = config.uiAndVisuals.renderingTweaks::hideOtherPeopleFishing
-			)
-			boolean(
 				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson", "Remove Front-Facing Third Person"),
 				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson.tooltip", "Removes the front-facing perspective from F5"),
 				default = defaults.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson,
