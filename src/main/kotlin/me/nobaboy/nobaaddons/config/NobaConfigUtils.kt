@@ -42,6 +42,9 @@ import kotlin.reflect.KMutableProperty
 object NobaConfigUtils {
 	private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT)
 
+	/**
+	 * Attempts to load the provided [AbstractConfig], logging an error and renaming the config file if it fails.
+	 */
 	fun AbstractConfig.safeLoad(pathSupplier: AbstractConfig.() -> Path = { (this as AbstractConfigAccessor).callGetPath() }) {
 		try {
 			load()
@@ -112,6 +115,7 @@ object NobaConfigUtils {
 	}
 
 	fun createLabelController(vararg lines: Text): LabelOption.Builder {
+		require(lines.isNotEmpty()) { "Cannot create an empty label controller" }
 		return LabelOption.createBuilder().apply {
 			if(lines.size == 1) line(lines[0]) else lines(lines.toList())
 		}
@@ -127,15 +131,13 @@ object NobaConfigUtils {
 		description: Text? = null,
 		collapsed: Boolean = true,
 		crossinline builder: OptionGroup.Builder.() -> Unit
-	): ConfigCategory.Builder {
+	) {
 		group(OptionGroup.createBuilder()
 			.name(name)
 			.also { if(description != null) it.description(OptionDescription.of(description)) }
 			.also { builder(it) }
 			.collapsed(collapsed)
 			.build())
-
-		return this
 	}
 
 	fun <G : OptionAddable, T : Any> G.add(

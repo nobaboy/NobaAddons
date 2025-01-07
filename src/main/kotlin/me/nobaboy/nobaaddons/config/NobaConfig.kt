@@ -4,7 +4,6 @@ import dev.celestialfault.celestialconfig.AbstractConfig
 import dev.celestialfault.celestialconfig.migrations.Migrations
 import dev.isxander.yacl3.api.YetAnotherConfigLib
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.config.configs.*
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -38,10 +37,6 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 	companion object {
 		@JvmField
 		val INSTANCE = NobaConfig()
-
-		fun init() {
-			INSTANCE.safeLoad()
-		}
 
 		fun getConfigScreen(parent: Screen?): Screen {
 			val defaults = NobaConfig()
