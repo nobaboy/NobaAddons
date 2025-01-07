@@ -40,7 +40,7 @@ import kotlin.io.path.nameWithoutExtension
 import kotlin.reflect.KMutableProperty
 
 object NobaConfigUtils {
-	private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss", Locale.ROOT)
+	private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT)
 
 	fun AbstractConfig.safeLoad(pathSupplier: AbstractConfig.() -> Path = { (this as AbstractConfigAccessor).callGetPath() }) {
 		try {

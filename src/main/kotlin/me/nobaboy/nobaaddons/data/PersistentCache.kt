@@ -4,6 +4,7 @@ import dev.celestialfault.celestialconfig.AbstractConfig
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.enumMap
@@ -20,7 +21,7 @@ object PersistentCache : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("cache.jso
 	var repoCommit by Property.ofNullable<String>("repoCommit")
 
 	fun init() {
-		load()
+		safeLoad()
 		Scheduler.scheduleAsync(15 * 20, repeat = true) {
 			if(dirty) {
 				NobaAddons.LOGGER.info("Saving cached values")

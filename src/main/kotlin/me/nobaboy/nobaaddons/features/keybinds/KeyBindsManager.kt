@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.keybinds
 import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.keybinds.impl.KeyBind
 import me.nobaboy.nobaaddons.features.keybinds.impl.NobaKeyBind
@@ -25,13 +26,7 @@ object KeyBindsManager {
 
 	fun init() {
 		gameKeyBinds.forEach(KeyBindingHelper::registerKeyBinding)
-
-		try {
-			KeyBindsConfig.load()
-			commandKeyBinds.addAll(KeyBindsConfig.keyBinds)
-		} catch(ex: IOException) {
-			ErrorManager.logError("Failed to load keybinds", ex)
-		}
+		KeyBindsConfig.safeLoad()
 	}
 
 	fun saveKeyBinds() {

@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.config
 
 import dev.celestialfault.celestialconfig.AbstractConfig
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.ui.data.TextElement
-import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import java.io.IOException
 
@@ -11,12 +11,7 @@ object UISettings : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("ui.json")) {
 	val itemPickupLog by TextElement("itemPickupLog")
 
 	fun init() {
-		try {
-			load()
-		} catch(ex: IOException) {
-			ErrorManager.logError("Failed to load UI settings", ex)
-		}
-
+		safeLoad()
 		ClientLifecycleEvents.CLIENT_STOPPING.register {
 			try {
 				save()
