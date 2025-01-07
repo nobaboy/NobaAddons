@@ -8,5 +8,5 @@ import java.nio.file.Path;
 
 @Mixin(AbstractConfig.class)
 public interface AbstractConfigAccessor {
-	@Invoker Path callGetPath();
+	@Invoker(remap = false) Path callGetPath();
 }

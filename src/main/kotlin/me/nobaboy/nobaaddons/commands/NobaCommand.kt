@@ -46,7 +46,7 @@ object NobaCommand {
 		NobaConfig.getConfigScreen(null).queueOpen()
 	}
 
-	@Command
+	@Command("hud", "gui")
 	fun hud() {
 		NobaHudScreen(null).queueOpen()
 	}

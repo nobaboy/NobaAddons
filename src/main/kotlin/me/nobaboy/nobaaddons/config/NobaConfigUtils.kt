@@ -28,6 +28,7 @@ import me.nobaboy.nobaaddons.mixins.accessors.AbstractConfigAccessor
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
+import me.nobaboy.nobaaddons.utils.Scheduler
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import net.minecraft.text.Text
 import net.minecraft.util.PathUtil
@@ -44,7 +45,7 @@ object NobaConfigUtils {
 	private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT)
 
 	/**
-	 * Attempts to load the provided [AbstractConfig], logging an error and renaming the config file if it fails.
+	 * Attempts to load the associated [AbstractConfig], logging an error and renaming the config file if it fails.
 	 */
 	fun AbstractConfig.safeLoad(pathSupplier: AbstractConfig.() -> Path = { (this as AbstractConfigAccessor).callGetPath() }) {
 		try {
@@ -74,6 +75,18 @@ object NobaConfigUtils {
 				save()
 			} catch(ex: Throwable) {
 				NobaAddons.LOGGER.error("Failed to automatically save $this", ex)
+			}
+		}
+	}
+
+	/**
+	 * Attempts to save the associated [AbstractConfig] every [ticks] interval if any changes have been made
+	 */
+	fun AbstractConfig.saveEvery(ticks: Int) {
+		Scheduler.scheduleAsync(ticks, repeat = true) {
+			if(dirty) {
+				NobaAddons.LOGGER.info("Auto-saving ${this@saveEvery}")
+				save()
 			}
 		}
 	}
