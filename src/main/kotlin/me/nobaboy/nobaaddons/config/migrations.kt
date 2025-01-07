@@ -10,23 +10,20 @@ internal fun `001_removeYaclVersion`(json: JsonObject) {
 }
 
 internal fun `002_inventoryCategory`(json: JsonObject) {
-	json["uiAndVisuals"]?.asJsonObject?.let { uiAndVisuals ->
-		val inventory = json["inventory"]?.asJsonObject ?: JsonObject().also {
-			json.add("inventory", it)
+	val uiAndVisuals = json["uiAndVisuals"]?.asJsonObject ?: return
+	val inventory = json["inventory"]?.asJsonObject ?: JsonObject().also { json.add("inventory", it) }
+
+	uiAndVisuals.remove("slotInfo")?.asJsonObject?.let { slotInfo ->
+		slotInfo.remove("enabled")
+		inventory.add("slotInfo", slotInfo)
+	}
+
+	uiAndVisuals.remove("enchantments")?.asJsonObject?.let { enchantments ->
+		enchantments.remove("parseItemEnchants")?.asBoolean?.let { parseItemEnchants ->
+			enchantments.addProperty("modifyTooltips", parseItemEnchants)
 		}
 
-		uiAndVisuals.remove("slotInfo")?.asJsonObject?.let { slotInfo ->
-			slotInfo.remove("enabled")
-			inventory.add("slotInfo", slotInfo)
-		}
-
-		uiAndVisuals.remove("enchantments")?.asJsonObject?.let { enchantments ->
-			enchantments.remove("parseItemEnchants")?.asBoolean?.let { parseItemEnchants ->
-				enchantments.addProperty("modifyTooltips", parseItemEnchants)
-			}
-
-			inventory.add("enchantmentTooltips", enchantments)
-		}
+		inventory.add("enchantmentTooltips", enchantments)
 	}
 }
 
