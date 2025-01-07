@@ -45,7 +45,7 @@ object HighlightStarredMobs {
 
 		val player = MCUtils.player ?: return
 
-		val color = config.highlightColor.toNobaColor()
+		val color = config.highlightColor
 		val mode = config.highlightMode
 
 		starredMobs.removeIf { !it.isAlive }

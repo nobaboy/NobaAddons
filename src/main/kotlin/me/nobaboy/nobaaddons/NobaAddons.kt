@@ -23,6 +23,7 @@ import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.data.PersistentCache
@@ -112,10 +113,10 @@ object NobaAddons : ClientModInitializer {
 	// immediately ran).
 	override fun onInitializeClient() {
 		/* region Core */
-		NobaConfig.init()
-		PersistentCache.init()
+		NobaConfig.INSTANCE.safeLoad()
+		PersistentCache.safeLoad()
 		RepoManager.init()
-		UISettings.init()
+		UISettings.safeLoad()
 		UIManager.init()
 
 		UpdateNotifier.init()

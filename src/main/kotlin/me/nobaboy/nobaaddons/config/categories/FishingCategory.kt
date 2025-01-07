@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
@@ -19,7 +20,7 @@ object FishingCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.fishing", "Fishing")) {
 		// region Bobber Timer
 		buildGroup(tr("nobaaddons.config.fishing.bobberTimer", "Bobber Timer")) {
-			boolean(
+			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.fishing.bobberTimer.enabled,
 				property = config.fishing.bobberTimer::enabled
@@ -28,7 +29,7 @@ object FishingCategory {
 				tr("nobaaddons.config.fishing.bobberTimer.crimsonIsleOnly", "Show on Crimson Isle Only"),
 				default = defaults.fishing.bobberTimer.crimsonIsleOnly,
 				property = config.fishing.bobberTimer::crimsonIsleOnly
-			)
+			) requires enabled
 		}
 		// endregion
 
@@ -47,7 +48,7 @@ object FishingCategory {
 
 		// region Sea Creature Alert
 		buildGroup(tr("nobaaddons.config.fishing.seaCreatureAlert", "Sea Creature Alert")) {
-			boolean(
+			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.fishing.seaCreatureAlert.enabled,
 				property = config.fishing.seaCreatureAlert::enabled
@@ -57,37 +58,37 @@ object FishingCategory {
 				tr("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity.tooltip", "Uses the sea creature's name instead when displaying the notification, instead of 'Legendary Catch!'"),
 				default = defaults.fishing.seaCreatureAlert.nameInsteadOfRarity,
 				property = config.fishing.seaCreatureAlert::nameInsteadOfRarity
-			)
+			) requires enabled
 			cycler(
 				tr("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity", "Minimum Rarity"),
 				tr("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity.tooltip", "The minimum rarity to display a catch notification for"),
 				default = defaults.fishing.seaCreatureAlert.minimumRarity,
 				property = config.fishing.seaCreatureAlert::minimumRarity,
 				onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray()
-			)
+			) requires enabled
 			boolean(
 				tr("nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare", "Carrot King is Rare"),
 				tr("nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare.tooltip", "Carrot King will be considered rare even if the above minimum rarity isn't low enough for it (since not many people fish for it)"),
 				default = defaults.fishing.seaCreatureAlert.carrotKingIsRare,
 				property = config.fishing.seaCreatureAlert::carrotKingIsRare
-			)
+			) requires enabled
 			boolean(
 				tr("nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat", "Announce in Party Chat"),
 				tr("nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat.tooltip", "A chat message will also be sent in party chat when catching a rare creature"),
 				default = defaults.fishing.seaCreatureAlert.announceInPartyChat,
 				property = config.fishing.seaCreatureAlert::announceInPartyChat
-			)
+			) requires enabled
 			cycler(
 				CommonText.Config.NOTIFICATION_SOUND,
 				default = defaults.fishing.seaCreatureAlert.notificationSound,
 				property = config.fishing.seaCreatureAlert::notificationSound
-			)
+			) requires enabled
 		}
 		// endregion
 
 		// region Highlight Thunder Sparks
 		buildGroup(tr("nobaaddons.config.fishing.highlightThunderSparks", "Highlight Thunder Sparks")) {
-			boolean(
+			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.fishing.highlightThunderSparks.enabled,
 				property = config.fishing.highlightThunderSparks::enabled
@@ -96,12 +97,12 @@ object FishingCategory {
 				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.fishing.highlightThunderSparks.highlightColor,
 				property = config.fishing.highlightThunderSparks::highlightColor
-			)
+			) requires enabled
 			boolean(
 				tr("nobaaddons.config.fishing.highlightThunderSparks.showText", "Show Text"),
 				default = defaults.fishing.highlightThunderSparks.showText,
 				property = config.fishing.highlightThunderSparks::showText
-			)
+			) requires enabled
 		}
 		// endregion
 	}

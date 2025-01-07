@@ -66,7 +66,7 @@ object TemporaryWaypoints {
 		if(!enabled) return
 
 		val cameraPos = context.camera().pos.toNobaVec()
-		val color = config.waypointColor.toNobaColor()
+		val color = config.waypointColor
 
 		waypoints.removeIf { it.expired || it.location.distance(cameraPos) < 5.0 }
 		waypoints.forEach { waypoint ->

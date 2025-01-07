@@ -2,10 +2,13 @@ package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.availableIf
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.button
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.conflicts
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -35,7 +38,7 @@ object UIAndVisualsCategory {
 
 		// region Temporary Waypoints
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints", "Temporary Waypoints")) {
-			boolean(
+			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.uiAndVisuals.temporaryWaypoints.enabled,
 				property = config.uiAndVisuals.temporaryWaypoints::enabled
@@ -44,7 +47,7 @@ object UIAndVisualsCategory {
 				tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints.waypointColor", "Waypoint Color"),
 				default = defaults.uiAndVisuals.temporaryWaypoints.waypointColor,
 				property = config.uiAndVisuals.temporaryWaypoints::waypointColor
-			)
+			) requires enabled
 			slider(
 				tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime", "Expiration Time"),
 				tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime.tooltip", "Sets the duration after which a temporary waypoint disappears"),
@@ -53,13 +56,13 @@ object UIAndVisualsCategory {
 				min = 1,
 				max = 120,
 				step = 1
-			)
+			) requires enabled
 		}
 		// endregion
 
 		// region Etherwarp Helper
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper", "Etherwarp Overlay")) {
-			boolean(
+			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.uiAndVisuals.etherwarpHelper.enabled,
 				property = config.uiAndVisuals.etherwarpHelper::enabled
@@ -68,19 +71,19 @@ object UIAndVisualsCategory {
 				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.uiAndVisuals.etherwarpHelper.highlightColor,
 				property = config.uiAndVisuals.etherwarpHelper::highlightColor
-			)
+			) requires enabled
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText", "Show Fail Text"),
 				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText.tooltip", "Displays the reason for an Etherwarp failure below the crosshair"),
 				default = defaults.uiAndVisuals.etherwarpHelper.showFailText,
 				property = config.uiAndVisuals.etherwarpHelper::showFailText
-			)
+			) requires enabled
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir", "Allow Overlay on Air"),
 				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip", "Allows the overlay to render on air blocks displaying how far you're allowed to teleport"),
 				default = defaults.uiAndVisuals.etherwarpHelper.allowOverlayOnAir,
 				property = config.uiAndVisuals.etherwarpHelper::allowOverlayOnAir
-			)
+			) requires enabled
 		}
 		// endregion
 
@@ -109,7 +112,7 @@ object UIAndVisualsCategory {
 
 		// region Arm Swing Animation Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.swingAnimation", "Arm Swing Animation Tweaks")) {
-			slider(
+			val duration = slider(
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration", "Swing Duration"),
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip", "Controls how long your arm swing animation duration is, ignoring all effects like Haste"),
 				default = defaults.uiAndVisuals.swingAnimation.swingDuration,
@@ -130,13 +133,13 @@ object UIAndVisualsCategory {
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip", "If enabled, the above swing duration will also apply to all players, insteada of only yourself"),
 				default = defaults.uiAndVisuals.swingAnimation.applyToAllPlayers,
 				property = config.uiAndVisuals.swingAnimation::applyToAllPlayers,
-			)
+			).availableIf(duration) { duration.pendingValue() > 1 }
 		}
 		// endregion
 
 		// region First Person Item Rendering
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.itemRendering", "First Person Item Rendering")) {
-			boolean(
+			val cancelReequip = boolean(
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip", "Cancel Re-equip Animation"),
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip.tooltip", "Prevents the item update animation from playing entirely, including when switching items"),
 				default = defaults.uiAndVisuals.itemPosition.cancelEquipAnimation,
@@ -147,7 +150,7 @@ object UIAndVisualsCategory {
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate.tooltip", "Prevents the item update animation from playing when your held item is updated"),
 				default = defaults.uiAndVisuals.itemPosition.cancelItemUpdateAnimation,
 				property = config.uiAndVisuals.itemPosition::cancelItemUpdateAnimation
-			)
+			) conflicts cancelReequip
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation", "Cancel Item Consume Animation"),
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip", "Prevents the item consume animation (such as from drinking potions) from playing"),
@@ -195,18 +198,20 @@ object UIAndVisualsCategory {
 
 		// region Armor Glint Tweaks
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
-			boolean(
+			val fix = boolean(
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints"),
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "It's ${societyIsCrumbling(2019)}. Society has progressed little in the past 20 years. The world is falling apart. Hypixel still has yet to figure out how to consistently add an enchantment glint to armor."),
 				default = defaults.uiAndVisuals.renderingTweaks.fixEnchantedArmorGlint,
 				property = config.uiAndVisuals.renderingTweaks::fixEnchantedArmorGlint
 			)
-			boolean(
+			val remove = boolean(
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.removeGlints", "Remove All Armor Enchant Glints"),
 				tr("nobaaddons.config.uiAndVisuals.armorGlints.removeGlints.tooltip", "Removes enchantment glints from all armor pieces"),
 				default = defaults.uiAndVisuals.renderingTweaks.removeArmorGlints,
 				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
 			)
+
+			fix.conflicts(remove)
 		}
 		// endregion
 	}

@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.config
 
+import dev.celestialfault.celestialconfig.AbstractConfig
 import dev.isxander.yacl3.api.ButtonOption
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.Controller
@@ -8,6 +9,7 @@ import dev.isxander.yacl3.api.NameableEnum
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionAddable
 import dev.isxander.yacl3.api.OptionDescription
+import dev.isxander.yacl3.api.OptionEventListener
 import dev.isxander.yacl3.api.OptionGroup
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder
@@ -21,12 +23,44 @@ import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import dev.isxander.yacl3.api.controller.ValueFormatter
 import dev.isxander.yacl3.gui.YACLScreen
 import dev.isxander.yacl3.gui.controllers.cycling.EnumController
+import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.mixins.accessors.AbstractConfigAccessor
+import me.nobaboy.nobaaddons.utils.ErrorManager
+import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import net.minecraft.text.Text
+import net.minecraft.util.PathUtil
 import net.minecraft.util.TranslatableOption
 import java.awt.Color
+import java.nio.file.Path
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import kotlin.io.path.nameWithoutExtension
 import kotlin.reflect.KMutableProperty
 
 object NobaConfigUtils {
+	private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss", Locale.ROOT)
+
+	fun AbstractConfig.safeLoad(pathSupplier: AbstractConfig.() -> Path = { (this as AbstractConfigAccessor).callGetPath() }) {
+		try {
+			load()
+		} catch(ex: Throwable) {
+			val path = pathSupplier(this)
+			ErrorManager.logError("Failed to load a config file", ex)
+
+			val date = DATE_FORMATTER.format(ZonedDateTime.now())
+			val name = "${path.nameWithoutExtension}-${date}"
+			val backup = PathUtil.getNextUniqueName(NobaAddons.CONFIG_DIR, name, ".json")
+
+			if(path.toFile().renameTo(path.parent.resolve(backup).toFile())) {
+				NobaAddons.LOGGER.warn("Moved config file to $backup")
+			} else {
+				NobaAddons.LOGGER.warn("Couldn't rename config file")
+			}
+		}
+	}
+
 	fun createBooleanController(option: Option<Boolean>): BooleanControllerBuilder {
 		return BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true)
 	}
@@ -110,15 +144,14 @@ object NobaConfigUtils {
 		optionController: (Option<T>) -> ControllerBuilder<T>,
 		default: T,
 		property: KMutableProperty<T>
-	): G {
-		option(Option.createBuilder<T>()
+	): Option<T> {
+		return Option.createBuilder<T>()
 			.name(name)
 			.also { if(description != null) it.description(OptionDescription.of(description)) }
 			.binding(default, property.getter::call, property.setter::call)
 			.controller(optionController)
-			.build())
-
-		return this
+			.build()
+			.also { option(it) }
 	}
 
 	fun <G : OptionAddable> G.boolean(
@@ -126,7 +159,7 @@ object NobaConfigUtils {
 		description: Text? = null,
 		default: Boolean,
 		property: KMutableProperty<Boolean>
-	): G {
+	): Option<Boolean> {
 		return add(name, description, ::createBooleanController, default, property)
 	}
 
@@ -135,7 +168,7 @@ object NobaConfigUtils {
 		description: Text? = null,
 		default: Boolean,
 		property: KMutableProperty<Boolean>
-	): G {
+	): Option<Boolean> {
 		return add(name, description, ::createTickBoxController, default, property)
 	}
 
@@ -144,7 +177,7 @@ object NobaConfigUtils {
 		description: Text? = null,
 		default: String,
 		property: KMutableProperty<String>
-	): G {
+	): Option<String> {
 		return add(name, description, ::createStringController, default, property)
 	}
 
@@ -155,7 +188,7 @@ object NobaConfigUtils {
 		property: KMutableProperty<E>,
 		onlyInclude: Array<E>? = null,
 		formatter: ValueFormatter<E>? = null,
-	): G {
+	): Option<E> {
 		val builder: (Option<E>) -> ControllerBuilder<E> = {
 			createCyclerController(it, onlyInclude).apply { if(formatter != null) formatValue(formatter) }
 		}
@@ -172,7 +205,7 @@ object NobaConfigUtils {
 		max: N,
 		step: N,
 		noinline format: ((N) -> Text)? = null,
-	): G {
+	): Option<N> {
 		val controller: (Option<N>) -> ControllerBuilder<N> = when(N::class) {
 			Integer::class -> { option ->
 				createIntegerSliderController(option as Option<Int>, min.toInt(), max.toInt(), step.toInt(), format as ((Int) -> Text)?) as ControllerBuilder<N>
@@ -192,21 +225,62 @@ object NobaConfigUtils {
 	fun <G : OptionAddable> G.color(
 		name: Text,
 		description: Text? = null,
-		default: Color,
-		property: KMutableProperty<Color>
-	): G {
-		return add(name, description, ::createColorController, default, property)
+		default: NobaColor,
+		property: KMutableProperty<NobaColor>
+	): Option<Color> {
+		val option = Option.createBuilder<Color>()
+			.name(name)
+			.also { if(description != null) it.description(OptionDescription.of(description)) }
+			.controller(::createColorController)
+			.binding(default.toColor(), { property.getter.call().toColor() }) { property.setter.call(it.toNobaColor()) }
+			.build()
+		option(option)
+		return option
 	}
 
 	fun <G : OptionAddable> G.label(vararg lines: Text): G = this.apply { option(createLabelController(*lines).build()) }
 
-	fun <G : OptionAddable> G.button(name: Text, description: Text? = null, text: Text? = null, action: (YACLScreen) -> Unit): G {
-		option(ButtonOption.createBuilder()
+	fun <G : OptionAddable> G.button(name: Text, description: Text? = null, text: Text? = null, action: (YACLScreen) -> Unit): ButtonOption {
+		val button = ButtonOption.createBuilder()
 			.name(name)
 			.also { if(description != null) it.description(OptionDescription.of(description)) }
 			.also { if(text != null) it.text(text) }
 			.action { screen, _ -> action(screen) }
-			.build())
+			.build()
+		option(button)
+		return button
+	}
+
+	fun <T> Option<T>.availableIf(vararg listenTo: Option<*>, onlyIf: () -> Boolean): Option<T> {
+		require(listenTo.isNotEmpty()) { "No options were provided to attach event listeners to" }
+		if(available()) setAvailable(onlyIf())
+		listenTo.forEach {
+			it.addEventListener { _, type ->
+				if(type != OptionEventListener.Event.AVAILABILITY_CHANGE) setAvailable(onlyIf())
+			}
+		}
 		return this
+	}
+
+	infix fun <T> Option<T>.requires(other: Option<Boolean>): Option<T> {
+		require(this !== other) { "Cannot make an option depend on itself" }
+		return availableIf(other) { other.pendingValue() }
+	}
+
+	infix fun <T> Option<T>.requires(other: Collection<Option<Boolean>>): Option<T> {
+		require(other.none { it === this }) { "Cannot make an option depend on itself" }
+		return availableIf(*other.toTypedArray()) { other.all { it.pendingValue() } }
+	}
+
+	fun <T, O> Option<T>.conflicts(other: Option<O>, onlyIf: (O) -> Boolean): Option<T> {
+		require(this !== other) { "Cannot make an option conflict with itself" }
+		return availableIf(other) { !onlyIf(other.pendingValue()) }
+	}
+
+	infix fun <T> Option<T>.conflicts(other: Option<Boolean>): Option<T> = conflicts(other) { it }
+
+	infix fun <T> Option<T>.conflicts(other: Collection<Option<Boolean>>): Option<T> {
+		require(other.none { it === this }) { "Cannot make an option conflict with itself" }
+		return availableIf(*other.toTypedArray()) { other.none { it.pendingValue() } }
 	}
 }

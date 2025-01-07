@@ -74,7 +74,7 @@ object EtherwarpHelper {
 		targetBlock = validateTargetBlock(world, target)
 		if(targetBlock == ValidationType.TOO_FAR && !config.allowOverlayOnAir) return
 
-		var color = targetBlock?.let { NobaColor.GRAY } ?: config.highlightColor.toNobaColor()
+		var color = targetBlock?.let { NobaColor.GRAY } ?: config.highlightColor
 		RenderUtils.renderOutlinedFilledBox(context, target.blockPos.toNobaVec(), color, throughBlocks = true)
 	}
 
