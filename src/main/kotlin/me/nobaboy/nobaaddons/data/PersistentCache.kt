@@ -5,6 +5,7 @@ import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.saveOnExit
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.enumMap
@@ -22,15 +23,12 @@ object PersistentCache : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("cache.jso
 
 	fun init() {
 		safeLoad()
+		saveOnExit()
 		Scheduler.scheduleAsync(15 * 20, repeat = true) {
 			if(dirty) {
 				NobaAddons.LOGGER.info("Saving cached values")
 				save()
 			}
-		}
-		ClientLifecycleEvents.CLIENT_STOPPING.register {
-			// mutable variables (like trophyFish) can't set dirty to true, so we have to also save on shutdown
-			save()
 		}
 	}
 }

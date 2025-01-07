@@ -28,6 +28,7 @@ import me.nobaboy.nobaaddons.mixins.accessors.AbstractConfigAccessor
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import net.minecraft.text.Text
 import net.minecraft.util.PathUtil
 import net.minecraft.util.TranslatableOption
@@ -60,6 +61,19 @@ object NobaConfigUtils {
 				NobaAddons.LOGGER.warn("Moved config file to $backup")
 			} else {
 				NobaAddons.LOGGER.warn("Couldn't rename config file")
+			}
+		}
+	}
+
+	/**
+	 * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [AbstractConfig.save]
+	 */
+	fun AbstractConfig.saveOnExit() {
+		ClientLifecycleEvents.CLIENT_STOPPING.register {
+			try {
+				save()
+			} catch(ex: Throwable) {
+				NobaAddons.LOGGER.error("Failed to automatically save $this", ex)
 			}
 		}
 	}
