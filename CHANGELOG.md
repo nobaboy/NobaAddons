@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Chat Notifications - celeste
 - Item Pickup Log - celeste
+- Worm Alert - nobaboy
 - `/noba day` to display the lobby day count (since Hypixel doesn't send the information for the line F3 shows this on) - celeste
 
 ### Changed
@@ -23,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- `/noba refill pearls` using the wrong item ID - celeste
+- `/noba refill item` is now case-insensitive to match `/gfs` - celeste
 - An occasional crash that occurs while processing an event - celeste
 
 ## 0.1.0-Alpha.12 - 2024-12-29

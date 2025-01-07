@@ -78,7 +78,7 @@ object NobaCommand {
 			return
 		}
 		TemporaryWaypoints.addWaypoint(x, y, z, "Temporary Waypoint")
-		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will last until you walk near it."))
+		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will not disappear until you walk near it."))
 	}
 
 	@Command
