@@ -74,7 +74,7 @@ object NobaConfigUtils {
 			try {
 				save()
 			} catch(ex: Throwable) {
-				NobaAddons.LOGGER.error("Failed to automatically save $this", ex)
+				NobaAddons.LOGGER.error("Failed to automatically save ${this::class.simpleName}", ex)
 			}
 		}
 	}
@@ -85,7 +85,7 @@ object NobaConfigUtils {
 	fun AbstractConfig.saveEvery(ticks: Int) {
 		Scheduler.scheduleAsync(ticks, repeat = true) {
 			if(dirty) {
-				NobaAddons.LOGGER.info("Auto-saving ${this@saveEvery}")
+				NobaAddons.LOGGER.info("Auto-saving ${this@saveEvery::class.simpleName}")
 				save()
 			}
 		}
