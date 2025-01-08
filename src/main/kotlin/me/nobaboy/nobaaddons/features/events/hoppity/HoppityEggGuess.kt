@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.hoppity.HoppityEgg
 import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -30,6 +31,7 @@ object HoppityEggGuess {
 	private var guessLocation: NobaVec? = null
 
 	fun init() {
+		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		SecondPassedEvent.EVENT.register { onSecondPassed() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		UseItemCallback.EVENT.register { player, _, _ -> onUseItem(player) }
@@ -57,11 +59,10 @@ object HoppityEggGuess {
 		val end = first + direction * 512
 
 		val eggLocations = HoppityEgg.getByIsland(SkyBlockAPI.currentIsland) ?: return
-		guessLocation = eggLocations.minByOrNull {
-			it.distanceToLine(first, end)
-		}
+		guessLocation = eggLocations.minByOrNull { it.distanceToLine(first, end) }
 	}
 
+	// FIXME make a custom event for item usage
 	private fun onUseItem(player: PlayerEntity): ActionResult {
 		if(!enabled) return ActionResult.PASS
 
@@ -86,5 +87,10 @@ object HoppityEggGuess {
 				RenderUtils.renderText(it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 		}
+	}
+
+	private fun reset() {
+		particleLocations.clear()
+		guessLocation = null
 	}
 }
