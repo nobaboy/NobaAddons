@@ -35,6 +35,8 @@ object DevFeatures {
 			appendLine()
 		}
 		append("---- SERIALIZED ITEM ----\n\n")
+		// it *is* possible to dump this as nbt, but json is slightly better to read than even prettified nbt.
+		// (ItemStack#toNbt(RegistryWrapper.WrapperLookup) also doesn't exist on 1.21.1)
 		val encoded = ItemStack.CODEC.encodeStart(MCUtils.player!!.registryManager.getOps(JsonOps.INSTANCE), item).orThrow
 		append(gson.toJson(encoded))
 	}.stripWhitespace()
