@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.fishing
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.ducks.FishingBobberTimerDuck
 import me.nobaboy.nobaaddons.events.EntityNametagRenderEvents
@@ -19,8 +19,8 @@ import net.minecraft.text.Text
 import kotlin.time.DurationUnit
 
 object FishingBobberTweaks {
-	private val renderConfig get() = NobaConfigManager.config.uiAndVisuals.renderingTweaks
-	private val fishingConfig get() = NobaConfigManager.config.fishing
+	private val renderConfig get() = NobaConfig.INSTANCE.uiAndVisuals.renderingTweaks
+	private val fishingConfig get() = NobaConfig.INSTANCE.fishing
 
 	private val GREEN = NobaColor.GREEN.rgb
 	private val GOLD = NobaColor.GOLD.rgb

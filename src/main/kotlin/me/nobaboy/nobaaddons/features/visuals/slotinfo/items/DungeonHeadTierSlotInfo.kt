@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 object DungeonHeadTierSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.dungeonHeadTier
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val item = event.itemStack.getSkyBlockItem() ?: return
 		if(!(item.id.startsWith("GOLD_") || item.id.startsWith("DIAMOND_")) || !item.id.endsWith("_HEAD")) return
 

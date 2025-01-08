@@ -38,10 +38,10 @@ object MiningCategory {
 				property = config.mining.glaciteMineshaft::corpseLocator
 			)
 			boolean(
-				tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpseCoords", "Auto Share Corpses"),
-				tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpseCoords.tooltip", "Automatically shares the coordinates of the nearest corpse within 5 blocks in party chat"),
-				default = defaults.mining.glaciteMineshaft.autoShareCorpseCoords,
-				property = config.mining.glaciteMineshaft::autoShareCorpseCoords
+				tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpses", "Auto Share Corpses"),
+				tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpses.tooltip", "Automatically shares the coordinates of the nearest corpse within 5 blocks in party chat"),
+				default = defaults.mining.glaciteMineshaft.autoShareCorpses,
+				property = config.mining.glaciteMineshaft::autoShareCorpses
 			)
 			// endregion
 

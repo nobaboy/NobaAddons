@@ -24,6 +24,12 @@ object ChatNotifications {
 	}
 
 	fun init() {
+		try {
+			ChatNotificationsConfig.load()
+		} catch(ex: IOException) {
+			ErrorManager.logError("Failed to load chat notifications", ex)
+		}
+
 		ClientReceiveMessageEvents.GAME.register { message, overlay ->
 			if(overlay) return@register
 			onChatMessage(message.string.cleanFormatting())
@@ -31,11 +37,6 @@ object ChatNotifications {
 		ClientReceiveMessageEvents.GAME_CANCELED.register { message, overlay ->
 			if(overlay) return@register
 			onChatMessage(message.string.cleanFormatting())
-		}
-		try {
-			ChatNotificationsConfig.load()
-		} catch(e: IOException) {
-			ErrorManager.logError("Failed to load chat notifications", e)
 		}
 	}
 

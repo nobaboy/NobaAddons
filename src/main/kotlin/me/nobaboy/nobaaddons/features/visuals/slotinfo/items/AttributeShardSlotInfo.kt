@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 object AttributeShardSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.attributeShardLevel || config.attributeShardName
 
-	override fun handle(event: ScreenRenderEvents.DrawSlot) {
+	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val item = event.itemStack.getSkyBlockItem() ?: return
 		if(item.id != "ATTRIBUTE_SHARD" || item.attributes.size != 1) return
 

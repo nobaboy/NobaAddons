@@ -1,67 +1,42 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.isxander.yacl3.config.v2.api.SerialEntry
+import dev.celestialfault.celestialconfig.ObjectProperty
+import dev.celestialfault.celestialconfig.Property
+import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.features.slayers.BossTimeSource
 import me.nobaboy.nobaaddons.utils.NobaColor
-import java.awt.Color
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 
-class SlayersConfig {
-	@SerialEntry
-	val bossAlert: BossAlert = BossAlert()
+class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
+	val bossAlert by BossAlert()
+	val miniBossAlert by MiniBossAlert()
+	val announceBossKillTime by AnnounceBossKillTime()
+	val voidgloom by Voidgloom()
 
-	@SerialEntry
-	val miniBossAlert: MiniBossAlert = MiniBossAlert()
-
-	@SerialEntry
-	val announceBossKillTime: AnnounceBossKillTime = AnnounceBossKillTime()
-
-	@SerialEntry
-	val voidgloom: Voidgloom = Voidgloom()
-
-	class BossAlert {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var alertColor: Color = NobaColor.RED.toColor()
+	class BossAlert : ObjectProperty<BossAlert>("bossAlert") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.RED.toColor())
 	}
 
-	class MiniBossAlert {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var alertColor: Color = NobaColor.RED.toColor()
+	class MiniBossAlert : ObjectProperty<MiniBossAlert>("miniBossAlert") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.RED.toColor())
 	}
 
-	class AnnounceBossKillTime {
-		@SerialEntry
-		var enabled: Boolean = false
-
-		@SerialEntry
-		var timeSource: BossTimeSource = BossTimeSource.REAL_TIME
+	class AnnounceBossKillTime : ObjectProperty<AnnounceBossKillTime>("announceBossKillTime") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var timeSource by Property.of("timeSource", Serializer.enum(), BossTimeSource.REAL_TIME)
 	}
 
-	class Voidgloom {
-		@SerialEntry
-		var brokenHeartRadiationTimer: Boolean = false
+	class Voidgloom : ObjectProperty<Voidgloom>("voidgloom"){
+		var brokenHeartRadiationTimer by Property.of<Boolean>("brokenHeartRadiationTimer", false)
 
-		@SerialEntry
-		var yangGlyphAlert: Boolean = false
+		var yangGlyphAlert by Property.of<Boolean>("yangGlyphAlert", false)
+		var yangGlyphAlertColor by Property.of("yangGlyphAlertColor", Serializer.color, NobaColor.RED.toColor())
+		var highlightYangGlyphs by Property.of<Boolean>("highlightYangGlyphs", false)
+		var yangGlyphHighlightColor by Property.of("yangGlyphHighlightColor", Serializer.color, NobaColor.RED.toColor())
 
-		@SerialEntry
-		var yangGlyphAlertColor: Color = NobaColor.RED.toColor()
-
-		@SerialEntry
-		var highlightYangGlyphs: Boolean = false
-
-		@SerialEntry
-		var yangGlyphHighlightColor: Color = NobaColor.RED.toColor()
-
-		@SerialEntry
-		var highlightNukekubiFixations: Boolean = false
-
-		@SerialEntry
-		var nukekubiFixationHighlightColor: Color = NobaColor.RED.toColor()
+		var highlightNukekubiFixations by Property.of<Boolean>("highlightNukekubiFixations", false)
+		var nukekubiFixationHighlightColor by Property.of("nukekubiFixationHighlightColor", Serializer.color, NobaColor.RED.toColor())
 	}
 }

@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.slayers.voidgloom
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
 import me.nobaboy.nobaaddons.events.EntityRenderEvents
@@ -22,7 +22,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.EndermanEntity
 
 object HighlightNukekubiFixations {
-	private val config get() = NobaConfigManager.config.slayers.voidgloom
+	private val config get() = NobaConfig.INSTANCE.slayers.voidgloom
 	private val enabled: Boolean
 		get() = config.highlightNukekubiFixations && SkyBlockIsland.THE_END.inIsland() &&
 			SlayerAPI.currentQuest?.let { it.boss == SlayerBoss.VOIDGLOOM && it.spawned } == true

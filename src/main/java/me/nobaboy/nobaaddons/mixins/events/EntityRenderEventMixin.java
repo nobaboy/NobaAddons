@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @SuppressWarnings("InvalidInjectorMethodSignature")
 //?}
 @Mixin(EntityRenderDispatcher.class)
-public class EntityRenderEventMixin {
+abstract class EntityRenderEventMixin {
 	@Inject(
 		//? if >=1.21.2 {
 		method = "render(Lnet/minecraft/entity/Entity;DDDFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/render/entity/EntityRenderer;)V",

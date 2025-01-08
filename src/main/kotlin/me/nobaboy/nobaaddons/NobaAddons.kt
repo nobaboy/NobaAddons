@@ -18,12 +18,12 @@ import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.BurrowGuessAPI
-import me.nobaboy.nobaaddons.api.skyblock.mythological.DianaAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowGuessAPI
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.data.PersistentCache
@@ -42,8 +42,8 @@ import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
-import me.nobaboy.nobaaddons.features.inventory.EnchantParsing
 import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
+import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentTooltips
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.features.mining.WormAlert
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
@@ -118,10 +118,10 @@ object NobaAddons : ClientModInitializer {
 	// immediately ran).
 	override fun onInitializeClient() {
 		/* region Core */
-		NobaConfigManager.init()
+		NobaConfig.init()
 		PersistentCache.init()
-		UISettings.init()
 		RepoManager.init()
+		UISettings.init()
 		UIManager.init()
 
 		UpdateNotifier.init()
@@ -158,10 +158,13 @@ object NobaAddons : ClientModInitializer {
 
 		/* region Features */
 		// region Visuals
-		EnchantParsing.init()
 		TemporaryWaypoints.init()
 		EtherwarpHelper.init()
+		// endregion
+
+		// region Inventory
 		ISlotInfo.init()
+		EnchantmentTooltips.init()
 		// endregion
 
 		// region Events

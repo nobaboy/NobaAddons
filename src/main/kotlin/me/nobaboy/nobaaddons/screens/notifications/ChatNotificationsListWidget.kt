@@ -98,7 +98,7 @@ class ChatNotificationsListWidget(
 			changeToggle()
 		}.size(104, 20).build()
 
-		private val modeButton = ButtonWidget.builder(notification.mode.toString().toText()) {
+		private val modeButton = ButtonWidget.builder(notification.mode.displayName) {
 			changeMode()
 		}.size(104, 20).build()
 

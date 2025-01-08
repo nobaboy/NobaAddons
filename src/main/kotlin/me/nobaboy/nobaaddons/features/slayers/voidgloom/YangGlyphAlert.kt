@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.slayers.voidgloom
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
 import me.nobaboy.nobaaddons.events.EntityRenderEvents
@@ -28,7 +28,7 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
 object YangGlyphAlert {
-	private val config get() = NobaConfigManager.config.slayers.voidgloom
+	private val config get() = NobaConfig.INSTANCE.slayers.voidgloom
 	private val enabled: Boolean
 		get() = SkyBlockIsland.THE_END.inIsland() && SlayerAPI.currentQuest?.boss == SlayerBoss.VOIDGLOOM
 

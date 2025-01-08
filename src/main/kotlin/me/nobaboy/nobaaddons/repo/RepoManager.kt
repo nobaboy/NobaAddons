@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.repo
 
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.events.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.data.GithubCommitResponse
@@ -28,7 +28,7 @@ import kotlin.random.Random
  */
 object RepoManager {
 	private val LOCK = Any()
-	private val config get() = NobaConfigManager.config.repo
+	private val config get() = NobaConfig.INSTANCE.repo
 
 	private val client by HTTPUtils::client
 	internal val objects = mutableSetOf<IRepoObject>()
@@ -120,10 +120,10 @@ object RepoManager {
 		synchronized(LOCK) {
 			try {
 				if(REPO_DIRECTORY.exists()) obj.load()
-			} catch(e: FileNotFoundException) {
-				NobaAddons.LOGGER.warn("Repo object failed to load missing file: {}", e.message)
-			} catch(e: Throwable) {
-				ErrorManager.logError("Repo object failed initial load", e, "Repo object" to obj)
+			} catch(ex: FileNotFoundException) {
+				NobaAddons.LOGGER.warn("Repo object failed to load missing file: {}", ex.message)
+			} catch(ex: Throwable) {
+				ErrorManager.logError("Repo object failed initial load", ex, "Repo object" to obj)
 			}
 			objects.add(obj)
 		}

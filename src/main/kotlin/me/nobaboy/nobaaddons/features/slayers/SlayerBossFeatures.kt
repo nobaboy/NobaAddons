@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.slayers
 
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import kotlin.time.Duration.Companion.seconds
 
 object SlayerBossFeatures {
-	private val config get() = NobaConfigManager.config.slayers
+	private val config get() = NobaConfig.INSTANCE.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest != null
 
 	fun init() {

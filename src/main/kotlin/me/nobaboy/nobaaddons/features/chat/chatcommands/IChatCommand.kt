@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands
 
-import me.nobaboy.nobaaddons.config.NobaConfigManager
+import me.nobaboy.nobaaddons.config.NobaConfig
 
 interface IChatCommand {
-	val config get() = NobaConfigManager.config.chat.chatCommands
+	val config get() = NobaConfig.INSTANCE.chat.chatCommands
 
 	val enabled: Boolean
 	val name: String
