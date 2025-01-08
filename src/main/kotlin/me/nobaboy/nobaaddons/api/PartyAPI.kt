@@ -4,6 +4,7 @@ import kotlinx.coroutines.Deferred
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.data.json.MojangProfile
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.CooldownTickEvent
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -61,7 +62,7 @@ object PartyAPI {
 		CooldownTickEvent.EVENT.register(this::onTick)
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
-		ClientReceiveMessageEvents.GAME.register { message, _ ->
+		ChatMessageEvents.CHAT.register { (message) ->
 			val cleaned = message.string.cleanFormatting()
 			if(invalidatePartyStateMessages.any { it.matches(cleaned) }) refreshPartyList = true
 		}

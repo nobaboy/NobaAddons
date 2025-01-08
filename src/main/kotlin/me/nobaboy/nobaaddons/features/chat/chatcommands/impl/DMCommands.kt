@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl
 
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.PartyMeCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.WarpMeCommand
@@ -26,7 +27,7 @@ object DMCommands : ChatCommandManager() {
 	}
 
 	fun init() {
-		ClientReceiveMessageEvents.GAME.register { message, _ ->
+		ChatMessageEvents.CHAT.register { (message) ->
 			val cleanMessage = message.string.cleanFormatting()
 
 			if(WarpPlayerHandler.isWarping) {

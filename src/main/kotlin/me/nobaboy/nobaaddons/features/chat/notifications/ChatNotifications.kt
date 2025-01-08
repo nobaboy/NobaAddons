@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.notifications
 
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -26,14 +27,7 @@ object ChatNotifications {
 
 	fun init() {
 		ChatNotificationsConfig.safeLoad()
-		ClientReceiveMessageEvents.GAME.register { message, overlay ->
-			if(overlay) return@register
-			onChatMessage(message.string.cleanFormatting())
-		}
-		ClientReceiveMessageEvents.GAME_CANCELED.register { message, overlay ->
-			if(overlay) return@register
-			onChatMessage(message.string.cleanFormatting())
-		}
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
 	private fun onChatMessage(message: String) {
