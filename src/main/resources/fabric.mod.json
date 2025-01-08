@@ -35,7 +35,7 @@
     "fabric-api": "*",
     "fabric-language-kotlin": "*",
     "hypixel-mod-api": ">=1.0.1",
-    "yet_another_config_lib_v3": "*"
+    "yet_another_config_lib_v3": ">=3.6.0"
   },
   "recommends": {
     "modmenu": "*"

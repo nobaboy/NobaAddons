@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
@@ -78,7 +79,7 @@ object QOLCategory {
 		buildGroup(tr("nobaaddons.config.qol.garden", "Garden")) {
 			// region Sensitivity Reducer
 			val lockMouseCommand = buildLiteral("/noba lockmouse") { darkAqua() }
-			boolean(
+			val reduce = boolean(
 				tr("nobaaddons.config.qol.garden.reduceMouseSensitivity", "Reduce Mouse Sensitivity"),
 				tr("nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip", "Reduces your mouse sensitivity in the Garden while holding a farming tool and on the ground. Your mouse may also be locked with $lockMouseCommand"),
 				default = defaults.qol.garden.reduceMouseSensitivity,
@@ -91,13 +92,13 @@ object QOLCategory {
 				min = 2,
 				max = 10,
 				step = 1
-			)
+			) requires reduce
 			boolean(
 				tr("nobaaddons.config.qol.garden.isDaedalusFarmingTool", "Reduce Sensitivity with Daedalus Axe"),
 				tr("nobaaddons.config.qol.garden.isDaedalusFarmingTool.tooltip", "Daedalus Axe will also be counted as a farming tool while enabled"),
 				default = defaults.qol.garden.isDaedalusFarmingTool,
 				property = config.qol.garden::isDaedalusFarmingTool
-			)
+			) requires reduce
 			boolean(
 				tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport", "Auto Unlock Mouse on Teleport"),
 				tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip", "Automatically unlocks your mouse when teleporting more than 5 blocks if locked with $lockMouseCommand"),

@@ -3,10 +3,10 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
-import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
-import java.awt.Color
 
 class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	val seaCreatureAlert by SeaCreatureAlert()
@@ -34,7 +34,7 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 
 	class HighlightThunderSparks : ObjectProperty<HighlightThunderSparks>("highlightThunderSparks") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var highlightColor by Property.of("highlightColor", Serializer.color, Color(0x24DDE5))
+		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor(0x24DDE5))
 		var showText by Property.of<Boolean>("showText", false)
 	}
 }

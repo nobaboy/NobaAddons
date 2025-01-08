@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
@@ -13,7 +14,7 @@ object MiningCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.mining", "Mining")) {
 		// region Worm Alert
 		buildGroup(tr("nobaaddons.config.mining.wormAlert", "Worm Alert")) {
-			boolean(
+			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.mining.wormAlert.enabled,
 				property = defaults.mining.wormAlert::enabled
@@ -22,7 +23,7 @@ object MiningCategory {
 				CommonText.Config.ALERT_COLOR,
 				default = defaults.mining.wormAlert.alertColor,
 				property = defaults.mining.wormAlert::alertColor
-			)
+			) requires enabled
 		}
 		// endregion
 
@@ -31,8 +32,8 @@ object MiningCategory {
 			// region Corpses
 			label(tr("nobaaddons.config.mining.glaciteMineshaft.label.corpses", "Corpses"))
 
-			boolean(
-				tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator", "Corpse Locator"),
+			val locate = boolean(
+				tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator", "Locate Corpses"),
 				tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator.tooltip", "Marks corpses with a waypoint when they're in your line of sight"),
 				default = defaults.mining.glaciteMineshaft.corpseLocator,
 				property = config.mining.glaciteMineshaft::corpseLocator
@@ -42,7 +43,7 @@ object MiningCategory {
 				tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpses.tooltip", "Automatically shares the coordinates of the nearest corpse within 5 blocks in party chat"),
 				default = defaults.mining.glaciteMineshaft.autoShareCorpses,
 				property = config.mining.glaciteMineshaft::autoShareCorpses
-			)
+			) requires locate
 			// endregion
 
 			// region Miscellaneous

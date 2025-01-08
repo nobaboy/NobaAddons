@@ -13,7 +13,7 @@ class MiningConfig : ObjectProperty<MiningConfig>("mining") {
 
 	class WormAlert : ObjectProperty<WormAlert>("wormAlert") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.YELLOW.toColor())
+		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.YELLOW)
 		var notificationSound by Property.of("notificationSound", Serializer.enum(), NotificationSound.DING)
 	}
 

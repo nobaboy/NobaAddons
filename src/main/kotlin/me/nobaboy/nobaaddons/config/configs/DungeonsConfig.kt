@@ -18,7 +18,7 @@ class DungeonsConfig : ObjectProperty<DungeonsConfig>("dungeons") {
 
 	class HighlightStarredMobs : ObjectProperty<HighlightStarredMobs>("highlightStarredMobs") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.YELLOW.toColor())
+		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.YELLOW)
 		var highlightMode by Property.of("highlightMode", Serializer.enum(), HighlightMode.FILLED_OUTLINE)
 	}
 }

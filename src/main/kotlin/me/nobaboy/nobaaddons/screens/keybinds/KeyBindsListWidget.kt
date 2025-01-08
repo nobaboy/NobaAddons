@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.screens.keybinds
 
+import me.nobaboy.nobaaddons.features.keybinds.KeyBindsConfig
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.features.keybinds.impl.KeyBind
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -26,23 +27,16 @@ class KeyBindsListWidget(
 	y: Int,
 	itemHeight: Int
 ) : ElementListWidget<KeyBindsListWidget.AbstractKeyBindEntry>(client, width, height, y, itemHeight) {
-	private val keyBinds = mutableListOf<KeyBind>()
+	private val keyBinds by KeyBindsConfig::keyBinds
 	var hasChanges = false
 
 	init {
-		KeyBindsManager.commandKeyBinds.forEach {
-			keyBinds.add(it.copy())
-		}
-
 		refreshEntries()
 	}
 
 	fun refreshEntries() {
 		clearEntries()
-		keyBinds.forEachIndexed { index, keyBind ->
-			addEntry(KeyBindEntry(index))
-		}
-
+		keyBinds.forEachIndexed { index, keyBind -> addEntry(KeyBindEntry(index)) }
 		update()
 	}
 
@@ -58,10 +52,7 @@ class KeyBindsListWidget(
 
 	fun saveChanges() {
 		keyBinds.removeIf { it.command.isBlank() }
-		KeyBindsManager.commandKeyBinds.clear()
-		KeyBindsManager.commandKeyBinds.addAll(keyBinds)
 		KeyBindsManager.saveKeyBinds()
-
 		hasChanges = false
 	}
 
