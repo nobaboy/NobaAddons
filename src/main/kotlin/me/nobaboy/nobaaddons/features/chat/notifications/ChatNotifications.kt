@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.notifications
 
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -24,12 +25,7 @@ object ChatNotifications {
 	}
 
 	fun init() {
-		try {
-			ChatNotificationsConfig.load()
-		} catch(ex: IOException) {
-			ErrorManager.logError("Failed to load chat notifications", ex)
-		}
-
+		ChatNotificationsConfig.safeLoad()
 		ClientReceiveMessageEvents.GAME.register { message, overlay ->
 			if(overlay) return@register
 			onChatMessage(message.string.cleanFormatting())
