@@ -4,7 +4,6 @@ import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
-import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
@@ -26,7 +25,7 @@ object MiniBossFeatures {
 		val distance = event.entity.getNobaVec().distanceToPlayer()
 		if(distance > 16) return
 
-		RenderUtils.drawTitle(tr("nobaaddons.slayers.miniBossAlert.spawned", "MiniBoss Spawned!"), config.miniBossAlert.alertColor.toNobaColor(), duration = 1.5.seconds)
+		RenderUtils.drawTitle(tr("nobaaddons.slayers.miniBossAlert.spawned", "MiniBoss Spawned!"), config.miniBossAlert.alertColor, duration = 1.5.seconds)
 		SoundUtils.dingLowSound.play()
 	}
 }

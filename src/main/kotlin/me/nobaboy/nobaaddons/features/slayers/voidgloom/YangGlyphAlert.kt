@@ -11,7 +11,6 @@ import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.getNobaVec
@@ -56,7 +55,7 @@ object YangGlyphAlert {
 			flyingYangGlyphs.remove(armorStand)
 			yangGlyphs[location] = Timestamp.now() + 5.seconds
 
-			RenderUtils.drawTitle("Yang Glyph!", config.yangGlyphAlertColor.toNobaColor())
+			RenderUtils.drawTitle("Yang Glyph!", config.yangGlyphAlertColor)
 			SoundUtils.plingSound.play()
 		} else {
 			if(location in yangGlyphs) yangGlyphs.remove(location)
@@ -88,8 +87,8 @@ object YangGlyphAlert {
 			if(location.distanceToPlayer() > 20) return@forEach
 
 			val seconds = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
-			RenderUtils.renderOutlinedFilledBox(context, location, config.yangGlyphHighlightColor.toNobaColor(), throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), "Yang Glyph", config.yangGlyphHighlightColor.toNobaColor(), yOffset = -10.0f, throughBlocks = true)
+			RenderUtils.renderOutlinedFilledBox(context, location, config.yangGlyphHighlightColor, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), "Yang Glyph", config.yangGlyphHighlightColor, yOffset = -10.0f, throughBlocks = true)
 			RenderUtils.renderText(location.center().raise(), seconds, NobaColor.WHITE, throughBlocks = true)
 		}
 	}

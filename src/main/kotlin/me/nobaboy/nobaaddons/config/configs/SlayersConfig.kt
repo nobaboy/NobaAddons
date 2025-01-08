@@ -15,12 +15,12 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 
 	class BossAlert : ObjectProperty<BossAlert>("bossAlert") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.RED.toColor())
+		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.RED)
 	}
 
 	class MiniBossAlert : ObjectProperty<MiniBossAlert>("miniBossAlert") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.RED.toColor())
+		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.RED)
 	}
 
 	class AnnounceBossKillTime : ObjectProperty<AnnounceBossKillTime>("announceBossKillTime") {
@@ -32,11 +32,11 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 		var brokenHeartRadiationTimer by Property.of<Boolean>("brokenHeartRadiationTimer", false)
 
 		var yangGlyphAlert by Property.of<Boolean>("yangGlyphAlert", false)
-		var yangGlyphAlertColor by Property.of("yangGlyphAlertColor", Serializer.color, NobaColor.RED.toColor())
+		var yangGlyphAlertColor by Property.of("yangGlyphAlertColor", Serializer.color, NobaColor.RED)
 		var highlightYangGlyphs by Property.of<Boolean>("highlightYangGlyphs", false)
-		var yangGlyphHighlightColor by Property.of("yangGlyphHighlightColor", Serializer.color, NobaColor.RED.toColor())
+		var yangGlyphHighlightColor by Property.of("yangGlyphHighlightColor", Serializer.color, NobaColor.RED)
 
 		var highlightNukekubiFixations by Property.of<Boolean>("highlightNukekubiFixations", false)
-		var nukekubiFixationHighlightColor by Property.of("nukekubiFixationHighlightColor", Serializer.color, NobaColor.RED.toColor())
+		var nukekubiFixationHighlightColor by Property.of("nukekubiFixationHighlightColor", Serializer.color, NobaColor.RED)
 	}
 }

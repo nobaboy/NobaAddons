@@ -10,7 +10,6 @@ import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.skullFromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
-import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -60,7 +59,7 @@ object HighlightNukekubiFixations {
 			val location = armorStand.pos.toNobaVec()
 			if(location.distanceToPlayer() > 20) return@forEach
 
-			RenderUtils.renderOutline(context, location.add(x = -0.5, y = 0.65, z = -0.5), config.nukekubiFixationHighlightColor.toNobaColor(), throughBlocks = true)
+			RenderUtils.renderOutline(context, location.add(x = -0.5, y = 0.65, z = -0.5), config.nukekubiFixationHighlightColor, throughBlocks = true)
 		}
 	}
 }

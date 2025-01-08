@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.features.slayers
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
-import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
@@ -23,7 +22,7 @@ object SlayerBossFeatures {
 		if(!config.bossAlert.enabled) return
 		if(!enabled) return
 
-		RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor.toNobaColor(), duration = 1.5.seconds)
+		RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds)
 		SoundUtils.dingLowSound.play()
 	}
 
