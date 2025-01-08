@@ -12,6 +12,8 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
+import me.nobaboy.nobaaddons.utils.SkyBlockSeason
+import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.hypixel.data.type.GameType
@@ -35,6 +37,8 @@ object SkyBlockAPI {
 		get() = HypixelUtils.onHypixel && currentGame == GameType.SKYBLOCK
 	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN
 		private set
+	var currentSeason: SkyBlockSeason? = null
+		private set
 	var currentZone: String? = null
 		private set
 
@@ -55,19 +59,14 @@ object SkyBlockAPI {
 		private set
 
 	fun SkyBlockIsland.inIsland(): Boolean = inSkyBlock && currentIsland == this
+	fun SkyBlockSeason.isSeason(): Boolean = inSkyBlock && currentSeason == this
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
 	fun init() {
-		SecondPassedEvent.EVENT.register { onSecondPassed() }
+		SecondPassedEvent.EVENT.register { update() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
-	}
-
-	private fun onSecondPassed() {
-		if(!inSkyBlock) return
-
-		update()
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
@@ -95,6 +94,11 @@ object SkyBlockAPI {
 	}
 
 	private fun update() {
+		if(!inSkyBlock) return
+
+		val month = SkyBlockTime.now().month
+		currentSeason = SkyBlockSeason.entries[(month - 1) / 3]
+
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 
 		// I originally planned to make an enum including all the zones but after realising

@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.api.skyblock
+package me.nobaboy.nobaaddons.api.skyblock.fishing
 
 import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
@@ -57,6 +57,7 @@ object TrophyFishAPI {
 		rarities[rarity] = (rarities[rarity] ?: 0) + 1
 	}
 
+	// FIXME this null check might be useless
 	fun getCountFromOdgerStack(item: ItemStack): Map<TrophyFishRarity, Int> {
 		val fish = item.lore?.stringLines?.mapNotNull { ODGER_RARITY_REGEX.matchEntire(it) } ?: return emptyMap()
 		if(fish.isEmpty()) return emptyMap()

@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.features.events.mythological
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.events.skyblock.events.MythologicalEvents
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.BlockUtils.inLoadedChunk
 import me.nobaboy.nobaaddons.utils.LocationUtils
@@ -152,7 +152,7 @@ object BurrowWaypoints {
 			val distance = adjustedLocation.distance(playerLocation)
 
 			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
-			RenderUtils.renderText(adjustedLocation.center().raise(), "Guess", NobaColor.AQUA, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(adjustedLocation.center().raise(), "Burrow Guess", NobaColor.AQUA, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
 
 			if(distance > 5) {
 				val formattedDistance = distance.toInt().addSeparators()

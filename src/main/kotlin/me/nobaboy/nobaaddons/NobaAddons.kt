@@ -16,10 +16,10 @@ import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowGuessAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
+import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -35,6 +35,7 @@ import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
 import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
+import me.nobaboy.nobaaddons.features.events.hoppity.HoppityEggGuess
 import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
@@ -162,6 +163,8 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Events
+		HoppityEggGuess.init()
+
 		AnnounceRareDrops.init()
 		BurrowWaypoints.init()
 		InquisitorWaypoints.init()

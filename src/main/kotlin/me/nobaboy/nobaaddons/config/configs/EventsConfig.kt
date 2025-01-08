@@ -10,6 +10,7 @@ class EventsConfig : ObjectProperty<EventsConfig>("events") {
 	val mythological by Mythological()
 
 	class Hoppity : ObjectProperty<Hoppity>("hoppity") {
+		var eggGuess by Property.of<Boolean>("eggGuess", false)
 		var requireMythicRabbit by Property.of<Boolean>("requireMythicRabbit", false)
 	}
 

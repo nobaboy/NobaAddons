@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.SoundEvents
-import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.events.skyblock.events.MythologicalEvents
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.minecraft.particle.ParticleTypes
@@ -217,11 +217,9 @@ object BurrowGuessAPI {
 					val d1 = ((p1.x - it.x).times(2 + (p1.z - it.z))).pow(2)
 					val d2 = ((p2.x - it.x).times(2 + (p2.z - it.z))).pow(2)
 
-					val finalLocation = if(d1 < d2) {
-						NobaVec(floor(p1.x), 255.0, floor(p1.z))
-					} else {
-						NobaVec(floor(p2.x), 255.0, floor(p2.z))
-					}
+					val point = if(d1 < d2) p1 else p2
+					val finalLocation = NobaVec(floor(point.x), 255.0, floor(point.z))
+
 					MythologicalEvents.BURROW_GUESS.invoke(MythologicalEvents.BurrowGuess(finalLocation))
 				}
 			}

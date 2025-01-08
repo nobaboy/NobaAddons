@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.events.skyblock
+package me.nobaboy.nobaaddons.events.skyblock.events
 
 import me.nobaboy.nobaaddons.events.internal.Event
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher

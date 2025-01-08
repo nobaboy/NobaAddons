@@ -11,6 +11,22 @@ import me.nobaboy.nobaaddons.utils.tr
 
 object EventsCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.events", "Events")) {
+		// region Hoppity's Hunt
+		buildGroup(tr("nobaaddons.config.events.hoppity", "Hoppity's Hunt")) {
+			boolean(
+				tr("nobaaddons.config.events.hoppity.eggGuess", "Egg Guess"),
+				tr("nobaaddons.config.events.hoppity.eggGuess.tooltip", "Guesses the eggs location from the Egglocator's ability"),
+				default = defaults.events.hoppity.eggGuess,
+				property = config.events.hoppity::eggGuess
+			)
+			boolean(
+				tr("nobaaddons.config.events.hoppity.requireMythicRabbit", "Require Mythic Rabbit"),
+				default = defaults.events.hoppity.requireMythicRabbit,
+				property = config.events.hoppity::requireMythicRabbit
+			)
+		}
+		// endregion
+
 		// region Mythological Ritual
 		buildGroup(tr("nobaaddons.config.events.mythological", "Mythological Ritual")) {
 			boolean(

@@ -13,7 +13,7 @@ import net.minecraft.client.render.VertexFormats
 
 object NobaRenderLayers {
 	val DEFAULT_TRANSPARENCY: Transparency = Transparency(
-		"default_transparency",
+		"nobaaddons_default_transparency",
 		{
 			RenderSystem.enableBlend()
 			RenderSystem.defaultBlendFunc()
@@ -22,7 +22,7 @@ object NobaRenderLayers {
 	)
 
 	val FILLED: MultiPhase = RenderLayer.of(
-		"filled",
+		"nobaaddons_filled",
 		VertexFormats.POSITION_COLOR,
 		DrawMode.TRIANGLE_STRIP,
 		RenderLayer.CUTOUT_BUFFER_SIZE,
@@ -42,7 +42,7 @@ object NobaRenderLayers {
 	)
 
 	val FILLED_THROUGH_BLOCKS: MultiPhase = RenderLayer.of(
-		"filled_through_blocks",
+		"nobaaddons_filled_through_blocks",
 		VertexFormats.POSITION_COLOR,
 		DrawMode.TRIANGLE_STRIP,
 		RenderLayer.CUTOUT_BUFFER_SIZE,

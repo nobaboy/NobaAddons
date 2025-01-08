@@ -24,16 +24,16 @@ object RegexUtils {
 	inline fun Regex.forEachMatch(text: String, consumer: MatchResult.() -> Unit) = findAll(text).forEach(consumer)
 
 	/**
-	 * Executes [consumer] for each line in [lines] that fully matches the current pattern
-	 */
-	inline fun Regex.forEachFullMatch(lines: Collection<String>, crossinline consumer: MatchResult.() -> Unit) =
-		lines.forEach { onFullMatch(it, consumer) }
-
-	/**
 	 * Executes [consumer] for the first line from [lines] matching the current pattern
 	 */
 	inline fun Regex.firstFullMatch(lines: Collection<String>, consumer: MatchResult.() -> Unit) =
 		lines.firstNotNullOfOrNull { matchEntire(it) }?.let(consumer)
+
+	/**
+	 * Executes [consumer] for each line in [lines] that fully matches the current pattern
+	 */
+	inline fun Regex.forEachFullMatch(lines: Collection<String>, crossinline consumer: MatchResult.() -> Unit) =
+		lines.forEach { onFullMatch(it, consumer) }
 
 	/**
 	 * Executes [consumer] with the first full match from any of the patterns in the current iterable

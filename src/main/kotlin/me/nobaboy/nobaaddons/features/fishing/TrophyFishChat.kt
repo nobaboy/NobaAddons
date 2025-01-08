@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.fishing
 
-import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
+import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.events.LateChatMessageEvent

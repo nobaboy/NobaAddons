@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.ParticleEvents
-import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.events.skyblock.events.MythologicalEvents
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
