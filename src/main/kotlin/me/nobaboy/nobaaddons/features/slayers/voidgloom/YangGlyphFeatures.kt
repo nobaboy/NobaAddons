@@ -26,13 +26,14 @@ import net.minecraft.entity.mob.EndermanEntity
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
-object YangGlyphAlert {
+object YangGlyphFeatures {
 	private val config get() = NobaConfig.INSTANCE.slayers.voidgloom
 	private val enabled: Boolean
 		get() = SkyBlockIsland.THE_END.inIsland() && SlayerAPI.currentQuest?.boss == SlayerBoss.VOIDGLOOM
 
 	private val yangGlyphs = mutableMapOf<NobaVec, Timestamp>()
 	private val flyingYangGlyphs = mutableListOf<ArmorStandEntity>()
+	val inBeaconPhase: Boolean get() = yangGlyphs.isNotEmpty() || flyingYangGlyphs.isNotEmpty()
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }

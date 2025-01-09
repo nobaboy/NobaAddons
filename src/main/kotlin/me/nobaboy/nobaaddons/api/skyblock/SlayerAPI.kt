@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
-import me.nobaboy.nobaaddons.core.slayer.SlayerMiniBoss
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
@@ -12,16 +11,17 @@ import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.entity.Entity
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 
 object SlayerAPI {
 	private val slayerNamePattern by Regex("^☠ (?<name>[A-z ]+?)(?: (?<tier>[IV]+))? (?<hp>[\\d/BMk.,❤]+)\$").fromRepo("slayer.name")
+	private val slayerProgressPattern by Regex("^(?<current>\\d+)/(?<required>\\d+) Kills").fromRepo("slayer.progress")
 
 	var currentQuest: SlayerQuest? = null
 		private set
 
-	val miniBosses = mutableSetOf<Entity>()
+	private val miniBosses = mutableSetOf<LivingEntity>()
 
 	fun init() {
 		ClientTickEvents.END_CLIENT_TICK.register { onTick() }
@@ -31,42 +31,54 @@ object SlayerAPI {
 	private fun onTick() {
 		if(!SkyBlockAPI.inSkyBlock) return
 
-		val lines = ScoreboardUtils.getScoreboardLines()
-		val questLine = lines.nextAfter("Slayer Quest") ?: return
-		val boss = SlayerBoss.getByName(questLine) ?: return
+		val scoreboard = ScoreboardUtils.getScoreboardLines()
+		val bossNameLine = scoreboard.nextAfter("Slayer Quest") ?: return
+		val slayerBoss = SlayerBoss.getByName(bossNameLine) ?: return
 
-		if(currentQuest?.boss != boss) currentQuest = SlayerQuest(boss)
+		if(currentQuest?.boss != slayerBoss) currentQuest = SlayerQuest(slayerBoss)
+
+		val progressLine = scoreboard.nextAfter("Slayer Quest", 2).orEmpty()
+		slayerProgressPattern.onFullMatch(progressLine) {
+			val current = groups["current"]?.value?.toInt() ?: return@onFullMatch
+			val required = groups["required"]?.value?.toInt() ?: return@onFullMatch
+
+			currentQuest?.progress = (current / required) * 100
+		}
 
 		val previousState = currentQuest?.spawned
-		currentQuest?.spawned = lines.any { it == "Slay the boss!" }
+		currentQuest?.spawned = scoreboard.any { it == "Slay the boss!" }
 		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn())
 
-		currentQuest?.boss?.entity?.let { entityClass ->
-			EntityUtils.getEntities(entityClass).forEach { entity ->
-				if(entity in miniBosses) return@forEach
+		currentQuest?.let {
+			EntityUtils.getEntities(it.boss.entity)
+				.filterIsInstance<LivingEntity>()
+				.filterNot { it in miniBosses }
+				.forEach { entity ->
+					val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return@forEach
+					val armorStandName = armorStand.name.string
 
-				val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return@forEach
+					slayerNamePattern.onFullMatch(armorStandName) {
+						if(it.entity != null) return@forEach
 
-				slayerNamePattern.onFullMatch(armorStand.name.string) {
-					val ownerArmorStand = EntityUtils.getNextEntity(armorStand, 2) as? ArmorStandEntity ?: return@forEach
-					val playerName = MCUtils.playerName ?: return@forEach
+						val ownerArmorStand = EntityUtils.getNextEntity(armorStand, 2) as? ArmorStandEntity ?: return@forEach
+						val playerName = MCUtils.playerName ?: return@forEach
 
-					if(ownerArmorStand.name.string != "Spawned by: $playerName") return
-					val timerEntity = EntityUtils.getNextEntity(armorStand, 1) as? ArmorStandEntity ?: return@forEach
+						if(ownerArmorStand.name.string != "Spawned by: $playerName") return@forEach
+						val timerArmorStand = EntityUtils.getNextEntity(armorStand, 1) as? ArmorStandEntity ?: return@forEach
 
-					currentQuest?.let {
 						it.entity = entity
-						it.timerEntity = timerEntity
+						it.armorStand = armorStand
+						it.timerArmorStand = timerArmorStand
+
+						SlayerEvents.FIND_BOSS.invoke(SlayerEvents.Find(entity))
+						return@forEach
 					}
 
-					return@forEach
+					if(it.boss.miniBossType?.names?.any { armorStandName.contains(it) } == true) {
+						SlayerEvents.FIND_MINI_BOSS.invoke(SlayerEvents.Find(entity))
+						miniBosses.add(entity)
+					}
 				}
-
-				SlayerMiniBoss.getByName(armorStand.name.string)?.let {
-					if(entity.age <= 20) SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
-					miniBosses.add(entity)
-				}
-			}
 		}
 	}
 
@@ -77,16 +89,18 @@ object SlayerAPI {
 		when(message.trim()) {
 			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest = null
 			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
-				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerEntity))
-				currentQuest?.spawned = false
+				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
+//				currentQuest?.spawned = false
 			}
 		}
 	}
 
 	data class SlayerQuest(
-		val boss: SlayerBoss?,
+		val boss: SlayerBoss,
+		var progress: Int = 0,
 		var spawned: Boolean = false,
-		var entity: Entity? = null,
-		var timerEntity: Entity? = null
+		var entity: LivingEntity? = null,
+		var armorStand: ArmorStandEntity? = null,
+		var timerArmorStand: ArmorStandEntity? = null
 	)
 }

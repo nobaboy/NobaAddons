@@ -55,7 +55,8 @@ import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.BrokenHeartRadiationTimer
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.HighlightNukekubiFixations
-import me.nobaboy.nobaaddons.features.slayers.voidgloom.YangGlyphAlert
+import me.nobaboy.nobaaddons.features.slayers.voidgloom.HighlightVoidgloomPhases
+import me.nobaboy.nobaaddons.features.slayers.voidgloom.YangGlyphFeatures
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
@@ -175,11 +176,12 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Slayers
-		MiniBossFeatures.init()
 		SlayerBossFeatures.init()
+		MiniBossFeatures.init()
 
+		HighlightVoidgloomPhases.init()
 		BrokenHeartRadiationTimer.init()
-		YangGlyphAlert.init()
+		YangGlyphFeatures.init()
 		HighlightNukekubiFixations.init()
 		// endregion
 

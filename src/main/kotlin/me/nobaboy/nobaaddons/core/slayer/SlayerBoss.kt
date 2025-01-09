@@ -67,7 +67,6 @@ enum class SlayerBoss(
 
 	companion object {
 		fun getByName(name: String) = entries.firstOrNull { name.contains(it.displayName) }
-		fun getByEntity(entity: Entity) = entries.firstOrNull { entity::class.java == it.entity }
 		fun getByZone(zone: String) = entries.firstOrNull { zone in it.zones }
 	}
 }

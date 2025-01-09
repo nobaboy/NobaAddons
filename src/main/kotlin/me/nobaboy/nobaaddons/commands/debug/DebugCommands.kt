@@ -14,12 +14,16 @@ import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.utils.ErrorManager
+import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.render.EntityOverlay
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.entity.LivingEntity
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -126,6 +130,17 @@ object DebugCommands {
 	fun updateNotification(ctx: Context) {
 		UpdateNotifier.sendUpdateNotification()
 	}
+
+	@Command
+	fun overlay(ctx: Context, color: String? = null) {
+		val entity = MCUtils.client.targetedEntity as? LivingEntity ?: ctx.source.player
+		if(color == null) {
+			EntityOverlay.remove(entity)
+			return
+		}
+		EntityOverlay.set(entity, NobaColor.COLORS.first { it.formatting!!.name.equals(color, ignoreCase = true) })
+	}
+
 
 	val item = NobaClientCommandGroup(ItemDebugCommands)
 	val pet = NobaClientCommandGroup(PetDebugCommands)

@@ -1,7 +1,9 @@
 package me.nobaboy.nobaaddons.utils
 
 import net.minecraft.util.Formatting
+import org.jetbrains.annotations.Unmodifiable
 import java.awt.Color
+import java.util.Collections
 
 data class NobaColor(val rgb: Int, val formatting: Formatting? = null) {
 	constructor(formatting: Formatting) : this(formatting.colorValue!!, formatting)
@@ -22,6 +24,7 @@ data class NobaColor(val rgb: Int, val formatting: Formatting? = null) {
 
 	companion object {
 		private val allColors = mutableListOf<NobaColor>()
+		val COLORS: @Unmodifiable List<NobaColor> = Collections.unmodifiableList(allColors)
 
 		val BLACK = register(NobaColor(Formatting.BLACK))
 		val DARK_BLUE = register(NobaColor(Formatting.DARK_BLUE))

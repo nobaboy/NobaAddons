@@ -39,6 +39,19 @@ object SlayersCategory {
 			) requires enabled
 		}
 
+		buildGroup(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
+			val enabled = boolean(
+				CommonText.Config.ENABLED,
+				default = defaults.slayers.highlightMiniBosses.enabled,
+				property = config.slayers.highlightMiniBosses::enabled
+			)
+			color(
+				CommonText.Config.HIGHLIGHT_COLOR,
+				default = defaults.slayers.highlightMiniBosses.highlightColor,
+				property = config.slayers.highlightMiniBosses::highlightColor
+			) requires enabled
+		}
+
 		buildGroup(tr("nobaaddons.config.slayers.announceBossKillTime", "Announce Boss Kill Time")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
@@ -54,11 +67,26 @@ object SlayersCategory {
 		}
 
 		buildGroup(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
-			boolean(
-				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer"),
-				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
-				property = config.slayers.voidgloom::brokenHeartRadiationTimer
+			val highlightPhases = boolean(
+				tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases"),
+				default = defaults.slayers.voidgloom.highlightPhases,
+				property = config.slayers.voidgloom::highlightPhases
 			)
+			color(
+				tr("nobaaddons.config.slayers.voidgloom.hitPhaseColor", "Hit Phase Color"),
+				default = defaults.slayers.voidgloom.hitPhaseColor,
+				property = config.slayers.voidgloom::hitPhaseColor
+			) requires highlightPhases
+			color(
+				tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color"),
+				default = defaults.slayers.voidgloom.damagePhaseColor,
+				property = config.slayers.voidgloom::damagePhaseColor
+			) requires highlightPhases
+			color(
+				tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color"),
+				default = defaults.slayers.voidgloom.beaconPhaseColor,
+				property = config.slayers.voidgloom::beaconPhaseColor
+			) requires highlightPhases
 
 			label(tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs"))
 
@@ -95,6 +123,14 @@ object SlayersCategory {
 				default = defaults.slayers.voidgloom.nukekubiFixationHighlightColor,
 				property = config.slayers.voidgloom::nukekubiFixationHighlightColor
 			) requires highlightNukekubiFixations
+
+			label(CommonText.Config.LABEL_MISC)
+
+			boolean(
+				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer"),
+				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
+				property = config.slayers.voidgloom::brokenHeartRadiationTimer
+			)
 		}
 	}
 }

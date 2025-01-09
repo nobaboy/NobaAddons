@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 	val bossAlert by BossAlert()
 	val miniBossAlert by MiniBossAlert()
+	val highlightMiniBosses by HighlightMiniBosses()
 	val announceBossKillTime by AnnounceBossKillTime()
 	val voidgloom by Voidgloom()
 
@@ -23,12 +24,22 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.RED)
 	}
 
+	class HighlightMiniBosses : ObjectProperty<HighlightMiniBosses>("highlightMiniBosses") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.GOLD)
+	}
+
 	class AnnounceBossKillTime : ObjectProperty<AnnounceBossKillTime>("announceBossKillTime") {
 		var enabled by Property.of<Boolean>("enabled", false)
 		var timeSource by Property.of("timeSource", Serializer.enum(), BossTimeSource.REAL_TIME)
 	}
 
 	class Voidgloom : ObjectProperty<Voidgloom>("voidgloom"){
+		var highlightPhases by Property.of<Boolean>("highlightPhases", false)
+		var hitPhaseColor by Property.of("hitPhaseColor", Serializer.color, NobaColor.LIGHT_PURPLE)
+		var damagePhaseColor by Property.of("damagePhaseColor", Serializer.color, NobaColor.LIGHT_PURPLE)
+		var beaconPhaseColor by Property.of("beaconPhaseColor", Serializer.color, NobaColor.LIGHT_PURPLE)
+
 		var brokenHeartRadiationTimer by Property.of<Boolean>("brokenHeartRadiationTimer", false)
 
 		var yangGlyphAlert by Property.of<Boolean>("yangGlyphAlert", false)

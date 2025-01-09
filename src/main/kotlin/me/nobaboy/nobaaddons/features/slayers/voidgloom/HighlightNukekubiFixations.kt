@@ -57,7 +57,7 @@ object HighlightNukekubiFixations {
 		nukekubiFixations.removeIf { !it.isAlive }
 		nukekubiFixations.forEach { armorStand ->
 			val location = armorStand.pos.toNobaVec()
-			if(location.distanceToPlayer() > 20) return@forEach
+			if(location.distanceToPlayer() > 32) return@forEach
 
 			RenderUtils.renderOutline(context, location.add(x = -0.5, y = 0.65, z = -0.5), config.nukekubiFixationHighlightColor, throughBlocks = true)
 		}

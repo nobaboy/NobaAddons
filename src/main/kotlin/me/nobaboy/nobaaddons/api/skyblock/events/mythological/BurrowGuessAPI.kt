@@ -49,11 +49,11 @@ object BurrowGuessAPI {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		SoundEvents.SOUND.register(this::onPlaySound)
+		SoundEvents.SOUND.register(this::onSound)
 		ParticleEvents.PARTICLE.register(this::onParticle)
 	}
 
-	private fun onPlaySound(event: SoundEvents.Sound) {
+	private fun onSound(event: SoundEvents.Sound) {
 		if(!enabled) return
 		if(event.id != Identifier.ofVanilla("block.note_block.harp")) return
 

@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
 import kotlin.time.Duration.Companion.seconds
 
+// TODO: Add boss soon warning
 object SlayerBossFeatures {
 	private val config get() = NobaConfig.INSTANCE.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest != null
