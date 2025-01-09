@@ -90,7 +90,8 @@ object SlayerAPI {
 			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest = null
 			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
 				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
-//				currentQuest?.spawned = false
+				currentQuest?.spawned = false
+				currentQuest?.entity = null
 			}
 		}
 	}
