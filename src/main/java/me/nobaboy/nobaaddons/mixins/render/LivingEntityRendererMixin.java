@@ -6,9 +6,9 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-// FIXME This causes an issue with versions under 1.21.3 related to entity state since it never existed then
 @Mixin(LivingEntityRenderer.class)
 abstract class LivingEntityRendererMixin {
+	//? if >=1.21.2 {
 	@ModifyExpressionValue(
 		method = "getOverlay",
 		at = @At(
@@ -19,4 +19,16 @@ abstract class LivingEntityRendererMixin {
 	private static boolean nobaaddons$forceOverlayWhereNecessary(boolean original) {
 		return original || EntityOverlay.INSTANCE.getOverlay();
 	}
+	//?} else {
+	/*@ModifyExpressionValue(
+		method = "getOverlay",
+		at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/entity/LivingEntity;hurtTime:I"
+		)
+	)
+	private static int nobaaddons$forceOverlayWhereNecessary(int original) {
+		return EntityOverlay.INSTANCE.getOverlay() ? 1 : original;
+	}
+	*///?}
 }
