@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.mixins.misc;
+package me.nobaboy.nobaaddons.mixins.chat;
 
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature;
 import net.minecraft.client.gui.screen.ChatScreen;

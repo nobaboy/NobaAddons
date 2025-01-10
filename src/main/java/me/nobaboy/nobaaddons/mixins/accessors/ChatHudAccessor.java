@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mixin(ChatHud.class)
 public interface ChatHudAccessor {
-	@Accessor List<ChatHudLine> getMessages();
+	@Accessor List<ChatHudLine.Visible> getVisibleMessages();
 	@Invoker double callToChatLineX(double mouseX);
 	@Invoker double callToChatLineY(double mouseY);
 	@Invoker int callGetMessageIndex(double x, double y);

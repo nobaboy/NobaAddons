@@ -7,9 +7,12 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import net.minecraft.client.gui.hud.ChatHudLine
 import net.minecraft.client.gui.screen.Screen
+import java.util.WeakHashMap
 
 object CopyChatFeature {
+	val messages = WeakHashMap<ChatHudLine.Visible, ChatHudLine>(200)
 	val config get() = NobaConfig.INSTANCE.chat.copyChat
 
 	private fun isEnabled(button: Int): Boolean {
@@ -28,8 +31,8 @@ object CopyChatFeature {
 		val index = hud.callGetMessageIndex(hud.callToChatLineX(mouseX), hud.callToChatLineY(mouseY))
 		if(index == -1) return false
 
-		var message = hud.getMessages()[index]
-		var cleaned = message.content().string.cleanFormatting()
+		val visibleLine = hud.visibleMessages[index]
+		val cleaned = messages[visibleLine]?.content?.string?.cleanFormatting() ?: return false
 
 		MCUtils.copyToClipboard(cleaned)
 		ChatUtils.addMessage(tr("nobaaddons.chat.copiedMessage", "Copied chat message to clipboard"))
