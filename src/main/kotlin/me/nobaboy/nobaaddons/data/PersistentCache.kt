@@ -19,6 +19,7 @@ object PersistentCache : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("cache.jso
 		serializer = Serializer.map<EnumMap<TrophyFishRarity, Int>>(Serializer.enumMap<TrophyFishRarity, Int>())
 	)
 	var repoCommit by Property.ofNullable<String>("repoCommit")
+	var devMode by Property.of("devMode", false)
 
 	fun init() {
 		safeLoad()
