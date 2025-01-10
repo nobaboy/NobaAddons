@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.lang.ref.WeakReference;
+
 @Mixin(ChatHud.class)
 abstract class ChatHudMixin {
 	@Unique private final ThreadLocal<@Nullable ChatHudLine> LINE = new ThreadLocal<>();
@@ -46,7 +48,7 @@ abstract class ChatHudMixin {
 		var visible = original.call(tick, text, indicator, endOfEntry);
 		var line = LINE.get();
 		if(line != null) {
-			CopyChatFeature.INSTANCE.getMessages().put(visible, line);
+			CopyChatFeature.getMessages().put(visible, new WeakReference<>(line));
 		}
 		return visible;
 	}
