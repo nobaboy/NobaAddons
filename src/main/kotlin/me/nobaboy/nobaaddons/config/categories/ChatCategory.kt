@@ -15,6 +15,17 @@ import net.minecraft.text.Text
 
 object ChatCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.chat", "Chat")) {
+		// region Copy Chat
+		buildGroup(tr("nobaaddons.config.chat.copyChat", "Copy Chat")) {
+			boolean(CommonText.Config.ENABLED, default = defaults.chat.copyChat.enabled, property = config.chat.copyChat::enabled)
+			cycler(
+				tr("nobaaddons.config.chat.copyChat.mode", "Copy Chat With"),
+				default = defaults.chat.copyChat.mode,
+				property = config.chat.copyChat::mode
+			)
+		}
+		// endregion
+
 		// region Alerts
 		buildGroup(tr("nobaaddons.config.chat.alerts", "Alerts")) {
 			// region Crimson Isle
