@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.events.internal
 
 import me.nobaboy.nobaaddons.utils.ErrorManager
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * Abstract event dispatcher implementation, providing a basic implementation of a Fabric-like event system
@@ -22,13 +23,10 @@ abstract class AbstractEventDispatcher<T : Event, R : Any?>(
 	 */
 	protected val gracefulExceptions: Boolean = true,
 ) {
-	private val lock = Any()
-	private var listeners: Array<(T) -> Unit> = emptyArray()
+	private val listeners = CopyOnWriteArrayList<(T) -> Unit>()
 
 	open fun register(listener: (T) -> Unit) {
-		synchronized(lock) {
-			listeners = listeners.plus(listener)
-		}
+		listeners.add(listener)
 	}
 
 	protected fun executeListeners(event: T) {

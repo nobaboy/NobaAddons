@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.dungeons.DungeonBoss
 import me.nobaboy.nobaaddons.core.dungeons.DungeonClass
 import me.nobaboy.nobaaddons.core.dungeons.DungeonFloor
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -30,7 +31,7 @@ object DungeonsAPI {
 
 	fun init() {
 		SecondPassedEvent.EVENT.register { onSecondPassed() }
-		ClientReceiveMessageEvents.GAME.register { message, _ -> getBossType(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register { (message) -> getBossType(message.string.cleanFormatting()) }
 	}
 
 	private fun onSecondPassed() {

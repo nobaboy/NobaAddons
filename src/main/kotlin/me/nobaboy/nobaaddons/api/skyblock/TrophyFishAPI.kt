@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.api.skyblock
 import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.data.PersistentCache
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -25,8 +26,7 @@ object TrophyFishAPI {
 	private val inventorySlots = 10..31
 
 	fun init() {
-		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message) }
-		ClientReceiveMessageEvents.GAME_CANCELED.register { message, _ -> onChatMessage(message) }
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message) }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 	}
 

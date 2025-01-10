@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl
 
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.AllInviteCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.CancelCommand
@@ -29,7 +30,7 @@ object PartyCommands : ChatCommandManager() {
 	}
 
 	fun init() {
-		ClientReceiveMessageEvents.GAME.register { message, _ ->
+		ChatMessageEvents.CHAT.register { (message) ->
 			processMessage(message.string.cleanFormatting())
 		}
 	}
