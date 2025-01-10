@@ -17,12 +17,12 @@ object ChatCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.chat", "Chat")) {
 		// region Copy Chat
 		buildGroup(tr("nobaaddons.config.chat.copyChat", "Copy Chat")) {
-			boolean(CommonText.Config.ENABLED, default = defaults.chat.copyChat.enabled, property = config.chat.copyChat::enabled)
+			val enabled = boolean(CommonText.Config.ENABLED, default = defaults.chat.copyChat.enabled, property = config.chat.copyChat::enabled)
 			cycler(
 				tr("nobaaddons.config.chat.copyChat.mode", "Copy Chat With"),
 				default = defaults.chat.copyChat.mode,
 				property = config.chat.copyChat::mode
-			)
+			) requires enabled
 		}
 		// endregion
 
