@@ -24,6 +24,7 @@ object SlayerAPI {
 	fun init() {
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
+//		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		ClientTickEvents.END_CLIENT_TICK.register { onTick() }
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
@@ -31,24 +32,25 @@ object SlayerAPI {
 	private fun onPacketReceive(event: PacketEvents.Receive) {
 		if(!SkyBlockAPI.inSkyBlock) return
 
-		currentQuest?.let {
-			if(it.entity != null) return
+		val currentQuest = currentQuest ?: return
+		if(currentQuest.entity != null) return
 
-			val packet = event.packet as? EntityTrackerUpdateS2CPacket ?: return
-			val armorStand = EntityUtils.getEntityById(packet.id) as? ArmorStandEntity ?: return
+		val packet = event.packet as? EntityTrackerUpdateS2CPacket ?: return
+		val armorStand = EntityUtils.getEntityById(packet.id) as? ArmorStandEntity ?: return
 
-			val entity = EntityUtils.getNextEntity(armorStand, -1) as? LivingEntity ?: return
-			if(entity.type != it.boss.entityType) return
+		val entity = EntityUtils.getNextEntity(armorStand, -1) as? LivingEntity ?: return
+		if(entity.type != currentQuest.boss.entityType) return
 
-			val ownerArmorStand = EntityUtils.getNextEntity(armorStand, 2) as? ArmorStandEntity ?: return
-			val playerName = MCUtils.playerName ?: return
-			if(ownerArmorStand.name.string != "Spawned by: $playerName") return
+		val ownerArmorStand = EntityUtils.getNextEntity(armorStand, 2) as? ArmorStandEntity ?: return
+		val playerName = MCUtils.playerName ?: return
+		if(ownerArmorStand.name.string != "Spawned by: $playerName") return
 
-			val timerArmorStand = EntityUtils.getNextEntity(armorStand, 1) as? ArmorStandEntity ?: return
+		val timerArmorStand = EntityUtils.getNextEntity(armorStand, 1) as? ArmorStandEntity ?: return
 
-			it.entity = entity
-			it.armorStand = armorStand
-			it.timerArmorStand = timerArmorStand
+		currentQuest.apply {
+			this.entity = entity
+			this.armorStand = armorStand
+			this.timerArmorStand = timerArmorStand
 		}
 	}
 
@@ -59,13 +61,27 @@ object SlayerAPI {
 		if(entity is ArmorStandEntity) return
 		if(entity in miniBosses) return
 
-		currentQuest?.let {
-			if(entity.type != it.boss.entityType) return
-			val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return
+		val currentQuest = this.currentQuest ?: return
+		if(entity.type != currentQuest.boss.entityType) return
+		val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return
 
-			if(it.boss.miniBossType?.names?.any { armorStand.name.string.contains(it) } == true) {
-				SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
-				miniBosses.add(entity)
+		if(currentQuest.boss.miniBossType?.names?.any { armorStand.name.string.contains(it) } == true) {
+			SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
+			miniBosses.add(entity)
+		}
+	}
+
+	private fun onChatMessage(message: String) {
+		println(message)
+
+		if(!SkyBlockAPI.inSkyBlock) return
+		if(currentQuest == null) return
+
+		when(message.trim()) {
+			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest = null
+			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
+				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
+				currentQuest = null
 			}
 		}
 	}
@@ -84,19 +100,6 @@ object SlayerAPI {
 		val previousState = currentQuest?.spawned
 		currentQuest?.spawned = scoreboard.any { it == "Slay the boss!" }
 		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn())
-	}
-
-	private fun onChatMessage(message: String) {
-		if(!SkyBlockAPI.inSkyBlock) return
-		if(currentQuest == null) return
-
-		when(message.trim()) {
-			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest = null
-			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
-				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
-				currentQuest = null
-			}
-		}
 	}
 
 	data class SlayerQuest(
