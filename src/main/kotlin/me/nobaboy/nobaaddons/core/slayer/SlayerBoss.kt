@@ -1,30 +1,24 @@
 package me.nobaboy.nobaaddons.core.slayer
 
-import net.minecraft.entity.Entity
-import net.minecraft.entity.mob.BlazeEntity
-import net.minecraft.entity.mob.EndermanEntity
-import net.minecraft.entity.mob.SpiderEntity
-import net.minecraft.entity.mob.ZombieEntity
-import net.minecraft.entity.passive.WolfEntity
-import net.minecraft.entity.player.PlayerEntity
-import kotlin.reflect.KClass
+import me.nobaboy.nobaaddons.core.slayer.SlayerBoss.entries
+import net.minecraft.entity.EntityType
 
 enum class SlayerBoss(
 	val displayName: String,
-	val entity: KClass<out Entity>,
+	val entityType: EntityType<*>,
 	val miniBossType: SlayerMiniBoss?,
 	vararg slayerZones: String
 ) {
 	REVENANT(
 		"Revenant Horror",
-		ZombieEntity::class,
+		EntityType.ZOMBIE,
 		SlayerMiniBoss.REVENANT,
 		"Graveyard",
 		"Coal Mine"
 	),
 	TARANTULA(
 		"Tarantula Broodfather",
-		SpiderEntity::class,
+		EntityType.SPIDER,
 		SlayerMiniBoss.TARANTULA,
 		"Spider Mound",
 		"Arachne's Burrow",
@@ -33,14 +27,14 @@ enum class SlayerBoss(
 	),
 	SVEN(
 		"Sven Packmaster",
-		WolfEntity::class,
+		EntityType.WOLF,
 		SlayerMiniBoss.SVEN,
 		"Ruins",
 		"Howling Cave"
 	),
 	VOIDGLOOM(
 		"Voidgloom Seraph",
-		EndermanEntity::class,
+		EntityType.ENDERMAN,
 		SlayerMiniBoss.VOIDGLOOM,
 		"The End",
 		"Dragon's Nest",
@@ -49,7 +43,7 @@ enum class SlayerBoss(
 	),
 	INFERNO(
 		"Inferno Demonlord",
-		BlazeEntity::class,
+		EntityType.BLAZE,
 		SlayerMiniBoss.INFERNO,
 		"Stronghold",
 		"The Wasteland",
@@ -57,7 +51,7 @@ enum class SlayerBoss(
 	),
 	RIFTSTALKER(
 		"Bloodfiend",
-		PlayerEntity::class,
+		EntityType.PLAYER,
 		null,
 		"Stillgore Château",
 		"Oubliette"

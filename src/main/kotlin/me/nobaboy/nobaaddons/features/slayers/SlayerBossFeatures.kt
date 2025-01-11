@@ -23,7 +23,7 @@ object SlayerBossFeatures {
 		if(!config.bossAlert.enabled) return
 		if(!enabled) return
 
-		RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds)
+		RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds, id = "slayer.alert")
 		SoundUtils.dingLowSound.play()
 	}
 

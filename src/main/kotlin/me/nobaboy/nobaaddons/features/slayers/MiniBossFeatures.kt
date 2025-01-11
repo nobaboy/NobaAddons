@@ -34,7 +34,7 @@ object MiniBossFeatures {
 		val distance = entity.getNobaVec().distanceToPlayer()
 		if(distance > 16) return
 
-		RenderUtils.drawTitle(tr("nobaaddons.slayers.miniBossAlert.spawned", "MiniBoss Spawned!"), config.miniBossAlert.alertColor, duration = 1.5.seconds, id = "slayers.miniBossAlert.spawned")
+		RenderUtils.drawTitle(tr("nobaaddons.slayers.miniBossAlert.spawned", "MiniBoss Spawned!"), config.miniBossAlert.alertColor, duration = 1.5.seconds, id = "slayer.alert")
 		SoundUtils.dingLowSound.play()
 	}
 }
