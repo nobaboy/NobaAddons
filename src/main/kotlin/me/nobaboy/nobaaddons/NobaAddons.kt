@@ -180,9 +180,9 @@ object NobaAddons : ClientModInitializer {
 		MiniBossFeatures.init()
 
 		HighlightVoidgloomPhases.init()
-		BrokenHeartRadiationTimer.init()
 		YangGlyphFeatures.init()
 		HighlightNukekubiFixations.init()
+		BrokenHeartRadiationTimer.init()
 		// endregion
 
 		// region Fishing

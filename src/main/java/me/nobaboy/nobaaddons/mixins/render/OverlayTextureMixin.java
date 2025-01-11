@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * @see me.nobaboy.nobaaddons.utils.render.EntityOverlay

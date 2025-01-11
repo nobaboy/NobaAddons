@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.utils.render
 
 //? if >=1.21.2 {
 import me.nobaboy.nobaaddons.mixins.accessors.DrawContextAccessor
-import net.minecraft.client.render.VertexRendering
 import net.minecraft.client.gl.ShaderProgramKeys
+import net.minecraft.client.render.VertexRendering
 //?} else {
 /*import net.minecraft.client.render.WorldRenderer
 import net.minecraft.client.render.GameRenderer

@@ -32,7 +32,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		double x, double y, double z,
 		//? if <1.21.2 {
 		/*float yaw,
-		 *///?}
+		*///?}
 		float tickDelta,
 		MatrixStack matrices,
 		VertexConsumerProvider vertexConsumers,
@@ -66,7 +66,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		double x, double y, double z,
 		//? if <1.21.2 {
 		/*float yaw,
-		 *///?}
+		*///?}
 		float tickDelta,
 		MatrixStack matrices,
 		VertexConsumerProvider vertexConsumers,
@@ -98,7 +98,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		double x, double y, double z,
 		//? if <1.21.2 {
 		/*float yaw,
-		 *///?}
+		*///?}
 		float tickDelta,
 		MatrixStack matrices,
 		VertexConsumerProvider vertexConsumers,

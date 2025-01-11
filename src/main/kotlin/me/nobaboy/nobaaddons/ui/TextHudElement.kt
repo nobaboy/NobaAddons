@@ -7,8 +7,6 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.getWidth
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
-import kotlin.collections.maxOf
-import kotlin.collections.plus
 
 /**
  * Generic text display [HudElement], providing helper methods to render text

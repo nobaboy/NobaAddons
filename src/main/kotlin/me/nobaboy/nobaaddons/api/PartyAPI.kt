@@ -22,7 +22,7 @@ import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import net.minecraft.text.HoverEvent
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
-import java.util.*
+import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
 object PartyAPI {

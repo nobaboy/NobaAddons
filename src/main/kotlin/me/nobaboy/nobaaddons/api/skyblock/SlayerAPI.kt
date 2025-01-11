@@ -4,11 +4,9 @@ import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
 import me.nobaboy.nobaaddons.events.EntityEvents
 import me.nobaboy.nobaaddons.events.PacketEvents
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -18,8 +16,6 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket
 
 object SlayerAPI {
-	private val slayerProgressPattern by Regex("^(?<current>\\d+)/(?<required>\\d+) Kills").fromRepo("slayer.progress")
-
 	var currentQuest: SlayerQuest? = null
 		private set
 
@@ -85,14 +81,6 @@ object SlayerAPI {
 
 		if(currentQuest?.boss != slayerBoss) currentQuest = SlayerQuest(slayerBoss)
 
-		val progressLine = scoreboard.nextAfter("Slayer Quest", 2).orEmpty()
-		slayerProgressPattern.onFullMatch(progressLine) {
-			val current = groups["current"]?.value?.toDouble() ?: return@onFullMatch
-			val required = groups["required"]?.value?.toDouble() ?: return@onFullMatch
-
-			currentQuest?.progress = (current / required * 100).toInt()
-		}
-
 		val previousState = currentQuest?.spawned
 		currentQuest?.spawned = scoreboard.any { it == "Slay the boss!" }
 		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn())
@@ -116,7 +104,6 @@ object SlayerAPI {
 		var entity: LivingEntity? = null,
 		var armorStand: ArmorStandEntity? = null,
 		var timerArmorStand: ArmorStandEntity? = null,
-		var spawned: Boolean = false,
-		var progress: Int = 0
+		var spawned: Boolean = false
 	)
 }

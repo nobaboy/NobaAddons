@@ -19,7 +19,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 import net.minecraft.text.Texts
-import java.util.*
+import java.util.Calendar
 
 private val year = Calendar.getInstance().get(Calendar.YEAR)
 
