@@ -55,7 +55,5 @@ object SlayerBossFeatures {
 				return maxTime - remainingTime
 			}
 		}
-
-		return null
 	}
 }

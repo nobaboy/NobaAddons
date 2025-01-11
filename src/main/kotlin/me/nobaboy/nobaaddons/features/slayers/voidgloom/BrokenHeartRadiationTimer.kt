@@ -35,7 +35,6 @@ object BrokenHeartRadiationTimer {
 		if(!enabled) return
 
 		val bossEntity = SlayerAPI.currentQuest?.entity ?: return
-		if(bossEntity.vehicle == null) return // This is fairly useless but does sometimes??? prevent false timers
 		if(event.entity != bossEntity) return
 
 		if(brokenHeartRadiation == null) brokenHeartRadiation = BrokenHeartRadiation(bossEntity)

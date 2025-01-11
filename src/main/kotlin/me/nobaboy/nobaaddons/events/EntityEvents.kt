@@ -41,7 +41,7 @@ object EntityEvents {
 	@JvmField val ALLOW_RENDER = EventDispatcher<AllowRender>()
 
 	/**
-	 * Event invoked when an [Entity]'s pose is changed.
+	 * Event invoked when an [Entity]'s vehicle is changed.
 	 */
 	@JvmField val VEHICLE_CHANGE = EventDispatcher<VehicleChange>()
 

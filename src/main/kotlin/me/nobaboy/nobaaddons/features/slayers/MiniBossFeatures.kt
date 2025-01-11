@@ -16,6 +16,8 @@ object MiniBossFeatures {
 	private val config get() = NobaConfig.INSTANCE.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false
 
+	private val EXPLODE = Identifier.ofVanilla("entity.generic.explode")
+
 	private var lastAlert = Timestamp.distantPast()
 
 	fun init() {
@@ -24,12 +26,9 @@ object MiniBossFeatures {
 	}
 
 	private fun onSound(event: SoundEvents.Sound) {
-		if(!config.miniBossAlert.enabled) return
-		if(!enabled) return
+		if(!config.miniBossAlert.enabled || !enabled) return
 		if(lastAlert.elapsedSince() < 1.seconds) return
-		if(event.id != Identifier.ofVanilla("entity.generic.explode")) return
-		if(event.volume != 0.6f) return
-		if(event.pitch != 9 / 7f) return
+		if(event.id != EXPLODE || event.volume != 0.6f || event.pitch != 9 / 7f) return
 
 		RenderUtils.drawTitle(tr("nobaaddons.slayers.miniBossAlert.spawned", "MiniBoss Spawned!"), config.miniBossAlert.alertColor, duration = 1.5.seconds, id = "slayer.alert")
 		SoundUtils.dingLowSound.play()
@@ -37,9 +36,7 @@ object MiniBossFeatures {
 	}
 
 	private fun onMiniBossSpawn(event: SlayerEvents.MiniBossSpawn) {
-		if(!config.highlightMiniBosses.enabled) return
-		if(!enabled) return
-
+		if(!config.highlightMiniBosses.enabled || !enabled) return
 		event.entity.highlight(config.highlightMiniBosses.highlightColor)
 	}
 }

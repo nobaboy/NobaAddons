@@ -55,9 +55,8 @@ object TrophyFishAPI {
 		rarities[rarity] = (rarities[rarity] ?: 0) + 1
 	}
 
-	// TODO: Is null checking needed here
 	fun getCountFromOdgerStack(item: ItemStack): Map<TrophyFishRarity, Int> {
-		val fish = item.lore?.stringLines?.mapNotNull { ODGER_RARITY_REGEX.matchEntire(it) } ?: return emptyMap()
+		val fish = item.lore.stringLines.mapNotNull { ODGER_RARITY_REGEX.matchEntire(it) }
 		if(fish.isEmpty()) return emptyMap()
 
 		return fish.associate {

@@ -135,7 +135,7 @@ object InventoryCategory {
 			)
 			tickBox(
 				tr("nobaaddons.config.inventory.slotInfo.petItem", "Pet Items"),
-				tr("nobaaddons.config.inventory.slotInfo.petItem.tooltip", "Displays an icon for specific pet items, such as EXP Share, Lucky Clover Core or Tier Boost"),
+				tr("nobaaddons.config.inventory.slotInfo.petItem.tooltip", "Displays an icon for specific pet items, such as EXP Share, Lucky Clover, or Tier Boost"),
 				default = defaults.inventory.slotInfo.petItem,
 				property = config.inventory.slotInfo::petItem
 			)

@@ -19,12 +19,14 @@ import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.block.Blocks
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.EndermanEntity
+import net.minecraft.item.Items
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
@@ -57,7 +59,7 @@ object YangGlyphFeatures {
 			if(bossEntity !in nearbyEntities) return@schedule
 
 			val helmet = armorStand.getEquippedStack(EquipmentSlot.HEAD)
-			if(helmet.name.string != "Beacon") return@schedule
+			if(helmet.item != Items.BEACON) return@schedule
 
 			flyingYangGlyphs.add(armorStand)
 		}
@@ -77,7 +79,7 @@ object YangGlyphFeatures {
 				flyingYangGlyphs.remove(armorStand)
 				yangGlyphs[location] = Timestamp.now() + 5.seconds
 
-				RenderUtils.drawTitle("Yang Glyph!", config.yangGlyphAlertColor, duration = 1.5.seconds)
+				RenderUtils.drawTitle(tr("nobaaddons.slayers.yangGlyph.placed", "Yang Glyph!"), config.yangGlyphAlertColor, duration = 1.5.seconds)
 				SoundUtils.plingSound.play()
 			}
 			else -> yangGlyphs.remove(location)
@@ -92,7 +94,7 @@ object YangGlyphFeatures {
 
 			val seconds = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
 			RenderUtils.renderOutlinedFilledBox(context, location, config.yangGlyphHighlightColor, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), "Yang Glyph", config.yangGlyphHighlightColor, yOffset = -10f, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), tr("nobaaddons.slayers.yangGlyph.name", "Yang Glyph"), config.yangGlyphHighlightColor, yOffset = -10f, throughBlocks = true)
 			RenderUtils.renderText(location.center().raise(), seconds, NobaColor.WHITE, throughBlocks = true)
 		}
 	}

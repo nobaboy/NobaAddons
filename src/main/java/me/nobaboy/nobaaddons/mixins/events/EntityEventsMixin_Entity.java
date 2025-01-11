@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 abstract class EntityEventsMixin_Entity {
 	@Inject(method = "startRiding(Lnet/minecraft/entity/Entity;Z)Z", at = @At("RETURN"))
 	public void nobaaddons$onStartRiding(Entity vehicle, boolean force, CallbackInfoReturnable<Boolean> cir) {
-		if(!cir.getReturnValue()) return;
-		EntityEvents.VEHICLE_CHANGE.invoke(new EntityEvents.VehicleChange((Entity) (Object) this, vehicle));
+		if(cir.getReturnValue()) EntityEvents.VEHICLE_CHANGE.invoke(new EntityEvents.VehicleChange((Entity) (Object) this, vehicle));
 	}
 }

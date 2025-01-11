@@ -51,7 +51,7 @@ abstract class OverlayTextureMixin implements OverlayTextureDuck {
 	@Unique
 	private static int getColorInt(int red, int green, int blue, int alpha) {
 		alpha = 255 - alpha;
-		return ColorHelper./*? if >=1.21.2 {*/getArgb/*?} else {*//*Argb.getArgb*//*?}*/(alpha, red, green, blue);
+		return ColorHelper./*? if <1.21.2 {*//*Argb.*//*?}*/getArgb(alpha, red, green, blue);
 	}
 
 	public void nobaaddons$setColor(@Nullable Color color) {
