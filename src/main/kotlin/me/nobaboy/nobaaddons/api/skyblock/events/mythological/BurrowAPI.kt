@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
-import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI.BurrowParticleType.entries
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.ParticleEvents

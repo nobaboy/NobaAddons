@@ -1,9 +1,5 @@
 package me.nobaboy.nobaaddons.events
 
-import me.nobaboy.nobaaddons.events.ChatMessageEvents.ALLOW
-import me.nobaboy.nobaaddons.events.ChatMessageEvents.CHAT
-import me.nobaboy.nobaaddons.events.ChatMessageEvents.LATE_MODIFY
-import me.nobaboy.nobaaddons.events.ChatMessageEvents.MODIFY
 import me.nobaboy.nobaaddons.events.internal.Event
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents

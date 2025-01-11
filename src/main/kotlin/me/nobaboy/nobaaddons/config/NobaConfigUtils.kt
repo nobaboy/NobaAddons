@@ -121,10 +121,6 @@ object NobaConfigUtils {
 		return EnumControllerBuilder.create(option).enumClass(E::class.java)
 	}
 
-	inline fun <reified E : Enum<E>> createCyclerController(option: Option<E>): EnumControllerBuilder<E> {
-		return EnumControllerBuilder.create(option).enumClass(E::class.java)
-	}
-
 	fun createIntegerSliderController(option: Option<Int>, min: Int, max: Int, step: Int, format: ((Int) -> Text)? = null): ControllerBuilder<Int> {
 		return IntegerSliderControllerBuilder.create(option).range(min, max).step(step).also { if(format != null) it.formatValue(format) }
 	}

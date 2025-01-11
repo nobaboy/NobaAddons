@@ -7,7 +7,6 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
 import net.minecraft.entity.Entity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
-import kotlin.reflect.KClass
 
 object EntityUtils {
 	fun PlayerEntity.isRealPlayer() = uuid?.let { it.version() == 4 } == true
@@ -22,10 +21,6 @@ object EntityUtils {
 	}
 
 	inline fun <reified T : Entity> getEntities(): Sequence<T> = getAllEntities().filterIsInstance<T>()
-
-	@Suppress("UNCHECKED_CAST")
-	fun <T : Entity> getEntities(clazz: KClass<T>): Sequence<T> =
-		getAllEntities().filter { clazz.isInstance(it) } as Sequence<T>
 
 	fun getEntityById(entityId: Int) = MCUtils.player?.entityWorld?.getEntityById(entityId)
 

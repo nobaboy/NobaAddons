@@ -129,7 +129,7 @@ object InventoryCategory {
 			)
 			tickBox(
 				tr("nobaaddons.config.inventory.slotInfo.petLevel", "Pet Level"),
-				tr("nobaaddons.config.inventory.slotInfo.petLevel.tooltip", "Displays the level of a non-maxed level pet"),
+				tr("nobaaddons.config.inventory.slotInfo.petLevel.tooltip", "Displays the level of a non-maxed pet"),
 				default = defaults.inventory.slotInfo.petLevel,
 				property = config.inventory.slotInfo::petLevel
 			)
