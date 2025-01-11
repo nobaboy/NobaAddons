@@ -10,11 +10,11 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
 object HoppityAPI {
 	const val LOCATOR = "EGGLOCATOR"
 
-	val isActive: Boolean get() = SkyBlockSeason.SPRING.isSeason() && inRelatedIsland && hasLocatorInHand()
+	val isActive: Boolean get() = SkyBlockSeason.SPRING.isSeason() && inRelevantIsland && hasLocatorInHand()
 
 	private fun hasLocatorInHand(): Boolean = MCUtils.player?.mainHandStack?.getSkyBlockItemId() == LOCATOR
 
-	private val inRelatedIsland: Boolean
+	private val inRelevantIsland: Boolean
 		get() = listOf(
 			SkyBlockIsland.PRIVATE_ISLAND,
 			SkyBlockIsland.GARDEN,
