@@ -69,6 +69,7 @@ object SlayersCategory {
 		buildGroup(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
 			val highlightPhases = boolean(
 				tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases"),
+				tr("nobaaddons.config.slayers.voidgloom.highlightPhases.tooltip", "Highlights the Voidgloom Seraph based on its current phase\n\nThe priority of the phases are:\n - Hit Phase (No placed Yang Glyph)\n - Beacon Phase\n - Damage Phase"),
 				default = defaults.slayers.voidgloom.highlightPhases,
 				property = config.slayers.voidgloom::highlightPhases
 			)
@@ -92,6 +93,7 @@ object SlayersCategory {
 
 			val yangGlyphAlert = boolean(
 				tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert", "Yang Glyph Alert"),
+				tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert.tooltip", "Displays an alert when a Yang Glyph, commonly known as a Beacon, is placed by the Voidgloom Seraph"),
 				default = defaults.slayers.voidgloom.yangGlyphAlert,
 				property = config.slayers.voidgloom::yangGlyphAlert
 			)
@@ -101,6 +103,7 @@ object SlayersCategory {
 				property = config.slayers.voidgloom::yangGlyphAlertColor
 			) requires yangGlyphAlert
 			val highlightYangGlyph = boolean(
+				tr("nobaaddons.config.slayers.voidgloom.highlightYangGlyph", "Highlight Yang Glyphs"),
 				tr("nobaaddons.config.slayers.voidgloom.highlightYangGlyph", "Highlight Yang Glyphs"),
 				default = defaults.slayers.voidgloom.highlightYangGlyphs,
 				property = config.slayers.voidgloom::highlightYangGlyphs
@@ -128,6 +131,7 @@ object SlayersCategory {
 
 			boolean(
 				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer"),
+				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer.tooltip", "Displays a timer on the Voidgloom Seraph boss indicating how much time is left for its Broken Heart Radiation, commonly known as Lazer Phase"),
 				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
 				property = config.slayers.voidgloom::brokenHeartRadiationTimer
 			)
