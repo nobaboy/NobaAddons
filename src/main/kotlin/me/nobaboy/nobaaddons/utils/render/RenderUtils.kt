@@ -447,7 +447,7 @@ object RenderUtils {
 
 			buffer.vertex(entry, points[i].x.toFloat(), points[i].y.toFloat(), points[i].z.toFloat())
 				.color(red, green, blue, 1f)
-				.normal(entry, normalVec)
+				.normal(entry, normalVec.x, normalVec.y, normalVec.z)
 		}
 
 		BufferRenderer.drawWithGlobalProgram(buffer.end())
