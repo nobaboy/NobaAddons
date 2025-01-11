@@ -30,9 +30,9 @@ object StringUtils {
 
 	fun Int.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String {
 		return when {
-			this.toInt() > 1_000_000_000 -> "${(this / 1_000_000_000.0).roundTo(billionPrecision)}b"
-			this.toInt() > 1_000_000 -> "${(this / 1_000_000.0).roundTo(millionPrecision)}m"
-			this.toInt() > 1_000 -> "${(this / 1_000.0).roundTo(thousandPrecision)}k"
+			this.toInt() >= 1_000_000_000 -> "${(this / 1_000_000_000.0).roundTo(billionPrecision)}b"
+			this.toInt() >= 1_000_000 -> "${(this / 1_000_000.0).roundTo(millionPrecision)}m"
+			this.toInt() >= 1_000 -> "${(this / 1_000.0).roundTo(thousandPrecision)}k"
 			else -> this.toString()
 		}.replace(TRAILING_ZERO, "$1")
 	}
