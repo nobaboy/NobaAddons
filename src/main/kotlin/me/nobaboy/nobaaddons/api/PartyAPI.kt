@@ -4,6 +4,7 @@ import kotlinx.coroutines.Deferred
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.data.json.MojangProfile
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.CooldownTickEvent
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -15,15 +16,13 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import net.minecraft.text.HoverEvent
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
-import java.util.UUID
-import kotlin.text.Regex
+import java.util.*
 import kotlin.time.Duration.Companion.seconds
 
 object PartyAPI {
@@ -61,7 +60,7 @@ object PartyAPI {
 		CooldownTickEvent.EVENT.register(this::onTick)
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
-		ClientReceiveMessageEvents.GAME.register { message, _ ->
+		ChatMessageEvents.CHAT.register { (message) ->
 			val cleaned = message.string.cleanFormatting()
 			if(invalidatePartyStateMessages.any { it.matches(cleaned) }) refreshPartyList = true
 		}

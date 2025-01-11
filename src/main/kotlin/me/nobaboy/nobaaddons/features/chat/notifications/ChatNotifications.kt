@@ -1,12 +1,12 @@
 package me.nobaboy.nobaaddons.features.chat.notifications
 
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.util.Util
 import java.util.regex.PatternSyntaxException
 import kotlin.time.Duration.Companion.seconds
@@ -25,14 +25,7 @@ object ChatNotifications {
 
 	fun init() {
 		ChatNotificationsConfig.safeLoad()
-		ClientReceiveMessageEvents.GAME.register { message, overlay ->
-			if(overlay) return@register
-			onChatMessage(message.string.cleanFormatting())
-		}
-		ClientReceiveMessageEvents.GAME_CANCELED.register { message, overlay ->
-			if(overlay) return@register
-			onChatMessage(message.string.cleanFormatting())
-		}
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
 	private fun onChatMessage(message: String) {

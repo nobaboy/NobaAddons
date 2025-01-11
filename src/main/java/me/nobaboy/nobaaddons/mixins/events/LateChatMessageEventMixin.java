@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
-import me.nobaboy.nobaaddons.events.LateChatMessageEvent;
+import me.nobaboy.nobaaddons.events.ChatMessageEvents;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,8 +15,6 @@ abstract class LateChatMessageEventMixin {
 		argsOnly = true
 	)
 	public Text nobaaddons$lateModifyMessage(Text original) {
-		var event = new LateChatMessageEvent(original);
-		LateChatMessageEvent.EVENT.invoke(event);
-		return event.getMessage();
+		return ChatMessageEvents.LATE_MODIFY.invoke(new ChatMessageEvents.Modify(original));
 	}
 }

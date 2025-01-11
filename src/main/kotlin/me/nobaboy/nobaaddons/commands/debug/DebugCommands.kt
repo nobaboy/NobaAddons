@@ -13,6 +13,7 @@ import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
+import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -48,6 +49,17 @@ object DebugCommands {
 			append("-".repeat(20).toText().formatted(Formatting.DARK_GRAY, Formatting.BOLD))
 		}
 		source.sendFeedback(text)
+	}
+
+	@OptIn(UntranslatedMessage::class)
+	@Command
+	fun dev() {
+		PersistentCache.devMode = !PersistentCache.devMode
+		if(PersistentCache.devMode) {
+			ChatUtils.addMessage("Enabled developer mode; use Right Control while hovering over an item to copy it")
+		} else {
+			ChatUtils.addMessage("Disabled developer mode")
+		}
 	}
 
 	@Command

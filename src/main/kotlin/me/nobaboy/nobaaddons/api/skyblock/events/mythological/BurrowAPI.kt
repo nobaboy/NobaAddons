@@ -1,6 +1,8 @@
 package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI.BurrowParticleType.entries
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
@@ -13,7 +15,6 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.toNobaVec
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.block.Blocks
@@ -43,7 +44,7 @@ object BurrowAPI {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
-		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		AttackBlockCallback.EVENT.register { player, _, _, pos, _ -> onBlockClick(player, pos.toNobaVec()) }
 		UseBlockCallback.EVENT.register { player, _, _, hitResult -> onBlockClick(player, hitResult.toNobaVec()) }
 	}

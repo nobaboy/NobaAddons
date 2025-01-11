@@ -3,18 +3,17 @@ package me.nobaboy.nobaaddons.api.skyblock
 import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.data.PersistentCache
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.text.Text
 import java.util.EnumMap
-import kotlin.text.get
 
 object TrophyFishAPI {
 	val trophyFish: MutableMap<String, EnumMap<TrophyFishRarity, Int>> by PersistentCache::trophyFish
@@ -25,8 +24,7 @@ object TrophyFishAPI {
 	private val inventorySlots = 10..31
 
 	fun init() {
-		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message) }
-		ClientReceiveMessageEvents.GAME_CANCELED.register { message, _ -> onChatMessage(message) }
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message) }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 	}
 
@@ -57,6 +55,7 @@ object TrophyFishAPI {
 		rarities[rarity] = (rarities[rarity] ?: 0) + 1
 	}
 
+	// TODO: Is null checking needed here
 	fun getCountFromOdgerStack(item: ItemStack): Map<TrophyFishRarity, Int> {
 		val fish = item.lore?.stringLines?.mapNotNull { ODGER_RARITY_REGEX.matchEntire(it) } ?: return emptyMap()
 		if(fish.isEmpty()) return emptyMap()

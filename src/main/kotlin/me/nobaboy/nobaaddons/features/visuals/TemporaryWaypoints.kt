@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.visuals
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
@@ -17,7 +18,6 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import kotlin.time.Duration
@@ -35,7 +35,7 @@ object TemporaryWaypoints {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { waypoints.clear() }
-		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
