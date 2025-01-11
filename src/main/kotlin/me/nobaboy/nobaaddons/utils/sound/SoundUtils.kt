@@ -16,12 +16,12 @@ object SoundUtils {
 
 	val dingHighSound = SimpleSound(ARROW_HIT_PLAYER)
 	val dingLowSound = SimpleSound(EXPERIENCE_ORB_PICKUP, pitch = 0.5f)
-	val plingSound = SimpleSound(NOTE_BLOCK_PLING, pitch = 2.0f)
+	val plingSound = SimpleSound(NOTE_BLOCK_PLING, pitch = 2f)
 
 	val zeldaSecretSound = SoundSequence.uniformVolume(
 		soundEvent = NOTE_BLOCK_FLUTE,
 		semitones = listOf(1, 0, -3, -9, -10, -2, 2, 6),
-		volume = 1.0f,
+		volume = 1f,
 		delay = 3
 	)
 
@@ -64,8 +64,8 @@ object SoundUtils {
 
 	class SimpleSound(
 		val soundEvent: SoundEvent,
-		val pitch: Float = 1.0f,
-		val volume: Float = 1.0f
+		val pitch: Float = 1f,
+		val volume: Float = 1f
 	) : PlayableSound {
 		override fun play(category: SoundCategory) {
 			playSound(soundEvent, volume, pitch, category)

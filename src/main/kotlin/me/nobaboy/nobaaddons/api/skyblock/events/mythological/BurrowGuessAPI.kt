@@ -31,8 +31,8 @@ object BurrowGuessAPI {
 
 	private var dingIndex = 0
 	private var hasDinged = false
-	private var lastDingPitch = 0.0f
-	private var firstPitch = 0.0f
+	private var lastDingPitch = 0f
+	private var firstPitch = 0f
 	private var lastParticlePoint: NobaVec? = null
 	private var lastParticlePoint2: NobaVec? = null
 	private var firstParticlePoint: NobaVec? = null
@@ -75,7 +75,7 @@ object BurrowGuessAPI {
 			locs.clear()
 		}
 
-		if(lastDingPitch == 0.0f) {
+		if(lastDingPitch == 0f) {
 			lastDingPitch = pitch
 			distance = null
 			lastParticlePoint = null

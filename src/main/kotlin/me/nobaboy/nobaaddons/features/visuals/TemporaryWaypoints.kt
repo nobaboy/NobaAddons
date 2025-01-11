@@ -74,7 +74,7 @@ object TemporaryWaypoints {
 			val formattedDistance = distance.toInt().addSeparators()
 
 			RenderUtils.renderWaypoint(context, location, color, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), waypoint.text, color, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), waypoint.text, color, yOffset = -10f, hideThreshold = 5.0, throughBlocks = true)
 			RenderUtils.renderText(location.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}

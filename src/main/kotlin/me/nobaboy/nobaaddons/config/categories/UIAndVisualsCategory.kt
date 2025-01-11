@@ -19,7 +19,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 import net.minecraft.text.Texts
-import java.util.Calendar
+import java.util.*
 
 private val year = Calendar.getInstance().get(Calendar.YEAR)
 
@@ -184,7 +184,7 @@ object UIAndVisualsCategory {
 				default = defaults.uiAndVisuals.itemPosition.scale,
 				property = config.uiAndVisuals.itemPosition::scale,
 				min = 0.1f,
-				max = 2.0f,
+				max = 2f,
 				step = 0.1f
 			)
 		}

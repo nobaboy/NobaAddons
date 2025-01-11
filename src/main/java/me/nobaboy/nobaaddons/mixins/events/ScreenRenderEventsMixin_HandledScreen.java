@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HandledScreen.class)
-abstract class ScreenRenderEventsHandledScreenMixin extends Screen {
-	protected ScreenRenderEventsHandledScreenMixin(Text title) {
+abstract class ScreenRenderEventsMixin_HandledScreen extends Screen {
+	protected ScreenRenderEventsMixin_HandledScreen(Text title) {
 		super(title);
 	}
 

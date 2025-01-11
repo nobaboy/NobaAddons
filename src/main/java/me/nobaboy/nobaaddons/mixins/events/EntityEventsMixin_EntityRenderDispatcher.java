@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
-import me.nobaboy.nobaaddons.events.EntityRenderEvents;
+import me.nobaboy.nobaaddons.events.EntityEvents;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @SuppressWarnings("InvalidInjectorMethodSignature")
 //?}
 @Mixin(EntityRenderDispatcher.class)
-abstract class EntityRenderEventMixin {
+abstract class EntityEventsMixin_EntityRenderDispatcher {
 	@Inject(
 		//? if >=1.21.2 {
 		method = "render(Lnet/minecraft/entity/Entity;DDDFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/render/entity/EntityRenderer;)V",
@@ -32,7 +32,7 @@ abstract class EntityRenderEventMixin {
 		double x, double y, double z,
 		//? if <1.21.2 {
 		/*float yaw,
-		*///?}
+		 *///?}
 		float tickDelta,
 		MatrixStack matrices,
 		VertexConsumerProvider vertexConsumers,
@@ -42,8 +42,8 @@ abstract class EntityRenderEventMixin {
 		//?}
 		CallbackInfo ci
 	) {
-		var event = new EntityRenderEvents.AllowRender(entity);
-		EntityRenderEvents.ALLOW_RENDER.invoke(event);
+		var event = new EntityEvents.AllowRender(entity);
+		EntityEvents.ALLOW_RENDER.invoke(event);
 		if(event.isCanceled()) {
 			ci.cancel();
 		}
@@ -66,7 +66,7 @@ abstract class EntityRenderEventMixin {
 		double x, double y, double z,
 		//? if <1.21.2 {
 		/*float yaw,
-		*///?}
+		 *///?}
 		float tickDelta,
 		MatrixStack matrices,
 		VertexConsumerProvider vertexConsumers,
@@ -76,8 +76,8 @@ abstract class EntityRenderEventMixin {
 		//?}
 		CallbackInfo ci
 	) {
-		var event = new EntityRenderEvents.Render(entity, tickDelta);
-		EntityRenderEvents.PRE_RENDER.invoke(event);
+		var event = new EntityEvents.Render(entity, tickDelta);
+		EntityEvents.PRE_RENDER.invoke(event);
 	}
 
 	@Inject(
@@ -98,7 +98,7 @@ abstract class EntityRenderEventMixin {
 		double x, double y, double z,
 		//? if <1.21.2 {
 		/*float yaw,
-		*///?}
+		 *///?}
 		float tickDelta,
 		MatrixStack matrices,
 		VertexConsumerProvider vertexConsumers,
@@ -108,7 +108,7 @@ abstract class EntityRenderEventMixin {
 		//?}
 		CallbackInfo ci
 	) {
-		var event = new EntityRenderEvents.Render(entity, tickDelta);
-		EntityRenderEvents.POST_RENDER.invoke(event);
+		var event = new EntityEvents.Render(entity, tickDelta);
+		EntityEvents.POST_RENDER.invoke(event);
 	}
 }

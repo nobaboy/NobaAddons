@@ -6,8 +6,8 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.ducks.FishingBobberTimerDuck
+import me.nobaboy.nobaaddons.events.EntityEvents
 import me.nobaboy.nobaaddons.events.EntityNametagRenderEvents
-import me.nobaboy.nobaaddons.events.EntityRenderEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
@@ -26,13 +26,13 @@ object FishingBobberTweaks {
 	private val GOLD = NobaColor.GOLD.rgb
 
 	fun init() {
-		EntityRenderEvents.ALLOW_RENDER.register(this::onEntityRender)
+		EntityEvents.ALLOW_RENDER.register(this::onEntityRender)
 		EntityNametagRenderEvents.VISIBILITY.register(this::allowNameTag)
 		EntityNametagRenderEvents.EVENT.register(this::renderTimer)
 		ClientEntityEvents.ENTITY_LOAD.register { entity, _ -> onEntityLoad(entity) }
 	}
 
-	private fun onEntityRender(event: EntityRenderEvents.AllowRender) {
+	private fun onEntityRender(event: EntityEvents.AllowRender) {
 		val entity = event.entity as? FishingBobberEntity ?: return
 		if(!renderConfig.hideOtherPeopleFishing) return
 		if(entity.isOurs) return

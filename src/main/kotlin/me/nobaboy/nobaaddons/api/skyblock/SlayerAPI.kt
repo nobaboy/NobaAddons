@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
-import me.nobaboy.nobaaddons.events.EntityRenderEvents
+import me.nobaboy.nobaaddons.events.EntityEvents
 import me.nobaboy.nobaaddons.events.PacketEvents
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -27,7 +27,7 @@ object SlayerAPI {
 
 	fun init() {
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
-		EntityRenderEvents.POST_RENDER.register(this::onEntityRender)
+		EntityEvents.POST_RENDER.register(this::onEntityRender)
 		ClientTickEvents.END_CLIENT_TICK.register { onTick() }
 		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string.cleanFormatting()) }
 	}
@@ -56,7 +56,7 @@ object SlayerAPI {
 		}
 	}
 
-	private fun onEntityRender(event: EntityRenderEvents.Render) {
+	private fun onEntityRender(event: EntityEvents.Render) {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		val entity = event.entity as? LivingEntity ?: return

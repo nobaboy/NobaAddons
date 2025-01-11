@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.utils.render
 
 import me.nobaboy.nobaaddons.ducks.OverlayTextureDuck
-import me.nobaboy.nobaaddons.events.EntityRenderEvents
+import me.nobaboy.nobaaddons.events.EntityEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
@@ -16,13 +16,13 @@ object EntityOverlay {
 	private val entities = mutableMapOf<LivingEntity, Color>()
 
 	init {
-		EntityRenderEvents.PRE_RENDER.register {
+		EntityEvents.PRE_RENDER.register {
 			val color = entities[it.entity] ?: return@register
 			(texture as OverlayTextureDuck).`nobaaddons$setColor`(color)
 			overlay = true
 		}
 
-		EntityRenderEvents.POST_RENDER.register {
+		EntityEvents.POST_RENDER.register {
 			if(!overlay) return@register
 			(texture as OverlayTextureDuck).`nobaaddons$setColor`(null)
 			overlay = false

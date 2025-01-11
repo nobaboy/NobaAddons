@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.fishing
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.events.EntityRenderEvents
+import me.nobaboy.nobaaddons.events.EntityEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.skullFromRepo
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
@@ -25,11 +25,11 @@ object HighlightThunderSparks {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { thunderSparks.clear() }
-		EntityRenderEvents.POST_RENDER.register(this::onEntityRender)
+		EntityEvents.POST_RENDER.register(this::onEntityRender)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 	}
 
-	private fun onEntityRender(event: EntityRenderEvents.Render) {
+	private fun onEntityRender(event: EntityEvents.Render) {
 		if(!enabled) return
 
 		val entity = event.entity as? ArmorStandEntity ?: return

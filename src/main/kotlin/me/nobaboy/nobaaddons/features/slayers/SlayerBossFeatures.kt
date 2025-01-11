@@ -19,6 +19,7 @@ object SlayerBossFeatures {
 		SlayerEvents.BOSS_KILL.register(this::onBossKill)
 	}
 
+	// FIXME: This sometimes false triggers when a boss is killed, maybe lag?
 	private fun onBossSpawn(event: SlayerEvents.BossSpawn) {
 		if(!config.bossAlert.enabled) return
 		if(!enabled) return

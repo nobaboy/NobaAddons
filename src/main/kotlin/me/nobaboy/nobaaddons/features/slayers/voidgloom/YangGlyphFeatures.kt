@@ -5,13 +5,14 @@ import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
-import me.nobaboy.nobaaddons.events.EntityRenderEvents
+import me.nobaboy.nobaaddons.events.EntityEvents
 import me.nobaboy.nobaaddons.events.WorldEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
+import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -37,9 +38,28 @@ object YangGlyphFeatures {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
+		EntityEvents.SPAWN.register(this::onEntitySpawn)
 		WorldEvents.BLOCK_UPDATE.register(this::onBlockUpdate)
-		EntityRenderEvents.POST_RENDER.register(this::onEntityRender)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::onWorldRender)
+	}
+
+	private fun onEntitySpawn(event: EntityEvents.Spawn) {
+		if(!config.yangGlyphAlert) return
+		if(!enabled) return
+
+		Scheduler.schedule(2) {
+			val bossEntity = SlayerAPI.currentQuest?.entity ?: return@schedule
+			val armorStand = event.entity as? ArmorStandEntity ?: return@schedule
+			if(armorStand in flyingYangGlyphs) return@schedule
+
+			val nearbyEntities = EntityUtils.getEntitiesNear<EndermanEntity>(armorStand.getNobaVec(), 3.0)
+			if(bossEntity !in nearbyEntities) return@schedule
+
+			val helmet = armorStand.getEquippedStack(EquipmentSlot.HEAD)
+			if(helmet.name.string != "Beacon") return@schedule
+
+			flyingYangGlyphs.add(armorStand)
+		}
 	}
 
 	private fun onBlockUpdate(event: WorldEvents.BlockUpdate) {
@@ -48,37 +68,19 @@ object YangGlyphFeatures {
 
 		val location = event.blockPos.toNobaVec()
 
-		if(event.newState.block == Blocks.BEACON) {
-			if(SlayerAPI.currentQuest?.spawned == false) return
+		when(event.newState.block) {
+			Blocks.BEACON -> {
+				if(SlayerAPI.currentQuest?.spawned == false) return
 
-			val armorStand = flyingYangGlyphs.firstOrNull { it.getNobaVec().distance(location) < 3 } ?: return
+				val armorStand = flyingYangGlyphs.firstOrNull { it.getNobaVec().distance(location) < 3 } ?: return
+				flyingYangGlyphs.remove(armorStand)
+				yangGlyphs[location] = Timestamp.now() + 5.seconds
 
-			flyingYangGlyphs.remove(armorStand)
-			yangGlyphs[location] = Timestamp.now() + 5.seconds
-
-			RenderUtils.drawTitle("Yang Glyph!", config.yangGlyphAlertColor)
-			SoundUtils.plingSound.play()
-		} else {
-			if(location in yangGlyphs) yangGlyphs.remove(location)
+				RenderUtils.drawTitle("Yang Glyph!", config.yangGlyphAlertColor, duration = 1.5.seconds)
+				SoundUtils.plingSound.play()
+			}
+			else -> yangGlyphs.remove(location)
 		}
-	}
-
-	private fun onEntityRender(event: EntityRenderEvents.Render) {
-		if(!config.yangGlyphAlert) return
-		if(!enabled) return
-
-		val bossEntity = SlayerAPI.currentQuest?.entity ?: return
-
-		val entity = event.entity as? ArmorStandEntity ?: return
-		if(entity in flyingYangGlyphs) return
-
-		val helmet = entity.getEquippedStack(EquipmentSlot.HEAD)
-		if(helmet.name.string != "Beacon") return
-
-		val entitiesNear = EntityUtils.getEntitiesNear<EndermanEntity>(entity.getNobaVec(), 3.0)
-		if(bossEntity !in entitiesNear) return
-
-		flyingYangGlyphs.add(entity)
 	}
 
 	private fun onWorldRender(context: WorldRenderContext) {
@@ -89,7 +91,7 @@ object YangGlyphFeatures {
 
 			val seconds = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
 			RenderUtils.renderOutlinedFilledBox(context, location, config.yangGlyphHighlightColor, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), "Yang Glyph", config.yangGlyphHighlightColor, yOffset = -10.0f, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), "Yang Glyph", config.yangGlyphHighlightColor, yOffset = -10f, throughBlocks = true)
 			RenderUtils.renderText(location.center().raise(), seconds, NobaColor.WHITE, throughBlocks = true)
 		}
 	}

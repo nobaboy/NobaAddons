@@ -5,11 +5,12 @@ import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
-import me.nobaboy.nobaaddons.events.EntityRenderEvents
+import me.nobaboy.nobaaddons.events.EntityEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.skullFromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
+import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -27,30 +28,30 @@ object HighlightNukekubiFixations {
 			SlayerAPI.currentQuest?.let { it.boss == SlayerBoss.VOIDGLOOM && it.spawned } == true
 
 	private val NUKEKUBI_FIXATION_TEXTURE by "eyJ0aW1lc3RhbXAiOjE1MzQ5NjM0MzU5NjIsInByb2ZpbGVJZCI6ImQzNGFhMmI4MzFkYTRkMjY5NjU1ZTMzYzE0M2YwOTZjIiwicHJvZmlsZU5hbWUiOiJFbmRlckRyYWdvbiIsInNpZ25hdHVyZVJlcXVpcmVkIjp0cnVlLCJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWIwNzU5NGUyZGYyNzM5MjFhNzdjMTAxZDBiZmRmYTExMTVhYmVkNWI5YjIwMjllYjQ5NmNlYmE5YmRiYjRiMyJ9fX0=".skullFromRepo("nukekubi_fixatiion")
-
 	private val nukekubiFixations = mutableListOf<ArmorStandEntity>()
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { nukekubiFixations.clear() }
-		EntityRenderEvents.POST_RENDER.register(this::onEntityRender)
+		EntityEvents.SPAWN.register(this::onEntitySpawn)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::onWorldRender)
 	}
 
-	private fun onEntityRender(event: EntityRenderEvents.Render) {
+	private fun onEntitySpawn(event: EntityEvents.Spawn) {
 		if(!enabled) return
 
-		val bossEntity = SlayerAPI.currentQuest?.entity ?: return
+		Scheduler.schedule(2) {
+			val bossEntity = SlayerAPI.currentQuest?.entity ?: return@schedule
+			val armorStand = event.entity as? ArmorStandEntity ?: return@schedule
+			if(armorStand in nukekubiFixations) return@schedule
 
-		val entity = event.entity as? ArmorStandEntity ?: return
-		if(entity in nukekubiFixations) return
+			val nearbyEntities = EntityUtils.getEntitiesNear<EndermanEntity>(armorStand.getNobaVec(), 3.0)
+			if(bossEntity !in nearbyEntities) return@schedule
 
-		val helmet = entity.getEquippedStack(EquipmentSlot.HEAD)
-		if(helmet.getSkullTexture() != NUKEKUBI_FIXATION_TEXTURE) return
+			val helmet = armorStand.getEquippedStack(EquipmentSlot.HEAD)
+			if(helmet.getSkullTexture() != NUKEKUBI_FIXATION_TEXTURE) return@schedule
 
-		val entitiesNear = EntityUtils.getEntitiesNear<EndermanEntity>(entity.getNobaVec(), 5.0)
-		if(bossEntity !in entitiesNear) return
-
-		nukekubiFixations.add(entity)
+			nukekubiFixations.add(armorStand)
+		}
 	}
 
 	private fun onWorldRender(context: WorldRenderContext) {
