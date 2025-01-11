@@ -61,9 +61,9 @@ interface ISlotInfo {
 			check(!init) { "Already initialized slot info!" }
 			init = true
 
-			slotInfos.forEach { handler ->
+			slotInfos.forEach { slotInfo ->
 				ScreenRenderEvents.DRAW_ITEM.register {
-					if(SkyBlockAPI.inSkyBlock && handler.enabled) handler.handle(it)
+					if(SkyBlockAPI.inSkyBlock && slotInfo.enabled) slotInfo.handle(it)
 				}
 			}
 		}

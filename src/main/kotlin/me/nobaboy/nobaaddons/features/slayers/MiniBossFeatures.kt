@@ -17,10 +17,10 @@ object MiniBossFeatures {
 	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false
 
 	fun init() {
-		SlayerEvents.FIND_MINI_BOSS.register(this::onFindMiniBoss)
+		SlayerEvents.MINI_BOSS_SPAWN.register(this::onFindMiniBoss)
 	}
 
-	private fun onFindMiniBoss(event: SlayerEvents.Find) {
+	private fun onFindMiniBoss(event: SlayerEvents.MiniBossSpawn) {
 		if(!enabled) return
 
 		val entity = event.entity

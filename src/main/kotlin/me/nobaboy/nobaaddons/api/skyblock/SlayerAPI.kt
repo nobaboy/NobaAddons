@@ -15,7 +15,7 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 
 object SlayerAPI {
-	private val slayerNamePattern by Regex("^☠ (?<name>[A-z ]+?)(?: (?<tier>[IV]+))? (?<hp>[\\d/BMk.,❤]+)\$").fromRepo("slayer.name")
+	private val slayerNamePattern by Regex("^☠ (?<name>[A-z ]+?)(?: (?<tier>[IV]+))? \\d+.*").fromRepo("slayer.name")
 	private val slayerProgressPattern by Regex("^(?<current>\\d+)/(?<required>\\d+) Kills").fromRepo("slayer.progress")
 
 	var currentQuest: SlayerQuest? = null
@@ -30,6 +30,8 @@ object SlayerAPI {
 
 	private fun onTick() {
 		if(!SkyBlockAPI.inSkyBlock) return
+
+		miniBosses.removeIf { !it.isAlive }
 
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 		val bossNameLine = scoreboard.nextAfter("Slayer Quest") ?: return
@@ -58,8 +60,6 @@ object SlayerAPI {
 					val armorStandName = armorStand.name.string
 
 					slayerNamePattern.onFullMatch(armorStandName) {
-						if(it.entity != null) return@forEach
-
 						val ownerArmorStand = EntityUtils.getNextEntity(armorStand, 2) as? ArmorStandEntity ?: return@forEach
 						val playerName = MCUtils.playerName ?: return@forEach
 
@@ -70,12 +70,11 @@ object SlayerAPI {
 						it.armorStand = armorStand
 						it.timerArmorStand = timerArmorStand
 
-						SlayerEvents.FIND_BOSS.invoke(SlayerEvents.Find(entity))
 						return@forEach
 					}
 
 					if(it.boss.miniBossType?.names?.any { armorStandName.contains(it) } == true) {
-						SlayerEvents.FIND_MINI_BOSS.invoke(SlayerEvents.Find(entity))
+						SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
 						miniBosses.add(entity)
 					}
 				}
@@ -90,18 +89,17 @@ object SlayerAPI {
 			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest = null
 			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
 				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
-				currentQuest?.spawned = false
-				currentQuest?.entity = null
+				currentQuest = null
 			}
 		}
 	}
 
 	data class SlayerQuest(
 		val boss: SlayerBoss,
-		var progress: Int = 0,
-		var spawned: Boolean = false,
 		var entity: LivingEntity? = null,
 		var armorStand: ArmorStandEntity? = null,
-		var timerArmorStand: ArmorStandEntity? = null
+		var timerArmorStand: ArmorStandEntity? = null,
+		var spawned: Boolean = false,
+		var progress: Int = 0
 	)
 }

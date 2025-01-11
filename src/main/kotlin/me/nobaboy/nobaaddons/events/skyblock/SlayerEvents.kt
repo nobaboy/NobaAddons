@@ -9,10 +9,9 @@ object SlayerEvents {
 	val BOSS_SPAWN = EventDispatcher<BossSpawn>()
 	val BOSS_KILL = EventDispatcher<BossKill>()
 
-	val FIND_BOSS = EventDispatcher<Find>()
-	val FIND_MINI_BOSS = EventDispatcher<Find>()
+	val MINI_BOSS_SPAWN = EventDispatcher<MiniBossSpawn>()
 
 	class BossSpawn() : Event()
 	data class BossKill(val entity: LivingEntity?, val timerEntity: ArmorStandEntity?) : Event()
-	data class Find(val entity: LivingEntity) : Event()
+	data class MiniBossSpawn(val entity: LivingEntity) : Event()
 }
