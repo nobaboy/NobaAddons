@@ -102,8 +102,8 @@ object RenderUtils {
 		}
 		MCUtils.textRenderer.drawWithOutline(
 			text.asOrderedText(),
-			(x / scale).toFloat(),
-			(y / scale).toFloat(),
+			x / scale,
+			y / scale,
 			color.rgb,
 			outlineColor.rgb,
 			context.matrices.peek().positionMatrix,
@@ -398,66 +398,5 @@ object RenderUtils {
 		throughBlocks: Boolean = false
 	) {
 		renderText(location, text.toText(), color, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
-	}
-
-	// this is something.
-	fun renderCurve(
-		context: WorldRenderContext,
-		points: List<NobaVec>,
-		color: NobaColor,
-		lineWidth: Float = 1.0f,
-		throughBlocks: Boolean = false
-	) {
-		val matrices = context.matrixStack() ?: return
-		val cameraPos = context.camera().pos.toNobaVec()
-		val tessellator = RenderSystem.renderThreadTesselator()
-
-		GL11.glEnable(GL11.GL_LINE_SMOOTH)
-		GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
-
-		//? if >=1.21.2 {
-		RenderSystem.setShader(ShaderProgramKeys.RENDERTYPE_LINES)
-		//?} else {
-		/*RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram)
-		*///?}
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f)
-		RenderSystem.lineWidth(lineWidth)
-		RenderSystem.enableBlend()
-		RenderSystem.defaultBlendFunc()
-		RenderSystem.disableCull()
-		RenderSystem.enableDepthTest()
-		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
-
-		matrices.push()
-		matrices.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z)
-
-		val buffer = tessellator.begin(DrawMode.LINES, VertexFormats.LINES)
-
-		val red = color.red / 255.0f
-		val green = color.green / 255.0f
-		val blue = color.blue / 255.0f
-
-		val entry = matrices.peek()
-
-		for(i in points.indices) {
-			val nextPoint = if(i + 1 == points.size) points[i - 1] else points[i + 1]
-			val normalVec = (nextPoint - NobaVec(points[i].x, points[i].y, points[i].z)).normalize().toVec3d().toVector3f()
-
-			if(i + 1 == points.size) normalVec.negate()
-
-			buffer.vertex(entry, points[i].x.toFloat(), points[i].y.toFloat(), points[i].z.toFloat())
-				.color(red, green, blue, 1f)
-				.normal(entry, normalVec.x, normalVec.y, normalVec.z)
-		}
-
-		BufferRenderer.drawWithGlobalProgram(buffer.end())
-
-		matrices.pop()
-		GL11.glDisable(GL11.GL_LINE_SMOOTH)
-		RenderSystem.lineWidth(1f)
-		RenderSystem.disableBlend()
-		RenderSystem.enableCull()
-		RenderSystem.disableDepthTest()
-		RenderSystem.depthFunc(GL11.GL_LEQUAL)
 	}
 }

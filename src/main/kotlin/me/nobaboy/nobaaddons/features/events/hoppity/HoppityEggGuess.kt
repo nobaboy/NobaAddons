@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.hoppity.HoppityAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.hoppity.HoppityEgg
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.ParticleEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
@@ -11,8 +12,9 @@ import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
@@ -20,6 +22,7 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.ActionResult
+import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
 
 object HoppityEggGuess {
@@ -30,13 +33,11 @@ object HoppityEggGuess {
 	private val particleLocations = mutableListOf<NobaVec>()
 	private var guessLocation: NobaVec? = null
 
-	// Remove later
-	private val curvePoints = mutableListOf<NobaVec>()
-
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		SecondPassedEvent.EVENT.register { onSecondPassed() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		UseItemCallback.EVENT.register { player, _, _ -> onUseItem(player) }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
@@ -61,20 +62,23 @@ object HoppityEggGuess {
 		val yCurve = fitParabola(timeSteps, particleLocations.map { it.y })
 		val zCurve = fitParabola(timeSteps, particleLocations.map { it.z })
 
-		// Remove later
-		curvePoints.clear()
-
 		guessLocation = predictFutureLocation(xCurve, yCurve, zCurve)
+	}
+
+	private fun onChatMessage(message: String) {
+		if(!enabled) return
+		if(!message.startsWith("HOPPITY'S HUNT You found a Chocolate")) return
+
+		reset()
 	}
 
 	// FIXME make a custom event for item usage
 	private fun onUseItem(player: PlayerEntity): ActionResult {
 		if(!enabled) return ActionResult.PASS
 
-		val itemId = player.mainHandStack.getSkyBlockItemId() ?: return ActionResult.PASS
+		val itemId = player.mainHandStack.skyBlockId ?: return ActionResult.PASS
 		if(itemId != HoppityAPI.LOCATOR) return ActionResult.PASS
 
-		curvePoints.clear() // Remove later
 		lastAbilityUse = Timestamp.now()
 		return ActionResult.PASS
 	}
@@ -93,9 +97,6 @@ object HoppityEggGuess {
 				RenderUtils.renderText(it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 		}
-
-		// Remove later
-		if(curvePoints.isNotEmpty()) RenderUtils.renderCurve(context, curvePoints, NobaColor.BLUE, lineWidth = 3.0f)
 	}
 
 	private fun fitParabola(time: List<Double>, values: List<Double>): Triple<Double, Double, Double> {
@@ -123,10 +124,10 @@ object HoppityEggGuess {
 		val size = matrix.size
 		val augmentedMatrix = Array(size) { i -> matrix[i] + doubleArrayOf(vector[i]) }
 
-		for (i in 0 until size) {
+		for(i in 0 until size) {
 			var maxRow = i
-			for (k in i + 1 until size) {
-				if (Math.abs(augmentedMatrix[k][i]) > Math.abs(augmentedMatrix[maxRow][i])) {
+			for(k in i + 1 until size) {
+				if(abs(augmentedMatrix[k][i]) > abs(augmentedMatrix[maxRow][i])) {
 					maxRow = k
 				}
 			}
@@ -135,18 +136,18 @@ object HoppityEggGuess {
 			augmentedMatrix[i] = augmentedMatrix[maxRow]
 			augmentedMatrix[maxRow] = temp
 
-			for (k in i + 1 until size) {
+			for(k in i + 1 until size) {
 				val factor = augmentedMatrix[k][i] / augmentedMatrix[i][i]
-				for (j in i until size + 1) {
+				for(j in i until size + 1) {
 					augmentedMatrix[k][j] -= factor * augmentedMatrix[i][j]
 				}
 			}
 		}
 
 		val result = DoubleArray(size)
-		for (i in size - 1 downTo 0) {
+		for(i in size - 1 downTo 0) {
 			result[i] = augmentedMatrix[i][size] / augmentedMatrix[i][i]
-			for (k in 0 until i) {
+			for(k in 0 until i) {
 				augmentedMatrix[k][size] -= augmentedMatrix[k][i] * result[i]
 			}
 		}
@@ -172,13 +173,10 @@ object HoppityEggGuess {
 			val z = zCurve.first * t * t + zCurve.second * t + zCurve.third
 			val currentPoint = NobaVec(x, y, z)
 
-			// Remove later
-			curvePoints.add(currentPoint)
-
 			val eggLocations = HoppityEgg.getByIsland(SkyBlockAPI.currentIsland) ?: break
 			for(eggLocation in eggLocations) {
 				val distance = currentPoint.distance(eggLocation)
-				if (distance < closestDistance) {
+				if(distance < closestDistance) {
 					closestDistance = distance
 					closestLocation = eggLocation
 				}
