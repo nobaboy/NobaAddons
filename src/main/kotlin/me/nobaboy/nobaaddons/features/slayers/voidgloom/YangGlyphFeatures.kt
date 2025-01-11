@@ -13,6 +13,7 @@ import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.Scheduler
+import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -33,8 +34,8 @@ object YangGlyphFeatures {
 		get() = SkyBlockIsland.THE_END.inIsland() && SlayerAPI.currentQuest?.boss == SlayerBoss.VOIDGLOOM
 
 	private val yangGlyphs = mutableMapOf<NobaVec, Timestamp>()
-	private val flyingYangGlyphs = mutableListOf<ArmorStandEntity>()
-	val inBeaconPhase: Boolean get() = yangGlyphs.isNotEmpty() || flyingYangGlyphs.isNotEmpty()
+	private val flyingYangGlyphs = TimedSet<ArmorStandEntity>(2.seconds)
+	val inBeaconPhase: Boolean get() = yangGlyphs.isNotEmpty() || flyingYangGlyphs.toSet().isNotEmpty()
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }

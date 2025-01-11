@@ -36,11 +36,9 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 
 	class Voidgloom : ObjectProperty<Voidgloom>("voidgloom"){
 		var highlightPhases by Property.of<Boolean>("highlightPhases", false)
-		var hitPhaseColor by Property.of("hitPhaseColor", Serializer.color, NobaColor.LIGHT_PURPLE)
-		var damagePhaseColor by Property.of("damagePhaseColor", Serializer.color, NobaColor.LIGHT_PURPLE)
-		var beaconPhaseColor by Property.of("beaconPhaseColor", Serializer.color, NobaColor.LIGHT_PURPLE)
-
-		var brokenHeartRadiationTimer by Property.of<Boolean>("brokenHeartRadiationTimer", false)
+		var hitPhaseColor by Property.of("hitPhaseColor", Serializer.color, NobaColor(0xFF9C46))
+		var beaconPhaseColor by Property.of("beaconPhaseColor", Serializer.color, NobaColor(0xFF2D9C))
+		var damagePhaseColor by Property.of("damagePhaseColor", Serializer.color, NobaColor(0x6788FF))
 
 		var yangGlyphAlert by Property.of<Boolean>("yangGlyphAlert", false)
 		var yangGlyphAlertColor by Property.of("yangGlyphAlertColor", Serializer.color, NobaColor.RED)
@@ -49,5 +47,7 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 
 		var highlightNukekubiFixations by Property.of<Boolean>("highlightNukekubiFixations", false)
 		var nukekubiFixationHighlightColor by Property.of("nukekubiFixationHighlightColor", Serializer.color, NobaColor.RED)
+
+		var brokenHeartRadiationTimer by Property.of<Boolean>("brokenHeartRadiationTimer", false)
 	}
 }

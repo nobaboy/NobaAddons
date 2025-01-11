@@ -104,7 +104,6 @@ object SlayersCategory {
 			) requires yangGlyphAlert
 			val highlightYangGlyph = boolean(
 				tr("nobaaddons.config.slayers.voidgloom.highlightYangGlyph", "Highlight Yang Glyphs"),
-				tr("nobaaddons.config.slayers.voidgloom.highlightYangGlyph", "Highlight Yang Glyphs"),
 				default = defaults.slayers.voidgloom.highlightYangGlyphs,
 				property = config.slayers.voidgloom::highlightYangGlyphs
 			)
@@ -131,7 +130,7 @@ object SlayersCategory {
 
 			boolean(
 				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer"),
-				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer.tooltip", "Displays a timer on the Voidgloom Seraph boss indicating how much time is left for its Broken Heart Radiation, commonly known as Lazer Phase"),
+				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer.tooltip", "Displays a timer on the Voidgloom Seraph indicating how much time is left for its Broken Heart Radiation, commonly known as Lazer Phase"),
 				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
 				property = config.slayers.voidgloom::brokenHeartRadiationTimer
 			)
