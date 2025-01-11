@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.fishing
 import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
-import me.nobaboy.nobaaddons.events.LateChatMessageEvent
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.NumberUtils.ordinalSuffix
 import me.nobaboy.nobaaddons.utils.TextUtils.aqua
@@ -19,7 +19,7 @@ object TrophyFishChat {
 	private val config get() = NobaConfig.INSTANCE.fishing.trophyFishing
 
 	fun init() {
-		LateChatMessageEvent.EVENT.register(this::modifyChatMessage)
+		ChatMessageEvents.LATE_MODIFY.register(this::modifyChatMessage)
 	}
 
 	fun format(name: Text, rarity: TrophyFishRarity, count: Int, total: Int) = buildText {
@@ -33,7 +33,7 @@ object TrophyFishChat {
 		append(tr("nobaaddons.fishing.trophyFishing.total", "($total total)").gray())
 	}
 
-	private fun modifyChatMessage(event: LateChatMessageEvent) {
+	private fun modifyChatMessage(event: ChatMessageEvents.Modify) {
 		if(!config.modifyChatMessages) return
 		val (fish, rarity) = TrophyFishAPI.parseFromChatMessage(event.message.string) ?: return
 

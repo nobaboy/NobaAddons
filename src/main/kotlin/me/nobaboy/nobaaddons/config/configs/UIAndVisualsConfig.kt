@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
-import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 
 class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
 	val temporaryWaypoints by TemporaryWaypoints()
@@ -15,13 +15,13 @@ class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
 
 	class TemporaryWaypoints : ObjectProperty<TemporaryWaypoints>("temporaryWaypoints") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var waypointColor by Property.of("waypointColor", Serializer.color, NobaColor.YELLOW.toColor())
+		var waypointColor by Property.of("waypointColor", Serializer.color, NobaColor.YELLOW)
 		var expirationTime by Property.of<Int>("expirationTime", 30)
 	}
 
 	class EtherwarpHelper : ObjectProperty<EtherwarpHelper>("etherwarpHelper") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.BLUE.toColor())
+		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.BLUE)
 		var showFailText by Property.of<Boolean>("showFailText", false)
 		var allowOverlayOnAir by Property.of<Boolean>("allowOverlayOnAir", false)
 	}

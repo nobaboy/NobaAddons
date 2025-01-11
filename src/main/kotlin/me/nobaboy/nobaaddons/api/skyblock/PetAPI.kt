@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.data.json.PetInfo
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo
@@ -15,7 +16,6 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
@@ -45,7 +45,7 @@ object PetAPI {
 	fun init() {
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		InventoryEvents.SLOT_CLICK.register(this::onInventorySlotClick)
-		ClientReceiveMessageEvents.GAME.register { message, _ -> onChatMessage(message.string) }
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string) }
 		currentPet = PersistentCache.pet
 	}
 

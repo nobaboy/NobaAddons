@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -166,7 +167,7 @@ object ChatCategory {
 			val warpOutTitle = tr("nobaaddons.config.chat.chatCommands.warpOut", "!warpout Command")
 			val warpOutDescription = tr("nobaaddons.config.chat.chatCommands.warpOut.tooltip", "Warps the specified player to your lobby when used")
 
-			boolean(
+			val dmEnabled = boolean(
 				CommonText.Config.ENABLED,
 				tr("nobaaddons.config.chat.chatCommands.dm.enabled.tooltip", "Enables chat commands when other players /msg you"),
 				default = defaults.chat.chatCommands.dm.enabled,
@@ -176,30 +177,30 @@ object ChatCategory {
 				helpTitle, helpDescription,
 				default = defaults.chat.chatCommands.dm.help,
 				property = config.chat.chatCommands.dm::help
-			)
+			) requires dmEnabled
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.dm.warpMe", "!warpme Command"),
 				tr("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip", "Warps the messaging player to your lobby"),
 				default = defaults.chat.chatCommands.dm.warpMe,
 				property = config.chat.chatCommands.dm::warpMe
-			)
+			) requires dmEnabled
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.dm.partyMe", "!partyme Command"),
 				tr("nobaaddons.config.chat.chatCommands.dm.partyMe.tooltip", "Invites the messaging player to your party"),
 				default = defaults.chat.chatCommands.dm.partyMe,
 				property = config.chat.chatCommands.dm::partyMe
-			)
+			) requires dmEnabled
 			boolean(
 				warpOutTitle, warpOutDescription,
 				default = defaults.chat.chatCommands.dm.warpOut,
 				property = config.chat.chatCommands.dm::warpOut
-			)
+			) requires dmEnabled
 			// endregion
 
 			// region Party
 			label(tr("nobaaddons.config.chat.chatCommands.label.party", "Party Commands"))
 
-			boolean(
+			val partyEnabled = boolean(
 				CommonText.Config.ENABLED,
 				tr("nobaaddons.config.chat.chatCommands.party.enabled.tooltip", "Enables chat commands in party chat"),
 				default = defaults.chat.chatCommands.party.enabled,
@@ -209,37 +210,37 @@ object ChatCategory {
 				helpTitle, helpDescription,
 				default = defaults.chat.chatCommands.party.help,
 				property = config.chat.chatCommands.party::help
-			)
+			) requires partyEnabled
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.allInvite", "!allinvite Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip", "Runs '/p settings allinvite' when used if you're the party leader"),
 				default = defaults.chat.chatCommands.party.allInvite,
 				property = config.chat.chatCommands.party::allInvite
-			)
+			) requires partyEnabled
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.transfer", "!transfer Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.transfer.tooltip", "Transfers the party to the player using the command (or the specified player, if any) if you're the party leader"),
 				default = defaults.chat.chatCommands.party.transfer,
 				property = config.chat.chatCommands.party::transfer
-			)
+			) requires partyEnabled
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.warp", "!warp Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.warp.tooltip", "Warps the party to your current lobby (with an optional seconds delay) if you're the leader"),
 				default = defaults.chat.chatCommands.party.warp,
 				property = config.chat.chatCommands.party::warp
-			)
+			) requires partyEnabled
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.coords", "!coords Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.coords.tooltip", "Responds with your current in-game coordinates"),
 				default = defaults.chat.chatCommands.party.coords,
 				property = config.chat.chatCommands.party::coords
-			)
+			) requires partyEnabled
 			// endregion
 
 			// region Guild
 			label(tr("nobaaddons.config.chat.chatCommands.label.guild", "Guild Command"))
 
-			boolean(
+			val guildEnabled = boolean(
 				CommonText.Config.ENABLED,
 				tr("nobaaddons.config.chat.chatCommands.guild.enabled.tooltip", "Enables chat commands in guild chat"),
 				default = defaults.chat.chatCommands.guild.enabled,
@@ -249,12 +250,12 @@ object ChatCategory {
 				helpTitle, helpDescription,
 				default = defaults.chat.chatCommands.guild.help,
 				property = config.chat.chatCommands.guild::help
-			)
+			) requires guildEnabled
 			boolean(
 				warpOutTitle, warpOutDescription,
 				default = defaults.chat.chatCommands.guild.warpOut,
 				property = config.chat.chatCommands.guild::warpOut
-			)
+			) requires guildEnabled
 			// endregion
 		}
 		// endregion

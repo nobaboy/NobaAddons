@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.filters
 
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.chat.filters.ability.AbilityChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.BlessingChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.HealerOrbChatFilter
@@ -10,7 +11,6 @@ import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessagesChat
 import me.nobaboy.nobaaddons.features.chat.filters.mobs.SeaCreatureSpawnMessageChatFilter
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 interface IChatFilter {
 	val config get() = NobaConfig.INSTANCE.chat.filters
@@ -38,14 +38,20 @@ interface IChatFilter {
 			check(!init) { "Already initialized chat filters!" }
 			init = true
 
-			ClientReceiveMessageEvents.ALLOW_GAME.register { message, _ ->
-				filters.asSequence().filter { it.enabled }.none {
-					runCatching { it.shouldFilter(message.string.cleanFormatting()) }
-						.onFailure { error ->
-							ErrorManager.logError("${it::class.simpleName} threw an error while processing a chat message", error)
+			ChatMessageEvents.ALLOW.register { event ->
+				val string = event.message.string.cleanFormatting()
+				for(filter in filters.asSequence()) {
+					if(!filter.enabled) continue
+					try {
+						if(filter.shouldFilter(string)) {
+							event.cancel()
+							break
 						}
-						.getOrDefault(false)
+					} catch(ex: Throwable) {
+						ErrorManager.logError("${filter::class.simpleName} threw an error while processing a chat message", ex)
+					}
 				}
+//				}
 			}
 		}
 	}

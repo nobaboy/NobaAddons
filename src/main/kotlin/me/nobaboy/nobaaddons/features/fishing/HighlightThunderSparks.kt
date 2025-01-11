@@ -8,7 +8,6 @@ import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.EntityUtils.heldSkullTexture
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
-import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -41,15 +40,13 @@ object HighlightThunderSparks {
 	private fun renderHighlights(context: WorldRenderContext) {
 		if(!enabled) return
 
-		val color = config.highlightColor.toNobaColor()
-
 		sparks.removeIf { !it.isAlive }
 		sparks.forEach {
 			val vec = it.getNobaVec()
 			val block = vec.roundToBlock().add(y = 1).getBlockStateAt()
 			val throughBlocks = vec.distanceToPlayer() < 6 && block.fluidState != null && block.fluidState.fluid is LavaFluid
 
-			RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, z = -0.5), color, extraSize = -0.25, throughBlocks = throughBlocks)
+			RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, z = -0.5), config.highlightColor, extraSize = -0.25, throughBlocks = throughBlocks)
 			if(config.showText && vec.distanceToPlayer() < 10) RenderUtils.renderText(vec.raise(1.25), "Thunder Spark", throughBlocks = throughBlocks)
 		}
 	}

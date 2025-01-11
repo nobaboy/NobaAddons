@@ -1,11 +1,11 @@
 package me.nobaboy.nobaaddons.features.chat.alerts
 
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.MythicSeaCreatureAlert
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.VanquisherAlert
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 interface IAlert {
 	val config get() = NobaConfig.INSTANCE.chat.alerts
@@ -24,7 +24,7 @@ interface IAlert {
 			check(!init) { "Already initialized alerts!" }
 			init = true
 
-			ClientReceiveMessageEvents.GAME.register { message, _ ->
+			ChatMessageEvents.CHAT.register { (message) ->
 				alerts.asSequence().filter { it.enabled }.forEach {
 					runCatching { it.shouldAlert(message.string.cleanFormatting()) }
 						.onFailure { error ->

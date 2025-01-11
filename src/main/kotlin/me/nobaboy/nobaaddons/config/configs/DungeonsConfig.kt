@@ -3,9 +3,9 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
-import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.HighlightMode
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 
 class DungeonsConfig : ObjectProperty<DungeonsConfig>("dungeons") {
 	val simonSaysTimer by SimonSaysTimerConfig()
@@ -18,7 +18,7 @@ class DungeonsConfig : ObjectProperty<DungeonsConfig>("dungeons") {
 
 	class HighlightStarredMobs : ObjectProperty<HighlightStarredMobs>("highlightStarredMobs") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.YELLOW.toColor())
+		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.YELLOW)
 		var highlightMode by Property.of("highlightMode", Serializer.enum(), HighlightMode.FILLED_OUTLINE)
 	}
 }

@@ -10,15 +10,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Chat Notifications - celeste
 - Item Pickup Log - celeste
+- Worm Alert - nobaboy
 - `/noba day` to display the lobby day count (since Hypixel doesn't send the information for the line F3 shows this on) - celeste
 
 ### Changed
 
-- Added `/noba gui` as an alias to `/noba hud` - celeste
 - Reworked commands to use [commander](https://github.com/celestialfault/commander) - celeste
+- Reworked the main mod config to not depend on YACL - nobaboy
+- The config UI will now clearly mark options unavailable if the feature they're associated with isn't enabled - celeste
 - Rewrote the HUD internals to make adding new elements easier - celeste
 - Changed how HUD elements render to properly handle different window sizes - celeste
   - This will cause existing info boxes to be in the top left corner when updating
+
+### Fixed
+
+- `/noba refill pearls` using the wrong item ID - celeste
+- `/noba refill item` is now case-insensitive to match `/gfs` - celeste
+- An occasional crash that occurs while processing an event - celeste
 
 ## 0.1.0-Alpha.12 - 2024-12-29
 

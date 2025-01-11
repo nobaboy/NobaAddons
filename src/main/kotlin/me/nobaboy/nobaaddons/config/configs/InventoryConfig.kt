@@ -3,9 +3,9 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
-import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentDisplayMode
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 
 class InventoryConfig : ObjectProperty<InventoryConfig>("inventory") {
 	val slotInfo by SlotInfo()
@@ -48,10 +48,10 @@ class InventoryConfig : ObjectProperty<InventoryConfig>("inventory") {
 		var displayMode by Property.of("displayMode", Serializer.enum(), EnchantmentDisplayMode.NORMAL)
 		var showDescriptions by Property.of<Boolean>("showDescriptions", false)
 		var showStackingProgress by Property.of<Boolean>("showStackingProgress", false)
-		var maxColor by Property.of("maxColor", Serializer.color, NobaColor.GOLD.toColor())
-		var goodColor by Property.of("goodColor", Serializer.color, NobaColor.GOLD.toColor())
-		var averageColor by Property.of("averageColor", Serializer.color, NobaColor.BLUE.toColor())
-		var badColor by Property.of("badColor", Serializer.color, NobaColor.GRAY.toColor())
+		var maxColor by Property.of("maxColor", Serializer.color, NobaColor.GOLD)
+		var goodColor by Property.of("goodColor", Serializer.color, NobaColor.GOLD)
+		var averageColor by Property.of("averageColor", Serializer.color, NobaColor.BLUE)
+		var badColor by Property.of("badColor", Serializer.color, NobaColor.GRAY)
 	}
 
 	class ItemPickupLog : ObjectProperty<ItemPickupLog>("itemPickupLog") {
