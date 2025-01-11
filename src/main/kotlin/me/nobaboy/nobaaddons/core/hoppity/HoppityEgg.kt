@@ -6,10 +6,10 @@ import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.NobaVec
 
 @Serializable
-data class HoppityEgg(val locations: Map<SkyBlockIsland, List<NobaVec>>) {
+data class HoppityEgg(val eggLocations: Map<SkyBlockIsland, List<NobaVec>>) {
 	companion object {
 		val LOCATIONS by Repo.create("data/hoppity.json", serializer())
 
-		fun getByIsland(island: SkyBlockIsland) = LOCATIONS?.locations[island]
+		fun getByIsland(island: SkyBlockIsland) = LOCATIONS?.eggLocations[island]
 	}
 }
