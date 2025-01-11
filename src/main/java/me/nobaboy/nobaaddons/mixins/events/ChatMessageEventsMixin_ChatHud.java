@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(value = ChatHud.class, priority = 10000)
-abstract class LateChatMessageEventMixin {
+abstract class ChatMessageEventsMixin_ChatHud {
 	@ModifyVariable(
 		method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V",
 		at = @At("HEAD"),
