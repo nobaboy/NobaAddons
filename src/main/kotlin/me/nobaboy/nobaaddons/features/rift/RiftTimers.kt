@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.rift
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.core.ProfileData
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.InventoryEvents
@@ -25,6 +26,7 @@ import kotlin.time.Duration.Companion.hours
 
 object RiftTimers {
 	private val config = NobaConfig.INSTANCE.rift
+	private val data get() = ProfileData.PROFILE.riftTimers
 
 	private val warpLocation by config::warpTarget
 	private fun clickToWarp() = tr("nobaaddons.rift.clickToWarp", "Click to warp to ${warpLocation.displayName}").yellow()
@@ -36,25 +38,26 @@ object RiftTimers {
 	private var notifiedSplitStealCooldown = false
 
 	fun init() {
+		SecondPassedEvent.EVENT.register(this::onSecondPassed)
 		InventoryEvents.OPEN.register(this::onOpenInventory)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
-		SecondPassedEvent.EVENT.register(this::onSecondPassed)
 	}
 
 	private fun updateNextInfusion() {
-		val nextInfusion = RiftTimerData.nextFreeInfusion ?: return
+		val data = this.data
+		val nextInfusion = data.nextFreeInfusion ?: return
 		val gained = floor((nextInfusion - 4.hours).elapsedSince() / 4.hours).toInt().coerceIn(0, 3)
 		if(gained == 0) return
 
-		RiftTimerData.freeRiftInfusions = (RiftTimerData.freeRiftInfusions + gained).coerceAtMost(3)
-		RiftTimerData.nextFreeInfusion = if(RiftTimerData.freeRiftInfusions < 3) {
+		data.freeRiftInfusions = (data.freeRiftInfusions + gained).coerceAtMost(3)
+		data.nextFreeInfusion = if(data.freeRiftInfusions < 3) {
 			nextInfusion + (gained * 4).hours
 		} else {
 			null
 		}
 
 		if(config.freeInfusionAlert) {
-			val count = buildLiteral("(${RiftTimerData.freeRiftInfusions}/3)") { gray() }
+			val count = buildLiteral("(${data.freeRiftInfusions}/3)") { gray() }
 			ChatUtils.addMessageWithClickAction(
 				tr("nobaaddons.rift.gainedFreeInfusion", "You've regained a free Rift infusion! $count"),
 				builder = { hoverText(clickToWarp()) }
@@ -65,7 +68,7 @@ object RiftTimers {
 	}
 
 	private fun updateSplitSteal() {
-		val nextSS = RiftTimerData.nextSplitSteal ?: return
+		val nextSS = data.nextSplitSteal ?: return
 		if(nextSS.isPast() && !notifiedSplitStealCooldown) {
 			notifiedSplitStealCooldown = true
 			if(config.splitStealAlert) {
@@ -94,9 +97,8 @@ object RiftTimers {
 		val lore = event.inventory.items.values.firstOrNull { it.name.string.cleanFormatting() == itemName }?.lore?.stringLines ?: return
 
 		val infusionCount = lore.firstFullMatch(freeInfusions)?.groups["count"]?.value?.toInt() ?: return
-		RiftTimerData.freeRiftInfusions = infusionCount
-
-		RiftTimerData.nextFreeInfusion = if(infusionCount < 3) {
+		data.freeRiftInfusions = infusionCount
+		data.nextFreeInfusion = if(infusionCount < 3) {
 			lore.firstFullMatch(nextFreeInfusion)?.groups["time"]?.value?.asTimestamp()
 		} else {
 			null
@@ -108,7 +110,7 @@ object RiftTimers {
 			"Dimensional Infusion", "Fast Travel" -> updateFreeInfusions(event)
 			"Split or Steal" -> {
 				if(!SkyBlockIsland.RIFT.inIsland()) return
-				RiftTimerData.nextSplitSteal = Timestamp.now() + 2.hours
+				data.nextSplitSteal = Timestamp.now() + 2.hours
 				notifiedSplitStealCooldown = false
 			}
 		}
@@ -117,13 +119,13 @@ object RiftTimers {
 	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		val string = event.message.string.cleanFormatting()
 		if(string == "INFUSED! Used one of your free Rift charges!") {
-			RiftTimerData.freeRiftInfusions -= 1
-			if(RiftTimerData.nextFreeInfusion == null) {
-				RiftTimerData.nextFreeInfusion = Timestamp.now() + 4.hours
+			data.freeRiftInfusions -= 1
+			if(data.nextFreeInfusion == null) {
+				data.nextFreeInfusion = Timestamp.now() + 4.hours
 			}
 		} else if(string.startsWith("SPLIT! You need to wait")) {
 			val match = splitStealCooldown.matchEntire(string) ?: return
-			RiftTimerData.nextSplitSteal = match.groups["time"]!!.value.asTimestamp() ?: return
+			data.nextSplitSteal = match.groups["time"]!!.value.asTimestamp() ?: return
 			notifiedSplitStealCooldown = false
 		}
 	}

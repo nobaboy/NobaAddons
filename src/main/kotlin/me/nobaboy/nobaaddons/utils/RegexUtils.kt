@@ -1,6 +1,9 @@
 package me.nobaboy.nobaaddons.utils
 
 object RegexUtils {
+	const val UUID_PATTERN = "[0-9a-f]{8}-?(?:[0-9a-f]{4}-?){3}[0-9a-f]{12}"
+	val uuidRegex = Regex(UUID_PATTERN)
+
 	/**
 	 * Executes [consumer] with the resulting [MatchResult] if the provided [text] fully matches the current pattern
 	 */

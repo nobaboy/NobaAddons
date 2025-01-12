@@ -11,12 +11,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chat Notifications - celeste
 - Item Pickup Log - celeste
 - Worm Alert - nobaboy
+- Rift free infusion & Split or Steal timer notifications - celeste
 - `/noba day` to display the lobby day count (since Hypixel doesn't send the information for the line F3 shows this on) - celeste
 
 ### Changed
 
 - Reworked commands to use [commander](https://github.com/celestialfault/commander) - celeste
 - Reworked the main mod config to not depend on YACL - nobaboy
+- Reworked how the mod handles some data to store per-profile - celeste
 - The config UI will now clearly mark options unavailable if the feature they're associated with isn't enabled - celeste
 - Rewrote the HUD internals to make adding new elements easier - celeste
 - Changed how HUD elements render to properly handle different window sizes - celeste

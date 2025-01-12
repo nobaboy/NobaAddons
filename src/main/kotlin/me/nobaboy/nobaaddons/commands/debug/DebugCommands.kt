@@ -13,7 +13,8 @@ import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
-import me.nobaboy.nobaaddons.data.PersistentCache
+import me.nobaboy.nobaaddons.core.PersistentCache
+import me.nobaboy.nobaaddons.core.ProfileData
 import me.nobaboy.nobaaddons.features.rift.RiftTimerData
 import me.nobaboy.nobaaddons.features.rift.RiftTimers
 import me.nobaboy.nobaaddons.utils.ErrorManager
@@ -141,6 +142,12 @@ object DebugCommands {
 	@Command
 	fun updateNotification(ctx: Context) {
 		UpdateNotifier.sendUpdateNotification()
+	}
+
+	@Command
+	fun flushCaches() {
+		PersistentCache.save()
+		ProfileData.saveAll()
 	}
 
 	val item = NobaClientCommandGroup(ItemDebugCommands)
