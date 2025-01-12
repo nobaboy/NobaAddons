@@ -69,12 +69,13 @@ object NobaConfigUtils {
 	/**
 	 * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [AbstractConfig.save]
 	 */
-	fun AbstractConfig.saveOnExit() {
+	fun AbstractConfig.saveOnExit(onlyIfDirty: Boolean = false) {
 		ClientLifecycleEvents.CLIENT_STOPPING.register {
+			if(onlyIfDirty && !dirty) return@register
 			try {
 				save()
 			} catch(ex: Throwable) {
-				NobaAddons.LOGGER.error("Failed to automatically save ${this::class.simpleName}", ex)
+				NobaAddons.LOGGER.error("Failed to save ${this::class.simpleName} before shutdown", ex)
 			}
 		}
 	}

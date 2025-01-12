@@ -20,7 +20,7 @@ class ProfileData private constructor(val profile: UUID?) : AbstractConfig(
 	createIfMissing = profile != null,
 ) {
 	init {
-		if(profile != null) saveOnExit()
+		saveOnExit(onlyIfDirty = profile == null)
 	}
 
 	var pet by Property.ofNullable("pet", Serializer.expose<PetData>())
@@ -40,7 +40,7 @@ class ProfileData private constructor(val profile: UUID?) : AbstractConfig(
 		private var _profile: ProfileData? = null
 
 		val PROFILE: ProfileData get() {
-			var current = _profile?.takeUnless { it.profile != SkyBlockAPI.currentProfile }
+			var current = _profile?.takeIf { it.profile == SkyBlockAPI.currentProfile }
 			if(current == null) {
 				current = getOrPut(SkyBlockAPI.currentProfile)
 				_profile = current
