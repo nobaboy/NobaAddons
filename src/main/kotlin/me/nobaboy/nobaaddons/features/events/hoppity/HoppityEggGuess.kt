@@ -29,6 +29,9 @@ object HoppityEggGuess {
 	private val config get() = NobaConfig.INSTANCE.events.hoppity
 	private val enabled: Boolean get() = config.eggGuess && HoppityAPI.isActive
 
+	private const val MAX_STEPS = 2500
+	private const val STEP = 0.1
+
 	private var lastAbilityUse = Timestamp.distantPast()
 	private val particleLocations = mutableListOf<NobaVec>()
 	private var guessLocation: NobaVec? = null
@@ -67,9 +70,7 @@ object HoppityEggGuess {
 
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
-		if(!message.startsWith("HOPPITY'S HUNT You found a Chocolate")) return
-
-		reset()
+		if(!message.startsWith("HOPPITY'S HUNT You found a Chocolate")) guessLocation = null
 	}
 
 	// FIXME make a custom event for item usage
@@ -101,10 +102,12 @@ object HoppityEggGuess {
 
 	private fun fitParabola(time: List<Double>, values: List<Double>): Triple<Double, Double, Double> {
 		val n = time.size
+
 		val sumT = time.sum()
 		val sumT2 = time.sumOf { it * it }
 		val sumT3 = time.sumOf { it * it * it }
 		val sumT4 = time.sumOf { it * it * it * it }
+
 		val sumV = values.sum()
 		val sumTV = time.zip(values).sumOf { it.first * it.second }
 		val sumT2V = time.zip(values).sumOf { it.first * it.first * it.second }
@@ -120,7 +123,7 @@ object HoppityEggGuess {
 		return Triple(coefficients[0], coefficients[1], coefficients[2])
 	}
 
-	fun solveLinearSystem(matrix: Array<DoubleArray>, vector: DoubleArray): DoubleArray {
+	private fun solveLinearSystem(matrix: Array<DoubleArray>, vector: DoubleArray): DoubleArray {
 		val size = matrix.size
 		val augmentedMatrix = Array(size) { i -> matrix[i] + doubleArrayOf(vector[i]) }
 
@@ -161,13 +164,11 @@ object HoppityEggGuess {
 		zCurve: Triple<Double, Double, Double>
 	): NobaVec {
 		var t = 0.0
-		val step = 0.1
-		val maxSteps = 2000
 
 		var closestLocation: NobaVec? = null
 		var closestDistance = Double.MAX_VALUE
 
-		for(i in 0 until maxSteps) {
+		for(i in 0 until MAX_STEPS) {
 			val x = xCurve.first * t * t + xCurve.second * t + xCurve.third
 			val y = yCurve.first * t * t + yCurve.second * t + yCurve.third
 			val z = zCurve.first * t * t + zCurve.second * t + zCurve.third
@@ -182,7 +183,7 @@ object HoppityEggGuess {
 				}
 			}
 
-			t += step
+			t += STEP
 		}
 
 		return closestLocation ?: NobaVec()
