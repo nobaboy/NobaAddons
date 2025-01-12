@@ -18,6 +18,7 @@ import me.nobaboy.nobaaddons.core.ProfileData
 import me.nobaboy.nobaaddons.features.rift.RiftTimerData
 import me.nobaboy.nobaaddons.features.rift.RiftTimers
 import me.nobaboy.nobaaddons.utils.ErrorManager
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
@@ -153,6 +154,11 @@ object DebugCommands {
 	@Command
 	fun profile(ctx: Context) {
 		ctx.dumpInfo("Current profile" to ProfileData.PROFILE.profile)
+	}
+
+	@Command
+	fun fake(text: Text) {
+		MCUtils.player!!.sendMessage(text, false)
 	}
 
 	val item = NobaClientCommandGroup(ItemDebugCommands)

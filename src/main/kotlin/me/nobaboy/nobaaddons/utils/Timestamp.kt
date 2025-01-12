@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
-private val timeRegex = Regex("(\\d+)([hms])")
+private val timeRegex = Regex("([\\d,]+)([hms])")
 private val durations: Map<String, (Long) -> Duration> = mapOf(
 	"h" to { it.hours },
 	"m" to { it.minutes },
@@ -67,7 +67,7 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 			var time: Duration = 0.seconds
 
 			timeRegex.forEachMatch(this) {
-				time += durations[groups[2]!!.value]!!(groups[1]!!.value.toLong())
+				time += durations[groups[2]!!.value]!!(groups[1]!!.value.replace(",", "").toLong())
 			}
 
 			return if(time > 0.seconds) now() + time else null
