@@ -15,7 +15,7 @@ import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.enumMap
 import java.util.EnumMap
 import java.util.UUID
 
-class ProfileData private constructor(private val profile: UUID?) : AbstractConfig(
+class ProfileData private constructor(val profile: UUID?) : AbstractConfig(
 	NobaAddons.CONFIG_DIR.resolve("profiles").resolve("${profile ?: "unknown"}.json"),
 	createIfMissing = profile != null,
 ) {
@@ -31,27 +31,32 @@ class ProfileData private constructor(private val profile: UUID?) : AbstractConf
 	)
 	val riftTimers by RiftTimerData()
 
-	private fun safeLoadAsync() {
-		NobaAddons.runAsync {
-			safeLoad()
-			if(profile != null) {
-				SkyBlockEvents.PROFILE_DATA_LOADED.invoke(SkyBlockEvents.ProfileDataLoad(profile, this@ProfileData))
-			}
-		}
-	}
-
 	companion object {
 		init {
-			SkyBlockEvents.PROFILE_CHANGE.register {
-				PROFILES.putIfAbsent(it.profileId, ProfileData(it.profileId).also(ProfileData::safeLoadAsync))
-			}
+			SkyBlockEvents.PROFILE_CHANGE.register { getOrPut(it.profileId) }
 		}
 
 		private val PROFILES = mutableMapOf<UUID?, ProfileData>()
-		val PROFILE: ProfileData get() = getOrPut(SkyBlockAPI.currentProfile)
+		private var _profile: ProfileData? = null
+
+		val PROFILE: ProfileData get() {
+			var current = _profile?.takeUnless { it.profile != SkyBlockAPI.currentProfile }
+			if(current == null) {
+				current = getOrPut(SkyBlockAPI.currentProfile)
+				_profile = current
+			}
+			return current
+		}
 
 		private fun getOrPut(id: UUID?): ProfileData {
-			return PROFILES.getOrPut(id) { ProfileData(id).also(ProfileData::safeLoadAsync) }
+			return PROFILES.getOrPut(id) {
+				val data = ProfileData(id)
+				data.safeLoad()
+				if(id != null) {
+					SkyBlockEvents.PROFILE_DATA_LOADED.invoke(SkyBlockEvents.ProfileDataLoad(id, data))
+				}
+				data
+			}
 		}
 
 		fun saveAll() {

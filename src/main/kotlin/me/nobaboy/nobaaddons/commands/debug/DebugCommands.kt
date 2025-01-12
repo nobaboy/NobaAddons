@@ -150,6 +150,11 @@ object DebugCommands {
 		ProfileData.saveAll()
 	}
 
+	@Command
+	fun profile(ctx: Context) {
+		ctx.dumpInfo("Current profile" to ProfileData.PROFILE.profile)
+	}
+
 	val item = NobaClientCommandGroup(ItemDebugCommands)
 	val pet = NobaClientCommandGroup(PetDebugCommands)
 	val regex = NobaClientCommandGroup(RepoDebugCommands)

@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.features.rift.RiftWarpTarget
 
 class RiftConfig : ObjectProperty<RiftConfig>("rift") {
 	var splitStealAlert by Property.of("splitStealAlert", false)
+	var splitStealItemCooldown by Property.of("splitStealItemCooldown", false)
 	var freeInfusionAlert by Property.of("freeInfusionAlert", false)
 	var warpTarget by Property.of("warpTarget", Serializer.enum(), RiftWarpTarget.WIZARD_TOWER)
 }

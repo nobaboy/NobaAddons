@@ -7,11 +7,11 @@ import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.RegexUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
@@ -31,7 +31,7 @@ object SkyBlockAPI {
 	private val xpPattern by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
 	private val currencyPattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
 	private val zonePattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
-	private val profileIdPattern by Regex("^Profile ID: (?<id>${RegexUtils.UUID_PATTERN})").fromRepo("skyblock.profile_id")
+	private val profileIdPattern by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN})").fromRepo("skyblock.profile_id")
 
 	var currentGame: ServerType? = null
 		private set

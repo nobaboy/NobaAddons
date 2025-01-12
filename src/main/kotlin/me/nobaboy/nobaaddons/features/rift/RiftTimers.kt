@@ -9,18 +9,29 @@ import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.indexOfFirstFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
 import me.nobaboy.nobaaddons.utils.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
+import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import me.nobaboy.nobaaddons.utils.tr
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.item.tooltip.TooltipType
+import net.minecraft.text.Text
 import kotlin.math.floor
 import kotlin.time.Duration.Companion.hours
 
@@ -41,6 +52,18 @@ object RiftTimers {
 		SecondPassedEvent.EVENT.register(this::onSecondPassed)
 		InventoryEvents.OPEN.register(this::onOpenInventory)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
+		ItemTooltipCallback.EVENT.register(this::addSplitStealItemCooldown)
+	}
+
+	private fun addSplitStealItemCooldown(item: ItemStack, ctx: Item.TooltipContext, type: TooltipType, lines: MutableList<Text>) {
+		if(item.skyBlockId != "UBIKS_CUBE") return
+		if(!config.splitStealItemCooldown) return
+		val cooldown = data.nextSplitSteal?.takeIf { it.isFuture() }?.timeRemaining()?.toShortString()?.toText()?.yellow() ?: return
+
+		val index = lines.map { it.string.cleanFormatting() }.indexOfFirstFullMatch(CommonPatterns.COOLDOWN)
+		if(index == -1) return
+
+		lines.add(index + 1, tr("nobaaddons.rift.ubikCube.itemCooldown", "On cooldown for: $cooldown").darkGray())
 	}
 
 	private fun updateNextInfusion() {

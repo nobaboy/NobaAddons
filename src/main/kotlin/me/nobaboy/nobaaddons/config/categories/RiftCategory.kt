@@ -23,6 +23,12 @@ object RiftCategory {
 				default = defaults.rift.splitStealAlert,
 				property = config.rift::splitStealAlert
 			)
+			boolean(
+				tr("nobaaddons.config.rift.timers.splitStealItemCooldown", "Display Cooldown on Ubik's Cube"),
+				tr("nobaaddons.config.rift.timers.splitStealItemCooldown.tooltip", "Adds the Split or Steal cooldown time remaining to the Ubik's Cube item tooltip"),
+				default = defaults.rift.splitStealItemCooldown,
+				property = config.rift::splitStealItemCooldown
+			)
 			cycler(
 				tr("nobaaddons.config.rift.timers.warpTarget", "Warp To"),
 				tr("nobaaddons.config.rift.timers.warpTarget.tooltip", "Where clicking on the sent chat message should warp you"),

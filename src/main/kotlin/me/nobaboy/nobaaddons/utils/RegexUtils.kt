@@ -1,9 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
 object RegexUtils {
-	const val UUID_PATTERN = "[0-9a-f]{8}-?(?:[0-9a-f]{4}-?){3}[0-9a-f]{12}"
-	val uuidRegex = Regex(UUID_PATTERN, RegexOption.IGNORE_CASE)
-
 	/**
 	 * Executes [consumer] with the resulting [MatchResult] if the provided [text] fully matches the current pattern
 	 */
@@ -61,6 +58,11 @@ object RegexUtils {
 	 */
 	fun Iterable<String>.firstFullMatch(regex: Regex): MatchResult? =
 		firstNotNullOfOrNull { regex.matchEntire(it) }
+
+	/**
+	 * Returns the index of the first full match of the provided [regex], or `-1` if no matches were found
+	 */
+	fun Iterable<String>.indexOfFirstFullMatch(regex: Regex): Int = indexOfFirst(regex::matches)
 
 	/**
 	 * Returns the value of the requested group from the given [text] if it fully matches the current pattern

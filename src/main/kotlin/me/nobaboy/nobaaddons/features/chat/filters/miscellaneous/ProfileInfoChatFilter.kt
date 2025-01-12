@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.RegexUtils
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.anyFullMatch
 import net.minecraft.text.Text
 
@@ -19,7 +19,7 @@ object ProfileInfoChatFilter : IChatFilter {
 	private fun isSuggestProfile(message: Text): Boolean {
 		if(suggestPattern.matches(message.string)) {
 			val clickAction = message.style.clickEvent ?: return false
-			return RegexUtils.uuidRegex.matches(clickAction.value)
+			return CommonPatterns.UUID.matches(clickAction.value)
 		}
 		return false
 	}
