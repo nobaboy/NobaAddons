@@ -54,6 +54,12 @@ object RegexUtils {
 		this.firstNotNullOfOrNull { it.matchEntire(text) } != null
 
 	/**
+	 * Returns a [MatchResult] for the first string that fully matches the provided [regex], or `null` if none match
+	 */
+	fun Iterable<String>.firstFullMatch(regex: Regex): MatchResult? =
+		firstNotNullOfOrNull { regex.matchEntire(it) }
+
+	/**
 	 * Returns the value of the requested group from the given [text] if it fully matches the current pattern
 	 */
 	fun Regex.getGroupFromFullMatch(text: String, group: String): String? = mapFullMatch(text) { groups[group]?.value }

@@ -5,9 +5,9 @@ import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.saveEvery
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.saveOnExit
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
+import me.nobaboy.nobaaddons.features.rift.RiftTimerData
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.enumMap
 import java.util.EnumMap
 
@@ -20,10 +20,10 @@ object PersistentCache : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("cache.jso
 	)
 	var repoCommit by Property.ofNullable<String>("repoCommit")
 	var devMode by Property.of("devMode", false)
+	val rift by RiftTimerData
 
 	fun init() {
 		safeLoad()
 		saveOnExit()
-		saveEvery(ticks = 15 * 20)
 	}
 }

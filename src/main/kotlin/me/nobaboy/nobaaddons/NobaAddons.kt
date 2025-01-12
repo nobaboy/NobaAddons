@@ -50,6 +50,7 @@ import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
+import me.nobaboy.nobaaddons.features.rift.RiftTimers
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
@@ -203,6 +204,10 @@ object NobaAddons : ClientModInitializer {
 		// region QOL
 		ISoundFilter.init()
 		MouseLock.init()
+		// endregion
+
+		// region Rift
+		RiftTimers.init()
 		// endregion
 		/* endregion */
 	}

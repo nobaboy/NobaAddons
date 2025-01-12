@@ -79,18 +79,6 @@ object NobaConfigUtils {
 		}
 	}
 
-	/**
-	 * Attempts to save the associated [AbstractConfig] every [ticks] interval if any changes have been made
-	 */
-	fun AbstractConfig.saveEvery(ticks: Int) {
-		Scheduler.scheduleAsync(ticks, repeat = true) {
-			if(dirty) {
-				NobaAddons.LOGGER.info("Auto-saving ${this@saveEvery::class.simpleName}")
-				save()
-			}
-		}
-	}
-
 	fun createBooleanController(option: Option<Boolean>): BooleanControllerBuilder {
 		return BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true)
 	}
@@ -299,6 +287,11 @@ object NobaConfigUtils {
 	infix fun <T> Option<T>.requires(other: Collection<Option<Boolean>>): Option<T> {
 		require(other.none { it === this }) { "Cannot make an option depend on itself" }
 		return availableIf(*other.toTypedArray()) { other.all { it.pendingValue() } }
+	}
+
+	infix fun <T> Option<T>.requiresAny(other: Collection<Option<Boolean>>): Option<T> {
+		require(other.none { it === this }) { "Cannot make an option depend on itself" }
+		return availableIf(*other.toTypedArray()) { other.any { it.pendingValue() } }
 	}
 
 	fun <T, O> Option<T>.conflicts(other: Option<O>, onlyIf: (O) -> Boolean): Option<T> {
