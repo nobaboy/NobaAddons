@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EntityRenderer.class)
-abstract class NametagRenderEventsMixin {
+abstract class NametagRenderEventsMixin_EntityRenderer {
 	@Shadow
 	protected abstract void renderLabelIfPresent(
 		//? if >=1.21.2 {

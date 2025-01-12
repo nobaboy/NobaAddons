@@ -53,6 +53,7 @@ import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
+import me.nobaboy.nobaaddons.features.slayers.sven.HidePupNametags
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.BrokenHeartRadiationTimer
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.HighlightNukekubiFixations
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.HighlightVoidgloomPhases
@@ -130,17 +131,17 @@ object NobaAddons : ClientModInitializer {
 		/* endregion */
 
 		/* region APIs */
-		InventoryAPI.init()
-		PartyAPI.init()
-		SkyBlockAPI.init()
-		DebugAPI.init()
-		MayorAPI.init()
-		PetAPI.init()
-		SlayerAPI.init()
-		DungeonsAPI.init()
-		DianaAPI.init()
 		BurrowAPI.init()
 		BurrowGuessAPI.init()
+		DebugAPI.init()
+		DianaAPI.init()
+		DungeonsAPI.init()
+		InventoryAPI.init()
+		MayorAPI.init()
+		PartyAPI.init()
+		PetAPI.init()
+		SkyBlockAPI.init()
+		SlayerAPI.init()
 		TrophyFishAPI.init()
 		/* endregion */
 
@@ -160,13 +161,13 @@ object NobaAddons : ClientModInitializer {
 
 		/* region Features */
 		// region Visuals
-		TemporaryWaypoints.init()
 		EtherwarpHelper.init()
+		TemporaryWaypoints.init()
 		// endregion
 
 		// region Inventory
-		ISlotInfo.init()
 		EnchantmentTooltips.init()
+		ISlotInfo.init()
 		// endregion
 
 		// region Events
@@ -176,29 +177,30 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Slayers
-		SlayerBossFeatures.init()
 		MiniBossFeatures.init()
-
+		SlayerBossFeatures.init()
+		/* region Sven Packmaster */
+		HidePupNametags.init()
+		/* endregion */
+		/* region Voidgloom Seraph */
+		BrokenHeartRadiationTimer.init()
+		HighlightNukekubiFixations.init()
 		HighlightVoidgloomPhases.init()
 		YangGlyphFeatures.init()
-		HighlightNukekubiFixations.init()
-		BrokenHeartRadiationTimer.init()
+		/* endregion */
 		// endregion
 
 		// region Fishing
 		FishingBobberTweaks.init()
+		HighlightThunderSparks.init()
 		SeaCreatureAlert.init()
 		TrophyFishChat.init()
 		// endregion
 
 		// region Mining
-		WormAlert.init()
 		CorpseLocator.init()
 		MineshaftWaypoints.init()
-		// endregion
-
-		// region Crimson Isle
-		HighlightThunderSparks.init()
+		WormAlert.init()
 		// endregion
 
 		// region Dungeons
@@ -207,15 +209,14 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Chat
+		ChatNotifications.init()
 		IAlert.init()
 		IChatFilter.init()
-		ChatNotifications.init()
-		// endregion
-
-		// region Chat Commands
+		/* region Chat Commands */
 		DMCommands.init()
 		PartyCommands.init()
 		GuildCommands.init()
+		/* endregion */
 		// endregion
 
 		// region QOL

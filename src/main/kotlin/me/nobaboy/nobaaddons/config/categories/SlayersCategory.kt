@@ -66,6 +66,14 @@ object SlayersCategory {
 			) requires enabled
 		}
 
+		buildGroup(tr("nobaaddons.config.slayers.sven", "Sven Packmaster")) {
+			boolean(
+				tr("nobaaddons.config.slayers.sven.hidePupNametags", "Hide Pup Nametags"),
+				default = defaults.slayers.sven.hidePupNametags,
+				property = config.slayers.sven::hidePupNametags
+			)
+		}
+
 		buildGroup(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
 			val highlightPhases = boolean(
 				tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases"),

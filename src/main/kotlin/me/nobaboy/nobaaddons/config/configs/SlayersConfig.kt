@@ -12,6 +12,7 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 	val miniBossAlert by MiniBossAlert()
 	val highlightMiniBosses by HighlightMiniBosses()
 	val announceBossKillTime by AnnounceBossKillTime()
+	val sven by Sven()
 	val voidgloom by Voidgloom()
 
 	class BossAlert : ObjectProperty<BossAlert>("bossAlert") {
@@ -32,6 +33,10 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 	class AnnounceBossKillTime : ObjectProperty<AnnounceBossKillTime>("announceBossKillTime") {
 		var enabled by Property.of<Boolean>("enabled", false)
 		var timeSource by Property.of("timeSource", Serializer.enum(), BossTimeSource.REAL_TIME)
+	}
+
+	class Sven : ObjectProperty<Sven>("sven") {
+		var hidePupNametags by Property.of<Boolean>("hidePupNametags", false)
 	}
 
 	class Voidgloom : ObjectProperty<Voidgloom>("voidgloom"){

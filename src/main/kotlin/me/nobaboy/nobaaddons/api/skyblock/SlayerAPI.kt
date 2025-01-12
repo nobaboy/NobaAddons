@@ -64,15 +64,13 @@ object SlayerAPI {
 		if(entity.type != currentQuest.boss.entityType) return
 		val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return
 
-		if(currentQuest.boss.miniBossType?.names?.any { armorStand.name.string.contains(it) } == true) {
+		if(currentQuest.boss.miniBossNames?.any { armorStand.name.string.contains(it) } == true) {
 			SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
 			miniBosses.add(entity)
 		}
 	}
 
 	private fun onChatMessage(message: String) {
-		println(message)
-
 		if(!SkyBlockAPI.inSkyBlock) return
 		if(currentQuest == null) return
 
