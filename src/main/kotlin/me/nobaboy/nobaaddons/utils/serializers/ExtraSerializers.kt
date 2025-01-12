@@ -4,7 +4,6 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.utils.NobaColor
-import java.awt.Color
 import java.util.EnumMap
 
 object ExtraSerializers {

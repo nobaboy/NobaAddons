@@ -10,12 +10,10 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.text.Text
 import java.util.EnumMap
-import kotlin.text.get
 
 object TrophyFishAPI {
 	val trophyFish: MutableMap<String, EnumMap<TrophyFishRarity, Int>> by PersistentCache::trophyFish
@@ -58,7 +56,7 @@ object TrophyFishAPI {
 	}
 
 	fun getCountFromOdgerStack(item: ItemStack): Map<TrophyFishRarity, Int> {
-		val fish = item.lore?.stringLines?.mapNotNull { ODGER_RARITY_REGEX.matchEntire(it) } ?: return emptyMap()
+		val fish = item.lore.stringLines.mapNotNull { ODGER_RARITY_REGEX.matchEntire(it) }
 		if(fish.isEmpty()) return emptyMap()
 
 		return fish.associate {

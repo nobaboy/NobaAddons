@@ -11,7 +11,6 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object DungeonsAPI {
 	var currentClass: DungeonClass = DungeonClass.EMPTY
@@ -68,9 +67,9 @@ object DungeonsAPI {
 	}
 
 	private fun getFloorType() {
-		val lines = ScoreboardUtils.getScoreboardLines()
+		val scoreboard = ScoreboardUtils.getScoreboardLines()
 
-		val fullLine = lines.firstOrNull { it.contains("The Catacombs (") }
+		val fullLine = scoreboard.firstOrNull { it.contains("The Catacombs (") }
 		val dungeonFloor = fullLine?.substringAfter("(")?.substringBefore(")")
 
 		currentFloor = dungeonFloor?.let { floor ->

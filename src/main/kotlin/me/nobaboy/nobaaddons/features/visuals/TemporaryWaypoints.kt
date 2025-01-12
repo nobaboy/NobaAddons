@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
@@ -19,7 +18,6 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import kotlin.time.Duration
@@ -71,14 +69,13 @@ object TemporaryWaypoints {
 
 		waypoints.removeIf { it.expired || it.location.distance(cameraPos) < 5.0 }
 		waypoints.forEach { waypoint ->
-			waypoint.location.let {
-				val distance = it.distanceToPlayer()
-				val formattedDistance = distance.toInt().addSeparators()
+			val location = waypoint.location
+			val distance = location.distanceToPlayer()
+			val formattedDistance = distance.toInt().addSeparators()
 
-				RenderUtils.renderWaypoint(context, it, color, throughBlocks = true)
-				RenderUtils.renderText(it.center().raise(), waypoint.text, color, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
-				RenderUtils.renderText(it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
-			}
+			RenderUtils.renderWaypoint(context, location, color, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), waypoint.text, color, yOffset = -10f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 

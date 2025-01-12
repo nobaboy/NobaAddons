@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
-abstract class ScreenRenderEventsInGameHudMixin {
+abstract class ScreenRenderEventsMixin_InGameHud {
 	@Shadow @Final private MinecraftClient client;
 
 	@Inject(

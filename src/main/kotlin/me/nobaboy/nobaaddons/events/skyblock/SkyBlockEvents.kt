@@ -4,7 +4,6 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.events.internal.Event
 import me.nobaboy.nobaaddons.events.internal.EventDispatcher
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents.IslandChange
 
 object SkyBlockEvents {
 	val ISLAND_CHANGE = EventDispatcher<IslandChange>()

@@ -82,7 +82,7 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 
 		val centerX = MCUtils.window.scaledWidth / 2
 
-		RenderUtils.drawCenteredText(context, TITLE_TEXT, centerX, height / 6 - 10, 4.0f, NobaColor.BLUE, true)
+		RenderUtils.drawCenteredText(context, TITLE_TEXT, centerX, height / 6 - 10, 4f, NobaColor.BLUE, true)
 		RenderUtils.drawCenteredText(context, VERSION_TEXT, centerX, height / 6 + 25, 1.5f, NobaColor.WHITE, true)
 	}
 

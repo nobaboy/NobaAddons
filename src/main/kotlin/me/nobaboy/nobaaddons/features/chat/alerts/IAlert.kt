@@ -6,7 +6,6 @@ import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.MythicSeaCreatureA
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.VanquisherAlert
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 interface IAlert {
 	val config get() = NobaConfig.INSTANCE.chat.alerts

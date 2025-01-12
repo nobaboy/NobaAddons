@@ -61,24 +61,24 @@ interface ISlotInfo {
 			check(!init) { "Already initialized slot info!" }
 			init = true
 
-			slotInfos.forEach { handler ->
+			slotInfos.forEach { slotInfo ->
 				ScreenRenderEvents.DRAW_ITEM.register {
-					if(SkyBlockAPI.inSkyBlock && handler.enabled) handler.handle(it)
+					if(SkyBlockAPI.inSkyBlock && slotInfo.enabled) slotInfo.handle(it)
 				}
 			}
 		}
 
 		fun renderSlotInfo(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: Text, position: Position) {
 			val width = textRenderer.getWidth(text)
-			val scale = if(width > 16) 0.8333333f else 1.0f
+			val scale = if(width > 16) 0.8333333f else 1f
 
 			context.matrices.push()
 
 			when(position) {
-				Position.TOP_LEFT -> context.matrices.translate(0.0f, 0.0f, 200.0f)
-				Position.TOP_RIGHT -> context.matrices.translate(16.0f - width + 1.0f, 0.0f, 200.0f)
-				Position.BOTTOM_LEFT -> context.matrices.translate(0.0f, textRenderer.fontHeight.toFloat(), 200.0f)
-				Position.BOTTOM_RIGHT -> context.matrices.translate(16.0f - width + 1.0f, textRenderer.fontHeight.toFloat(), 200.0f)
+				Position.TOP_LEFT -> context.matrices.translate(0f, 0f, 200f)
+				Position.TOP_RIGHT -> context.matrices.translate(16f - width + 1f, 0f, 200f)
+				Position.BOTTOM_LEFT -> context.matrices.translate(0f, textRenderer.fontHeight.toFloat(), 200f)
+				Position.BOTTOM_RIGHT -> context.matrices.translate(16f - width + 1f, textRenderer.fontHeight.toFloat(), 200f)
 			}
 
 			RenderUtils.drawText(context, text, x, y, scale)
@@ -87,14 +87,14 @@ interface ISlotInfo {
 
 		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: Text, color: NobaColor = NobaColor.WHITE) {
 			context.matrices.push()
-			context.matrices.translate(0.0F, 0.0F, 200.0F)
+			context.matrices.translate(0f, 0f, 200f)
 			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color.rgb, true)
 			context.matrices.pop()
 		}
 
 		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: String, color: NobaColor = NobaColor.WHITE) {
 			context.matrices.push()
-			context.matrices.translate(0.0F, 0.0F, 200.0F)
+			context.matrices.translate(0f, 0f, 200f)
 			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color.rgb, true)
 			context.matrices.pop()
 		}

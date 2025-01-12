@@ -7,9 +7,7 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.util.Util
-import java.io.IOException
 import java.util.regex.PatternSyntaxException
 import kotlin.time.Duration.Companion.seconds
 
@@ -51,7 +49,7 @@ object ChatNotifications {
 
 			if(display == null) display = it.colorFormattedDisplay
 			SoundUtils.dingHighSound.play()
-			RenderUtils.drawTitle(display, NobaColor.WHITE, 2.75f, duration = 2.seconds, id = "chat_notification")
+			RenderUtils.drawTitle(display, NobaColor.WHITE, 2.75f, duration = 2.seconds, id = "chat.notification")
 			return
 		}
 	}

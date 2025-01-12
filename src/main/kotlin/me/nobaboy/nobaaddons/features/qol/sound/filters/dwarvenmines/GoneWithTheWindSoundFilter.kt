@@ -20,8 +20,8 @@ object GoneWithTheWindSoundFilter : ISoundFilter {
 
 	override fun onSound(sound: SoundEvents.AllowSound) {
 		val shouldFilter = when(sound.id) {
-			WIND_CHANGE_DING -> sound.pitch == 4.047619f && (sound.volume == 8.0f || sound.volume == 0.8f)
-			WIND_CHANGE_ELYTRA -> sound.pitch == 2.0f && sound.volume == 0.2f
+			WIND_CHANGE_DING -> sound.pitch == 4.047619f && (sound.volume == 8f || sound.volume == 0.8f)
+			WIND_CHANGE_ELYTRA -> sound.pitch == 2f && sound.volume == 0.2f
 			else -> false
 		}
 

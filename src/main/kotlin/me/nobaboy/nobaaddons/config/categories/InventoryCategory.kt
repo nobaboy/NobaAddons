@@ -129,19 +129,19 @@ object InventoryCategory {
 			)
 			tickBox(
 				tr("nobaaddons.config.inventory.slotInfo.petLevel", "Pet Level"),
-				tr("nobaaddons.config.inventory.slotInfo.petLevel.tooltip", "Shows the level of a non-maxed pet"),
+				tr("nobaaddons.config.inventory.slotInfo.petLevel.tooltip", "Displays the level of a non-maxed pet"),
 				default = defaults.inventory.slotInfo.petLevel,
 				property = config.inventory.slotInfo::petLevel
 			)
 			tickBox(
 				tr("nobaaddons.config.inventory.slotInfo.petItem", "Pet Items"),
-				tr("nobaaddons.config.inventory.slotInfo.petItem.tooltip", "Shows an icon for certain pet items, like EXP Share or Lucky Clover"),
+				tr("nobaaddons.config.inventory.slotInfo.petItem.tooltip", "Displays an icon for specific pet items, such as EXP Share, Lucky Clover, or Tier Boost"),
 				default = defaults.inventory.slotInfo.petItem,
 				property = config.inventory.slotInfo::petItem
 			)
 			tickBox(
 				tr("nobaaddons.config.inventory.slotInfo.petCandy", "Pet Candy"),
-				tr("nobaaddons.config.inventory.slotInfo.petCandy.tooltip", "Displays an icon when a pet has candies applied"),
+				tr("nobaaddons.config.inventory.slotInfo.petCandy.tooltip", "Displays an icon when a pet has candies"),
 				default = defaults.inventory.slotInfo.petCandy,
 				property = config.inventory.slotInfo::petCandy
 			)
