@@ -80,8 +80,8 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 
 			val days = duration.inWholeDays.days
 			val hours = duration.inWholeHours.hours - days
-			val minutes = duration.inWholeMinutes.minutes - hours
-			val seconds = duration.inWholeSeconds.seconds - minutes
+			val minutes = duration.inWholeMinutes.minutes - hours - days
+			val seconds = duration.inWholeSeconds.seconds - minutes - hours - days
 
 			if(days >= 1.days) add(hours.toString(DurationUnit.DAYS, 0))
 			if(hours >= 1.hours) add(hours.toString(DurationUnit.HOURS, 0))
