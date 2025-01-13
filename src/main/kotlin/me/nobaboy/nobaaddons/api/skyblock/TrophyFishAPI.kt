@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
-import me.nobaboy.nobaaddons.core.ProfileData
+import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.events.ChatMessageEvents

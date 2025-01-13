@@ -14,14 +14,11 @@ import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.PersistentCache
-import me.nobaboy.nobaaddons.core.ProfileData
-import me.nobaboy.nobaaddons.features.rift.RiftTimerData
-import me.nobaboy.nobaaddons.features.rift.RiftTimers
+import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
@@ -30,7 +27,6 @@ import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import kotlin.jvm.optionals.getOrNull
-import kotlin.time.Duration.Companion.hours
 
 @Suppress("unused")
 @Group("debug")

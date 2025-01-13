@@ -2,9 +2,8 @@ package me.nobaboy.nobaaddons.api.skyblock
 
 import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.core.ProfileData
+import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.core.Rarity
-import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.data.json.PetInfo
 import me.nobaboy.nobaaddons.events.ChatMessageEvents
