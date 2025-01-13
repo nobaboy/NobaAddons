@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
+import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
-import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -10,7 +10,6 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.text.Text
@@ -18,7 +17,7 @@ import java.util.EnumMap
 import kotlin.text.get
 
 object TrophyFishAPI {
-	val trophyFish: MutableMap<String, EnumMap<TrophyFishRarity, Int>> by PersistentCache::trophyFish
+	val trophyFish: MutableMap<String, EnumMap<TrophyFishRarity, Int>> get() = ProfileData.PROFILE.trophyFish
 
 	private val ODGER_RARITY_REGEX by Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?").fromRepo("trophy_fish.odger")
 	// .* is required to catch any extra text added afterward from compact chat mods like Compacting

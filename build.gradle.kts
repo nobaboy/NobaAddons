@@ -68,7 +68,7 @@ dependencies {
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
-	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true)
+	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true) { isTransitive = false }
 	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
 	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
 

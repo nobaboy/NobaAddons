@@ -13,8 +13,10 @@ import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
-import me.nobaboy.nobaaddons.data.PersistentCache
+import me.nobaboy.nobaaddons.core.PersistentCache
+import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.utils.ErrorManager
+import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
@@ -137,6 +139,22 @@ object DebugCommands {
 	@Command
 	fun updateNotification(ctx: Context) {
 		UpdateNotifier.sendUpdateNotification()
+	}
+
+	@Command
+	fun flushCaches() {
+		PersistentCache.save()
+		ProfileData.saveAll()
+	}
+
+	@Command
+	fun profile(ctx: Context) {
+		ctx.dumpInfo("Current profile" to ProfileData.PROFILE.profile)
+	}
+
+	@Command
+	fun fake(text: Text) {
+		MCUtils.player!!.sendMessage(text, false)
 	}
 
 	val item = NobaClientCommandGroup(ItemDebugCommands)

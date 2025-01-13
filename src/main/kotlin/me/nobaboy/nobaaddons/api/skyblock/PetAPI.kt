@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.api.skyblock
 
 import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.core.Rarity
-import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.data.json.PetInfo
 import me.nobaboy.nobaaddons.events.ChatMessageEvents
@@ -37,16 +37,13 @@ object PetAPI {
 
 	var currentPet: PetData? = null
 		get() = if(SkyBlockAPI.inSkyBlock) field else null
-		private set(value) {
-			if(value != PersistentCache.pet) PersistentCache.pet = value
-			field = value
-		}
+		private set
 
 	fun init() {
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		InventoryEvents.SLOT_CLICK.register(this::onInventorySlotClick)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string) }
-		currentPet = PersistentCache.pet
+		SkyBlockEvents.PROFILE_DATA_LOADED.register { (_, data) -> currentPet = data.pet }
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
@@ -94,6 +91,7 @@ object PetAPI {
 
 		SkyBlockEvents.PET_CHANGE.invoke(SkyBlockEvents.PetChange(currentPet, pet))
 		currentPet = pet
+		ProfileData.PROFILE.pet = pet
 	}
 
 	fun xpFromLevel(level: Int, rarity: Rarity, maxLevel: Int = 100): Double {

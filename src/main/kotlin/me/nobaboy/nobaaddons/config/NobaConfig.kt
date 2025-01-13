@@ -33,6 +33,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 	val chat by ChatConfig()
 	val qol by QOLConfig()
 	val repo by RepoConfig()
+	val rift by RiftConfig()
 
 	companion object {
 		@JvmField
@@ -52,6 +53,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 				category(MiningCategory.create(defaults, INSTANCE))
 				category(DungeonsCategory.create(defaults, INSTANCE))
 				category(ChatCategory.create(defaults, INSTANCE))
+				category(RiftCategory.create(defaults, INSTANCE))
 				category(QOLCategory.create(defaults, INSTANCE))
 				category(ApiCategory.create(defaults, INSTANCE))
 

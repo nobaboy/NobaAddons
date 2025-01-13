@@ -11,11 +11,14 @@ import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessagesChat
 import me.nobaboy.nobaaddons.features.chat.filters.mobs.SeaCreatureSpawnMessageChatFilter
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import net.minecraft.text.Text
 
 interface IChatFilter {
 	val config get() = NobaConfig.INSTANCE.chat.filters
 
 	val enabled: Boolean
+
+	fun shouldFilter(message: Text): Boolean = shouldFilter(message.string.cleanFormatting())
 	fun shouldFilter(message: String): Boolean
 
 	companion object {
@@ -39,11 +42,10 @@ interface IChatFilter {
 			init = true
 
 			ChatMessageEvents.ALLOW.register { event ->
-				val string = event.message.string.cleanFormatting()
 				for(filter in filters.asSequence()) {
 					if(!filter.enabled) continue
 					try {
-						if(filter.shouldFilter(string)) {
+						if(filter.shouldFilter(event.message)) {
 							event.cancel()
 							break
 						}
