@@ -14,6 +14,7 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 	val announceBossKillTime by AnnounceBossKillTime()
 	val sven by Sven()
 	val voidgloom by Voidgloom()
+	val inferno by Inferno()
 
 	class BossAlert : ObjectProperty<BossAlert>("bossAlert") {
 		var enabled by Property.of<Boolean>("enabled", false)
@@ -39,7 +40,7 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 		var hidePupNametags by Property.of<Boolean>("hidePupNametags", false)
 	}
 
-	class Voidgloom : ObjectProperty<Voidgloom>("voidgloom"){
+	class Voidgloom : ObjectProperty<Voidgloom>("voidgloom") {
 		var highlightPhases by Property.of<Boolean>("highlightPhases", false)
 		var hitPhaseColor by Property.of("hitPhaseColor", Serializer.color, NobaColor(0xFF9C46))
 		var beaconPhaseColor by Property.of("beaconPhaseColor", Serializer.color, NobaColor(0xFF2D9C))
@@ -54,5 +55,9 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 		var nukekubiFixationHighlightColor by Property.of("nukekubiFixationHighlightColor", Serializer.color, NobaColor.RED)
 
 		var brokenHeartRadiationTimer by Property.of<Boolean>("brokenHeartRadiationTimer", false)
+	}
+
+	class Inferno : ObjectProperty<Inferno>("inferno") {
+		var highlightHellionShield by Property.of<Boolean>("highlightHellionShield", false)
 	}
 }

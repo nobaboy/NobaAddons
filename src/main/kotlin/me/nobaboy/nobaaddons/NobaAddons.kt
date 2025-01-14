@@ -54,6 +54,7 @@ import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.rift.RiftTimers
 import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
+import me.nobaboy.nobaaddons.features.slayers.inferno.HighlightHellionShield
 import me.nobaboy.nobaaddons.features.slayers.sven.HidePupNametags
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.BrokenHeartRadiationTimer
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.HighlightNukekubiFixations
@@ -188,6 +189,9 @@ object NobaAddons : ClientModInitializer {
 		HighlightNukekubiFixations.init()
 		HighlightVoidgloomPhases.init()
 		YangGlyphFeatures.init()
+		/* endregion */
+		/* region Inferno Demonlord */
+		HighlightHellionShield.init()
 		/* endregion */
 		// endregion
 

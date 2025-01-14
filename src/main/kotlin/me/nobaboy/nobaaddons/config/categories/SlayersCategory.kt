@@ -143,5 +143,13 @@ object SlayersCategory {
 				property = config.slayers.voidgloom::brokenHeartRadiationTimer
 			)
 		}
+
+		buildGroup(tr("nobaaddons.config.slayers.inferno", "Inferno Demonlord")) {
+			boolean(
+				tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield"),
+				default = defaults.slayers.inferno.highlightHellionShield,
+				property = config.slayers.inferno::highlightHellionShield
+			)
+		}
 	}
 }
