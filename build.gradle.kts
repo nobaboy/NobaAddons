@@ -1,5 +1,6 @@
 import moe.nea.mcautotranslations.gradle.CollectTranslations
 import nobaaddonsbuild.DownloadBackupRepo
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 plugins {
 	id("fabric-loom")
@@ -32,21 +33,19 @@ group = mod.group
 base { archivesName.set(mod.id) }
 
 repositories {
-	mavenCentral()
-	maven("https://maven.isxander.dev/releases") // YACL
-	maven("https://maven.terraformersmc.com/") // ModMenu
-	maven("https://maven.celestialfault.dev/releases") // CelestialConfig, Commander
-	maven("https://repo.hypixel.net/repository/Hypixel/") // Hypixel Mod API
-	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
-	maven("https://repo.nea.moe/releases") // mc-auto-translations (which doesn't document anywhere that you need this!!!!)
-	exclusiveContent {
-		forRepository {
-			maven("https://api.modrinth.com/maven")
-		}
-		filter {
-			includeGroup("maven.modrinth")
-		}
+	fun strictMaven(url: String, vararg groups: String) = exclusiveContent {
+		forRepository { maven(url) }
+		filter { groups.forEach(::includeGroup) }
 	}
+
+	mavenCentral()
+	strictMaven("https://maven.isxander.dev/releases", "dev.isxander", "org.quiltmc.parsers") // YACL
+	strictMaven("https://maven.terraformersmc.com/", "com.terraformersmc") // ModMenu
+	strictMaven("https://maven.celestialfault.dev/releases", "dev.celestialfault") // CelestialConfig, Commander
+	strictMaven("https://repo.hypixel.net/repository/Hypixel/", "net.hypixel") // Hypixel Mod API
+	strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "me.djtheredstoner") // DevAuth
+	strictMaven("https://repo.nea.moe/releases", "moe.nea.mcautotranslations") // mc-auto-translations (which doesn't document anywhere that you need this!!!!)
+	strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
 }
 
 dependencies {
@@ -69,7 +68,7 @@ dependencies {
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
-	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true)
+	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true) { isTransitive = false }
 	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
 	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
 
@@ -81,6 +80,10 @@ dependencies {
 	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}") // Sodium
 	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // No Telemetry
 	devEnvOnly("maven.modrinth:compacting:${deps["compacting"]}") // Compacting
+
+	if(DefaultNativePlatform.getCurrentOperatingSystem().isLinux) {
+		devEnvOnly("maven.modrinth:fix-keyboard-on-linux:${deps["fix-linux-keyboard"]}")
+	}
 }
 
 loom {

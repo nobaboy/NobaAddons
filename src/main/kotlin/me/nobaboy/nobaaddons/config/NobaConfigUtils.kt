@@ -28,7 +28,6 @@ import me.nobaboy.nobaaddons.mixins.accessors.AbstractConfigAccessor
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
-import me.nobaboy.nobaaddons.utils.Scheduler
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import net.minecraft.text.Text
 import net.minecraft.util.PathUtil
@@ -69,24 +68,13 @@ object NobaConfigUtils {
 	/**
 	 * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [AbstractConfig.save]
 	 */
-	fun AbstractConfig.saveOnExit() {
+	fun AbstractConfig.saveOnExit(onlyIfDirty: Boolean = false) {
 		ClientLifecycleEvents.CLIENT_STOPPING.register {
+			if(onlyIfDirty && !dirty) return@register
 			try {
 				save()
 			} catch(ex: Throwable) {
-				NobaAddons.LOGGER.error("Failed to automatically save ${this::class.simpleName}", ex)
-			}
-		}
-	}
-
-	/**
-	 * Attempts to save the associated [AbstractConfig] every [ticks] interval if any changes have been made
-	 */
-	fun AbstractConfig.saveEvery(ticks: Int) {
-		Scheduler.scheduleAsync(ticks, repeat = true) {
-			if(dirty) {
-				NobaAddons.LOGGER.info("Auto-saving ${this@saveEvery::class.simpleName}")
-				save()
+				NobaAddons.LOGGER.error("Failed to save ${this::class.simpleName} before shutdown", ex)
 			}
 		}
 	}
@@ -299,6 +287,11 @@ object NobaConfigUtils {
 	infix fun <T> Option<T>.requires(other: Collection<Option<Boolean>>): Option<T> {
 		require(other.none { it === this }) { "Cannot make an option depend on itself" }
 		return availableIf(*other.toTypedArray()) { other.all { it.pendingValue() } }
+	}
+
+	infix fun <T> Option<T>.requiresAny(other: Collection<Option<Boolean>>): Option<T> {
+		require(other.none { it === this }) { "Cannot make an option depend on itself" }
+		return availableIf(*other.toTypedArray()) { other.any { it.pendingValue() } }
 	}
 
 	fun <T, O> Option<T>.conflicts(other: Option<O>, onlyIf: (O) -> Boolean): Option<T> {

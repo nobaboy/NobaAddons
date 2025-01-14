@@ -4,8 +4,30 @@ import dev.celestialfault.celestialconfig.AbstractConfig
 import dev.celestialfault.celestialconfig.migrations.Migrations
 import dev.isxander.yacl3.api.YetAnotherConfigLib
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.config.categories.*
-import me.nobaboy.nobaaddons.config.configs.*
+import me.nobaboy.nobaaddons.config.categories.ApiCategory
+import me.nobaboy.nobaaddons.config.categories.ChatCategory
+import me.nobaboy.nobaaddons.config.categories.DungeonsCategory
+import me.nobaboy.nobaaddons.config.categories.EventsCategory
+import me.nobaboy.nobaaddons.config.categories.FishingCategory
+import me.nobaboy.nobaaddons.config.categories.GeneralCategory
+import me.nobaboy.nobaaddons.config.categories.InventoryCategory
+import me.nobaboy.nobaaddons.config.categories.MiningCategory
+import me.nobaboy.nobaaddons.config.categories.QOLCategory
+import me.nobaboy.nobaaddons.config.categories.RiftCategory
+import me.nobaboy.nobaaddons.config.categories.SlayersCategory
+import me.nobaboy.nobaaddons.config.categories.UIAndVisualsCategory
+import me.nobaboy.nobaaddons.config.configs.ChatConfig
+import me.nobaboy.nobaaddons.config.configs.DungeonsConfig
+import me.nobaboy.nobaaddons.config.configs.EventsConfig
+import me.nobaboy.nobaaddons.config.configs.FishingConfig
+import me.nobaboy.nobaaddons.config.configs.GeneralConfig
+import me.nobaboy.nobaaddons.config.configs.InventoryConfig
+import me.nobaboy.nobaaddons.config.configs.MiningConfig
+import me.nobaboy.nobaaddons.config.configs.QOLConfig
+import me.nobaboy.nobaaddons.config.configs.RepoConfig
+import me.nobaboy.nobaaddons.config.configs.RiftConfig
+import me.nobaboy.nobaaddons.config.configs.SlayersConfig
+import me.nobaboy.nobaaddons.config.configs.UIAndVisualsConfig
 import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
 
@@ -34,6 +56,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 	val chat by ChatConfig()
 	val qol by QOLConfig()
 	val repo by RepoConfig()
+	val rift by RiftConfig()
 
 	companion object {
 		@JvmField
@@ -54,6 +77,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 				category(MiningCategory.create(defaults, INSTANCE))
 				category(DungeonsCategory.create(defaults, INSTANCE))
 				category(ChatCategory.create(defaults, INSTANCE))
+				category(RiftCategory.create(defaults, INSTANCE))
 				category(QOLCategory.create(defaults, INSTANCE))
 				category(ApiCategory.create(defaults, INSTANCE))
 

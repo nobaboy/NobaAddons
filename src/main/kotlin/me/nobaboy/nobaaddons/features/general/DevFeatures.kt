@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.general
 
 import com.google.gson.GsonBuilder
 import com.mojang.serialization.JsonOps
-import me.nobaboy.nobaaddons.data.PersistentCache
+import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.mixins.accessors.HandledScreenAccessor
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.stripWhitespace

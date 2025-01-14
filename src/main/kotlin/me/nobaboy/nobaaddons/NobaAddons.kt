@@ -26,8 +26,8 @@ import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
-import me.nobaboy.nobaaddons.data.PersistentCache
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
@@ -51,6 +51,7 @@ import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
+import me.nobaboy.nobaaddons.features.rift.RiftTimers
 import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.sven.HidePupNametags
@@ -122,9 +123,9 @@ object NobaAddons : ClientModInitializer {
 	override fun onInitializeClient() {
 		/* region Core */
 		NobaConfig.INSTANCE.safeLoad()
-		PersistentCache.init()
+		PersistentCache.safeLoad()
 		RepoManager.init()
-		UISettings.init()
+		UISettings.safeLoad()
 		UIManager.init()
 
 		UpdateNotifier.init()
@@ -222,6 +223,10 @@ object NobaAddons : ClientModInitializer {
 		// region QOL
 		ISoundFilter.init()
 		MouseLock.init()
+		// endregion
+
+		// region Rift
+		RiftTimers.init()
 		// endregion
 		/* endregion */
 	}

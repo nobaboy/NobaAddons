@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.repo
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.data.PersistentCache
+import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.events.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.data.GithubCommitResponse
 import me.nobaboy.nobaaddons.repo.objects.IRepoObject

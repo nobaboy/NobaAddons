@@ -1,23 +1,29 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
+import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
+import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.InventoryEvents
 import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.hypixel.data.type.GameType
 import net.hypixel.data.type.ServerType
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
+import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
@@ -25,6 +31,7 @@ object SkyBlockAPI {
 	private val xpPattern by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
 	private val currencyPattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
 	private val zonePattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
+	private val profileIdPattern by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN})").fromRepo("skyblock.profile_id")
 
 	var currentGame: ServerType? = null
 		private set
@@ -37,6 +44,12 @@ object SkyBlockAPI {
 		private set
 	var currentZone: String? = null
 		private set
+
+	var currentProfile: UUID? = null
+		private set(value) {
+			field = value
+			PersistentCache.lastProfile = value
+		}
 
 	val prefixedZone: String?
 		get() = currentZone?.let {
@@ -60,13 +73,22 @@ object SkyBlockAPI {
 	fun init() {
 		SecondPassedEvent.EVENT.register { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
+		currentProfile = PersistentCache.lastProfile
+	}
+
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val profileId = UUID.fromString(profileIdPattern.getGroupFromFullMatch(event.message.string.cleanFormatting(), "id") ?: return)
+		if(profileId != currentProfile) {
+			currentProfile = profileId
+			SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
+		}
 	}
 
 	private fun onSecondPassed() {
 		if(!inSkyBlock) return
-
 		update()
 	}
 
