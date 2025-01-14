@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.core.Rarity
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandRegistryAccess
-import net.minecraft.command.CommandSource
 import net.minecraft.command.argument.NbtPathArgumentType
 import net.minecraft.command.argument.TextArgumentType
 import net.minecraft.text.Text
@@ -22,36 +21,37 @@ object CommandUtil {
 	private lateinit var access: CommandRegistryAccess
 
 	init {
-		Commander.register(NbtPathArgumentType.NbtPath::class, NbtPathHandler)
-		Commander.register(Rarity::class, RarityHandler)
-		Commander.register(Text::class, TextHandler)
+		val commander = Commander<FabricClientCommandSource>()
+		commander.addHandler(NbtPathArgumentType.NbtPath::class, NbtPathHandler)
+		commander.addHandler(Rarity::class, RarityHandler)
+		commander.addHandler(Text::class, TextHandler)
 		ClientCommandRegistrationCallback.EVENT.register { dispatch, access ->
 			this.access = access
-			commands.forEach { Commander.register(it, dispatch) }
+			commands.forEach { commander.register(it, dispatch) }
 		}
 	}
 
-	private object NbtPathHandler : ArgumentHandler<NbtPathArgumentType.NbtPath, CommandSource> {
+	private object NbtPathHandler : ArgumentHandler<NbtPathArgumentType.NbtPath, FabricClientCommandSource> {
 		override fun argument(parameter: KParameter): ArgumentType<NbtPathArgumentType.NbtPath> {
 			return NbtPathArgumentType.nbtPath()
 		}
 
-		override fun parse(ctx: CommandContext<CommandSource>, name: String): NbtPathArgumentType.NbtPath {
+		override fun parse(ctx: CommandContext<FabricClientCommandSource>, name: String): NbtPathArgumentType.NbtPath {
 			return ctx.getArgument(name, NbtPathArgumentType.NbtPath::class.java)
 		}
 	}
 
-	private object RarityHandler : ArgumentHandler<Rarity, CommandSource> {
+	private object RarityHandler : ArgumentHandler<Rarity, FabricClientCommandSource> {
 		override fun argument(parameter: KParameter): ArgumentType<Rarity> = Rarity.RarityArgumentType
 
-		override fun parse(ctx: CommandContext<CommandSource>, name: String): Rarity =
+		override fun parse(ctx: CommandContext<FabricClientCommandSource>, name: String): Rarity =
 			Rarity.RarityArgumentType.getItemRarity(ctx, name)
 	}
 
-	private object TextHandler : ArgumentHandler<Text, CommandSource> {
+	private object TextHandler : ArgumentHandler<Text, FabricClientCommandSource> {
 		override fun argument(parameter: KParameter): ArgumentType<Text> = TextArgumentType.text(access)
 
-		override fun parse(ctx: CommandContext<CommandSource>, name: String): Text =
+		override fun parse(ctx: CommandContext<FabricClientCommandSource>, name: String): Text =
 			ctx.getArgument(name, Text::class.java)
 	}
 
