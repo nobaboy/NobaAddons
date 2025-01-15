@@ -11,11 +11,11 @@ import java.util.EnumMap
 import java.util.UUID
 
 class ProfileData private constructor(profile: UUID?) : AbstractPerProfileConfig(profile, "data.json") {
-	var pet by Property.Companion.ofNullable("pet", Serializer.Companion.expose<PetData>())
-	val trophyFish by Property.Companion.of(
+	var pet by Property.ofNullable("pet", Serializer.expose<PetData>())
+	val trophyFish by Property.of(
 		key = "trophyFish",
 		default = mutableMapOf(),
-		serializer = Serializer.Companion.map<EnumMap<TrophyFishRarity, Int>>(Serializer.Companion.enumMap<TrophyFishRarity, Int>())
+		serializer = Serializer.map<EnumMap<TrophyFishRarity, Int>>(Serializer.enumMap<TrophyFishRarity, Int>())
 	)
 	val riftTimers by RiftTimerData()
 

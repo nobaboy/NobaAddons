@@ -10,7 +10,7 @@ object SendMessageEvents {
 	/**
 	 * Event invoked before a command is sent by the player to the server
 	 */
-	@JvmField val SEND_COMMAND = EventDispatcher.Companion.cancelable<SendCommand>()
+	@JvmField val SEND_COMMAND = EventDispatcher.cancelable<SendCommand>()
 
 	data class SendCommand(val command: String) : Event(isCancelable = true)
 }
