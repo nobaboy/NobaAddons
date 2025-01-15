@@ -4,9 +4,9 @@ import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.SecondPassedEvent
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -18,7 +18,6 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -35,11 +34,11 @@ object CorpseLocator {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { corpses.clear() }
-		SecondPassedEvent.EVENT.register(this::onSecondPassed)
+		TickEvents.everySecond(this::onSecondPassed)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
-	private fun onSecondPassed(event: SecondPassedEvent) {
+	private fun onSecondPassed(event: TickEvents.Tick) {
 		if(!enabled) return
 
 		event.client.player?.let {

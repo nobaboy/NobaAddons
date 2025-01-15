@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.api.skyblock
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.InventoryEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals

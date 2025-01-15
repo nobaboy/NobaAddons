@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.visuals.slotinfo.items
 
-import me.nobaboy.nobaaddons.events.ScreenRenderEvents
+import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.NumberUtils.formatLong

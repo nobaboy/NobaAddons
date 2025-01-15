@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHa
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object GuildCommands : ChatCommandManager() {
 	private val config get() = NobaConfig.INSTANCE.chat.chatCommands.guild

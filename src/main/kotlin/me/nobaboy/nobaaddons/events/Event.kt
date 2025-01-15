@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.events.internal
+package me.nobaboy.nobaaddons.events
 
 abstract class Event(val isCancelable: Boolean = false) {
 	@get:JvmName("isCanceled")

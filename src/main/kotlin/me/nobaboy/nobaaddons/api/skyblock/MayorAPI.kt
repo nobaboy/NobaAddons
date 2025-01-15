@@ -4,9 +4,9 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.data.json.MayorJson
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.InventoryEvents
-import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.mapFullMatch
@@ -19,7 +19,6 @@ import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
@@ -54,7 +53,7 @@ object MayorAPI {
 		private set
 
 	fun init() {
-		SecondPassedEvent.EVENT.register { onSecondPassed() }
+		TickEvents.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}

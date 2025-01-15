@@ -3,12 +3,11 @@ package me.nobaboy.nobaaddons.features.fishing
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.fishing.SeaCreature
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object SeaCreatureAlert {
 	private val config get() = NobaConfig.INSTANCE.fishing.seaCreatureAlert

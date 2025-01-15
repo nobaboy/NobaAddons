@@ -5,13 +5,12 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.dungeons.DungeonBoss
 import me.nobaboy.nobaaddons.core.dungeons.DungeonClass
 import me.nobaboy.nobaaddons.core.dungeons.DungeonFloor
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 object DungeonsAPI {
 	var currentClass: DungeonClass = DungeonClass.EMPTY
@@ -30,7 +29,7 @@ object DungeonsAPI {
 	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN && currentBoss != DungeonBoss.WATCHER
 
 	fun init() {
-		SecondPassedEvent.EVENT.register { onSecondPassed() }
+		TickEvents.everySecond { onSecondPassed() }
 		ChatMessageEvents.CHAT.register { (message) -> getBossType(message.string.cleanFormatting()) }
 	}
 

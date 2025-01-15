@@ -1,10 +1,10 @@
-package me.nobaboy.nobaaddons.events.skyblock
+package me.nobaboy.nobaaddons.events.impl.skyblock
 
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.data.PetData
-import me.nobaboy.nobaaddons.events.internal.Event
-import me.nobaboy.nobaaddons.events.internal.EventDispatcher
+import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.EventDispatcher
 import java.util.UUID
 
 object SkyBlockEvents {

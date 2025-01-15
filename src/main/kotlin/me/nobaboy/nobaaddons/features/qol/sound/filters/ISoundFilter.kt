@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.qol.sound.filters
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.SoundEvents
+import me.nobaboy.nobaaddons.events.impl.client.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ability.WitherSkullAbilitiesSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.dwarvenmines.GoneWithTheWindSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.misc.PunchSoundFilter

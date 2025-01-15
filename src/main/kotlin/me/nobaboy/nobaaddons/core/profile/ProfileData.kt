@@ -4,7 +4,7 @@ import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.data.PetData
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.rift.RiftTimerData
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.enumMap
 import java.util.EnumMap
