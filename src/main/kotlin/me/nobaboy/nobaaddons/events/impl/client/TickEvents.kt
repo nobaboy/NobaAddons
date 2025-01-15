@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.events.impl.client
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.utils.CooldownManager
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.minecraft.client.MinecraftClient
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
