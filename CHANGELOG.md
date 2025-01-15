@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Worm Alert - nobaboy
 - Rift free infusion & Split or Steal timer notifications - celeste
 - `/noba day` to display the lobby day count (since Hypixel doesn't send the information for the line F3 shows this on) - celeste
+- Chat commands to join Dungeons and Kuudra - celeste
+- Option to keep items in the same position when swinging - celeste
 
 ### Changed
 

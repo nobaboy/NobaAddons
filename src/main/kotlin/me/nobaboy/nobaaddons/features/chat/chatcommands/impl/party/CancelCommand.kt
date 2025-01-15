@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.features.chat.chatcommands.IChatCommand
+import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 
-class CancelCommand : IChatCommand {
+class CancelCommand : ChatCommand() {
 	override val enabled: Boolean get() = config.party.warp
 
 	override val name: String = "cancel"

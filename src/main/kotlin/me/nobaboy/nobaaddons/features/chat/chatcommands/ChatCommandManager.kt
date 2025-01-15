@@ -1,21 +1,26 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands
 
-import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
+import me.nobaboy.nobaaddons.utils.HypixelUtils
+import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.client.MinecraftClient
 
-abstract class ChatCommandManager : CooldownManager() {
-	private val commands = mutableListOf<IChatCommand>()
+abstract class ChatCommandManager {
+	private val commands = mutableListOf<ChatCommand>()
 	private val lock = Object()
+
+	protected fun onHypixel(): Boolean {
+		return HypixelUtils.onHypixel || (FabricLoader.getInstance().isDevelopmentEnvironment && MinecraftClient.getInstance().isInSingleplayer)
+	}
 
 	protected abstract val enabled: Boolean
 	protected abstract val pattern: Regex
 
-	protected fun register(command: IChatCommand) {
+	protected fun register(command: ChatCommand) {
 		commands.add(command)
 	}
 
-	fun getCommands(enabledOnly: Boolean = false): List<IChatCommand> =
+	fun getCommands(enabledOnly: Boolean = false): List<ChatCommand> =
 		if(enabledOnly) commands.filter { it.enabled } else commands
 
 	protected open fun matchMessage(message: String): MatchResult? =
@@ -37,20 +42,16 @@ abstract class ChatCommandManager : CooldownManager() {
 			val cmd = commands.asSequence()
 				.filter { it.enabled }
 				.firstOrNull {
-					it.name.lowercaseEquals(ctx.command) ||
-						it.aliases.any { alias ->
-							alias.lowercaseEquals(ctx.command)
-						}
+					it.name.equals(ctx.command, ignoreCase = true)
+						|| it.aliases.any { alias -> alias.equals(ctx.command, ignoreCase = true) }
 				} ?: return
 
-			if(!cmd.bypassCooldown && isOnCooldown()) return
+			if(!cmd.bypassCooldown && cmd.isOnCooldown()) return
 
-			runCatching {
+			try {
 				cmd.run(ctx)
-			}.onSuccess {
-				if(!cmd.bypassCooldown) startCooldown()
-			}.onFailure { ex ->
-				ErrorManager.logError("Chat command '${cmd.name}' threw an error", ex, "Command" to ctx.fullMessage)
+			} catch(ex: Throwable) {
+				ErrorManager.logError("Chat command '${ctx.command}' threw an error", ex, "Command" to ctx.fullMessage)
 			}
 		}
 	}

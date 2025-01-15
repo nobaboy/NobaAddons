@@ -1,14 +1,15 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.features.chat.chatcommands.IChatCommand
+import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import kotlin.time.Duration.Companion.seconds
 
-class JoinInstanceCommands : IChatCommand {
+class JoinInstanceCommands : ChatCommand() {
 	override val enabled: Boolean = config.party.joinInstanced
 
-	override val usage: String = "f(1-7), !m(1-7), !t(1-5)" // TODO does this make sense?
+	override val usage: String = "f(1-7), m(1-7), t(1-5)"
 
 	override val name: String = "f1"
 	override val aliases: List<String> = listOf(
@@ -28,6 +29,7 @@ class JoinInstanceCommands : IChatCommand {
 		}
 		ChatUtils.addMessage(tr("nobaaddons.chat.partyCommands.joiningInstance", "Joining ${type.uppercase()}$tier"))
 		ChatUtils.queueCommand("joininstance $instanceName")
+		startCooldown()
 	}
 }
 

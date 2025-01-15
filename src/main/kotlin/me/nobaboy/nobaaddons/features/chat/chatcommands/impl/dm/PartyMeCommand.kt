@@ -1,11 +1,11 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm
 
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.features.chat.chatcommands.IChatCommand
+import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
-class PartyMeCommand : IChatCommand {
+class PartyMeCommand : ChatCommand() {
 	override val enabled: Boolean get() = config.dm.partyMe
 
 	override val name: String = "partyme"
@@ -17,5 +17,6 @@ class PartyMeCommand : IChatCommand {
 		if(ctx.user == playerName) return
 
 		HypixelCommands.partyInvite(ctx.user)
+		startCooldown()
 	}
 }
