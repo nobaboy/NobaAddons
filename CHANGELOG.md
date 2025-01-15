@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Chat Notifications - celeste
+- Copy Chat - celeste
 - Item Pickup Log - celeste
 - Worm Alert - nobaboy
 - Rift free infusion & Split or Steal timer notifications - celeste
@@ -29,6 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `/noba refill pearls` using the wrong item ID - celeste
 - `/noba refill item` is now case-insensitive to match `/gfs` - celeste
 - An occasional crash that occurs while processing an event - celeste
+- The mod will now detect you being on Hypixel if you use the bare `hypixel.net` IP - nobaboy
 
 ## 0.1.0-Alpha.12 - 2024-12-29
 

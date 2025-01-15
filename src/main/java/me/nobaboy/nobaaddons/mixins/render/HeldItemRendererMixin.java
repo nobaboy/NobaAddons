@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.mixins.render;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI;
@@ -95,5 +96,13 @@ abstract class HeldItemRendererMixin {
 		if(NobaConfig.INSTANCE.getUiAndVisuals().getItemPosition().getCancelDrinkAnimation()) {
 			ci.cancel();
 		}
+	}
+
+	@WrapWithCondition(
+		method = "swingArm",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V")
+	)
+	public boolean nobaaddons$staticSwingPosition(MatrixStack instance, float x, float y, float z) {
+		return !NobaConfig.INSTANCE.getUiAndVisuals().getSwingAnimation().getStaticSwingPosition();
 	}
 }

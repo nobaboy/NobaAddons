@@ -121,6 +121,11 @@ object UIAndVisualsCategory {
 					else -> it.toString().toText()
 				}
 			}
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.swingAnimation.static", "Static Item Swing Position"),
+				default = defaults.uiAndVisuals.swingAnimation.staticSwingPosition,
+				property = config.uiAndVisuals.swingAnimation::staticSwingPosition
+			)
 
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers", "Apply to All Players"),

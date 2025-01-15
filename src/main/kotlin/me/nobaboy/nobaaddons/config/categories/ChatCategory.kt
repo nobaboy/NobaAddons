@@ -246,6 +246,12 @@ object ChatCategory {
 				default = defaults.chat.chatCommands.party.coords,
 				property = config.chat.chatCommands.party::coords
 			) requires partyEnabled
+			boolean(
+				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced", "Join Instanced Islands Commands"),
+				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced.tooltip", "Commands such as !m6, !f7, !t5, etc."),
+				default = defaults.chat.chatCommands.party.joinInstanced,
+				property = config.chat.chatCommands.party::joinInstanced
+			) requires partyEnabled
 			// endregion
 
 			// region Guild

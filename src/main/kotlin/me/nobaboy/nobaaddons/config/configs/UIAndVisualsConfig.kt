@@ -37,6 +37,7 @@ class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
 	class SwingAnimation : ObjectProperty<SwingAnimation>("swingAnimation") {
 		var swingDuration by Property.of<Int>("swingDuration", 1)
 		var applyToAllPlayers by Property.of<Boolean>("applyToAllPlayers", false)
+		var staticSwingPosition by Property.of<Boolean>("staticSwingPosition", false)
 	}
 
 	class FirstPersonItemPosition : ObjectProperty<FirstPersonItemPosition>("itemPosition") {
