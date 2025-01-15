@@ -20,8 +20,9 @@ object CommandUtil {
 	private val commands: MutableList<ICommand<FabricClientCommandSource>> = mutableListOf()
 	private lateinit var access: CommandRegistryAccess
 
+	val commander = Commander<FabricClientCommandSource>()
+
 	init {
-		val commander = Commander<FabricClientCommandSource>()
 		commander.addHandler(NbtPathArgumentType.NbtPath::class, NbtPathHandler)
 		commander.addHandler(Rarity::class, RarityHandler)
 		commander.addHandler(Text::class, TextHandler)

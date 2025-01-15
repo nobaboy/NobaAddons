@@ -7,8 +7,7 @@ class CancelCommand : ChatCommand() {
 	override val enabled: Boolean get() = config.party.warp
 
 	override val name: String = "cancel"
-
-	override val bypassCooldown: Boolean = true
+	override val hideFromHelp: Boolean = true
 
 	override fun run(ctx: ChatContext) {
 		WarpCommand.cancel = true

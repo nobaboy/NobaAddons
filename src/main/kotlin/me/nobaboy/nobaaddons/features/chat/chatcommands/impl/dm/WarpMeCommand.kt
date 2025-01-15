@@ -17,7 +17,7 @@ class WarpMeCommand : ChatCommand(3.seconds) {
 		if(ctx.user == playerName) return
 
 		if(WarpPlayerHandler.isWarping) {
-			HypixelCommands.privateChat(ctx.user, "Warp-in is on cooldown, try again later!")
+			ctx.reply("Warp-in is on cooldown, try again later!")
 			return
 		}
 

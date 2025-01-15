@@ -12,7 +12,8 @@ abstract class ChatCommand(defaultCooldown: Duration = 1.seconds) : CooldownMana
 	abstract val name: String
 	open val aliases: List<String> get() = emptyList<String>()
 	open val usage: String get() = name
-	open val bypassCooldown: Boolean get() = false
+
+	open val hideFromHelp: Boolean = false
 
 	abstract fun run(ctx: ChatContext)
 }

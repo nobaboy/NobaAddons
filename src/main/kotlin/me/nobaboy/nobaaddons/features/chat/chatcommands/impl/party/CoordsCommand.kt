@@ -11,8 +11,7 @@ class CoordsCommand : ChatCommand() {
 	override val name: String = "coords"
 
 	override fun run(ctx: ChatContext) {
-		val coords = LocationUtils.playerCoords()
-		HypixelCommands.partyChat(coords)
+		ctx.reply(LocationUtils.playerCoords())
 		startCooldown()
 	}
 }

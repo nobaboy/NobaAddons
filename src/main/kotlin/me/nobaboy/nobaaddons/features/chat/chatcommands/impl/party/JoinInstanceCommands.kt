@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import kotlin.time.Duration.Companion.seconds
 
-class JoinInstanceCommands : ChatCommand() {
+class JoinInstanceCommands : ChatCommand(2.seconds) {
 	override val enabled: Boolean = config.party.joinInstanced
 
 	override val usage: String = "f(1-7), m(1-7), t(1-5)"
