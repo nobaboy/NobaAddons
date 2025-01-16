@@ -247,8 +247,8 @@ object ChatCategory {
 				property = config.chat.chatCommands.party::coords
 			) requires partyEnabled
 			boolean(
-				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced", "Join Instanced Islands Commands"),
-				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced.tooltip", "Commands such as !m6, !f7, !t5, etc."),
+				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced", "Instance Commands"),
+				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced.tooltip", "Commands such as !m6 (Master Mode Catacombs), !f7 (Catacombs), !t5 (Kuudra), etc."),
 				default = defaults.chat.chatCommands.party.joinInstanced,
 				property = config.chat.chatCommands.party::joinInstanced
 			) requires partyEnabled
