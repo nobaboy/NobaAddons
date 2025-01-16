@@ -10,7 +10,6 @@ import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket
@@ -25,19 +24,27 @@ object SlayerAPI {
 	private val miniBosses = mutableSetOf<LivingEntity>()
 
 	fun init() {
-		TickEvents.everySecond { onSecondPassed() }
+		TickEvents.TICK.register { onTick() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
-		ClientTickEvents.END_CLIENT_TICK.register { onTick() }
 	}
 
-	private fun onSecondPassed() {
+	private fun onTick() {
 		if(!SkyBlockAPI.inSkyBlock) return
-		if(currentQuest == null) return
 
 		miniBosses.removeIf { !it.isAlive }
 		if(currentQuest?.entity?.isAlive == false) currentQuest?.entity = null
+
+		val scoreboard = ScoreboardUtils.getScoreboardLines()
+		val bossNameLine = scoreboard.nextAfter("Slayer Quest") ?: return
+		val slayerBoss = SlayerBoss.getByName(bossNameLine) ?: return
+
+		if(currentQuest?.boss != slayerBoss) currentQuest = SlayerQuest(slayerBoss)
+
+		val previousState = currentQuest?.spawned
+		currentQuest?.spawned = scoreboard.any { it == "Slay the boss!" }
+		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn())
 	}
 
 	private fun onPacketReceive(event: PacketEvents.Receive) {
@@ -107,20 +114,6 @@ object SlayerAPI {
 				}
 			}
 		}
-	}
-
-	private fun onTick() {
-		if(!SkyBlockAPI.inSkyBlock) return
-
-		val scoreboard = ScoreboardUtils.getScoreboardLines()
-		val bossNameLine = scoreboard.nextAfter("Slayer Quest") ?: return
-		val slayerBoss = SlayerBoss.getByName(bossNameLine) ?: return
-
-		if(currentQuest?.boss != slayerBoss) currentQuest = SlayerQuest(slayerBoss)
-
-		val previousState = currentQuest?.spawned
-		currentQuest?.spawned = scoreboard.any { it == "Slay the boss!" }
-		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn())
 	}
 
 	data class SlayerQuest(
