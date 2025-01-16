@@ -82,7 +82,7 @@ object HoppityEggGuess {
 
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
-		if(!message.startsWith("HOPPITY'S HUNT You found a Chocolate")) guessLocation = null
+		if(message.startsWith("HOPPITY'S HUNT You found a Chocolate")) guessLocation = null
 	}
 
 	// FIXME make a custom event for item usage
@@ -140,20 +140,12 @@ object HoppityEggGuess {
 		val augmentedMatrix = Array(size) { i -> matrix[i] + doubleArrayOf(vector[i]) }
 
 		for(i in 0 until size) {
-			var maxRow = i
-			for(k in i + 1 until size) {
-				if(abs(augmentedMatrix[k][i]) > abs(augmentedMatrix[maxRow][i])) {
-					maxRow = k
-				}
-			}
-
-			val temp = augmentedMatrix[i]
-			augmentedMatrix[i] = augmentedMatrix[maxRow]
-			augmentedMatrix[maxRow] = temp
+			val maxRow = (i until size).maxByOrNull { abs(augmentedMatrix[it][i]) } ?: i
+			augmentedMatrix[i] = augmentedMatrix[maxRow].also { augmentedMatrix[maxRow] = augmentedMatrix[i] }
 
 			for(k in i + 1 until size) {
 				val factor = augmentedMatrix[k][i] / augmentedMatrix[i][i]
-				for(j in i until size + 1) {
+				for(j in i ..size) {
 					augmentedMatrix[k][j] -= factor * augmentedMatrix[i][j]
 				}
 			}
@@ -175,15 +167,15 @@ object HoppityEggGuess {
 		yCurve: Triple<Double, Double, Double>,
 		zCurve: Triple<Double, Double, Double>
 	): NobaVec {
-		var t = 0.0
+		var time = 0.0
 
 		var closestLocation: NobaVec? = null
 		var closestDistance = Double.MAX_VALUE
 
 		for(i in 0 until MAX_STEPS) {
-			val x = xCurve.first * t * t + xCurve.second * t + xCurve.third
-			val y = yCurve.first * t * t + yCurve.second * t + yCurve.third
-			val z = zCurve.first * t * t + zCurve.second * t + zCurve.third
+			val x = xCurve.first * time * time + xCurve.second * time + xCurve.third
+			val y = yCurve.first * time * time + yCurve.second * time + yCurve.third
+			val z = zCurve.first * time * time + zCurve.second * time + zCurve.third
 			val currentPoint = NobaVec(x, y, z)
 
 			val eggLocations = HoppityEgg.getByIsland(SkyBlockAPI.currentIsland) ?: break
@@ -195,7 +187,7 @@ object HoppityEggGuess {
 				}
 			}
 
-			t += STEP
+			time += STEP
 		}
 
 		return closestLocation ?: NobaVec()
