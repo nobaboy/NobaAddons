@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.features.slayers.inferno
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
-import me.nobaboy.nobaaddons.events.EntityEvents
-import me.nobaboy.nobaaddons.events.QuarterSecondPassedEvent
+import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
@@ -22,11 +22,11 @@ object HighlightHellionShield {
 	private val armorStands = mutableSetOf<LivingEntity>()
 
 	fun init() {
-		QuarterSecondPassedEvent.EVENT.register { onQuarterSecondPassed() }
+		TickEvents.TICK.register { onTick() }
 		EntityEvents.SPAWN.register(this::onEntitySpawn)
 	}
 
-	private fun onQuarterSecondPassed() {
+	private fun onTick() {
 		if(!enabled) return
 
 		val currentQuest = SlayerAPI.currentQuest ?: return

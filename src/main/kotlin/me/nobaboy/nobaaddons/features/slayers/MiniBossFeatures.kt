@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.features.slayers
 
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.SoundEvents
-import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
+import me.nobaboy.nobaaddons.events.impl.client.SoundEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.render.RenderUtils

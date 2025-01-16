@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.events.skyblock
+package me.nobaboy.nobaaddons.events.impl.skyblock
 
-import me.nobaboy.nobaaddons.events.internal.Event
-import me.nobaboy.nobaaddons.events.internal.EventDispatcher
+import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 

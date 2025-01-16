@@ -3,10 +3,10 @@ package me.nobaboy.nobaaddons.api
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.InventoryData
-import me.nobaboy.nobaaddons.events.InventoryEvents
-import me.nobaboy.nobaaddons.events.PacketEvents
-import me.nobaboy.nobaaddons.events.QuarterSecondPassedEvent
-import me.nobaboy.nobaaddons.events.WorldEvents
+import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
+import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.Timestamp
@@ -36,13 +36,13 @@ object InventoryAPI {
 	private fun shouldSuppressItemLogUpdate(): Boolean = inventorySuppressTime.elapsedSeconds() < 2
 
 	fun init() {
-		QuarterSecondPassedEvent.EVENT.register(this::onQuarterSecond)
+		TickEvents.every(5, this::onQuarterSecond)
 		PacketEvents.SEND.register(this::onPacketSend)
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		WorldEvents.POST_LOAD.register { debounceItemLog() }
 	}
 
-	private fun onQuarterSecond(event: QuarterSecondPassedEvent) {
+	private fun onQuarterSecond(event: TickEvents.Tick) {
 		val player = event.client.player
 		if(!SkyBlockAPI.inSkyBlock || player == null) {
 			previousItemCounts = null

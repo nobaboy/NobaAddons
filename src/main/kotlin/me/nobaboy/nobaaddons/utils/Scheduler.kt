@@ -1,18 +1,18 @@
 package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.NobaAddons
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 
 /**
  * Scheduling utility for running methods a certain amount of ticks later.
  *
- * @see me.nobaboy.nobaaddons.events.CooldownTickEvent
+ * @see me.nobaboy.nobaaddons.events.impl.client.TickEvents.cooldown
  */
 object Scheduler {
 	private val tasks = mutableListOf<ScheduledTask>()
 
 	init {
-		ClientTickEvents.END_CLIENT_TICK.register { tick() }
+		TickEvents.TICK.register { tick() }
 	}
 
 	fun schedule(delay: Int, repeat: Boolean = false, task: ScheduledTask.() -> Unit): ScheduledTask {

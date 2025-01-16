@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
-import me.nobaboy.nobaaddons.events.QuarterSecondPassedEvent
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import net.minecraft.block.Blocks
@@ -17,10 +17,10 @@ object HighlightVoidgloomPhases {
 		SlayerAPI.currentQuest?.let { it.boss == SlayerBoss.VOIDGLOOM && it.spawned && it.entity != null } == true
 
 	fun init() {
-		QuarterSecondPassedEvent.EVENT.register { onQuarterSecondPassed() }
+		TickEvents.TICK.register { onTick() }
 	}
 
-	private fun onQuarterSecondPassed() {
+	private fun onTick() {
 		if(!enabled) return
 
 		val color = getHighlightColor() ?: return

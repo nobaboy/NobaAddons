@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.slayers.sven
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.EntityNametagRenderEvents
+import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents
 import net.minecraft.entity.decoration.ArmorStandEntity
 
 object HidePupNametags {

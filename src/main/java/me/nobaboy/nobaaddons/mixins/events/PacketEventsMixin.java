@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.mixins.events;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import me.nobaboy.nobaaddons.events.PacketEvents;
+import me.nobaboy.nobaaddons.events.impl.client.PacketEvents;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.listener.PacketListener;

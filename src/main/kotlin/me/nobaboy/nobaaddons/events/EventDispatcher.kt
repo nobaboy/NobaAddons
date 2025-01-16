@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.events.internal
+package me.nobaboy.nobaaddons.events
 
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import java.util.concurrent.CopyOnWriteArrayList
@@ -25,6 +25,11 @@ abstract class AbstractEventDispatcher<T : Event, R : Any?>(
 ) {
 	private val listeners = CopyOnWriteArrayList<(T) -> Unit>()
 
+	private fun eventName(event: T): String {
+		val parent = event::class.qualifiedName ?: "an event"
+		return parent.split(".").asReversed().takeWhile { it.any(Char::isUpperCase) }.reversed().joinToString(".")
+	}
+
 	open fun register(listener: (T) -> Unit) {
 		listeners.add(listener)
 	}
@@ -35,7 +40,7 @@ abstract class AbstractEventDispatcher<T : Event, R : Any?>(
 				it(event)
 			} catch(e: Throwable) {
 				if(!gracefulExceptions) throw e
-				ErrorManager.logError("Encountered an exception while processing ${event::class.simpleName}", e)
+				ErrorManager.logError("Encountered an exception while processing ${eventName(event)}", e)
 			}
 			if(event.canceled && exitEarlyOnCancel) return
 		}

@@ -2,14 +2,14 @@ package me.nobaboy.nobaaddons.features.dungeons
 
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.HighlightMode
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.entity.decoration.ArmorStandEntity
@@ -23,7 +23,7 @@ object HighlightStarredMobs {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { starredMobs.clear() }
-		ClientTickEvents.END_CLIENT_TICK.register { getStarredMobs() }
+		TickEvents.TICK.register { getStarredMobs() }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 	}
 

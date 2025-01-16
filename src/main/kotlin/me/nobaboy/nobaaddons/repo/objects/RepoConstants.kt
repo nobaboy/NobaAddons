@@ -4,7 +4,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.serializer
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.events.RepoReloadEvent
+import me.nobaboy.nobaaddons.events.impl.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.repo.serializers.RegexKSerializer

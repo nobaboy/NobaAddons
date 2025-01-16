@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.mixins.events;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import me.nobaboy.nobaaddons.events.EntityNametagRenderEvents;
+import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents;
 import net.minecraft.client.render.entity.ArmorStandEntityRenderer;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import org.spongepowered.asm.mixin.Mixin;

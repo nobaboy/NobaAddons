@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.events
+package me.nobaboy.nobaaddons.events.impl.client
 
-import me.nobaboy.nobaaddons.events.internal.Event
-import me.nobaboy.nobaaddons.events.internal.EventDispatcher
+import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.minecraft.entity.Entity
 

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.utils.render
 
 import me.nobaboy.nobaaddons.ducks.OverlayTextureDuck
-import me.nobaboy.nobaaddons.events.EntityEvents
+import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
