@@ -7,16 +7,23 @@ import me.nobaboy.nobaaddons.utils.tr
 import kotlin.time.Duration.Companion.seconds
 
 class JoinInstanceCommands : ChatCommand(2.seconds) {
-	override val enabled: Boolean = config.party.joinInstanced
+	private val floors = mapOf(
+		1 to "one", 2 to "two", 3 to "three", 4 to "four", 5 to "five", 6 to "six", 7 to "seven"
+	)
 
-	override val usage: String = "f(1-7), m(1-7), t(1-5)"
+	private val kuudraTiers = mapOf(
+		1 to "normal", 2 to "hot", 3 to "burning", 4 to "fiery", 5 to "infernal"
+	)
+
+	override val enabled: Boolean = config.party.joinInstanced
 
 	override val name: String = "f1"
 	override val aliases: List<String> = listOf(
 		/*f1,*/ "f2", "f3", "f4", "f5", "f6", "f7", // Catacombs
 		"m1",   "m2", "m3", "m4", "m5", "m6", "m7", // Master Mode Catacombs
-		"t1", "t2", "t3", "t4", "t5",               // Kuudra
+		"t1",   "t2", "t3", "t4", "t5",             // Kuudra
 	)
+	override val usage: String = "f(1-7), m(1-7), t(1-5)"
 
 	override fun run(ctx: ChatContext) {
 		val type = ctx.command.first().lowercase()
@@ -32,11 +39,3 @@ class JoinInstanceCommands : ChatCommand(2.seconds) {
 		startCooldown()
 	}
 }
-
-private val floors = mapOf(
-	1 to "one", 2 to "two", 3 to "three", 4 to "four", 5 to "five", 6 to "six", 7 to "seven"
-)
-
-private val kuudraTiers = mapOf(
-	1 to "normal", 2 to "hot", 3 to "burning", 4 to "fiery", 5 to "infernal"
-)

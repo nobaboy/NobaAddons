@@ -1,14 +1,20 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands
 
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HypixelUtils
+import me.nobaboy.nobaaddons.utils.MCUtils
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import java.util.Collections
+import kotlin.time.Duration.Companion.seconds
 
 abstract class ChatCommandManager {
 	private val commands = mutableListOf<ChatCommand>()
-	private val lock = Object()
+	private val lock = Mutex()
 
 	fun commands(): List<ChatCommand> = Collections.unmodifiableList(commands)
 
@@ -35,19 +41,20 @@ abstract class ChatCommandManager {
 		return ChatContext(source, user, command, args, message)
 	}
 
-	fun processMessage(message: String) {
+	fun processMessage(message: String) = NobaAddons.runAsync { processMessageInternal(message) }
+
+	private suspend fun processMessageInternal(message: String) {
 		if(!enabled) return
 
-		synchronized(lock) {
-			val ctx = getContext(message) ?: return
-			val cmd = commands.asSequence()
-				.filter { it.enabled }
-				.firstOrNull {
-					it.name.equals(ctx.command, ignoreCase = true)
-						|| it.aliases.any { alias -> alias.equals(ctx.command, ignoreCase = true) }
-				} ?: return
+		val ctx = getContext(message) ?: return
+		val cmd = commands.asSequence().filter { it.enabled }.firstOrNull { it.nameMatches(ctx.command) } ?: return
 
+		lock.withLock(null) {
 			if(cmd.isOnCooldown()) return
+			if(ctx.user == MCUtils.playerName) {
+				// wait a short bit to avoid sending commands too fast
+				delay(0.2.seconds)
+			}
 
 			try {
 				cmd.run(ctx)
