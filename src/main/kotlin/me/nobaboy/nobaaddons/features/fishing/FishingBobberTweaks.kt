@@ -19,8 +19,7 @@ import net.minecraft.text.Text
 import kotlin.time.DurationUnit
 
 object FishingBobberTweaks {
-	private val renderConfig get() = NobaConfig.INSTANCE.uiAndVisuals.renderingTweaks
-	private val fishingConfig get() = NobaConfig.INSTANCE.fishing
+	private val config get() = NobaConfig.INSTANCE.fishing
 
 	private val GREEN = NobaColor.GREEN.rgb
 	private val GOLD = NobaColor.GOLD.rgb
@@ -34,7 +33,7 @@ object FishingBobberTweaks {
 
 	private fun onEntityRender(event: EntityRenderEvents.AllowRender) {
 		val entity = event.entity as? FishingBobberEntity ?: return
-		if(!renderConfig.hideOtherPeopleFishing) return
+		if(!config.hideOtherPeopleFishing) return
 		if(entity.isOurs) return
 
 		event.cancel()
@@ -42,9 +41,9 @@ object FishingBobberTweaks {
 
 	private fun allowNameTag(event: EntityNametagRenderEvents.Visibility) {
 		val entity = event.entity as? FishingBobberEntity ?: return
-		if(!fishingConfig.bobberTimer.enabled) return
+		if(!config.bobberTimer.enabled) return
 		if(!SkyBlockAPI.inSkyBlock) return
-		if(!SkyBlockIsland.CRIMSON_ISLE.inIsland() && fishingConfig.bobberTimer.crimsonIsleOnly) return
+		if(!SkyBlockIsland.CRIMSON_ISLE.inIsland() && config.bobberTimer.crimsonIsleOnly) return
 		if(!entity.isOurs) return
 		if((entity as FishingBobberTimerDuck).`nobaaddons$spawnedAt`() == null) return
 
@@ -53,7 +52,7 @@ object FishingBobberTweaks {
 
 	private fun renderTimer(event: EntityNametagRenderEvents.Nametag) {
 		val entity = event.entity as? FishingBobberEntity ?: return
-		if(!fishingConfig.bobberTimer.enabled) return
+		if(!config.bobberTimer.enabled) return
 		if(!entity.isOurs) return
 
 		val time = (entity as FishingBobberTimerDuck).`nobaaddons$spawnedAt`() ?: return

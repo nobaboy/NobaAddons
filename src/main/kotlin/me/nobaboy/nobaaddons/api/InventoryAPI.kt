@@ -5,8 +5,8 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
-import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.Timestamp

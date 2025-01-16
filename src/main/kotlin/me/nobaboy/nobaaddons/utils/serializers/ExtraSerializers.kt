@@ -5,7 +5,6 @@ import com.google.gson.JsonPrimitive
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.Timestamp
-import java.awt.Color
 import java.util.EnumMap
 import java.util.UUID
 

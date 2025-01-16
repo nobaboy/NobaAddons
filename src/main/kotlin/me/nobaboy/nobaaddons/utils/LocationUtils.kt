@@ -29,8 +29,6 @@ object LocationUtils {
 	fun Entity.distanceToPlayer() = getNobaVec().distanceToPlayer()
 
 	fun Entity.distanceTo(vec: NobaVec) = getNobaVec().distance(vec)
-	fun Entity.distanceTo(other: Entity) = getNobaVec().distance(other.getNobaVec())
-
 	fun Entity.distanceToIgnoreY(vec: NobaVec) = getNobaVec().distanceIgnoreY(vec)
 
 	fun PlayerEntity.eyeLocation(oldVersion: Boolean = true): NobaVec {
