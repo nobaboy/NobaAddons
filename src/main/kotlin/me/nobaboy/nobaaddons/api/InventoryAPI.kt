@@ -39,7 +39,7 @@ object InventoryAPI {
 		TickEvents.every(5, this::onQuarterSecond)
 		PacketEvents.SEND.register(this::onPacketSend)
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
-		WorldEvents.POST_LOAD.register { debounceItemLog() }
+		WorldEvents.LOAD.register { debounceItemLog() }
 	}
 
 	private fun onQuarterSecond(event: TickEvents.Tick) {

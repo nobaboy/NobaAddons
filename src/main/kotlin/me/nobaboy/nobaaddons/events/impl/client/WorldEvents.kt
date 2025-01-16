@@ -7,7 +7,7 @@ import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.math.BlockPos
 
 object WorldEvents {
-	@JvmField val POST_LOAD = EventDispatcher<Load>()
+	@JvmField val LOAD = EventDispatcher<Load>()
 
 	@JvmField val BLOCK_UPDATE = EventDispatcher<BlockUpdate>()
 
