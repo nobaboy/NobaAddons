@@ -5,8 +5,8 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.hoppity.HoppityAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.Rarity
-import me.nobaboy.nobaaddons.events.PacketEvents
-import me.nobaboy.nobaaddons.events.SendMessageEvents
+import me.nobaboy.nobaaddons.events.impl.chat.SendMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow

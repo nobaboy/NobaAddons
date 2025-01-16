@@ -1,13 +1,19 @@
 package me.nobaboy.nobaaddons.features.events.hoppity
 
+//? if <=1.21.2 {
+/*import net.minecraft.util.TypedActionResult
+*///?} else {
+import net.minecraft.util.ActionResult
+//?}
+
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.hoppity.HoppityAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.hoppity.HoppityEgg
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.ParticleEvents
-import me.nobaboy.nobaaddons.events.SecondPassedEvent
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -21,7 +27,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.fabricmc.fabric.api.event.player.UseItemCallback
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
-import net.minecraft.util.ActionResult
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
 
@@ -38,10 +43,17 @@ object HoppityEggGuess {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		SecondPassedEvent.EVENT.register { onSecondPassed() }
+		TickEvents.everySecond { onSecondPassed() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		UseItemCallback.EVENT.register { player, _, _ -> onUseItem(player) }
+		UseItemCallback.EVENT.register { player, _, hand ->
+			onUseItem(player)
+			//? if <=1.21.1 {
+			/*TypedActionResult.pass(player.getStackInHand(hand))
+			*///?} else {
+			ActionResult.PASS
+			//?}
+		}
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
@@ -74,14 +86,14 @@ object HoppityEggGuess {
 	}
 
 	// FIXME make a custom event for item usage
-	private fun onUseItem(player: PlayerEntity): ActionResult {
-		if(!enabled) return ActionResult.PASS
+	private fun onUseItem(player: PlayerEntity) {
+		if(!enabled) return
 
-		val itemId = player.mainHandStack.skyBlockId ?: return ActionResult.PASS
-		if(itemId != HoppityAPI.LOCATOR) return ActionResult.PASS
+		val itemId = player.mainHandStack.skyBlockId ?: return
+		if(itemId != HoppityAPI.LOCATOR) return
 
 		lastAbilityUse = Timestamp.now()
-		return ActionResult.PASS
+		return
 	}
 
 	private fun renderWaypoints(context: WorldRenderContext) {
