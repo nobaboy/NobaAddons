@@ -15,13 +15,13 @@ import net.minecraft.text.Text
 
 object ChatCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.chat", "Chat")) {
-		// region Click Copy Chat
-		buildGroup(tr("nobaaddons.config.chat.clickCopyChat", "Click Copy Chat")) {
-			val enabled = boolean(CommonText.Config.ENABLED, default = defaults.chat.clickCopyChat.enabled, property = config.chat.clickCopyChat::enabled)
+		// region Copy Chat
+		buildGroup(tr("nobaaddons.config.chat.CopyChat", "Copy Chat")) {
+			val enabled = boolean(CommonText.Config.ENABLED, default = defaults.chat.copyChat.enabled, property = config.chat.copyChat::enabled)
 			cycler(
 				tr("nobaaddons.config.chat.copyChat.mode", "Copy Chat With"),
-				default = defaults.chat.clickCopyChat.mode,
-				property = config.chat.clickCopyChat::mode
+				default = defaults.chat.copyChat.mode,
+				property = config.chat.copyChat::mode
 			) requires enabled
 		}
 		// endregion

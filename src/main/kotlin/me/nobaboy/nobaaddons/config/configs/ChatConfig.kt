@@ -11,9 +11,9 @@ class ChatConfig : ObjectProperty<ChatConfig>("chat") {
 	val alerts by Alerts()
 	val filters by Filters()
 	val chatCommands by ChatCommands()
-	val clickCopyChat by ClickCopyChat()
+	val copyChat by CopyChat()
 
-	class ClickCopyChat : ObjectProperty<ClickCopyChat>("copy") {
+	class CopyChat : ObjectProperty<CopyChat>("copy") {
 		var enabled by Property.of("enabled", false)
 		var mode by Property.of("button", Serializer.enum(), CopyChatFeature.CopyWith.RIGHT_CLICK)
 	}

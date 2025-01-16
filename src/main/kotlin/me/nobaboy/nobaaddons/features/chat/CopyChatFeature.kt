@@ -15,7 +15,7 @@ import java.util.WeakHashMap
 object CopyChatFeature {
 	@get:JvmStatic val messages = WeakHashMap<ChatHudLine.Visible, WeakReference<ChatHudLine>>(200)
 
-	private val config get() = NobaConfig.INSTANCE.chat.clickCopyChat
+	private val config get() = NobaConfig.INSTANCE.chat.copyChat
 
 	private fun isEnabled(button: Int): Boolean {
 		if(!config.enabled) return false
