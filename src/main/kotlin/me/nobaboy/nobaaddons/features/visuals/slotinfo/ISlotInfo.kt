@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.visuals.slotinfo
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.ScreenRenderEvents
+import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.items.*
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements.*
 import me.nobaboy.nobaaddons.utils.NobaColor

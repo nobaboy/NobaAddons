@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.events
+package me.nobaboy.nobaaddons.events.impl.chat
 
-import me.nobaboy.nobaaddons.events.internal.Event
-import me.nobaboy.nobaaddons.events.internal.EventDispatcher
+import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
 

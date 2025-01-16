@@ -9,6 +9,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -22,7 +23,6 @@ import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
 import me.nobaboy.nobaaddons.utils.TextUtils.underline
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.loader.api.Version
 
 object UpdateNotifier {
@@ -35,7 +35,7 @@ object UpdateNotifier {
 	private val UPDATE_INFO by Repo.create("update.json", UpdateInfo.serializer())
 
 	fun init() {
-		ClientTickEvents.END_CLIENT_TICK.register {
+		TickEvents.TICK.register {
 			if(MCUtils.world != null && !inWorld) {
 				onJoin()
 				inWorld = true

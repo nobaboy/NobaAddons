@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
-import me.nobaboy.nobaaddons.events.WorldEvents;
+import me.nobaboy.nobaaddons.events.impl.client.WorldEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;

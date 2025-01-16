@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.events
+package me.nobaboy.nobaaddons.events.impl.render
 
-import me.nobaboy.nobaaddons.events.internal.Event
-import me.nobaboy.nobaaddons.events.internal.EventDispatcher
+import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.minecraft.entity.Entity
 
 object EntityRenderEvents {

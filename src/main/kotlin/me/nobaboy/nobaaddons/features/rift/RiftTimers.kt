@@ -5,9 +5,9 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.InventoryEvents
-import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
@@ -49,7 +49,7 @@ object RiftTimers {
 	private var notifiedSplitStealCooldown = false
 
 	fun init() {
-		SecondPassedEvent.EVENT.register(this::onSecondPassed)
+		TickEvents.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onOpenInventory)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		ItemTooltipCallback.EVENT.register(this::addSplitStealItemCooldown)
@@ -105,7 +105,7 @@ object RiftTimers {
 		}
 	}
 
-	private fun onSecondPassed(@Suppress("unused") event: SecondPassedEvent) {
+	private fun onSecondPassed() {
 		if(!SkyBlockAPI.inSkyBlock) return
 		updateNextInfusion()
 		updateSplitSteal()
