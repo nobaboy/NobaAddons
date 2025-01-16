@@ -18,5 +18,5 @@ abstract class ChatCommand(defaultCooldown: Duration = 1.seconds) : CooldownMana
 	abstract fun run(ctx: ChatContext)
 
 	open fun nameMatches(name: String): Boolean =
-		name.equals(name, ignoreCase = true) || aliases.any { it.equals(name, ignoreCase = true) }
+		this.name.equals(name, ignoreCase = true) || (aliases.isNotEmpty() && aliases.any { it.equals(name, ignoreCase = true) })
 }
