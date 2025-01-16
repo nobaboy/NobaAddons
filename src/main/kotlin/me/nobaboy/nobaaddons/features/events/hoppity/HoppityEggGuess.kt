@@ -113,9 +113,9 @@ object HoppityEggGuess {
 	}
 
 	private fun fitParabola(time: List<Double>, values: List<Double>): Triple<Double, Double, Double> {
-		val n = time.size
+		val sizeT = time.size.toDouble()
 
-		val sumT = time.sum()
+		val sumT1 = time.sum()
 		val sumT2 = time.sumOf { it * it }
 		val sumT3 = time.sumOf { it * it * it }
 		val sumT4 = time.sumOf { it * it * it * it }
@@ -126,8 +126,8 @@ object HoppityEggGuess {
 
 		val matrix = arrayOf(
 			doubleArrayOf(sumT4, sumT3, sumT2),
-			doubleArrayOf(sumT3, sumT2, sumT),
-			doubleArrayOf(sumT2, sumT, n.toDouble())
+			doubleArrayOf(sumT3, sumT2, sumT1),
+			doubleArrayOf(sumT2, sumT1, sizeT)
 		)
 		val vector = doubleArrayOf(sumT2V, sumTV, sumV)
 
