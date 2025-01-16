@@ -34,7 +34,7 @@ object HighlightVoidgloomPhases {
 		val isHoldingBeacon = (currentQuest.entity as? EndermanEntity)?.carriedBlock?.block == Blocks.BEACON
 
 		return when {
-			armorStandName.contains("Hits") -> config.hitPhaseColor
+			armorStandName.contains("Hits") && YangGlyphFeatures.yangGlyphs.isNotEmpty() -> config.hitPhaseColor
 			isHoldingBeacon || YangGlyphFeatures.inBeaconPhase -> config.beaconPhaseColor
 			else -> config.damagePhaseColor
 		}

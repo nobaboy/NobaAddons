@@ -35,7 +35,7 @@ object YangGlyphFeatures {
 	private val enabled: Boolean
 		get() = SkyBlockIsland.THE_END.inIsland() && SlayerAPI.currentQuest?.boss == SlayerBoss.VOIDGLOOM
 
-	private val yangGlyphs = mutableMapOf<NobaVec, Timestamp>()
+	val yangGlyphs = mutableMapOf<NobaVec, Timestamp>()
 	private val flyingYangGlyphs = TimedSet<ArmorStandEntity>(2.seconds)
 	val inBeaconPhase: Boolean get() = yangGlyphs.isNotEmpty() || flyingYangGlyphs.toSet().isNotEmpty()
 
