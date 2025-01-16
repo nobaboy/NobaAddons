@@ -4,16 +4,19 @@ import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
 import me.nobaboy.nobaaddons.events.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.EntityEvents
 import me.nobaboy.nobaaddons.events.PacketEvents
+import me.nobaboy.nobaaddons.events.SecondPassedEvent
 import me.nobaboy.nobaaddons.events.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket
+import net.minecraft.text.Text
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 object SlayerAPI {
 	var currentQuest: SlayerQuest? = null
@@ -22,10 +25,19 @@ object SlayerAPI {
 	private val miniBosses = mutableSetOf<LivingEntity>()
 
 	fun init() {
+		SecondPassedEvent.EVENT.register { onSecondPassed() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		ClientTickEvents.END_CLIENT_TICK.register { onTick() }
+	}
+
+	private fun onSecondPassed() {
+		if(!SkyBlockAPI.inSkyBlock) return
+		if(currentQuest == null) return
+
+		miniBosses.removeIf { !it.isAlive }
+		if(currentQuest?.entity?.isAlive == false) currentQuest?.entity = null
 	}
 
 	private fun onPacketReceive(event: PacketEvents.Receive) {
@@ -35,16 +47,18 @@ object SlayerAPI {
 		if(currentQuest.entity != null) return
 
 		val packet = event.packet as? EntityTrackerUpdateS2CPacket ?: return
-		val armorStand = EntityUtils.getEntityById(packet.id) as? ArmorStandEntity ?: return
+		val ownerArmorStand = EntityUtils.getEntityById(packet.id) as? ArmorStandEntity ?: return
 
-		val entity = EntityUtils.getNextEntity(armorStand, -1) as? LivingEntity ?: return
+		val playerName = MCUtils.playerName ?: return
+		val metadata = packet.trackedValues.associate { it.id to it.value }
+		val armorStandName = metadata[2]?.let { (it as? Optional<*>)?.getOrNull() as? Text }?.string ?: return
+		if(armorStandName != "Spawned by: $playerName") return
+
+		val entity = EntityUtils.getNextEntity(ownerArmorStand, -3) as? LivingEntity ?: return
 		if(entity.type != currentQuest.boss.entityType) return
 
-		val ownerArmorStand = EntityUtils.getNextEntity(armorStand, 2) as? ArmorStandEntity ?: return
-		val playerName = MCUtils.playerName ?: return
-		if(ownerArmorStand.name.string != "Spawned by: $playerName") return
-
-		val timerArmorStand = EntityUtils.getNextEntity(armorStand, 1) as? ArmorStandEntity ?: return
+		val armorStand = EntityUtils.getNextEntity(ownerArmorStand, -2) as? ArmorStandEntity ?: return
+		val timerArmorStand = EntityUtils.getNextEntity(ownerArmorStand, -1) as? ArmorStandEntity ?: return
 
 		currentQuest.apply {
 			this.entity = entity
@@ -56,37 +70,47 @@ object SlayerAPI {
 	private fun onEntityRender(event: EntityEvents.Render) {
 		if(!SkyBlockAPI.inSkyBlock) return
 
+		val currentQuest = currentQuest ?: return
+		if(currentQuest.entity != null) return
+
 		val entity = event.entity as? LivingEntity ?: return
-		if(entity is ArmorStandEntity) return
+		if(entity.type != currentQuest.boss.entityType) return
 		if(entity in miniBosses) return
 
-		val currentQuest = this.currentQuest ?: return
-		if(entity.type != currentQuest.boss.entityType) return
 		val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return
+		val armorStandName = armorStand.name.string
 
-		if(currentQuest.boss.miniBossNames?.any { armorStand.name.string.contains(it) } == true) {
+		if(armorStandName.contains(currentQuest.boss.displayName)) {
+			val playerName = MCUtils.playerName ?: return
+			val ownerArmorStand = EntityUtils.getNextEntity(entity, 3) as? ArmorStandEntity ?: return
+			if(ownerArmorStand.name.string != "Spawned by: $playerName") return
+
+			currentQuest.entity = entity
+		} else if(currentQuest.boss.miniBossNames?.any { armorStandName.contains(it) } == true) {
 			SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
 			miniBosses.add(entity)
 		}
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!SkyBlockAPI.inSkyBlock) return
 		if(currentQuest == null) return
 
-		when(message.trim()) {
+		when(event.message.string.trim()) {
 			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest = null
 			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
 				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
-				currentQuest = null
+				currentQuest?.apply {
+					this.entity = null
+					this.armorStand = null
+					this.timerArmorStand = null
+				}
 			}
 		}
 	}
 
 	private fun onTick() {
 		if(!SkyBlockAPI.inSkyBlock) return
-
-		miniBosses.removeIf { !it.isAlive }
 
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 		val bossNameLine = scoreboard.nextAfter("Slayer Quest") ?: return
