@@ -53,7 +53,6 @@ object MouseLock {
 		if(!config.reduceMouseSensitivity) return false
 
 		val heldItem = MCUtils.player?.mainHandStack?.getSkyBlockItem() ?: return false
-		if(heldItem.id == "DAEDALUS_AXE" || heldItem.id == "STARRED_DAEDALUS_AXE") return config.isDaedalusFarmingTool
 		return heldItem.id in FARMING_TOOLS
 	}
 
