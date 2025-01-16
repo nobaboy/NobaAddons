@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.events.skyblock.events
+package me.nobaboy.nobaaddons.events.impl.skyblock
 
-import me.nobaboy.nobaaddons.events.internal.Event
-import me.nobaboy.nobaaddons.events.internal.EventDispatcher
+import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.utils.NobaVec
 import net.minecraft.client.network.OtherClientPlayerEntity

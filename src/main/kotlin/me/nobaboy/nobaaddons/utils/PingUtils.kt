@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
-import me.nobaboy.nobaaddons.events.PacketEvents
+import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.network.packet.c2s.query.QueryPingC2SPacket
 import net.minecraft.network.packet.s2c.query.PingResultS2CPacket

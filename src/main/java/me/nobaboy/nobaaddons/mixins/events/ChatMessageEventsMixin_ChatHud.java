@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
-import me.nobaboy.nobaaddons.events.ChatMessageEvents;
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;

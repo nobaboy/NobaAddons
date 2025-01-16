@@ -3,9 +3,9 @@ package me.nobaboy.nobaaddons.features.events.mythological
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.events.skyblock.events.MythologicalEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.BlockUtils.inLoadedChunk
 import me.nobaboy.nobaaddons.utils.LocationUtils

@@ -6,8 +6,8 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.ducks.FishingBobberTimerDuck
-import me.nobaboy.nobaaddons.events.EntityNametagRenderEvents
-import me.nobaboy.nobaaddons.events.EntityRenderEvents
+import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents
+import me.nobaboy.nobaaddons.events.impl.render.EntityRenderEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo

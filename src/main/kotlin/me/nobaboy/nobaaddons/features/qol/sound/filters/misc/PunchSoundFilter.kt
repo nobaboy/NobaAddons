@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.qol.sound.filters.misc
 
-import me.nobaboy.nobaaddons.events.SoundEvents
+import me.nobaboy.nobaaddons.events.impl.client.SoundEvents
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import net.minecraft.util.Identifier
 

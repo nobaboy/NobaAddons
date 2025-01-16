@@ -4,10 +4,11 @@ import kotlinx.coroutines.Deferred
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.data.json.MojangProfile
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.CooldownTickEvent
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.request
@@ -57,7 +58,7 @@ object PartyAPI {
 		private set
 
 	fun init() {
-		CooldownTickEvent.EVENT.register(this::onTick)
+		TickEvents.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ChatMessageEvents.CHAT.register { (message) ->
@@ -66,11 +67,11 @@ object PartyAPI {
 		}
 	}
 
-	private fun onTick(event: CooldownTickEvent) {
+	private fun onTick(cooldownManager: CooldownManager) {
 		if(refreshPartyList && HypixelUtils.onHypixel) {
 			getPartyInfo()
 			refreshPartyList = false
-			event.cooldownManager.startCooldown(1.5.seconds)
+			cooldownManager.startCooldown(1.5.seconds)
 		}
 	}
 

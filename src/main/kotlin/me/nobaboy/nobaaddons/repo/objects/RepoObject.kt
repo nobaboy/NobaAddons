@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.repo.objects
 
 import kotlinx.serialization.KSerializer
-import me.nobaboy.nobaaddons.events.RepoReloadEvent
+import me.nobaboy.nobaaddons.events.impl.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.Repo
 import kotlin.reflect.KProperty
 

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.notifications
 
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.AllInviteCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.CancelCommand
