@@ -56,10 +56,7 @@ import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.inferno.HighlightHellionShield
 import me.nobaboy.nobaaddons.features.slayers.sven.HidePupNametags
-import me.nobaboy.nobaaddons.features.slayers.voidgloom.BrokenHeartRadiationTimer
-import me.nobaboy.nobaaddons.features.slayers.voidgloom.HighlightNukekubiFixations
-import me.nobaboy.nobaaddons.features.slayers.voidgloom.HighlightVoidgloomPhases
-import me.nobaboy.nobaaddons.features.slayers.voidgloom.YangGlyphFeatures
+import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomSeraphFeatures
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
@@ -110,7 +107,7 @@ object NobaAddons : ClientModInitializer {
 	}
 
 	private val supervisorJob = SupervisorJob()
-	private val exceptionHandler = CoroutineExceptionHandler { ctx, error ->
+	private val exceptionHandler = CoroutineExceptionHandler { _, error ->
 		ErrorManager.logError("Encountered an unhandled error in an async context", error)
 	}
 	val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob + exceptionHandler)
@@ -185,10 +182,7 @@ object NobaAddons : ClientModInitializer {
 		HidePupNametags.init()
 		/* endregion */
 		/* region Voidgloom Seraph */
-		BrokenHeartRadiationTimer.init()
-		HighlightNukekubiFixations.init()
-		HighlightVoidgloomPhases.init()
-		YangGlyphFeatures.init()
+		VoidgloomSeraphFeatures.init()
 		/* endregion */
 		/* region Inferno Demonlord */
 		HighlightHellionShield.init()

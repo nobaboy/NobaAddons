@@ -38,7 +38,7 @@ object EntityEvents {
 	/**
 	 * Event invoked to determine whether a given [Entity] should be allowed to render in the world.
 	 */
-	@JvmField val ALLOW_RENDER = EventDispatcher<AllowRender>()
+	@JvmField val ALLOW_RENDER = EventDispatcher.cancelable<AllowRender>()
 
 	/**
 	 * Event invoked when an [Entity]'s vehicle is changed.

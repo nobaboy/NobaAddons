@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 abstract class NametagRenderEventsMixin_ArmorStandEntityRenderer {
 	@ModifyReturnValue(method = "hasLabel(Lnet/minecraft/entity/decoration/ArmorStandEntity;D)Z", at = @At("RETURN"))
 	public boolean nobaaddons$modifyNametagVisibility(boolean original, @Local(argsOnly = true) ArmorStandEntity entity) {
-		var event = new EntityNametagRenderEvents.Visibility(entity, original);
-		EntityNametagRenderEvents.VISIBILITY.invoke(event);
-		return event.getShouldRender();
+		return EntityNametagRenderEvents.VISIBILITY.invoke(new EntityNametagRenderEvents.Visibility(entity, original));
 	}
 }

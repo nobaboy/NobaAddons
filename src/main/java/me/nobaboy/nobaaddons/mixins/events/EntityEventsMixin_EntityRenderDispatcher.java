@@ -42,11 +42,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		//?}
 		CallbackInfo ci
 	) {
-		var event = new EntityEvents.AllowRender(entity);
-		EntityEvents.ALLOW_RENDER.invoke(event);
-		if(event.isCanceled()) {
-			ci.cancel();
-		}
+		if(EntityEvents.ALLOW_RENDER.invoke(new EntityEvents.AllowRender(entity))) ci.cancel();
 	}
 
 	@Inject(
@@ -76,8 +72,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		//?}
 		CallbackInfo ci
 	) {
-		var event = new EntityEvents.Render(entity, tickDelta);
-		EntityEvents.PRE_RENDER.invoke(event);
+		EntityEvents.PRE_RENDER.invoke(new EntityEvents.Render(entity, tickDelta));
 	}
 
 	@Inject(

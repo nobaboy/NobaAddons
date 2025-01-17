@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket
@@ -27,7 +28,7 @@ object SlayerAPI {
 		TickEvents.TICK.register { onTick() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
-		ChatMessageEvents.CHAT.register(this::onChatMessage)
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
 	private fun onTick() {
@@ -99,13 +100,17 @@ object SlayerAPI {
 		}
 	}
 
-	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+	private fun onChatMessage(message: String) {
 		if(!SkyBlockAPI.inSkyBlock) return
 		if(currentQuest == null) return
 
-		when(event.message.string.trim()) {
-			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> currentQuest = null
+		when(message.trim()) {
+			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> {
+				SlayerEvents.QUEST_CLEAR.invoke(SlayerEvents.QuestClear())
+				currentQuest = null
+			}
 			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
+				SlayerEvents.QUEST_CLEAR.invoke(SlayerEvents.QuestClear())
 				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
 				currentQuest?.apply {
 					this.entity = null
