@@ -6,15 +6,14 @@ import me.nobaboy.nobaaddons.api.skyblock.events.hoppity.HoppityAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.events.impl.chat.SendMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
+import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
-import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket
-import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket
 import net.minecraft.util.Formatting
 
 object ChocolateFactoryFeatures {
@@ -25,18 +24,15 @@ object ChocolateFactoryFeatures {
 		PetAPI.currentPet?.id == "RABBIT" && PetAPI.currentPet?.rarity == Rarity.MYTHIC
 
 	fun init() {
-		PacketEvents.SEND.register(this::onSendPacket)
+		InteractEvents.USE_ITEM.register(this::onInteract)
 		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 	}
 
-	private fun onSendPacket(event: PacketEvents.Send) {
+	private fun onInteract(event: InteractEvents.UseItem) {
 		if(!HoppityAPI.isSpring || !HoppityAPI.inRelevantIsland) return
 		if(!enabled) return
 
-		val packet = event.packet
-		if(packet !is PlayerInteractItemC2SPacket && packet !is PlayerInteractBlockC2SPacket) return
-
-		if(!HoppityAPI.hasLocatorInHand) return
+		if(event.itemInHand.skyBlockId != HoppityAPI.LOCATOR) return
 		if(hasMythicRabbitSpawned) return
 
 		RenderUtils.drawTitle(tr("nobaaddons.chocolateFactory.spawnMythicRabbit", "Spawn Mythic Rabbit!"), NobaColor.RED)
