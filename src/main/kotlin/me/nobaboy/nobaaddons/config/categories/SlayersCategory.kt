@@ -77,31 +77,31 @@ object SlayersCategory {
 		buildGroup(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
 			val highlightPhases = boolean(
 				tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases"),
-				tr("nobaaddons.config.slayers.voidgloom.highlightPhases.tooltip", "Highlights the Voidgloom Seraph based on its current phase\n\nThe priority of the phases are:\n - Hit Phase (No placed Yang Glyph)\n - Beacon Phase\n - Damage Phase"),
+				tr("nobaaddons.config.slayers.voidgloom.highlightPhases.tooltip", "Highlights the Voidgloom Seraph based on its current phase\n\nThe priority of the phases are:\n - Beacon Phase\n - Hits Phase\n - Damage Phase"),
 				default = defaults.slayers.voidgloom.highlightPhases,
 				property = config.slayers.voidgloom::highlightPhases
 			)
 			color(
-				tr("nobaaddons.config.slayers.voidgloom.hitPhaseColor", "Hit Phase Color"),
-				default = defaults.slayers.voidgloom.hitPhaseColor,
-				property = config.slayers.voidgloom::hitPhaseColor
+				tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color"),
+				default = defaults.slayers.voidgloom.beaconPhaseColor,
+				property = config.slayers.voidgloom::beaconPhaseColor
+			) requires highlightPhases
+			color(
+				tr("nobaaddons.config.slayers.voidgloom.hitsPhaseColor", "Hits Phase Color"),
+				default = defaults.slayers.voidgloom.hitsPhaseColor,
+				property = config.slayers.voidgloom::hitsPhaseColor
 			) requires highlightPhases
 			color(
 				tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color"),
 				default = defaults.slayers.voidgloom.damagePhaseColor,
 				property = config.slayers.voidgloom::damagePhaseColor
 			) requires highlightPhases
-			color(
-				tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color"),
-				default = defaults.slayers.voidgloom.beaconPhaseColor,
-				property = config.slayers.voidgloom::beaconPhaseColor
-			) requires highlightPhases
 
 			label(tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs"))
 
 			val yangGlyphAlert = boolean(
 				tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert", "Yang Glyph Alert"),
-				tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert.tooltip", "Displays an alert when a Yang Glyph, commonly known as a Beacon, is placed by the Voidgloom Seraph"),
+				tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert.tooltip", "Displays an alert when a Yang Glyph (commonly known as a Beacon) is placed by the Voidgloom Seraph."),
 				default = defaults.slayers.voidgloom.yangGlyphAlert,
 				property = config.slayers.voidgloom::yangGlyphAlert
 			)
@@ -138,7 +138,7 @@ object SlayersCategory {
 
 			boolean(
 				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer"),
-				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer.tooltip", "Displays a timer on the Voidgloom Seraph indicating how much time is left for its Broken Heart Radiation, commonly known as Lazer Phase"),
+				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer.tooltip", "Displays a timer on the Voidgloom Seraph indicating how much time is left for its Broken Heart Radiation (commonly known as Lazer Phase)"),
 				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
 				property = config.slayers.voidgloom::brokenHeartRadiationTimer
 			)

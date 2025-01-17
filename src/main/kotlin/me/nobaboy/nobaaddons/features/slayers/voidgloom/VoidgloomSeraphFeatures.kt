@@ -74,11 +74,11 @@ object VoidgloomSeraphFeatures {
 
 		val currentQuest = SlayerAPI.currentQuest ?: return
 		if(!currentQuest.spawned) return
+
 		val entity = currentQuest.entity ?: return
+		val armorStand = event.entity as? ArmorStandEntity ?: return
 
 		Scheduler.schedule(2) {
-			val armorStand = event.entity as? ArmorStandEntity ?: return@schedule
-
 			val nearbyEntities = EntityUtils.getEntitiesNear<EndermanEntity>(armorStand.getNobaVec(), 3.0)
 			if(entity !in nearbyEntities) return@schedule
 
@@ -166,7 +166,7 @@ object VoidgloomSeraphFeatures {
 		val isHoldingBeacon = (entity as? EndermanEntity)?.carriedBlock?.block == Blocks.BEACON
 
 		return when {
-			armorStandName.contains("Hits") && !inBeaconPhase -> config.hitPhaseColor
+			armorStandName.contains("Hits") && !inBeaconPhase -> config.hitsPhaseColor
 			isHoldingBeacon || inBeaconPhase -> config.beaconPhaseColor
 			else -> config.damagePhaseColor
 		}

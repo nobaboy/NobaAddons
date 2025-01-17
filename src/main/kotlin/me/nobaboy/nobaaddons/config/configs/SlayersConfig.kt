@@ -42,8 +42,8 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 
 	class Voidgloom : ObjectProperty<Voidgloom>("voidgloom") {
 		var highlightPhases by Property.of<Boolean>("highlightPhases", false)
-		var hitPhaseColor by Property.of("hitPhaseColor", Serializer.color, NobaColor(0xFF9C46))
 		var beaconPhaseColor by Property.of("beaconPhaseColor", Serializer.color, NobaColor(0xFF2D9C))
+		var hitsPhaseColor by Property.of("hitsPhaseColor", Serializer.color, NobaColor(0xFF9C46))
 		var damagePhaseColor by Property.of("damagePhaseColor", Serializer.color, NobaColor(0x6788FF))
 
 		var yangGlyphAlert by Property.of<Boolean>("yangGlyphAlert", false)
