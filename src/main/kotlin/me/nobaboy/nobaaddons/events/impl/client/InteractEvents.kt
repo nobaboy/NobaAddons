@@ -2,9 +2,7 @@ package me.nobaboy.nobaaddons.events.impl.client
 
 //? if <=1.21.1 {
 /*import net.minecraft.util.TypedActionResult
-*///?} else {
-import net.minecraft.util.ActionResult
-//?}
+*///?}
 
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
@@ -15,6 +13,7 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.fabricmc.fabric.api.event.player.UseItemCallback
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.Direction
