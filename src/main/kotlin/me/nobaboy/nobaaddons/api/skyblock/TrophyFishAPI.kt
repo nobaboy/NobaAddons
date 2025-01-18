@@ -51,7 +51,7 @@ object TrophyFishAPI {
 
 	private fun onChatMessage(message: Text) {
 		val (fish, rarity) = parseFromChatMessage(message.string) ?: return
-		val rarities = trophyFish[fish.id] ?: trophyFish.put(fish.id, EnumMap(TrophyFishRarity::class.java))!!
+		val rarities = trophyFish.getOrPut(fish.id) { EnumMap(TrophyFishRarity::class.java) }
 		rarities[rarity] = (rarities[rarity] ?: 0) + 1
 	}
 

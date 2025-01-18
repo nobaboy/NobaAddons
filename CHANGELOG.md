@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - `/noba refill pearls` using the wrong item ID - celeste
 - `/noba refill item` is now case-insensitive to match `/gfs` - celeste
+- A crash that can occur when catching a trophy fish if you haven't opened Odger's menu - celeste
 - An occasional crash that occurs while processing an event - celeste
 
 ## 0.1.0-Alpha.12 - 2024-12-29
