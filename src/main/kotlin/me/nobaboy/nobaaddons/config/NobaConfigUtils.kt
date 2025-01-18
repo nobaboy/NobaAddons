@@ -28,7 +28,6 @@ import me.nobaboy.nobaaddons.mixins.accessors.AbstractConfigAccessor
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
-import me.nobaboy.nobaaddons.utils.Scheduler
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import net.minecraft.text.Text
 import net.minecraft.util.PathUtil

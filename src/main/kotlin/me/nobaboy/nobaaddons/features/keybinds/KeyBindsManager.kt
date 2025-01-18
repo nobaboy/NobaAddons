@@ -18,17 +18,17 @@ object KeyBindsManager {
 
 	private val cooldownManager = CooldownManager(100.milliseconds)
 
-	internal val commandKeyBinds by KeyBindsConfig::keyBinds
+	val commandKeyBinds by KeyBindsConfig::keyBinds
 	private val gameKeyBinds = listOf<NobaKeyBind>(
 		NobaKeyBind(tr("nobaaddons.keyBind.mythologicalRitual.nearestWarp", "Mythological Nearest Warp")) { BurrowWaypoints.useNearestWarp() }
 	)
 
 	fun init() {
-		gameKeyBinds.forEach(KeyBindingHelper::registerKeyBinding)
 		KeyBindsConfig.safeLoad()
+		gameKeyBinds.forEach(KeyBindingHelper::registerKeyBinding)
 	}
 
-	fun saveKeyBinds() {
+	fun save() {
 		try {
 			KeyBindsConfig.save()
 		} catch(ex: IOException) {

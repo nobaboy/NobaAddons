@@ -16,7 +16,7 @@ interface ISoundFilter {
 
 	companion object {
 		private var init = false
-		private val filters = arrayOf<ISoundFilter>(
+		private val filters = arrayOf(
 			// Items Abilities
 			WitherSkullAbilitiesSoundFilter,
 			// Mobs

@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.repo.objects.RepoObjectArray
 import me.nobaboy.nobaaddons.repo.objects.RepoObjectMap
 import org.jetbrains.annotations.Blocking
 import org.jetbrains.annotations.UnmodifiableView
-import java.util.*
+import java.util.Collections
 
 /**
  * Utility methods for interacting with the [RepoManager]

@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
-import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 
 class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
 	val temporaryWaypoints by TemporaryWaypoints()
@@ -27,7 +27,6 @@ class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
 	}
 
 	class RenderingTweaks : ObjectProperty<RenderingTweaks>("renderingTweaks") {
-		var hideOtherPeopleFishing by Property.of<Boolean>("hideOtherPeopleFishing", false)
 		var hideLightningBolt by Property.of<Boolean>("hideLightningBolt", false)
 		var removeFrontFacingThirdPerson by Property.of<Boolean>("removeFrontFacingThirdPerson", false)
 		var fixEnchantedArmorGlint by Property.of<Boolean>("fixEnchantedArmorGlint", false)

@@ -239,4 +239,3 @@ fun ParticleS2CPacket.toNobaVec() = NobaVec(x, y, z)
 fun Array<Double>.toNobaVec(): NobaVec = NobaVec(this[0], this[1], this[2])
 
 fun Box.expand(vec: NobaVec): Box = this.expand(vec.x, vec.y, vec.z)
-fun Box.expand(amount: Double): Box = this.expand(amount, amount, amount)

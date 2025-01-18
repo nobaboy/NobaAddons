@@ -9,7 +9,7 @@ object WitherSkullAbilitiesSoundFilter : ISoundFilter {
 	private val SHOOT = Identifier.ofVanilla("entity.wither.shoot")
 	private val EXPLODE = Identifier.ofVanilla("entity.generic.explode")
 
-	private val SHOOT_VOLUMES = arrayOf(0.2f, 0.5f)
+	private val SHOOT_VOLUMES = listOf(0.2f, 0.5f)
 
 	override val enabled: Boolean get() = config.muteWitherSkullAbilities && SkyBlockAPI.inSkyBlock
 
