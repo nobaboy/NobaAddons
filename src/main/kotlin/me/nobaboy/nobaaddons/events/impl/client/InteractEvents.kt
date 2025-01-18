@@ -62,13 +62,13 @@ object InteractEvents {
 	 */
 	val INTERACT_BLOCK = EventDispatcher<BlockInteraction>()
 
-	sealed class GenericInteractEvent(val player: ClientPlayerEntity, val hand: Hand) : Event() {
+	sealed class GenericInteractEvent protected constructor(val player: ClientPlayerEntity, val hand: Hand) : Event() {
 		val itemInHand: ItemStack = player.getStackInHand(hand)
 	}
 
 	class UseItem(player: ClientPlayerEntity, hand: Hand) : GenericInteractEvent(player, hand)
 
-	sealed class BlockInteraction(player: ClientPlayerEntity, hand: Hand) : GenericInteractEvent(player, hand) {
+	sealed class BlockInteraction protected constructor(player: ClientPlayerEntity, hand: Hand) : GenericInteractEvent(player, hand) {
 		abstract val block: NobaVec
 	}
 

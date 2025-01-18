@@ -124,7 +124,7 @@ object HoppityEggGuess {
 		val size = matrix.size
 		val augmentedMatrix = Array(size) { i -> matrix[i] + doubleArrayOf(vector[i]) }
 
-		for(i in 0 until size) {
+		repeat(size) { i ->
 			val maxRow = (i until size).maxByOrNull { abs(augmentedMatrix[it][i]) } ?: i
 			augmentedMatrix[i] = augmentedMatrix[maxRow].also { augmentedMatrix[maxRow] = augmentedMatrix[i] }
 
@@ -150,20 +150,20 @@ object HoppityEggGuess {
 	private fun predictFutureLocation(
 		xCurve: Triple<Double, Double, Double>,
 		yCurve: Triple<Double, Double, Double>,
-		zCurve: Triple<Double, Double, Double>
-	): NobaVec {
-		var time = 0.0
-
+		zCurve: Triple<Double, Double, Double>,
+	): NobaVec? {
+		val eggLocations = HoppityEgg.getByIsland(SkyBlockAPI.currentIsland) ?: return null
 		var closestLocation: NobaVec? = null
 		var closestDistance = Double.MAX_VALUE
 
-		for(i in 0 until MAX_STEPS) {
+		repeat(MAX_STEPS) { i ->
+			val time = i * STEP
+
 			val x = xCurve.first * time * time + xCurve.second * time + xCurve.third
 			val y = yCurve.first * time * time + yCurve.second * time + yCurve.third
 			val z = zCurve.first * time * time + zCurve.second * time + zCurve.third
 			val currentPoint = NobaVec(x, y, z)
 
-			val eggLocations = HoppityEgg.getByIsland(SkyBlockAPI.currentIsland) ?: break
 			for(eggLocation in eggLocations) {
 				val distance = currentPoint.distance(eggLocation)
 				if(distance < closestDistance) {
@@ -171,11 +171,9 @@ object HoppityEggGuess {
 					closestLocation = eggLocation
 				}
 			}
-
-			time += STEP
 		}
 
-		return closestLocation ?: NobaVec()
+		return closestLocation
 	}
 
 	private fun reset() {
