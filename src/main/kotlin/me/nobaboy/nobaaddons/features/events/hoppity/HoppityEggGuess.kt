@@ -87,7 +87,7 @@ object HoppityEggGuess {
 		guessLocation?.let {
 			val distance = it.distanceToPlayer()
 
-			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = distance > 5)
+			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = true)
 			RenderUtils.renderText(it.center().raise(), "Egg Guess", NobaColor.AQUA, yOffset = -10.0f, throughBlocks = true)
 
 			if(distance > 5) {
