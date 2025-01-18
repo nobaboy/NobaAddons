@@ -57,6 +57,7 @@ abstract class ChatCommandManager {
 			}
 
 			try {
+				// TODO should commands also be `suspend fun`?
 				cmd.run(ctx)
 			} catch(ex: Throwable) {
 				ErrorManager.logError("Chat command '${ctx.command}' threw an error", ex, "Command" to ctx.fullMessage)

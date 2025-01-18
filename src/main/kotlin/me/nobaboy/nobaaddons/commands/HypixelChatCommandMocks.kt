@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.commands
 import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Greedy
 import me.nobaboy.nobaaddons.commands.impl.CommandUtil
-import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommand
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
@@ -12,7 +11,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.loader.api.FabricLoader
 
 @OptIn(UntranslatedMessage::class)
-object HypixelChatCommandMocks {
+internal object HypixelChatCommandMocks {
 	internal fun init() {
 		if(!FabricLoader.getInstance().isDevelopmentEnvironment) return
 		ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ ->
