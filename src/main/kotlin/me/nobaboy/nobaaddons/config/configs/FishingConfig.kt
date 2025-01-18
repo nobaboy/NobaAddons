@@ -9,6 +9,8 @@ import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
+	var hideOtherPeopleFishing by Property.of<Boolean>("hideOtherPeopleFishing", false)
+
 	val seaCreatureAlert by SeaCreatureAlert()
 	val bobberTimer by BobberTimer()
 	val trophyFishing by TrophyFishing()

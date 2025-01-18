@@ -20,7 +20,7 @@ class InfoBoxesListWidget(
 	height: Int,
 	y: Int,
 	itemHeight: Int
-) : ElementListWidget<InfoBoxesListWidget.AbstractInfoBoxEntry>(client, width, height, y, itemHeight) {
+) : ElementListWidget<InfoBoxesListWidget.InfoBoxConfigEntry>(client, width, height, y, itemHeight) {
 	private val infoBoxes = InfoBoxesManager.infoBoxes.map { it.copy() }.toMutableList()
 	val size: Int get() = infoBoxes.size
 
@@ -37,10 +37,10 @@ class InfoBoxesListWidget(
 	}
 
 	fun update() {
-		children().forEach(AbstractInfoBoxEntry::update)
+		children().forEach(InfoBoxConfigEntry::update)
 	}
 
-	fun addInfoBox() {
+	fun create() {
 		val newInfoBox = InfoBoxElement(ElementPosition(x = 0.025, y = 0.025))
 		infoBoxes.add(newInfoBox)
 
@@ -60,27 +60,27 @@ class InfoBoxesListWidget(
 		hasChanges = false
 	}
 
-	override fun removeEntry(entry: AbstractInfoBoxEntry): Boolean {
+	override fun removeEntry(entry: InfoBoxConfigEntry): Boolean {
 		return super.removeEntry(entry)
 	}
 
 	override fun getRowWidth(): Int = super.rowWidth + 140
 	override fun getScrollbarX(): Int = super.scrollbarX + 20
 
-	inner class InfoBoxConfigEntry(private val infoBoxIndex: Int) : AbstractInfoBoxEntry() {
+	inner class InfoBoxConfigEntry(private val infoBoxIndex: Int) : Entry<InfoBoxConfigEntry>() {
+		private val infoBox = infoBoxes[infoBoxIndex]
 		private var oldScrollAmount = 0.0
-		val infoBox = infoBoxes[infoBoxIndex]
 
-		private val textField = TextFieldWidget(client.textRenderer, 250, 20, Text.empty()).apply {
-			setMaxLength(256)
+		private val textField = TextFieldWidget(client.textRenderer, 252, 20, Text.empty()).apply {
 			text = infoBox.text
+			setMaxLength(256)
 			setChangedListener { newText ->
 				infoBox.text = newText
 				hasChanges = true
 			}
 		}
 
-		private val textModeButton = ButtonWidget.builder(Text.literal(infoBox.textShadow.toString())) {
+		private val textModeButton = ButtonWidget.builder(infoBox.textShadow.displayName) {
 			changeTextMode()
 		}.size(50, 20).build()
 
@@ -89,20 +89,16 @@ class InfoBoxesListWidget(
 			deleteEntry()
 		}.size(50, 20).build()
 
-		init {
-			update()
-		}
-
 		private fun changeTextMode() {
 			val newTextMode = infoBox.textShadow.next
 			infoBox.textShadow = newTextMode
-			textModeButton.message = Text.literal(newTextMode.toString())
+			textModeButton.message = newTextMode.displayName
 
 			refreshEntries()
 			hasChanges = true
 		}
 
-		fun deleteEntry() {
+		private fun deleteEntry() {
 			infoBoxes.removeAt(infoBoxIndex)
 			removeEntry(this)
 
@@ -110,8 +106,13 @@ class InfoBoxesListWidget(
 			/*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/ = oldScrollAmount
 
 			refreshEntries()
-
 			hasChanges = true
+		}
+
+		fun update() {
+			textField.x = width / 2 - 180
+			textModeButton.x = width / 2 + 76
+			deleteButton.x = width / 2 + 130
 		}
 
 		override fun children(): List<Element> = listOf(textField, textModeButton, deleteButton)
@@ -138,15 +139,5 @@ class InfoBoxesListWidget(
 			deleteButton.y = y
 			deleteButton.render(context, mouseX, mouseY, tickDelta)
 		}
-
-		override fun update() {
-			textField.x = width / 2 - 180
-			textModeButton.x = width / 2 + 75
-			deleteButton.x = width / 2 + 130
-		}
-	}
-
-	abstract class AbstractInfoBoxEntry : Entry<AbstractInfoBoxEntry>() {
-		abstract fun update()
 	}
 }

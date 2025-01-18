@@ -23,7 +23,7 @@ interface IChatFilter {
 
 	companion object {
 		private var init = false
-		private val filters = arrayOf<IChatFilter>(
+		private val filters = arrayOf(
 			// Item Abilities
 			AbilityChatFilter,
 			// Mobs

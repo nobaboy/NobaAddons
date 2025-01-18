@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.screens.keybinds
 
-import me.nobaboy.nobaaddons.features.keybinds.KeyBindsConfig
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.features.keybinds.impl.KeyBind
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -26,8 +25,8 @@ class KeyBindsListWidget(
 	height: Int,
 	y: Int,
 	itemHeight: Int
-) : ElementListWidget<KeyBindsListWidget.AbstractKeyBindEntry>(client, width, height, y, itemHeight) {
-	private val keyBinds by KeyBindsConfig::keyBinds
+) : ElementListWidget<KeyBindsListWidget.KeyBindEntry>(client, width, height, y, itemHeight) {
+	private val keyBinds = KeyBindsManager.commandKeyBinds.map { it.copy() }.toMutableList()
 	var hasChanges = false
 
 	init {
@@ -36,15 +35,15 @@ class KeyBindsListWidget(
 
 	fun refreshEntries() {
 		clearEntries()
-		keyBinds.forEachIndexed { index, keyBind -> addEntry(KeyBindEntry(index)) }
+		keyBinds.forEachIndexed { index, _ -> addEntry(KeyBindEntry(index)) }
 		update()
 	}
 
 	fun update() {
-		children().forEach(AbstractKeyBindEntry::update)
+		children().forEach(KeyBindEntry::update)
 	}
 
-	fun addKeyBind() {
+	fun create() {
 		keyBinds.add(KeyBind())
 		refreshEntries()
 		hasChanges = true
@@ -52,34 +51,37 @@ class KeyBindsListWidget(
 
 	fun saveChanges() {
 		keyBinds.removeIf { it.command.isBlank() }
-		KeyBindsManager.saveKeyBinds()
+
+		KeyBindsManager.commandKeyBinds.clear()
+		KeyBindsManager.commandKeyBinds.addAll(keyBinds)
+		KeyBindsManager.save()
+
 		hasChanges = false
 	}
 
-	override fun removeEntry(entry: AbstractKeyBindEntry): Boolean {
+	override fun removeEntry(entry: KeyBindEntry): Boolean {
 		return super.removeEntry(entry)
 	}
 
-	override fun getRowWidth(): Int = super.rowWidth + 140
+	override fun getRowWidth(): Int = super.rowWidth + 140 // 360
 	override fun getScrollbarX(): Int = super.scrollbarX + 20
 
-	inner class KeyBindEntry(private val keyBindIndex: Int) : AbstractKeyBindEntry() {
-		private var oldScrollAmount = 0.0
+	inner class KeyBindEntry(private val keyBindIndex: Int) : Entry<KeyBindEntry>() {
 		private val keyBind = keyBinds[keyBindIndex]
+		private var oldScrollAmount = 0.0
 		private var duplicate = false
 
-		@Suppress("UsePropertyAccessSyntax") // maxLength can't be used as property despite intellij claiming it can be
 		private val textField = TextFieldWidget(client.textRenderer, 210, 20, Text.empty()).apply {
-			setMaxLength(128)
 			text = keyBind.command
 			tooltip = Tooltip.of(tr("nobaaddons.screen.keyBinds.command.tooltip", "The command to send when the key bind is pressed. The command must not start with a '/'"))
+			setMaxLength(128)
 			setChangedListener { newText ->
 				keyBind.command = newText
 				hasChanges = true
 			}
 		}
 
-		private val editButton = ButtonWidget.builder(Text.empty()) {
+		private val keyButton = ButtonWidget.builder(Text.empty()) {
 			screen.selectedKeyBind = keyBind
 			update()
 		}.size(75, 20).build()
@@ -88,10 +90,6 @@ class KeyBindsListWidget(
 			oldScrollAmount = /*? if >=1.21.4 {*/scrollY/*?} else {*//*scrollAmount*//*?}*/
 			deleteEntry()
 		}.size(50, 20).build()
-
-		init {
-			update()
-		}
 
 		private fun deleteEntry() {
 			keyBinds.removeAt(keyBindIndex)
@@ -103,6 +101,40 @@ class KeyBindsListWidget(
 			hasChanges = true
 		}
 
+		fun update() {
+			textField.x = width / 2 - 180
+			keyButton.x = width / 2 + 50
+			deleteButton.x = width / 2 + 130
+
+			duplicate = false
+			keyButton.message = getKeyText(keyBind.key)
+
+			if(keyBind.key != GLFW.GLFW_KEY_UNKNOWN) {
+				val filteredKeyBinds = keyBinds.filterIndexed { index, _ -> index != keyBindIndex }
+				duplicate = filteredKeyBinds.any { it.key == keyBind.key }
+			}
+
+			if(duplicate) keyButton.apply {
+				message = buildText {
+					formatted(Formatting.RED)
+
+					append("[ ")
+					append(message.copy().formatted(Formatting.WHITE))
+					append(" ]")
+				}
+			}
+
+			if(screen.selectedKeyBind == keyBind) keyButton.apply {
+				message = buildText {
+					formatted(Formatting.YELLOW)
+
+					append("> ")
+					append(message.copy().formatted(Formatting.WHITE, Formatting.UNDERLINE))
+					append(" <")
+				}
+			}
+		}
+
 		private fun getKeyText(keyCode: Int): Text {
 			return when(keyCode) {
 				in GLFW.GLFW_MOUSE_BUTTON_1..GLFW.GLFW_MOUSE_BUTTON_8 -> InputUtil.Type.MOUSE.createFromCode(keyCode).localizedText
@@ -110,8 +142,8 @@ class KeyBindsListWidget(
 			}
 		}
 
-		override fun children(): List<Element> = listOf(textField, editButton, deleteButton)
-		override fun selectableChildren(): List<Selectable> = listOf(textField, editButton, deleteButton)
+		override fun children(): List<Element> = listOf(textField, keyButton, deleteButton)
+		override fun selectableChildren(): List<Selectable> = listOf(textField, keyButton, deleteButton)
 
 		override fun render(
 			context: DrawContext,
@@ -128,51 +160,13 @@ class KeyBindsListWidget(
 			textField.y = y
 			textField.render(context, mouseX, mouseY, tickDelta)
 
-			editButton.y = y
-			editButton.render(context, mouseX, mouseY, tickDelta)
+			keyButton.y = y
+			keyButton.render(context, mouseX, mouseY, tickDelta)
 
 			deleteButton.y = y
 			deleteButton.render(context, mouseX, mouseY, tickDelta)
 
-			if(duplicate) context.fill(editButton.x - 6, y, editButton.x - 3, y + 20, 0xFFFF0000.toInt())
+			if(duplicate) context.fill(keyButton.x - 6, y, keyButton.x - 3, y + 20, 0xFFFF0000.toInt())
 		}
-
-		override fun update() {
-			textField.x = width / 2 - 180
-			editButton.x = width / 2 + 50
-			deleteButton.x = width / 2 + 130
-
-			duplicate = false
-			editButton.message = getKeyText(keyBind.key)
-
-			if(keyBind.key != GLFW.GLFW_KEY_UNKNOWN) {
-				val filteredKeyBinds = keyBinds.filterIndexed { index, _ -> index != keyBindIndex }
-				duplicate = filteredKeyBinds.any { it.key == keyBind.key }
-			}
-
-			if(duplicate) editButton.apply {
-				message = buildText {
-					formatted(Formatting.RED)
-
-					append("[ ")
-					append(message.copy().formatted(Formatting.WHITE))
-					append(" ]")
-				}
-			}
-
-			if(screen.selectedKeyBind == keyBind) editButton.apply {
-				message = buildText {
-					formatted(Formatting.YELLOW)
-
-					append("> ")
-					append(message.copy().formatted(Formatting.WHITE, Formatting.UNDERLINE))
-					append(" <")
-				}
-			}
-		}
-	}
-
-	abstract class AbstractKeyBindEntry : Entry<AbstractKeyBindEntry>() {
-		abstract fun update()
 	}
 }

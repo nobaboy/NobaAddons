@@ -27,7 +27,6 @@ class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
 	}
 
 	class RenderingTweaks : ObjectProperty<RenderingTweaks>("renderingTweaks") {
-		var hideOtherPeopleFishing by Property.of<Boolean>("hideOtherPeopleFishing", false)
 		var hideLightningBolt by Property.of<Boolean>("hideLightningBolt", false)
 		var removeFrontFacingThirdPerson by Property.of<Boolean>("removeFrontFacingThirdPerson", false)
 		var fixEnchantedArmorGlint by Property.of<Boolean>("fixEnchantedArmorGlint", false)

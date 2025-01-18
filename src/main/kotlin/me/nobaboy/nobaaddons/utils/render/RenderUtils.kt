@@ -102,8 +102,8 @@ object RenderUtils {
 		}
 		MCUtils.textRenderer.drawWithOutline(
 			text.asOrderedText(),
-			(x / scale).toFloat(),
-			(y / scale).toFloat(),
+			x / scale,
+			y / scale,
 			color.rgb,
 			outlineColor.rgb,
 			context.matrices.peek().positionMatrix,

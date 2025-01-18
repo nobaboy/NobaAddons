@@ -5,7 +5,6 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
-import me.nobaboy.nobaaddons.features.chat.filters.StatType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch

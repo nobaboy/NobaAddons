@@ -21,7 +21,7 @@ class EnumMapSerializer<K : Enum<K>, V>(
 		val map = EnumMap<K, V>(enumClass)
 		element.asMap().forEach { k, v ->
 			val enum = values.firstOrNull { it.name == k } ?: return@forEach
-			valueSerializer.deserialize(v)?.let { deserialized -> map.put(enum, deserialized) }
+			valueSerializer.deserialize(v)?.let { deserialized -> map[enum] = deserialized }
 		}
 		return map
 	}

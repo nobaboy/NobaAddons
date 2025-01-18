@@ -33,7 +33,7 @@ interface ISlotInfo {
 		const val CHECK = "✔"
 
 		private var init = false
-		private val slotInfos = arrayOf<ISlotInfo>(
+		private val slotInfos = arrayOf(
 			// UI Elements
 			BestiarySlotInfo,
 			CollectionTierSlotInfo,
