@@ -40,12 +40,12 @@ object HealerOrbChatFilter : IChatFilter {
 	}
 
 	private fun compileHealerOrbMessage(
-        orb: String,
-        player: String,
-        health: String,
-        buff: String,
-        statType: StatType,
-        duration: String
+		orb: String,
+		player: String,
+		health: String,
+		buff: String,
+		statType: StatType,
+		duration: String
 	) = buildText {
 		formatted(Formatting.GRAY)
 		append(Text.literal("HEALER ORB!").formatted(Formatting.YELLOW, Formatting.BOLD))
