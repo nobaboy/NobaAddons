@@ -15,7 +15,7 @@ interface IAlert {
 
 	companion object {
 		private var init = false
-		private var alerts = arrayOf<IAlert>(
+		private var alerts = arrayOf(
 			MythicSeaCreatureAlert,
 			VanquisherAlert
 		)
