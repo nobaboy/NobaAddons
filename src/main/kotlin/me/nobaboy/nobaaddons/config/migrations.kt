@@ -31,3 +31,9 @@ internal fun `003_renameGlaciteMineshaftShareCorpses`(json: JsonObject) {
 	val glaciteMineshaft = json["mining"]?.asJsonObject["glaciteMineshaft"]?.asJsonObject ?: return
 	glaciteMineshaft.add("autoShareCorpses", glaciteMineshaft.remove("autoShareCorpseCoords") ?: return)
 }
+
+internal fun `004_moveHideOtherPeopleFishing`(json: JsonObject) {
+	val renderingTweaks = json["uiAndVisuals"]?.asJsonObject["renderingTweaks"]?.asJsonObject ?: return
+	val fishing = json["fishing"]?.asJsonObject ?: JsonObject().also { json.add("fishing", it) }
+	fishing.add("hideOtherPeopleFishing", renderingTweaks.remove("hideOtherPeopleFishing"))
+}

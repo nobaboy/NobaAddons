@@ -1,13 +1,13 @@
 package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.minecraft.text.Text
 import net.minecraft.util.math.MathHelper
 import java.util.LinkedList
@@ -20,7 +20,7 @@ object ErrorManager {
 	private val queuedMessages: Queue<Text> = LinkedList()
 
 	init {
-		ClientTickEvents.END_CLIENT_TICK.register { attemptSendQueuedMessages() }
+		TickEvents.TICK.register { attemptSendQueuedMessages() }
 	}
 
 	fun clearPreviousErrors() {

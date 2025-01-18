@@ -25,14 +25,15 @@ import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.config.UISettings
-import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.PersistentCache
+import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
+import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsManager
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
@@ -138,6 +139,7 @@ object NobaAddons : ClientModInitializer {
 		/* endregion */
 
 		/* region Screens */
+		ChatNotificationsManager.init()
 		InfoBoxesManager.init()
 		KeyBindsManager.init()
 		/* endregion */

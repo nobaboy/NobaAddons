@@ -10,7 +10,7 @@ abstract class ChatCommand(defaultCooldown: Duration = 1.seconds) : CooldownMana
 
 	abstract val enabled: Boolean
 	abstract val name: String
-	open val aliases: List<String> get() = emptyList<String>()
+	open val aliases: List<String> get() = emptyList()
 	open val usage: String get() = name
 
 	open val hideFromHelp: Boolean = false

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.filters
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.chat.filters.ability.AbilityChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.BlessingChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.HealerOrbChatFilter
@@ -23,7 +23,7 @@ interface IChatFilter {
 
 	companion object {
 		private var init = false
-		private val filters = arrayOf<IChatFilter>(
+		private val filters = arrayOf(
 			// Item Abilities
 			AbilityChatFilter,
 			// Mobs

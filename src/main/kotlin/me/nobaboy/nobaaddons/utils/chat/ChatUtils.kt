@@ -1,9 +1,8 @@
 package me.nobaboy.nobaaddons.utils.chat
 
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.events.CooldownTickEvent
-import me.nobaboy.nobaaddons.events.CooldownTickEvent.Companion.ticks
-import me.nobaboy.nobaaddons.events.SecondPassedEvent
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
@@ -19,14 +18,15 @@ import java.util.LinkedList
 import java.util.Queue
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 object ChatUtils {
 	private val commandQueue: Queue<String> = LinkedList()
 	private val clickActions: MutableMap<String, ClickAction> = mutableMapOf()
 
 	init {
-		CooldownTickEvent.EVENT.register(this::processCommandQueue)
-		SecondPassedEvent.EVENT.register { removeExpiredClickActions() }
+		TickEvents.cooldown { _, cooldown -> processCommandQueue(cooldown) }
+		TickEvents.everySecond { removeExpiredClickActions() }
 	}
 
 	private fun removeExpiredClickActions() {
@@ -36,13 +36,13 @@ object ChatUtils {
 		}
 	}
 
-	private fun processCommandQueue(event: CooldownTickEvent) {
+	private fun processCommandQueue(cooldownManager: CooldownManager) {
 		if(MCUtils.player == null) {
 			commandQueue.clear()
 			return
 		}
 		(MCUtils.networkHandler ?: return).sendCommand(commandQueue.poll() ?: return)
-		event.cooldownManager.startCooldown(20.ticks)
+		cooldownManager.startCooldown(1.seconds)
 	}
 
 	/**

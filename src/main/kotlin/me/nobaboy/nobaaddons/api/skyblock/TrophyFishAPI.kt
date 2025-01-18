@@ -1,10 +1,10 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
-import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.InventoryEvents
+import me.nobaboy.nobaaddons.core.profile.ProfileData
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.text.Text
 import java.util.EnumMap
-import kotlin.text.get
 
 object TrophyFishAPI {
 	val trophyFish: MutableMap<String, EnumMap<TrophyFishRarity, Int>> get() = ProfileData.PROFILE.trophyFish
@@ -44,7 +43,7 @@ object TrophyFishAPI {
 
 			val trophy = TrophyFish.get(item.name.string.cleanFormatting()) ?: return@forEach
 			val rarities = getCountFromOdgerStack(item).toMutableMap()
-				.also { TrophyFishRarity.entries.forEach { e -> if(e !in it) it.put(e, 0) } }
+				.also { TrophyFishRarity.entries.forEach { e -> if(e !in it) it[e] = 0 } }
 				.let { EnumMap(it) }
 			trophyFish[trophy.id] = rarities
 		}
@@ -52,12 +51,12 @@ object TrophyFishAPI {
 
 	private fun onChatMessage(message: Text) {
 		val (fish, rarity) = parseFromChatMessage(message.string) ?: return
-		val rarities = trophyFish[fish.id] ?: trophyFish.put(fish.id, EnumMap(TrophyFishRarity::class.java))!!
+		val rarities = trophyFish.getOrPut(fish.id) { EnumMap(TrophyFishRarity::class.java) }
 		rarities[rarity] = (rarities[rarity] ?: 0) + 1
 	}
 
 	fun getCountFromOdgerStack(item: ItemStack): Map<TrophyFishRarity, Int> {
-		val fish = item.lore?.stringLines?.mapNotNull { ODGER_RARITY_REGEX.matchEntire(it) } ?: return emptyMap()
+		val fish = item.lore.stringLines.mapNotNull { ODGER_RARITY_REGEX.matchEntire(it) }
 		if(fish.isEmpty()) return emptyMap()
 
 		return fish.associate {

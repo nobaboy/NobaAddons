@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import me.nobaboy.nobaaddons.events.SoundEvents;
+import me.nobaboy.nobaaddons.events.impl.client.SoundEvents;
 import me.nobaboy.nobaaddons.utils.NobaVec;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.world.ClientWorld;

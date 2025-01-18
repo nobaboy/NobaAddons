@@ -16,7 +16,7 @@ class InfoBoxesScreen(private val parent: Screen?) : Screen(tr("nobaaddons.scree
 	private var initialized = false
 
 	private val cancelButton = ButtonWidget.builder(ScreenTexts.CANCEL) { close() }.build()
-	internal val addButton = ButtonWidget.builder(tr("nobaaddons.screen.button.newInfoBox", "New Info Box")) { infoBoxesList.addInfoBox() }.build()
+	internal val addButton = ButtonWidget.builder(tr("nobaaddons.screen.button.newInfoBox", "New Info Box")) { infoBoxesList.create() }.build()
 	private val doneButton = ButtonWidget.builder(ScreenTexts.DONE) {
 		infoBoxesList.saveChanges()
 		close()

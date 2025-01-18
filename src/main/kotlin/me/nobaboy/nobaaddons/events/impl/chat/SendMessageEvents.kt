@@ -1,10 +1,11 @@
-package me.nobaboy.nobaaddons.events
+package me.nobaboy.nobaaddons.events.impl.chat
 
-import me.nobaboy.nobaaddons.events.internal.Event
-import me.nobaboy.nobaaddons.events.internal.EventDispatcher
+import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.EventDispatcher
 
 object SendMessageEvents {
 	// TODO is there any use in adding a chat message event?
+	// TODO could this be changed to be a wrapper around the fabric send message events?
 
 	/**
 	 * Event invoked before a command is sent by the player to the server

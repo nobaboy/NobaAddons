@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.screens.notifications
 
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsConfig
+import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsManager
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.green
 import me.nobaboy.nobaaddons.utils.TextUtils.red
@@ -22,26 +23,22 @@ class ChatNotificationsListWidget(
 	height: Int,
 	y: Int,
 	itemHeight: Int
-) : ElementListWidget<ChatNotificationsListWidget.NotificationEntry>(client, width, height, y, itemHeight) {
-	private val notifications = mutableListOf<ChatNotificationsConfig.Notification>()
+) : ElementListWidget<ChatNotificationsListWidget.ChatNotificationEntry>(client, width, height, y, itemHeight) {
+	private val notifications = ChatNotificationsManager.notifications.map { it.copy() }.toMutableList()
 	var hasChanges = false
 
 	init {
-		ChatNotificationsConfig.notifications.forEach { notifications.add(it.copy()) }
 		refreshEntries()
 	}
 
 	fun refreshEntries() {
 		clearEntries()
-		notifications.forEachIndexed { index, keyBind ->
-			addEntry(NotificationEntry(index))
-		}
-
+		notifications.forEachIndexed { index, _ -> addEntry(ChatNotificationEntry(index)) }
 		update()
 	}
 
 	fun update() {
-		children().forEach(NotificationEntry::update)
+		children().forEach(ChatNotificationEntry::update)
 	}
 
 	fun create() {
@@ -52,20 +49,22 @@ class ChatNotificationsListWidget(
 
 	fun saveChanges() {
 		notifications.removeIf { it.message.isBlank() }
-		ChatNotificationsConfig.notifications.clear()
-		ChatNotificationsConfig.notifications.addAll(notifications)
-		ChatNotificationsConfig.save()
+
+		ChatNotificationsManager.notifications.clear()
+		ChatNotificationsManager.notifications.addAll(notifications)
+		ChatNotificationsManager.save()
+
 		hasChanges = false
 	}
 
-	override fun removeEntry(entry: NotificationEntry): Boolean {
+	override fun removeEntry(entry: ChatNotificationEntry): Boolean {
 		return super.removeEntry(entry)
 	}
 
 	override fun getRowWidth(): Int = super.rowWidth + 80
 	override fun getScrollbarX(): Int = super.scrollbarX + 20
 
-	inner class NotificationEntry(private val index: Int) : Entry<NotificationEntry>() {
+	inner class ChatNotificationEntry(private val index: Int) : Entry<ChatNotificationEntry>() {
 		private val notification = notifications[index]
 		private var oldScrollAmount = 0.0
 
@@ -74,9 +73,9 @@ class ChatNotificationsListWidget(
 
 		private val messageField = TextFieldWidget(client.textRenderer, 158, 20, Text.empty()).apply {
 			text = notification.message
-			setMaxLength(256)
-			setPlaceholder(tr("nobaaddons.screen.chatNotifications.chatMessage", "Chat Message"))
 			tooltip = Tooltip.of(tr("nobaaddons.screen.chatNotifications.chatMessage.tooltip", "The chat message to display a notification for upon receiving"))
+			setPlaceholder(tr("nobaaddons.screen.chatNotifications.chatMessage", "Chat Message"))
+			setMaxLength(256)
 			setChangedListener { newText ->
 				notification.message = newText
 				hasChanges = true
@@ -107,10 +106,6 @@ class ChatNotificationsListWidget(
 			deleteEntry()
 		}.size(104, 20).build()
 
-		init {
-			update()
-		}
-
 		private fun changeToggle() {
 			notification.enabled = !notification.enabled
 			toggleButton.message = toggleText
@@ -137,6 +132,14 @@ class ChatNotificationsListWidget(
 
 			refreshEntries()
 			hasChanges = true
+		}
+
+		fun update() {
+			messageField.x = width / 2 - 160
+			displayField.x = width / 2 + 2
+			toggleButton.x = width / 2 - 160
+			modeButton.x = width / 2 - 52
+			deleteButton.x = width / 2 + 56
 		}
 
 		override fun children(): List<Element> = listOf(messageField, displayField, toggleButton, modeButton, deleteButton)
@@ -168,14 +171,6 @@ class ChatNotificationsListWidget(
 
 			deleteButton.y = y + 24
 			deleteButton.render(context, mouseX, mouseY, tickDelta)
-		}
-
-		fun update() {
-			messageField.x = width / 2 - 160
-			displayField.x = width / 2 + 2
-			toggleButton.x = width / 2 - 160
-			modeButton.x = width / 2 - 52
-			deleteButton.x = width / 2 + 56
 		}
 	}
 }

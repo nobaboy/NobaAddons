@@ -1,12 +1,11 @@
 package me.nobaboy.nobaaddons.features.chat.alerts
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.MythicSeaCreatureAlert
 import me.nobaboy.nobaaddons.features.chat.alerts.crimsonisle.VanquisherAlert
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 
 interface IAlert {
 	val config get() = NobaConfig.INSTANCE.chat.alerts
@@ -16,7 +15,7 @@ interface IAlert {
 
 	companion object {
 		private var init = false
-		private var alerts = arrayOf<IAlert>(
+		private var alerts = arrayOf(
 			MythicSeaCreatureAlert,
 			VanquisherAlert
 		)

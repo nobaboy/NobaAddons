@@ -18,22 +18,30 @@ private val migrations = Migrations.create {
 	add(migration = ::`001_removeYaclVersion`)
 	add(migration = ::`002_inventoryCategory`)
 	add(migration = ::`003_renameGlaciteMineshaftShareCorpses`)
+	add(migration = ::`004_moveHideOtherPeopleFishing`)
 }
 
 private val CONFIG_PATH = NobaAddons.CONFIG_DIR.resolve("config.json")
 
+/*
+ * If you are adding a new category and config, please add it in alphabetically in its designated group.
+ */
 class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations = migrations) {
 	val general by GeneralConfig()
 	val uiAndVisuals by UIAndVisualsConfig()
 	val inventory by InventoryConfig()
 	val events by EventsConfig()
+	// region Skills
 	val fishing by FishingConfig()
 	val mining by MiningConfig()
+	// endregion
+	// region Islands
 	val dungeons by DungeonsConfig()
+	val rift by RiftConfig()
+	// endregion
 	val chat by ChatConfig()
 	val qol by QOLConfig()
 	val repo by RepoConfig()
-	val rift by RiftConfig()
 
 	companion object {
 		@JvmField
@@ -52,8 +60,8 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 				category(FishingCategory.create(defaults, INSTANCE))
 				category(MiningCategory.create(defaults, INSTANCE))
 				category(DungeonsCategory.create(defaults, INSTANCE))
-				category(ChatCategory.create(defaults, INSTANCE))
 				category(RiftCategory.create(defaults, INSTANCE))
+				category(ChatCategory.create(defaults, INSTANCE))
 				category(QOLCategory.create(defaults, INSTANCE))
 				category(ApiCategory.create(defaults, INSTANCE))
 
