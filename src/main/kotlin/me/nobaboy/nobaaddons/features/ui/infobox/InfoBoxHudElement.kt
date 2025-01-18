@@ -7,10 +7,12 @@ import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.properties.CacheFor
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
+import kotlin.time.Duration.Companion.seconds
 
 private val COLOR_REGEX = Regex("&([0-9a-fk-orz])", RegexOption.IGNORE_CASE)
 
@@ -24,8 +26,9 @@ class InfoBoxHudElement(val textElement: InfoBoxElement) : TextHudElement(textEl
 	override fun shouldRender(): Boolean =
 		super.shouldRender() && MCUtils.client.currentScreen !is InfoBoxesScreen
 
-	val text: List<Text> get() =
+	val text: List<Text> by CacheFor(0.25.seconds) {
 		textElement.text.replace("\\n", "\n").split("\n").map { compileText(it).toText() }
+	}
 
 	override fun renderText(context: DrawContext) {
 		renderLines(context, text)
