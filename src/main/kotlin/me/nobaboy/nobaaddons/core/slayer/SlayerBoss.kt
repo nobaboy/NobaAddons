@@ -6,7 +6,7 @@ enum class SlayerBoss(
 	val displayName: String,
 	val entityType: EntityType<*>,
 	val miniBossNames: List<String>?,
-	val zones:  List<String>,
+	val zones: List<String>,
 ) {
 	REVENANT(
 		"Revenant Horror",
