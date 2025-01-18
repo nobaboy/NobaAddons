@@ -4,7 +4,6 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
-import me.nobaboy.nobaaddons.features.chat.filters.StatType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.NumberUtils.formatDouble
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
@@ -41,12 +40,12 @@ object HealerOrbChatFilter : IChatFilter {
 	}
 
 	private fun compileHealerOrbMessage(
-		orb: String,
-		player: String,
-		health: String,
-		buff: String,
-		statType: StatType,
-		duration: String
+        orb: String,
+        player: String,
+        health: String,
+        buff: String,
+        statType: StatType,
+        duration: String
 	) = buildText {
 		formatted(Formatting.GRAY)
 		append(Text.literal("HEALER ORB!").formatted(Formatting.YELLOW, Formatting.BOLD))
