@@ -7,6 +7,8 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 
 class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
+	var renderInfoBoxesOutsideSkyBlock by Property.of<Boolean>("renderInfoBoxesOutsideSkyBlock", false)
+
 	val temporaryWaypoints by TemporaryWaypoints()
 	val etherwarpHelper by EtherwarpHelper()
 	val renderingTweaks by RenderingTweaks()

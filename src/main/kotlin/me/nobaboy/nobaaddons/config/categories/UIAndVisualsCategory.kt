@@ -35,6 +35,12 @@ object UIAndVisualsCategory {
 		button(tr("nobaaddons.screen.infoBoxes", "Info Boxes"), text = CommonText.SCREEN_OPEN) {
 			MCUtils.client.setScreen(InfoBoxesScreen(it))
 		}
+		boolean(
+			tr("nobaaddons.config.uiAndVisuals.renderInfoBoxesOutsideSkyBlock", "Render Info Boxes Outside SkyBlock"),
+			tr("nobaaddons.config.uiAndVisuals.renderInfoBoxesOutsideSkyBlock.tooltip", "Enables rendering of Info Boxes while not in SkyBlock"),
+			default = defaults.uiAndVisuals.renderInfoBoxesOutsideSkyBlock,
+			property = config.uiAndVisuals::renderInfoBoxesOutsideSkyBlock
+		)
 
 		// region Temporary Waypoints
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints", "Temporary Waypoints")) {

@@ -13,6 +13,7 @@
 <details>
 <summary>UI & Visuals</summary>
 
+- Info Boxes (see below)
 - Etherwarp Helper
 - Temporary Waypoints
 - Remove front-facing third-person camera view
@@ -22,6 +23,31 @@
   - Arm swing animation tweaks
   - First-person item model positioning options
 
+<details>
+<summary>Info Boxes</summary>
+
+<!-- TODO placeholders? functions? what actual end-user terminology do we want to use for this? -->
+
+Info Boxes display any provided text on-screen, and also replace the following placeholders with relevant information:
+
+- Client information:
+  - `{fps}`
+  - `{ping}`
+- Server information:
+  - `{day}`
+- Player position:
+  - `{x}`, `{y}`, `{z}`
+  - `{bps}`
+  - `{pitch}`
+  - `{yaw}`
+  - `{zone}`
+- SkyBlock profile information:
+  - `{level}`, `{level_color}`
+  - `{xp}`
+  - `{coins}`
+  - `{bits}`
+
+</details>
 </details>
 
 <details>
