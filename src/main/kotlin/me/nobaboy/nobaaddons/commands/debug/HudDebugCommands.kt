@@ -13,24 +13,28 @@ import net.minecraft.util.Colors
 @Suppress("unused")
 @Group("hud")
 object HudDebugCommands {
+	private val colors = listOf(
+		Colors.WHITE, Colors.GREEN, Colors.LIGHT_RED, Colors.GRAY,
+		Colors.ALTERNATE_WHITE, Colors.BLUE, Colors.LIGHT_YELLOW,
+		Colors.YELLOW
+	)
+
+	private class DebugHudElement : TextHudElement(TextElement(color = colors.random())) {
+		override fun renderText(context: DrawContext) {
+			renderLine(context, "Zoop!".toText())
+		}
+
+		override val name: Text = Text.literal("Debug HUD")
+		override val size: Pair<Int, Int> = 100 to 25
+	}
+
 	@Command
 	fun addElement() {
-		UIManager.add(object : TextHudElement(TextElement(color = listOf(
-			Colors.WHITE, Colors.GREEN, Colors.LIGHT_RED, Colors.GRAY,
-			Colors.ALTERNATE_WHITE, Colors.BLUE, Colors.LIGHT_YELLOW,
-			Colors.YELLOW
-		).random())) {
-			override fun renderText(context: DrawContext) {
-				renderLine(context, "Zoop!".toText())
-			}
-
-			override val name: Text = Text.literal("Debug HUD")
-			override val size: Pair<Int, Int> = 100 to 25
-		})
+		UIManager.add(DebugHudElement())
 	}
 
 	@Command
 	fun clear() {
-		UIManager.removeAll { it.name.string == "Debug HUD" }
+		UIManager.removeAll { it is DebugHudElement }
 	}
 }
