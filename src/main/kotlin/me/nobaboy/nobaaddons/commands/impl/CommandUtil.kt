@@ -20,8 +20,9 @@ object CommandUtil {
 	private val commands: MutableList<ICommand<FabricClientCommandSource>> = mutableListOf()
 	private lateinit var access: CommandRegistryAccess
 
+	val commander = Commander<FabricClientCommandSource>()
+
 	init {
-		val commander = Commander<FabricClientCommandSource>()
 		commander.addHandler(NbtPathArgumentType.NbtPath::class, NbtPathHandler)
 		commander.addHandler(Rarity::class, RarityHandler)
 		commander.addHandler(Text::class, TextHandler)
@@ -32,13 +33,10 @@ object CommandUtil {
 	}
 
 	private object NbtPathHandler : ArgumentHandler<NbtPathArgumentType.NbtPath, FabricClientCommandSource> {
-		override fun argument(parameter: KParameter): ArgumentType<NbtPathArgumentType.NbtPath> {
-			return NbtPathArgumentType.nbtPath()
-		}
+		override fun argument(parameter: KParameter): ArgumentType<NbtPathArgumentType.NbtPath> = NbtPathArgumentType.nbtPath()
 
-		override fun parse(ctx: CommandContext<FabricClientCommandSource>, name: String): NbtPathArgumentType.NbtPath {
-			return ctx.getArgument(name, NbtPathArgumentType.NbtPath::class.java)
-		}
+		override fun parse(ctx: CommandContext<FabricClientCommandSource>, name: String): NbtPathArgumentType.NbtPath =
+			ctx.getArgument(name, NbtPathArgumentType.NbtPath::class.java)
 	}
 
 	private object RarityHandler : ArgumentHandler<Rarity, FabricClientCommandSource> {

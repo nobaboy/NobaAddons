@@ -35,6 +35,12 @@ object UIAndVisualsCategory {
 		button(tr("nobaaddons.screen.infoBoxes", "Info Boxes"), text = CommonText.SCREEN_OPEN) {
 			MCUtils.client.setScreen(InfoBoxesScreen(it))
 		}
+		boolean(
+			tr("nobaaddons.config.uiAndVisuals.renderInfoBoxesOutsideSkyBlock", "Render Info Boxes Outside SkyBlock"),
+			tr("nobaaddons.config.uiAndVisuals.renderInfoBoxesOutsideSkyBlock.tooltip", "Enables rendering of Info Boxes while not in SkyBlock"),
+			default = defaults.uiAndVisuals.renderInfoBoxesOutsideSkyBlock,
+			property = config.uiAndVisuals::renderInfoBoxesOutsideSkyBlock
+		)
 
 		// region Temporary Waypoints
 		buildGroup(tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints", "Temporary Waypoints")) {
@@ -121,6 +127,11 @@ object UIAndVisualsCategory {
 					else -> it.toString().toText()
 				}
 			}
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.swingAnimation.static", "Static Item Swing Position"),
+				default = defaults.uiAndVisuals.swingAnimation.staticSwingPosition,
+				property = config.uiAndVisuals.swingAnimation::staticSwingPosition
+			)
 
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers", "Apply to All Players"),
