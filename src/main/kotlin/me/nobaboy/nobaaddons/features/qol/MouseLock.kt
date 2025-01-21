@@ -58,15 +58,14 @@ object MouseLock {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { locked = false }
-		PacketEvents.EARLY_RECEIVE.register(this::onEarlyPacketReceive)
+		PacketEvents.PRE_RECEIVE.register(this::onEarlyPacketReceive)
 	}
 
-	private fun onEarlyPacketReceive(event: PacketEvents.EarlyReceive) {
+	private fun onEarlyPacketReceive(event: PacketEvents.Receive) {
 		if(!config.autoUnlockMouseOnTeleport) return
 		if(!locked) return
 
-		val packet = event.packet
-		if(packet !is PlayerPositionLookS2CPacket) return
+		val packet = event.packet as? PlayerPositionLookS2CPacket ?: return
 
 		val playerLocation = LocationUtils.playerLocation().round(2)
 		//? if >=1.21.2 {
@@ -74,6 +73,7 @@ object MouseLock {
 		//?} else {
 		/*val packetLocation = NobaVec(packet.x, packet.y, packet.z).round(2)
 		*///?}
+
 		if(packetLocation.distance(playerLocation) >= 5) lockMouse()
 	}
 

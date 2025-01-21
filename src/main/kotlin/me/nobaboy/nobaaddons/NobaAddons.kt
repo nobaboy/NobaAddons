@@ -16,6 +16,7 @@ import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.api.skyblock.TrophyFishAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowGuessAPI
@@ -52,6 +53,11 @@ import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.rift.RiftTimers
+import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
+import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
+import me.nobaboy.nobaaddons.features.slayers.inferno.HighlightHellionShield
+import me.nobaboy.nobaaddons.features.slayers.sven.HidePupNametags
+import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomSeraphFeatures
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
@@ -102,7 +108,7 @@ object NobaAddons : ClientModInitializer {
 	}
 
 	private val supervisorJob = SupervisorJob()
-	private val exceptionHandler = CoroutineExceptionHandler { ctx, error ->
+	private val exceptionHandler = CoroutineExceptionHandler { _, error ->
 		ErrorManager.logError("Encountered an unhandled error in an async context", error)
 	}
 	val coroutineScope = CoroutineScope(CoroutineName(MOD_ID) + supervisorJob + exceptionHandler)
@@ -125,16 +131,17 @@ object NobaAddons : ClientModInitializer {
 		/* endregion */
 
 		/* region APIs */
-		InventoryAPI.init()
-		PartyAPI.init()
-		SkyBlockAPI.init()
-		DebugAPI.init()
-		MayorAPI.init()
-		PetAPI.init()
-		DungeonsAPI.init()
-		DianaAPI.init()
 		BurrowAPI.init()
 		BurrowGuessAPI.init()
+		DebugAPI.init()
+		DianaAPI.init()
+		DungeonsAPI.init()
+		InventoryAPI.init()
+		MayorAPI.init()
+		PartyAPI.init()
+		PetAPI.init()
+		SkyBlockAPI.init()
+		SlayerAPI.init()
 		TrophyFishAPI.init()
 		/* endregion */
 
@@ -155,13 +162,13 @@ object NobaAddons : ClientModInitializer {
 
 		/* region Features */
 		// region Visuals
-		TemporaryWaypoints.init()
 		EtherwarpHelper.init()
+		TemporaryWaypoints.init()
 		// endregion
 
 		// region Inventory
-		ISlotInfo.init()
 		EnchantmentTooltips.init()
+		ISlotInfo.init()
 		// endregion
 
 		// region Events
@@ -170,20 +177,31 @@ object NobaAddons : ClientModInitializer {
 		InquisitorWaypoints.init()
 		// endregion
 
+		// region Slayers
+		MiniBossFeatures.init()
+		SlayerBossFeatures.init()
+		/* region Sven Packmaster */
+		HidePupNametags.init()
+		/* endregion */
+		/* region Voidgloom Seraph */
+		VoidgloomSeraphFeatures.init()
+		/* endregion */
+		/* region Inferno Demonlord */
+		HighlightHellionShield.init()
+		/* endregion */
+		// endregion
+
 		// region Fishing
 		FishingBobberTweaks.init()
+		HighlightThunderSparks.init()
 		SeaCreatureAlert.init()
 		TrophyFishChat.init()
 		// endregion
 
 		// region Mining
-		WormAlert.init()
 		CorpseLocator.init()
 		MineshaftWaypoints.init()
-		// endregion
-
-		// region Crimson Isle
-		HighlightThunderSparks.init()
+		WormAlert.init()
 		// endregion
 
 		// region Dungeons
@@ -192,15 +210,14 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Chat
+		ChatNotifications.init()
 		IAlert.init()
 		IChatFilter.init()
-		ChatNotifications.init()
-		// endregion
-
-		// region Chat Commands
+		/* region Chat Commands */
 		DMCommands.init()
 		PartyCommands.init()
 		GuildCommands.init()
+		/* endregion */
 		// endregion
 
 		// region QOL

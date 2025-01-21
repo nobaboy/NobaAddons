@@ -195,7 +195,7 @@ object UIAndVisualsCategory {
 				default = defaults.uiAndVisuals.itemPosition.scale,
 				property = config.uiAndVisuals.itemPosition::scale,
 				min = 0.1f,
-				max = 2.0f,
+				max = 2f,
 				step = 0.1f
 			)
 		}

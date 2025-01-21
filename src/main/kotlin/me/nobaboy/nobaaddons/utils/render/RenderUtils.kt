@@ -52,7 +52,7 @@ object RenderUtils {
 
 	fun startScale(context: DrawContext, scale: Float) {
 		context.matrices.push()
-		context.matrices.scale(scale, scale, 1.0f)
+		context.matrices.scale(scale, scale, 1f)
 	}
 	fun endScale(context: DrawContext) = context.matrices.pop()
 
@@ -64,21 +64,21 @@ object RenderUtils {
 		text: Text,
 		x: Int,
 		y: Int,
-		scale: Float = 1.0f,
+		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
 	) {
-		if(applyScaling && scale != 1.0f) startScale(context, scale)
+		if(applyScaling && scale != 1f) startScale(context, scale)
 		context.drawText(MCUtils.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color.rgb, shadow)
-		if(applyScaling && scale != 1.0f) endScale(context)
+		if(applyScaling && scale != 1f) endScale(context)
 	}
 	fun drawText(
 		context: DrawContext,
 		text: String,
 		x: Int,
 		y: Int,
-		scale: Float = 1.0f,
+		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
@@ -91,7 +91,7 @@ object RenderUtils {
 		text: Text,
 		x: Int,
 		y: Int,
-		scale: Float = 1.0f,
+		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		outlineColor: NobaColor = NobaColor.BLACK,
 		applyScaling: Boolean = true
@@ -117,7 +117,7 @@ object RenderUtils {
 		text: String,
 		x: Int,
 		y: Int,
-		scale: Float = 1.0f,
+		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		outlineColor: NobaColor = NobaColor.BLACK,
 		applyScaling: Boolean = true
@@ -130,7 +130,7 @@ object RenderUtils {
 		text: Text,
 		x: Int,
 		y: Int,
-		scale: Float = 1.0f,
+		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
@@ -143,7 +143,7 @@ object RenderUtils {
 		text: String,
 		x: Int,
 		y: Int,
-		scale: Float = 1.0f,
+		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
 		applyScaling: Boolean = true
@@ -164,7 +164,7 @@ object RenderUtils {
 	fun drawTitle(
 		text: Text,
 		color: NobaColor = NobaColor.WHITE,
-		scale: Float = 4.0f,
+		scale: Float = 4f,
 		offset: Int = 0,
 		duration: Duration = 3.seconds,
 		id: String = StringUtils.randomAlphanumeric(),
@@ -175,7 +175,7 @@ object RenderUtils {
 	fun drawTitle(
 		text: String,
 		color: NobaColor = NobaColor.WHITE,
-		scale: Float = 4.0f,
+		scale: Float = 4f,
 		offset: Int = 0,
 		duration: Duration = 3.seconds,
 		id: String = StringUtils.randomAlphanumeric(),
@@ -205,7 +205,7 @@ object RenderUtils {
 		context: WorldRenderContext,
 		location: NobaVec,
 		color: NobaColor,
-		lineWidth: Float = 3.0f,
+		lineWidth: Float = 3f,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
@@ -234,7 +234,7 @@ object RenderUtils {
 		context: WorldRenderContext,
 		location: NobaVec,
 		color: NobaColor,
-		lineWidth: Float = 3.0f,
+		lineWidth: Float = 3f,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
@@ -251,7 +251,7 @@ object RenderUtils {
 		//?} else {
 		/*RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram)
 		*///?}
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f)
+		RenderSystem.setShaderColor(1f, 1f, 1f, 1f)
 		RenderSystem.lineWidth(lineWidth)
 		RenderSystem.enableBlend()
 		RenderSystem.disableCull()
@@ -263,12 +263,12 @@ object RenderUtils {
 
 		val buffer = tessellator.begin(DrawMode.LINES, VertexFormats.LINES)
 
-		val red = color.red / 255.0f
-		val green = color.green / 255.0f
-		val blue = color.blue / 255.0f
+		val red = color.red / 255f
+		val green = color.green / 255f
+		val blue = color.blue / 255f
 
 		val distSq = location.distanceSq(cameraPos)
-		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.7f, 1.0f)
+		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.7f, 1f)
 
 		val box = Box(
 			location.x - extraSize, location.y - extraSizeBottomY, location.z - extraSize,
@@ -289,7 +289,7 @@ object RenderUtils {
 		BufferRenderer.drawWithGlobalProgram(buffer.end())
 
 		matrices.pop()
-		RenderSystem.lineWidth(1.0f)
+		RenderSystem.lineWidth(1f)
 		RenderSystem.disableBlend()
 		RenderSystem.enableCull()
 		RenderSystem.disableDepthTest()
@@ -316,9 +316,9 @@ object RenderUtils {
 		val consumers = context.consumers() ?: return
 		val buffer = consumers.getBuffer(if(throughBlocks) NobaRenderLayers.FILLED_THROUGH_BLOCKS else NobaRenderLayers.FILLED)
 
-		val red = color.red / 255.0f
-		val green = color.green / 255.0f
-		val blue = color.blue / 255.0f
+		val red = color.red / 255f
+		val green = color.green / 255f
+		val blue = color.blue / 255f
 
 		val distSq = location.distanceSq(cameraPos)
 		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.2f, 0.7f)
@@ -348,8 +348,8 @@ object RenderUtils {
 		text: Text,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
-		yOffset: Float = 0.0f,
-		scaleMultiplier: Float = 1.0f,
+		yOffset: Float = 0f,
+		scaleMultiplier: Float = 1f,
 		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {
@@ -363,7 +363,7 @@ object RenderUtils {
 		val dist = location.distance(cameraPos).coerceAtMost(512.0)
 		if(dist <= hideThreshold) return
 
-		var scale = dist.toFloat() / 256.0f
+		var scale = dist.toFloat() / 256f
 		scale = (scale * scaleMultiplier).coerceAtLeast(0.025f)
 
 		val x = location.x - cameraPos.x
@@ -375,7 +375,7 @@ object RenderUtils {
 			.rotate(camera.rotation)
 			.scale(scale, -scale, scale)
 
-		val xOffset = -textRenderer.getWidth(text) / 2.0f
+		val xOffset = -textRenderer.getWidth(text) / 2f
 
 		val consumers = VertexConsumerProvider.immediate(ALLOCATOR)
 
@@ -392,8 +392,8 @@ object RenderUtils {
 		text: String,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
-		yOffset: Float = 0.0f,
-		scaleMultiplier: Float = 1.0f,
+		yOffset: Float = 0f,
+		scaleMultiplier: Float = 1f,
 		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false
 	) {

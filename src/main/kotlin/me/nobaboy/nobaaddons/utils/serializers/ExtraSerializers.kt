@@ -5,6 +5,7 @@ import com.google.gson.JsonPrimitive
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.Timestamp
+import java.awt.Color
 import java.util.EnumMap
 import java.util.UUID
 
@@ -20,6 +21,23 @@ object ExtraSerializers {
 
 		override fun deserialize(element: JsonElement): NobaColor? =
 			element.let { it as? JsonPrimitive }?.takeIf { it.isNumber }?.let { NobaColor(it.asInt) }
+	}
+
+	val Serializer.Companion.awtColor get() = object : Serializer<Color> {
+		override fun serialize(value: Color): JsonElement =
+			JsonPrimitive("${value.red}:${value.green}:${value.blue}:${value.alpha}")
+
+		override fun deserialize(element: JsonElement): Color? {
+			val deserialized = element.let { it as? JsonPrimitive }?.takeIf { it.isString }?.asString ?: return null
+			val parts = deserialized.split(':').mapNotNull { it.toIntOrNull() }
+			return when(parts.size) {
+				// [r, g, b]
+				3 -> Color(parts[0], parts[1], parts[2])
+				// [r, g, b, a]
+				4 -> Color(parts[0], parts[1], parts[2], parts[3])
+				else -> null
+			}
+		}
 	}
 
 	val Serializer.Companion.timestamp get() = object : Serializer<Timestamp> {

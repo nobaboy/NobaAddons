@@ -55,6 +55,37 @@ object RiftTimers {
 		ItemTooltipCallback.EVENT.register(this::addSplitStealItemCooldown)
 	}
 
+	private fun onSecondPassed() {
+		if(!SkyBlockAPI.inSkyBlock) return
+		updateNextInfusion()
+		updateSplitSteal()
+	}
+
+	private fun onOpenInventory(event: InventoryEvents.Open) {
+		when(event.inventory.title) {
+			"Dimensional Infusion", "Fast Travel" -> updateFreeInfusions(event)
+			"Split or Steal" -> {
+				if(!SkyBlockIsland.RIFT.inIsland()) return
+				data.nextSplitSteal = Timestamp.now() + 2.hours
+				notifiedSplitStealCooldown = false
+			}
+		}
+	}
+
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val string = event.message.string.cleanFormatting()
+		if(string == "INFUSED! Used one of your free Rift charges!") {
+			data.freeRiftInfusions -= 1
+			if(data.nextFreeInfusion == null) {
+				data.nextFreeInfusion = Timestamp.now() + 4.hours
+			}
+		} else if(string.startsWith("SPLIT! You need to wait")) {
+			val match = splitStealCooldown.matchEntire(string) ?: return
+			data.nextSplitSteal = match.groups["time"]!!.value.asTimestamp() ?: return
+			notifiedSplitStealCooldown = false
+		}
+	}
+
 	private fun addSplitStealItemCooldown(item: ItemStack, ctx: Item.TooltipContext, type: TooltipType, lines: MutableList<Text>) {
 		if(item.skyBlockId != "UBIKS_CUBE") return
 		if(!config.splitStealItemCooldown) return
@@ -105,12 +136,6 @@ object RiftTimers {
 		}
 	}
 
-	private fun onSecondPassed() {
-		if(!SkyBlockAPI.inSkyBlock) return
-		updateNextInfusion()
-		updateSplitSteal()
-	}
-
 	private fun updateFreeInfusions(event: InventoryEvents.Open) {
 		val itemName = when(event.inventory.title) {
 			"Dimensional Infusion" -> "Dimensional Infusion"
@@ -125,31 +150,6 @@ object RiftTimers {
 			lore.firstFullMatch(nextFreeInfusion)?.groups["time"]?.value?.asTimestamp()
 		} else {
 			null
-		}
-	}
-
-	private fun onOpenInventory(event: InventoryEvents.Open) {
-		when(event.inventory.title) {
-			"Dimensional Infusion", "Fast Travel" -> updateFreeInfusions(event)
-			"Split or Steal" -> {
-				if(!SkyBlockIsland.RIFT.inIsland()) return
-				data.nextSplitSteal = Timestamp.now() + 2.hours
-				notifiedSplitStealCooldown = false
-			}
-		}
-	}
-
-	private fun onChatMessage(event: ChatMessageEvents.Chat) {
-		val string = event.message.string.cleanFormatting()
-		if(string == "INFUSED! Used one of your free Rift charges!") {
-			data.freeRiftInfusions -= 1
-			if(data.nextFreeInfusion == null) {
-				data.nextFreeInfusion = Timestamp.now() + 4.hours
-			}
-		} else if(string.startsWith("SPLIT! You need to wait")) {
-			val match = splitStealCooldown.matchEntire(string) ?: return
-			data.nextSplitSteal = match.groups["time"]!!.value.asTimestamp() ?: return
-			notifiedSplitStealCooldown = false
 		}
 	}
 }

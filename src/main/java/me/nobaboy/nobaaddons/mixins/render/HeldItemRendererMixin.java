@@ -31,7 +31,7 @@ abstract class HeldItemRendererMixin {
 	)
 	public float nobaaddons$cancelAttackCooldown(float original) {
 		if(NobaConfig.INSTANCE.getUiAndVisuals().getSwingAnimation().getSwingDuration() > 1) {
-			return 1.0f;
+			return 1f;
 		}
 
 		return original;

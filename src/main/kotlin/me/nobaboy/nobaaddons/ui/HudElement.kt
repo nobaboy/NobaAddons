@@ -70,7 +70,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	 *
 	 * Note that this is capped at `3f` in [ElementPosition]
 	 */
-	open val maxScale: Float = 3.0f
+	open val maxScale: Float = 3f
 
 	open val allowScaling: Boolean = true
 
@@ -124,7 +124,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 		context.fill(bounds.x - offset, bounds.y - offset, bounds.x + bounds.width + offset, bounds.y + bounds.height + offset, 0x80000000.toInt())
 		context.drawBorder(bounds.x - offset - 1, bounds.y - offset - 1, bounds.width + 2 * offset + 2, bounds.height + 2 * offset + 2, color.toInt())
 
-		val yOffset = if(scale < 1.0f) 10 else 0
+		val yOffset = if(scale < 1f) 10 else 0
 		RenderUtils.drawCenteredText(context, name, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2 - 4 - yOffset)
 	}
 
@@ -148,7 +148,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	}
 
 	open fun reset() {
-		scale = 1.0f
+		scale = 1f
 		moveTo(0, 0)
 	}
 }
