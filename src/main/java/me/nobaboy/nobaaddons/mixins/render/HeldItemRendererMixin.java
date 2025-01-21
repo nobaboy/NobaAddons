@@ -108,7 +108,8 @@ abstract class HeldItemRendererMixin {
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V"
 			/*? if <1.21.4 {*//*,
-			ordinal = 3
+			// :deadge:
+			ordinal = 12
 			*///?}
 		)
 	)
