@@ -246,6 +246,12 @@ object ChatCategory {
 				default = defaults.chat.chatCommands.party.coords,
 				property = config.chat.chatCommands.party::coords
 			) requires partyEnabled
+			boolean(
+				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced", "Instance Commands"),
+				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced.tooltip", "Commands such as !m6 (Master Mode Catacombs), !f7 (Catacombs), !t5 (Kuudra), etc."),
+				default = defaults.chat.chatCommands.party.joinInstanced,
+				property = config.chat.chatCommands.party::joinInstanced
+			) requires partyEnabled
 			// endregion
 
 			// region Guild

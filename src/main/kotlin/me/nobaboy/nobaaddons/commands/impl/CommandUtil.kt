@@ -16,6 +16,8 @@ typealias Context = CommandContext<FabricClientCommandSource>
 object CommandUtil {
 	private val commands: MutableList<ICommand<FabricClientCommandSource>> = mutableListOf()
 
+	val commander = Commander<FabricClientCommandSource>()
+
 	init {
 		val commander = Commander<FabricClientCommandSource>()
 		commander.addHandler(Formatting::class, FormattingHandler())

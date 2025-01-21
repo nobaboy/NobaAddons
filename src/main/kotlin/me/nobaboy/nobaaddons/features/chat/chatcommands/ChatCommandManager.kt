@@ -1,22 +1,34 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands
 
-import me.nobaboy.nobaaddons.utils.CooldownManager
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
+import me.nobaboy.nobaaddons.utils.HypixelUtils
+import me.nobaboy.nobaaddons.utils.MCUtils
+import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.client.MinecraftClient
+import java.util.Collections
+import kotlin.time.Duration.Companion.seconds
 
-abstract class ChatCommandManager : CooldownManager() {
-	private val commands = mutableListOf<IChatCommand>()
-	private val lock = Object()
+abstract class ChatCommandManager {
+	private val commands = mutableListOf<ChatCommand>()
+	private val lock = Mutex()
 
+	fun commands(): List<ChatCommand> = Collections.unmodifiableList(commands)
+
+	protected fun onHypixel(): Boolean {
+		return HypixelUtils.onHypixel || (FabricLoader.getInstance().isDevelopmentEnvironment && MinecraftClient.getInstance().isInSingleplayer)
+	}
+
+	protected abstract val source: ChatContext.ChatCommandSource
 	protected abstract val enabled: Boolean
 	protected abstract val pattern: Regex
 
-	protected fun register(command: IChatCommand) {
+	protected fun register(command: ChatCommand) {
 		commands.add(command)
 	}
-
-	fun getCommands(enabledOnly: Boolean = false): List<IChatCommand> =
-		if(enabledOnly) commands.filter { it.enabled } else commands
 
 	protected open fun matchMessage(message: String): MatchResult? =
 		pattern.matchEntire(message)
@@ -26,31 +38,29 @@ abstract class ChatCommandManager : CooldownManager() {
 		val user = match.groups["username"]?.value!!
 		val command = match.groups["command"]?.value!!
 		val args = match.groups["argument"]?.value?.split(" ") ?: emptyList()
-		return ChatContext(user, command, args, message)
+		return ChatContext(source, user, command, args, message)
 	}
 
-	fun processMessage(message: String) {
+	fun processMessage(message: String) = NobaAddons.runAsync { processMessageInternal(message) }
+
+	private suspend fun processMessageInternal(message: String) {
 		if(!enabled) return
 
-		synchronized(lock) {
-			val ctx = getContext(message) ?: return
-			val cmd = commands.asSequence()
-				.filter { it.enabled }
-				.firstOrNull {
-					it.name.lowercaseEquals(ctx.command) ||
-						it.aliases.any { alias ->
-							alias.lowercaseEquals(ctx.command)
-						}
-				} ?: return
+		val ctx = getContext(message) ?: return
+		val cmd = commands.asSequence().filter { it.enabled }.firstOrNull { it.nameMatches(ctx.command) } ?: return
 
-			if(!cmd.bypassCooldown && isOnCooldown()) return
+		lock.withLock(null) {
+			if(cmd.isOnCooldown()) return
+			if(ctx.user == MCUtils.playerName) {
+				// wait a short bit to avoid sending commands too fast
+				delay(0.2.seconds)
+			}
 
-			runCatching {
+			try {
+				// TODO should commands also be `suspend fun`?
 				cmd.run(ctx)
-			}.onSuccess {
-				if(!cmd.bypassCooldown) startCooldown()
-			}.onFailure { ex ->
-				ErrorManager.logError("Chat command '${cmd.name}' threw an error", ex, "Command" to ctx.fullMessage)
+			} catch(ex: Throwable) {
+				ErrorManager.logError("Chat command '${ctx.command}' threw an error", ex, "Command" to ctx.fullMessage)
 			}
 		}
 	}

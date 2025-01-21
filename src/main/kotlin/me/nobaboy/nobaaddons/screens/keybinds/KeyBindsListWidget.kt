@@ -71,9 +71,12 @@ class KeyBindsListWidget(
 		private var oldScrollAmount = 0.0
 		private var duplicate = false
 
+		// using property access syntax for setMaxLength() is impossible, as kotlin tries to use the
+		// private underlying field instead of the correct setter method
+		@Suppress("UsePropertyAccessSyntax")
 		private val textField = TextFieldWidget(client.textRenderer, 210, 20, Text.empty()).apply {
 			text = keyBind.command
-			tooltip = Tooltip.of(tr("nobaaddons.screen.keyBinds.command.tooltip", "The command to send when the key bind is pressed. The command must not start with a '/'"))
+			tooltip = Tooltip.of(tr("nobaaddons.screen.keyBinds.command.tooltip", "The command to send when the key bind is pressed"))
 			setMaxLength(128)
 			setChangedListener { newText ->
 				keyBind.command = newText

@@ -21,7 +21,7 @@ object ChatNotificationsConfig : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("c
 		var enabled: Boolean by Property.of("enabled", true)
 		var message: String by Property.of("message", "")
 		var display: String by Property.of("notification", "")
-		var mode: NotificationMode by Property.of("mode", Serializer.enum<NotificationMode>(), NotificationMode.CONTAINS)
+		var mode: NotificationMode by Property.of("mode", Serializer.enum(), NotificationMode.CONTAINS)
 
 		val colorFormattedDisplay: String get() = display.replace(COLOR_REGEX, "${Formatting.FORMATTING_CODE_PREFIX}$1")
 

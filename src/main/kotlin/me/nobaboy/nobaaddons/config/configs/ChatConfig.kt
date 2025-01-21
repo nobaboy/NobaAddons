@@ -65,6 +65,7 @@ class ChatConfig : ObjectProperty<ChatConfig>("chat") {
 			var transfer by Property.of<Boolean>("transfer", false)
 			var warp by Property.of<Boolean>("warp", false)
 			var coords by Property.of<Boolean>("coords", false)
+			var joinInstanced by Property.of<Boolean>("joinInstanced", false)
 		}
 
 		class GuildCommands : ObjectProperty<GuildCommands>("guild") {

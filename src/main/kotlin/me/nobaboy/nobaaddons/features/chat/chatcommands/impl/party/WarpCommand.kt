@@ -2,12 +2,13 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.features.chat.chatcommands.IChatCommand
+import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import org.apache.commons.lang3.StringUtils
+import kotlin.time.Duration.Companion.seconds
 
-class WarpCommand : IChatCommand {
+class WarpCommand : ChatCommand(3.seconds) {
 	companion object {
 		var cancel = false
 	}
@@ -26,6 +27,7 @@ class WarpCommand : IChatCommand {
 
 		val time = if(ctx.args.isEmpty()) null else ctx.args[0]
 		warpParty(time)
+		startCooldown()
 	}
 
 	private fun warpParty(seconds: String?) {

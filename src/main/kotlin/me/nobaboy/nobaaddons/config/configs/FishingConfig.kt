@@ -30,7 +30,7 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 		var crimsonIsleOnly by Property.of<Boolean>("crimsonIsleOnly", true)
 	}
 
-	class TrophyFishing() : ObjectProperty<TrophyFishing>("trophyFishing") {
+	class TrophyFishing : ObjectProperty<TrophyFishing>("trophyFishing") {
 		var modifyChatMessages by Property.of<Boolean>("modifyChatMessages", false)
 	}
 

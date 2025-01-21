@@ -34,6 +34,7 @@ import net.minecraft.util.Formatting
 object NobaCommand {
 	fun init() {
 		CommandUtil.registerRoot(this)
+		HypixelChatCommandMocks.init()
 	}
 
 	@RootCommand
