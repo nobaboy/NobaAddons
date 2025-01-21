@@ -62,10 +62,10 @@ dependencies {
 	mappings("net.fabricmc:yarn:${mcVersion}+build.${deps["yarn_build"]}:v2")
 	modImplementation("net.fabricmc:fabric-loader:${deps["fabric_loader"]}")
 
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}")
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+${mcVersion}")
 	modImplementation("net.fabricmc:fabric-language-kotlin:${deps["kotlin"]}")
 
-	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}") // YACL
+	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
 	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true) { isTransitive = false }
@@ -77,7 +77,7 @@ dependencies {
 
 	devEnvOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
 
-	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}") // Sodium
+	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}-fabric") // Sodium
 	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // No Telemetry
 	devEnvOnly("maven.modrinth:compacting:${deps["compacting"]}") // Compacting
 
