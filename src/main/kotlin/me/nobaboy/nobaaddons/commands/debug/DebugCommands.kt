@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.commands.adapters.FormattingHandler
 import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.core.PersistentCache
@@ -23,6 +24,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay
+import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.entity.LivingEntity
@@ -161,13 +163,14 @@ object DebugCommands {
 	}
 
 	@Command
-	fun overlay(ctx: Context, color: String? = null) {
+	fun overlay(ctx: Context, formatting: @FormattingHandler.ColorOnly Formatting? = null) {
 		val entity = MCUtils.client.targetedEntity as? LivingEntity ?: ctx.source.player
-		if(color == null) {
+		if(formatting == null) {
 			EntityOverlay.remove(entity)
 			return
 		}
-		EntityOverlay.set(entity, NobaColor.COLORS.first { it.formatting!!.name.equals(color, ignoreCase = true) })
+
+		entity.highlight(NobaColor.COLORS.first { it.formatting == formatting })
 	}
 
 
