@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.features.chat.notifications
 
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -24,7 +23,6 @@ object ChatNotifications {
 	}
 
 	fun init() {
-		ChatNotificationsConfig.safeLoad()
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
@@ -49,7 +47,7 @@ object ChatNotifications {
 
 			if(display == null) display = it.colorFormattedDisplay
 			SoundUtils.dingHighSound.play()
-			RenderUtils.drawTitle(display, NobaColor.WHITE, 2.75f, duration = 2.seconds, id = "chat_notification")
+			RenderUtils.drawTitle(display, NobaColor.WHITE, 2.75f, duration = 2.seconds, id = "chat.notification")
 			return
 		}
 	}

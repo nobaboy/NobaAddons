@@ -122,11 +122,11 @@ object BurrowWaypoints {
 		InquisitorWaypoints.waypoints.toList().forEach { inquisitor ->
 			val location = inquisitor.location
 			val distance = location.distance(playerLocation)
-			val yOffset = if(config.showInquisitorDespawnTime) -20.0f else -10.0f
+			val yOffset = if(config.showInquisitorDespawnTime) -20f else -10f
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
 			RenderUtils.renderText(location.center().raise(), "Inquisitor", NobaColor.DARK_RED, yOffset = yOffset, hideThreshold = 5.0, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = yOffset + 10.0f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = yOffset + 10f, hideThreshold = 5.0, throughBlocks = true)
 
 			if(config.showInquisitorDespawnTime) {
 				val spawnTime = inquisitor.spawnTime
@@ -142,7 +142,7 @@ object BurrowWaypoints {
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
 		burrows.forEach { location, type ->
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), type.displayName, type.color, yOffset = -5.0f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(location.center().raise(), type.displayName, type.color, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 
@@ -169,7 +169,7 @@ object BurrowWaypoints {
 		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
 
 		lastWarpSuggestTime = Timestamp.now()
-		RenderUtils.drawTitle(tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2.0f, 30, 1.seconds)
+		RenderUtils.drawTitle(tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2f, 30, 1.seconds)
 	}
 
 	private fun getTargetLocation(): NobaVec? {

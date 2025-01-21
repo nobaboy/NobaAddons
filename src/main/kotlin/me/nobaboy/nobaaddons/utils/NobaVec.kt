@@ -148,7 +148,7 @@ data class NobaVec(
 	fun raise(offset: Number = 1): NobaVec = copy(y = y + offset.toDouble())
 	fun lower(offset: Number = 1): NobaVec = copy(y = y - offset.toDouble())
 
-	fun center(): NobaVec = roundToBlock().add(x = 0.5, y = 0.5, z = 0.5)
+	fun center(): NobaVec = add(x = 0.5, y = 0.5, z = 0.5)
 
 	fun middle(other: NobaVec): NobaVec = plus(other.minus(this) / 2)
 
@@ -239,4 +239,4 @@ fun ParticleS2CPacket.toNobaVec() = NobaVec(x, y, z)
 
 fun Array<Double>.toNobaVec(): NobaVec = NobaVec(this[0], this[1], this[2])
 
-fun Box.expand(vec: NobaVec): Box = expand(vec.x, vec.y, vec.z)
+fun Box.expand(vec: NobaVec): Box = this.expand(vec.x, vec.y, vec.z)

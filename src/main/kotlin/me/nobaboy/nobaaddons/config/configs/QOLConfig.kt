@@ -23,7 +23,6 @@ class QOLConfig : ObjectProperty<QOLConfig>("qol") {
 	class Garden : ObjectProperty<Garden>("garden") {
 		var reduceMouseSensitivity by Property.of<Boolean>("reduceMouseSensitivity", false)
 		var reductionMultiplier by Property.of<Int>("reductionMultiplier", 6)
-		var isDaedalusFarmingTool by Property.of<Boolean>("isDaedalusFarmingTool", false)
 		var autoUnlockMouseOnTeleport by Property.of<Boolean>("autoUnlockMouseOnTeleport", false)
 	}
 }

@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.client.SoundEvents
+import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -31,8 +31,8 @@ object BurrowGuessAPI {
 
 	private var dingIndex = 0
 	private var hasDinged = false
-	private var lastDingPitch = 0.0f
-	private var firstPitch = 0.0f
+	private var lastDingPitch = 0f
+	private var firstPitch = 0f
 	private var lastParticlePoint: NobaVec? = null
 	private var lastParticlePoint2: NobaVec? = null
 	private var firstParticlePoint: NobaVec? = null
@@ -49,11 +49,11 @@ object BurrowGuessAPI {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		SoundEvents.SOUND.register(this::onPlaySound)
+		SoundEvents.SOUND.register(this::onSound)
 		ParticleEvents.PARTICLE.register(this::onParticle)
 	}
 
-	private fun onPlaySound(event: SoundEvents.Sound) {
+	private fun onSound(event: SoundEvents.Sound) {
 		if(!enabled) return
 		if(event.id != Identifier.ofVanilla("block.note_block.harp")) return
 
@@ -75,7 +75,7 @@ object BurrowGuessAPI {
 			locs.clear()
 		}
 
-		if(lastDingPitch == 0.0f) {
+		if(lastDingPitch == 0f) {
 			lastDingPitch = pitch
 			distance = null
 			lastParticlePoint = null

@@ -9,10 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Chat Notifications - celeste
+- Copy Chat - celeste
 - Item Pickup Log - celeste
 - Worm Alert - nobaboy
 - Rift free infusion & Split or Steal timer notifications - celeste
 - `/noba day` to display the lobby day count (since Hypixel doesn't send the information for the line F3 shows this on) - celeste
+- Chat commands to join Dungeons and Kuudra - celeste
+- Option to keep items in the same position when swinging - celeste
 
 ### Changed
 
@@ -28,7 +31,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - `/noba refill pearls` using the wrong item ID - celeste
 - `/noba refill item` is now case-insensitive to match `/gfs` - celeste
+- A crash that can occur when catching a trophy fish if you haven't opened Odger's menu - celeste
 - An occasional crash that occurs while processing an event - celeste
+- The mod will now detect you being on Hypixel if you use the bare `hypixel.net` IP - nobaboy
 
 ## 0.1.0-Alpha.12 - 2024-12-29
 

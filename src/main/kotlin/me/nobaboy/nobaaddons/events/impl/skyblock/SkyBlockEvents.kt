@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.events.impl.skyblock
 
-import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
+import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher

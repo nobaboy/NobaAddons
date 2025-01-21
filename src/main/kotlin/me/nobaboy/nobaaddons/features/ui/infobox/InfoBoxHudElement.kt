@@ -1,26 +1,34 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.features.ui.infobox.functions.FunctionsManager
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.properties.CacheFor
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
+import kotlin.time.Duration.Companion.seconds
+
+private val COLOR_REGEX = Regex("&([0-9a-fk-orz])", RegexOption.IGNORE_CASE)
 
 class InfoBoxHudElement(val textElement: InfoBoxElement) : TextHudElement(textElement) {
-	private val COLOR_REGEX = Regex("&([0-9a-fk-orz])", RegexOption.IGNORE_CASE)
-
 	override val name: Text = tr("nobaaddons.ui.infoBox", "Info Box")
 	override val size: Pair<Int, Int> get() = getBoundsFrom(text)
+
+	override val enabled: Boolean
+		get() = SkyBlockAPI.inSkyBlock || NobaConfig.INSTANCE.uiAndVisuals.renderInfoBoxesOutsideSkyBlock
 
 	override fun shouldRender(): Boolean =
 		super.shouldRender() && MCUtils.client.currentScreen !is InfoBoxesScreen
 
-	val text: List<Text> get() =
+	val text: List<Text> by CacheFor(0.25.seconds) {
 		textElement.text.replace("\\n", "\n").split("\n").map { compileText(it).toText() }
+	}
 
 	override fun renderText(context: DrawContext) {
 		renderLines(context, text)

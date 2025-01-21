@@ -34,7 +34,7 @@ enum class Rarity(val color: NobaColor? = null) : StringIdentifiable, NameableEn
 	override fun toString(): String = name.replace("_", " ").title()
 
 	companion object {
-		val CODEC: Codec<Rarity> = StringIdentifiable.createCodec { Rarity.entries.toTypedArray() }
+		val CODEC: Codec<Rarity> = StringIdentifiable.createCodec { entries.toTypedArray() }
 		val RARITIES: Map<String, Rarity> = entries.associateBy { it.name.replace("_", " ") }
 
 		fun getRarity(text: String): Rarity = RARITIES.getOrDefault(text, UNKNOWN)
@@ -45,10 +45,10 @@ enum class Rarity(val color: NobaColor? = null) : StringIdentifiable, NameableEn
 		}
 
 		fun ClosedRange<Rarity>.toArray() =
-			Rarity.entries.filter { it >= this.start && it <= this.endInclusive }.toTypedArray()
+			entries.filter { it >= this.start && it <= this.endInclusive }.toTypedArray()
 	}
 
-	object RarityArgumentType : EnumArgumentType<Rarity>(CODEC, { Rarity.entries.toTypedArray() }) {
+	object RarityArgumentType : EnumArgumentType<Rarity>(CODEC, { entries.toTypedArray() }) {
 		fun getItemRarity(context: CommandContext<out CommandSource>, id: String): Rarity {
 			return context.getArgument(id, Rarity::class.java)
 		}

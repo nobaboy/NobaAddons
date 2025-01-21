@@ -2,12 +2,12 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.features.chat.chatcommands.IChatCommand
+import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
-class TransferCommand : IChatCommand {
+class TransferCommand : ChatCommand() {
 	override val enabled: Boolean get() = config.party.transfer
 
 	override val name: String = "transfer"
@@ -27,5 +27,6 @@ class TransferCommand : IChatCommand {
 
 		if(ctx.user == MCUtils.playerName) return
 		HypixelCommands.partyTransfer(ctx.user)
+		startCooldown()
 	}
 }

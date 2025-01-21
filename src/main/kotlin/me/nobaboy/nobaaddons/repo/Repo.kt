@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.repo.objects.RepoObjectArray
 import me.nobaboy.nobaaddons.repo.objects.RepoObjectMap
 import org.jetbrains.annotations.Blocking
 import org.jetbrains.annotations.UnmodifiableView
-import java.util.*
+import java.util.Collections
 
 /**
  * Utility methods for interacting with the [RepoManager]
@@ -100,6 +100,12 @@ object Repo {
 	 * back to [this] if none exists.
 	 */
 	fun String.fromRepo(key: String) = RepoConstants.Entry(key, this, RepoConstants.Strings)
+
+	/**
+	 * Creates a [RepoConstants.Entry] object supplying a skull texture from the mod repository,
+	 * falling back to [this] if none exists.
+	 */
+	fun String.skullFromRepo(key: String) = RepoConstants.Entry(key, this, RepoConstants.SkullTextures)
 
 	/**
 	 * Reads the file located at the provided [path] relative to the repository directory root,

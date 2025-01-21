@@ -13,14 +13,14 @@ object EntityUtils {
 
 	fun Entity.canBeSeen(radius: Double = 150.0) = getNobaVec().add(y = 0.5).canBeSeen()
 
-	inline fun <reified R : Entity> getEntities(): Sequence<R> = getAllEntities().filterIsInstance<R>()
-
 	fun getAllEntities(): Sequence<Entity> {
 		val client = MCUtils.client
 		return client.world?.entities?.let {
 			if(client.isOnThread) it else it.toMutableList()
 		}?.asSequence()?.filterNotNull() ?: emptySequence()
 	}
+
+	inline fun <reified T : Entity> getEntities(): Sequence<T> = getAllEntities().filterIsInstance<T>()
 
 	fun getEntityById(entityId: Int) = MCUtils.player?.entityWorld?.getEntityById(entityId)
 

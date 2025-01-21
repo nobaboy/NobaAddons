@@ -9,8 +9,8 @@ enum class EnchantmentDisplayMode : NameableEnum {
 	LINES;
 
 	override fun getDisplayName() = when(this) {
-		NORMAL -> tr("nobaaddons.config.inventory.enchantmentTooltips.enchantDisplayMode.normal", "Default")
-		COMPACT -> tr("nobaaddons.config.inventory.enchantmentTooltips.enchantDisplayMode.compact", "Compact")
-		LINES -> tr("nobaaddons.config.inventory.enchantmentTooltips.enchantDisplayMode.lines", "One per line")
+		NORMAL -> tr("nobaaddons.label.enchantDisplayMode.normal", "Default")
+		COMPACT -> tr("nobaaddons.label.enchantDisplayMode.compact", "Compact")
+		LINES -> tr("nobaaddons.label.enchantDisplayMode.lines", "One per line")
 	}
 }

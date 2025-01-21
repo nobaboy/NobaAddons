@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EntityRenderer.class)
-abstract class NametagRenderEventsMixin {
+abstract class NametagRenderEventsMixin_EntityRenderer {
 	@Shadow
 	protected abstract void renderLabelIfPresent(
 		//? if >=1.21.2 {
@@ -99,7 +99,7 @@ abstract class NametagRenderEventsMixin {
 				/*? if <1.21.2 {*//*, tickDelta*//*?}*/
 			);
 			if(i < event.getTags().size() - 1 || event.getRenderEntityName()) {
-				matrices.translate(0.0F, 9.0F * 1.15F * 0.025F, 0.0F);
+				matrices.translate(0f, 9f * 1.15f * 0.025f, 0f);
 			}
 		}
 		if(event.getRenderEntityName()) {

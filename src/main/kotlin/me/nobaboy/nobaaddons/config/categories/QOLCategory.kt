@@ -94,12 +94,6 @@ object QOLCategory {
 				step = 1
 			) requires reduce
 			boolean(
-				tr("nobaaddons.config.qol.garden.isDaedalusFarmingTool", "Reduce Sensitivity with Daedalus Axe"),
-				tr("nobaaddons.config.qol.garden.isDaedalusFarmingTool.tooltip", "Daedalus Axe will also be counted as a farming tool while enabled"),
-				default = defaults.qol.garden.isDaedalusFarmingTool,
-				property = config.qol.garden::isDaedalusFarmingTool
-			) requires reduce
-			boolean(
 				tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport", "Auto Unlock Mouse on Teleport"),
 				tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip", "Automatically unlocks your mouse when teleporting more than 5 blocks if locked with $lockMouseCommand"),
 				default = defaults.qol.garden.autoUnlockMouseOnTeleport,
