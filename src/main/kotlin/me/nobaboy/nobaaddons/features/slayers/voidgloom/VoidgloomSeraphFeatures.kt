@@ -32,6 +32,7 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.EndermanEntity
 import net.minecraft.item.Items
+import java.awt.Color
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
@@ -161,7 +162,7 @@ object VoidgloomSeraphFeatures {
 		}
 	}
 
-	private fun getHighlightColor(entity: LivingEntity?, armorStand: ArmorStandEntity?): NobaColor {
+	private fun getHighlightColor(entity: LivingEntity?, armorStand: ArmorStandEntity?): Color {
 		val armorStandName = armorStand?.name?.string.orEmpty()
 		val isHoldingBeacon = (entity as? EndermanEntity)?.carriedBlock?.block == Blocks.BEACON
 

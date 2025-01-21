@@ -33,8 +33,16 @@ object EntityOverlay {
 		}
 	}
 
+	fun LivingEntity.highlight(color: Color) {
+		set(this, color)
+	}
+
 	fun LivingEntity.highlight(color: NobaColor, alpha: Int = 175) {
 		set(this, color, alpha)
+	}
+
+	fun set(entity: LivingEntity, color: Color) {
+		entities[entity] = Color(color.red, color.green, color.blue, color.alpha)
 	}
 
 	fun set(entity: LivingEntity, color: NobaColor, alpha: Int = 175) {

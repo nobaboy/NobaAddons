@@ -86,17 +86,20 @@ object SlayersCategory {
 			color(
 				tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color"),
 				default = defaults.slayers.voidgloom.beaconPhaseColor,
-				property = config.slayers.voidgloom::beaconPhaseColor
+				property = config.slayers.voidgloom::beaconPhaseColor,
+				allowAlpha = true,
 			) requires highlightPhases
 			color(
 				tr("nobaaddons.config.slayers.voidgloom.hitsPhaseColor", "Hits Phase Color"),
 				default = defaults.slayers.voidgloom.hitsPhaseColor,
-				property = config.slayers.voidgloom::hitsPhaseColor
+				property = config.slayers.voidgloom::hitsPhaseColor,
+				allowAlpha = true,
 			) requires highlightPhases
 			color(
 				tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color"),
 				default = defaults.slayers.voidgloom.damagePhaseColor,
-				property = config.slayers.voidgloom::damagePhaseColor
+				property = config.slayers.voidgloom::damagePhaseColor,
+				allowAlpha = true,
 			) requires highlightPhases
 
 			label(tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs"))

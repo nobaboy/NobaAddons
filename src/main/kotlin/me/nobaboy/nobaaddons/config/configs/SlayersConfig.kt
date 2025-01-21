@@ -5,7 +5,9 @@ import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.features.slayers.BossTimeSource
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.awtColor
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
+import java.awt.Color
 
 class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 	val bossAlert by BossAlert()
@@ -42,9 +44,9 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 
 	class Voidgloom : ObjectProperty<Voidgloom>("voidgloom") {
 		var highlightPhases by Property.of<Boolean>("highlightPhases", false)
-		var beaconPhaseColor by Property.of("beaconPhaseColor", Serializer.color, NobaColor(0xFF2D9C))
-		var hitsPhaseColor by Property.of("hitsPhaseColor", Serializer.color, NobaColor(0xFF9C46))
-		var damagePhaseColor by Property.of("damagePhaseColor", Serializer.color, NobaColor(0x6788FF))
+		var beaconPhaseColor by Property.of("beaconPhaseColor", Serializer.awtColor, Color(255, 45, 156, 175))
+		var hitsPhaseColor by Property.of("hitsPhaseColor", Serializer.awtColor, Color(255, 156, 70, 175))
+		var damagePhaseColor by Property.of("damagePhaseColor", Serializer.awtColor, Color(103, 136, 255, 175))
 
 		var yangGlyphAlert by Property.of<Boolean>("yangGlyphAlert", false)
 		var yangGlyphAlertColor by Property.of("yangGlyphAlertColor", Serializer.color, NobaColor.RED)

@@ -173,7 +173,6 @@ object DebugCommands {
 		entity.highlight(NobaColor.COLORS.first { it.formatting == formatting })
 	}
 
-
 	val item = NobaClientCommandGroup(ItemDebugCommands)
 	val pet = NobaClientCommandGroup(PetDebugCommands)
 	val regex = NobaClientCommandGroup(RepoDebugCommands)
