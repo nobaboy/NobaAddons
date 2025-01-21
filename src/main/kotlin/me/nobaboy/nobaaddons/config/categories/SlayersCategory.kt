@@ -11,8 +11,6 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
-// TODO: Implement awtColor serializer to allow for alpha on highlight colors, which might also require a migration
-//       of configs if this is released before
 object SlayersCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.slayers", "Slayers")) {
 		buildGroup(tr("nobaaddons.config.slayers.bossAlert", "Boss Alert")) {
