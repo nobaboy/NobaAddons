@@ -125,14 +125,27 @@ object BurrowWaypoints {
 			val yOffset = if(config.showInquisitorDespawnTime) -20f else -10f
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), "Inquisitor", NobaColor.DARK_RED, yOffset = yOffset, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				location = location.center().raise(),
+				text = tr("nobaaddons.events.mythological.inquisitor", "Inquisitor"),
+				color = NobaColor.DARK_RED,
+				yOffset = yOffset,
+				hideThreshold = 5.0,
+				throughBlocks = true,
+			)
 			RenderUtils.renderText(location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = yOffset + 10f, hideThreshold = 5.0, throughBlocks = true)
 
 			if(config.showInquisitorDespawnTime) {
 				val spawnTime = inquisitor.spawnTime
 				val formattedTime = (75 - spawnTime.elapsedSince().inWholeSeconds).toInt()
 
-				RenderUtils.renderText(location.center().raise(), "Despawns in ${formattedTime}s", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
+				RenderUtils.renderText(
+					location = location.center().raise(),
+					text = tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${formattedTime}s"),
+					color = NobaColor.GRAY,
+					hideThreshold = 5.0,
+					throughBlocks = true,
+				)
 			}
 
 			if(distance < 5) InquisitorWaypoints.tryRemove(inquisitor)
@@ -152,7 +165,14 @@ object BurrowWaypoints {
 			val distance = adjustedLocation.distance(playerLocation)
 
 			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
-			RenderUtils.renderText(adjustedLocation.center().raise(), "Burrow Guess", NobaColor.AQUA, yOffset = -10.0f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				location = adjustedLocation.center().raise(),
+				text = tr("nobaaddons.events.mythological.burrowGuessWaypoint", "Burrow Guess"),
+				color = NobaColor.AQUA,
+				yOffset = -10.0f,
+				hideThreshold = 5.0,
+				throughBlocks = true,
+			)
 
 			if(distance > 5) {
 				val formattedDistance = distance.toInt().addSeparators()
