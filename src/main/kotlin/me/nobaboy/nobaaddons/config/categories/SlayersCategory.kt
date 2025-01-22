@@ -9,6 +9,9 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.utils.CommonText
+import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.tr
 
 object SlayersCategory {
@@ -149,7 +152,10 @@ object SlayersCategory {
 
 		buildGroup(tr("nobaaddons.config.slayers.inferno", "Inferno Demonlord")) {
 			boolean(
-				tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield"),
+				buildText {
+					append(buildLiteral("[WIP] ") { red() })
+					append(tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield"))
+				},
 				default = defaults.slayers.inferno.highlightHellionShield,
 				property = config.slayers.inferno::highlightHellionShield
 			)
