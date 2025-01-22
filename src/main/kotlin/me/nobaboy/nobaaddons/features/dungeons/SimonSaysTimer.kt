@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysTimes
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -23,12 +24,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.plus
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
-import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.event.player.UseBlockCallback
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.util.ActionResult
-import net.minecraft.util.hit.BlockHitResult
 
 // TODO: Requires actual testing in dungeons
 object SimonSaysTimer {
@@ -47,7 +43,7 @@ object SimonSaysTimer {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		UseBlockCallback.EVENT.register { player, _, _, hitResult -> onInteract(player, hitResult) }
+		InteractEvents.INTERACT_BLOCK.register { if(it is InteractEvents.UseBlockInteraction) onInteract(it) }
 
 		try {
 			SimonSaysTimes.load()
@@ -121,13 +117,11 @@ object SimonSaysTimer {
 		}
 	}
 
-	@Suppress("SameReturnValue")
-	private fun onInteract(player: PlayerEntity, hitResult: BlockHitResult): ActionResult {
-		if(!enabled || buttonPressed || player != MCUtils.player || hitResult.blockPos.toNobaVec() != buttonVec) return ActionResult.PASS
+	private fun onInteract(event: InteractEvents.UseBlockInteraction) {
+		if(!enabled || buttonPressed || event.player != MCUtils.player || event.block != buttonVec) return
 
 		startTime = Timestamp.now()
 		buttonPressed = true
-		return ActionResult.PASS
 	}
 
 	private fun processCompletionTime() {

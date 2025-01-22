@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.utils
 
 import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
+import me.nobaboy.nobaaddons.utils.serializers.NobaVecKSerializer
 import net.minecraft.entity.Entity
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket
 import net.minecraft.util.hit.BlockHitResult
@@ -16,7 +17,7 @@ import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-@Serializable
+@Serializable(with = NobaVecKSerializer::class)
 data class NobaVec(
 	val x: Double,
 	val y: Double,
@@ -29,7 +30,7 @@ data class NobaVec(
 	fun toBlockPos(): BlockPos = BlockPos(x.toInt(), y.toInt() ,z.toInt())
 	fun toVec3d(): Vec3d = Vec3d(x, y, z)
 	fun toBox(): Box {
-		val vec = this.roundToBlock()
+		val vec = roundToBlock()
 		return Box(vec.x, vec.y, vec.z, vec.x + 1.0, vec.y + 1.0, vec.z + 1.0)
 	}
 
@@ -70,7 +71,7 @@ data class NobaVec(
 
 	fun dot(other: NobaVec): Double = (x * other.x) + (y * other.y) + (z * other.z)
 
-    fun cosAngle(other: NobaVec) = this.normalize().dot(other.normalize())
+    fun cosAngle(other: NobaVec) = normalize().dot(other.normalize())
     fun radianAngle(other: NobaVec) = acos(cosAngle(other))
     fun degreeAngle(other: NobaVec) = Math.toDegrees(radianAngle(other))
 
@@ -100,7 +101,7 @@ data class NobaVec(
     fun toCleanString(): String = "$x $y $z"
 
     fun lengthSquared(): Double = x * x + y * y + z * z
-    fun length(): Double = sqrt(this.lengthSquared())
+    fun length(): Double = sqrt(lengthSquared())
 
     fun isZero(): Boolean = x == 0.0 && y == 0.0 && z == 0.0
 

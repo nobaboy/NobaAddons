@@ -99,8 +99,19 @@ abstract class HeldItemRendererMixin {
 	}
 
 	@WrapWithCondition(
+		//? if >=1.21.4 {
 		method = "swingArm",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V")
+		//?} else {
+		/*method = "renderFirstPersonItem",
+		*///?}
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V"
+			/*? if <1.21.4 {*//*,
+			// :deadge:
+			ordinal = 12
+			*///?}
+		)
 	)
 	public boolean nobaaddons$staticSwingPosition(MatrixStack instance, float x, float y, float z) {
 		return !NobaConfig.INSTANCE.getUiAndVisuals().getSwingAnimation().getStaticSwingPosition();

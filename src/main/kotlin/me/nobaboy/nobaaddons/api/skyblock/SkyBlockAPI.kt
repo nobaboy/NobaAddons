@@ -17,6 +17,8 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
+import me.nobaboy.nobaaddons.utils.SkyBlockSeason
+import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
@@ -57,6 +59,9 @@ object SkyBlockAPI {
 	var currentZone: String? = null
 		private set
 
+	var currentSeason: SkyBlockSeason? = null
+		private set
+
 	val prefixedZone: String?
 		get() = currentZone?.let {
 			val symbol = if(currentIsland == SkyBlockIsland.RIFT) "ф" else "⏣"
@@ -74,28 +79,16 @@ object SkyBlockAPI {
 		private set
 
 	fun SkyBlockIsland.inIsland(): Boolean = profileType == SkyBlockProfile.STRANDED || inSkyBlock && currentIsland == this
+	fun SkyBlockSeason.isSeason(): Boolean = inSkyBlock && currentSeason == this
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
 	fun init() {
-		TickEvents.everySecond { onSecondPassed() }
+		TickEvents.everySecond { update() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 		currentProfile = PersistentCache.lastProfile
-	}
-
-	private fun onChatMessage(event: ChatMessageEvents.Chat) {
-		val profileId = UUID.fromString(profileIdPattern.getGroupFromFullMatch(event.message.string.cleanFormatting(), "id") ?: return)
-		if(profileId != currentProfile) {
-			currentProfile = profileId
-			SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
-		}
-	}
-
-	private fun onSecondPassed() {
-		if(!inSkyBlock) return
-		update()
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
@@ -116,6 +109,14 @@ object SkyBlockAPI {
 		}
 	}
 
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val profileId = UUID.fromString(profileIdPattern.getGroupFromFullMatch(event.message.string.cleanFormatting(), "id") ?: return)
+		if(profileId != currentProfile) {
+			currentProfile = profileId
+			SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
+		}
+	}
+
 	private fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentGame = packet.serverType.getOrNull()
 		currentIsland = packet.mode.map(SkyBlockIsland::getSkyBlockIsland).orElse(SkyBlockIsland.UNKNOWN)
@@ -123,6 +124,11 @@ object SkyBlockAPI {
 	}
 
 	private fun update() {
+		if(!inSkyBlock) return
+
+		val month = SkyBlockTime.now().month
+		currentSeason = SkyBlockSeason.entries[(month - 1) / 3]
+
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 
 		// I originally planned to make an enum including all the zones but after realising
