@@ -45,13 +45,6 @@ object SkyBlockAPI {
 	val inSkyBlock: Boolean
 		get() = HypixelUtils.onHypixel && currentGame == GameType.SKYBLOCK
 
-	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN
-		private set
-	var currentSeason: SkyBlockSeason? = null
-		private set
-	var currentZone: String? = null
-		private set
-
 	var currentProfile: UUID? = null
 		private set(value) {
 			field = value
@@ -59,6 +52,14 @@ object SkyBlockAPI {
 		}
 
 	var profileType: SkyBlockProfile = SkyBlockProfile.CLASSIC
+		private set
+
+	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN
+		private set
+	var currentZone: String? = null
+		private set
+
+	var currentSeason: SkyBlockSeason? = null
 		private set
 
 	val prefixedZone: String?
@@ -90,14 +91,6 @@ object SkyBlockAPI {
 		currentProfile = PersistentCache.lastProfile
 	}
 
-	private fun onChatMessage(event: ChatMessageEvents.Chat) {
-		val profileId = UUID.fromString(profileIdPattern.getGroupFromFullMatch(event.message.string.cleanFormatting(), "id") ?: return)
-		if(profileId != currentProfile) {
-			currentProfile = profileId
-			SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
-		}
-	}
-
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
 		if(event.inventory.title != "SkyBlock Menu") return
 
@@ -113,6 +106,14 @@ object SkyBlockAPI {
 
 		xpPattern.firstFullMatch(lore) {
 			xp = groups["xp"]?.value?.toInt()
+		}
+	}
+
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val profileId = UUID.fromString(profileIdPattern.getGroupFromFullMatch(event.message.string.cleanFormatting(), "id") ?: return)
+		if(profileId != currentProfile) {
+			currentProfile = profileId
+			SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
 		}
 	}
 

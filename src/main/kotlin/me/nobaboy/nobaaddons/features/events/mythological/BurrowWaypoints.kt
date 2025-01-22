@@ -124,23 +124,25 @@ object BurrowWaypoints {
 			val distance = location.distance(playerLocation)
 			val yOffset = if(config.showInquisitorDespawnTime) -20f else -10f
 
+			val adjustedLocation = location.center().raise()
+
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
 			RenderUtils.renderText(
-				location = location.center().raise(),
+				location = adjustedLocation,
 				text = tr("nobaaddons.events.mythological.inquisitor", "Inquisitor"),
 				color = NobaColor.DARK_RED,
 				yOffset = yOffset,
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
-			RenderUtils.renderText(location.center().raise(), inquisitor.spawner, NobaColor.GOLD, yOffset = yOffset + 10f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(adjustedLocation, inquisitor.spawner, NobaColor.GOLD, yOffset = yOffset + 10f, hideThreshold = 5.0, throughBlocks = true)
 
 			if(config.showInquisitorDespawnTime) {
 				val spawnTime = inquisitor.spawnTime
 				val formattedTime = (75 - spawnTime.elapsedSince().inWholeSeconds).toInt()
 
 				RenderUtils.renderText(
-					location = location.center().raise(),
+					location = adjustedLocation,
 					text = tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${formattedTime}s"),
 					color = NobaColor.GRAY,
 					hideThreshold = 5.0,

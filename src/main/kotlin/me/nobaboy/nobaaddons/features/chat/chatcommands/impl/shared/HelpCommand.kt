@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared
 
+import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 
 class HelpCommand(
 	private val manager: ChatCommandManager,
