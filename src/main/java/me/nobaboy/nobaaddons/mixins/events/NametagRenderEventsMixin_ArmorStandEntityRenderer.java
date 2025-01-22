@@ -10,7 +10,14 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ArmorStandEntityRenderer.class)
 abstract class NametagRenderEventsMixin_ArmorStandEntityRenderer {
-	@ModifyReturnValue(method = "hasLabel(Lnet/minecraft/entity/decoration/ArmorStandEntity;D)Z", at = @At("RETURN"))
+	@ModifyReturnValue(
+		//? if >=1.21.2 {
+		method = "hasLabel(Lnet/minecraft/entity/decoration/ArmorStandEntity;D)Z",
+		//?} else {
+		/*method = "hasLabel(Lnet/minecraft/entity/decoration/ArmorStandEntity;)Z",
+		*///?}
+		at = @At("RETURN")
+	)
 	public boolean nobaaddons$modifyNametagVisibility(boolean original, @Local(argsOnly = true) ArmorStandEntity entity) {
 		return EntityNametagRenderEvents.VISIBILITY.invoke(new EntityNametagRenderEvents.Visibility(entity, original));
 	}

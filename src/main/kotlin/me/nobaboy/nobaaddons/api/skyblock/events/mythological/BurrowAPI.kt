@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
@@ -13,13 +14,8 @@ import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.Timestamp
-import me.nobaboy.nobaaddons.utils.toNobaVec
-import net.fabricmc.fabric.api.event.player.AttackBlockCallback
-import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.block.Blocks
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
-import net.minecraft.util.ActionResult
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
@@ -44,8 +40,7 @@ object BurrowAPI {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		AttackBlockCallback.EVENT.register { player, _, _, pos, _ -> onBlockClick(player, pos.toNobaVec()) }
-		UseBlockCallback.EVENT.register { player, _, _, hitResult -> onBlockClick(player, hitResult.toNobaVec()) }
+		InteractEvents.INTERACT_BLOCK.register(this::onBlockClick)
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
@@ -86,26 +81,26 @@ object BurrowAPI {
 		}
 	}
 
-	@Suppress("SameReturnValue")
-	private fun onBlockClick(player: PlayerEntity, location: NobaVec): ActionResult {
-		if(!enabled) return ActionResult.PASS
-		if(!DianaAPI.hasSpadeInHand(player)) return ActionResult.PASS
-		if(location.getBlockAt() != Blocks.GRASS_BLOCK) return ActionResult.PASS
+	private fun onBlockClick(event: InteractEvents.BlockInteraction) {
+		if(!enabled) return
+		val player = event.player
+		val location = event.block
+
+		if(!DianaAPI.hasSpadeInHand(player)) return
+		if(location.getBlockAt() != Blocks.GRASS_BLOCK) return
 
 		if(location == fakeBurrow) {
 			fakeBurrow = null
 			tryDigBurrow(location, ignoreFound = true)
-			return ActionResult.PASS
+			return
 		}
 
-		if(!burrows.containsKey(location)) return ActionResult.PASS
+		if(!burrows.containsKey(location)) return
 
 		lastDugBurrow = location
 		Scheduler.schedule(20) {
 			if(lastBurrowChatMessage.elapsedSince() > 2.seconds) burrows.remove(location)
 		}
-
-		return ActionResult.PASS
 	}
 
 	private fun tryDigBurrow(location: NobaVec, ignoreFound: Boolean = false): Boolean {

@@ -6,7 +6,13 @@ import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class EventsConfig : ObjectProperty<EventsConfig>("events") {
+	val hoppity by Hoppity()
 	val mythological by Mythological()
+
+	class Hoppity : ObjectProperty<Hoppity>("hoppity") {
+		var eggGuess by Property.of<Boolean>("eggGuess", false)
+		var requireMythicRabbit by Property.of<Boolean>("requireMythicRabbit", false)
+	}
 
 	class Mythological : ObjectProperty<Mythological>("mythological") {
 		var burrowGuess by Property.of<Boolean>("burrowGuess", false)

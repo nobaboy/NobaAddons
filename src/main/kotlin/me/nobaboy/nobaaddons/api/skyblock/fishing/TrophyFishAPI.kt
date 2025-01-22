@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.api.skyblock
+package me.nobaboy.nobaaddons.api.skyblock.fishing
 
 import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
