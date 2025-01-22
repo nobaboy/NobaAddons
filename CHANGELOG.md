@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Copy Chat - celeste
 - Item Pickup Log - celeste
 - Worm Alert - nobaboy
+- Slayer Features - nobaboy
+  - This isn't fully complete as it's missing some Blaze and Vampire Slayer Features
+- Hoppity Egg Guess - nobaboy
+- Require Mythic Rabbit for Chocolate Factory - celeste
 - Rift free infusion & Split or Steal timer notifications - celeste
 - `/noba day` to display the lobby day count (since Hypixel doesn't send the information for the line F3 shows this on) - celeste
 - Chat commands to join Dungeons and Kuudra - celeste

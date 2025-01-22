@@ -62,11 +62,33 @@ Info Boxes display any provided text on-screen, and also replace the following p
 <details>
 <summary>Events</summary>
 
+- Hoppity's Hunt:
+  - Egglocator location guess
+  - Require mythic rabbit pet before opening chocolate factory
+
 - Mythological Ritual:
   - Ancestral Spade location guess
   - Highlight nearby burrows
   - Send an alert in all/party chat on Inquisitor spawn
   - Rare drop messages
+
+</details>
+
+<details>
+<summary>Slayers</summary>
+
+- Boss and MiniBoss alerts
+- Highlight MiniBosses
+- Announce slayer boss kill time
+- Wolf slayer:
+  - Hide sven pup nametags
+- Enderman slayer:
+  - Highlight phases (reword)
+  - Beacon highlighting and alert
+  - Highlight fixations
+  - Lazer phase timer
+- Blaze slayer:
+  - Highlight hellion shield
 
 </details>
 
