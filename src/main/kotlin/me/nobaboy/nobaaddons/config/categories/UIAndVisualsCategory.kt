@@ -1,15 +1,7 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.availableIf
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.button
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.conflicts
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
+import me.nobaboy.nobaaddons.config.utils.*
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -31,7 +23,7 @@ private fun societyIsCrumbling(@Suppress("SameParameterValue") fromYear: Int): T
 }
 
 object UIAndVisualsCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.uiAndVisuals", "UI & Visuals")) {
+	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.uiAndVisuals", "UI & Visuals")) {
 		button(tr("nobaaddons.screen.infoBoxes", "Info Boxes"), text = CommonText.SCREEN_OPEN) {
 			MCUtils.client.setScreen(InfoBoxesScreen(it))
 		}
@@ -53,7 +45,7 @@ object UIAndVisualsCategory {
 				tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints.waypointColor", "Waypoint Color"),
 				default = defaults.uiAndVisuals.temporaryWaypoints.waypointColor,
 				property = config.uiAndVisuals.temporaryWaypoints::waypointColor
-			) requires enabled
+			) requires config(enabled)
 			slider(
 				tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime", "Expiration Time"),
 				tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints.expirationTime.tooltip", "Sets the duration after which a temporary waypoint disappears"),
@@ -62,7 +54,7 @@ object UIAndVisualsCategory {
 				min = 1,
 				max = 120,
 				step = 1
-			) requires enabled
+			) requires config(enabled)
 		}
 		// endregion
 
@@ -77,19 +69,19 @@ object UIAndVisualsCategory {
 				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.uiAndVisuals.etherwarpHelper.highlightColor,
 				property = config.uiAndVisuals.etherwarpHelper::highlightColor
-			) requires enabled
+			) requires config(enabled)
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText", "Show Fail Text"),
 				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText.tooltip", "Displays the reason for an Etherwarp failure below the crosshair"),
 				default = defaults.uiAndVisuals.etherwarpHelper.showFailText,
 				property = config.uiAndVisuals.etherwarpHelper::showFailText
-			) requires enabled
+			) requires config(enabled)
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir", "Allow Overlay on Air"),
 				tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip", "Allows the overlay to render on air blocks displaying how far you're allowed to teleport"),
 				default = defaults.uiAndVisuals.etherwarpHelper.allowOverlayOnAir,
 				property = config.uiAndVisuals.etherwarpHelper::allowOverlayOnAir
-			) requires enabled
+			) requires config(enabled)
 		}
 		// endregion
 
@@ -138,7 +130,7 @@ object UIAndVisualsCategory {
 				tr("nobaaddons.config.uiAndVisuals.swingAnimation.applyToAllPlayers.tooltip", "If enabled, the above swing duration will also apply to all players, insteada of only yourself"),
 				default = defaults.uiAndVisuals.swingAnimation.applyToAllPlayers,
 				property = config.uiAndVisuals.swingAnimation::applyToAllPlayers,
-			).availableIf(duration) { duration.pendingValue() > 1 }
+			) requires config(duration) { duration.pendingValue() > 1 }
 		}
 		// endregion
 
@@ -155,7 +147,7 @@ object UIAndVisualsCategory {
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate.tooltip", "Prevents the item update animation from playing when your held item is updated"),
 				default = defaults.uiAndVisuals.itemPosition.cancelItemUpdateAnimation,
 				property = config.uiAndVisuals.itemPosition::cancelItemUpdateAnimation
-			) conflicts cancelReequip
+			) requires config(cancelReequip, invert = true)
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation", "Cancel Item Consume Animation"),
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip", "Prevents the item consume animation (such as from drinking potions) from playing"),
@@ -216,7 +208,7 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
 			)
 
-			fix.conflicts(remove)
+			fix.requires(config(remove, invert = true))
 		}
 		// endregion
 	}

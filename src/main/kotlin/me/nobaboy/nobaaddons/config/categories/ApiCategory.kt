@@ -1,11 +1,7 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.string
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.tickBox
+import me.nobaboy.nobaaddons.config.utils.*
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TextUtils.underline
@@ -14,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.loader.api.FabricLoader
 
 object ApiCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.apis", "APIs")) {
+	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.apis", "APIs")) {
 		label(
 			tr("nobaaddons.config.apis.disclaimer.line1", "You should not be modifying these settings unless you've been explicitly instructed to after requesting support!").red().underline(),
 			"".toText(),

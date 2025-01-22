@@ -1,17 +1,12 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
+import me.nobaboy.nobaaddons.config.utils.*
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
 object DungeonsCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.dungeons", "Dungeons")) {
+	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.dungeons", "Dungeons")) {
 		// region Highlight Starred Mobs
 		buildGroup(tr("nobaaddons.config.dungeons.highlightStarredMobs", "Highlight Starred Mobs")) {
 			val enabled = boolean(
@@ -23,12 +18,12 @@ object DungeonsCategory {
 				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.dungeons.highlightStarredMobs.highlightColor,
 				property = config.dungeons.highlightStarredMobs::highlightColor
-			) requires enabled
+			) requires config(enabled)
 			cycler(
 				tr("nobaaddons.config.dungeons.highlightStarredMobs.highlightMode", "Highlight Mode"),
 				default = defaults.dungeons.highlightStarredMobs.highlightMode,
 				property = config.dungeons.highlightStarredMobs::highlightMode
-			) requires enabled
+			) requires config(enabled)
 		}
 		// endregion
 
@@ -44,7 +39,7 @@ object DungeonsCategory {
 				tr("nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat.tooltip", "Sends your Simon Says device completion time in party chat"),
 				default = defaults.dungeons.simonSaysTimer.timeInPartyChat,
 				property = config.dungeons.simonSaysTimer::timeInPartyChat
-			) requires enabled
+			) requires config(enabled)
 		}
 		// endregion
 	}

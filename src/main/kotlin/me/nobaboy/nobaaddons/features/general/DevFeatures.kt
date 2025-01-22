@@ -3,17 +3,20 @@ package me.nobaboy.nobaaddons.features.general
 import com.google.gson.GsonBuilder
 import com.mojang.serialization.JsonOps
 import me.nobaboy.nobaaddons.core.PersistentCache
+import me.nobaboy.nobaaddons.events.Listener
+import me.nobaboy.nobaaddons.features.Feature
 import me.nobaboy.nobaaddons.mixins.accessors.HandledScreenAccessor
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.stripWhitespace
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import org.lwjgl.glfw.GLFW
 
-object DevFeatures {
+object DevFeatures : Feature("dev", tr("nobaaddons.feature.dev", "Dev"), hidden = true) {
 	private val gson = GsonBuilder().setPrettyPrinting().serializeNulls().create()
 
 	@JvmStatic
@@ -45,4 +48,6 @@ object DevFeatures {
 	fun shouldCopy(keyCode: Int): Boolean {
 		return PersistentCache.devMode && keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL
 	}
+
+	override fun initListeners(): List<Listener<*>> = emptyList()
 }

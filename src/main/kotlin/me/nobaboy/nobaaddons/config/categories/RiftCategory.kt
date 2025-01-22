@@ -1,15 +1,11 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requiresAny
+import me.nobaboy.nobaaddons.config.utils.*
 import me.nobaboy.nobaaddons.utils.tr
 
 object RiftCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.rift", "Rift")) {
+	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.rift", "Rift")) {
 		buildGroup(tr("nobaaddons.config.rift.timers", "Rift Timers")) {
 			val infusion = boolean(
 				tr("nobaaddons.config.rift.timers.freeInfusions", "Free Infusions"),
@@ -34,7 +30,7 @@ object RiftCategory {
 				tr("nobaaddons.config.rift.timers.warpTarget.tooltip", "Where clicking on the sent chat message should warp you"),
 				default = defaults.rift.warpTarget,
 				property = config.rift::warpTarget
-			) requiresAny listOf(infusion, ss)
+			) requires any(config(infusion), config(ss))
 		}
 	}
 }
