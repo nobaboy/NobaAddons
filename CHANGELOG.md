@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Item Pickup Log - celeste
 - Worm Alert - nobaboy
 - Slayer Features - nobaboy
-  - This isn't fully complete as it's missing some Blaze and Vampire Slayer Features
+  - This isn't fully complete as it's missing some Blaze and Vampire Slayer features
 - Hoppity Egg Guess - nobaboy
 - Require Mythic Rabbit for Chocolate Factory - celeste
 - Rift free infusion & Split or Steal timer notifications - celeste
