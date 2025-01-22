@@ -25,13 +25,13 @@ object SlayerBossFeatures {
 
 	// FIXME: This sometimes false triggers when a boss is killed, maybe lag?
 	private fun onBossSpawn(event: SlayerEvents.BossSpawn) {
-		if(!config.bossAlert.enabled) return
 		if(!enabled) return
 
-		RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds, id = "slayer.alert")
-		SoundUtils.dingLowSound.play()
-
 		if(config.announceBossKillTime.enabled) bossSpawnTime = Timestamp.now()
+		if(config.bossAlert.enabled) {
+			RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds, id = "slayer.alert")
+			SoundUtils.dingLowSound.play()
+		}
 	}
 
 	private fun onBossKill(event: SlayerEvents.BossKill) {
