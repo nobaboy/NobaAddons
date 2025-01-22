@@ -23,7 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Reworked commands to use [commander](https://github.com/celestialfault/commander) - celeste
+- Reworked commands to use [commander](https://codeberg.org/celestialfault/commander) - celeste
 - Reworked the main mod config to not depend on YACL - nobaboy
 - Reworked how the mod handles some data to store per-profile - celeste
 - The config UI will now clearly mark options unavailable if the feature they're associated with isn't enabled - celeste
