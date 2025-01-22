@@ -64,7 +64,7 @@ Info Boxes display any provided text on-screen, and also replace the following p
 
 - Hoppity's Hunt:
   - Egglocator location guess
-  - Require mythic rabbit pet before opening chocolate factory
+  - Require mythic Rabbit pet to open Chocolate Factory
 
 - Mythological Ritual:
   - Ancestral Spade location guess
@@ -81,14 +81,14 @@ Info Boxes display any provided text on-screen, and also replace the following p
 - Highlight MiniBosses
 - Announce slayer boss kill time
 - Wolf slayer:
-  - Hide sven pup nametags
+  - Hide Sven Pup nametags
 - Enderman slayer:
-  - Highlight phases (reword)
+  - Boss phase highlighting
   - Beacon highlighting and alert
   - Highlight fixations
   - Lazer phase timer
 - Blaze slayer:
-  - Highlight hellion shield
+  - Highlight current hellion shield
 
 </details>
 
