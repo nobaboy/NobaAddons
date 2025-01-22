@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## 0.1.0-Alpha.13 - 2025-01-21
 
 ### Added
 
@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Copy Chat - celeste
 - Item Pickup Log - celeste
 - Worm Alert - nobaboy
+- Slayer Features - nobaboy
+  - This isn't fully complete as it's missing some Blaze and Vampire Slayer features
+- Hoppity Egg Guess - nobaboy
+- Require Mythic Rabbit for Chocolate Factory - celeste
 - Rift free infusion & Split or Steal timer notifications - celeste
 - `/noba day` to display the lobby day count (since Hypixel doesn't send the information for the line F3 shows this on) - celeste
 - Chat commands to join Dungeons and Kuudra - celeste
@@ -19,7 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Reworked commands to use [commander](https://github.com/celestialfault/commander) - celeste
+- Reworked commands to use [commander](https://codeberg.org/celestialfault/commander) - celeste
 - Reworked the main mod config to not depend on YACL - nobaboy
 - Reworked how the mod handles some data to store per-profile - celeste
 - The config UI will now clearly mark options unavailable if the feature they're associated with isn't enabled - celeste
@@ -33,7 +37,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `/noba refill item` is now case-insensitive to match `/gfs` - celeste
 - A crash that can occur when catching a trophy fish if you haven't opened Odger's menu - celeste
 - An occasional crash that occurs while processing an event - celeste
+- Updated sea creature message matching to properly support the Mithril Grubber - celeste
 - The mod will now detect you being on Hypixel if you use the bare `hypixel.net` IP - nobaboy
+
+### Removed
+
+- Reduce Sensitivity with Daedalus Axe option - celeste
 
 ## 0.1.0-Alpha.12 - 2024-12-29
 
