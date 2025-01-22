@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 0.1.0-Alpha.13.1 - 2025-01-21
+
+### Fixed
+
+- Slayer spawn time not resetting - nobaboy
+
 ## 0.1.0-Alpha.13 - 2025-01-21
 
 ### Added
