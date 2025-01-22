@@ -22,6 +22,7 @@ object EventsCategory {
 			)
 			boolean(
 				tr("nobaaddons.config.events.hoppity.requireMythicRabbit", "Require Mythic Rabbit"),
+				tr("nobaaddons.config.events.hoppity.requireMythicRabbit.tooltip", "Blocks opening /cf and displays a warning when using an Egglocator if you don't have a mythic Rabbit spawned"),
 				default = defaults.events.hoppity.requireMythicRabbit,
 				property = config.events.hoppity::requireMythicRabbit
 			)
