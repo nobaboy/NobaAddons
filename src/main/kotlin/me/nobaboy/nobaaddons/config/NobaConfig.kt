@@ -31,6 +31,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 	val uiAndVisuals by UIAndVisualsConfig()
 	val inventory by InventoryConfig()
 	val events by EventsConfig()
+	val slayers by SlayersConfig()
 	// region Skills
 	val fishing by FishingConfig()
 	val mining by MiningConfig()
@@ -57,6 +58,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 				category(UIAndVisualsCategory.create(defaults, INSTANCE))
 				category(InventoryCategory.create(defaults, INSTANCE))
 				category(EventsCategory.create(defaults, INSTANCE))
+				category(SlayersCategory.create(defaults, INSTANCE))
 				category(FishingCategory.create(defaults, INSTANCE))
 				category(MiningCategory.create(defaults, INSTANCE))
 				category(DungeonsCategory.create(defaults, INSTANCE))

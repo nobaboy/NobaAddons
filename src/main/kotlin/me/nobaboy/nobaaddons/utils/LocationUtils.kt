@@ -32,13 +32,13 @@ object LocationUtils {
 	fun Entity.distanceToIgnoreY(vec: NobaVec) = getNobaVec().distanceIgnoreY(vec)
 
 	fun PlayerEntity.eyeLocation(oldVersion: Boolean = true): NobaVec {
-		val eyePos = if(this.isSneaking) {
+		val eyePos = if(isSneaking) {
 			if(oldVersion) 1.54 else 1.27
 		} else {
 			1.62
 		}
 
-		return this.getNobaVec().add(y = eyePos)
+		return getNobaVec().add(y = eyePos)
 	}
 
 	fun PlayerEntity.rayCast(maxDistance: Double, tickDelta: Float, includeFluids: Boolean): HitResult? {
@@ -69,8 +69,8 @@ object LocationUtils {
 
 	fun Box.rayIntersects(origin: NobaVec, direction: NobaVec): Boolean {
 		val rayDirectionInverse = direction.inverse()
-		val t1 = (this.minBox() - origin) * rayDirectionInverse
-		val t2 = (this.maxBox() - origin) * rayDirectionInverse
+		val t1 = (minBox() - origin) * rayDirectionInverse
+		val t2 = (maxBox() - origin) * rayDirectionInverse
 
 		val tMin = max(t1.minOfEach(t2).max(), Double.NEGATIVE_INFINITY)
 		val tMax = min(t1.maxOfEach(t2).min(), Double.NEGATIVE_INFINITY)

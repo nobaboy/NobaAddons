@@ -121,8 +121,8 @@ object NobaConfigUtils {
 		return DoubleSliderControllerBuilder.create(option).range(min, max).step(step).also { if(format != null) it.formatValue(format) }
 	}
 
-	fun createColorController(option: Option<Color>): ColorControllerBuilder {
-		return ColorControllerBuilder.create(option)
+	fun createColorController(option: Option<Color>, allowAlpha: Boolean = false): ColorControllerBuilder {
+		return ColorControllerBuilder.create(option).allowAlpha(allowAlpha)
 	}
 
 	fun createStringController(option: Option<String>): StringControllerBuilder {
@@ -237,6 +237,23 @@ object NobaConfigUtils {
 		}
 
 		return add(name, description, controller, default, property)
+	}
+
+	fun <G : OptionAddable> G.color(
+		name: Text,
+		description: Text? = null,
+		default: Color,
+		property: KMutableProperty<Color>,
+		allowAlpha: Boolean = false,
+	): Option<Color> {
+		val option = Option.createBuilder<Color>()
+			.name(name)
+			.also { if(description != null) it.description(OptionDescription.of(description)) }
+			.controller { createColorController(it, allowAlpha) }
+			.binding(default, { property.getter.call() }) { property.setter.call(it) }
+			.build()
+		option(option)
+		return option
 	}
 
 	fun <G : OptionAddable> G.color(

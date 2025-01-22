@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
+import me.nobaboy.nobaaddons.core.SkyBlockProfile
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
@@ -27,11 +28,12 @@ import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
+	private val profileTypePattern by Regex("^. (?<type>Ironman|Stranded|Bingo)").fromRepo("skyblock.profile_type")
+	private val profileIdPattern by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN})").fromRepo("skyblock.profile_id")
 	private val levelPattern by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("skyblock.level")
 	private val xpPattern by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
 	private val currencyPattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
 	private val zonePattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
-	private val profileIdPattern by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN})").fromRepo("skyblock.profile_id")
 
 	var currentGame: ServerType? = null
 		private set
@@ -40,16 +42,20 @@ object SkyBlockAPI {
 	@get:JvmName("inSkyBlock")
 	val inSkyBlock: Boolean
 		get() = HypixelUtils.onHypixel && currentGame == GameType.SKYBLOCK
-	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN
-		private set
-	var currentZone: String? = null
-		private set
 
 	var currentProfile: UUID? = null
 		private set(value) {
 			field = value
 			PersistentCache.lastProfile = value
 		}
+
+	var profileType: SkyBlockProfile = SkyBlockProfile.CLASSIC
+		private set
+
+	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN
+		private set
+	var currentZone: String? = null
+		private set
 
 	val prefixedZone: String?
 		get() = currentZone?.let {
@@ -67,7 +73,7 @@ object SkyBlockAPI {
 	var bits: Long? = null
 		private set
 
-	fun SkyBlockIsland.inIsland(): Boolean = inSkyBlock && currentIsland == this
+	fun SkyBlockIsland.inIsland(): Boolean = profileType == SkyBlockProfile.STRANDED || inSkyBlock && currentIsland == this
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
 	fun init() {
@@ -123,6 +129,11 @@ object SkyBlockAPI {
 		// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
 		zonePattern.firstFullMatch(scoreboard) {
 			currentZone = groups["zone"]?.value
+		}
+
+		profileTypePattern.firstFullMatch(scoreboard) {
+			val type = groups["type"]?.value ?: return@firstFullMatch
+			profileType = SkyBlockProfile.getByName(type)
 		}
 
 		// This can be further expanded to include other types like Pelts, North Stars, etc.

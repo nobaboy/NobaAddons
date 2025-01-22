@@ -9,7 +9,7 @@ object EntityNametagRenderEvents {
 	/**
 	 * Event invoked to determine if an [Entity]'s nametag should be visible
 	 */
-	@JvmField val VISIBILITY = EventDispatcher<Visibility>()
+	@JvmField val VISIBILITY = EventDispatcher<Visibility, Boolean> { it.shouldRender }
 
 	/**
 	 * Event invoked when an [Entity]'s nametag is being rendered, allowing for adding new nametag line(s)

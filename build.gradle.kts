@@ -77,7 +77,7 @@ dependencies {
 
 	devEnvOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
 
-	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}") // Sodium
+	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}-fabric") // Sodium
 	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // No Telemetry
 	devEnvOnly("maven.modrinth:compacting:${deps["compacting"]}") // Compacting
 
