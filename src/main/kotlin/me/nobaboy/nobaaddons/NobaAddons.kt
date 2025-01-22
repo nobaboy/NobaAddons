@@ -174,12 +174,16 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Events
+		/* region Hoppity */
 		HoppityEggGuess.init()
+		ChocolateFactoryFeatures.init()
+		/* endregion */
 
+		/* region Mythological */
 		AnnounceRareDrops.init()
 		BurrowWaypoints.init()
 		InquisitorWaypoints.init()
-		ChocolateFactoryFeatures.init()
+		/* endregion*/
 		// endregion
 
 		// region Slayers

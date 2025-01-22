@@ -51,7 +51,7 @@ object HoppityEggGuess {
 	private fun onParticle(event: ParticleEvents.Particle) {
 		if(!enabled) return
 		if(event.type != ParticleTypes.HAPPY_VILLAGER) return
-		if(event.speed != 0.0f || event.count != 1) return
+		if(event.speed != 0f || event.count != 1) return
 		if(lastAbilityUse.elapsedSince() > 3.seconds) return
 
 		val location = event.location
@@ -88,7 +88,7 @@ object HoppityEggGuess {
 			val distance = it.distanceToPlayer()
 
 			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = true)
-			RenderUtils.renderText(it.center().raise(), "Egg Guess", NobaColor.AQUA, yOffset = -10.0f, throughBlocks = true)
+			RenderUtils.renderText(it.center().raise(), "Egg Guess", NobaColor.AQUA, yOffset = -10f, throughBlocks = true)
 
 			if(distance > 5) {
 				val formattedDistance = distance.toInt().addSeparators()

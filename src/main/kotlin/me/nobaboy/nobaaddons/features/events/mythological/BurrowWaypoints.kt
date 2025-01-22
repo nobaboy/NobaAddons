@@ -171,7 +171,7 @@ object BurrowWaypoints {
 				location = adjustedLocation.center().raise(),
 				text = tr("nobaaddons.events.mythological.burrowGuessWaypoint", "Burrow Guess"),
 				color = NobaColor.AQUA,
-				yOffset = -10.0f,
+				yOffset = -10f,
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
