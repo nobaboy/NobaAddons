@@ -1,32 +1,24 @@
 package me.nobaboy.nobaaddons.features
 
-import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import me.nobaboy.nobaaddons.events.Listener
 import net.minecraft.text.Text
 
 abstract class Feature(
 	val id: String,
+	val category: FeatureCategory,
 	val name: Text,
-	enabledByDefault: Boolean? = null,
-	val hidden: Boolean = false,
-) : ObjectProperty<Feature>(id) {
-	init {
-		FeatureManager.FEATURES.add(this)
-	}
-
-	private var loaded = false
-	var enabled by Property.of("enabled", enabledByDefault ?: (hidden == true))
+	enabledByDefault: Boolean = false,
+) {
+	var enabled by Property.of("enabled", enabledByDefault)
 
 	private var listeners: List<Listener<*>>? = null
-	val killswitch: FeatureKillSwitch? get() = FeatureManager.getKillswitch(id)
+	val killswitch: FeatureKillSwitch? get() = FeatureManager.getKillSwitch(id)
+
+	abstract val config: FeatureConfig?
 
 	open fun enable() {
 		if(killswitch?.isApplicable == true) return
-		if(!loaded) {
-			FeatureManager.CONFIG[id]?.let(::load)
-			loaded = true
-		}
 		listeners = initListeners()
 	}
 
