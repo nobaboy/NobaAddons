@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.mixins.chat;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature;
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.hud.MessageIndicator;
@@ -33,6 +34,10 @@ abstract class ChatHudMixin {
 												   Operation<ChatHudLine> original) {
 		var line = original.call(creationTick, text, messageSignatureData, messageIndicator);
 		LINE.set(line);
+		var message = ChatUtils.CAPTURING.get();
+		if(message != null) {
+			message.setLine(line);
+		}
 		return line;
 	}
 
@@ -49,6 +54,10 @@ abstract class ChatHudMixin {
 		var line = LINE.get();
 		if(line != null) {
 			CopyChatFeature.getMessages().put(visible, new WeakReference<>(line));
+		}
+		var message = ChatUtils.CAPTURING.get();
+		if(message != null) {
+			message.getVisible().add(visible);
 		}
 		return visible;
 	}

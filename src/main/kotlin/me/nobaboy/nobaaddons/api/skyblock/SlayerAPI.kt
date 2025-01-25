@@ -1,11 +1,13 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
+import me.nobaboy.nobaaddons.core.slayer.SlayerData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -19,6 +21,8 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 object SlayerAPI {
+	val DATA by Repo.create("data/slayer.json", SlayerData.serializer())
+
 	var currentQuest: SlayerQuest? = null
 		private set
 

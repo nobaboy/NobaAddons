@@ -24,6 +24,8 @@ object ChatUtils {
 	private val commandQueue: Queue<String> = LinkedList()
 	private val clickActions: MutableMap<String, ClickAction> = mutableMapOf()
 
+	@JvmField val CAPTURING = ThreadLocal<Message?>()
+
 	init {
 		TickEvents.cooldown { _, cooldown -> processCommandQueue(cooldown) }
 		TickEvents.everySecond { removeExpiredClickActions() }
@@ -62,22 +64,28 @@ object ChatUtils {
 	/**
 	 * Add a chat message to the player's chat
 	 */
-	fun addMessage(message: Text, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.WHITE) {
-		val text = buildText {
-			if(prefix) append(NobaAddons.PREFIX)
-			color?.let { formatted(it) }
-			append(message)
-		}
-		MCUtils.player?.sendMessage(text, overlay)
+	fun addMessage(message: Text, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.WHITE): Message {
+		val message = if(prefix || color != null) {
+			buildText {
+				if(prefix) append(NobaAddons.PREFIX)
+				color?.let { formatted(it) }
+				append(message)
+			}
+		} else message
+
+		val captured = Message(message, null, mutableListOf())
+		CAPTURING.set(captured)
+		MCUtils.player?.sendMessage(message, overlay)
+		CAPTURING.remove()
+		return captured
 	}
 
 	/**
 	 * Add an untranslated chat message to the player's chat
 	 */
 	@UntranslatedMessage
-	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.WHITE) {
+	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.WHITE): Message =
 		addMessage(Text.literal(message), prefix, overlay, color)
-	}
 
 	/**
 	 * Sends a chat message with a clickable action
@@ -89,19 +97,17 @@ object ChatUtils {
 		ttl: Duration = 1.minutes,
 		builder: MutableText.() -> Unit = {},
 		clickAction: () -> Unit,
-	) {
-		MCUtils.player?.sendMessage(buildText {
-			if(prefix) append(NobaAddons.PREFIX)
-			append(text)
+	): Message = addMessage(buildText {
+		if(prefix) append(NobaAddons.PREFIX)
+		append(text)
 
-			val uuid = MathHelper.randomUuid().toString()
-			clickActions[uuid] = ClickAction(clickAction, ttl = ttl)
-			runCommand("/nobaaddons internal action $uuid")
+		val uuid = MathHelper.randomUuid().toString()
+		clickActions[uuid] = ClickAction(clickAction, ttl = ttl)
+		runCommand("/nobaaddons internal action $uuid")
 
-			color?.let { formatted(it) }
-			builder(this)
-		}, false)
-	}
+		color?.let { formatted(it) }
+		builder(this)
+	}, prefix = false, color = null)
 
 	/**
 	 * Sends an untranslated chat message with a clickable action
@@ -114,9 +120,7 @@ object ChatUtils {
 		ttl: Duration = 1.minutes,
 		builder: MutableText.() -> Unit = {},
 		clickAction: () -> Unit,
-	) {
-		addMessageWithClickAction(text.toText(), prefix, color, ttl, builder, clickAction)
-	}
+	): Message = addMessageWithClickAction(text.toText(), prefix, color, ttl, builder, clickAction)
 
 	fun processClickAction(action: String) {
 		val action = clickActions.remove(action) ?: return

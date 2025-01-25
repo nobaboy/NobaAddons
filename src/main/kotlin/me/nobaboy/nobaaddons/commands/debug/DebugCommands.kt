@@ -23,6 +23,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.chat.Message
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
@@ -171,6 +172,14 @@ object DebugCommands {
 		}
 
 		entity.highlight(NobaColor.COLORS.first { it.formatting == formatting })
+	}
+
+	private var lastResponse: Message? = null
+
+	@OptIn(UntranslatedMessage::class)
+	fun removeLastResponse() {
+		lastResponse?.remove()
+		lastResponse = ChatUtils.addMessage("Shello!")
 	}
 
 	val item = NobaClientCommandGroup(ItemDebugCommands)

@@ -55,6 +55,7 @@ import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.rift.RiftTimers
+import me.nobaboy.nobaaddons.features.slayers.CompactSlayerMessages
 import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.inferno.HighlightHellionShield
@@ -189,6 +190,7 @@ object NobaAddons : ClientModInitializer {
 		// region Slayers
 		MiniBossFeatures.init()
 		SlayerBossFeatures.init()
+		CompactSlayerMessages.init()
 		/* region Sven Packmaster */
 		HidePupNametags.init()
 		/* endregion */
