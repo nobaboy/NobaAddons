@@ -18,7 +18,7 @@ class RepoObject<T : Any>(private val path: String, private val serializer: KSer
 	operator fun getValue(instance: Any?, property: KProperty<*>): T? = this.instance
 
 	override fun load() {
-		instance = Repo.JSON.decodeFromString(serializer, Repo.readAsString(path))
+		instance = Repo.JSON.decodeFromString(serializer, Repo.resolve(path).readText())
 		onReload?.invoke(instance)
 	}
 

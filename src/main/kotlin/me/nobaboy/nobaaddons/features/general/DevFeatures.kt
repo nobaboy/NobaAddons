@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.events.Listener
 import me.nobaboy.nobaaddons.features.Feature
 import me.nobaboy.nobaaddons.features.FeatureCategory
-import me.nobaboy.nobaaddons.features.FeatureConfig
+import me.nobaboy.nobaaddons.features.KillSwitch
 import me.nobaboy.nobaaddons.mixins.accessors.HandledScreenAccessor
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.stripWhitespace
@@ -20,6 +20,13 @@ import org.lwjgl.glfw.GLFW
 
 object DevFeatures : Feature("dev", FeatureCategory.DEV, tr("nobaaddons.feature.dev", "Dev")) {
 	private val gson = GsonBuilder().setPrettyPrinting().serializeNulls().create()
+
+	val test by KillSwitch("test")
+
+	override fun enable() {
+		super.enable()
+		println("test killswitch: $test")
+	}
 
 	@JvmStatic
 	@OptIn(UntranslatedMessage::class)
@@ -51,6 +58,5 @@ object DevFeatures : Feature("dev", FeatureCategory.DEV, tr("nobaaddons.feature.
 		return PersistentCache.devMode && keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL
 	}
 
-	override val config: FeatureConfig? = null
 	override fun initListeners(): List<Listener<*>> = emptyList()
 }
