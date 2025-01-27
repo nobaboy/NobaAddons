@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.features.slayers
 
-import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -10,7 +9,6 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.toAbbreviatedString
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.darkPurple
 import me.nobaboy.nobaaddons.utils.TextUtils.gray
@@ -24,13 +22,10 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
-import java.text.NumberFormat
 
 @Suppress("RegExpSimplifiable") // [ ] is used to make it clear the spaces are not a mistake
 object CompactSlayerMessages {
 	private val config get() = NobaConfig.INSTANCE.slayers.compactMessages
-
-	private val PERCENTAGE = NumberFormat.getPercentInstance().apply { maximumFractionDigits = 2 }
 
 	private val SLAYER_QUEST_COMPLETE by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.questComplete")
 	private val SLAYER_LEVEL by Regex("^[ ]+(?<slayer>[A-z]+) Slayer LVL (?<level>\\d) - (?:LVL MAXED OUT!|Next LVL in (?<nextLevel>[\\d,]+) XP)").fromRepo("slayer.slayerXp")
@@ -73,17 +68,8 @@ object CompactSlayerMessages {
 			//      required to track that right now
 			append(tr("nobaaddons.slayer.compact.maxLevel", "MAX").green().bold())
 		} else {
-			val currentXp = lvl.second ?: 0
-			val nextLevel = SlayerAPI.DATA?.levelToXp?.get(slayer?.lowercase())?.get(lvl.first)
-			val percent: Text = if(nextLevel != null) {
-				buildLiteral(PERCENTAGE.format(currentXp / nextLevel)) {
-					yellow()
-					hoverText("${currentXp.addSeparators()}/${nextLevel.toAbbreviatedString()}".toText().yellow())
-				}
-			} else {
-				currentXp.addSeparators().toText().yellow()
-			}
-			append(tr("nobaaddons.slayer.compact.toNext", "$percent to next LVL").gray())
+			val toNextLevel = lvl.second?.addSeparators().toText().yellow()
+			append(tr("nobaaddons.slayer.compact.toNext", "$toNextLevel to next LVL").gray())
 		}
 
 		val rngMeter = rngMeter
