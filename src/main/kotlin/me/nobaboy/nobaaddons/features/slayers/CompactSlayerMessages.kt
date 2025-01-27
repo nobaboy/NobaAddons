@@ -1,58 +1,171 @@
 package me.nobaboy.nobaaddons.features.slayers
 
+import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
+import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.StringUtils.toAbbreviatedString
+import me.nobaboy.nobaaddons.utils.TextUtils.bold
+import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.darkPurple
+import me.nobaboy.nobaaddons.utils.TextUtils.gray
+import me.nobaboy.nobaaddons.utils.TextUtils.green
+import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
+import me.nobaboy.nobaaddons.utils.TextUtils.lightPurple
+import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.Message
+import me.nobaboy.nobaaddons.utils.tr
+import net.minecraft.text.Text
+import java.text.NumberFormat
 
 @Suppress("RegExpSimplifiable") // [ ] is used to make it clear the spaces are not a mistake
 object CompactSlayerMessages {
+	private val config get() = NobaConfig.INSTANCE.slayers.compactMessages
+
+	private val PERCENTAGE = NumberFormat.getPercentInstance().apply { maximumFractionDigits = 2 }
+
 	private val SLAYER_QUEST_COMPLETE by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.questComplete")
-	private val SLAYER_LEVEL by Regex("^[ ]+(?<slayer>[A-z]+) LVL (?<level>\\d) - (?:LVL MAXED OUT!|Next LVL in (?<nextLevel>[\\d,]+) XP)").fromRepo("slayer.slayerXp")
-	private val RNG_METER by Regex("^[ ]+RNG Meter - [\\d,]+ Stored XP").fromRepo("slayer.rngMeter")
+	private val SLAYER_LEVEL by Regex("^[ ]+(?<slayer>[A-z]+) Slayer LVL (?<level>\\d) - (?:LVL MAXED OUT!|Next LVL in (?<nextLevel>[\\d,]+) XP)").fromRepo("slayer.slayerXp")
+	private val RNG_METER by Regex("^[ ]+RNG Meter - (?<xp>[\\d,]+) Stored XP").fromRepo("slayer.rngMeter")
 
 	private val SLAYER_QUEST_STARTED by Regex("^[ ]+SLAYER QUEST STARTED!").fromRepo("slayer.questStarted")
 	private val SLAYER_QUEST_TO_SPAWN by Regex("^[ ]+» Slay [\\d,]+ Combat XP worth of .+").fromRepo("slayer.toSpawnBoss")
 
-	// With auto slayer:
-	// SLAYER_QUEST_COMPLETE
-	// SLAYER_LEVEL
-	// RNG_METER
-	// SLAYER_QUEST_STARTED
-	// SLAYER_QUEST_TO_SPAWN
+	private val BOSS_SLAIN by Regex("^[ ]+NICE! SLAYER BOSS SLAIN!").fromRepo("slayer.bossSlain")
+	private val TALK_TO_MADDOX by Regex("[ ]+» Talk to Maddox to claim your [A-z]+ Slayer XP!").fromRepo("slayer.talkToMaddox")
 
-	// Claiming at Maddox:
-	// SLAYER_QUEST_COMPLETE
-	// SLAYER_LEVEL
-	// RNG_METER
-
-	private var lastQuestComplete = Timestamp.distantPast()
 	private var lastMessage: Message? = null
 
-	private var level: Pair<Int, Int>? = null // TODO
-	// clickEvent=ClickEvent{action=RUN_COMMAND, value='/cb 0942fc74-ca9f-49c1-950b-a64f9074e3b9'}
-	private var rngMeter: Pair<Int, String>? = null
+	private var autoslayer = false
 
-	// how i'd like to format this is effectively:
-	/*
-	buildText {
-		append("SLAYER COMPLETE!".green().bold())
-		append(" ")
-		append(if(max) "MAX LVL".gray() else "${percent}%".hoverText("${current}/${nextLevel}").gray())
-		if(rngMeter) {
-			append(" (".darkGray())
-			val (xp, cb) = rngMeter
-			append("${xp} stored XP".lightPurple().clickCommand("/cb ${cb}"))
-			append(")".darkGray())
-		}
-	}
-	*/
+	private var slayer: String? = null
+	private var level: Pair<Int, Int?>? = null
+	private var rngMeter: Pair<Int, String>? = null
 
 	fun init() {
 		ChatMessageEvents.ALLOW.register(this::onChatMessage)
 	}
 
+	fun fake(slayer: String, level: Pair<Int, Int?>, rngMeter: Pair<Int, String>?): Text {
+		this.slayer = slayer
+		this.level = level
+		this.rngMeter = rngMeter
+		return compile()
+	}
+
+	private fun compile() = buildText {
+		append(tr("nobaaddons.slayer.compact.prefix", "SLAYER QUEST!").green().bold())
+		append(" ")
+
+		val lvl = level ?: (-1 to null)
+		append(tr("nobaaddons.slayer.compact.level", "LVL ${lvl.first}").yellow())
+		append(" - ".toText().darkPurple())
+		if(lvl.second == null) {
+			// TODO it'd be nice to include total xp here, but I don't feel like building out the functionality
+			//      required to track that right now
+			append(tr("nobaaddons.slayer.compact.maxLevel", "MAX").green().bold())
+		} else {
+			val currentXp = lvl.second ?: 0
+			val nextLevel = SlayerAPI.DATA?.levelToXp?.get(slayer?.lowercase())?.get(lvl.first)
+			val percent: Text = if(nextLevel != null) {
+				buildLiteral(PERCENTAGE.format(currentXp / nextLevel)) {
+					yellow()
+					hoverText("${currentXp.addSeparators()}/${nextLevel.toAbbreviatedString()}".toText().yellow())
+				}
+			} else {
+				currentXp.addSeparators().toText().yellow()
+			}
+			append(tr("nobaaddons.slayer.compact.toNext", "$percent to next LVL").gray())
+		}
+
+		val rngMeter = rngMeter
+		if(rngMeter != null) {
+			append(" ")
+			val xp = rngMeter.first
+			append(buildText {
+				append(tr("nobaaddons.slayer.compact.storedRngXp", "(${xp.toAbbreviatedString()} stored XP)"))
+				runCommand(rngMeter.second)
+				hoverText(xp.addSeparators().toText().lightPurple())
+				lightPurple()
+			})
+		}
+	}
+
+	private fun send() {
+		lastMessage?.remove()
+		lastMessage = ChatUtils.addMessage(compile(), prefix = false, color = null)
+	}
+
+	// Completing a quest with auto slayer:
+	//  SLAYER_QUEST_COMPLETE
+	//  SLAYER_LEVEL
+	//  RNG_METER
+	//  SLAYER_QUEST_STARTED
+	//  SLAYER_QUEST_TO_SPAWN
+
+	// Completing a quest without auto slayer:
+	//  BOSS_SLAIN
+	//  TALK_TO_MADDOX
+
+	// Claiming at Maddox:
+	//  SLAYER_QUEST_COMPLETE
+	//  SLAYER_LEVEL
+	//  RNG_METER
+
+	// We're canceling messages from completing a slayer quest with auto slayer active, and when claiming at Maddox;
+	// quest completion messages without auto slayer are also used to know the correct order, but we don't
+	// cancel those messages.
 	private fun onChatMessage(event: ChatMessageEvents.Allow) {
-		//
+		if(!config.enabled) return
+
+		val text = event.message
+		val string = text.string.cleanFormatting()
+
+		SLAYER_QUEST_COMPLETE.onFullMatch(string) {
+			slayer = null
+			level = null
+			rngMeter = null
+			event.cancel()
+			return
+		}
+
+		listOf(BOSS_SLAIN, TALK_TO_MADDOX).firstFullMatch(string) {
+			autoslayer = false
+			return
+		}
+
+		SLAYER_LEVEL.onFullMatch(string) {
+			slayer = groups["slayer"]!!.value
+			level = groups["level"]!!.value.toInt() to groups["nextLevel"]?.value?.replace(",", "")?.toIntOrNull()
+			event.cancel()
+			return
+		}
+
+		RNG_METER.onFullMatch(string) {
+			rngMeter = groups["xp"]!!.value.replace(",", "").toInt() to text.style.clickEvent!!.value
+			if(!autoslayer) send()
+			event.cancel()
+			return
+		}
+
+		SLAYER_QUEST_STARTED.onFullMatch(string) {
+			event.cancel()
+			return
+		}
+
+		SLAYER_QUEST_TO_SPAWN.onFullMatch(string) {
+			if(autoslayer) send()
+			autoslayer = true
+			event.cancel()
+			return
+		}
 	}
 }

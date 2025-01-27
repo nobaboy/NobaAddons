@@ -13,7 +13,10 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 	val bossAlert by BossAlert()
 	val miniBossAlert by MiniBossAlert()
 	val highlightMiniBosses by HighlightMiniBosses()
+
 	val announceBossKillTime by AnnounceBossKillTime()
+	val compactMessages by CompactMessages()
+
 	val sven by Sven()
 	val voidgloom by Voidgloom()
 	val inferno by Inferno()
@@ -36,6 +39,10 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 	class AnnounceBossKillTime : ObjectProperty<AnnounceBossKillTime>("announceBossKillTime") {
 		var enabled by Property.of<Boolean>("enabled", false)
 		var timeSource by Property.of("timeSource", Serializer.enum(), BossTimeSource.REAL_TIME)
+	}
+
+	class CompactMessages : ObjectProperty<CompactMessages>("compactMessages") {
+		var enabled by Property.of<Boolean>("enabled", false)
 	}
 
 	class Sven : ObjectProperty<Sven>("sven") {
