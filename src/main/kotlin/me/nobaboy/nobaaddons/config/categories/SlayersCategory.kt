@@ -50,12 +50,12 @@ object SlayersCategory {
 
 		buildGroup(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
 			val enabled = boolean(
-				CommonText.Config.ENABLED,
+				CommonText.Config.ENABLED.wip(),
 				default = defaults.slayers.highlightMiniBosses.enabled,
 				property = config.slayers.highlightMiniBosses::enabled
 			)
 			color(
-				CommonText.Config.HIGHLIGHT_COLOR,
+				CommonText.Config.HIGHLIGHT_COLOR.wip(),
 				default = defaults.slayers.highlightMiniBosses.highlightColor,
 				property = config.slayers.highlightMiniBosses::highlightColor
 			) requires enabled
