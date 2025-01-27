@@ -69,7 +69,7 @@ object CompactSlayerMessages {
 			append(tr("nobaaddons.slayer.compact.maxLevel", "MAX").green().bold())
 		} else {
 			val toNextLevel = lvl.second?.addSeparators().toText().yellow()
-			append(tr("nobaaddons.slayer.compact.toNext", "$toNextLevel to next LVL").gray())
+			append(tr("nobaaddons.slayer.compact.toNext", "$toNextLevel XP to next LVL").gray())
 		}
 
 		val rngMeter = rngMeter
@@ -79,7 +79,11 @@ object CompactSlayerMessages {
 			append(buildText {
 				append(tr("nobaaddons.slayer.compact.storedRngXp", "(${xp.toAbbreviatedString()} stored XP)"))
 				runCommand(rngMeter.second)
-				hoverText(xp.addSeparators().toText().lightPurple())
+				hoverText {
+					append("${xp.addSeparators()} XP".toText().lightPurple())
+					append("\n\n")
+					append(tr("nobaaddons.slayer.compact.clickRngMeter", "Click to select RNG Meter drop").yellow())
+				}
 				lightPurple()
 			})
 		}
