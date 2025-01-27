@@ -78,7 +78,7 @@ object SlayersCategory {
 		buildGroup(tr("nobaaddons.config.slayers.compactMessages", "Compact Quest Messages")) {
 			boolean(
 				CommonText.Config.ENABLED,
-				tr("nobaaddons.config.slayers.compactMessages.enabled.tooltip", "Compacts slayer completion messages while enabled"),
+				tr("nobaaddons.config.slayers.compactMessages.enabled.tooltip", "Condenses messages from Auto-Slayer and manually claiming a Slayer quest at Maddox into one message while enabled"),
 				default = defaults.slayers.compactMessages.enabled,
 				property = config.slayers.compactMessages::enabled,
 			)
