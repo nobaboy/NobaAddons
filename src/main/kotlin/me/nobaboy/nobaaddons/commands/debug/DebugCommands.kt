@@ -19,6 +19,8 @@ import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.StringUtils
+import me.nobaboy.nobaaddons.utils.StringUtils.toAbbreviatedString
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
@@ -176,10 +178,17 @@ object DebugCommands {
 
 	private var lastResponse: Message? = null
 
+	@Command
 	@OptIn(UntranslatedMessage::class)
 	fun removeLastResponse() {
 		lastResponse?.remove()
-		lastResponse = ChatUtils.addMessage("Shello!")
+		lastResponse = ChatUtils.addMessage("Debug message ${StringUtils.randomAlphanumeric()}")
+	}
+
+	@Command
+	@OptIn(UntranslatedMessage::class)
+	fun abbreviate(number: Int) {
+		ChatUtils.addMessage(number.toAbbreviatedString())
 	}
 
 	val item = NobaClientCommandGroup(ItemDebugCommands)

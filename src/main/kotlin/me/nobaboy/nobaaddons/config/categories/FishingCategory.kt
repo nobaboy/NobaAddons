@@ -44,12 +44,24 @@ object FishingCategory {
 		buildGroup(tr("nobaaddons.config.fishing.trophyFishing", "Trophy Fishing")) {
 			val exampleMessage = TrophyFishChat.format(Text.literal("Blobfish").white(), TrophyFishRarity.BRONZE, 1234, 2345)
 
-			boolean(
+			val modify = boolean(
 				tr("nobaaddons.config.fishing.trophyFishing.modifyChatMessages", "Add Count to Catch Messages"),
 				tr("nobaaddons.config.fishing.trophyFishing.modifyChatMessages.tooltip", "Adds catch counts to chat messages, for example:\n\n$exampleMessage\n\nThis requires opening Odger's menu at least once to get accurate counts"),
 				default = defaults.fishing.trophyFishing.modifyChatMessages,
 				property = config.fishing.trophyFishing::modifyChatMessages,
 			)
+			val compact = boolean(
+				tr("nobaaddons.config.fishing.trophyFishing.compactCatches", "Compact Catch Messages"),
+				tr("nobaaddons.config.fishing.trophyFishing.compactCatches.tooltip", "Removes the previous catch message of the same trophy fish & rarity while enabled; note that this may conflict with certain compact chat mods."),
+				default = defaults.fishing.trophyFishing.compactMessages,
+				property = config.fishing.trophyFishing::compactMessages,
+			) requires modify
+			cycler(
+				tr("nobaaddons.config.fishing.trophyFishing.compactMaxRarity", "Compact Max Rarity"),
+				tr("nobaaddons.config.fishing.trophyFishing.compactMaxRarity.tooltip", "The maximum rarity to compact catch messages for. If this is set to Diamond, this will effectively compact all catch messages."),
+				default = defaults.fishing.trophyFishing.compactMaxRarity,
+				property = config.fishing.trophyFishing::compactMaxRarity,
+			) requires listOf(modify, compact)
 		}
 		// endregion
 

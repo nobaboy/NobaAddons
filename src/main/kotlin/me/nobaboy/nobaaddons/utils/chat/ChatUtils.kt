@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.utils.chat
 
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
@@ -24,11 +25,13 @@ object ChatUtils {
 	private val commandQueue: Queue<String> = LinkedList()
 	private val clickActions: MutableMap<String, ClickAction> = mutableMapOf()
 
-	@JvmField val CAPTURING = ThreadLocal<Message?>()
+	private val SHOULD_CAPTURE: ThreadLocal<Boolean> = ThreadLocal.withInitial { false }
+	private val CAPTURED_MESSAGE: ThreadLocal<Message?> = ThreadLocal()
 
 	init {
 		TickEvents.cooldown { _, cooldown -> processCommandQueue(cooldown) }
 		TickEvents.everySecond { removeExpiredClickActions() }
+		ChatMessageEvents.ADDED.register(this::onChatAdded)
 	}
 
 	private fun removeExpiredClickActions() {
@@ -45,6 +48,12 @@ object ChatUtils {
 		}
 		(MCUtils.networkHandler ?: return).sendCommand(commandQueue.poll() ?: return)
 		cooldownManager.startCooldown(1.seconds)
+	}
+
+	private fun onChatAdded(event: ChatMessageEvents.Added) {
+		if(SHOULD_CAPTURE.get()) {
+			CAPTURED_MESSAGE.set(event.message)
+		}
 	}
 
 	/**
@@ -64,7 +73,7 @@ object ChatUtils {
 	/**
 	 * Add a chat message to the player's chat
 	 */
-	fun addMessage(message: Text, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.WHITE): Message {
+	fun addMessage(message: Text, prefix: Boolean = true, color: Formatting? = Formatting.WHITE): Message {
 		val message = if(prefix || color != null) {
 			buildText {
 				if(prefix) append(NobaAddons.PREFIX)
@@ -73,10 +82,12 @@ object ChatUtils {
 			}
 		} else message
 
-		val captured = Message(message, null, mutableListOf())
-		CAPTURING.set(captured)
-		MCUtils.player?.sendMessage(message, overlay)
-		CAPTURING.remove()
+		SHOULD_CAPTURE.set(true)
+		MCUtils.client.inGameHud.chatHud.addMessage(message)
+		SHOULD_CAPTURE.set(false)
+
+		val captured = CAPTURED_MESSAGE.get() ?: error("Mixin did not capture message")
+		CAPTURED_MESSAGE.remove()
 		return captured
 	}
 
@@ -84,8 +95,8 @@ object ChatUtils {
 	 * Add an untranslated chat message to the player's chat
 	 */
 	@UntranslatedMessage
-	fun addMessage(message: String, prefix: Boolean = true, overlay: Boolean = false, color: Formatting? = Formatting.WHITE): Message =
-		addMessage(Text.literal(message), prefix, overlay, color)
+	fun addMessage(message: String, prefix: Boolean = true, color: Formatting? = Formatting.WHITE): Message =
+		addMessage(Text.literal(message), prefix, color)
 
 	/**
 	 * Sends a chat message with a clickable action
@@ -122,6 +133,9 @@ object ChatUtils {
 		clickAction: () -> Unit,
 	): Message = addMessageWithClickAction(text.toText(), prefix, color, ttl, builder, clickAction)
 
+	/**
+	 * Internal method called to invoke a click action from [addMessageWithClickAction]
+	 */
 	fun processClickAction(action: String) {
 		val action = clickActions.remove(action) ?: return
 		try {

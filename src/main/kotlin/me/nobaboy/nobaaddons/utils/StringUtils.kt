@@ -22,12 +22,13 @@ object StringUtils {
 	fun String.cleanFormatting(): String = Formatting.strip(this)!!
 
 	fun randomAlphanumeric(length: Int = 8): String {
-		val allowedChars = ('0'..'9') + ('A'..'z') + ('a'..'z')
+		val allowedChars = ('0'..'9') + ('A'..'Z') + ('a'..'z')
 		return (1..length)
 			.map { allowedChars.random() }
 			.joinToString("")
 	}
 
+	@Suppress("KotlinConstantConditions") // this is wrong
 	fun Int.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String {
 		return when {
 			this >= 1_000_000_000 -> "${(this / 1_000_000_000.0).roundTo(billionPrecision)}b"
