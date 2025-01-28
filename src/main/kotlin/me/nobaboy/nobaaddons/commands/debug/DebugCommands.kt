@@ -16,7 +16,6 @@ import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.profile.ProfileData
-import me.nobaboy.nobaaddons.features.slayers.CompactSlayerMessages
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -164,11 +163,6 @@ object DebugCommands {
 	@Command
 	fun fake(text: Text) {
 		MCUtils.player!!.sendMessage(text, false)
-	}
-
-	@Command
-	fun fakeSlayer(ctx: Context, slayer: String, level: Int, nextLevel: Int? = null, rngMeter: Int? = null) {
-		ctx.source.sendFeedback(CompactSlayerMessages.fake(slayer, level to nextLevel?.takeIf { it > 0 }, rngMeter?.let { it to "/totallyrealrngmeter" }))
 	}
 
 	@Command

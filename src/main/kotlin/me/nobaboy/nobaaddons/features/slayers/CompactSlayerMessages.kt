@@ -21,7 +21,6 @@ import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
-import net.minecraft.text.Text
 
 @Suppress("RegExpSimplifiable") // [ ] is used to make it clear the spaces are not a mistake
 object CompactSlayerMessages {
@@ -39,6 +38,7 @@ object CompactSlayerMessages {
 
 	private var lastMessage: Message? = null
 
+	// used to determine when the compacted message should be sent
 	private var autoslayer = false
 
 	private var slayer: String? = null
@@ -47,13 +47,6 @@ object CompactSlayerMessages {
 
 	fun init() {
 		ChatMessageEvents.ALLOW.register(this::onChatMessage)
-	}
-
-	fun fake(slayer: String, level: Pair<Int, Int?>, rngMeter: Pair<Int, String>?): Text {
-		this.slayer = slayer
-		this.level = level
-		this.rngMeter = rngMeter
-		return compile()
 	}
 
 	private fun compile() = buildText {
@@ -87,6 +80,8 @@ object CompactSlayerMessages {
 				lightPurple()
 			})
 		}
+
+		// TODO include messages from other features (i.e. kill times)
 	}
 
 	private fun send() {
