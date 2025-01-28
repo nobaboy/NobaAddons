@@ -43,6 +43,7 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 
 	class CompactMessages : ObjectProperty<CompactMessages>("compactMessages") {
 		var enabled by Property.of<Boolean>("enabled", false)
+		var removeLastMessage by Property.of<Boolean>("removeLastMessage", false)
 	}
 
 	class Sven : ObjectProperty<Sven>("sven") {

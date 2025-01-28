@@ -50,7 +50,7 @@ object CompactSlayerMessages {
 	}
 
 	private fun compile() = buildText {
-		append(tr("nobaaddons.slayer.compact.prefix", "SLAYER QUEST!").green().bold())
+		append(tr("nobaaddons.slayer.compact.prefix", "SLAYER COMPLETE!").green().bold())
 		append(" ")
 
 		val lvl = level ?: (-1 to null)
@@ -85,7 +85,9 @@ object CompactSlayerMessages {
 	}
 
 	private fun send() {
-		lastMessage?.remove()
+		if(config.removeLastMessage) {
+			lastMessage?.remove()
+		}
 		lastMessage = ChatUtils.addMessage(compile(), prefix = false, color = null)
 	}
 

@@ -82,6 +82,12 @@ object SlayersCategory {
 				default = defaults.slayers.compactMessages.enabled,
 				property = config.slayers.compactMessages::enabled,
 			)
+			boolean(
+				tr("nobaaddons.config.slayers.compactMessages.removeLastMessage", "Remove Previous Message"),
+				tr("nobaaddons.config.slayers.compactMessages.removeLastMessage.tooltip", "The last compacted message will also be removed upon completing another slayer quest"),
+				default = defaults.slayers.compactMessages.removeLastMessage,
+				property = config.slayers.compactMessages::removeLastMessage,
+			)
 		}
 
 		buildGroup(tr("nobaaddons.config.slayers.sven", "Sven Packmaster")) {
