@@ -5,6 +5,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.fabricmc.loader.api.Version
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
+import net.minecraft.client.gui.hud.ChatHud
 import net.minecraft.client.network.ClientPlayNetworkHandler
 import net.minecraft.client.option.GameOptions
 import net.minecraft.client.render.WorldRenderer
@@ -39,6 +40,8 @@ object MCUtils {
 
 	val textRenderer: TextRenderer get() = client.textRenderer
 	val worldRenderer: WorldRenderer get() = client.worldRenderer
+
+	val chatHud: ChatHud get() = client.inGameHud.chatHud
 
 	fun sendPacket(packet: Packet<*>) {
 		if(client.networkHandler == null) {

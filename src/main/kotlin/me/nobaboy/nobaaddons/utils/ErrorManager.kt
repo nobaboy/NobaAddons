@@ -7,7 +7,6 @@ import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.text.Text
 import net.minecraft.util.math.MathHelper
 import java.util.LinkedList
@@ -28,8 +27,7 @@ object ErrorManager {
 	}
 
 	private fun attemptSendQueuedMessages() {
-		val player = MCUtils.player ?: return
-		player.sendMessage(queuedMessages.poll() ?: return, false)
+		MCUtils.chatHud.addMessage(queuedMessages.poll() ?: return)
 	}
 
 	/**
@@ -109,6 +107,6 @@ object ErrorManager {
 	fun copyError(id: String) {
 		val error = errors[id] ?: return
 		MCUtils.copyToClipboard(error)
-		ChatUtils.addMessage(tr("nobaaddons.error.copiedToClipboard", "Copied full error to clipboard, please report it in the Discord"))
+		MCUtils.chatHud.addMessage(tr("nobaaddons.error.copiedToClipboard", "Copied full error to clipboard, please report it in the Discord"))
 	}
 }

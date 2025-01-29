@@ -74,4 +74,6 @@ object TextUtils {
 }
 
 fun tr(key: String, default: String): MutableText = error("Compiler plugin did not run")
+
+@Suppress("unused") // uses of tr are replaced with this method at compile time
 fun trResolved(key: String, vararg args: Any): MutableText = Text.stringifiedTranslatable(key, *args)

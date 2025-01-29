@@ -1,17 +1,20 @@
 package me.nobaboy.nobaaddons.api
 
+import com.mojang.authlib.yggdrasil.ProfileResult
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.data.PartyData
-import me.nobaboy.nobaaddons.data.json.MojangProfile
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CooldownManager
-import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HypixelUtils
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.request
+import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
@@ -20,6 +23,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
+import net.hypixel.modapi.packet.impl.serverbound.ServerboundPartyInfoPacket
 import net.minecraft.text.HoverEvent
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
@@ -27,9 +31,11 @@ import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
 object PartyAPI {
-	private val uuidCache = Util.memoize<UUID, Deferred<MojangProfile>> {
-		val url = "https://sessionserver.mojang.com/session/minecraft/profile/$it"
-		HTTPUtils.fetchJson<MojangProfile>(url)
+	private val semaphore = Semaphore(3)
+	private val uuidCache = Util.memoize<UUID, Deferred<ProfileResult?>> {
+		NobaAddons.coroutineScope.async {
+			semaphore.withPermit { MCUtils.client.sessionService.fetchProfile(it, true) }
+		}
 	}
 
 	private val invalidatePartyStateMessages: List<Regex> by Repo.list(
@@ -65,6 +71,7 @@ object PartyAPI {
 			val cleaned = message.string.cleanFormatting()
 			if(invalidatePartyStateMessages.any { it.matches(cleaned) }) refreshPartyList = true
 		}
+		HypixelModAPI.getInstance().listen(this::onPartyData)
 	}
 
 	private fun onTick(cooldownManager: CooldownManager) {
@@ -76,22 +83,21 @@ object PartyAPI {
 	}
 
 	fun getPartyInfo() {
-		HypixelModAPI.getInstance().request<ClientboundPartyInfoPacket> {
-			if(!it.isInParty) {
-				party = null
-				return@request
-			}
+		HypixelModAPI.getInstance().sendPacket(ServerboundPartyInfoPacket())
+	}
 
-			NobaAddons.runAsync {
-				val leader = it.leader.orElseThrow()
-				// TODO this should be reworked to not wait until *every* profile is fetched
-				val members = it.memberMap.values.map {
-					val profile = uuidCache.apply(it.uuid).await()
-					PartyData.Member(uuid = it.uuid, profile = profile, role = it.role)
-				}
-				party = PartyData(leaderUUID = leader, members = members)
-			}
+	private fun onPartyData(party: ClientboundPartyInfoPacket) {
+		if(!party.isInParty) {
+			this.party = null
+			return
 		}
+
+		this.party = PartyData(
+			leaderUUID = party.leader.orElseThrow(),
+			members = party.memberMap.values.map {
+				PartyData.Member(uuid = it.uuid, profile = uuidCache.apply(it.uuid), role = it.role)
+			},
+		)
 	}
 
 	// This method is only called from debug commands, and as such is fine being untranslated.
