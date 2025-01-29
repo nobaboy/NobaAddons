@@ -185,12 +185,6 @@ object DebugCommands {
 		lastResponse = ChatUtils.addMessage("Debug message ${StringUtils.randomAlphanumeric()}")
 	}
 
-	@Command
-	@OptIn(UntranslatedMessage::class)
-	fun abbreviate(number: Int) {
-		ChatUtils.addMessage(number.toAbbreviatedString())
-	}
-
 	val item = NobaClientCommandGroup(ItemDebugCommands)
 	val pet = NobaClientCommandGroup(PetDebugCommands)
 	val regex = NobaClientCommandGroup(RepoDebugCommands)
