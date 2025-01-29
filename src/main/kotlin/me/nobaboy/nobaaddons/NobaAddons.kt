@@ -70,13 +70,15 @@ import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.ErrorManager
+import me.nobaboy.nobaaddons.utils.TextUtils.blue
+import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
 import me.nobaboy.nobaaddons.utils.TextUtils.literal
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.fabricmc.loader.api.Version
 import net.minecraft.text.Text
-import net.minecraft.util.Formatting
 import org.slf4j.Logger
 import java.nio.file.Path
 
@@ -88,8 +90,8 @@ object NobaAddons : ClientModInitializer {
 
 	val PREFIX: Text get() = buildText {
 		append(CommonText.NOBAADDONS)
-		literal(" » ") { formatted(Formatting.DARK_GRAY) }
-		formatted(Formatting.BLUE, Formatting.BOLD)
+		literal(" » ") { darkGray() }
+		blue().bold()
 	}
 
 	val LOGGER: Logger = LogUtils.getLogger()
