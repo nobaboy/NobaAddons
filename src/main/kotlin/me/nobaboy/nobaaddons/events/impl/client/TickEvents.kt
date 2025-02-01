@@ -14,14 +14,29 @@ object TickEvents {
 	}
 
 	class TickEventDispatcher internal constructor() : EventDispatcher<Tick>() {
+		/**
+		 * Automatically attaches the returned wrapping from [TickEvents.every] to the [TICK] dispatcher
+		 *
+		 * @see TickEvents.every
+		 */
 		inline fun every(nthTick: Int, crossinline event: (Tick) -> Unit) {
 			register(TickEvents.every(nthTick, event))
 		}
 
+		/**
+		 * Automatically attaches the returned wrapping from [TickEvents.everySecond] to the [TICK] dispatcher
+		 *
+		 * @see TickEvents.everySecond
+		 */
 		inline fun everySecond(crossinline event: (Tick) -> Unit) {
 			every(20, event)
 		}
 
+		/**
+		 * Automatically attaches the returned wrapping from [TickEvents.cooldown] to the [TICK] dispatcher
+		 *
+		 * @see TickEvents.cooldown
+		 */
 		inline fun cooldown(defaultCooldown: Duration = 3.seconds, crossinline event: (Tick, CooldownManager) -> Unit) = register {
 			register(TickEvents.cooldown(defaultCooldown, event))
 		}
