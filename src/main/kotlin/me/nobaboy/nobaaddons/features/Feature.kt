@@ -55,8 +55,19 @@ abstract class Feature(val id: String, val category: FeatureCategory) {
 		dispatcher.register { if(!killswitch) listener(it) }
 	}
 
+	/**
+	 * Implement your feature's initialization logic here.
+	 *
+	 * Make sure you use [listen] for any events, or otherwise ensure you're checking [killswitch].
+	 */
 	open fun init() {
 	}
 
+	/**
+	 * Implement your feature's config options here.
+	 *
+	 * If not implemented, this feature is assumed to not have any user-configurable options,
+	 * and won't be included in the built YACL menu.
+	 */
 	open fun config(): OptionGroup? = null
 }
