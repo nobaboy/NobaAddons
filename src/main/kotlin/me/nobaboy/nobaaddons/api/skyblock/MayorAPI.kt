@@ -54,7 +54,7 @@ object MayorAPI {
 		private set
 
 	fun init() {
-		TickEvents.everySecond { onSecondPassed() }
+		TickEvents.TICK.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}

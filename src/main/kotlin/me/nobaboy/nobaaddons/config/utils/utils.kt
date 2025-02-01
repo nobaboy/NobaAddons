@@ -12,28 +12,33 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.io.path.nameWithoutExtension
 
-private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT)
+val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT)
 
-/**
- * Attempts to load the associated [AbstractConfig], logging an error and renaming the config file if it fails.
- */
-fun AbstractConfig.safeLoad(pathSupplier: AbstractConfig.() -> Path = { (this as AbstractConfigAccessor).callGetPath() }) {
-	try {
+inline fun <R> safeLoad(pathSupplier: () -> Path, load: () -> R): R? {
+	return try {
 		load()
-	} catch(ex: Throwable) {
-		val path = pathSupplier(this)
+	} catch(ex: Exception) {
+		val path = pathSupplier()
 		ErrorManager.logError("Failed to load a config file", ex)
 
 		val date = DATE_FORMATTER.format(ZonedDateTime.now())
 		val name = "${path.nameWithoutExtension}-${date}"
-		val backup = PathUtil.getNextUniqueName(NobaAddons.CONFIG_DIR, name, ".json")
+		val backup = PathUtil.getNextUniqueName(path.parent, name, ".json")
 
 		if(path.toFile().renameTo(path.parent.resolve(backup).toFile())) {
 			NobaAddons.LOGGER.warn("Moved config file to $backup")
 		} else {
 			NobaAddons.LOGGER.warn("Couldn't rename config file")
 		}
+		return null
 	}
+}
+
+/**
+ * Attempts to load the associated [AbstractConfig], logging an error and renaming the config file if it fails.
+ */
+fun AbstractConfig.safeLoad(pathSupplier: AbstractConfig.() -> Path = { (this as AbstractConfigAccessor).callGetPath() }) {
+	safeLoad({ pathSupplier(this) }, this::load)
 }
 
 /**

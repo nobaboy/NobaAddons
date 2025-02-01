@@ -83,7 +83,7 @@ object SkyBlockAPI {
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
 	fun init() {
-		TickEvents.everySecond { update() }
+		TickEvents.TICK.everySecond { update() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()

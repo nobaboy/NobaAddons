@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.utils
 
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import me.nobaboy.nobaaddons.NobaAddons
 import net.minecraft.util.Util
 import java.io.BufferedWriter
@@ -21,7 +22,7 @@ object FileUtils {
 	@Throws(IOException::class)
 	fun File.writeAtomically(writer: (BufferedWriter) -> Unit) {
 		val temp = Files.createTempFile("${nameWithoutExtension}-${StringUtils.randomAlphanumeric()}", extension)
-		bufferedWriter().use(writer)
+		temp.toFile().bufferedWriter().use(writer)
 		Util.backupAndReplace(temp, toPath(), toPath().parent.resolve("${name}_old"))
 	}
 
@@ -29,7 +30,7 @@ object FileUtils {
 	 * Create an instance of [T] from the current [File] using `kotlinx.serialization`
 	 */
 	@Throws(IOException::class)
-	inline fun <reified T> File.readJson(): T = NobaAddons.JSON.decodeFromString(readText())
+	inline fun <reified T> File.readJson(json: Json = NobaAddons.JSON): T = json.decodeFromString(readText())
 
 	/**
 	 * Create an instance of [type] from the current [File] using Gson
@@ -43,8 +44,8 @@ object FileUtils {
 	 * @see writeAtomically
 	 */
 	@Throws(IOException::class)
-	inline fun <reified T> File.writeJson(obj: T) = writeAtomically {
-		it.write(NobaAddons.JSON.encodeToString(obj))
+	inline fun <reified T> File.writeJson(obj: T, json: Json = NobaAddons.JSON) = writeAtomically {
+		it.write(json.encodeToString(obj))
 	}
 
 	/**

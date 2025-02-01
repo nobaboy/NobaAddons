@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.tr
 object DungeonsCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.dungeons", "Dungeons")) {
 		// region Highlight Starred Mobs
-		buildGroup(tr("nobaaddons.config.dungeons.highlightStarredMobs", "Highlight Starred Mobs")) {
+		group(tr("nobaaddons.config.dungeons.highlightStarredMobs", "Highlight Starred Mobs")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.dungeons.highlightStarredMobs.enabled,
@@ -18,17 +18,17 @@ object DungeonsCategory {
 				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.dungeons.highlightStarredMobs.highlightColor,
 				property = config.dungeons.highlightStarredMobs::highlightColor
-			) requires config(enabled)
+			) requires configOption(enabled)
 			cycler(
 				tr("nobaaddons.config.dungeons.highlightStarredMobs.highlightMode", "Highlight Mode"),
 				default = defaults.dungeons.highlightStarredMobs.highlightMode,
 				property = config.dungeons.highlightStarredMobs::highlightMode
-			) requires config(enabled)
+			) requires configOption(enabled)
 		}
 		// endregion
 
 		// region Simon Says Timer
-		buildGroup(tr("nobaaddons.config.dungeons.simonSaysTimer", "Simon Says Timer")) {
+		group(tr("nobaaddons.config.dungeons.simonSaysTimer", "Simon Says Timer")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.dungeons.simonSaysTimer.enabled,
@@ -39,7 +39,7 @@ object DungeonsCategory {
 				tr("nobaaddons.config.dungeons.simonSaysTimer.timeInPartyChat.tooltip", "Sends your Simon Says device completion time in party chat"),
 				default = defaults.dungeons.simonSaysTimer.timeInPartyChat,
 				property = config.dungeons.simonSaysTimer::timeInPartyChat
-			) requires config(enabled)
+			) requires configOption(enabled)
 		}
 		// endregion
 	}

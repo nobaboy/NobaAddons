@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.serializers.VersionKSerializer
 import net.fabricmc.loader.api.Version
 import kotlin.reflect.KProperty
 
-private val KILLSWITCHES by Repo.create("killswitch.json", serializer<Map<String, KillSwitchData>>()).onReload(FeatureManager::reevaulate)
+private val KILLSWITCHES by Repo.create("killswitch.json", serializer<Map<String, KillSwitchData>>())
 typealias SerializedVersion = @Serializable(with = VersionKSerializer::class) Version
 
 /**

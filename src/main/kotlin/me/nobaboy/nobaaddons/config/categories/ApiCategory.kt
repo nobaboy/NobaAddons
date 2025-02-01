@@ -17,7 +17,7 @@ object ApiCategory {
 			tr("nobaaddons.config.apis.disclaimer.line2", "Modifying these settings has the potential to break the mod!").yellow()
 		)
 
-		buildGroup(tr("nobaaddons.config.apis.repo", "Repo")) {
+		group(tr("nobaaddons.config.apis.repo", "Repo")) {
 			string(
 				tr("nobaaddons.config.apis.repo.username", "Repo Username"),
 				default = defaults.repo.username,

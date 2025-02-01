@@ -3,14 +3,12 @@ package me.nobaboy.nobaaddons.config.categories
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.utils.*
 import me.nobaboy.nobaaddons.utils.CommonText
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.TextUtils.darkAqua
 import me.nobaboy.nobaaddons.utils.tr
 
 object QOLCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.qol", "QOL")) {
 		// region Sound Filters
-		buildGroup(tr("nobaaddons.config.qol.soundFilters", "Sound Filters")) {
+		group(tr("nobaaddons.config.qol.soundFilters", "Sound Filters")) {
 			// region Item Abilities
 			label(CommonText.Config.LABEL_ITEM_ABILITIES)
 
@@ -65,34 +63,6 @@ object QOLCategory {
 				tr("nobaaddons.config.qol.soundFilters.mutePunch.tooltip", "Mutes the punch sound Hypixel started playing on all hits recently"),
 				default = defaults.qol.soundFilters.mutePunch,
 				property = config.qol.soundFilters::mutePunch
-			)
-			// endregion
-		}
-		// endregion
-
-		// region Garden
-		buildGroup(tr("nobaaddons.config.qol.garden", "Garden")) {
-			// region Sensitivity Reducer
-			val lockMouseCommand = buildLiteral("/noba lockmouse") { darkAqua() }
-			val reduce = boolean(
-				tr("nobaaddons.config.qol.garden.reduceMouseSensitivity", "Reduce Mouse Sensitivity"),
-				tr("nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip", "Reduces your mouse sensitivity in the Garden while holding a farming tool and on the ground. Your mouse may also be locked with $lockMouseCommand"),
-				default = defaults.qol.garden.reduceMouseSensitivity,
-				property = config.qol.garden::reduceMouseSensitivity
-			)
-			slider(
-				tr("nobaaddons.config.qol.garden.reductionMultiplier", "Reduction Multiplier"),
-				default = defaults.qol.garden.reductionMultiplier,
-				property = config.qol.garden::reductionMultiplier,
-				min = 2,
-				max = 10,
-				step = 1
-			) requires config(reduce)
-			boolean(
-				tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport", "Auto Unlock Mouse on Teleport"),
-				tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip", "Automatically unlocks your mouse when teleporting more than 5 blocks if locked with $lockMouseCommand"),
-				default = defaults.qol.garden.autoUnlockMouseOnTeleport,
-				property = config.qol.garden::autoUnlockMouseOnTeleport
 			)
 			// endregion
 		}

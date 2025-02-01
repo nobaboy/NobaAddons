@@ -16,7 +16,7 @@ private fun Text.wip(): Text = buildText {
 
 object SlayersCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.slayers", "Slayers")) {
-		buildGroup(tr("nobaaddons.config.slayers.bossAlert", "Boss Alert")) {
+		group(tr("nobaaddons.config.slayers.bossAlert", "Boss Alert")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.slayers.bossAlert.enabled,
@@ -26,10 +26,10 @@ object SlayersCategory {
 				CommonText.Config.ALERT_COLOR,
 				default = defaults.slayers.bossAlert.alertColor,
 				property = config.slayers.bossAlert::alertColor
-			) requires config(enabled)
+			) requires configOption(enabled)
 		}
 
-		buildGroup(tr("nobaaddons.config.slayers.miniBossAlert", "MiniBoss Alert")) {
+		group(tr("nobaaddons.config.slayers.miniBossAlert", "MiniBoss Alert")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.slayers.miniBossAlert.enabled,
@@ -39,10 +39,10 @@ object SlayersCategory {
 				CommonText.Config.ALERT_COLOR,
 				default = defaults.slayers.miniBossAlert.alertColor,
 				property = config.slayers.miniBossAlert::alertColor
-			) requires config(enabled)
+			) requires configOption(enabled)
 		}
 
-		buildGroup(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
+		group(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED.wip(),
 				default = defaults.slayers.highlightMiniBosses.enabled,
@@ -52,10 +52,10 @@ object SlayersCategory {
 				CommonText.Config.HIGHLIGHT_COLOR.wip(),
 				default = defaults.slayers.highlightMiniBosses.highlightColor,
 				property = config.slayers.highlightMiniBosses::highlightColor
-			) requires config(enabled)
+			) requires configOption(enabled)
 		}
 
-		buildGroup(tr("nobaaddons.config.slayers.announceBossKillTime", "Announce Boss Kill Time")) {
+		group(tr("nobaaddons.config.slayers.announceBossKillTime", "Announce Boss Kill Time")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.slayers.announceBossKillTime.enabled,
@@ -66,10 +66,10 @@ object SlayersCategory {
 				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource.tooltip", "Determines the source for the boss kill time\n\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag"),
 				default = defaults.slayers.announceBossKillTime.timeSource,
 				property = config.slayers.announceBossKillTime::timeSource
-			) requires config(enabled)
+			) requires configOption(enabled)
 		}
 
-		buildGroup(tr("nobaaddons.config.slayers.compactMessages", "Compact Quest Messages")) {
+		group(tr("nobaaddons.config.slayers.compactMessages", "Compact Quest Messages")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				tr("nobaaddons.config.slayers.compactMessages.enabled.tooltip", "Condenses messages from Auto-Slayer and manually claiming a Slayer quest at Maddox into one message while enabled"),
@@ -81,10 +81,10 @@ object SlayersCategory {
 				tr("nobaaddons.config.slayers.compactMessages.removeLastMessage.tooltip", "The last compacted message will also be removed upon completing another slayer quest"),
 				default = defaults.slayers.compactMessages.removeLastMessage,
 				property = config.slayers.compactMessages::removeLastMessage,
-			) requires enabled
+			) requires configOption(enabled)
 		}
 
-		buildGroup(tr("nobaaddons.config.slayers.sven", "Sven Packmaster")) {
+		group(tr("nobaaddons.config.slayers.sven", "Sven Packmaster")) {
 			boolean(
 				tr("nobaaddons.config.slayers.sven.hidePupNametags", "Hide Pup Nametags"),
 				default = defaults.slayers.sven.hidePupNametags,
@@ -92,7 +92,7 @@ object SlayersCategory {
 			)
 		}
 
-		buildGroup(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
+		group(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
 			val highlightPhases = boolean(
 				tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases").wip(),
 				tr("nobaaddons.config.slayers.voidgloom.highlightPhases.tooltip", "Highlights the Voidgloom Seraph based on its current phase\n\nThe priority of the phases are:\n - Beacon Phase\n - Hits Phase\n - Damage Phase"),
@@ -104,19 +104,19 @@ object SlayersCategory {
 				default = defaults.slayers.voidgloom.beaconPhaseColor,
 				property = config.slayers.voidgloom::beaconPhaseColor,
 				allowAlpha = true,
-			) requires config(highlightPhases)
+			) requires configOption(highlightPhases)
 			color(
 				tr("nobaaddons.config.slayers.voidgloom.hitsPhaseColor", "Hits Phase Color").wip(),
 				default = defaults.slayers.voidgloom.hitsPhaseColor,
 				property = config.slayers.voidgloom::hitsPhaseColor,
 				allowAlpha = true,
-			) requires config(highlightPhases)
+			) requires configOption(highlightPhases)
 			color(
 				tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color").wip(),
 				default = defaults.slayers.voidgloom.damagePhaseColor,
 				property = config.slayers.voidgloom::damagePhaseColor,
 				allowAlpha = true,
-			) requires config(highlightPhases)
+			) requires configOption(highlightPhases)
 
 			label(tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs"))
 
@@ -130,7 +130,7 @@ object SlayersCategory {
 				CommonText.Config.ALERT_COLOR,
 				default = defaults.slayers.voidgloom.yangGlyphAlertColor,
 				property = config.slayers.voidgloom::yangGlyphAlertColor
-			) requires config(yangGlyphAlert)
+			) requires configOption(yangGlyphAlert)
 			val highlightYangGlyph = boolean(
 				tr("nobaaddons.config.slayers.voidgloom.highlightYangGlyph", "Highlight Yang Glyphs"),
 				default = defaults.slayers.voidgloom.highlightYangGlyphs,
@@ -140,7 +140,7 @@ object SlayersCategory {
 				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.slayers.voidgloom.yangGlyphHighlightColor,
 				property = config.slayers.voidgloom::yangGlyphHighlightColor
-			) requires config(highlightYangGlyph)
+			) requires configOption(highlightYangGlyph)
 
 			label(tr("nobaaddons.config.slayers.voidgloom.label.nukekubiFixations", "Nukekubi Fixations"))
 
@@ -153,7 +153,7 @@ object SlayersCategory {
 				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.slayers.voidgloom.nukekubiFixationHighlightColor,
 				property = config.slayers.voidgloom::nukekubiFixationHighlightColor
-			) requires config(highlightNukekubiFixations)
+			) requires configOption(highlightNukekubiFixations)
 
 			label(CommonText.Config.LABEL_MISC)
 
@@ -165,7 +165,7 @@ object SlayersCategory {
 			)
 		}
 
-		buildGroup(tr("nobaaddons.config.slayers.inferno", "Inferno Demonlord")) {
+		group(tr("nobaaddons.config.slayers.inferno", "Inferno Demonlord")) {
 			boolean(
 				tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield").wip(),
 				default = defaults.slayers.inferno.highlightHellionShield,

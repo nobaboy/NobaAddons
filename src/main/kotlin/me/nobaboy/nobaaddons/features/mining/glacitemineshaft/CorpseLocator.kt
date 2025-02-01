@@ -34,7 +34,7 @@ object CorpseLocator {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { corpses.clear() }
-		TickEvents.everySecond(this::onSecondPassed)
+		TickEvents.TICK.everySecond(this::onSecondPassed)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 

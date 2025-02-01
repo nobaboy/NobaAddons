@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.tr
 object InventoryCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.inventory", "Inventory")) {
 		// region Slot Info
-		buildGroup(
+		group(
 			tr("nobaaddons.config.inventory.slotInfo", "Slot Info"),
 			tr("nobaaddons.config.inventory.slotInfo.tooltip", "Displays item details such as names and/or tiers on item slots")
 		) {
@@ -155,7 +155,7 @@ object InventoryCategory {
 		// endregion
 
 		// region Enchantment Tooltips
-		buildGroup(tr("nobaaddons.config.inventory.enchantmentTooltips", "Enchantment Tooltips")) {
+		group(tr("nobaaddons.config.inventory.enchantmentTooltips", "Enchantment Tooltips")) {
 			val enabled = boolean(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips", "Modify Enchant Tooltips"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips.tooltip", "Reformats the enchantment list on items in a style similar to the same feature from Skyblock Addons"),
@@ -167,38 +167,38 @@ object InventoryCategory {
 				tr("nobaaddons.config.inventory.enchantmentTooltips.replaceRomanNumerals.tooltip", "Enchantment tiers will be replaced with their number representation instead of the original roman numerals used"),
 				default = defaults.inventory.enchantmentTooltips.replaceRomanNumerals,
 				property = config.inventory.enchantmentTooltips::replaceRomanNumerals
-			) requires config(enabled)
+			) requires configOption(enabled)
 			val display = cycler(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.displayMode", "Display Mode"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.displayMode.tooltip", "Changes how enchantments are displayed on items; Default will follow roughly the same behavior as Hypixel and compact at 6 or more enchants, while Compact will always condense them into as few lines as possible."),
 				default = defaults.inventory.enchantmentTooltips.displayMode,
 				property = config.inventory.enchantmentTooltips::displayMode
-			) requires config(enabled)
+			) requires configOption(enabled)
 			boolean(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.showDescriptions", "Show Descriptions"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.showDescriptions.tooltip", "Controls whether enchant descriptions will be shown when enchantments aren't compacted (only when Hypixel adds the descriptions); this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."),
 				default = defaults.inventory.enchantmentTooltips.showDescriptions,
 				property = config.inventory.enchantmentTooltips::showDescriptions
-			) requires all(config(enabled), config(display) { it != EnchantmentDisplayMode.COMPACT })
+			) requires all(configOption(enabled), configOption(display) { it != EnchantmentDisplayMode.COMPACT })
 			boolean(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.showStacking", "Show Stacking Enchant Progress"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.showStacking.tooltip", "Shows the total value (and progress to next tier if applicable) on stacking enchantments like Champion, Expertise, etc."),
 				default = defaults.inventory.enchantmentTooltips.showStackingProgress,
 				property = config.inventory.enchantmentTooltips::showStackingProgress
-			) requires config(enabled)
+			) requires configOption(enabled)
 
 			color(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.maxColor", "Max Enchant Color"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.maxColor.tooltip", "The color used for enchantments at their maximum level"),
 				default = defaults.inventory.enchantmentTooltips.maxColor,
 				property = config.inventory.enchantmentTooltips::maxColor
-			) requires config(enabled)
+			) requires configOption(enabled)
 			color(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.goodColor", "Good Enchant Color"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.goodColor.tooltip", "The color used for enchantments that are above their max normally obtainable level"),
 				default = defaults.inventory.enchantmentTooltips.goodColor,
 				property = config.inventory.enchantmentTooltips::goodColor
-			) requires config(enabled)
+			) requires configOption(enabled)
 			color(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.averageColor", "Max Normally Obtainable Enchant Color"),
 				// if only mc-auto-translations supported splitting strings onto multiple lines :(
@@ -208,18 +208,18 @@ object InventoryCategory {
 				),
 				default = defaults.inventory.enchantmentTooltips.averageColor,
 				property = config.inventory.enchantmentTooltips::averageColor
-			) requires config(enabled)
+			) requires configOption(enabled)
 			color(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.badColor", "Bad Enchant Color"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.badColor.tooltip", "The color used for enchantments that aren't at any of the above tiers"),
 				default = defaults.inventory.enchantmentTooltips.badColor,
 				property = config.inventory.enchantmentTooltips::badColor
-			) requires config(enabled)
+			) requires configOption(enabled)
 		}
 		// endregion
 
 		// region Item Pickup Log
-		buildGroup(tr("nobaaddons.config.inventory.itemPickupLog", "Item Pickup Log")) {
+		group(tr("nobaaddons.config.inventory.itemPickupLog", "Item Pickup Log")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.inventory.itemPickupLog.enabled,
@@ -233,12 +233,12 @@ object InventoryCategory {
 				default = defaults.inventory.itemPickupLog.timeoutSeconds,
 				property = defaults.inventory.itemPickupLog::timeoutSeconds,
 				format = CommonText.Config::seconds
-			) requires config(enabled)
+			) requires configOption(enabled)
 			cycler(
 				tr("nobaaddons.config.inventory.itemPickupLog.style", "Text Style"),
 				default = TextShadow.SHADOW,
 				property = UISettings.itemPickupLog::textShadow
-			) requires config(enabled)
+			) requires configOption(enabled)
 		}
 		// endregion
 	}

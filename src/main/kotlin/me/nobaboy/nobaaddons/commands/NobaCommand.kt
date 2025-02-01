@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.commands.debug.DebugCommands
 import me.nobaboy.nobaaddons.commands.impl.CommandUtil
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.features.FeatureManager
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWarpLocations
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
@@ -45,6 +46,11 @@ object NobaCommand {
 	@Command
 	fun config() {
 		NobaConfig.getConfigScreen(null).queueOpen()
+	}
+
+	@Command
+	fun newConfig() {
+		FeatureManager.config().generateScreen(null).queueOpen()
 	}
 
 	@Command("hud", "gui")

@@ -25,16 +25,17 @@ fun all(vararg conditions: OptionCondition): OptionCondition =
 fun none(vararg conditions: OptionCondition): OptionCondition =
 	WrappingCondition(conditions.toList()) { conditions.none { it.validate() } }
 
-fun config(option: Option<Boolean>, invert: Boolean = false) = config(option, invert) { it }
+fun configOption(option: Option<Boolean>, invert: Boolean = false) = configOption(option, invert) { it }
 
-fun <T> config(option: Option<T>, invert: Boolean = false, condition: (T) -> Boolean) = object : OptionCondition {
+fun <T> configOption(option: Option<T>, invert: Boolean = false, condition: (T) -> Boolean) = object : OptionCondition {
 	override fun validate() = if(invert) !condition(option.pendingValue()) else condition(option.pendingValue())
 	override fun listenTo(): Set<Option<*>> = setOf(option)
 }
 
 fun mod(mod: String, minVersion: Version? = null, maxVersion: Version? = null, invert: Boolean = false) = OptionCondition {
-	val container = FabricLoader.getInstance().getModContainer(mod).getOrNull() ?: return@OptionCondition false
+	val container = FabricLoader.getInstance().getModContainer(mod).getOrNull()
 	val ret = when {
+		container == null -> false
 		minVersion != null && minVersion > container.metadata.version -> false
 		maxVersion != null && maxVersion < container.metadata.version -> false
 		else -> true

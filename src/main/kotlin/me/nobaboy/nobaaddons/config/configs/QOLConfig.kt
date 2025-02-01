@@ -5,7 +5,6 @@ import dev.celestialfault.celestialconfig.Property
 
 class QOLConfig : ObjectProperty<QOLConfig>("qol") {
 	val soundFilters by SoundFilters()
-	val garden by Garden()
 
 	class SoundFilters : ObjectProperty<SoundFilters>("soundFilters") {
 		var muteWitherSkullAbilities by Property.of<Boolean>("muteWitherSkullAbilities", false)
@@ -20,6 +19,7 @@ class QOLConfig : ObjectProperty<QOLConfig>("qol") {
 		var mutePunch by Property.of<Boolean>("mutePunch", false)
 	}
 
+	// TODO migrate
 	class Garden : ObjectProperty<Garden>("garden") {
 		var reduceMouseSensitivity by Property.of<Boolean>("reduceMouseSensitivity", false)
 		var reductionMultiplier by Property.of<Int>("reductionMultiplier", 6)

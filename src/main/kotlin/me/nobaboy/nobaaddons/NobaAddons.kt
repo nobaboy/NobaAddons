@@ -29,6 +29,7 @@ import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
+import me.nobaboy.nobaaddons.features.FeatureManager
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
@@ -150,6 +151,8 @@ object NobaAddons : ClientModInitializer {
 		SlayerAPI.init()
 		TrophyFishAPI.init()
 		/* endregion */
+
+		FeatureManager.init()
 
 		/* region Screens */
 		ChatNotificationsManager.init()

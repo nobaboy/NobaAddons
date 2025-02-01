@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.utils.tr
 
 object RiftCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.rift", "Rift")) {
-		buildGroup(tr("nobaaddons.config.rift.timers", "Rift Timers")) {
+		group(tr("nobaaddons.config.rift.timers", "Rift Timers")) {
 			val infusion = boolean(
 				tr("nobaaddons.config.rift.timers.freeInfusions", "Free Infusions"),
 				tr("nobaaddons.config.rift.timers.freeInfusions.tooltip", "Sends a message in chat when you regain a free Rift infusion"),
@@ -30,7 +30,7 @@ object RiftCategory {
 				tr("nobaaddons.config.rift.timers.warpTarget.tooltip", "Where clicking on the sent chat message should warp you"),
 				default = defaults.rift.warpTarget,
 				property = config.rift::warpTarget
-			) requires any(config(infusion), config(ss))
+			) requires any(configOption(infusion), configOption(ss))
 		}
 	}
 }

@@ -11,18 +11,18 @@ import net.minecraft.text.Text
 object ChatCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.chat", "Chat")) {
 		// region Copy Chat
-		buildGroup(tr("nobaaddons.config.chat.copyChat", "Copy Chat")) {
+		group(tr("nobaaddons.config.chat.copyChat", "Copy Chat")) {
 			val enabled = boolean(CommonText.Config.ENABLED, default = defaults.chat.copyChat.enabled, property = config.chat.copyChat::enabled)
 			cycler(
 				tr("nobaaddons.config.chat.copyChat.mode", "Copy Chat With"),
 				default = defaults.chat.copyChat.mode,
 				property = config.chat.copyChat::mode
-			) requires config(enabled)
+			) requires configOption(enabled)
 		}
 		// endregion
 
 		// region Alerts
-		buildGroup(tr("nobaaddons.config.chat.alerts", "Alerts")) {
+		group(tr("nobaaddons.config.chat.alerts", "Alerts")) {
 			// region Crimson Isle
 			label(CommonText.Config.LABEL_CRIMSON_ISLE)
 
@@ -43,7 +43,7 @@ object ChatCategory {
 		// endregion
 
 		// region Filters
-		buildGroup(tr("nobaaddons.config.chat.filters", "Filters")) {
+		group(tr("nobaaddons.config.chat.filters", "Filters")) {
 			// region Crimson Isle
 			label(CommonText.Config.LABEL_CRIMSON_ISLE)
 
@@ -163,7 +163,7 @@ object ChatCategory {
 		// endregion
 
 		// region Chat Commands
-		buildGroup(tr("nobaaddons.config.chat.chatCommands", "Chat Commands")) {
+		group(tr("nobaaddons.config.chat.chatCommands", "Chat Commands")) {
 			// region DM
 			label(tr("nobaaddons.config.chat.chatCommands.label.dm", "DM Commands"))
 
@@ -183,24 +183,24 @@ object ChatCategory {
 				helpTitle, helpDescription,
 				default = defaults.chat.chatCommands.dm.help,
 				property = config.chat.chatCommands.dm::help
-			) requires config(dmEnabled)
+			) requires configOption(dmEnabled)
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.dm.warpMe", "!warpme Command"),
 				tr("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip", "Warps the messaging player to your lobby"),
 				default = defaults.chat.chatCommands.dm.warpMe,
 				property = config.chat.chatCommands.dm::warpMe
-			) requires config(dmEnabled)
+			) requires configOption(dmEnabled)
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.dm.partyMe", "!partyme Command"),
 				tr("nobaaddons.config.chat.chatCommands.dm.partyMe.tooltip", "Invites the messaging player to your party"),
 				default = defaults.chat.chatCommands.dm.partyMe,
 				property = config.chat.chatCommands.dm::partyMe
-			) requires config(dmEnabled)
+			) requires configOption(dmEnabled)
 			boolean(
 				warpOutTitle, warpOutDescription,
 				default = defaults.chat.chatCommands.dm.warpOut,
 				property = config.chat.chatCommands.dm::warpOut
-			) requires config(dmEnabled)
+			) requires configOption(dmEnabled)
 			// endregion
 
 			// region Party
@@ -216,37 +216,37 @@ object ChatCategory {
 				helpTitle, helpDescription,
 				default = defaults.chat.chatCommands.party.help,
 				property = config.chat.chatCommands.party::help
-			) requires config(partyEnabled)
+			) requires configOption(partyEnabled)
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.allInvite", "!allinvite Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip", "Runs '/p settings allinvite' when used if you're the party leader"),
 				default = defaults.chat.chatCommands.party.allInvite,
 				property = config.chat.chatCommands.party::allInvite
-			) requires config(partyEnabled)
+			) requires configOption(partyEnabled)
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.transfer", "!transfer Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.transfer.tooltip", "Transfers the party to the player using the command (or the specified player, if any) if you're the party leader"),
 				default = defaults.chat.chatCommands.party.transfer,
 				property = config.chat.chatCommands.party::transfer
-			) requires config(partyEnabled)
+			) requires configOption(partyEnabled)
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.warp", "!warp Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.warp.tooltip", "Warps the party to your current lobby (with an optional seconds delay) if you're the leader"),
 				default = defaults.chat.chatCommands.party.warp,
 				property = config.chat.chatCommands.party::warp
-			) requires config(partyEnabled)
+			) requires configOption(partyEnabled)
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.coords", "!coords Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.coords.tooltip", "Responds with your current in-game coordinates"),
 				default = defaults.chat.chatCommands.party.coords,
 				property = config.chat.chatCommands.party::coords
-			) requires config(partyEnabled)
+			) requires configOption(partyEnabled)
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced", "Instance Commands"),
 				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced.tooltip", "Commands such as !m6 (Master Mode Catacombs), !f7 (Catacombs), !t5 (Kuudra), etc."),
 				default = defaults.chat.chatCommands.party.joinInstanced,
 				property = config.chat.chatCommands.party::joinInstanced
-			) requires config(partyEnabled)
+			) requires configOption(partyEnabled)
 			// endregion
 
 			// region Guild
@@ -262,12 +262,12 @@ object ChatCategory {
 				helpTitle, helpDescription,
 				default = defaults.chat.chatCommands.guild.help,
 				property = config.chat.chatCommands.guild::help
-			) requires config(guildEnabled)
+			) requires configOption(guildEnabled)
 			boolean(
 				warpOutTitle, warpOutDescription,
 				default = defaults.chat.chatCommands.guild.warpOut,
 				property = config.chat.chatCommands.guild::warpOut
-			) requires config(guildEnabled)
+			) requires configOption(guildEnabled)
 			// endregion
 		}
 		// endregion

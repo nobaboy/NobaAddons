@@ -30,7 +30,7 @@ object ChatUtils {
 
 	init {
 		TickEvents.cooldown { _, cooldown -> processCommandQueue(cooldown) }
-		TickEvents.everySecond { removeExpiredClickActions() }
+		TickEvents.TICK.everySecond { removeExpiredClickActions() }
 		ChatMessageEvents.ADDED.register(this::onChatAdded)
 	}
 

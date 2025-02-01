@@ -49,7 +49,7 @@ object InquisitorWaypoints {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		TickEvents.everySecond { onSecondPassed() }
+		TickEvents.TICK.everySecond { onSecondPassed() }
 		MythologicalEvents.INQUISITOR_SPAWN.register(this::onInquisitorSpawn)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}

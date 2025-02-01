@@ -1,12 +1,8 @@
 package me.nobaboy.nobaaddons.config.utils
 
-import dev.isxander.yacl3.api.ButtonOption
-import dev.isxander.yacl3.api.ConfigCategory
-import dev.isxander.yacl3.api.LabelOption
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionAddable
 import dev.isxander.yacl3.api.OptionDescription
-import dev.isxander.yacl3.api.OptionGroup
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder
 import dev.isxander.yacl3.api.controller.ControllerBuilder
@@ -18,82 +14,76 @@ import dev.isxander.yacl3.api.controller.SliderControllerBuilder
 import dev.isxander.yacl3.api.controller.StringControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import dev.isxander.yacl3.api.controller.ValueFormatter
-import dev.isxander.yacl3.gui.YACLScreen
-import me.nobaboy.nobaaddons.features.WrappedOption
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import net.minecraft.text.Text
 import java.awt.Color
-
-inline fun buildCategory(name: Text, crossinline builder: ConfigCategory.Builder.() -> Unit): ConfigCategory =
-	ConfigCategory.createBuilder().name(name).apply(builder).build()
-
-inline fun buildGroup(name: Text, description: Text? = null, collapsed: Boolean = true, builder: OptionGroup.Builder.() -> Unit): OptionGroup =
-	OptionGroup.createBuilder().apply {
-		name(name)
-		description?.let { description(OptionDescription.of(it)) }
-		collapsed(collapsed)
-		apply(builder)
-	}.build()
-
-inline fun ConfigCategory.Builder.group(
-	name: Text,
-	description: Text? = null,
-	collapsed: Boolean = true,
-	crossinline builder: OptionGroup.Builder.() -> Unit
-) {
-	group(buildGroup(name, description, collapsed, builder))
-}
+import kotlin.reflect.KMutableProperty
 
 fun <G : OptionAddable, T : Any> G.add(
 	name: Text,
 	description: Text? = null,
 	optionController: (Option<T>) -> ControllerBuilder<T>,
-	option: WrappedOption<T>,
+	default: T,
+	property: KMutableProperty<T>
 ): Option<T> = Option.createBuilder<T>().apply {
 	name(name)
 	description?.let { description(OptionDescription.of(it)) }
+	binding(default, property.getter::call, property.setter::call)
 	controller(optionController)
-	binding(option.default, option::get, option::set)
 }.build().also { option(it) }
 
 fun <G : OptionAddable> G.boolean(
 	name: Text,
 	description: Text? = null,
-	option: WrappedOption<Boolean>
-): Option<Boolean> = add(name, description, { BooleanControllerBuilder.create(it).coloured(true) }, option)
+	default: Boolean,
+	property: KMutableProperty<Boolean>
+): Option<Boolean> = add(name, description, BooleanControllerBuilder::create, default, property)
 
 fun <G : OptionAddable> G.tickBox(
 	name: Text,
 	description: Text? = null,
-	option: WrappedOption<Boolean>
-): Option<Boolean> = add(name, description, TickBoxControllerBuilder::create, option)
+	default: Boolean,
+	property: KMutableProperty<Boolean>
+): Option<Boolean> {
+	return add(name, description, TickBoxControllerBuilder::create, default, property)
+}
 
 fun <G : OptionAddable> G.string(
 	name: Text,
 	description: Text? = null,
-	option: WrappedOption<String>
-): Option<String> = add(name, description, StringControllerBuilder::create, option)
+	default: String,
+	property: KMutableProperty<String>
+): Option<String> {
+	return add(name, description, StringControllerBuilder::create, default, property)
+}
 
 inline fun <G : OptionAddable, reified E : Enum<E>> G.cycler(
 	name: Text,
 	description: Text? = null,
-	option: WrappedOption<E>,
+	default: E,
+	property: KMutableProperty<E>,
 	onlyInclude: Array<E>? = null,
 	formatter: ValueFormatter<E>? = null,
 ): Option<E> {
 	val builder: (Option<E>) -> EnumControllerBuilder<E> = when(onlyInclude) {
-		null -> { it -> EnumControllerBuilder.create(it).apply { if(formatter != null) formatValue(formatter) } }
+		null -> { it ->
+			EnumControllerBuilder.create(it).apply {
+				if(formatter != null) formatValue(formatter)
+				enumClass(E::class.java)
+			}
+		}
 		else -> { it -> LimitedEnumControllerBuilder(it, onlyInclude).apply { if(formatter != null) formatValue(formatter) } }
 	}
-	return add(name, description, builder, option)
+	return add(name, description, builder, default, property)
 }
 
 @Suppress("UNCHECKED_CAST")
 inline fun <G : OptionAddable, reified N : Number> G.slider(
 	name: Text,
 	description: Text? = null,
-	option: WrappedOption<N>,
+	default: N,
+	property: KMutableProperty<N>,
 	min: N,
 	max: N,
 	step: N,
@@ -113,20 +103,21 @@ inline fun <G : OptionAddable, reified N : Number> G.slider(
 			.apply { if(format != null) formatValue(format) }
 	}
 
-	return add(name, description, builder, option)
+	return add(name, description, builder, default, property)
 }
 
 fun <G : OptionAddable> G.color(
 	name: Text,
 	description: Text? = null,
-	option: WrappedOption<Color>,
+	default: Color,
+	property: KMutableProperty<Color>,
 	allowAlpha: Boolean = false,
 ): Option<Color> {
 	val option = Option.createBuilder<Color>()
 		.name(name)
 		.also { if(description != null) it.description(OptionDescription.of(description)) }
 		.controller { ColorControllerBuilder.create(it).allowAlpha(allowAlpha) }
-		.binding(option.default, option::get, option::set)
+		.binding(default, { property.getter.call() }) { property.setter.call(it) }
 		.build()
 	option(option)
 	return option
@@ -135,32 +126,15 @@ fun <G : OptionAddable> G.color(
 fun <G : OptionAddable> G.color(
 	name: Text,
 	description: Text? = null,
-	option: WrappedOption<NobaColor>
+	default: NobaColor,
+	property: KMutableProperty<NobaColor>
 ): Option<Color> {
 	val option = Option.createBuilder<Color>()
 		.name(name)
 		.also { if(description != null) it.description(OptionDescription.of(description)) }
 		.controller(ColorControllerBuilder::create)
-		.binding(option.default.toColor(), { option.get().toColor() }, { option.set(it.toNobaColor()) })
+		.binding(default.toColor(), { property.getter.call().toColor() }) { property.setter.call(it.toNobaColor()) }
 		.build()
 	option(option)
 	return option
-}
-
-fun <G : OptionAddable> G.label(vararg lines: Text): G = apply {
-	require(lines.isNotEmpty()) { "Cannot create an empty label controller" }
-	option(LabelOption.createBuilder().apply {
-		if(lines.size == 1) line(lines[0]) else lines(lines.toList())
-	}.build())
-}
-
-fun <G : OptionAddable> G.button(name: Text, description: Text? = null, text: Text? = null, action: (YACLScreen) -> Unit): ButtonOption {
-	val button = ButtonOption.createBuilder()
-		.name(name)
-		.also { if(description != null) it.description(OptionDescription.of(description)) }
-		.also { if(text != null) it.text(text) }
-		.action { screen, _ -> action(screen) }
-		.build()
-	option(button)
-	return button
 }

@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.tr
 object EventsCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.events", "Events")) {
 		// region Hoppity's Hunt
-		buildGroup(tr("nobaaddons.config.events.hoppity", "Hoppity's Hunt")) {
+		group(tr("nobaaddons.config.events.hoppity", "Hoppity's Hunt")) {
 			boolean(
 				tr("nobaaddons.config.events.hoppity.eggGuess", "Egg Guess"),
 				tr("nobaaddons.config.events.hoppity.eggGuess.tooltip", "Guesses the eggs location from the Egglocator's ability"),
@@ -25,7 +25,7 @@ object EventsCategory {
 		// endregion
 
 		// region Mythological Ritual
-		buildGroup(tr("nobaaddons.config.events.mythological", "Mythological Ritual")) {
+		group(tr("nobaaddons.config.events.mythological", "Mythological Ritual")) {
 			val burrowGuess = boolean(
 				tr("nobaaddons.config.events.mythological.burrowGuess", "Burrow Guess"),
 				tr("nobaaddons.config.events.mythological.burrowGuess.tooltip", "Guesses the next burrow location from the Ancestral Spade's Echo ability"),
@@ -43,13 +43,13 @@ object EventsCategory {
 				tr("nobaaddons.config.events.mythological.pingOnBurrowFind.tooltip", "Plays a sound when a burrow is found nearby"),
 				default = defaults.events.mythological.dingOnBurrowFind,
 				property = config.events.mythological::dingOnBurrowFind
-			) requires config(findNearby)
+			) requires configOption(findNearby)
 			boolean(
 				tr("nobaaddons.config.events.mythological.removeGuessOnBurrowFind", "Hide Guess Near Burrows"),
 				tr("nobaaddons.config.events.mythological.removeGuessOnBurrowFind.tooltip", "Automatically hides any guesses when nearby burrows are found"),
 				default = defaults.events.mythological.removeGuessOnBurrowFind,
 				property = config.events.mythological::removeGuessOnBurrowFind
-			) requires all(config(findNearby), config(burrowGuess))
+			) requires all(configOption(findNearby), configOption(burrowGuess))
 			val warp = boolean(
 				tr("nobaaddons.config.events.mythological.findNearestWarp", "Find Nearest Warp"),
 				tr("nobaaddons.config.events.mythological.findNearestWarp.tooltip", "Finds the nearest /warp to the guess, which can automatically be warped to with the associated key configured in Controls"),
@@ -70,24 +70,24 @@ object EventsCategory {
 				tr("nobaaddons.config.events.mythological.alertOnlyInParty.tooltip", "The Inquisitor alert message will always be sent in party chat, instead of your current selected /chat"),
 				default = defaults.events.mythological.alertOnlyInParty,
 				property = config.events.mythological::alertOnlyInParty
-			) requires config(alertInquis)
+			) requires configOption(alertInquis)
 			cycler(
 				CommonText.Config.NOTIFICATION_SOUND,
 				default = defaults.events.mythological.notificationSound,
 				property = config.events.mythological::notificationSound
-			) requires config(alertInquis)
+			) requires configOption(alertInquis)
 			boolean(
 				tr("nobaaddons.config.events.mythological.showInquisitorDespawnTime", "Show Inquisitor Despawn Time"),
 				tr("nobaaddons.config.events.mythological.showInquisitorDespawnTime.tooltip", "Displays how much time is left until the Minos Inquisitor despawns"),
 				default = defaults.events.mythological.showInquisitorDespawnTime,
 				property = config.events.mythological::showInquisitorDespawnTime
-			) requires config(alertInquis)
+			) requires configOption(alertInquis)
 			boolean(
 				tr("nobaaddons.config.events.mythological.inquisitorFocusMode", "Inquisitor Focus Mode"),
 				tr("nobaaddons.config.events.mythological.inquisitorFocusMode.tooltip", "Hides all other waypoints when an Inquisitor spawn is detected"),
 				default = defaults.events.mythological.inquisitorFocusMode,
 				property = config.events.mythological::inquisitorFocusMode
-			) requires config(alertInquis)
+			) requires configOption(alertInquis)
 
 			label(CommonText.Config.LABEL_MISC)
 
@@ -105,19 +105,19 @@ object EventsCategory {
 				tr("nobaaddons.config.events.mythological.ignoreCrypt.tooltip", "Because leaving the crypts may be inconvenient"),
 				default = defaults.events.mythological.ignoreCrypt,
 				property = config.events.mythological::ignoreCrypt
-			) requires config(warp)
+			) requires configOption(warp)
 			boolean(
 				tr("nobaaddons.config.events.mythological.ignoreWizard", "Ignore /warp wizard"),
 				tr("nobaaddons.config.events.mythological.ignoreWizard.tooltip", "Because it's easy to accidentally fall into the Rift from it"),
 				default = defaults.events.mythological.ignoreWizard,
 				property = config.events.mythological::ignoreWizard
-			) requires config(warp)
+			) requires configOption(warp)
 			boolean(
 				tr("nobaaddons.config.events.mythological.ignoreStonks", "Ignore /warp stonks"),
 				tr("nobaaddons.config.events.mythological.ignoreStonks.tooltip", "Because it's new"),
 				default = defaults.events.mythological.ignoreStonks,
 				property = config.events.mythological::ignoreStonks
-			) requires config(warp)
+			) requires configOption(warp)
 		}
 		// endregion
 	}
