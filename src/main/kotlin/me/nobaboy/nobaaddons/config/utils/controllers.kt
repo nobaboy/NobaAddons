@@ -3,6 +3,8 @@ package me.nobaboy.nobaaddons.config.utils
 import dev.isxander.yacl3.api.Controller
 import dev.isxander.yacl3.api.NameableEnum
 import dev.isxander.yacl3.api.Option
+import dev.isxander.yacl3.api.controller.BooleanControllerBuilder
+import dev.isxander.yacl3.api.controller.ControllerBuilder
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder
 import dev.isxander.yacl3.api.controller.ValueFormatter
 import dev.isxander.yacl3.gui.controllers.cycling.EnumController
@@ -23,4 +25,20 @@ class LimitedEnumControllerBuilder<E : Enum<E>>(private val option: Option<E>, p
 
 	@Suppress("UnstableApiUsage")
 	override fun build(): Controller<E> = EnumController.createInternal(option, formatter, onlyInclude)
+}
+
+fun OptionBuilder<Boolean>.boolean() {
+	controller = { BooleanControllerBuilder.create(it).coloured(true) }
+}
+
+fun <T : Enum<T>> OptionBuilder<T>.enumController(cls: Class<T>) {
+	controller = { EnumControllerBuilder.create(it).enumClass(cls) }
+}
+
+inline fun <reified T : Enum<T>> OptionBuilder<T>.enumController() {
+	controller = { EnumControllerBuilder.create(it).enumClass(T::class.java) }
+}
+
+inline fun <reified T : Enum<T>> OptionBuilder<T>.enumController(onlyInclude: Array<T>) {
+	controller = { LimitedEnumControllerBuilder(it, onlyInclude) }
 }

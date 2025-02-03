@@ -156,36 +156,50 @@ object InventoryCategory {
 
 		// region Enchantment Tooltips
 		group(tr("nobaaddons.config.inventory.enchantmentTooltips", "Enchantment Tooltips")) {
-			val enabled = boolean(
-				tr("nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips", "Modify Enchant Tooltips"),
-				tr("nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips.tooltip", "Reformats the enchantment list on items in a style similar to the same feature from Skyblock Addons"),
-				default = defaults.inventory.enchantmentTooltips.modifyTooltips,
-				property = config.inventory.enchantmentTooltips::modifyTooltips
-			)
-			boolean(
-				tr("nobaaddons.config.inventory.enchantmentTooltips.replaceRomanNumerals", "Replace Roman Numerals"),
-				tr("nobaaddons.config.inventory.enchantmentTooltips.replaceRomanNumerals.tooltip", "Enchantment tiers will be replaced with their number representation instead of the original roman numerals used"),
-				default = defaults.inventory.enchantmentTooltips.replaceRomanNumerals,
-				property = config.inventory.enchantmentTooltips::replaceRomanNumerals
-			) requires configOption(enabled)
-			val display = cycler(
-				tr("nobaaddons.config.inventory.enchantmentTooltips.displayMode", "Display Mode"),
-				tr("nobaaddons.config.inventory.enchantmentTooltips.displayMode.tooltip", "Changes how enchantments are displayed on items; Default will follow roughly the same behavior as Hypixel and compact at 6 or more enchants, while Compact will always condense them into as few lines as possible."),
-				default = defaults.inventory.enchantmentTooltips.displayMode,
-				property = config.inventory.enchantmentTooltips::displayMode
-			) requires configOption(enabled)
-			boolean(
-				tr("nobaaddons.config.inventory.enchantmentTooltips.showDescriptions", "Show Descriptions"),
-				tr("nobaaddons.config.inventory.enchantmentTooltips.showDescriptions.tooltip", "Controls whether enchant descriptions will be shown when enchantments aren't compacted (only when Hypixel adds the descriptions); this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."),
-				default = defaults.inventory.enchantmentTooltips.showDescriptions,
-				property = config.inventory.enchantmentTooltips::showDescriptions
-			) requires all(configOption(enabled), configOption(display) { it != EnchantmentDisplayMode.COMPACT })
-			boolean(
-				tr("nobaaddons.config.inventory.enchantmentTooltips.showStacking", "Show Stacking Enchant Progress"),
-				tr("nobaaddons.config.inventory.enchantmentTooltips.showStacking.tooltip", "Shows the total value (and progress to next tier if applicable) on stacking enchantments like Champion, Expertise, etc."),
-				default = defaults.inventory.enchantmentTooltips.showStackingProgress,
-				property = config.inventory.enchantmentTooltips::showStackingProgress
-			) requires configOption(enabled)
+			val enabled = boolean {
+				name = tr("nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips", "Modify Enchant Tooltips")
+				description = tr(
+					"nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips.tooltip",
+					"Reformats the enchantment list on items in a style similar to the same feature from Skyblock Addons"
+				)
+				property(defaults, config) { inventory.enchantmentTooltips::modifyTooltips }
+			}
+			boolean {
+				name = tr("nobaaddons.config.inventory.enchantmentTooltips.replaceRomanNumerals", "Replace Roman Numerals")
+				description = tr(
+					"nobaaddons.config.inventory.enchantmentTooltips.replaceRomanNumerals.tooltip",
+					"Enchantment tiers will be replaced with their number representation instead of the original roman numerals used"
+				)
+				property(defaults, config) { inventory.enchantmentTooltips::replaceRomanNumerals }
+				condition { option(enabled) }
+			}
+			val display = enum<EnchantmentDisplayMode> {
+				name = tr("nobaaddons.config.inventory.enchantmentTooltips.displayMode", "Display Mode")
+				description = tr(
+					"nobaaddons.config.inventory.enchantmentTooltips.displayMode.tooltip",
+					"Changes how enchantments are displayed on items; Default will follow roughly the same behavior as Hypixel and compact at 6 or more enchants, while Compact will always condense them into as few lines as possible."
+				)
+				property(defaults, config) { inventory.enchantmentTooltips::displayMode }
+				condition { option(enabled) }
+			}
+			boolean {
+				name = tr("nobaaddons.config.inventory.enchantmentTooltips.showDescriptions", "Show Descriptions")
+				description = tr(
+					"nobaaddons.config.inventory.enchantmentTooltips.showDescriptions.tooltip",
+					"Controls whether enchant descriptions will be shown when enchantments aren't compacted (only when Hypixel adds the descriptions); this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."
+				)
+				property(defaults.inventory.enchantmentTooltips.showDescriptions, config.inventory.enchantmentTooltips::showDescriptions)
+				condition { all(option(enabled), option(display) { it != EnchantmentDisplayMode.COMPACT }) }
+			}
+			boolean {
+				name = tr("nobaaddons.config.inventory.enchantmentTooltips.showStacking", "Show Stacking Enchant Progress")
+				description = tr(
+					"nobaaddons.config.inventory.enchantmentTooltips.showStacking.tooltip",
+					"Shows the total value (and progress to next tier if applicable) on stacking enchantments like Champion, Expertise, etc."
+				)
+				property(defaults, config) { inventory.enchantmentTooltips::showStackingProgress }
+				condition { option(enabled) }
+			}
 
 			color(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.maxColor", "Max Enchant Color"),

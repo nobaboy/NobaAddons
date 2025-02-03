@@ -8,47 +8,72 @@ import kotlin.jvm.optionals.getOrNull
 
 fun interface OptionCondition {
 	fun validate(): Boolean
-	fun listenTo(): Set<Option<*>> = emptySet()
+	val listenForUpdates: List<Option<*>> get() = emptyList()
 }
 
-private class WrappingCondition(private val wrapping: Collection<OptionCondition>, private val validate: OptionCondition) : OptionCondition {
-	override fun validate(): Boolean = validate.validate()
-	override fun listenTo(): Set<Option<*>> = wrapping.flatMap { it.listenTo() }.toSet()
+private class WrappingCondition(
+	val conditions: Collection<OptionCondition> = emptyList(),
+	val options: Collection<Option<*>> = emptyList(),
+	val condition: OptionCondition,
+) : OptionCondition {
+	override fun validate(): Boolean = condition.validate()
+
+	override val listenForUpdates: List<Option<*>> get() = buildSet {
+		addAll(condition.listenForUpdates)
+		addAll(options)
+		conditions.forEach { addAll(it.listenForUpdates) }
+	}.toList()
 }
 
-fun any(vararg conditions: OptionCondition): OptionCondition =
-	WrappingCondition(conditions.toList()) { conditions.any { it.validate() } }
-
-fun all(vararg conditions: OptionCondition): OptionCondition =
-	WrappingCondition(conditions.toList()) { conditions.all { it.validate() } }
-
-fun none(vararg conditions: OptionCondition): OptionCondition =
-	WrappingCondition(conditions.toList()) { conditions.none { it.validate() } }
-
-fun configOption(option: Option<Boolean>, invert: Boolean = false) = configOption(option, invert) { it }
-
-fun <T> configOption(option: Option<T>, invert: Boolean = false, condition: (T) -> Boolean) = object : OptionCondition {
-	override fun validate() = if(invert) !condition(option.pendingValue()) else condition(option.pendingValue())
-	override fun listenTo(): Set<Option<*>> = setOf(option)
-}
-
-fun mod(mod: String, minVersion: Version? = null, maxVersion: Version? = null, invert: Boolean = false) = OptionCondition {
-	val container = FabricLoader.getInstance().getModContainer(mod).getOrNull()
-	val ret = when {
-		container == null -> false
-		minVersion != null && minVersion > container.metadata.version -> false
-		maxVersion != null && maxVersion < container.metadata.version -> false
-		else -> true
+object ConditionBuilder {
+	fun not(condition: OptionCondition): OptionCondition = WrappingCondition(listOf(condition)) {
+		!condition.validate()
 	}
-	if(invert) !ret else ret
+
+	fun any(vararg conditions: OptionCondition): OptionCondition = WrappingCondition(conditions.toList()) {
+		conditions.any(OptionCondition::validate)
+	}
+
+	fun all(vararg conditions: OptionCondition): OptionCondition = WrappingCondition(conditions.toList()) {
+		conditions.all(OptionCondition::validate)
+	}
+
+	fun mod(mod: String, min: Version? = null, max: Version? = null) = OptionCondition {
+		val mod = FabricLoader.getInstance().getModContainer(mod).getOrNull()
+		when {
+			mod == null -> false
+			min != null && mod.metadata.version < min -> false
+			max != null && mod.metadata.version > max -> false
+			else -> true
+		}
+	}
+
+	fun option(other: Option<Boolean>): OptionCondition = WrappingCondition(options = listOf(other)) {
+		other.pendingValue() && other.available()
+	}
+
+	fun <T> option(other: Option<T>, mapper: (T) -> Boolean): OptionCondition = WrappingCondition(options = listOf(other)) {
+		mapper(other.pendingValue()) && other.available()
+	}
 }
 
-infix fun <T> Option<T>.requires(requirement: OptionCondition): Option<T> {
-	if(available()) setAvailable(requirement.validate())
-	requirement.listenTo().forEach {
+@Deprecated("Replaced in favor of more functional conditions")
+fun configOption(option: Option<Boolean>): OptionCondition =
+	ConditionBuilder.option(option)
+
+@Deprecated("Replaced in favor of more functional conditions")
+fun <T> configOption(option: Option<T>, mapping: (T) -> Boolean): OptionCondition =
+	ConditionBuilder.option(option, mapping)
+
+infix fun <T> Option<T>.requires(condition: OptionCondition): Option<T> {
+	if(available()) setAvailable(condition.validate())
+	condition.listenForUpdates.forEach {
 		it.addEventListener { _, type ->
-			if(type != OptionEventListener.Event.AVAILABILITY_CHANGE) setAvailable(requirement.validate())
+			if(type != OptionEventListener.Event.AVAILABILITY_CHANGE) setAvailable(condition.validate())
 		}
 	}
 	return this
 }
+
+inline infix fun <T> Option<T>.requires(builder: ConditionBuilder.() -> OptionCondition): Option<T> =
+	requires(builder(ConditionBuilder))

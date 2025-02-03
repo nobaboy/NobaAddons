@@ -147,7 +147,7 @@ object UIAndVisualsCategory {
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate.tooltip", "Prevents the item update animation from playing when your held item is updated"),
 				default = defaults.uiAndVisuals.itemPosition.cancelItemUpdateAnimation,
 				property = config.uiAndVisuals.itemPosition::cancelItemUpdateAnimation
-			) requires configOption(cancelReequip, invert = true)
+			) requires { not(option(cancelReequip)) }
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation", "Cancel Item Consume Animation"),
 				tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelDrinkAnimation.tooltip", "Prevents the item consume animation (such as from drinking potions) from playing"),
@@ -208,7 +208,7 @@ object UIAndVisualsCategory {
 				property = config.uiAndVisuals.renderingTweaks::removeArmorGlints
 			)
 
-			fix.requires(configOption(remove, invert = true))
+			fix.requires { not(option(remove)) }
 		}
 		// endregion
 	}
