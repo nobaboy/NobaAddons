@@ -13,6 +13,12 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.tr
+import net.minecraft.text.Text
+
+private fun Text.wip(): Text = buildText {
+	append(buildLiteral("[WIP] ") { red() })
+	append(this@wip)
+}
 
 object SlayersCategory {
 	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.slayers", "Slayers")) {
@@ -44,12 +50,12 @@ object SlayersCategory {
 
 		buildGroup(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
 			val enabled = boolean(
-				CommonText.Config.ENABLED,
+				CommonText.Config.ENABLED.wip(),
 				default = defaults.slayers.highlightMiniBosses.enabled,
 				property = config.slayers.highlightMiniBosses::enabled
 			)
 			color(
-				CommonText.Config.HIGHLIGHT_COLOR,
+				CommonText.Config.HIGHLIGHT_COLOR.wip(),
 				default = defaults.slayers.highlightMiniBosses.highlightColor,
 				property = config.slayers.highlightMiniBosses::highlightColor
 			) requires enabled
@@ -69,6 +75,21 @@ object SlayersCategory {
 			) requires enabled
 		}
 
+		buildGroup(tr("nobaaddons.config.slayers.compactMessages", "Compact Quest Messages")) {
+			val enabled = boolean(
+				CommonText.Config.ENABLED,
+				tr("nobaaddons.config.slayers.compactMessages.enabled.tooltip", "Condenses messages from Auto-Slayer and manually claiming a Slayer quest at Maddox into one message while enabled"),
+				default = defaults.slayers.compactMessages.enabled,
+				property = config.slayers.compactMessages::enabled,
+			)
+			boolean(
+				tr("nobaaddons.config.slayers.compactMessages.removeLastMessage", "Remove Previous Message"),
+				tr("nobaaddons.config.slayers.compactMessages.removeLastMessage.tooltip", "The last compacted message will also be removed upon completing another slayer quest"),
+				default = defaults.slayers.compactMessages.removeLastMessage,
+				property = config.slayers.compactMessages::removeLastMessage,
+			) requires enabled
+		}
+
 		buildGroup(tr("nobaaddons.config.slayers.sven", "Sven Packmaster")) {
 			boolean(
 				tr("nobaaddons.config.slayers.sven.hidePupNametags", "Hide Pup Nametags"),
@@ -79,25 +100,25 @@ object SlayersCategory {
 
 		buildGroup(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
 			val highlightPhases = boolean(
-				tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases"),
+				tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases").wip(),
 				tr("nobaaddons.config.slayers.voidgloom.highlightPhases.tooltip", "Highlights the Voidgloom Seraph based on its current phase\n\nThe priority of the phases are:\n - Beacon Phase\n - Hits Phase\n - Damage Phase"),
 				default = defaults.slayers.voidgloom.highlightPhases,
 				property = config.slayers.voidgloom::highlightPhases
 			)
 			color(
-				tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color"),
+				tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color").wip(),
 				default = defaults.slayers.voidgloom.beaconPhaseColor,
 				property = config.slayers.voidgloom::beaconPhaseColor,
 				allowAlpha = true,
 			) requires highlightPhases
 			color(
-				tr("nobaaddons.config.slayers.voidgloom.hitsPhaseColor", "Hits Phase Color"),
+				tr("nobaaddons.config.slayers.voidgloom.hitsPhaseColor", "Hits Phase Color").wip(),
 				default = defaults.slayers.voidgloom.hitsPhaseColor,
 				property = config.slayers.voidgloom::hitsPhaseColor,
 				allowAlpha = true,
 			) requires highlightPhases
 			color(
-				tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color"),
+				tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color").wip(),
 				default = defaults.slayers.voidgloom.damagePhaseColor,
 				property = config.slayers.voidgloom::damagePhaseColor,
 				allowAlpha = true,
@@ -152,10 +173,7 @@ object SlayersCategory {
 
 		buildGroup(tr("nobaaddons.config.slayers.inferno", "Inferno Demonlord")) {
 			boolean(
-				buildText {
-					append(buildLiteral("[WIP] ") { red() })
-					append(tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield"))
-				},
+				tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield").wip(),
 				default = defaults.slayers.inferno.highlightHellionShield,
 				property = config.slayers.inferno::highlightHellionShield
 			)

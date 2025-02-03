@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.features.chat
 
 import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.mixins.accessors.ChatHudAccessor
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -13,9 +14,18 @@ import java.lang.ref.WeakReference
 import java.util.WeakHashMap
 
 object CopyChatFeature {
-	@get:JvmStatic val messages = WeakHashMap<ChatHudLine.Visible, WeakReference<ChatHudLine>>(200)
+	private val messages = WeakHashMap<ChatHudLine.Visible, WeakReference<ChatHudLine>>(200)
 
 	private val config get() = NobaConfig.INSTANCE.chat.copyChat
+
+	fun init() {
+		ChatMessageEvents.ADDED.register(this::onChatAdded)
+	}
+
+	private fun onChatAdded(event: ChatMessageEvents.Added) {
+		val message = event.message
+		message.visible.forEach { messages[it] = WeakReference(message.line) }
+	}
 
 	private fun isEnabled(button: Int): Boolean {
 		if(!config.enabled) return false

@@ -4,6 +4,7 @@ import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
@@ -32,6 +33,8 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 
 	class TrophyFishing : ObjectProperty<TrophyFishing>("trophyFishing") {
 		var modifyChatMessages by Property.of<Boolean>("modifyChatMessages", false)
+		var compactMessages by Property.of<Boolean>("compactMessages", false)
+		var compactMaxRarity by Property.of<TrophyFishRarity>("compactMaxRarity", Serializer.enum(), TrophyFishRarity.SILVER)
 	}
 
 	class HighlightThunderSparks : ObjectProperty<HighlightThunderSparks>("highlightThunderSparks") {

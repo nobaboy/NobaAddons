@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.events.impl.chat
 
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
+import me.nobaboy.nobaaddons.utils.chat.Message
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
 
@@ -46,15 +47,15 @@ object ChatMessageEvents {
 	val MODIFY = EventDispatcher<Modify, Text> { it.message }
 
 	/**
-	 * Event invoked as late as possible in the chat message receive process, after almost all other mods have
-	 * already applied any applicable modifications (including compact chat mods).
+	 * Event invoked after a chat message has been added to the chat HUD.
 	 *
-	 * This is intended to allow for modifying a message while using other compact chat mods the
-	 * client may have installed.
+	 * This event provides access to the underlying [net.minecraft.client.gui.hud.ChatHudLine], and the visible
+	 * counterparts, along with an easy way to remove them afterward ([Message.remove]).
 	 */
-	@JvmField val LATE_MODIFY = EventDispatcher<Modify, Text> { it.message }
+	@JvmField val ADDED = EventDispatcher<Added>()
 
 	data class Chat(val message: Text) : Event()
 	data class Allow(val message: Text) : Event(true)
 	data class Modify(var message: Text) : Event()
+	data class Added(val message: Message) : Event()
 }

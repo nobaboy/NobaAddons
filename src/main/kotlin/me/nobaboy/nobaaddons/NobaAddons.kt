@@ -28,6 +28,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
+import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
 import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
@@ -55,6 +56,7 @@ import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.rift.RiftTimers
+import me.nobaboy.nobaaddons.features.slayers.CompactSlayerMessages
 import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.inferno.HighlightHellionShield
@@ -68,13 +70,15 @@ import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.ErrorManager
+import me.nobaboy.nobaaddons.utils.TextUtils.blue
+import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
 import me.nobaboy.nobaaddons.utils.TextUtils.literal
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.fabricmc.loader.api.Version
 import net.minecraft.text.Text
-import net.minecraft.util.Formatting
 import org.slf4j.Logger
 import java.nio.file.Path
 
@@ -86,8 +90,8 @@ object NobaAddons : ClientModInitializer {
 
 	val PREFIX: Text get() = buildText {
 		append(CommonText.NOBAADDONS)
-		literal(" » ") { formatted(Formatting.DARK_GRAY) }
-		formatted(Formatting.BLUE, Formatting.BOLD)
+		literal(" » ") { darkGray() }
+		blue().bold()
 	}
 
 	val LOGGER: Logger = LogUtils.getLogger()
@@ -189,6 +193,7 @@ object NobaAddons : ClientModInitializer {
 		// region Slayers
 		MiniBossFeatures.init()
 		SlayerBossFeatures.init()
+		CompactSlayerMessages.init()
 		/* region Sven Packmaster */
 		HidePupNametags.init()
 		/* endregion */
@@ -219,6 +224,7 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Chat
+		CopyChatFeature.init()
 		ChatNotifications.init()
 		IAlert.init()
 		IChatFilter.init()
