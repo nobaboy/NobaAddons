@@ -65,7 +65,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 				category(RiftCategory.create(defaults, INSTANCE))
 				category(ChatCategory.create(defaults, INSTANCE))
 				category(QOLCategory.create(defaults, INSTANCE))
-				category(ApiCategory.create(defaults, INSTANCE))
+//				category(ApiCategory.create(defaults, INSTANCE))
 
 				save(INSTANCE::save)
 			}.build().generateScreen(parent)

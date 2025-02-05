@@ -11,12 +11,13 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.stripWhitespace
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import org.lwjgl.glfw.GLFW
 
-object DevFeatures : Feature("dev", FeatureCategory.DEV) {
+object DevFeatures : Feature("dev", tr("nobaaddons.feature.dev", "Dev"), FeatureCategory.DEV) {
 	private val gson = GsonBuilder().setPrettyPrinting().serializeNulls().create()
 
 	val test by KillSwitch("test")

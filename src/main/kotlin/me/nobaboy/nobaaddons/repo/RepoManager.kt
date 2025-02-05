@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.repo
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.core.CoreAPIConfig
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.events.impl.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.data.GithubCommitResponse
@@ -27,7 +28,7 @@ import kotlin.random.Random
  */
 object RepoManager {
 	private val LOCK = Any()
-	private val config get() = NobaConfig.INSTANCE.repo
+	private val config = CoreAPIConfig
 
 	private val client by HTTPUtils::client
 	internal val objects = mutableSetOf<IRepoObject>()

@@ -28,11 +28,18 @@ object FeatureManager {
 
 	fun load() {
 		if(!FEATURE_CONFIG.exists()) {
+			// TODO migrating is going to be a pain in the ass
+			// one possible way to go about this would be something like
+			// listOf(
+			//     "old.config.key" to "feature.config.key",
+			//     ...
+			// )
 			save()
 			return
 		}
 		val obj = safeLoad({ FEATURE_CONFIG }) { FEATURE_CONFIG.toFile().readJson<JsonObject>(JSON) } ?: return
 		features.forEach {
+			// TODO implement per-feature migrations
 			try {
 				it.load(JSON, obj[it.id] as? JsonObject ?: return@forEach)
 			} catch(ex: Exception) {
@@ -59,14 +66,25 @@ object FeatureManager {
 	fun config(): YetAnotherConfigLib = YetAnotherConfigLib.createBuilder().apply {
 		title(CommonText.NOBAADDONS)
 
-		categories(categories.map {
-			val features = it.value.mapNotNull { it.config() }
-			if(features.isEmpty()) return@map null
-			ConfigCategory.createBuilder().apply {
+		categories(categories.mapNotNull {
+			// TODO remove this as features are migrated over
+			if(it.value.isEmpty() && it.key.global == null) {
+				return@mapNotNull null
+			}
+
+			val category = ConfigCategory.createBuilder().apply {
 				name(it.key.displayName)
-				groups(features)
-			}.build()
-		}.filterNotNull())
+				it.key.global?.buildConfig(this)
+				it.value.forEach { it.buildConfig(this) }
+			}
+
+			try {
+				category.build()
+			} catch(_: IllegalArgumentException) {
+				// empty category, don't bother trying to add it
+				null
+			}
+		})
 
 		save { save() }
 	}.build()

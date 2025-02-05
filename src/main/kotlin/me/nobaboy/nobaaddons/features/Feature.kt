@@ -1,73 +1,55 @@
 package me.nobaboy.nobaaddons.features
 
+import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.OptionGroup
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.buildJsonObject
+import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
-import kotlin.reflect.KMutableProperty
-import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.full.hasAnnotation
-import kotlin.reflect.full.memberProperties
+import net.minecraft.text.Text
 
-abstract class Feature(val id: String, val category: FeatureCategory) {
-	val killswitch by KillSwitch(null)
-
-	private val options: Map<String, WrappedOption<*>> by lazy {
-		this::class.memberProperties
-			.mapNotNull { it as? KMutableProperty<*> }
-			.filter { it.hasAnnotation<Option>() }
-			.map { WrappedOption(this, it) }
-			.associate { it.name to it }
-	}
+abstract class Feature(val id: String, val name: Text, val category: FeatureCategory) : AbstractConfigOptionHolder() {
+	val killSwitch by KillSwitch(null)
 
 	/**
-	 * Returns the [WrappedOption] for the given [Option] annotated property
-	 */
-	@Suppress("UNCHECKED_CAST")
-	protected fun <T> KMutableProperty<T>.option(): WrappedOption<T> {
-		val name = this.findAnnotation<Option>()?.key?.takeIf { it.isNotBlank() } ?: name
-		println(name)
-		return options[name] as WrappedOption<T>
-	}
-
-	internal fun load(json: Json, obj: JsonObject) {
-		val config = obj["config"] as? JsonObject ?: JsonObject(emptyMap())
-		for(option in options.values) {
-			option.set(json, config[option.name] ?: continue)
-		}
-	}
-
-	internal fun dump(json: Json): JsonObject = buildJsonObject {
-		put("config", buildJsonObject {
-			for(option in options.values) {
-				put(option.name, option.get(json))
-			}
-		})
-	}
-
-	/**
-	 * Registers the given [listener] on the given [dispatcher], only invoking it if this feature's [killswitch] hasn't
+	 * Registers the given [listener] on the given [dispatcher], only invoking it if this feature's [killSwitch] hasn't
 	 * been activated.
 	 */
-	protected fun <T : Event> listen(dispatcher: EventDispatcher<T>, listener: (T) -> Unit) {
-		dispatcher.register { if(!killswitch) listener(it) }
+	protected fun <T : Event> listen(
+		dispatcher: EventDispatcher<T>,
+		featureKillSwitch: () -> Boolean = { false },
+		listener: (T) -> Unit
+	) {
+		dispatcher.register {
+			if(!killSwitch && !featureKillSwitch()) listener(it)
+		}
 	}
 
 	/**
 	 * Implement your feature's initialization logic here.
 	 *
-	 * Make sure you use [listen] for any events, or otherwise ensure you're checking [killswitch].
+	 * Make sure you use [listen] for any events, or otherwise ensure you're checking [killSwitch].
 	 */
 	open fun init() {
 	}
 
 	/**
-	 * Implement your feature's config options here.
-	 *
-	 * If not implemented, this feature is assumed to not have any user-configurable options,
-	 * and won't be included in the built YACL menu.
+	 * Implementation providing a YACL option group; by default, this automatically generates an option group
+	 * based on your [config] properties.
 	 */
-	open fun config(): OptionGroup? = null
+	override fun buildConfig(category: ConfigCategory.Builder) {
+		if(killSwitch) {
+			return
+		}
+
+		val options = options.values.mapNotNull { it.yaclOption }
+		if(options.isEmpty()) {
+			return
+		}
+
+		category.group(OptionGroup.createBuilder().apply {
+			name(name)
+			collapsed(true)
+			options(options)
+		}.build())
+	}
 }

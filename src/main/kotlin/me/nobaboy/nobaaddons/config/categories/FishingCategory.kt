@@ -50,13 +50,13 @@ object FishingCategory {
 				tr("nobaaddons.config.fishing.trophyFishing.compactCatches.tooltip", "Removes the previous catch message of the same trophy fish & rarity while enabled; note that this may conflict with certain compact chat mods."),
 				default = defaults.fishing.trophyFishing.compactMessages,
 				property = config.fishing.trophyFishing::compactMessages,
-			) requires modify
+			)// requires modify
 			cycler(
 				tr("nobaaddons.config.fishing.trophyFishing.compactMaxRarity", "Compact Max Rarity"),
 				tr("nobaaddons.config.fishing.trophyFishing.compactMaxRarity.tooltip", "The maximum rarity to compact catch messages for. If this is set to Diamond, this will effectively compact all catch messages."),
 				default = defaults.fishing.trophyFishing.compactMaxRarity,
 				property = config.fishing.trophyFishing::compactMaxRarity,
-			) requires listOf(modify, compact)
+			)// requires listOf(modify, compact)
 		}
 		// endregion
 

@@ -21,9 +21,12 @@ object FileUtils {
 	 */
 	@Throws(IOException::class)
 	fun File.writeAtomically(writer: (BufferedWriter) -> Unit) {
-		val temp = Files.createTempFile("${nameWithoutExtension}-${StringUtils.randomAlphanumeric()}", extension)
-		temp.toFile().bufferedWriter().use(writer)
-		Util.backupAndReplace(temp, toPath(), toPath().parent.resolve("${name}_old"))
+		val temp = Files.createTempFile("${nameWithoutExtension}-${StringUtils.randomAlphanumeric()}", extension).toFile()
+		temp.bufferedWriter().use(writer)
+		if(exists()) {
+			renameTo(toPath().parent.resolve("${name}_old").toFile())
+		}
+		temp.renameTo(this)
 	}
 
 	/**

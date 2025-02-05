@@ -1,9 +1,11 @@
 package me.nobaboy.nobaaddons.features
 
+import me.nobaboy.nobaaddons.config.core.CoreAPIConfig
+import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
-enum class FeatureCategory(val displayName: Text) {
+enum class FeatureCategory(val displayName: Text, val global: AbstractConfigOptionHolder? = null) {
 	GENERAL(tr("nobaaddons.category.general", "General")),
 
 	UI_AND_VISUAL(tr("nobaaddons.category.uiAndVisual", "UI & Visual")),
@@ -17,6 +19,6 @@ enum class FeatureCategory(val displayName: Text) {
 	QOL(tr("nobaaddons.category.qol", "QOL")),
 
 	DEV(tr("nobaaddons.category.dev", "Dev")),
-	API(tr("nobaaddons.category.api", "APIs")),
+	API(tr("nobaaddons.category.api", "APIs"), CoreAPIConfig),
 	;
 }

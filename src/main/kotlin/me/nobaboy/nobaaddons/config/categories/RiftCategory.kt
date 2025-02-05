@@ -30,7 +30,7 @@ object RiftCategory {
 				tr("nobaaddons.config.rift.timers.warpTarget.tooltip", "Where clicking on the sent chat message should warp you"),
 				default = defaults.rift.warpTarget,
 				property = config.rift::warpTarget
-			) requires any(configOption(infusion), configOption(ss))
+			)// requires any(configOption(infusion), configOption(ss))
 		}
 	}
 }

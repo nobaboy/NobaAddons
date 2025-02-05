@@ -26,6 +26,7 @@ import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.utils.safeLoad
 import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.config.core.AbstractCoreConfig
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
@@ -129,6 +130,7 @@ object NobaAddons : ClientModInitializer {
 	override fun onInitializeClient() {
 		/* region Core */
 		NobaConfig.INSTANCE.safeLoad()
+		AbstractCoreConfig.load()
 		PersistentCache.safeLoad()
 		RepoManager.init()
 		UISettings.safeLoad()

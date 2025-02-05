@@ -49,7 +49,7 @@ object EventsCategory {
 				tr("nobaaddons.config.events.mythological.removeGuessOnBurrowFind.tooltip", "Automatically hides any guesses when nearby burrows are found"),
 				default = defaults.events.mythological.removeGuessOnBurrowFind,
 				property = config.events.mythological::removeGuessOnBurrowFind
-			) requires all(configOption(findNearby), configOption(burrowGuess))
+			)// requires all(configOption(findNearby), configOption(burrowGuess))
 			val warp = boolean(
 				tr("nobaaddons.config.events.mythological.findNearestWarp", "Find Nearest Warp"),
 				tr("nobaaddons.config.events.mythological.findNearestWarp.tooltip", "Finds the nearest /warp to the guess, which can automatically be warped to with the associated key configured in Controls"),

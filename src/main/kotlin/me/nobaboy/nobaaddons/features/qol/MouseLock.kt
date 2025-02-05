@@ -5,17 +5,13 @@ package me.nobaboy.nobaaddons.features.qol
 *///?}
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
-import me.nobaboy.nobaaddons.config.utils.boolean
-import me.nobaboy.nobaaddons.config.utils.buildGroup
-import me.nobaboy.nobaaddons.config.utils.configOption
-import me.nobaboy.nobaaddons.config.utils.requires
-import me.nobaboy.nobaaddons.config.utils.slider
+import me.nobaboy.nobaaddons.config.option.booleanController
+import me.nobaboy.nobaaddons.config.option.intSlider
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.Feature
 import me.nobaboy.nobaaddons.features.FeatureCategory
-import me.nobaboy.nobaaddons.features.Option
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
@@ -26,10 +22,30 @@ import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
 
-object MouseLock : Feature("mouseLock", FeatureCategory.QOL) {
-	@Option var reduceMouseSensitivity = false
-	@Option var reductionMultiplier = 6
-	@Option var autoUnlockMouseOnTeleport = false
+object MouseLock : Feature(
+	id = "mouseLock",
+	name = tr("nobaaddons.feature.mouseLock", "Mouse Sensitivity"),
+	category = FeatureCategory.QOL,
+) {
+	private val lockMouseCommand = buildLiteral("/noba lockmouse") { darkAqua() }
+
+	private var autoUnlockMouseOnTeleport by config(false) {
+		name = tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport", "Auto Unlock Mouse on Teleport")
+		description = tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip", "Automatically unlocks your mouse when teleporting more than 5 blocks if locked with $lockMouseCommand")
+		booleanController()
+	}
+
+	private var reduceMouseSensitivity by config(false) {
+		name = tr("nobaaddons.config.qol.garden.reduceMouseSensitivity", "Reduce Mouse Sensitivity")
+		description = tr("nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip", "Reduces your mouse sensitivity in the Garden while holding a farming tool and on the ground. Your mouse may also be locked with $lockMouseCommand")
+		booleanController()
+	}
+
+	@JvmStatic var reductionMultiplier by config(6) {
+		name = tr("nobaaddons.config.qol.garden.reductionMultiplier", "Reduction Multiplier")
+		intSlider(min = 2, max = 10)
+		requires { option(::reduceMouseSensitivity) }
+	}
 
 	private val FARMING_TOOLS: List<String> = buildList {
 		val gardeningTools = listOf("HOE", "AXE")
@@ -59,7 +75,7 @@ object MouseLock : Feature("mouseLock", FeatureCategory.QOL) {
 	@get:JvmStatic
 	@get:JvmName("isReduced")
 	val reduced: Boolean get() {
-		if(killswitch) return false
+		if(killSwitch) return false
 		if(!SkyBlockIsland.GARDEN.inIsland()) return false
 		if(MCUtils.player?.abilities?.flying == true) return false
 		if(!reduceMouseSensitivity) return false
@@ -70,7 +86,7 @@ object MouseLock : Feature("mouseLock", FeatureCategory.QOL) {
 
 	override fun init() {
 		listen(SkyBlockEvents.ISLAND_CHANGE) { locked = false }
-		listen(PacketEvents.PRE_RECEIVE, this::onEarlyPacketReceive)
+		listen(PacketEvents.PRE_RECEIVE, listener = this::onEarlyPacketReceive)
 	}
 
 	private fun onEarlyPacketReceive(event: PacketEvents.Receive) {
@@ -96,28 +112,5 @@ object MouseLock : Feature("mouseLock", FeatureCategory.QOL) {
 		else tr("nobaaddons.command.mouseLock.unlocked", "Mouse unlocked")
 
 		ChatUtils.addMessage(text)
-	}
-
-	override fun config() = buildGroup(tr("nobaaddons.feature.mouseLock", "Mouse Sensitivity")) {
-		val lockMouseCommand = buildLiteral("/noba lockmouse") { darkAqua() }
-
-		val reduce = boolean(
-			tr("nobaaddons.config.qol.garden.reduceMouseSensitivity", "Reduce Mouse Sensitivity"),
-			tr("nobaaddons.config.qol.garden.reduceMouseSensitivity.tooltip", "Reduces your mouse sensitivity in the Garden while holding a farming tool and on the ground. Your mouse may also be locked with $lockMouseCommand"),
-			::reduceMouseSensitivity.option()
-		)
-		slider(
-			tr("nobaaddons.config.qol.garden.reductionMultiplier", "Reduction Multiplier"),
-			option = ::reductionMultiplier.option(),
-			min = 2,
-			max = 10,
-			step = 1
-		) requires configOption(reduce)
-
-		boolean(
-			tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport", "Auto Unlock Mouse on Teleport"),
-			tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip", "Automatically unlocks your mouse when teleporting more than 5 blocks if locked with $lockMouseCommand"),
-			::autoUnlockMouseOnTeleport.option()
-		)
 	}
 }
