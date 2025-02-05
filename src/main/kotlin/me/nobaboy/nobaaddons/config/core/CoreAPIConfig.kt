@@ -42,7 +42,6 @@ object CoreAPIConfig : AbstractCoreConfig("api") {
 			"".toText(),
 			tr("nobaaddons.config.apis.disclaimer.line2", "Modifying these settings has the potential to break the mod!").yellow()
 		)
-		// TODO shove this in a group?
-		super.buildConfig(category)
+		buildConfig(category, tr("nobaaddons.config.apis.repo", "Repo"))
 	}
 }

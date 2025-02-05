@@ -42,7 +42,6 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 	// endregion
 	val chat by ChatConfig()
 	val qol by QOLConfig()
-	val repo by RepoConfig()
 
 	companion object {
 		@JvmField

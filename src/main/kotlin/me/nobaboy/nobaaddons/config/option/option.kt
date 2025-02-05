@@ -65,12 +65,15 @@ class ConfigOption<T>(val serializer: KSerializer<T>, val defaultFactory: () -> 
 	internal var yaclOptionBuilder: (() -> YACLOption<T>)? = null
 	val yaclOption: YACLOption<T>? by lazy { yaclOptionBuilder?.let { it() } }
 
-	internal fun get() = value
+	fun get() = value
 
-	internal fun set(value: T) {
+	fun set(value: T) {
 		this.value = value
 	}
 
+	@Suppress("unused")
 	operator fun getValue(instance: Any?, property: KProperty<*>): T = get()
+
+	@Suppress("unused")
 	operator fun setValue(instance: Any?, property: KProperty<*>, value: T) = set(value)
 }

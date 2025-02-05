@@ -3,11 +3,11 @@ package me.nobaboy.nobaaddons.features
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
+import me.nobaboy.nobaaddons.events.AbstractEventDispatcher
 import me.nobaboy.nobaaddons.events.Event
-import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.minecraft.text.Text
 
-abstract class Feature(val id: String, val name: Text, val category: FeatureCategory) : AbstractConfigOptionHolder() {
+abstract class Feature(id: String, val name: Text, val category: FeatureCategory) : AbstractConfigOptionHolder(id) {
 	val killSwitch by KillSwitch(null)
 
 	/**
@@ -15,7 +15,7 @@ abstract class Feature(val id: String, val name: Text, val category: FeatureCate
 	 * been activated.
 	 */
 	protected fun <T : Event> listen(
-		dispatcher: EventDispatcher<T>,
+		dispatcher: AbstractEventDispatcher<T, *>,
 		featureKillSwitch: () -> Boolean = { false },
 		listener: (T) -> Unit
 	) {

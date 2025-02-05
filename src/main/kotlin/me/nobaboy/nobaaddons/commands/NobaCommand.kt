@@ -50,7 +50,7 @@ object NobaCommand {
 
 	@Command
 	fun newConfig() {
-		FeatureManager.config().generateScreen(null).queueOpen()
+		FeatureManager.buildConfig().generateScreen(null).queueOpen()
 	}
 
 	@Command("hud", "gui")

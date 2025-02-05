@@ -2,8 +2,9 @@ package me.nobaboy.nobaaddons.features
 
 import me.nobaboy.nobaaddons.features.general.DevFeatures
 import me.nobaboy.nobaaddons.features.qol.MouseLock
+import me.nobaboy.nobaaddons.features.slayers.CompactSlayerMessages
 
-internal val FEATURES = listOf<Feature>(
+internal val FEATURES = arrayOf<Feature>(
 	// region General
 	// endregion
 
@@ -14,6 +15,10 @@ internal val FEATURES = listOf<Feature>(
 	// endregion
 
 	// region Events
+	// endregion
+
+	// region Slayers
+	CompactSlayerMessages,
 	// endregion
 
 	// region Fishing

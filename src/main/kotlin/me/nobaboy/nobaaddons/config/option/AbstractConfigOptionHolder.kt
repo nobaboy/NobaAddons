@@ -11,7 +11,7 @@ import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
-abstract class AbstractConfigOptionHolder : ConfigOptionHolder {
+abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder {
 	protected val options: Map<String, ConfigOption<*>> by lazy {
 		this::class.memberProperties
 			.sortedBy { it.findAnnotation<Order>()?.order ?: 0 }
@@ -24,13 +24,21 @@ abstract class AbstractConfigOptionHolder : ConfigOptionHolder {
 			.toMap()
 	}
 
+	/**
+	 * Load configs for all known [ConfigOption]s from the provided [JsonObject]
+	 */
 	fun load(json: Json, obj: JsonObject) {
 		val config = obj["config"] as? JsonObject ?: JsonObject(emptyMap())
+		// TODO implement migrations; this will be fairly involved as modifying a JsonObject from kotlinx.serialization
+		//      in-place isn't possible
 		for((name, option) in options) {
 			option.set(json, config[name] ?: continue)
 		}
 	}
 
+	/**
+	 * Dump all current [ConfigOption]s to a [JsonObject]
+	 */
 	fun dump(json: Json): JsonObject = buildJsonObject {
 		put("config", buildJsonObject {
 			for ((name, option) in options) {
@@ -39,15 +47,24 @@ abstract class AbstractConfigOptionHolder : ConfigOptionHolder {
 		})
 	}
 
+	/**
+	 * Create a new [ConfigOption] with the given [default] value; this is a convenience alias for [buildOption].
+	 */
 	protected inline fun <reified T> config(default: T, builder: OptionBuilder<T>.() -> Unit = {}): ConfigOption<T> =
 		buildOption(this) {
 			this.default = default
 			builder(this)
 		}
 
+	/**
+	 * Create a new [ConfigOption]; this is a convenience alias for [buildOption].
+	 */
 	protected inline fun <reified T> config(builder: OptionBuilder<T>.() -> Unit): ConfigOption<T> =
 		buildOption(this, builder)
 
+	/**
+	 * Implement your YACL config building here.
+	 */
 	abstract fun buildConfig(category: ConfigCategory.Builder)
 
 	override operator fun get(key: String): ConfigOption<*>? = options[key]

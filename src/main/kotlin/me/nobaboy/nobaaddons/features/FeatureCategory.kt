@@ -11,6 +11,7 @@ enum class FeatureCategory(val displayName: Text, val global: AbstractConfigOpti
 	UI_AND_VISUAL(tr("nobaaddons.category.uiAndVisual", "UI & Visual")),
 	INVENTORY(tr("nobaaddons.category.inventory", "Inventory")),
 	EVENTS(tr("nobaaddons.category.events", "Events")),
+	SLAYER(tr("nobaaddons.category.slayers", "Slayers")),
 	FISHING(tr("nobaaddons.category.fishing", "Fishing")),
 	MINING(tr("nobaaddons.category.mining", "Mining")),
 	DUNGEONS(tr("nobaaddons.category.dungeons", "Dungeons")),

@@ -69,21 +69,6 @@ object SlayersCategory {
 			) requires configOption(enabled)
 		}
 
-		group(tr("nobaaddons.config.slayers.compactMessages", "Compact Quest Messages")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED,
-				tr("nobaaddons.config.slayers.compactMessages.enabled.tooltip", "Condenses messages from Auto-Slayer and manually claiming a Slayer quest at Maddox into one message while enabled"),
-				default = defaults.slayers.compactMessages.enabled,
-				property = config.slayers.compactMessages::enabled,
-			)
-			boolean(
-				tr("nobaaddons.config.slayers.compactMessages.removeLastMessage", "Remove Previous Message"),
-				tr("nobaaddons.config.slayers.compactMessages.removeLastMessage.tooltip", "The last compacted message will also be removed upon completing another slayer quest"),
-				default = defaults.slayers.compactMessages.removeLastMessage,
-				property = config.slayers.compactMessages::removeLastMessage,
-			) requires configOption(enabled)
-		}
-
 		group(tr("nobaaddons.config.slayers.sven", "Sven Packmaster")) {
 			boolean(
 				tr("nobaaddons.config.slayers.sven.hidePupNametags", "Hide Pup Nametags"),

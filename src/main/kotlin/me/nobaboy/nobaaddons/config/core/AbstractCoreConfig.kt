@@ -1,55 +1,32 @@
 package me.nobaboy.nobaaddons.config.core
 
 import dev.isxander.yacl3.api.ConfigCategory
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.buildJsonObject
+import dev.isxander.yacl3.api.OptionDescription
+import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
-import me.nobaboy.nobaaddons.config.utils.safeLoad
-import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.FileUtils.readJson
-import me.nobaboy.nobaaddons.utils.FileUtils.writeJson
-import kotlin.io.path.exists
+import net.minecraft.text.Text
 
-sealed class AbstractCoreConfig(protected val id: String) : AbstractConfigOptionHolder() {
+sealed class AbstractCoreConfig(id: String) : AbstractConfigOptionHolder(id) {
 	override fun buildConfig(category: ConfigCategory.Builder) {
 		options.values.mapNotNull { it.yaclOption }.forEach(category::option)
 	}
 
-	companion object {
-		private val FILE = NobaAddons.CONFIG_DIR.resolve("core.json")
-		private val CONFIGS = arrayOf<AbstractCoreConfig>(
+	/**
+	 * Overload wrapping this config's options in a group
+	 */
+	protected fun buildConfig(category: ConfigCategory.Builder, group: Text, description: Text? = null) {
+		category.group(OptionGroup.createBuilder().apply {
+			name(group)
+			description?.let { description(OptionDescription.of(it)) }
+			collapsed(true)
+			options.values.mapNotNull { it.yaclOption }.forEach(::option)
+		}.build())
+	}
+
+	companion object : AbstractConfigOptionLoader<AbstractCoreConfig>(NobaAddons.CONFIG_DIR.resolve("core.json").toFile()) {
+		override val configs: Array<AbstractCoreConfig> = arrayOf(
 			CoreAPIConfig,
 		)
-
-		private val JSON = Json {
-			prettyPrint = true
-		}
-
-		fun load() {
-			if(!FILE.exists()) {
-				save()
-				return
-			}
-			val obj = safeLoad({ FILE }) { FILE.toFile().readJson<JsonObject>(JSON) } ?: return
-			CONFIGS.forEach {
-				try {
-					it.load(JSON, obj[it.id] as? JsonObject ?: return@forEach)
-				} catch(ex: Exception) {
-					ErrorManager.logError("Failed to load a core config", ex, "Feature" to it::class)
-				}
-			}
-		}
-
-		fun save() {
-			try {
-				FILE.toFile().writeJson(buildJsonObject {
-					CONFIGS.forEach { put(it.id, it.dump(JSON)) }
-				}, JSON)
-			} catch(ex: Exception) {
-				ErrorManager.logError("Failed to save core config", ex)
-			}
-		}
 	}
 }
