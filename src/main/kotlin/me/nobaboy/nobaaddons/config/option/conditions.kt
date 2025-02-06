@@ -97,7 +97,7 @@ class ConditionBuilder(private val holder: ConfigOptionHolder) {
 		val delegate = other.apply { isAccessible = true }.getDelegate() as ConfigOption<T>
 		val option = delegate.yaclOption!!
 		return WrappingCondition(options = listOf(option)) {
-			mapper(option.pendingValue()) && option.available()
+			mapper(option.pendingValue() as T) && option.available()
 		}
 	}
 

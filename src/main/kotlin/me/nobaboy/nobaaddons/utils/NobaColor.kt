@@ -1,10 +1,18 @@
 package me.nobaboy.nobaaddons.utils
 
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import net.minecraft.util.Formatting
 import org.jetbrains.annotations.Unmodifiable
 import java.awt.Color
 import java.util.Collections
 
+@Serializable(with = NobaColor.Companion.NobaColorSerializer::class)
 data class NobaColor(val rgb: Int, val formatting: Formatting? = null) {
 	constructor(formatting: Formatting) : this(formatting.colorValue!!, formatting)
 
@@ -49,5 +57,15 @@ data class NobaColor(val rgb: Int, val formatting: Formatting? = null) {
 		}
 
 		fun Color.toNobaColor(): NobaColor = NobaColor(rgb)
+
+		object NobaColorSerializer : KSerializer<NobaColor> {
+			override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("NobaColor", PrimitiveKind.INT)
+
+			override fun serialize(encoder: Encoder, value: NobaColor) {
+				encoder.encodeInt(value.rgb)
+			}
+
+			override fun deserialize(decoder: Decoder): NobaColor = NobaColor(decoder.decodeInt())
+		}
 	}
 }

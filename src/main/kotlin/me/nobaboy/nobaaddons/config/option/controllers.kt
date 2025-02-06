@@ -1,9 +1,12 @@
 package me.nobaboy.nobaaddons.config.option
 
+import dev.isxander.yacl3.api.Binding
 import dev.isxander.yacl3.api.Controller
 import dev.isxander.yacl3.api.NameableEnum
 import dev.isxander.yacl3.api.Option
+import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder
+import dev.isxander.yacl3.api.controller.ColorControllerBuilder
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder
 import dev.isxander.yacl3.api.controller.EnumDropdownControllerBuilder
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
@@ -12,8 +15,11 @@ import dev.isxander.yacl3.api.controller.StringControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import dev.isxander.yacl3.api.controller.ValueFormatter
 import dev.isxander.yacl3.gui.controllers.cycling.EnumController
+import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import net.minecraft.text.Text
 import net.minecraft.util.TranslatableOption
+import java.awt.Color
 
 class LimitedEnumControllerBuilder<E : Enum<E>>(private val option: Option<E>, private val onlyInclude: Array<E>) : EnumControllerBuilder<E> {
 	private var formatter: ValueFormatter<E> = ValueFormatter<E> {
@@ -41,6 +47,23 @@ fun OptionBuilder<Boolean>.tickBoxController() {
 
 fun OptionBuilder<String>.stringController() {
 	controller = StringControllerBuilder::create
+}
+
+fun OptionBuilder<Color>.colorController(allowAlpha: Boolean = false) {
+	controller = { ColorControllerBuilder.create(it).allowAlpha(allowAlpha) }
+}
+
+fun OptionBuilder<NobaColor>.colorController() {
+	yacl { option ->
+		Option.createBuilder<Color>().apply {
+			name(name!!)
+			descriptionFactory?.let {
+				description { value -> OptionDescription.of(it(value.toNobaColor())) }
+			}
+			controller(ColorControllerBuilder::create)
+			binding(Binding.generic(default.toColor(), { option.get().toColor() }, { option.set(it.toNobaColor()) }))
+		}.build()
+	}
 }
 
 fun OptionBuilder<Int>.intSlider(min: Int, max: Int, step: Int = 1) {

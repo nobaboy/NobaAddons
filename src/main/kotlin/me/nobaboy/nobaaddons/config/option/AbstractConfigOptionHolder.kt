@@ -1,10 +1,12 @@
 package me.nobaboy.nobaaddons.config.option
 
 import dev.isxander.yacl3.api.ConfigCategory
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.serializer
 import kotlin.collections.iterator
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.findAnnotation
@@ -17,7 +19,15 @@ abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder {
 			.sortedBy { it.findAnnotation<Order>()?.order ?: 0 }
 			.mapNotNull {
 				it as? KMutableProperty1<AbstractConfigOptionHolder, *> ?: return@mapNotNull null
-				it.isAccessible = true
+				try {
+					it.isAccessible = true
+				} catch(_: Error) {
+					// kotlin.reflect.jvm.internal.KotlinReflectionInternalError: Inconsistent number of parameters in the descriptor and Java reflection object: 0 != 1
+					// Calling: private final fun `<get-lastAlert>`(): me.nobaboy.nobaaddons.utils.Timestamp defined in me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures[PropertyGetterDescriptorImpl@319df56b]
+					// Parameter types: [])
+					// Default: false
+					return@mapNotNull null
+				}
 				val delegate = it.getDelegate(this@AbstractConfigOptionHolder) as? ConfigOption<*> ?: return@mapNotNull null
 				it.name to delegate
 			}
@@ -48,19 +58,29 @@ abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder {
 	}
 
 	/**
-	 * Create a new [ConfigOption] with the given [default] value; this is a convenience alias for [buildOption].
+	 * Create a new [ConfigOption] with the given [default] value
 	 */
-	protected inline fun <reified T> config(default: T, builder: OptionBuilder<T>.() -> Unit = {}): ConfigOption<T> =
-		buildOption(this) {
+	protected inline fun <reified T> config(
+		default: T,
+		serializer: KSerializer<T> = serializer<T>(),
+		builder: OptionBuilder<T>.() -> Unit = {}
+	): ConfigOption<T> =
+		config<T>(serializer) {
 			this.default = default
 			builder(this)
 		}
 
 	/**
-	 * Create a new [ConfigOption]; this is a convenience alias for [buildOption].
+	 * Create a new [ConfigOption]
 	 */
-	protected inline fun <reified T> config(builder: OptionBuilder<T>.() -> Unit): ConfigOption<T> =
-		buildOption(this, builder)
+	protected inline fun <reified T> config(
+		serializer: KSerializer<T> = serializer<T>(),
+		builder: OptionBuilder<T>.() -> Unit
+	): ConfigOption<T> {
+		val optionBuilder = OptionBuilder<T>(this, serializer)
+		builder(optionBuilder)
+		return optionBuilder.build()
+	}
 
 	/**
 	 * Implement your YACL config building here.
