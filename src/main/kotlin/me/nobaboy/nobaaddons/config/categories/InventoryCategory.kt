@@ -231,29 +231,5 @@ object InventoryCategory {
 			) requires configOption(enabled)
 		}
 		// endregion
-
-		// region Item Pickup Log
-		group(tr("nobaaddons.config.inventory.itemPickupLog", "Item Pickup Log")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED,
-				default = defaults.inventory.itemPickupLog.enabled,
-				property = config.inventory.itemPickupLog::enabled
-			)
-			slider(
-				tr("nobaaddons.config.inventory.itemPickupLog.timeout", "Expire After"),
-				min = 2,
-				max = 10,
-				step = 1,
-				default = defaults.inventory.itemPickupLog.timeoutSeconds,
-				property = defaults.inventory.itemPickupLog::timeoutSeconds,
-				format = CommonText.Config::seconds
-			) requires configOption(enabled)
-			cycler(
-				tr("nobaaddons.config.inventory.itemPickupLog.style", "Text Style"),
-				default = TextShadow.SHADOW,
-				property = UISettings.itemPickupLog::textShadow
-			) requires configOption(enabled)
-		}
-		// endregion
 	}
 }

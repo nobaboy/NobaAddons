@@ -44,6 +44,7 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 	var descriptionFactory: ((T) -> Text)? = null
 
 	private var yaclOptionBuilder: YACLOptionBuilder<T>? = null
+	private var onSave: ((T) -> Unit)? = null
 
 	/**
 	 * Controller for the built YACL option; this is required if [name] is set.
@@ -74,6 +75,15 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 	 */
 	fun description(factory: (T) -> Text) {
 		descriptionFactory = factory
+	}
+
+	/**
+	 * Add an event listener to be run when the config is updated through the YACL menu
+	 *
+	 * Note that this method is always run, even if the value for this option has not changed.
+	 */
+	fun onSave(event: (T) -> Unit) {
+		onSave = event
 	}
 
 	/**
@@ -113,7 +123,7 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 	}
 
 	fun build(): ConfigOption<T> {
-		val option = ConfigOption<T>(serializer, defaultFactory)
+		val option = ConfigOption<T>(serializer, defaultFactory, onSave)
 
 		if(yaclOptionBuilder == null && name != null) {
 			yaclOptionBuilder = defaultYaclBuilder(option)
@@ -126,7 +136,11 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 	}
 }
 
-class ConfigOption<T> internal constructor(val serializer: KSerializer<T>, val defaultFactory: () -> T) {
+class ConfigOption<T> internal constructor(
+	val serializer: KSerializer<T>,
+	val defaultFactory: () -> T,
+	private val onSave: ((T) -> Unit)? = null
+) {
 	private var value = defaultFactory()
 
 	internal var yaclOptionBuilder: YACLOptionBuilder<T>? = null
@@ -141,6 +155,10 @@ class ConfigOption<T> internal constructor(val serializer: KSerializer<T>, val d
 			condition?.apply(option)
 			option
 		}
+	}
+
+	fun saveEvent() {
+		onSave?.invoke(get())
 	}
 
 	fun get() = value

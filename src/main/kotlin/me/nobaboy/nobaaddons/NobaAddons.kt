@@ -164,10 +164,6 @@ object NobaAddons : ClientModInitializer {
 		SWikiCommand.init()
 		/* endregion */
 
-		/* region User Interface */
-		ItemPickupLog.init()
-		/* endregion */
-
 		/* region Features */
 		// region Visuals
 		EtherwarpHelper.init()

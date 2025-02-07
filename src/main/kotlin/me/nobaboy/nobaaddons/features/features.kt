@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.features
 
 import me.nobaboy.nobaaddons.features.general.DevFeatures
+import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.slayers.CompactSlayerMessages
 import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
@@ -13,6 +14,7 @@ internal val FEATURES = arrayOf<Feature>(
 	// endregion
 
 	// region Inventory
+	ItemPickupLog,
 	// endregion
 
 	// region Events

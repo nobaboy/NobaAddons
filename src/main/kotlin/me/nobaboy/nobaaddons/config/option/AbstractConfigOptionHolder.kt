@@ -13,7 +13,7 @@ import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
-abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder {
+abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder, Iterable<ConfigOption<*>> {
 	protected open val migrations: ConfigOptionMigration? = null
 
 	protected val options: Map<String, ConfigOption<*>> by lazy {
@@ -25,6 +25,8 @@ abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder {
 			}
 			.toMap()
 	}
+
+	override fun iterator(): Iterator<ConfigOption<*>> = options.values.iterator()
 
 	@Suppress("UNCHECKED_CAST")
 	protected fun <I, T> KMutableProperty1<I, T>.getOptionDelegate(instance: I): ConfigOption<T>? {
@@ -59,6 +61,10 @@ abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder {
 				put(name, option.get(json))
 			}
 		})
+	}
+
+	open fun onSave() {
+		options.values.forEach(ConfigOption<*>::saveEvent)
 	}
 
 	/**
