@@ -7,6 +7,7 @@ import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder
+import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder
 import dev.isxander.yacl3.api.controller.EnumDropdownControllerBuilder
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
@@ -54,6 +55,14 @@ fun OptionBuilder<Color>.colorController(allowAlpha: Boolean = false) {
 }
 
 fun OptionBuilder<NobaColor>.colorController() {
+	// this fucking sucks and absolutely breaks certain assumptions - namely, inter-option requirements
+	// will violently explode when using the property reference syntax.
+	// but, there's unfortunately not a lot else that can be done here without basically just copying the entire
+	// color controller and adapting it here.
+	// using awt Color is also very inconvenient, as doing so requires explicitly providing a KSerializer for it,
+	// as (for whatever reason?) @Serializable doesn't appear to work with this config system(???).
+	// in short: this sucks, but it's the most reasonable solution that exists given the limitations of
+	// this implementation.
 	yacl { option ->
 		Option.createBuilder<Color>().apply {
 			name(name!!)
@@ -72,6 +81,10 @@ fun OptionBuilder<Int>.intSlider(min: Int, max: Int, step: Int = 1) {
 
 fun OptionBuilder<Float>.floatSlider(min: Float, max: Float, step: Float = 1f) {
 	controller = { FloatSliderControllerBuilder.create(it).step(step).range(min, max) }
+}
+
+fun OptionBuilder<Double>.doubleSlider(min: Double, max: Double, step: Double = 1.0) {
+	controller = { DoubleSliderControllerBuilder.create(it).step(step).range(min, max) }
 }
 
 fun <T : Enum<T>> OptionBuilder<T>.enumDropdown() {

@@ -5,6 +5,7 @@ import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
+import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionLoader
 import net.minecraft.text.Text
 
 sealed class AbstractCoreConfig(id: String) : AbstractConfigOptionHolder(id) {

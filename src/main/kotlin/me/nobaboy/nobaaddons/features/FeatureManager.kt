@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.YetAnotherConfigLib
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.config.core.AbstractConfigOptionLoader
+import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionLoader
 import me.nobaboy.nobaaddons.utils.CommonText
 
 private val FEATURE_CONFIG = NobaAddons.CONFIG_DIR.resolve("features.json")
@@ -45,12 +45,7 @@ object FeatureManager : AbstractConfigOptionLoader<Feature>(FEATURE_CONFIG.toFil
 				it.value.forEach { it.buildConfig(this) }
 			}
 
-			try {
-				category.build()
-			} catch(_: IllegalArgumentException) {
-				// empty category, don't bother trying to add it
-				null
-			}
+			category.build()
 		})
 
 		save { save() }

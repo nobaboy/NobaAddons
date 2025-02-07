@@ -14,33 +14,37 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
 abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder {
+	protected open val migrations: ConfigOptionMigration? = null
+
 	protected val options: Map<String, ConfigOption<*>> by lazy {
 		this::class.memberProperties
 			.sortedBy { it.findAnnotation<Order>()?.order ?: 0 }
 			.mapNotNull {
 				it as? KMutableProperty1<AbstractConfigOptionHolder, *> ?: return@mapNotNull null
-				try {
-					it.isAccessible = true
-				} catch(_: Error) {
-					// kotlin.reflect.jvm.internal.KotlinReflectionInternalError: Inconsistent number of parameters in the descriptor and Java reflection object: 0 != 1
-					// Calling: private final fun `<get-lastAlert>`(): me.nobaboy.nobaaddons.utils.Timestamp defined in me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures[PropertyGetterDescriptorImpl@319df56b]
-					// Parameter types: [])
-					// Default: false
-					return@mapNotNull null
-				}
-				val delegate = it.getDelegate(this@AbstractConfigOptionHolder) as? ConfigOption<*> ?: return@mapNotNull null
-				it.name to delegate
+				it.name to (it.getOptionDelegate(this) ?: return@mapNotNull null)
 			}
 			.toMap()
+	}
+
+	@Suppress("UNCHECKED_CAST")
+	protected fun <I, T> KMutableProperty1<I, T>.getOptionDelegate(instance: I): ConfigOption<T>? {
+		try {
+			isAccessible = true
+		} catch(_: Error) {
+			// kotlin.reflect.jvm.internal.KotlinReflectionInternalError: Inconsistent number of parameters in the descriptor and Java reflection object: 0 != 1
+			// Calling: private final fun `<get-lastAlert>`(): me.nobaboy.nobaaddons.utils.Timestamp defined in me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures[PropertyGetterDescriptorImpl@319df56b]
+			// Parameter types: [])
+			return null
+		}
+		return getDelegate(instance) as? ConfigOption<T>
 	}
 
 	/**
 	 * Load configs for all known [ConfigOption]s from the provided [JsonObject]
 	 */
 	fun load(json: Json, obj: JsonObject) {
+		migrations?.apply(json, obj)
 		val config = obj["config"] as? JsonObject ?: JsonObject(emptyMap())
-		// TODO implement migrations; this will be fairly involved as modifying a JsonObject from kotlinx.serialization
-		//      in-place isn't possible
 		for((name, option) in options) {
 			option.set(json, config[name] ?: continue)
 		}

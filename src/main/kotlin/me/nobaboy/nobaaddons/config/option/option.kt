@@ -15,8 +15,18 @@ interface ConfigOptionHolder {
 }
 
 class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializer<T>) {
+	/**
+	 * Optional name; if set, this builder will automatically attach a YACL option builder
+	 * (unless a custom [yacl] builder is provided).
+	 */
 	var name: Text? = null
 
+	/**
+	 * Optional description displayed for this option.
+	 *
+	 * This property does not support its getter, and can only be written to - use [description]
+	 * if you need to access this.
+	 */
 	var description: Text?
 		// this is incredibly cursed
 		get() = throw UnsupportedOperationException("description does not support getter; get descriptionFactory instead")
@@ -28,40 +38,76 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 			}
 		}
 
+	/**
+	 * Optional description factory used for the built YACL option
+	 */
 	var descriptionFactory: ((T) -> Text)? = null
 
 	private var yaclOptionBuilder: YACLOptionBuilder<T>? = null
+
+	/**
+	 * Controller for the built YACL option; this is required if [name] is set.
+	 */
 	var controller: ((YACLOption<T>) -> ControllerBuilder<T>)? = null
 
+	/**
+	 * Factory method providing a default value for this config option
+	 */
 	lateinit var defaultFactory: () -> T
 
+	/**
+	 * Default value for this config option; this property is a convenience wrapper around [defaultFactory].
+	 */
 	var default: T
 		get() = defaultFactory()
 		set(value) {
 			defaultFactory = { value }
 		}
 
+	/**
+	 * @see requires
+	 */
 	var condition: OptionCondition? = null
 
-	fun descriptionFactory(factory: (T) -> Text) {
+	/**
+	 * @see descriptionFactory
+	 */
+	fun description(factory: (T) -> Text) {
 		descriptionFactory = factory
 	}
 
+	/**
+	 * Add an option condition to this option; this will be attached to the built YACL option,
+	 * marking it as unavailable if the condition returns `false`.
+	 */
 	fun requires(builder: ConditionBuilder.() -> OptionCondition) {
 		condition = builder(ConditionBuilder(holder))
 	}
 
+	/**
+	 * Override the default YACL option builder for this option
+	 *
+	 * Note that this allows for returning a different type than this option normally holds; this is
+	 * by design, to allow for [colorController] to function properly.
+	 *
+	 * Care should be taken to avoid changing the built option type if it isn't strictly necessary,
+	 * as doing so will result in any [requires] that uses property reference syntax on this option
+	 * to violently explode (but this can be worked around by using the property name as a string instead).
+	 */
 	fun yacl(builder: YACLOptionBuilder<T>) {
 		yaclOptionBuilder = builder
 	}
 
 	private fun defaultYaclBuilder(option: ConfigOption<T>): YACLOptionBuilder<T> = {
+		val name = name!!
+		val descriptionFactory = descriptionFactory
+		val controller = controller!!
 		YACLOption.createBuilder<T>().apply {
-			name(name!!)
+			name(name)
 			descriptionFactory?.let {
 				description { value -> OptionDescription.of(it(value)) }
 			}
-			controller(controller!!)
+			controller(controller)
 			binding(Binding.generic(option.defaultFactory(), option::get, option::set))
 		}.build()
 	}
@@ -80,7 +126,7 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 	}
 }
 
-class ConfigOption<T>(val serializer: KSerializer<T>, val defaultFactory: () -> T) {
+class ConfigOption<T> internal constructor(val serializer: KSerializer<T>, val defaultFactory: () -> T) {
 	private var value = defaultFactory()
 
 	internal var yaclOptionBuilder: YACLOptionBuilder<T>? = null

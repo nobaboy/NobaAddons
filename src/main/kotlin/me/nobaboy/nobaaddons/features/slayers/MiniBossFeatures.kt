@@ -1,7 +1,5 @@
-@file:UseSerializers(ColorKSerializer::class)
 package me.nobaboy.nobaaddons.features.slayers
 
-import kotlinx.serialization.UseSerializers
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.option.booleanController
 import me.nobaboy.nobaaddons.config.option.colorController
@@ -14,7 +12,6 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
-import me.nobaboy.nobaaddons.utils.serializers.ColorKSerializer
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.loader.api.FabricLoader
@@ -40,7 +37,7 @@ object MiniBossFeatures : Feature("slayerMiniBosses", tr("nobaaddons.feature.sla
 	@Order(2)
 	private var highlight by config(false) {
 		name = tr("nobaaddons.config.slayers.miniBosses.highlight", "Highlight MiniBosses")
-		descriptionFactory {
+		description {
 			if(FabricLoader.getInstance().isModLoaded("iris")) {
 				CommonText.Config.ENTITY_OVERLAY_IRIS_CONFLICT
 			} else {
