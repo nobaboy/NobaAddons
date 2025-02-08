@@ -5,31 +5,35 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.serializer
 import kotlin.collections.iterator
-import kotlin.reflect.KMutableProperty1
+import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
-abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder, Iterable<ConfigOption<*>> {
+abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionGroup, Iterable<Config> {
 	protected open val migrations: ConfigOptionMigration? = null
 
-	protected val options: Map<String, ConfigOption<*>> by lazy {
+	private var version: Int = migrations?.version ?: 0
+
+	override val options: Map<String, Config> by lazy {
 		this::class.memberProperties
 			.sortedBy { it.findAnnotation<Order>()?.order ?: 0 }
 			.mapNotNull {
-				it as? KMutableProperty1<AbstractConfigOptionHolder, *> ?: return@mapNotNull null
+				it as? KProperty1<AbstractConfigOptionHolder, *> ?: return@mapNotNull null
 				it.name to (it.getOptionDelegate(this) ?: return@mapNotNull null)
 			}
 			.toMap()
 	}
 
-	override fun iterator(): Iterator<ConfigOption<*>> = options.values.iterator()
+	override fun iterator(): Iterator<Config> = options.values.iterator()
 
 	@Suppress("UNCHECKED_CAST")
-	protected fun <I, T> KMutableProperty1<I, T>.getOptionDelegate(instance: I): ConfigOption<T>? {
+	protected fun <I, T> KProperty1<I, T>.getOptionDelegate(instance: I): ConfigOption<T>? {
 		try {
 			isAccessible = true
 		} catch(_: Error) {
@@ -44,27 +48,37 @@ abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder, 
 	/**
 	 * Load configs for all known [ConfigOption]s from the provided [JsonObject]
 	 */
-	fun load(json: Json, obj: JsonObject) {
+	override fun load(json: Json, obj: JsonObject) {
 		migrations?.apply(json, obj)
 		val config = obj["config"] as? JsonObject ?: JsonObject(emptyMap())
 		for((name, option) in options) {
-			option.set(json, config[name] ?: continue)
+			when(option) {
+				is ConfigOption<*> -> option.set(json, config[name] ?: continue)
+				is ConfigOptionGroup -> option.load(json, config["name"] as? JsonObject ?: continue)
+				else -> error("Expected ConfigOption<*> or ConfigOptionGroup, got ${option::class.simpleName} instead")
+			}
 		}
+		version = (obj["version"] as? JsonPrimitive)?.intOrNull ?: migrations?.version ?: 0
 	}
 
 	/**
 	 * Dump all current [ConfigOption]s to a [JsonObject]
 	 */
-	fun dump(json: Json): JsonObject = buildJsonObject {
+	override fun dump(json: Json): JsonObject = buildJsonObject {
 		put("config", buildJsonObject {
 			for ((name, option) in options) {
-				put(name, option.get(json))
+				put(name, when(option) {
+					is ConfigOption<*> -> option.get(json)
+					is ConfigOptionGroup -> option.dump(json)
+					else -> error("Expected ConfigOption<*> or ConfigOptionGroup, got ${option::class.simpleName} instead")
+				})
 			}
 		})
+		put("version", JsonPrimitive(version))
 	}
 
 	open fun onSave() {
-		options.values.forEach(ConfigOption<*>::saveEvent)
+		options.values.forEach(Config::saveEvent)
 	}
 
 	/**
@@ -97,7 +111,10 @@ abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionHolder, 
 	 */
 	abstract fun buildConfig(category: ConfigCategory.Builder)
 
-	override operator fun get(key: String): ConfigOption<*>? = options[key]
+	override operator fun get(key: String): Config? = options[key]
+
+	override fun saveEvent() {
+	}
 
 	/**
 	 * Annotate on a [config] field to change the order that it appears in the built YACL config.

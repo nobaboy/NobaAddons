@@ -3,12 +3,17 @@ package me.nobaboy.nobaaddons.features
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
+import me.nobaboy.nobaaddons.config.option.ConfigOption
 import me.nobaboy.nobaaddons.events.AbstractEventDispatcher
 import me.nobaboy.nobaaddons.events.Event
 import net.minecraft.text.Text
 
 abstract class Feature(id: String, val name: Text, val category: FeatureCategory) : AbstractConfigOptionHolder(id) {
 	val killSwitch by KillSwitch(null)
+
+	protected fun getKillSwitch(option: String): Boolean {
+		return KILLSWITCHES?.get(id)?.options?.get(option)?.isApplicable == true
+	}
 
 	/**
 	 * Registers the given [listener] on the given [dispatcher], only invoking it if this feature's [killSwitch] hasn't
@@ -41,7 +46,7 @@ abstract class Feature(id: String, val name: Text, val category: FeatureCategory
 			return
 		}
 
-		val options = options.values.mapNotNull { it.yaclOption }
+		val options = options.values.mapNotNull { (it as? ConfigOption<*>)?.yaclOption }
 		if(options.isEmpty()) {
 			return
 		}

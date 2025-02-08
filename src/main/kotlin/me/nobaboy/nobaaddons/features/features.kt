@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features
 
+import me.nobaboy.nobaaddons.features.chat.alerts.ChatAlerts
 import me.nobaboy.nobaaddons.features.general.DevFeatures
 import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.features.qol.MouseLock
@@ -38,6 +39,7 @@ internal val FEATURES = arrayOf<Feature>(
 	// endregion
 
 	// region Chat
+	ChatAlerts,
 	// endregion
 
 	// region QOL

@@ -39,7 +39,7 @@ private class WrappingCondition(
 	}.toList()
 }
 
-class ConditionBuilder(private val holder: ConfigOptionHolder) {
+class ConditionBuilder(private val group: ConfigOptionGroup) {
 	/**
 	 * Invert the provided [OptionCondition]'s return value
 	 */
@@ -117,7 +117,9 @@ class ConditionBuilder(private val holder: ConfigOptionHolder) {
 	 */
 	@Suppress("UNCHECKED_CAST")
 	fun <T> option(key: String, mapper: (T) -> Boolean): OptionCondition {
-		val lazyOther = { listOf(holder[key]?.yaclOption as? Option<T>).requireNoNulls() }
+		val lazyOther = {
+			listOf(group[key]?.let { it as ConfigOption<T> }?.yaclOption as? Option<T>).requireNoNulls()
+		}
 		val other by lazy { lazyOther().first() }
 		return WrappingCondition(lazyOptions = lazyOther) { mapper(other.pendingValue()) && other.available() }
 	}

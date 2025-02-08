@@ -6,11 +6,12 @@ import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
 import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionLoader
+import me.nobaboy.nobaaddons.config.option.ConfigOption
 import net.minecraft.text.Text
 
 sealed class AbstractCoreConfig(id: String) : AbstractConfigOptionHolder(id) {
 	override fun buildConfig(category: ConfigCategory.Builder) {
-		options.values.mapNotNull { it.yaclOption }.forEach(category::option)
+		options.values.mapNotNull { (it as? ConfigOption<*>)?.yaclOption }.forEach(category::option)
 	}
 
 	/**
@@ -21,7 +22,7 @@ sealed class AbstractCoreConfig(id: String) : AbstractConfigOptionHolder(id) {
 			name(group)
 			description?.let { description(OptionDescription.of(it)) }
 			collapsed(true)
-			options.values.mapNotNull { it.yaclOption }.forEach(::option)
+			options.values.mapNotNull { (it as? ConfigOption<*>)?.yaclOption }.forEach(::option)
 		}.build())
 	}
 

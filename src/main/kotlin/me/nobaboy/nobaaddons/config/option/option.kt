@@ -4,17 +4,15 @@ import dev.isxander.yacl3.api.Binding
 import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.controller.ControllerBuilder
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import net.minecraft.text.Text
 import kotlin.reflect.KProperty
 import dev.isxander.yacl3.api.Option as YACLOption
 
 typealias YACLOptionBuilder<T> = (ConfigOption<T>) -> YACLOption<*>
 
-interface ConfigOptionHolder {
-	operator fun get(key: String): ConfigOption<*>?
-}
-
-class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializer<T>) {
+class OptionBuilder<T>(val group: ConfigOptionGroup, val serializer: KSerializer<T>) {
 	/**
 	 * Optional name; if set, this builder will automatically attach a YACL option builder
 	 * (unless a custom [yacl] builder is provided).
@@ -24,17 +22,16 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 	/**
 	 * Optional description displayed for this option.
 	 *
-	 * This property does not support its getter, and can only be written to - use [description]
+	 * This property does not support its getter, and can only be written to - use [descriptionFactory]
 	 * if you need to access this.
 	 */
 	var description: Text?
 		// this is incredibly cursed
 		get() = throw UnsupportedOperationException("description does not support getter; get descriptionFactory instead")
 		set(value) {
-			descriptionFactory = if(value != null) {
-				{ value }
-			} else {
-				null
+			descriptionFactory = when(value) {
+				null -> null
+				else -> { _ -> value }
 			}
 		}
 
@@ -89,9 +86,11 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 	/**
 	 * Add an option condition to this option; this will be attached to the built YACL option,
 	 * marking it as unavailable if the condition returns `false`.
+	 *
+	 * This has no effect if no YACL option is attached to the built option.
 	 */
 	fun requires(builder: ConditionBuilder.() -> OptionCondition) {
-		condition = builder(ConditionBuilder(holder))
+		condition = builder(ConditionBuilder(group))
 	}
 
 	/**
@@ -102,7 +101,7 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 	 *
 	 * Care should be taken to avoid changing the built option type if it isn't strictly necessary,
 	 * as doing so will result in any [requires] that uses property reference syntax on this option
-	 * to violently explode (but this can be worked around by using the property name as a string instead).
+	 * to break (but this can be worked around by using the property name string instead).
 	 */
 	fun yacl(builder: YACLOptionBuilder<T>) {
 		yaclOptionBuilder = builder
@@ -122,8 +121,11 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 		}.build()
 	}
 
+	/**
+	 * Create a new [ConfigOption] from this builder's current settings
+	 */
 	fun build(): ConfigOption<T> {
-		val option = ConfigOption<T>(serializer, defaultFactory, onSave)
+		val option = ConfigOptionImpl<T>(serializer, defaultFactory, onSave)
 
 		if(yaclOptionBuilder == null && name != null) {
 			yaclOptionBuilder = defaultYaclBuilder(option)
@@ -136,11 +138,48 @@ class OptionBuilder<T>(val holder: ConfigOptionHolder, val serializer: KSerializ
 	}
 }
 
-class ConfigOption<T> internal constructor(
-	val serializer: KSerializer<T>,
-	val defaultFactory: () -> T,
+/**
+ * Generic configuration option; this includes individual config options and config option groups.
+ */
+interface Config {
+	fun saveEvent()
+}
+
+/**
+ * A group containing multiple individual config options
+ */
+interface ConfigOptionGroup : Config {
+	val options: Map<String, Config>
+
+	fun load(json: Json, obj: JsonObject)
+	fun dump(json: Json): JsonObject
+
+	operator fun get(key: String): Config?
+}
+
+/**
+ * An individual mutable config option, optionally with a YACL option.
+ */
+interface ConfigOption<T> : Config {
+	val serializer: KSerializer<T>
+	val defaultFactory: () -> T
+	val yaclOption: YACLOption<*>?
+
+	fun get(): T
+	fun set(value: T)
+
+	@Suppress("unused")
+	operator fun getValue(instance: Any?, property: KProperty<*>): T = get()
+
+	@Suppress("unused")
+	operator fun setValue(instance: Any?, property: KProperty<*>, value: T) = set(value)
+}
+
+internal class ConfigOptionImpl<T>(
+	override val serializer: KSerializer<T>,
+	override val defaultFactory: () -> T,
 	private val onSave: ((T) -> Unit)? = null
-) {
+) : ConfigOption<T> {
 	private var value = defaultFactory()
 
 	internal var yaclOptionBuilder: YACLOptionBuilder<T>? = null
@@ -149,7 +188,7 @@ class ConfigOption<T> internal constructor(
 	// TODO are there any issues that this would cause by only having a single YACL Option instance
 	//      over re-creating this for each new config screen? re-creating this on each new config screen
 	//      would be much more complicated to resolve requirements for
-	val yaclOption: YACLOption<*>? by lazy {
+	override val yaclOption: YACLOption<*>? by lazy {
 		yaclOptionBuilder?.let {
 			val option = it(this)
 			condition?.apply(option)
@@ -157,19 +196,13 @@ class ConfigOption<T> internal constructor(
 		}
 	}
 
-	fun saveEvent() {
+	override fun saveEvent() {
 		onSave?.invoke(get())
 	}
 
-	fun get() = value
+	override fun get() = value
 
-	fun set(value: T) {
+	override fun set(value: T) {
 		this.value = value
 	}
-
-	@Suppress("unused")
-	operator fun getValue(instance: Any?, property: KProperty<*>): T = get()
-
-	@Suppress("unused")
-	operator fun setValue(instance: Any?, property: KProperty<*>, value: T) = set(value)
 }
