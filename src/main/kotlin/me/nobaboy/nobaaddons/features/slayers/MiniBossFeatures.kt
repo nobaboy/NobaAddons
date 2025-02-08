@@ -32,6 +32,7 @@ object MiniBossFeatures : Feature("slayerMiniBosses", tr("nobaaddons.feature.sla
 	private var alertColor by config(NobaColor.RED) {
 		name = CommonText.Config.ALERT_COLOR
 		colorController()
+		requires { option(::spawnAlert) }
 	}
 
 	@Order(2)

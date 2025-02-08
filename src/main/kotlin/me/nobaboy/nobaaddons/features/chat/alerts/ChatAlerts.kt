@@ -48,6 +48,7 @@ object ChatAlerts : Feature("chatAlerts", tr("nobaaddons.feature.chatAlerts", "A
 	override fun buildConfig(category: ConfigCategory.Builder) {
 		if(killSwitch) return
 
+		deepBuildYaclOptions()
 		category.group(OptionGroup.createBuilder().apply {
 			name(name)
 			collapsed(true)

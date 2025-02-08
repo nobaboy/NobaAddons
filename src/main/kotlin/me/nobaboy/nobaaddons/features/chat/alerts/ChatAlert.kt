@@ -7,6 +7,7 @@ import net.minecraft.text.Text
 abstract class ChatAlert(id: String, private val name: Text) : AbstractConfigOptionGroup(id) {
 	protected open val description: Text? = null
 
+	@Order(-100)
 	var enabled by config(false) {
 		name = this@ChatAlert.name
 		description = this@ChatAlert.description

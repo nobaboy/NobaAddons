@@ -21,27 +21,6 @@ object ChatCategory {
 		}
 		// endregion
 
-		// region Alerts
-		group(tr("nobaaddons.config.chat.alerts", "Alerts")) {
-			// region Crimson Isle
-			label(CommonText.Config.LABEL_CRIMSON_ISLE)
-
-			boolean(
-				tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn", "Alert Mythic Sea Creature Catches"),
-				tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip", "Sends your current location in all chat when catching a mythic sea creature"),
-				default = defaults.chat.alerts.mythicSeaCreatureSpawn,
-				property = config.chat.alerts::mythicSeaCreatureSpawn
-			)
-			boolean(
-				tr("nobaaddons.config.chat.alerts.vanquisherSpawn", "Alert Vanquisher Spawn"),
-				tr("nobaaddons.config.chat.alerts.vanquisherSpawn.tooltip", "Sends your current location in all chat when you spawn a Vanquisher"),
-				default = defaults.chat.alerts.vanquisherSpawn,
-				property = config.chat.alerts::vanquisherSpawn
-			)
-			// endregion
-		}
-		// endregion
-
 		// region Filters
 		group(tr("nobaaddons.config.chat.filters", "Filters")) {
 			// region Crimson Isle

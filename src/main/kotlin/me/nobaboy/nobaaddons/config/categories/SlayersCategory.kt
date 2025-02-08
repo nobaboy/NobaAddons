@@ -29,32 +29,6 @@ object SlayersCategory {
 			) requires configOption(enabled)
 		}
 
-		group(tr("nobaaddons.config.slayers.miniBossAlert", "MiniBoss Alert")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED,
-				default = defaults.slayers.miniBossAlert.enabled,
-				property = config.slayers.miniBossAlert::enabled
-			)
-			color(
-				CommonText.Config.ALERT_COLOR,
-				default = defaults.slayers.miniBossAlert.alertColor,
-				property = config.slayers.miniBossAlert::alertColor
-			) requires configOption(enabled)
-		}
-
-		group(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED.wip(),
-				default = defaults.slayers.highlightMiniBosses.enabled,
-				property = config.slayers.highlightMiniBosses::enabled
-			)
-			color(
-				CommonText.Config.HIGHLIGHT_COLOR.wip(),
-				default = defaults.slayers.highlightMiniBosses.highlightColor,
-				property = config.slayers.highlightMiniBosses::highlightColor
-			) requires configOption(enabled)
-		}
-
 		group(tr("nobaaddons.config.slayers.announceBossKillTime", "Announce Boss Kill Time")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,

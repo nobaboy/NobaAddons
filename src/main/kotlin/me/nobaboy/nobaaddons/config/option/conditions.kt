@@ -26,7 +26,7 @@ fun interface OptionCondition {
 
 private class WrappingCondition(
 	val conditions: Collection<OptionCondition> = emptyList(),
-	val options: Collection<Option<*>> = emptyList(),
+	val options: Collection<ConfigOption<*>> = emptyList(),
 	val lazyOptions: () -> Collection<Option<*>> = { emptyList() },
 	val condition: OptionCondition,
 ) : OptionCondition {
@@ -34,7 +34,7 @@ private class WrappingCondition(
 
 	override fun listenForUpdates(): List<Option<*>> = buildSet {
 		addAll(condition.listenForUpdates())
-		addAll(options)
+		addAll(options.mapNotNull { it.yaclOption })
 		addAll(lazyOptions())
 		conditions.forEach { addAll(it.listenForUpdates()) }
 	}.toList()
@@ -104,8 +104,8 @@ class ConditionBuilder(private val group: ConfigOptionGroup) {
 			is KProperty1<*, *> -> (other as KProperty1<Any, *>).getDelegate(group) as ConfigOption<T>
 			else -> error("Expected KProperty0 or KProperty1, got ${other::class.simpleName} instead")
 		}
-		val option = delegate.yaclOption!!
-		return WrappingCondition(options = listOf(option)) {
+		return WrappingCondition(options = listOf(delegate)) {
+			val option = delegate.yaclOption!!
 			mapper(option.pendingValue() as T) && option.available()
 		}
 	}

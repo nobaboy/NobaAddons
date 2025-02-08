@@ -7,6 +7,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import net.minecraft.text.Text
+import kotlin.invoke
 import kotlin.reflect.KProperty
 import dev.isxander.yacl3.api.Option as YACLOption
 
@@ -146,7 +147,8 @@ internal annotation class SealedConfigApi
 /**
  * Generic configuration option; this includes individual config options and config option groups.
  *
- * This interface does not support being extended externally; extend ConfigOption or ConfigOptionGroup instead.
+ * This interface does not support being extended or implemented externally; use either
+ * [ConfigOption] or [ConfigOptionGroup] instead.
  */
 @SubclassOptInRequired(SealedConfigApi::class)
 interface Config {
@@ -173,7 +175,11 @@ interface ConfigOptionGroup : Config {
 interface ConfigOption<T> : Config {
 	val serializer: KSerializer<T>
 	val defaultFactory: () -> T
+
+	val condition: OptionCondition?
 	val yaclOption: YACLOption<*>?
+
+	fun buildYaclOption()
 
 	fun get(): T
 	fun set(value: T)
@@ -193,17 +199,15 @@ internal class ConfigOptionImpl<T>(
 	private var value = defaultFactory()
 
 	internal var yaclOptionBuilder: YACLOptionBuilder<T>? = null
-	internal var condition: OptionCondition? = null
 
-	// TODO are there any issues that this would cause by only having a single YACL Option instance
-	//      over re-creating this for each new config screen? re-creating this on each new config screen
-	//      would be much more complicated to resolve requirements for
-	override val yaclOption: YACLOption<*>? by lazy {
-		yaclOptionBuilder?.let {
-			val option = it(this)
-			condition?.apply(option)
-			option
-		}
+	override var condition: OptionCondition? = null
+		internal set
+
+	override var yaclOption: YACLOption<*>? = null
+		private set
+
+	override fun buildYaclOption() {
+		yaclOption = yaclOptionBuilder?.invoke(this)
 	}
 
 	override fun saveEvent() {

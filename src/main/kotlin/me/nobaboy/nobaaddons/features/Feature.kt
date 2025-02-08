@@ -46,6 +46,7 @@ abstract class Feature(id: String, val name: Text, val category: FeatureCategory
 			return
 		}
 
+		deepBuildYaclOptions()
 		val options = options.values.mapNotNull { (it as? ConfigOption<*>)?.yaclOption }
 		if(options.isEmpty()) {
 			return

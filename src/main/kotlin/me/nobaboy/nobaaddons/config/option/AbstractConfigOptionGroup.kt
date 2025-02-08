@@ -73,15 +73,15 @@ abstract class AbstractConfigOptionGroup(val id: String) : ConfigOptionGroup, It
 	}
 
 	/**
-	 * Create a new [ConfigOption] with the given [default] value
+	 * Create a new [ConfigOption] with the given [defaultValue]
 	 */
 	protected inline fun <reified T> config(
-		default: T,
+		defaultValue: T,
 		serializer: KSerializer<T> = serializer<T>(),
 		builder: OptionBuilder<T>.() -> Unit = {}
 	): ConfigOption<T> =
 		config<T>(serializer) {
-			this.default = default
+			default = defaultValue
 			builder(this)
 		}
 
@@ -95,6 +95,20 @@ abstract class AbstractConfigOptionGroup(val id: String) : ConfigOptionGroup, It
 		val optionBuilder = OptionBuilder<T>(this, serializer)
 		builder(optionBuilder)
 		return optionBuilder.build()
+	}
+
+	private fun walkOptions(group: ConfigOptionGroup = this, onEach: (ConfigOption<*>) -> Unit) {
+		for(option in group.options.values) {
+			when(option) {
+				is ConfigOption<*> -> onEach(option)
+				is ConfigOptionGroup -> walkOptions(option, onEach)
+			}
+		}
+	}
+
+	protected fun deepBuildYaclOptions() {
+		walkOptions { it.buildYaclOption() }
+		walkOptions { it.condition?.apply(it.yaclOption!!) }
 	}
 
 	override fun saveEvent() {
@@ -112,7 +126,7 @@ abstract class AbstractConfigOptionGroup(val id: String) : ConfigOptionGroup, It
 	}
 
 	/**
-	 * Annotate on a [config] field to change the order that it appears in the built YACL config.
+	 * Annotate on a [config] field to change the order that it appears in the config.
 	 *
 	 * Defaults to `0` if no annotation is present.
 	 *

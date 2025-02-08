@@ -52,3 +52,16 @@ inline fun MutableMap<String, JsonElement>.modify(element: String, mod: (Mutable
 inline fun JsonObject.modify(mod: (MutableMap<String, JsonElement>) -> Unit): JsonObject {
 	return JsonObject(toMutableMap().apply(mod))
 }
+
+fun MutableMap<String, JsonElement>.deepModify(path: List<String>, modifier: (MutableMap<String, JsonElement>) -> Unit) {
+	if(path.isEmpty()) {
+		modifier(this)
+		return
+	}
+
+	val path = path.toMutableList()
+	val key = path.removeFirst()
+	var item = this[key] as? JsonObject ?: JsonObject(mapOf())
+
+	put(key, JsonObject(item.toMutableMap().apply { deepModify(path, modifier) }))
+}

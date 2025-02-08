@@ -8,7 +8,6 @@ import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 
 class ChatConfig : ObjectProperty<ChatConfig>("chat") {
-	val alerts by Alerts()
 	val filters by Filters()
 	val chatCommands by ChatCommands()
 	val copyChat by CopyChat()
@@ -16,11 +15,6 @@ class ChatConfig : ObjectProperty<ChatConfig>("chat") {
 	class CopyChat : ObjectProperty<CopyChat>("copy") {
 		var enabled by Property.of("enabled", false)
 		var mode by Property.of("button", Serializer.enum(), CopyChatFeature.CopyWith.RIGHT_CLICK)
-	}
-
-	class Alerts : ObjectProperty<Alerts>("alerts") {
-		var mythicSeaCreatureSpawn by Property.of<Boolean>("mythicSeaCreatureSpawn", false)
-		var vanquisherSpawn by Property.of<Boolean>("mythicSeaCreatureSpawn", false)
 	}
 
 	class Filters : ObjectProperty<Filters>("filters") {

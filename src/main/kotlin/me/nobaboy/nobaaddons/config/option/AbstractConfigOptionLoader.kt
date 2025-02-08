@@ -22,9 +22,7 @@ abstract class AbstractConfigOptionLoader<T : AbstractConfigOptionGroup>(private
 			return
 		}
 
-		val obj = safeLoad({ file.toPath() }) { file.readJson<JsonObject>(JSON) } ?: return
-
-		loadFromJson(obj)
+		loadFromJson(safeLoad({ file.toPath() }) { file.readJson<JsonObject>(JSON) } ?: return)
 	}
 
 	protected fun loadFromJson(obj: JsonObject) {
