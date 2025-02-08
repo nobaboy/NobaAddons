@@ -16,6 +16,7 @@ import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.profile.ProfileData
+import me.nobaboy.nobaaddons.features.FeatureManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -153,6 +154,11 @@ object DebugCommands {
 	fun flushCaches() {
 		PersistentCache.save()
 		ProfileData.saveAll()
+	}
+
+	@Command
+	fun dumpUnacceptedConfig() {
+		FeatureManager.features.forEach { it.dumpUnaccepted() }
 	}
 
 	@Command

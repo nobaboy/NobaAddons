@@ -138,9 +138,17 @@ class OptionBuilder<T>(val group: ConfigOptionGroup, val serializer: KSerializer
 	}
 }
 
+@RequiresOptIn
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.BINARY)
+internal annotation class SealedConfigApi
+
 /**
  * Generic configuration option; this includes individual config options and config option groups.
+ *
+ * This interface does not support being extended externally; extend ConfigOption or ConfigOptionGroup instead.
  */
+@SubclassOptInRequired(SealedConfigApi::class)
 interface Config {
 	fun saveEvent()
 }
@@ -148,6 +156,7 @@ interface Config {
 /**
  * A group containing multiple individual config options
  */
+@OptIn(SealedConfigApi::class)
 interface ConfigOptionGroup : Config {
 	val options: Map<String, Config>
 
@@ -160,6 +169,7 @@ interface ConfigOptionGroup : Config {
 /**
  * An individual mutable config option, optionally with a YACL option.
  */
+@OptIn(SealedConfigApi::class)
 interface ConfigOption<T> : Config {
 	val serializer: KSerializer<T>
 	val defaultFactory: () -> T

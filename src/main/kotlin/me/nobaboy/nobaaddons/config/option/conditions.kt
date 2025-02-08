@@ -5,8 +5,9 @@ import dev.isxander.yacl3.api.OptionEventListener
 import net.fabricmc.loader.api.FabricLoader
 import net.fabricmc.loader.api.Version
 import kotlin.jvm.optionals.getOrNull
-import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
+import kotlin.reflect.KProperty0
+import kotlin.reflect.KProperty1
 import kotlin.reflect.jvm.isAccessible
 
 fun interface OptionCondition {
@@ -92,9 +93,17 @@ class ConditionBuilder(private val group: ConfigOptionGroup) {
 	 * If that isn't possible, you should instead use `option("name")`.
 	 */
 	@Suppress("UNCHECKED_CAST")
-	fun <T> option(other: KProperty<T>, mapper: (T) -> Boolean = { it as Boolean }): OptionCondition {
-		require(other is KMutableProperty0<*>)
-		val delegate = other.apply { isAccessible = true }.getDelegate() as ConfigOption<T>
+	fun <T> option(
+		other: KProperty<T>,
+		group: ConfigOptionGroup = this.group,
+		mapper: (T) -> Boolean = { it as Boolean }
+	): OptionCondition {
+		other.isAccessible = true
+		val delegate = when(other) {
+			is KProperty0<*> -> other.getDelegate() as ConfigOption<T>
+			is KProperty1<*, *> -> (other as KProperty1<Any, *>).getDelegate(group) as ConfigOption<T>
+			else -> error("Expected KProperty0 or KProperty1, got ${other::class.simpleName} instead")
+		}
 		val option = delegate.yaclOption!!
 		return WrappingCondition(options = listOf(option)) {
 			mapper(option.pendingValue() as T) && option.available()

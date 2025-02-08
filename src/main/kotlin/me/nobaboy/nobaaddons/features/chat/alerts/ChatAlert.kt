@@ -1,11 +1,10 @@
 package me.nobaboy.nobaaddons.features.chat.alerts
 
-import dev.isxander.yacl3.api.ConfigCategory
-import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
+import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionGroup
 import me.nobaboy.nobaaddons.config.option.booleanController
 import net.minecraft.text.Text
 
-abstract class ChatAlert(id: String, private val name: Text) : AbstractConfigOptionHolder(id) {
+abstract class ChatAlert(id: String, private val name: Text) : AbstractConfigOptionGroup(id) {
 	protected open val description: Text? = null
 
 	var enabled by config(false) {
@@ -15,8 +14,4 @@ abstract class ChatAlert(id: String, private val name: Text) : AbstractConfigOpt
 	}
 
 	abstract fun process(message: String)
-
-	override fun buildConfig(category: ConfigCategory.Builder) {
-		throw UnsupportedOperationException()
-	}
 }

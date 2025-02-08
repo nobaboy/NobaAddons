@@ -4,12 +4,12 @@ import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
+import me.nobaboy.nobaaddons.config.option.AbstractVersionedConfigOptionGroup
 import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionLoader
 import me.nobaboy.nobaaddons.config.option.ConfigOption
 import net.minecraft.text.Text
 
-sealed class AbstractCoreConfig(id: String) : AbstractConfigOptionHolder(id) {
+sealed class AbstractCoreConfig(id: String) : AbstractVersionedConfigOptionGroup(id) {
 	override fun buildConfig(category: ConfigCategory.Builder) {
 		options.values.mapNotNull { (it as? ConfigOption<*>)?.yaclOption }.forEach(category::option)
 	}

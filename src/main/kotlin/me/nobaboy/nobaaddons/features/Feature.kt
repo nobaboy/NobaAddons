@@ -2,13 +2,13 @@ package me.nobaboy.nobaaddons.features
 
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.OptionGroup
-import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
+import me.nobaboy.nobaaddons.config.option.AbstractVersionedConfigOptionGroup
 import me.nobaboy.nobaaddons.config.option.ConfigOption
 import me.nobaboy.nobaaddons.events.AbstractEventDispatcher
 import me.nobaboy.nobaaddons.events.Event
 import net.minecraft.text.Text
 
-abstract class Feature(id: String, val name: Text, val category: FeatureCategory) : AbstractConfigOptionHolder(id) {
+abstract class Feature(id: String, val name: Text, val category: FeatureCategory) : AbstractVersionedConfigOptionGroup(id) {
 	val killSwitch by KillSwitch(null)
 
 	protected fun getKillSwitch(option: String): Boolean {

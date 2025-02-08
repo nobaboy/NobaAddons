@@ -1,36 +1,31 @@
 package me.nobaboy.nobaaddons.config.option
 
-import dev.isxander.yacl3.api.ConfigCategory
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.serializer
-import kotlin.collections.iterator
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
-abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionGroup, Iterable<Config> {
-	protected open val migrations: ConfigOptionMigration? = null
-
-	private var version: Int = migrations?.version ?: 0
+/**
+ * Generic abstract implementation of [ConfigOptionGroup]
+ */
+abstract class AbstractConfigOptionGroup(val id: String) : ConfigOptionGroup, Iterable<Config> {
+	private val unaccepted = mutableMapOf<String, JsonElement>()
 
 	override val options: Map<String, Config> by lazy {
 		this::class.memberProperties
 			.sortedBy { it.findAnnotation<Order>()?.order ?: 0 }
 			.mapNotNull {
-				it as? KProperty1<AbstractConfigOptionHolder, *> ?: return@mapNotNull null
+				it as? KProperty1<AbstractConfigOptionGroup, *> ?: return@mapNotNull null
 				it.name to (it.getOptionDelegate(this) ?: return@mapNotNull null)
 			}
 			.toMap()
 	}
-
-	override fun iterator(): Iterator<Config> = options.values.iterator()
 
 	@Suppress("UNCHECKED_CAST")
 	protected fun <I, T> KProperty1<I, T>.getOptionDelegate(instance: I): ConfigOption<T>? {
@@ -49,36 +44,32 @@ abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionGroup, I
 	 * Load configs for all known [ConfigOption]s from the provided [JsonObject]
 	 */
 	override fun load(json: Json, obj: JsonObject) {
-		migrations?.apply(json, obj)
-		val config = obj["config"] as? JsonObject ?: JsonObject(emptyMap())
-		for((name, option) in options) {
+		for((key, value) in obj) {
+			val option = this[key]
+			if(option == null) {
+				unaccepted[key] = value
+				continue
+			}
 			when(option) {
-				is ConfigOption<*> -> option.set(json, config[name] ?: continue)
-				is ConfigOptionGroup -> option.load(json, config["name"] as? JsonObject ?: continue)
+				is ConfigOption<*> -> option.set(json, value)
+				is ConfigOptionGroup -> option.load(json, value as? JsonObject ?: continue)
 				else -> error("Expected ConfigOption<*> or ConfigOptionGroup, got ${option::class.simpleName} instead")
 			}
 		}
-		version = (obj["version"] as? JsonPrimitive)?.intOrNull ?: migrations?.version ?: 0
 	}
 
 	/**
 	 * Dump all current [ConfigOption]s to a [JsonObject]
 	 */
 	override fun dump(json: Json): JsonObject = buildJsonObject {
-		put("config", buildJsonObject {
-			for ((name, option) in options) {
-				put(name, when(option) {
-					is ConfigOption<*> -> option.get(json)
-					is ConfigOptionGroup -> option.dump(json)
-					else -> error("Expected ConfigOption<*> or ConfigOptionGroup, got ${option::class.simpleName} instead")
-				})
-			}
-		})
-		put("version", JsonPrimitive(version))
-	}
-
-	open fun onSave() {
-		options.values.forEach(Config::saveEvent)
+		unaccepted.forEach(::put)
+		for((name, option) in options) {
+			put(name, when(option) {
+				is ConfigOption<*> -> option.get(json)
+				is ConfigOptionGroup -> option.dump(json)
+				else -> error("Expected ConfigOption<*> or ConfigOptionGroup, got ${option::class.simpleName} instead")
+			})
+		}
 	}
 
 	/**
@@ -106,14 +97,18 @@ abstract class AbstractConfigOptionHolder(val id: String) : ConfigOptionGroup, I
 		return optionBuilder.build()
 	}
 
-	/**
-	 * Implement your YACL config building here.
-	 */
-	abstract fun buildConfig(category: ConfigCategory.Builder)
-
-	override operator fun get(key: String): Config? = options[key]
-
 	override fun saveEvent() {
+		options.values.forEach(Config::saveEvent)
+	}
+
+	override fun get(key: String): Config? = options[key]
+	override fun iterator(): Iterator<Config> = options.values.iterator()
+
+	fun dumpUnaccepted() {
+		unaccepted.clear()
+		options.values.forEach {
+			if(it is AbstractConfigOptionGroup) it.dumpUnaccepted()
+		}
 	}
 
 	/**

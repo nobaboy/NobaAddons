@@ -61,7 +61,4 @@ object ChatAlerts : Feature("chatAlerts", tr("nobaaddons.feature.chatAlerts", "A
 			}
 		}.build())
 	}
-
-	override fun saveEvent() {
-	}
 }

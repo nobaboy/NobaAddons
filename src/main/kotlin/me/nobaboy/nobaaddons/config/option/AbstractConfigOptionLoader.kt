@@ -13,9 +13,8 @@ private val JSON = Json {
 	prettyPrint = true
 }
 
-abstract class AbstractConfigOptionLoader<T : AbstractConfigOptionHolder>(private val file: File) {
+abstract class AbstractConfigOptionLoader<T : AbstractConfigOptionGroup>(private val file: File) {
 	protected abstract val configs: Array<T>
-	protected open val migrations: ConfigOptionMigration? = null
 
 	fun load() {
 		if(!file.exists()) {
@@ -23,11 +22,7 @@ abstract class AbstractConfigOptionLoader<T : AbstractConfigOptionHolder>(privat
 			return
 		}
 
-		val obj = safeLoad({ file.toPath() }) {
-			file.readJson<JsonObject>(JSON).also {
-				migrations?.apply(JSON, it)
-			}
-		} ?: return
+		val obj = safeLoad({ file.toPath() }) { file.readJson<JsonObject>(JSON) } ?: return
 
 		loadFromJson(obj)
 	}

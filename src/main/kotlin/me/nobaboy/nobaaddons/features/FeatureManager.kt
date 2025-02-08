@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.features
 import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.YetAnotherConfigLib
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionHolder
 import me.nobaboy.nobaaddons.config.option.AbstractConfigOptionLoader
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.ErrorManager
@@ -53,14 +52,14 @@ object FeatureManager : AbstractConfigOptionLoader<Feature>(FEATURE_CONFIG.toFil
 		save {
 			features.forEach {
 				try {
-					it.onSave()
+					it.saveEvent()
 				} catch(ex: Throwable) {
 					ErrorManager.logError("Feature failed to run save handler", ex, "In class" to it::class)
 				}
 			}
 			FeatureCategory.entries.forEach {
 				try {
-					it.global?.onSave()
+					it.global?.saveEvent()
 				} catch(ex: Throwable) {
 					ErrorManager.logError("Core config failed to run save handler", ex, "In class" to it::class)
 				}
