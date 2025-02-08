@@ -1,7 +1,8 @@
 package me.nobaboy.nobaaddons.utils
 
-import kotlinx.serialization.encodeToString
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import me.nobaboy.nobaaddons.NobaAddons
 import net.minecraft.util.Util
 import java.io.BufferedWriter
@@ -20,7 +21,7 @@ object FileUtils {
 	 * @see Util.backupAndReplace
 	 */
 	@Throws(IOException::class)
-	fun File.writeAtomically(writer: (BufferedWriter) -> Unit) {
+	inline fun File.writeAtomically(writer: (BufferedWriter) -> Unit) {
 		val temp = Files.createTempFile("${nameWithoutExtension}-${StringUtils.randomAlphanumeric()}", extension).toFile()
 		temp.bufferedWriter().use(writer)
 		if(exists()) {
@@ -47,8 +48,12 @@ object FileUtils {
 	 * @see writeAtomically
 	 */
 	@Throws(IOException::class)
-	inline fun <reified T> File.writeJson(obj: T, json: Json = NobaAddons.JSON) = writeAtomically {
-		it.write(json.encodeToString(obj))
+	inline fun <reified T> File.writeJson(
+		obj: T,
+		serializer: KSerializer<T> = serializer<T>(),
+		json: Json = NobaAddons.JSON,
+	) = writeAtomically {
+		it.write(json.encodeToString(serializer, obj))
 	}
 
 	/**
@@ -62,6 +67,7 @@ object FileUtils {
 	/**
 	 * Runs [with] with a temporary directory that is deleted once the provided function returns
 	 */
+	@Throws(IOException::class)
 	inline fun withTempDir(name: String, with: (Path) -> Unit) {
 		val tmp = Files.createTempDirectory(name)
 		try {
@@ -76,6 +82,7 @@ object FileUtils {
 	 *
 	 * @see withTempDir
 	 */
+	@Throws(IOException::class)
 	inline fun withTempFile(dir: String, file: String, with: (File) -> Unit) {
 		withTempDir(dir) {
 			with(it.resolve(file).toFile().apply { createNewFile() })
@@ -87,6 +94,7 @@ object FileUtils {
 	/**
 	 * Deletes the current [File], recursively deleting everything in it if this is a directory.
 	 */
+	@Throws(IOException::class)
 	fun File.recursiveDelete() {
 		if(isDirectory && !Files.isSymbolicLink(toPath())) {
 			listFiles().forEach { it.recursiveDelete() }

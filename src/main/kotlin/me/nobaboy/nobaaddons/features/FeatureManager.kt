@@ -15,16 +15,19 @@ import kotlin.io.path.exists
 
 private val FEATURE_CONFIG = NobaAddons.CONFIG_DIR.resolve("features.json")
 
-// TODO migrating configs to this new system is going to be a pain in the ass
-// one possible way to go about this would be something like
-// listOf(
-//     "old.config.key" to "feature.config.key",
-//     ...
-// )
-
 object FeatureManager : AbstractConfigOptionLoader<Feature>(FEATURE_CONFIG.toFile()) {
 	val features: Array<Feature> by ::FEATURES
 	override val configs: Array<Feature> by ::FEATURES
+
+	init {
+		val foundIds = mutableSetOf<String>()
+		features.forEach {
+			if(it.id in foundIds) {
+				error("Found duplicate feature ID: ${it.id}")
+			}
+			foundIds.add(it.id)
+		}
+	}
 
 	val categories: Map<FeatureCategory, List<Feature>> by lazy {
 		FeatureCategory.entries.associateWith {

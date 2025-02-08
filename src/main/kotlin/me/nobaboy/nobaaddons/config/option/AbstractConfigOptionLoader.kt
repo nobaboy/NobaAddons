@@ -46,7 +46,7 @@ abstract class AbstractConfigOptionLoader<T : AbstractConfigOptionGroup>(private
 			val obj = buildJsonObject {
 				configs.forEach { put(it.id, it.dump(JSON)) }
 			}
-			file.writeJson(obj, JSON)
+			file.writeJson(obj, json = JSON)
 		} catch(ex: Exception) {
 			ErrorManager.logError("Failed to save a config", ex)
 		}
