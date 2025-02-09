@@ -36,6 +36,5 @@ object DianaAPI {
 		return heldItem.id == SPADE
 	}
 
-	private fun isRitualActive() = MayorAPI.currentMayor.activePerks.contains(MayorPerk.MYTHOLOGICAL_RITUAL) ||
-		MayorAPI.currentMinister.activePerks.contains(MayorPerk.MYTHOLOGICAL_RITUAL)
+	private fun isRitualActive() = MayorAPI.allActivePerks.contains(MayorPerk.MYTHOLOGICAL_RITUAL)
 }

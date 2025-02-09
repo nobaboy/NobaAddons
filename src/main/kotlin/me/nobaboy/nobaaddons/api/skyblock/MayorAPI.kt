@@ -44,6 +44,14 @@ object MayorAPI {
 	var jerryMayor: Pair<Mayor, Timestamp> = Mayor.UNKNOWN to Timestamp.distantPast()
 		private set
 
+	val allActivePerks get() = buildSet<MayorPerk> {
+		addAll(currentMayor.activePerks)
+		addAll(currentMinister.activePerks)
+		if(currentMayor == Mayor.JERRY) {
+			addAll(jerryMayor.first.activePerks)
+		}
+	}
+
 	private var lastMayor: Mayor? = null
 
 	private var lastApiUpdate = Timestamp.distantPast()
