@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.option.booleanController
 import me.nobaboy.nobaaddons.config.option.intSlider
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
+import me.nobaboy.nobaaddons.events.EventListener
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.Feature
@@ -21,6 +22,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
+import kotlin.reflect.jvm.isAccessible
 
 object MouseLock : Feature(
 	id = "mouseLock",
@@ -75,7 +77,6 @@ object MouseLock : Feature(
 	@get:JvmStatic
 	@get:JvmName("isReduced")
 	val reduced: Boolean get() {
-		if(killSwitch) return false
 		if(!SkyBlockIsland.GARDEN.inIsland()) return false
 		if(MCUtils.player?.abilities?.flying == true) return false
 		if(!reduceMouseSensitivity) return false
@@ -86,10 +87,12 @@ object MouseLock : Feature(
 
 	override fun init() {
 		listen(SkyBlockEvents.ISLAND_CHANGE) { locked = false }
-		listen(PacketEvents.PRE_RECEIVE, listener = this::onEarlyPacketReceive)
+		// TODO
+		PacketEvents.EarlyReceive.registerFunction(this::onEarlyPacketReceive.also { it.isAccessible = true }, this)
 	}
 
-	private fun onEarlyPacketReceive(event: PacketEvents.Receive) {
+	@EventListener
+	private fun onEarlyPacketReceive(event: PacketEvents.EarlyReceive) {
 		if(!autoUnlockMouseOnTeleport) return
 		if(!locked) return
 

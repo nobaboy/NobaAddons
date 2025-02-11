@@ -7,10 +7,14 @@ import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.math.BlockPos
 
 object WorldEvents {
-	@JvmField val LOAD = EventDispatcher<Load>()
+	@JvmField val LOAD = Load.Companion
+	@JvmField val BLOCK_UPDATE = BlockUpdate.Companion
 
-	@JvmField val BLOCK_UPDATE = EventDispatcher<BlockUpdate>()
+	data class Load(val world: ClientWorld) : Event() {
+		companion object : EventDispatcher<Load>()
+	}
 
-	data class Load(val world: ClientWorld) : Event()
-	data class BlockUpdate(val blockPos: BlockPos, val newState: BlockState, val oldState: BlockState) : Event()
+	data class BlockUpdate(val blockPos: BlockPos, val newState: BlockState, val oldState: BlockState) : Event() {
+		companion object : EventDispatcher<BlockUpdate>()
+	}
 }

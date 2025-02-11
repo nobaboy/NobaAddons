@@ -6,35 +6,39 @@ import me.nobaboy.nobaaddons.config.option.AbstractVersionedConfigOptionGroup
 import me.nobaboy.nobaaddons.config.option.ConfigOption
 import me.nobaboy.nobaaddons.events.AbstractEventDispatcher
 import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.EventListener
 import net.minecraft.text.Text
+import kotlin.reflect.full.companionObjectInstance
+import kotlin.reflect.full.hasAnnotation
+import kotlin.reflect.full.isSubtypeOf
+import kotlin.reflect.full.memberFunctions
+import kotlin.reflect.full.starProjectedType
+import kotlin.reflect.jvm.isAccessible
+import kotlin.reflect.jvm.jvmErasure
 
 abstract class Feature(id: String, val name: Text, val category: FeatureCategory) : AbstractVersionedConfigOptionGroup(id) {
-	val killSwitch by KillSwitch(null)
-
-	protected fun getKillSwitch(option: String): Boolean {
-		return KILLSWITCHES?.get(id)?.options?.get(option)?.isApplicable == true
-	}
-
-	/**
-	 * Registers the given [listener] on the given [dispatcher], only invoking it if this feature's [killSwitch] hasn't
-	 * been activated.
-	 */
+	@Deprecated("")
 	protected fun <T : Event> listen(
 		dispatcher: AbstractEventDispatcher<T, *>,
-		featureKillSwitch: () -> Boolean = { false },
 		listener: (T) -> Unit
 	) {
-		dispatcher.register {
-			if(!killSwitch && !featureKillSwitch()) listener(it)
-		}
+		dispatcher.register(listener)
 	}
 
 	/**
-	 * Implement your feature's initialization logic here.
-	 *
-	 * Make sure you use [listen] for any events, or otherwise ensure you're checking [killSwitch].
+	 * Implement your feature's initialization logic here
 	 */
 	open fun init() {
+		for(function in this::class.memberFunctions) {
+			function.isAccessible = true
+			if(!function.hasAnnotation<EventListener>()) {
+				continue
+			}
+
+			val eventClass = function.parameters.first { it.type.isSubtypeOf(Event::class.starProjectedType) }.type.jvmErasure
+			val dispatcher = eventClass.companionObjectInstance as AbstractEventDispatcher<*, *>
+			dispatcher.registerFunction(function, this)
+		}
 	}
 
 	/**
@@ -42,10 +46,6 @@ abstract class Feature(id: String, val name: Text, val category: FeatureCategory
 	 * based on your [config] properties.
 	 */
 	override fun buildConfig(category: ConfigCategory.Builder) {
-		if(killSwitch) {
-			return
-		}
-
 		deepBuildYaclOptions()
 		val options = options.values.mapNotNull { (it as? ConfigOption<*>)?.yaclOption }
 		if(options.isEmpty()) {

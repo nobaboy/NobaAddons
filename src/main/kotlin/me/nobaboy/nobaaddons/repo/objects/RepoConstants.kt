@@ -21,7 +21,7 @@ object RepoConstants {
 
 		init {
 			RepoManager.performInitialLoad(this)
-			RepoReloadEvent.EVENT.register { this.load() }
+			RepoReloadEvent.register { this.load() }
 		}
 
 		override fun load() {

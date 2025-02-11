@@ -5,7 +5,6 @@ import com.mojang.serialization.JsonOps
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.features.Feature
 import me.nobaboy.nobaaddons.features.FeatureCategory
-import me.nobaboy.nobaaddons.features.KillSwitch
 import me.nobaboy.nobaaddons.mixins.accessors.HandledScreenAccessor
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.stripWhitespace
@@ -19,12 +18,6 @@ import org.lwjgl.glfw.GLFW
 
 object DevFeatures : Feature("dev", tr("nobaaddons.feature.dev", "Dev"), FeatureCategory.DEV) {
 	private val gson = GsonBuilder().setPrettyPrinting().serializeNulls().create()
-
-	val test by KillSwitch("test")
-
-	override fun init() {
-		println("test killswitch: $test")
-	}
 
 	@JvmStatic
 	@OptIn(UntranslatedMessage::class)

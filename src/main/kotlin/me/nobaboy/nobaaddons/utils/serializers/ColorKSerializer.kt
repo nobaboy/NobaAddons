@@ -19,8 +19,8 @@ object ColorKSerializer : KSerializer<Color> {
 	override fun deserialize(decoder: Decoder): Color {
 		val parts = decoder.decodeString().split(':').mapNotNull { it.toIntOrNull() }
 		return when(parts.size) {
-			3 -> Color(parts[0], parts[1], parts[2])           // [r, g, b]
-			4 -> Color(parts[0], parts[1], parts[2], parts[3]) // [r, g, b, a]
+			3 -> Color(/* r = */ parts[0], /* g = */ parts[1], /* b = */ parts[2])
+			4 -> Color(/* r = */ parts[0], /* g = */ parts[1], /* b = */ parts[2], /* a = */ parts[3])
 			else -> throw SerializationException("Malformed color; expected either 3 or 4 integer parts, but got ${parts.size} instead")
 		}
 	}

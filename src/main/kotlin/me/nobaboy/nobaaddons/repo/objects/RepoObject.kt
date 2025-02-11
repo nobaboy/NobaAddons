@@ -9,7 +9,7 @@ class RepoObject<T : Any>(private val path: String, private val serializer: KSer
 	private var onReload: ((T?) -> Unit)? = null
 
 	init {
-		RepoReloadEvent.EVENT.register { this.load() }
+		RepoReloadEvent.register { this.load() }
 	}
 
 	@Volatile private var instance: T? = null

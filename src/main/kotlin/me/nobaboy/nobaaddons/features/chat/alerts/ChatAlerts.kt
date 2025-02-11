@@ -5,6 +5,7 @@ import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.option.Config
 import me.nobaboy.nobaaddons.config.option.ConfigOption
 import me.nobaboy.nobaaddons.config.utils.label
+import me.nobaboy.nobaaddons.events.EventListener
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.Feature
 import me.nobaboy.nobaaddons.features.FeatureCategory
@@ -29,25 +30,22 @@ object ChatAlerts : Feature("chatAlerts", tr("nobaaddons.feature.chatAlerts", "A
 		putAll(allAlerts.map { it.id to it })
 	}
 
-	override fun init() {
-		listen(ChatMessageEvents.CHAT) { (message) ->
-			val string = message.string.cleanFormatting()
-			for(alert in allAlerts) {
-				if(!alert.enabled || getKillSwitch(alert.id)) continue
-				try {
-					alert.process(string)
-				} catch(ex: Throwable) {
-					ErrorManager.logError(
-						"${alert::class.simpleName} threw an error while processing a chat message", ex
-					)
-				}
+	@EventListener
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val string = event.message.string.cleanFormatting()
+		for(alert in allAlerts) {
+			if(!alert.enabled) continue
+			try {
+				alert.process(string)
+			} catch(ex: Throwable) {
+				ErrorManager.logError(
+					"${alert::class.simpleName} threw an error while processing a chat message", ex
+				)
 			}
 		}
 	}
 
 	override fun buildConfig(category: ConfigCategory.Builder) {
-		if(killSwitch) return
-
 		deepBuildYaclOptions()
 		category.group(OptionGroup.createBuilder().apply {
 			name(name)

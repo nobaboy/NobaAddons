@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
+@Deprecated("Use TickEvent instead")
 object TickEvents {
 	init {
 		ClientTickEvents.END_CLIENT_TICK.register { TICK.invoke(Tick(it)) }

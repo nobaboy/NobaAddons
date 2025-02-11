@@ -149,6 +149,6 @@ object RepoManager {
 	}
 
 	private fun RepoReloadEvent.Companion.invoke() {
-		synchronized(LOCK) { EVENT.invoke(RepoReloadEvent()) }
+		synchronized(LOCK) { invoke(RepoReloadEvent()) }
 	}
 }

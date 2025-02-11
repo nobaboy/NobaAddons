@@ -11,7 +11,7 @@ import kotlin.reflect.KProperty
 
 class RepoObjectMap<T>(private val path: String, private val serializer: KSerializer<T>) : IRepoObject {
 	init {
-		RepoReloadEvent.EVENT.register { this.load() }
+		RepoReloadEvent.register { this.load() }
 	}
 
 	@Volatile private var instances: Map<String, T> = emptyMap()
