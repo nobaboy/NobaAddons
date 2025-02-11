@@ -1,12 +1,12 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
+import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.Timestamp
@@ -36,7 +36,7 @@ object InventoryAPI {
 	private fun shouldSuppressItemLogUpdate(): Boolean = inventorySuppressTime.elapsedSeconds() < 2
 
 	fun init() {
-		TickEvents.every(5, this::onQuarterSecond)
+		TickEvents.TICK.every(5, this::onQuarterSecond)
 		PacketEvents.SEND.register(this::onPacketSend)
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		WorldEvents.LOAD.register { debounceItemLog() }
@@ -57,7 +57,7 @@ object InventoryAPI {
 		}
 
 		itemLog.entries.removeIf { (_, diff) ->
-			diff.timestamp.elapsedSeconds() > NobaConfig.INSTANCE.inventory.itemPickupLog.timeoutSeconds
+			diff.timestamp.elapsedSeconds() > ItemPickupLog.timeoutSeconds
 		}
 	}
 

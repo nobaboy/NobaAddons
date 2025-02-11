@@ -49,7 +49,7 @@ object RiftTimers {
 	private var notifiedSplitStealCooldown = false
 
 	fun init() {
-		TickEvents.everySecond { onSecondPassed() }
+		TickEvents.TICK.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onOpenInventory)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		ItemTooltipCallback.EVENT.register(this::addSplitStealItemCooldown)

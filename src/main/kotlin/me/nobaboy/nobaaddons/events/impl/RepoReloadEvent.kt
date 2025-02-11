@@ -4,7 +4,5 @@ import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 
 class RepoReloadEvent : Event() {
-	companion object {
-		val EVENT = EventDispatcher<RepoReloadEvent>()
-	}
+	companion object : EventDispatcher<RepoReloadEvent>()
 }

@@ -29,8 +29,8 @@ object ChatUtils {
 	private val CAPTURED_MESSAGE: ThreadLocal<Message?> = ThreadLocal()
 
 	init {
-		TickEvents.cooldown { _, cooldown -> processCommandQueue(cooldown) }
-		TickEvents.everySecond { removeExpiredClickActions() }
+		TickEvents.TICK.cooldown { _, cooldown -> processCommandQueue(cooldown) }
+		TickEvents.TICK.everySecond { removeExpiredClickActions() }
 		ChatMessageEvents.ADDED.register(this::onChatAdded)
 	}
 

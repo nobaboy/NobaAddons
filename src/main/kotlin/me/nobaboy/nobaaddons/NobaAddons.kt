@@ -24,12 +24,13 @@ import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
+import me.nobaboy.nobaaddons.config.utils.safeLoad
 import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.config.core.AbstractCoreConfig
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
-import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
+import me.nobaboy.nobaaddons.features.FeatureManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
@@ -47,17 +48,13 @@ import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
-import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentTooltips
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.features.mining.WormAlert
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.MineshaftWaypoints
-import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import me.nobaboy.nobaaddons.features.rift.RiftTimers
-import me.nobaboy.nobaaddons.features.slayers.CompactSlayerMessages
-import me.nobaboy.nobaaddons.features.slayers.MiniBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.inferno.HighlightHellionShield
 import me.nobaboy.nobaaddons.features.slayers.sven.HidePupNametags
@@ -128,6 +125,7 @@ object NobaAddons : ClientModInitializer {
 	override fun onInitializeClient() {
 		/* region Core */
 		NobaConfig.INSTANCE.safeLoad()
+		AbstractCoreConfig.load()
 		PersistentCache.safeLoad()
 		RepoManager.init()
 		UISettings.safeLoad()
@@ -151,6 +149,8 @@ object NobaAddons : ClientModInitializer {
 		TrophyFishAPI.init()
 		/* endregion */
 
+		FeatureManager.init()
+
 		/* region Screens */
 		ChatNotificationsManager.init()
 		InfoBoxesManager.init()
@@ -160,10 +160,6 @@ object NobaAddons : ClientModInitializer {
 		/* region Commands */
 		NobaCommand.init()
 		SWikiCommand.init()
-		/* endregion */
-
-		/* region User Interface */
-		ItemPickupLog.init()
 		/* endregion */
 
 		/* region Features */
@@ -191,9 +187,7 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Slayers
-		MiniBossFeatures.init()
 		SlayerBossFeatures.init()
-		CompactSlayerMessages.init()
 		/* region Sven Packmaster */
 		HidePupNametags.init()
 		/* endregion */
@@ -226,7 +220,6 @@ object NobaAddons : ClientModInitializer {
 		// region Chat
 		CopyChatFeature.init()
 		ChatNotifications.init()
-		IAlert.init()
 		IChatFilter.init()
 		/* region Chat Commands */
 		DMCommands.init()
@@ -237,7 +230,6 @@ object NobaAddons : ClientModInitializer {
 
 		// region QOL
 		ISoundFilter.init()
-		MouseLock.init()
 		// endregion
 
 		// region Rift

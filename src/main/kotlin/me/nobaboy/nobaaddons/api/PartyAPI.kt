@@ -64,7 +64,7 @@ object PartyAPI {
 		private set
 
 	fun init() {
-		TickEvents.cooldown { _, cooldown -> onTick(cooldown) }
+		TickEvents.TICK.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ChatMessageEvents.CHAT.register { (message) ->

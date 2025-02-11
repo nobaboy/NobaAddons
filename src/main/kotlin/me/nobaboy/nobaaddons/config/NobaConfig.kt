@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.config.configs.*
 import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
+import java.nio.file.Path
 
 /*
  * Migrations MUST be added at the end of this block, otherwise they will NOT run. Migrations that have already been
@@ -20,8 +21,6 @@ private val migrations = Migrations.create {
 	add(migration = ::`003_renameGlaciteMineshaftShareCorpses`)
 	add(migration = ::`004_moveHideOtherPeopleFishing`)
 }
-
-private val CONFIG_PATH = NobaAddons.CONFIG_DIR.resolve("config.json")
 
 /*
  * If you are adding a new category and config, please add it in alphabetically in its designated group.
@@ -42,9 +41,10 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 	// endregion
 	val chat by ChatConfig()
 	val qol by QOLConfig()
-	val repo by RepoConfig()
 
 	companion object {
+		val CONFIG_PATH: Path = NobaAddons.CONFIG_DIR.resolve("config.json")
+
 		@JvmField
 		val INSTANCE = NobaConfig()
 
@@ -65,7 +65,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 				category(RiftCategory.create(defaults, INSTANCE))
 				category(ChatCategory.create(defaults, INSTANCE))
 				category(QOLCategory.create(defaults, INSTANCE))
-				category(ApiCategory.create(defaults, INSTANCE))
+//				category(ApiCategory.create(defaults, INSTANCE))
 
 				save(INSTANCE::save)
 			}.build().generateScreen(parent)

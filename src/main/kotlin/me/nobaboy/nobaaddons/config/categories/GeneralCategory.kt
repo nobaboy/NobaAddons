@@ -1,12 +1,11 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
+import me.nobaboy.nobaaddons.config.utils.*
 import me.nobaboy.nobaaddons.utils.tr
 
 object GeneralCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.general", "General")) {
+	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.general", "General")) {
 		boolean(
 			tr("nobaaddons.config.general.allowKeybindsOutsideSkyBlock", "Allow Keybinds Outside SkyBlock"),
 			tr("nobaaddons.config.general.allowKeybindsOutsideSkyBlock.tooltip", "Enables the use of keybinds while not in SkyBlock"),

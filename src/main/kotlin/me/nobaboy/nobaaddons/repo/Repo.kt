@@ -8,8 +8,10 @@ import me.nobaboy.nobaaddons.repo.objects.RepoConstants
 import me.nobaboy.nobaaddons.repo.objects.RepoObject
 import me.nobaboy.nobaaddons.repo.objects.RepoObjectArray
 import me.nobaboy.nobaaddons.repo.objects.RepoObjectMap
-import org.jetbrains.annotations.Blocking
+import me.nobaboy.nobaaddons.utils.FileUtils.readJson
 import org.jetbrains.annotations.UnmodifiableView
+import java.io.File
+import java.io.IOException
 import java.util.Collections
 
 /**
@@ -108,16 +110,16 @@ object Repo {
 	fun String.skullFromRepo(key: String) = RepoConstants.Entry(key, this, RepoConstants.SkullTextures)
 
 	/**
-	 * Reads the file located at the provided [path] relative to the repository directory root,
-	 * and returns its contents as a [String]
+	 * Returns a [File] resolved from the repository root directory
+	 *
+	 * @see RepoManager.REPO_DIRECTORY
 	 */
-	@Blocking
-	fun readAsString(path: String): String = RepoManager.REPO_DIRECTORY.resolve(path).readText()
+	fun resolve(path: String): File = RepoManager.REPO_DIRECTORY.resolve(path)
 
 	/**
 	 * Reads the file located at the provided [path] relative to the repository directory root,
 	 * and returns its contents as a [JsonElement]
 	 */
-	@Blocking
-	fun readAsJson(path: String): JsonElement = JSON.parseToJsonElement(readAsString(path))
+	@Throws(IOException::class)
+	fun readAsJson(path: String): JsonElement = resolve(path).readJson()
 }

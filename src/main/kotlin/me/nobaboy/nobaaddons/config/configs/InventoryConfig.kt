@@ -10,7 +10,6 @@ import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 class InventoryConfig : ObjectProperty<InventoryConfig>("inventory") {
 	val slotInfo by SlotInfo()
 	val enchantmentTooltips by EnchantmentTooltips()
-	val itemPickupLog by ItemPickupLog()
 
 	class SlotInfo : ObjectProperty<SlotInfo>("slotInfo") {
 		var checkMarkIfMaxed by Property.of<Boolean>("checkMarkIfMaxed", false)
@@ -52,10 +51,5 @@ class InventoryConfig : ObjectProperty<InventoryConfig>("inventory") {
 		var goodColor by Property.of("goodColor", Serializer.color, NobaColor.GOLD)
 		var averageColor by Property.of("averageColor", Serializer.color, NobaColor.BLUE)
 		var badColor by Property.of("badColor", Serializer.color, NobaColor.GRAY)
-	}
-
-	class ItemPickupLog : ObjectProperty<ItemPickupLog>("itemPickupLog") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var timeoutSeconds by Property.of<Int>("timeoutSeconds", 5)
 	}
 }

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.notifications
 
 import kotlinx.io.IOException
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
+import me.nobaboy.nobaaddons.config.utils.safeLoad
 import me.nobaboy.nobaaddons.utils.ErrorManager
 
 object ChatNotificationsManager {

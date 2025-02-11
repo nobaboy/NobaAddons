@@ -5,8 +5,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Path
 import java.util.zip.ZipInputStream
 
 /**
@@ -14,16 +12,7 @@ import java.util.zip.ZipInputStream
  *
  * [Original source](https://github.com/hannibal002/SkyHanni/blob/e1e0deb10821f1f007f39798b3bb9956dea176a5/src/main/java/at/hannibal2/skyhanni/data/repo/RepoUtils.kt)
  */
-object RepoUtils {
-	fun recursiveDelete(path: Path) = recursiveDelete(path.toFile())
-
-	fun recursiveDelete(file: File) {
-		if(file.isDirectory && !Files.isSymbolicLink(file.toPath())) {
-			file.listFiles().forEach(::recursiveDelete)
-		}
-		file.delete()
-	}
-
+internal object RepoUtils {
 	/**
 	 * Modified from https://www.journaldev.com/960/java-unzip-file-example
 	 */

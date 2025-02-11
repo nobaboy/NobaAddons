@@ -8,9 +8,39 @@ import net.minecraft.client.MinecraftClient
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
+@Deprecated("Use TickEvent instead")
 object TickEvents {
 	init {
 		ClientTickEvents.END_CLIENT_TICK.register { TICK.invoke(Tick(it)) }
+	}
+
+	class TickEventDispatcher internal constructor() : EventDispatcher<Tick>() {
+		/**
+		 * Automatically attaches the returned wrapping from [TickEvents.every] to the [TICK] dispatcher
+		 *
+		 * @see TickEvents.every
+		 */
+		inline fun every(nthTick: Int, crossinline event: (Tick) -> Unit) {
+			register(TickEvents.every(nthTick, event))
+		}
+
+		/**
+		 * Automatically attaches the returned wrapping from [TickEvents.everySecond] to the [TICK] dispatcher
+		 *
+		 * @see TickEvents.everySecond
+		 */
+		inline fun everySecond(crossinline event: (Tick) -> Unit) {
+			every(20, event)
+		}
+
+		/**
+		 * Automatically attaches the returned wrapping from [TickEvents.cooldown] to the [TICK] dispatcher
+		 *
+		 * @see TickEvents.cooldown
+		 */
+		inline fun cooldown(defaultCooldown: Duration = 3.seconds, crossinline event: (Tick, CooldownManager) -> Unit) = register {
+			register(TickEvents.cooldown(defaultCooldown, event))
+		}
 	}
 
 	/**
@@ -18,15 +48,15 @@ object TickEvents {
 	 *
 	 * This event is a wrapper around the Fabric API event.
 	 */
-	val TICK = EventDispatcher<Tick>()
+	val TICK = TickEventDispatcher()
 
 	/**
-	 * Utility method to register a [TICK] listener that only runs every [nthTick]
+	 * Returns a wrapper for use with [TICK] listeners that only runs [event] every [nthTick]
 	 */
-	inline fun every(nthTick: Int, crossinline event: (Tick) -> Unit) {
+	inline fun every(nthTick: Int, crossinline event: (Tick) -> Unit): (Tick) -> Unit {
 		val nthTick = nthTick.also { require(it > 0) { "Provided value must be a positive non-zero integer" } }.toUInt()
 		var ticks = 0u
-		TICK.register {
+		return {
 			if(ticks++ % nthTick == 0u) {
 				event(it)
 			}
@@ -34,9 +64,11 @@ object TickEvents {
 	}
 
 	/**
-	 * Convenience method to add a tick listener for every 20th tick
+	 * Alias for `every(20) { ... }`
+	 *
+	 * @see every
 	 */
-	inline fun everySecond(crossinline tick: (Tick) -> Unit) = every(20, tick)
+	inline fun everySecond(crossinline event: (Tick) -> Unit) = every(20, event)
 
 	/**
 	 * Utility method to register a [TICK] listener but with a [CooldownManager] attached to it
@@ -48,7 +80,7 @@ object TickEvents {
 	 * ## Example
 	 *
 	 * ```kt
-	 * TickEvents.cooldown { event, cooldown ->
+	 * TickEvents.TICK.cooldown { event, cooldown ->
 	 *     // ... do something you want to guard with a cooldown ...
 	 *     cooldown.startCooldown(1.5.seconds)
 	 *     // now this event will be skipped for the next (about) 30 ticks, or 1.5 seconds
@@ -57,11 +89,12 @@ object TickEvents {
 	 *
 	 * @see me.nobaboy.nobaaddons.utils.Scheduler
 	 */
-	inline fun cooldown(defaultCooldown: Duration = 3.seconds, crossinline event: (Tick, CooldownManager) -> Unit) {
+	inline fun cooldown(defaultCooldown: Duration = 3.seconds, crossinline event: (Tick, CooldownManager) -> Unit): (Tick) -> Unit {
 		val manager = CooldownManager(defaultCooldown)
-		TICK.register {
-			if(manager.isOnCooldown()) return@register
-			event(it, manager)
+		return {
+			if(!manager.isOnCooldown()) {
+				event(it, manager)
+			}
 		}
 	}
 

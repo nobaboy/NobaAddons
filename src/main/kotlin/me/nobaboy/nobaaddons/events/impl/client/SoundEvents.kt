@@ -27,7 +27,9 @@ object SoundEvents {
 		val location: NobaVec,
 		val pitch: Float,
 		val volume: Float
-	) : Event(isCancelable = true)
+	) : Event(isCancelable = true) {
+		companion object : EventDispatcher<AllowSound>()
+	}
 
 	data class Sound(
 		val id: Identifier,

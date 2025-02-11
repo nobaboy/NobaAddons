@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.core.profile
 
 import dev.celestialfault.celestialconfig.AbstractConfig
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.saveOnExit
+import me.nobaboy.nobaaddons.config.utils.saveOnExit
 import java.util.UUID
 
 private val PROFILES_DIR = NobaAddons.CONFIG_DIR.resolve("profiles")

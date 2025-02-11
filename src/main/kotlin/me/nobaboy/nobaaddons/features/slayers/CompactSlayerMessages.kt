@@ -1,8 +1,11 @@
 package me.nobaboy.nobaaddons.features.slayers
 
-import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.option.booleanController
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.features.Feature
+import me.nobaboy.nobaaddons.features.FeatureCategory
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
@@ -23,8 +26,19 @@ import me.nobaboy.nobaaddons.utils.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
 
 @Suppress("RegExpSimplifiable") // [ ] is used to make it clear the spaces are not a mistake
-object CompactSlayerMessages {
-	private val config get() = NobaConfig.INSTANCE.slayers.compactMessages
+object CompactSlayerMessages : Feature("compactSlayerMessages", tr("nobaaddons.feature.compactSlayerMessages", "Compact Slayer Quest Messages"), FeatureCategory.SLAYER) {
+	private var enabled by config(false) {
+		name = CommonText.Config.ENABLED
+		description = tr("nobaaddons.config.slayers.compactMessages.enabled.tooltip", "Condenses messages from Auto-Slayer and manually claiming a Slayer quest at Maddox into one message while enabled")
+		booleanController()
+	}
+
+	private var removeLastMessage by config(false) {
+		name = tr("nobaaddons.config.slayers.compactMessages.removeLastMessage", "Remove Previous Message")
+		description = tr("nobaaddons.config.slayers.compactMessages.removeLastMessage.tooltip", "The last compacted message will also be removed upon completing another slayer quest")
+		booleanController()
+		requires { option(::enabled) }
+	}
 
 	private val SLAYER_QUEST_COMPLETE by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.questComplete")
 	private val SLAYER_LEVEL by Regex("^[ ]+(?<slayer>[A-z]+) Slayer LVL (?<level>\\d) - (?:LVL MAXED OUT!|Next LVL in (?<nextLevel>[\\d,]+) XP)").fromRepo("slayer.slayerXp")
@@ -45,8 +59,8 @@ object CompactSlayerMessages {
 	private var level: Pair<Int, Int?>? = null
 	private var rngMeter: Pair<Int, String>? = null
 
-	fun init() {
-		ChatMessageEvents.ALLOW.register(this::onChatMessage)
+	override fun init() {
+		listen(ChatMessageEvents.ALLOW, listener = this::onChatMessage)
 	}
 
 	private fun compile() = buildText {
@@ -85,7 +99,7 @@ object CompactSlayerMessages {
 	}
 
 	private fun send() {
-		if(config.removeLastMessage) {
+		if(removeLastMessage) {
 			lastMessage?.remove()
 		}
 		lastMessage = ChatUtils.addMessage(compile(), prefix = false, color = null)
@@ -111,7 +125,7 @@ object CompactSlayerMessages {
 	// quest completion messages without auto slayer are also used to know the correct order, but we don't
 	// cancel those messages.
 	private fun onChatMessage(event: ChatMessageEvents.Allow) {
-		if(!config.enabled) return
+		if(!enabled) return
 
 		val text = event.message
 		val string = text.string.cleanFormatting()

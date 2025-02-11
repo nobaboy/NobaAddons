@@ -36,7 +36,7 @@ object HoppityEggGuess {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		TickEvents.everySecond { onSecondPassed() }
+		TickEvents.TICK.everySecond { onSecondPassed() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		InteractEvents.USE_ITEM.register(this::onUseItem)

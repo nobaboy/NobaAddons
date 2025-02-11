@@ -8,7 +8,7 @@ import kotlin.reflect.KProperty
 
 class RepoObjectArray<T : Any>(val path: String, private val serializer: KSerializer<T>) : IRepoObject {
 	init {
-		RepoReloadEvent.EVENT.register { this.load() }
+		RepoReloadEvent.register { this.load() }
 	}
 
 	@Volatile private var instances: List<T> = emptyList()

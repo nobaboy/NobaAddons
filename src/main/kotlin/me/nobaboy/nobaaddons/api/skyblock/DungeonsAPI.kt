@@ -29,7 +29,7 @@ object DungeonsAPI {
 	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN && currentBoss != DungeonBoss.WATCHER
 
 	fun init() {
-		TickEvents.everySecond { onSecondPassed() }
+		TickEvents.TICK.everySecond { onSecondPassed() }
 		ChatMessageEvents.CHAT.register { (message) -> getBossType(message.string.cleanFormatting()) }
 	}
 

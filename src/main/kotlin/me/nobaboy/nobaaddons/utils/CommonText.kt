@@ -1,5 +1,7 @@
 package me.nobaboy.nobaaddons.utils
 
+import me.nobaboy.nobaaddons.utils.TextUtils.red
+
 object CommonText {
 	val NOBAADDONS get() = tr("nobaaddons.name", "NobaAddons")
 
@@ -8,6 +10,11 @@ object CommonText {
 
 	object Config {
 		val ENABLED get() = tr("nobaaddons.config.enabled", "Enabled")
+
+		val ENTITY_OVERLAY_IRIS_CONFLICT get() = tr(
+			"nobaaddons.config.highlightIrisConflict",
+			"This feature currently conflicts with Iris, and may not render correctly"
+		).red()
 
 		val ALERT_COLOR get() = tr("nobaaddons.config.alertColor", "Alert Color")
 		val HIGHLIGHT_COLOR get() = tr("nobaaddons.config.highlightColor", "Highlight Color")

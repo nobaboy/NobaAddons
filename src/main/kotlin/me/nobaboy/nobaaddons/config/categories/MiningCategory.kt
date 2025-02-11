@@ -1,19 +1,14 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
+import me.nobaboy.nobaaddons.config.utils.*
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
 object MiningCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.mining", "Mining")) {
+	fun create(defaults: NobaConfig, config: NobaConfig) = buildCategory(tr("nobaaddons.config.mining", "Mining")) {
 		// region Worm Alert
-		buildGroup(tr("nobaaddons.config.mining.wormAlert", "Worm Alert")) {
+		group(tr("nobaaddons.config.mining.wormAlert", "Worm Alert")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
 				default = defaults.mining.wormAlert.enabled,
@@ -23,12 +18,12 @@ object MiningCategory {
 				CommonText.Config.ALERT_COLOR,
 				default = defaults.mining.wormAlert.alertColor,
 				property = defaults.mining.wormAlert::alertColor
-			) requires enabled
+			) requires configOption(enabled)
 		}
 		// endregion
 
 		// region Glacite Mineshaft
-		buildGroup(tr("nobaaddons.config.mining.glaciteMineshaft", "Glacite Mineshaft")) {
+		group(tr("nobaaddons.config.mining.glaciteMineshaft", "Glacite Mineshaft")) {
 			// region Corpses
 			label(tr("nobaaddons.config.mining.glaciteMineshaft.label.corpses", "Corpses"))
 
@@ -43,7 +38,7 @@ object MiningCategory {
 				tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpses.tooltip", "Automatically shares the coordinates of the nearest corpse within 5 blocks in party chat"),
 				default = defaults.mining.glaciteMineshaft.autoShareCorpses,
 				property = config.mining.glaciteMineshaft::autoShareCorpses
-			) requires locate
+			) requires configOption(locate)
 			// endregion
 
 			// region Miscellaneous

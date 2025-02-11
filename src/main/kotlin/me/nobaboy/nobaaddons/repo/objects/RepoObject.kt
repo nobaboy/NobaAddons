@@ -6,17 +6,25 @@ import me.nobaboy.nobaaddons.repo.Repo
 import kotlin.reflect.KProperty
 
 class RepoObject<T : Any>(private val path: String, private val serializer: KSerializer<T>) : IRepoObject {
+	private var onReload: ((T?) -> Unit)? = null
+
 	init {
-		RepoReloadEvent.EVENT.register { this.load() }
+		RepoReloadEvent.register { this.load() }
 	}
 
 	@Volatile private var instance: T? = null
 
 	@Suppress("unused")
-	operator fun getValue(instance: Any, property: KProperty<*>): T? = this.instance
+	operator fun getValue(instance: Any?, property: KProperty<*>): T? = this.instance
 
 	override fun load() {
-		instance = Repo.JSON.decodeFromString(serializer, Repo.readAsString(path))
+		instance = Repo.JSON.decodeFromString(serializer, Repo.resolve(path).readText())
+		onReload?.invoke(instance)
+	}
+
+	fun onReload(listener: (T?) -> Unit): RepoObject<T> {
+		this.onReload = listener
+		return this
 	}
 
 	override fun toString(): String = "RepoObject(value=$instance, repoPath=$path)"
