@@ -61,17 +61,17 @@ object SlayersCategory {
 			) requires enabled
 		}
 
-		buildGroup(tr("nobaaddons.config.slayers.announceBossKillTime", "Announce Boss Kill Time")) {
+		buildGroup(tr("nobaaddons.config.slayers.bossKillTime", "Slayer Boss Kill Time")) {
 			val enabled = boolean(
 				CommonText.Config.ENABLED,
-				default = defaults.slayers.announceBossKillTime.enabled,
-				property = config.slayers.announceBossKillTime::enabled
+				default = defaults.slayers.bossKillTime.enabled,
+				property = config.slayers.bossKillTime::enabled
 			)
 			cycler(
-				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource", "Time Source"),
-				tr("nobaaddons.config.slayers.announceBossKillTime.timeSource.tooltip", "Determines the source for the boss kill time\n\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag"),
-				default = defaults.slayers.announceBossKillTime.timeSource,
-				property = config.slayers.announceBossKillTime::timeSource
+				tr("nobaaddons.config.slayers.bossKillTime.timeSource", "Time Source"),
+				tr("nobaaddons.config.slayers.bossKillTime.timeSource.tooltip", "Determines the source for the boss kill time\n\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag"),
+				default = defaults.slayers.bossKillTime.timeSource,
+				property = config.slayers.bossKillTime::timeSource
 			) requires enabled
 		}
 

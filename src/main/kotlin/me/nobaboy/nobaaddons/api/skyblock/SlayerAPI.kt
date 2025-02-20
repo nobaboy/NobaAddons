@@ -35,7 +35,6 @@ object SlayerAPI {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		miniBosses.removeIf { !it.isAlive }
-		if(currentQuest?.entity?.isAlive == false) currentQuest?.entity = null
 
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 		val bossNameLine = scoreboard.nextAfter("Slayer Quest") ?: return
@@ -112,6 +111,7 @@ object SlayerAPI {
 			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
 				SlayerEvents.QUEST_CLEAR.invoke(SlayerEvents.QuestClear())
 				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
+
 				currentQuest?.apply {
 					this.entity = null
 					this.armorStand = null

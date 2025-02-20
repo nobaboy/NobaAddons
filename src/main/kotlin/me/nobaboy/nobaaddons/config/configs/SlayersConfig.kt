@@ -14,7 +14,7 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 	val miniBossAlert by MiniBossAlert()
 	val highlightMiniBosses by HighlightMiniBosses()
 
-	val announceBossKillTime by AnnounceBossKillTime()
+	val bossKillTime by BossKillTime()
 	val compactMessages by CompactMessages()
 
 	val sven by Sven()
@@ -36,7 +36,7 @@ class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
 		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.GOLD)
 	}
 
-	class AnnounceBossKillTime : ObjectProperty<AnnounceBossKillTime>("announceBossKillTime") {
+	class BossKillTime : ObjectProperty<BossKillTime>("bossKillTime") {
 		var enabled by Property.of<Boolean>("enabled", false)
 		var timeSource by Property.of("timeSource", Serializer.enum(), BossTimeSource.REAL_TIME)
 	}
