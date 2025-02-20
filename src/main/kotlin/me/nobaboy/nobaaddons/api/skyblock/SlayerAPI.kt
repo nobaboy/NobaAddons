@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.EntityUtils
@@ -25,6 +26,7 @@ object SlayerAPI {
 	private val miniBosses = mutableSetOf<LivingEntity>()
 
 	fun init() {
+		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.TICK.register { onTick() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
@@ -119,6 +121,11 @@ object SlayerAPI {
 				}
 			}
 		}
+	}
+
+	private fun reset() {
+		currentQuest = null
+		miniBosses.clear()
 	}
 
 	data class SlayerQuest(
