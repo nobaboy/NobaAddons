@@ -12,7 +12,7 @@ import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
@@ -52,7 +52,7 @@ object MouseLock {
 		if(MCUtils.player?.abilities?.flying == true) return false
 		if(!config.reduceMouseSensitivity) return false
 
-		val heldItem = MCUtils.player?.mainHandStack?.getSkyBlockItem() ?: return false
+		val heldItem = MCUtils.player?.mainHandStack?.asSkyBlockItem ?: return false
 		return heldItem.id in FARMING_TOOLS
 	}
 

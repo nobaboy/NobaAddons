@@ -11,12 +11,12 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
@@ -50,7 +50,7 @@ object CorpseLocator {
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
 
-		chatCoordsPattern.onFullMatch(message) {
+		chatCoordsPattern.onPartialMatch(message) {
 			val username = groups["username"]!!.value
 			if(username == MCUtils.playerName) return
 
@@ -92,7 +92,7 @@ object CorpseLocator {
 		/*if(!entity.shouldHideBasePlate()) return
 		*///?}
 
-		val item = entity.getEquippedStack(EquipmentSlot.HEAD).getSkyBlockItem() ?: return
+		val item = entity.getEquippedStack(EquipmentSlot.HEAD).asSkyBlockItem ?: return
 		val corpseType = CorpseType.getByHelmetOrNull(item.id) ?: return
 
 		corpses.add(Corpse(entity, corpseType))

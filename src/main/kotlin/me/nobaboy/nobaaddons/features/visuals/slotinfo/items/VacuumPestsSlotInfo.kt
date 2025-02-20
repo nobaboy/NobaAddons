@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.NumberUtils.formatLong
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 
@@ -26,7 +26,7 @@ object VacuumPestsSlotInfo : ISlotInfo {
 	override fun handle(event: ScreenRenderEvents.DrawItem) {
 		val itemStack = event.itemStack
 
-		val item = itemStack.getSkyBlockItem() ?: return
+		val item = itemStack.asSkyBlockItem ?: return
 		if(item.id !in gardenVacuums) return
 
 		val lore = itemStack.lore.stringLines

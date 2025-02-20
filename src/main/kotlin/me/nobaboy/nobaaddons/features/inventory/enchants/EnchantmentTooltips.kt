@@ -17,9 +17,9 @@ import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
 import me.nobaboy.nobaaddons.utils.TextUtils.darkRed
 import me.nobaboy.nobaaddons.utils.TextUtils.lightPurple
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
 import net.minecraft.client.util.InputUtil
 import net.minecraft.item.ItemStack
@@ -51,7 +51,7 @@ object EnchantmentTooltips {
 	private fun parseEnchants(item: ItemStack, lines: MutableList<Text>) {
 		if(!config.modifyTooltips) return
 		if(InputUtil.isKeyPressed(MCUtils.window.handle, GLFW.GLFW_KEY_RIGHT_SHIFT)) return
-		if(!item.isSkyBlockItem || item.getSkyBlockItem()?.enchantments?.isEmpty() != false) return
+		if(!item.isSkyBlockItem || item.asSkyBlockItem?.enchantments?.isEmpty() != false) return
 
 		// Find the first line with an enchantment
 		val firstEnchant = lines.indexOfFirst { ENCHANT_LINE matches it.string.cleanFormatting() }
@@ -89,7 +89,7 @@ object EnchantmentTooltips {
 			lines.removeAt(firstEnchant)
 		}
 
-		val isSingleEnchantBook = item.getSkyBlockItemId() == "ENCHANTED_BOOK" && enchants.size == 1
+		val isSingleEnchantBook = item.skyBlockId == "ENCHANTED_BOOK" && enchants.size == 1
 		val shouldCompact = when(config.displayMode) {
 			EnchantmentDisplayMode.NORMAL -> enchants.size > 5
 			EnchantmentDisplayMode.COMPACT -> !isSingleEnchantBook
@@ -134,7 +134,7 @@ object EnchantmentTooltips {
 	) {
 		private val stackingProgress: MutableText? get() {
 			if(enchant is StackingEnchant) {
-				val (_, current, progress) = item.getSkyBlockItem()?.stackingEnchantProgress[enchant] ?: return null
+				val (_, current, progress) = item.asSkyBlockItem?.stackingEnchantProgress[enchant] ?: return null
 				return buildText {
 					append("(")
 					append(current.toAbbreviatedString(millionPrecision = 1))

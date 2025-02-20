@@ -15,7 +15,7 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
@@ -124,7 +124,7 @@ object PetAPI {
 	}
 
 	fun getPetData(itemStack: ItemStack): PetData? {
-		val item = itemStack.getSkyBlockItem() ?: return null
+		val item = itemStack.asSkyBlockItem ?: return null
 		if(item.id != "PET") return null
 
 		val petInfo: PetInfo = NobaAddons.GSON.fromJson(item.petInfo, PetInfo::class.java)

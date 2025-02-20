@@ -7,22 +7,22 @@ import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import net.minecraft.entity.EquipmentSlot
 
 object RanchersBootsSpeedSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.ranchersBootsSpeed
 
 	override fun handle(event: ScreenRenderEvents.DrawItem) {
-		val item = event.itemStack.getSkyBlockItem() ?: return
+		val item = event.itemStack.asSkyBlockItem ?: return
 		if(item.id != "RANCHERS_BOOTS") return
 
 		val player = MCUtils.player ?: return
 
 		val isBlackCatEquipped = PetAPI.currentPet?.let { it.id == "BLACK_CAT" } == true
 
-		val helmet = player.getEquippedStack(EquipmentSlot.HEAD).getSkyBlockItem()
-		val heldItem = player.mainHandStack.getSkyBlockItem()
+		val helmet = player.getEquippedStack(EquipmentSlot.HEAD).asSkyBlockItem
+		val heldItem = player.mainHandStack.asSkyBlockItem
 
 		val isLimit500 = isBlackCatEquipped ||
 			helmet?.id == "RACING HELMET" ||

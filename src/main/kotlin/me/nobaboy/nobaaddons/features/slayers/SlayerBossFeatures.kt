@@ -23,7 +23,7 @@ object SlayerBossFeatures {
 		SlayerEvents.BOSS_KILL.register(this::onBossKill)
 	}
 
-	private fun onBossSpawn(event: SlayerEvents.BossSpawn) {
+	private fun onBossSpawn(ignored: SlayerEvents.BossSpawn) {
 		if(!enabled) return
 
 		if(config.bossKillTime.enabled) bossSpawnTime = Timestamp.now()

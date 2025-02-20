@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItemId
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.tr
 
 object RefillFromSacks {
@@ -14,7 +14,7 @@ object RefillFromSacks {
 			.asSequence()
 			.mapNotNull {
 				player.inventory.getStack(it)
-					?.takeIf { it.getSkyBlockItemId() == id }
+					?.takeIf { it.skyBlockId == id }
 					?.count
 			}
 			.sum()

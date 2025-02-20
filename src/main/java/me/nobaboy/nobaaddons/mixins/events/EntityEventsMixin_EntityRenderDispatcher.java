@@ -103,7 +103,6 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		//?}
 		CallbackInfo ci
 	) {
-		var event = new EntityEvents.Render(entity, tickDelta);
-		EntityEvents.POST_RENDER.invoke(event);
+		EntityEvents.POST_RENDER.invoke(new EntityEvents.Render(entity, tickDelta));
 	}
 }
