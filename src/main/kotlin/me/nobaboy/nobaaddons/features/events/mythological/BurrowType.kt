@@ -5,8 +5,8 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
 enum class BurrowType(val displayName: Text, val color: NobaColor) {
-	START(tr("nobaaddons.config.events.mythological.burrowType.start", "Start"), NobaColor.GREEN),
-	MOB(tr("nobaaddons.config.events.mythological.burrowType.mob", "Mob"), NobaColor.RED),
-	TREASURE(tr("nobaaddons.config.events.mythological.burrowType.treasure", "Treasure"), NobaColor.GOLD),
-	UNKNOWN(tr("nobaaddons.config.events.mythological.burrowType.unknown", "Unknown"), NobaColor.GRAY)
+	START(tr("nobaaddons.label.mythological.burrowType.start", "Start"), NobaColor.GREEN),
+	MOB(tr("nobaaddons.label.mythological.burrowType.mob", "Mob"), NobaColor.RED),
+	TREASURE(tr("nobaaddons.label.mythological.burrowType.treasure", "Treasure"), NobaColor.GOLD),
+	UNKNOWN(tr("nobaaddons.label.mythological.burrowType.unknown", "Unknown"), NobaColor.GRAY)
 }

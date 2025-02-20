@@ -7,17 +7,16 @@ import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.rift.RiftTimerData
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.enumMap
-import java.util.EnumMap
 import java.util.UUID
 
 class ProfileData private constructor(profile: UUID?) : AbstractPerProfileConfig(profile, "data.json") {
 	var pet by Property.ofNullable("pet", Serializer.expose<PetData>())
-	val trophyFish by Property.of(
-		key = "trophyFish",
-		default = mutableMapOf(),
-		serializer = Serializer.map<EnumMap<TrophyFishRarity, Int>>(Serializer.enumMap<TrophyFishRarity, Int>())
-	)
 	val riftTimers by RiftTimerData()
+	val trophyFish by Property.of(
+		"trophyFish",
+		Serializer.map(Serializer.enumMap<TrophyFishRarity, Int>()),
+		mutableMapOf()
+	)
 
 	companion object : AbstractPerProfileDataLoader<ProfileData>() {
 		override fun create(id: UUID?): ProfileData = ProfileData(id)

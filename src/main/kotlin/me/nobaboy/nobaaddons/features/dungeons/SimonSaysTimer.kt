@@ -32,7 +32,7 @@ object SimonSaysTimer {
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7)
 
 	private val completionPattern by Regex("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)").fromRepo("dungeons.complete_device")
-	private val buttonVec = NobaVec(110, 121, 91)
+	private val buttonLocation = NobaVec(110, 121, 91)
 
 	private var startTime = Timestamp.distantPast()
 	private var completionTime = Timestamp.distantPast()
@@ -43,7 +43,7 @@ object SimonSaysTimer {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		InteractEvents.INTERACT_BLOCK.register { if(it is InteractEvents.UseBlockInteraction) onInteract(it) }
+		InteractEvents.BLOCK_INTERACT.register { if(it is InteractEvents.UseBlockInteraction) onInteract(it) }
 
 		try {
 			SimonSaysTimes.load()
@@ -118,7 +118,7 @@ object SimonSaysTimer {
 	}
 
 	private fun onInteract(event: InteractEvents.UseBlockInteraction) {
-		if(!enabled || buttonPressed || event.player != MCUtils.player || event.block != buttonVec) return
+		if(!enabled || buttonPressed || event.player != MCUtils.player || event.location.roundToBlock() != buttonLocation) return
 
 		startTime = Timestamp.now()
 		buttonPressed = true
