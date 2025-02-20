@@ -3,8 +3,7 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseContains
-import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
+import me.nobaboy.nobaaddons.utils.StringUtils.anyContains
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
@@ -14,13 +13,13 @@ object WarpPlayerHandler {
 	var player: String? = null
 	private var task: Scheduler.ScheduledTask? = null
 
-	val inviteFailMessages = listOf("Couldn't find a player with that name!", "You cannot invite that player since they're not online.")
+	private val inviteFailMessages = listOf("Couldn't find a player with that name!", "You cannot invite that player since they're not online.")
 
 	fun onChatMessage(message: String) {
 		when {
-			inviteFailMessages.lowercaseContains(message) -> cancel()
-			message.lowercaseEquals("$player is already in the party.") -> cancel()
-			message.lowercaseContains("$player joined the party.") -> playerJoined = true
+			inviteFailMessages.anyContains(message, ignoreCase = true) -> cancel()
+			message.equals("$player is already in the party.", ignoreCase = true) -> cancel()
+			message.contains("$player joined the party.", ignoreCase = true) -> playerJoined = true
 		}
 	}
 

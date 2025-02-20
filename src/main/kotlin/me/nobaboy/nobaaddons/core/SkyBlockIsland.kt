@@ -31,6 +31,6 @@ enum class SkyBlockIsland(val apiName: String?) {
 	companion object {
 		val ISLANDS = entries.filter { it.apiName != null }.associateBy { it.apiName!! }
 
-		fun getSkyBlockIsland(mode: String): SkyBlockIsland = ISLANDS.getOrDefault(mode, UNKNOWN)
+		fun getByName(name: String): SkyBlockIsland = ISLANDS.getOrDefault(name, UNKNOWN)
 	}
 }

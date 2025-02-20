@@ -6,11 +6,8 @@ import net.minecraft.util.Formatting
 object StringUtils {
 	private val TRAILING_ZERO = Regex("\\.0+(.)$")
 
-	infix fun String.lowercaseEquals(other: String) = this.equals(other, ignoreCase = true)
-	infix fun String.lowercaseContains(other: String) = this.contains(other, ignoreCase = true)
-
-	infix fun List<String>.lowercaseEquals(other: String) = this.any { it.equals(other, ignoreCase = true) }
-	infix fun List<String>.lowercaseContains(other: String) = this.any { it.contains(other, ignoreCase = true) }
+	fun List<String>.anyEquals(other: String, ignoreCase: Boolean = false) = this.any { it.equals(other, ignoreCase = ignoreCase) }
+	fun List<String>.anyContains(other: String, ignoreCase: Boolean = false) = this.any { it.contains(other, ignoreCase = ignoreCase) }
 
 	fun String.startsWith(list: List<String>): Boolean = list.any { this.startsWith(it) }
 
@@ -28,7 +25,6 @@ object StringUtils {
 			.joinToString("")
 	}
 
-	@Suppress("KotlinConstantConditions") // this is wrong
 	fun Int.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String {
 		return when {
 			this >= 1_000_000_000 -> "${(this / 1_000_000_000.0).roundTo(billionPrecision)}b"
