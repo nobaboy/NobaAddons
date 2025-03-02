@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.events.hoppity
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.hoppity.HoppityAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.core.hoppity.HoppityEgg
+import me.nobaboy.nobaaddons.core.events.HoppityData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
@@ -152,7 +152,7 @@ object HoppityEggGuess {
 		yCurve: Triple<Double, Double, Double>,
 		zCurve: Triple<Double, Double, Double>,
 	): NobaVec? {
-		val eggLocations = HoppityEgg.getByIsland(SkyBlockAPI.currentIsland) ?: return null
+		val eggLocations = HoppityData.getEggsByIsland(SkyBlockAPI.currentIsland) ?: return null
 		var closestLocation: NobaVec? = null
 		var closestDistance = Double.MAX_VALUE
 

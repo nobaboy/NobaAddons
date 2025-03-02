@@ -8,7 +8,6 @@ import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.LoreComponent
 import net.minecraft.component.type.NbtComponent
 import net.minecraft.item.ItemStack
-import org.jetbrains.annotations.ApiStatus.Obsolete
 import java.lang.ref.WeakReference
 
 object ItemUtils {
@@ -39,12 +38,6 @@ object ItemUtils {
 		return component.properties["textures"].firstOrNull()?.value
 	}
 
-	@Obsolete
-	fun ItemStack.getSkyBlockItem(): SkyBlockItemData? = asSkyBlockItem
-
-	@Obsolete
-	fun ItemStack.getSkyBlockItemId(): String? = skyBlockId
-
 	@JvmStatic
 	fun isEqual(first: ItemStack, second: ItemStack): Boolean {
 		if(first.item !== second.item) return false
@@ -53,13 +46,13 @@ object ItemUtils {
 
 	@JvmStatic
 	fun shouldArmorHaveEnchantGlint(item: ItemStack, original: Boolean): Boolean {
-		var config = NobaConfig.INSTANCE.uiAndVisuals.renderingTweaks
+		val config = NobaConfig.INSTANCE.uiAndVisuals.renderingTweaks
 
 		if(config.removeArmorGlints) return false
 		if(!config.fixEnchantedArmorGlint) return original
 		if(original) return true // don't remove enchant glints past this point, only add missing ones
 
-		var data = item.getSkyBlockItem() ?: return false
+		val data = item.asSkyBlockItem ?: return false
 		return data.enchantments.isNotEmpty() || data.runes.isNotEmpty()
 	}
 }

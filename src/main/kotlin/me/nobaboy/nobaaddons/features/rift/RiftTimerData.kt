@@ -6,7 +6,7 @@ import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.timestamp
 
 class RiftTimerData : ObjectProperty<RiftTimerData>("riftTimers") {
-	var nextSplitSteal by Property.ofNullable("nextSplitSteal", serializer = Serializer.timestamp)
 	var freeRiftInfusions by Property.of("freeInfusions", 3)
-	var nextFreeInfusion by Property.ofNullable("nextFreeInfusion", serializer = Serializer.timestamp)
+	var nextFreeInfusion by Property.ofNullable("nextFreeInfusion", Serializer.timestamp)
+	var nextSplitSteal by Property.ofNullable("nextSplitSteal", Serializer.timestamp)
 }

@@ -13,6 +13,7 @@ object SkyBlockEvents {
 	val PET_CHANGE = EventDispatcher<PetChange>()
 
 	val PROFILE_CHANGE = EventDispatcher<ProfileChange>()
+
 	val PROFILE_DATA_LOADED = EventDispatcher<ProfileDataLoad>()
 
 	data class IslandChange(val island: SkyBlockIsland) : Event()

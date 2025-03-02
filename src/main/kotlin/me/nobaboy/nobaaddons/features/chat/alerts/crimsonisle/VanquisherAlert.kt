@@ -7,7 +7,6 @@ import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 
 object VanquisherAlert : IAlert {
@@ -16,7 +15,7 @@ object VanquisherAlert : IAlert {
 	override val enabled: Boolean get() = config.vanquisherSpawn && SkyBlockIsland.CRIMSON_ISLE.inIsland()
 
 	override fun shouldAlert(message: String): Boolean {
-		if(!message.lowercaseEquals(vanquisherSpawnMessage)) return false
+		if(message != vanquisherSpawnMessage) return false
 
 		val location = LocationUtils.playerCoords()
 		val randomString = StringUtils.randomAlphanumeric()

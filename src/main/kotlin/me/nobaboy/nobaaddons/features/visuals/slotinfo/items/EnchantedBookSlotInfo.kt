@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.core.enchants.UltimateEnchant
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
@@ -13,7 +13,7 @@ object EnchantedBookSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.enchantedBookLevel || config.enchantedBookName
 
 	override fun handle(event: ScreenRenderEvents.DrawItem) {
-		val item = event.itemStack.getSkyBlockItem() ?: return
+		val item = event.itemStack.asSkyBlockItem ?: return
 		if(item.id != "ENCHANTED_BOOK" || item.enchantments.size != 1) return
 
 		item.enchantments.let {

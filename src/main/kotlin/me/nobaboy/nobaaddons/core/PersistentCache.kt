@@ -12,7 +12,7 @@ object PersistentCache : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("cache.jso
 		saveOnExit()
 	}
 
-	var lastProfile by Property.ofNullable("lastProfile", serializer = Serializer.uuid)
+	var lastProfile by Property.ofNullable("lastProfile", Serializer.uuid)
 	var repoCommit by Property.ofNullable<String>("repoCommit")
 	var devMode by Property.of("devMode", false)
 }

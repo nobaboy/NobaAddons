@@ -4,7 +4,6 @@ import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.lowercaseEquals
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class TransferCommand : ChatCommand() {
@@ -19,7 +18,7 @@ class TransferCommand : ChatCommand() {
 	override fun run(ctx: ChatContext) {
 		if(PartyAPI.party?.isLeader != true) return
 
-		if(!ctx.command.lowercaseEquals("ptme")) {
+		if(!ctx.command.equals("ptme", ignoreCase = true)) {
 			val player = if(ctx.args.isEmpty()) ctx.user else ctx.args[0]
 			HypixelCommands.partyTransfer(player)
 			return

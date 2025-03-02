@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.EntityUtils
@@ -25,6 +26,7 @@ object SlayerAPI {
 	private val miniBosses = mutableSetOf<LivingEntity>()
 
 	fun init() {
+		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.TICK.register { onTick() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
@@ -35,7 +37,6 @@ object SlayerAPI {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		miniBosses.removeIf { !it.isAlive }
-		if(currentQuest?.entity?.isAlive == false) currentQuest?.entity = null
 
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 		val bossNameLine = scoreboard.nextAfter("Slayer Quest") ?: return
@@ -112,6 +113,7 @@ object SlayerAPI {
 			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
 				SlayerEvents.QUEST_CLEAR.invoke(SlayerEvents.QuestClear())
 				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
+
 				currentQuest?.apply {
 					this.entity = null
 					this.armorStand = null
@@ -119,6 +121,11 @@ object SlayerAPI {
 				}
 			}
 		}
+	}
+
+	private fun reset() {
+		currentQuest = null
+		miniBosses.clear()
 	}
 
 	data class SlayerQuest(

@@ -40,7 +40,7 @@ object BurrowAPI {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		InteractEvents.INTERACT_BLOCK.register(this::onBlockClick)
+		InteractEvents.BLOCK_INTERACT.register(this::onBlockClick)
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
@@ -84,7 +84,7 @@ object BurrowAPI {
 	private fun onBlockClick(event: InteractEvents.BlockInteraction) {
 		if(!enabled) return
 		val player = event.player
-		val location = event.block
+		val location = event.location
 
 		if(!DianaAPI.hasSpadeInHand(player)) return
 		if(location.getBlockAt() != Blocks.GRASS_BLOCK) return

@@ -30,65 +30,71 @@ import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
-	private val profileTypePattern by Regex("^. (?<type>Ironman|Stranded|Bingo)").fromRepo("skyblock.profile_type")
 	private val profileIdPattern by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN})").fromRepo("skyblock.profile_id")
+	private val profileTypePattern by Regex("^. (?<type>Ironman|Stranded|Bingo)").fromRepo("skyblock.profile_type")
+
 	private val levelPattern by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("skyblock.level")
 	private val xpPattern by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
-	private val currencyPattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
-	private val zonePattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
 
-	var currentGame: ServerType? = null
+	private val zonePattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
+	private val currencyPattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
+
+	var currentServer: ServerType? = null
 		private set
 
 	@get:JvmStatic
 	@get:JvmName("inSkyBlock")
 	val inSkyBlock: Boolean
-		get() = HypixelUtils.onHypixel && currentGame == GameType.SKYBLOCK
+		get() = HypixelUtils.onHypixel && currentServer == GameType.SKYBLOCK
 
 	var currentProfile: UUID? = null
 		private set(value) {
 			field = value
 			PersistentCache.lastProfile = value
 		}
-
 	var profileType: SkyBlockProfile = SkyBlockProfile.CLASSIC
 		private set
-
-	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN
-		private set
-	var currentZone: String? = null
-		private set
-
-	var currentSeason: SkyBlockSeason? = null
-		private set
-
-	val prefixedZone: String?
-		get() = currentZone?.let {
-			val symbol = if(currentIsland == SkyBlockIsland.RIFT) "ф" else "⏣"
-			"$symbol $it"
-		}
 
 	var level: Int? = null
 		private set
 	var xp: Int? = null
 		private set
 
+	var currentIsland: SkyBlockIsland = SkyBlockIsland.UNKNOWN
+		private set
+	var currentSeason: SkyBlockSeason? = null
+		private set
+
+	var currentZone: String? = null
+		private set
+	val prefixedZone: String?
+		get() = currentZone?.let {
+			val symbol = if(currentIsland == SkyBlockIsland.RIFT) "ф" else "⏣"
+			"$symbol $it"
+		}
+
 	var coins: Long? = null
 		private set
 	var bits: Long? = null
 		private set
 
-	fun SkyBlockIsland.inIsland(): Boolean = profileType == SkyBlockProfile.STRANDED || inSkyBlock && currentIsland == this
+	fun SkyBlockIsland.inIsland(): Boolean = inSkyBlock && (profileType == SkyBlockProfile.STRANDED || currentIsland == this)
 	fun SkyBlockSeason.isSeason(): Boolean = inSkyBlock && currentSeason == this
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
 	fun init() {
-		TickEvents.everySecond { update() }
-		InventoryEvents.OPEN.register(this::onInventoryOpen)
-		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
+		TickEvents.everySecond { update() }
+		InventoryEvents.OPEN.register(this::onInventoryOpen)
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		currentProfile = PersistentCache.lastProfile
+	}
+
+	private fun onLocationPacket(packet: ClientboundLocationPacket) {
+		currentServer = packet.serverType.getOrNull()
+		currentIsland = SkyBlockIsland.getByName(packet.mode.getOrNull() ?: return)
+		if(currentIsland != SkyBlockIsland.UNKNOWN) SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
@@ -109,18 +115,12 @@ object SkyBlockAPI {
 		}
 	}
 
-	private fun onChatMessage(event: ChatMessageEvents.Chat) {
-		val profileId = UUID.fromString(profileIdPattern.getGroupFromFullMatch(event.message.string.cleanFormatting(), "id") ?: return)
-		if(profileId != currentProfile) {
-			currentProfile = profileId
-			SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
-		}
-	}
+	private fun onChatMessage(message: String) {
+		val profileId = UUID.fromString(profileIdPattern.getGroupFromFullMatch(message, "id") ?: return)
+		if(profileId == currentProfile) return
 
-	private fun onLocationPacket(packet: ClientboundLocationPacket) {
-		currentGame = packet.serverType.getOrNull()
-		currentIsland = packet.mode.map(SkyBlockIsland::getSkyBlockIsland).orElse(SkyBlockIsland.UNKNOWN)
-		if(currentIsland != SkyBlockIsland.UNKNOWN) SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
+		SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
+		currentProfile = profileId
 	}
 
 	private fun update() {
@@ -131,15 +131,15 @@ object SkyBlockAPI {
 
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 
+		profileTypePattern.firstFullMatch(scoreboard) {
+			val type = groups["type"]?.value ?: return@firstFullMatch
+			profileType = SkyBlockProfile.getByName(type)
+		}
+
 		// I originally planned to make an enum including all the zones but after realising
 		// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
 		zonePattern.firstFullMatch(scoreboard) {
 			currentZone = groups["zone"]?.value
-		}
-
-		profileTypePattern.firstFullMatch(scoreboard) {
-			val type = groups["type"]?.value ?: return@firstFullMatch
-			profileType = SkyBlockProfile.getByName(type)
 		}
 
 		// This can be further expanded to include other types like Pelts, North Stars, etc.

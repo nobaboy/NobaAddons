@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.util.Formatting
@@ -26,7 +26,7 @@ object AnnounceRareDrops {
 
 	private fun onSlotUpdate(event: InventoryEvents.SlotUpdate) {
 		val itemStack = event.itemStack
-		val item = itemStack.getSkyBlockItem() ?: return
+		val item = itemStack.asSkyBlockItem ?: return
 
 		if(item.id !in rareDrops) return
 		item.timestamp?.let { if(it.elapsedSince() > 3.seconds) return } ?: return

@@ -23,10 +23,10 @@ object SlayerBossFeatures {
 		SlayerEvents.BOSS_KILL.register(this::onBossKill)
 	}
 
-	private fun onBossSpawn(event: SlayerEvents.BossSpawn) {
+	private fun onBossSpawn(ignored: SlayerEvents.BossSpawn) {
 		if(!enabled) return
 
-		if(config.announceBossKillTime.enabled) bossSpawnTime = Timestamp.now()
+		if(config.bossKillTime.enabled) bossSpawnTime = Timestamp.now()
 		if(config.bossAlert.enabled) {
 			RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds, id = "slayer.alert")
 			SoundUtils.dingLowSound.play()
@@ -34,7 +34,7 @@ object SlayerBossFeatures {
 	}
 
 	private fun onBossKill(event: SlayerEvents.BossKill) {
-		if(!config.announceBossKillTime.enabled) return
+		if(!config.bossKillTime.enabled) return
 		if(!enabled) return
 
 		val seconds = getBossKillTime(event) ?: return
@@ -45,7 +45,7 @@ object SlayerBossFeatures {
 		if(event.entity == null) return null
 		val killTime = bossSpawnTime.elapsedSince().toDouble(DurationUnit.SECONDS)
 
-		when(config.announceBossKillTime.timeSource) {
+		when(config.bossKillTime.timeSource) {
 			BossTimeSource.REAL_TIME -> return killTime
 			BossTimeSource.BOSS_TIME_REMAINING -> {
 				val timer = event.timerEntity?.name?.string
