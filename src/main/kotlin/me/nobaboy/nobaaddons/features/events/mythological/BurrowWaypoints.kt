@@ -27,8 +27,6 @@ object BurrowWaypoints {
 	private val config get() = NobaConfig.INSTANCE.events.mythological
 	private val enabled: Boolean get() = DianaAPI.isActive
 
-	private val playerLocation get() = LocationUtils.playerLocation()
-
 	private val validBlocks = listOf(
 		Blocks.AIR,
 		Blocks.OAK_LEAVES,
@@ -121,7 +119,7 @@ object BurrowWaypoints {
 
 		InquisitorWaypoints.waypoints.toList().forEach { inquisitor ->
 			val location = inquisitor.location
-			val distance = location.distance(playerLocation)
+			val distance = location.distance(LocationUtils.playerLocation)
 			val yOffset = if(config.showInquisitorDespawnTime) -20f else -10f
 
 			val adjustedLocation = location.center().raise()
@@ -164,7 +162,7 @@ object BurrowWaypoints {
 	private fun renderGuessLocation(context: WorldRenderContext) {
 		guessLocation?.let {
 			val adjustedLocation = findValidLocation(it)
-			val distance = adjustedLocation.distance(playerLocation)
+			val distance = adjustedLocation.distance(LocationUtils.playerLocation)
 
 			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
 			RenderUtils.renderText(
@@ -200,7 +198,7 @@ object BurrowWaypoints {
 	}
 
 	private fun findValidLocation(location: NobaVec): NobaVec {
-		if(!location.inLoadedChunk()) return location.copy(y = playerLocation.y)
+		if(!location.inLoadedChunk()) return location.copy(y = LocationUtils.playerLocation.y)
 
 		return findGroundLevel(location) ?: findFirstSolidBelowAir(location)
 	}
@@ -218,7 +216,7 @@ object BurrowWaypoints {
 				return location.copy(y = (y - 1).toDouble())
 			}
 		}
-		return location.copy(y = playerLocation.y)
+		return location.copy(y = LocationUtils.playerLocation.y)
 	}
 
 	private fun NobaVec.isGroundAt(y: Int) = copy(y = y.toDouble()).getBlockAt() == Blocks.GRASS_BLOCK &&
