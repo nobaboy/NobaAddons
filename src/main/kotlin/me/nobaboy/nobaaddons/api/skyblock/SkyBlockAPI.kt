@@ -36,8 +36,8 @@ object SkyBlockAPI {
 	private val levelPattern by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("skyblock.level")
 	private val xpPattern by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
 
-	private val zonePattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.zone")
-	private val currencyPattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.currency")
+	private val zonePattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
+	private val currencyPattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
 
 	var currentServer: ServerType? = null
 		private set
