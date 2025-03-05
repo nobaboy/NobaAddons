@@ -22,7 +22,7 @@ object TipMessagesChatFilter : IChatFilter {
 	override val enabled: Boolean get() = config.hideTipMessages
 
 	override fun shouldFilter(message: String): Boolean =
-		alreadyTippedPattern matches message ||
+		alreadyTippedPattern.matches(message) ||
 			message.startsWith(tipSentPrefix) ||
 			message.startsWith(tipReceivedPrefix) ||
 			message in tipMessages
