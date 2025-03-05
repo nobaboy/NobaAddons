@@ -1,6 +1,8 @@
 package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.core.events.MythologicalDrops
+import me.nobaboy.nobaaddons.core.events.MythologicalMobs
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
@@ -10,6 +12,7 @@ import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TimedSet
@@ -20,38 +23,42 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 object BurrowAPI {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config = NobaConfig.INSTANCE.events.mythological
 	private val enabled: Boolean get() = config.findNearbyBurrows && DianaAPI.isActive
 
-	private val burrowDugPattern by Regex("^(You dug out a Griffin Burrow!|You finished the Griffin burrow chain!) \\(\\d/4\\)").fromRepo("mythological.dig_burrow")
-	private val mobDugPattern by Regex("^[A-z ]+! You dug out (?:a )?[A-z ]+!").fromRepo("mythological.dig_mob")
+	private val CLEAR_BURROWS_MESSAGE by "Poof! You have cleared your griffin burrows!".fromRepo("mythological.clear_burrows")
+	private val DEFEAT_MOBS_MESSAGE by "Defeat all the burrow defenders in order to dig it!".fromRepo("mythological.defeat_mobs")
 
-	private val burrows = mutableMapOf<NobaVec, Burrow>()
-	private val recentlyDugBurrows = TimedSet<NobaVec>(1.minutes)
-	private var lastDugBurrow: NobaVec? = null
+	private val DIG_BURROW_PATTERN by Regex("^(?:You dug out a Griffin Burrow|You finished the Griffin burrow chain)! \\(\\d/4\\)").fromRepo("mythological.dig_burrow")
+	private val DIG_MOB_PATTERN by Regex("^(?:Oi|Uh oh|Yikes|Woah|Oh|Danger|Good Grief)! You dug out (?:a )?(?<mob>[A-z ]+)!").fromRepo("mythological.dig_mob")
+	private val DIG_TREASURE_PATTERN by Regex("^(RARE DROP|Wow)! You dug out (?:a )?(?<treasure>[A-z0-9- ]+)(?: coins)?!").fromRepo("mythological.dig_treasure")
 
-	// This is here in case the player digs the burrow before the particles spawn
-	private var fakeBurrow: NobaVec? = null
-	var mobBurrow: NobaVec? = null
+	val burrows = mutableSetOf<Burrow>()
+	private val recentlyDugBurrows = TimedSet<Burrow>(1.minutes)
+
+	private var lastDugBurrow: Burrow? = null
+	private var fakeBurrow: Burrow? = null
+	private var mobBurrow: Burrow? = null
 
 	private var lastBurrowChatMessage = Timestamp.distantPast()
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
+		InteractEvents.BLOCK_INTERACT.register(this::onBlockInteract)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		InteractEvents.BLOCK_INTERACT.register(this::onBlockClick)
 	}
+
+	// remove mobBurrow from burrows on player death
 
 	private fun onParticle(event: ParticleEvents.Particle) {
 		if(!enabled) return
 
-		val particleType = BurrowParticleType.getParticleType(event) ?: return
-
 		val location = event.location.roundToBlock().lower()
-		if(location in recentlyDugBurrows) return
+		if(recentlyDugBurrows.any { it.location == location }) return
 
-		val burrow = burrows.getOrPut(location) { Burrow(location) }
+		val particleType = BurrowParticleType.getParticleType(event) ?: return
+		val burrow = burrows.firstOrNull { it.location == location } ?: Burrow(location).also { burrows.add(it) }
 
 		when(particleType) {
 			BurrowParticleType.ENCHANT -> burrow.hasEnchant = true
@@ -60,58 +67,77 @@ object BurrowAPI {
 			BurrowParticleType.TREASURE -> burrow.type = BurrowType.TREASURE
 		}
 
-		if(!burrow.hasEnchant || burrow.type == BurrowType.UNKNOWN || burrow.found) return
+		if(!burrow.found || !burrow.hasEnchant || burrow.type == BurrowType.UNKNOWN) return
 
-		MythologicalEvents.BURROW_FIND.invoke(MythologicalEvents.BurrowFind(burrow.location, burrow.type))
+		MythologicalEvents.BURROW_FIND.invoke(MythologicalEvents.BurrowFind(location, burrow.type))
 		burrow.found = true
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onBlockInteract(event: InteractEvents.BlockInteraction) {
 		if(!enabled) return
+		if(DianaAPI.hasSpadeInHand(event.player)) return
 
-		when {
-			burrowDugPattern.matches(message) -> {
-				lastBurrowChatMessage = Timestamp.now()
-
-				if(lastDugBurrow == null || !tryDigBurrow(lastDugBurrow!!)) return
-				fakeBurrow = lastDugBurrow
-			}
-			mobDugPattern.matches(message) -> mobBurrow = lastDugBurrow
-			message == "Defeat all the burrow defenders in order to dig it!" -> lastBurrowChatMessage = Timestamp.now()
-		}
-	}
-
-	private fun onBlockClick(event: InteractEvents.BlockInteraction) {
-		if(!enabled) return
-		val player = event.player
 		val location = event.location
-
-		if(!DianaAPI.hasSpadeInHand(player)) return
 		if(location.getBlockAt() != Blocks.GRASS_BLOCK) return
 
-		if(location == fakeBurrow) {
+		if(location == fakeBurrow?.location) {
 			fakeBurrow = null
 			tryDigBurrow(location, ignoreFound = true)
 			return
 		}
 
-		if(!burrows.containsKey(location)) return
+		val burrow = burrows.firstOrNull { it.location == location } ?: return
+		lastDugBurrow = burrow
 
-		lastDugBurrow = location
 		Scheduler.schedule(20) {
-			if(lastBurrowChatMessage.elapsedSince() > 2.seconds) burrows.remove(location)
+			if(lastBurrowChatMessage.elapsedSince() > 2.seconds) burrows.remove(burrow)
+		}
+	}
+
+	private fun onChatMessage(message: String) {
+		if(!enabled) return
+
+		if(message == CLEAR_BURROWS_MESSAGE) reset()
+
+		if(message == DEFEAT_MOBS_MESSAGE) lastBurrowChatMessage = Timestamp.now()
+
+		if(message.startsWith(" ☠ You were killed by")) burrows.remove(mobBurrow)
+
+		if(DIG_BURROW_PATTERN.matches(message)) {
+			lastBurrowChatMessage = Timestamp.now()
+			lastDugBurrow?.let { tryDigBurrow(it.location) } ?: return
+			fakeBurrow = lastDugBurrow
+		}
+
+		DIG_MOB_PATTERN.onFullMatch(message) {
+			val mob = MythologicalMobs.getByName(groups["mob"]?.value ?: return) ?: return
+			MythologicalEvents.MOB_DIG.invoke(MythologicalEvents.MobDig(mob))
+			lastBurrowChatMessage = Timestamp.now()
+			mobBurrow = lastDugBurrow
+		}
+
+		DIG_TREASURE_PATTERN.onFullMatch(message) {
+			val treasure = groups["treasure"]?.value ?: return
+			lastBurrowChatMessage = Timestamp.now()
+
+			treasure.replace(",", "").toIntOrNull()?.let { coins ->
+				MythologicalEvents.TREASURE_DIG.invoke(MythologicalEvents.TreasureDig(MythologicalDrops.COINS, coins))
+				return
+			}
+
+			val drop = MythologicalDrops.getByName(treasure) ?: return
+			MythologicalEvents.TREASURE_DIG.invoke(MythologicalEvents.TreasureDig(drop))
 		}
 	}
 
 	private fun tryDigBurrow(location: NobaVec, ignoreFound: Boolean = false): Boolean {
-		val burrow = burrows[location] ?: return false
+		val burrow = burrows.firstOrNull { it.location == location } ?: return false
 		if(!burrow.found && !ignoreFound) return false
 
-		burrows.remove(location)
-		recentlyDugBurrows.add(location)
+		burrows.remove(burrow)
+		recentlyDugBurrows.add(burrow)
 		lastDugBurrow = null
 
-		MythologicalEvents.BURROW_DIG.invoke(MythologicalEvents.BurrowDig(location))
 		return true
 	}
 
@@ -132,16 +158,13 @@ object BurrowAPI {
 		companion object {
 			fun getParticleType(event: ParticleEvents.Particle): BurrowParticleType? {
 				if(!event.forceSpawn) return null
-				for(type in entries) {
-					if(type.check(event)) return type
-				}
-				return null
+				return entries.find { it.check(event) }
 			}
 		}
 	}
 
-	class Burrow(
-		var location: NobaVec,
+	data class Burrow(
+		val location: NobaVec,
 		var hasEnchant: Boolean = false,
 		var type: BurrowType = BurrowType.UNKNOWN,
 		var found: Boolean = false

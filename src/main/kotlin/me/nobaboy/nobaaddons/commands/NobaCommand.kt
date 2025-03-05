@@ -10,8 +10,7 @@ import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWarpLocations
-import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
-import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
+import me.nobaboy.nobaaddons.features.events.mythological.MythologicalWaypoints
 import me.nobaboy.nobaaddons.features.general.RefillFromSacks
 import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
@@ -120,8 +119,7 @@ object NobaCommand {
 		@Command
 		fun clearBurrows() {
 			BurrowAPI.reset()
-			InquisitorWaypoints.reset()
-			BurrowWaypoints.reset()
+			MythologicalWaypoints.reset()
 			ChatUtils.addMessage(tr("nobaaddons.command.clearedBurrows", "Cleared all waypoints"))
 		}
 	}

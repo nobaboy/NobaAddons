@@ -97,6 +97,11 @@ object EventsCategory {
 			label(CommonText.Config.LABEL_MISC)
 
 			boolean(
+				tr("nobaaddons.config.events.mythological.tracker", "Mythological Tracker"),
+				default = defaults.events.mythological.tracker,
+				property = config.events.mythological::tracker
+			)
+			boolean(
 				tr("nobaaddons.config.events.mythological.announceRareDrops", "Announce Rare Drops"),
 				tr("nobaaddons.config.events.mythological.announceRareDrops.tooltip", "Sends rare drop messages for items that don't have one (like Dwarf Turtle Shelmet, Crochet Plushie, etc.)"),
 				default = defaults.events.mythological.announceRareDrops,

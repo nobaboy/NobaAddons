@@ -4,7 +4,7 @@ import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
-import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
+import me.nobaboy.nobaaddons.features.events.mythological.MythologicalWaypoints
 import me.nobaboy.nobaaddons.features.keybinds.impl.NobaKeyBind
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
@@ -20,7 +20,7 @@ object KeyBindsManager {
 
 	val commandKeyBinds by KeyBindsConfig::keyBinds
 	private val gameKeyBinds = listOf<NobaKeyBind>(
-		NobaKeyBind(tr("nobaaddons.keyBind.mythologicalRitual.nearestWarp", "Mythological Nearest Warp")) { BurrowWaypoints.useNearestWarp() }
+		NobaKeyBind(tr("nobaaddons.keyBind.mythologicalRitual.nearestWarp", "Mythological Nearest Warp")) { MythologicalWaypoints.useNearestWarp() }
 	)
 
 	fun init() {

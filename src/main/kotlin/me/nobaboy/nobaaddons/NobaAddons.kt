@@ -19,7 +19,6 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowGuessAPI
-import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
@@ -35,14 +34,14 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
-import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsManager
+import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.hoppity.HoppityEggGuess
 import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
-import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
-import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
+import me.nobaboy.nobaaddons.features.events.mythological.MythologicalTracker
+import me.nobaboy.nobaaddons.features.events.mythological.MythologicalWaypoints
 import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
@@ -140,7 +139,6 @@ object NobaAddons : ClientModInitializer {
 		BurrowAPI.init()
 		BurrowGuessAPI.init()
 		DebugAPI.init()
-		DianaAPI.init()
 		DungeonsAPI.init()
 		InventoryAPI.init()
 		MayorAPI.init()
@@ -179,30 +177,24 @@ object NobaAddons : ClientModInitializer {
 
 		// region Events
 		/* region Hoppity */
-		HoppityEggGuess.init()
 		ChocolateFactoryFeatures.init()
+		HoppityEggGuess.init()
 		/* endregion */
 
 		/* region Mythological */
 		AnnounceRareDrops.init()
-		BurrowWaypoints.init()
-		InquisitorWaypoints.init()
+		MythologicalTracker.init()
+		MythologicalWaypoints.init()
 		/* endregion*/
 		// endregion
 
 		// region Slayers
+		CompactSlayerMessages.init()
+		HidePupNametags.init()
+		HighlightHellionShield.init()
 		MiniBossFeatures.init()
 		SlayerBossFeatures.init()
-		CompactSlayerMessages.init()
-		/* region Sven Packmaster */
-		HidePupNametags.init()
-		/* endregion */
-		/* region Voidgloom Seraph */
 		VoidgloomSeraphFeatures.init()
-		/* endregion */
-		/* region Inferno Demonlord */
-		HighlightHellionShield.init()
-		/* endregion */
 		// endregion
 
 		// region Fishing
@@ -230,8 +222,8 @@ object NobaAddons : ClientModInitializer {
 		IChatFilter.init()
 		/* region Chat Commands */
 		DMCommands.init()
-		PartyCommands.init()
 		GuildCommands.init()
+		PartyCommands.init()
 		/* endregion */
 		// endregion
 

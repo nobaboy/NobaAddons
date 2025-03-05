@@ -27,6 +27,7 @@ class EventsConfig : ObjectProperty<EventsConfig>("events") {
 		var showInquisitorDespawnTime by Property.of<Boolean>("showInquisitorDespawnTime", false)
 		var inquisitorFocusMode by Property.of<Boolean>("inquisitorFocusMode", false)
 
+		var tracker by Property.of<Boolean>("tracker", false)
 		var announceRareDrops by Property.of<Boolean>("announceRareDrops", false)
 
 		var ignoreCrypt by Property.of<Boolean>("ignoreCrypt", false)
