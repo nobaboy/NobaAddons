@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.utils.chat
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -29,8 +29,8 @@ object ChatUtils {
 	private val CAPTURED_MESSAGE: ThreadLocal<Message?> = ThreadLocal()
 
 	init {
-		TickEvents.TICK.cooldown { _, cooldown -> processCommandQueue(cooldown) }
-		TickEvents.TICK.everySecond { removeExpiredClickActions() }
+		TickEvent.cooldown { _, cooldown -> processCommandQueue(cooldown) }
+		TickEvent.everySecond { removeExpiredClickActions() }
 		ChatMessageEvents.ADDED.register(this::onChatAdded)
 	}
 

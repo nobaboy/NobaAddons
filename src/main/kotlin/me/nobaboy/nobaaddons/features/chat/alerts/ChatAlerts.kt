@@ -5,7 +5,6 @@ import dev.isxander.yacl3.api.OptionGroup
 import me.nobaboy.nobaaddons.config.option.Config
 import me.nobaboy.nobaaddons.config.option.ConfigOption
 import me.nobaboy.nobaaddons.config.utils.label
-import me.nobaboy.nobaaddons.events.EventListener
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.features.Feature
 import me.nobaboy.nobaaddons.features.FeatureCategory

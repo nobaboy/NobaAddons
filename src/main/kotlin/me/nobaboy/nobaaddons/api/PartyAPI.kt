@@ -8,7 +8,7 @@ import kotlinx.coroutines.sync.withPermit
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CooldownManager
@@ -64,7 +64,7 @@ object PartyAPI {
 		private set
 
 	fun init() {
-		TickEvents.TICK.cooldown { _, cooldown -> onTick(cooldown) }
+		TickEvent.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ChatMessageEvents.CHAT.register { (message) ->

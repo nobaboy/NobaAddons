@@ -14,7 +14,7 @@ object PingUtils {
 
 	init {
 		Scheduler.schedule(10 * 20, repeat = true) { sendPingPacket() }
-		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
+		PacketEvents.PostReceive.register(this::onPacketReceive)
 	}
 
 	fun sendPingPacket(sendMessage: Boolean = false) {
@@ -26,7 +26,7 @@ object PingUtils {
 		client.networkHandler?.sendPacket(QueryPingC2SPacket(Util.getMeasuringTimeMs()))
 	}
 
-	private fun onPacketReceive(event: PacketEvents.Receive) {
+	private fun onPacketReceive(event: PacketEvents.PostReceive) {
 		val packet = event.packet as? PingResultS2CPacket ?: return
 		ping = (Timestamp(Util.getMeasuringTimeMs()) - Timestamp(packet.startTime)).inWholeMilliseconds.toInt()
 

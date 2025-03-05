@@ -49,7 +49,7 @@ object BurrowGuessAPI {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		SoundEvents.SOUND.register(this::onSound)
+		SoundEvents.Sound.register(this::onSound)
 		ParticleEvents.PARTICLE.register(this::onParticle)
 	}
 

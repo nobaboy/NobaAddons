@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.core.dungeons.DungeonBoss
 import me.nobaboy.nobaaddons.core.dungeons.DungeonClass
 import me.nobaboy.nobaaddons.core.dungeons.DungeonFloor
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
@@ -29,7 +29,7 @@ object DungeonsAPI {
 	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN && currentBoss != DungeonBoss.WATCHER
 
 	fun init() {
-		TickEvents.TICK.everySecond { onSecondPassed() }
+		TickEvent.everySecond { onSecondPassed() }
 		ChatMessageEvents.CHAT.register { (message) -> getBossType(message.string.cleanFormatting()) }
 	}
 

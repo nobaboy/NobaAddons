@@ -44,12 +44,12 @@ class WarpCommand : ChatCommand(3.seconds) {
 
 	private fun startTimedWarp() {
 		HypixelCommands.partyChat("Warping in $delay (To cancel type '!cancel')")
-		Scheduler.schedule(20, repeat = true) {
+		Scheduler.schedule(20, repeat = true) { task ->
 			if(cancel) {
 				HypixelCommands.partyChat("Warp cancelled...")
 				isWarping = false
 				cancel = false
-				return@schedule cancel()
+				return@schedule task.cancel()
 			}
 
 			if(--delay > 0) {
@@ -57,7 +57,7 @@ class WarpCommand : ChatCommand(3.seconds) {
 			} else {
 				HypixelCommands.partyWarp()
 				isWarping = false
-				return@schedule cancel()
+				return@schedule task.cancel()
 			}
 		}
 	}

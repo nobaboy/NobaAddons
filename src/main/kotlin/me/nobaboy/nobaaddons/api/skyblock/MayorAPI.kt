@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.data.json.MayorJson
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.HTTPUtils
@@ -62,7 +62,7 @@ object MayorAPI {
 		private set
 
 	fun init() {
-		TickEvents.TICK.everySecond { onSecondPassed() }
+		TickEvent.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}

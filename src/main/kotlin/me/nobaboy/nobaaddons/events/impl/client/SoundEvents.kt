@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.client
 
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -7,35 +8,37 @@ import net.minecraft.sound.SoundCategory
 import net.minecraft.util.Identifier
 
 object SoundEvents {
-	/**
-	 * Event invoked to determine whether a given sound should be allowed to play.
-	 */
-	@JvmField val ALLOW_SOUND = EventDispatcher.cancelable<AllowSound>()
+	@Deprecated("Use the companion object instead")
+	@JvmField val ALLOW_SOUND = AllowSound.Companion
+
+	@Deprecated("Use the companion object instead")
+	@JvmField val SOUND = Sound.Companion
 
 	/**
-	 * Event invoked after a sound is canceled.
+	 * Event invoked to determine whether a given sound should be allowed to play
 	 */
-	@JvmField val SOUND_CANCELED = EventDispatcher<Sound>()
-
-	/**
-	 * Event invoked after a sound is played.
-	 */
-	@JvmField val SOUND = EventDispatcher<Sound>()
-
 	data class AllowSound(
 		val id: Identifier,
 		val location: NobaVec,
 		val pitch: Float,
 		val volume: Float
-	) : Event(isCancelable = true) {
+	) : AbstractEvent(isCancelable = true) {
 		companion object : EventDispatcher<AllowSound>()
 	}
 
-	data class Sound(
+	/**
+	 * Event invoked after a sound is played (or canceled)
+	 */
+	data class Sound @JvmOverloads constructor(
 		val id: Identifier,
 		val category: SoundCategory,
 		val location: NobaVec,
 		val pitch: Float,
-		val volume: Float
-	) : Event()
+		val volume: Float,
+		override val canceled: Boolean = false,
+	) : Event {
+		fun asCanceled() = if(canceled) this else copy(canceled = true)
+
+		companion object : EventDispatcher<Sound>()
+	}
 }

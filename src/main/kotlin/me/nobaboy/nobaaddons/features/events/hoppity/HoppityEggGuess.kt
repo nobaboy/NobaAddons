@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.hoppity.HoppityEgg
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
@@ -36,7 +36,7 @@ object HoppityEggGuess {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		TickEvents.TICK.everySecond { onSecondPassed() }
+		TickEvent.everySecond { onSecondPassed() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		InteractEvents.USE_ITEM.register(this::onUseItem)

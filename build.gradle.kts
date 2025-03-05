@@ -68,8 +68,12 @@ dependencies {
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
+	// commander doesn't have any extra dependencies of its own, but gradle needs a bit of convincing
+	// to not try to pull in its transitive dependencies when building against older versions of minecraft
 	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true) { isTransitive = false }
 	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
+	// mixin constraints depends on sponge mixin, which conflicts with fabric's mixin fork, so just
+	// tell gradle to outright not try to resolve transitive dependencies
 	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
 
 	implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")

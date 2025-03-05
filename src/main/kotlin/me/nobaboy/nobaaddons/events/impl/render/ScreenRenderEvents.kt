@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.render
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
@@ -16,5 +16,5 @@ object ScreenRenderEvents {
 		val itemStack: ItemStack,
 		val x: Int,
 		val y: Int
-	) : Event()
+	) : AbstractEvent()
 }

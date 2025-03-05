@@ -51,14 +51,14 @@ object WarpPlayerHandler {
 
 		HypixelCommands.partyInvite(player!!)
 
-		Scheduler.schedule(20, repeat = true) {
-			if(!isWarping) return@schedule cancel()
+		Scheduler.schedule(20, repeat = true) { task ->
+			if(!isWarping) return@schedule task.cancel()
 
 			if(secondsPassed++ >= timeoutSeconds) {
 				ChatUtils.queueCommand("$command $timeoutMessage")
 				HypixelCommands.partyDisband()
 				reset()
-				return@schedule cancel()
+				return@schedule task.cancel()
 			}
 
 			if(playerJoined) {
@@ -74,7 +74,7 @@ object WarpPlayerHandler {
 					}
 				}
 
-				cancel()
+				task.cancel()
 			}
 		}
 	}

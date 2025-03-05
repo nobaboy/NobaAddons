@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.EntityUtils
@@ -25,8 +25,8 @@ object SlayerAPI {
 	private val miniBosses = mutableSetOf<LivingEntity>()
 
 	fun init() {
-		TickEvents.TICK.register { onTick() }
-		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
+		TickEvent.register { onTick() }
+		PacketEvents.PostReceive.register(this::onPacketReceive)
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
@@ -48,7 +48,7 @@ object SlayerAPI {
 		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn())
 	}
 
-	private fun onPacketReceive(event: PacketEvents.Receive) {
+	private fun onPacketReceive(event: PacketEvents.PostReceive) {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		val currentQuest = currentQuest ?: return

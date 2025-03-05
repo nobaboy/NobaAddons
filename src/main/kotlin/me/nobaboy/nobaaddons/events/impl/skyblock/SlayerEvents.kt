@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.skyblock
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
@@ -14,8 +14,8 @@ object SlayerEvents {
 
 	val MINI_BOSS_SPAWN = EventDispatcher<MiniBossSpawn>()
 
-	class QuestClear : Event()
-	class BossSpawn : Event()
-	data class BossKill(val entity: LivingEntity?, val timerEntity: ArmorStandEntity?) : Event()
-	data class MiniBossSpawn(val entity: LivingEntity) : Event()
+	class QuestClear : AbstractEvent()
+	class BossSpawn : AbstractEvent()
+	data class BossKill(val entity: LivingEntity?, val timerEntity: ArmorStandEntity?) : AbstractEvent()
+	data class MiniBossSpawn(val entity: LivingEntity) : AbstractEvent()
 }

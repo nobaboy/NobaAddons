@@ -33,6 +33,7 @@ abstract class AbstractEventDispatcher<T : Event, R : Any?> protected constructo
 		return parent.split(".").asReversed().takeWhile { it.any(Char::isUpperCase) }.reversed().joinToString(".")
 	}
 
+	@Deprecated("")
 	open fun registerFunction(function: KFunction<*>, instance: Any? = null) {
 		require(function.valueParameters.size == 1) { "Provided function must accept exactly one parameter" }
 		val eventParam = function.valueParameters.first()

@@ -9,7 +9,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -35,7 +35,7 @@ object UpdateNotifier {
 	private val UPDATE_INFO by Repo.create("update.json", UpdateInfo.serializer())
 
 	fun init() {
-		TickEvents.TICK.register {
+		TickEvent.register {
 			if(MCUtils.world != null && !inWorld) {
 				onJoin()
 				inWorld = true

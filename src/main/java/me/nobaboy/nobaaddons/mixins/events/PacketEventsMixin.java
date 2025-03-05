@@ -45,6 +45,6 @@ abstract class PacketEventsMixin {
 		if(!this.channel.isOpen()) return;
 		if(this.side != NetworkSide.CLIENTBOUND) return;
 
-		PacketEvents.Receive.Companion.invoke(new PacketEvents.Receive(packet));
+		PacketEvents.PostReceive.Companion.invoke(new PacketEvents.PostReceive(packet));
 	}
 }

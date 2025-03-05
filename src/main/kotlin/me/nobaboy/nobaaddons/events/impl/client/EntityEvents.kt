@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.client
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.minecraft.entity.Entity
@@ -45,9 +45,9 @@ object EntityEvents {
 	 */
 	@JvmField val VEHICLE_CHANGE = EventDispatcher<VehicleChange>()
 
-	data class Spawn(val entity: Entity) : Event()
-	data class Despawn(val entity: Entity) : Event()
-	data class Render(val entity: Entity, val delta: Float) : Event()
-	data class AllowRender(val entity: Entity) : Event(isCancelable = true)
-	data class VehicleChange(val entity: Entity, val vehicle: Entity) : Event()
+	data class Spawn(val entity: Entity) : AbstractEvent()
+	data class Despawn(val entity: Entity) : AbstractEvent()
+	data class Render(val entity: Entity, val delta: Float) : AbstractEvent()
+	data class AllowRender(val entity: Entity) : AbstractEvent(isCancelable = true)
+	data class VehicleChange(val entity: Entity, val vehicle: Entity) : AbstractEvent()
 }

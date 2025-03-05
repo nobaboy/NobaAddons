@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo
@@ -49,7 +49,7 @@ object InquisitorWaypoints {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		TickEvents.TICK.everySecond { onSecondPassed() }
+		TickEvent.everySecond { onSecondPassed() }
 		MythologicalEvents.INQUISITOR_SPAWN.register(this::onInquisitorSpawn)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}

@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.EntityUtils
@@ -34,11 +34,11 @@ object CorpseLocator {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { corpses.clear() }
-		TickEvents.TICK.everySecond(this::onSecondPassed)
+		TickEvent.everySecond(this::onSecondPassed)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
-	private fun onSecondPassed(event: TickEvents.Tick) {
+	private fun onSecondPassed(event: TickEvent) {
 		if(!enabled) return
 
 		event.client.player?.let {

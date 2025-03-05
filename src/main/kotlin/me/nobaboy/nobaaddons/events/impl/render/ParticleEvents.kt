@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.render
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.utils.NobaVec
 import net.minecraft.particle.ParticleType
@@ -23,7 +23,7 @@ object ParticleEvents {
 		val speed: Float,
 		val offset: NobaVec,
 		val forceSpawn: Boolean
-	): Event(isCancelable = true)
+	): AbstractEvent(isCancelable = true)
 
 	data class Particle(
 		val type: ParticleType<*>,
@@ -32,5 +32,5 @@ object ParticleEvents {
 		val speed: Float,
 		val offset: NobaVec,
 		val forceSpawn: Boolean
-	) : Event()
+	) : AbstractEvent()
 }

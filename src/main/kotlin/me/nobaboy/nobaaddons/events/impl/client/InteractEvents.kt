@@ -4,7 +4,7 @@ package me.nobaboy.nobaaddons.events.impl.client
 /*import net.minecraft.util.TypedActionResult
 *///?}
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.toNobaVec
@@ -62,7 +62,7 @@ object InteractEvents {
 	 */
 	val INTERACT_BLOCK = EventDispatcher<BlockInteraction>()
 
-	sealed class GenericInteractEvent protected constructor(val player: ClientPlayerEntity, val hand: Hand) : Event() {
+	sealed class GenericInteractEvent protected constructor(val player: ClientPlayerEntity, val hand: Hand) : AbstractEvent() {
 		val itemInHand: ItemStack = player.getStackInHand(hand)
 	}
 

@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.render
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.minecraft.entity.Entity
 import net.minecraft.text.Text
@@ -20,7 +20,7 @@ object EntityNametagRenderEvents {
 	 */
 	@JvmField val EVENT = EventDispatcher<Nametag>()
 
-	data class Visibility(val entity: Entity, var shouldRender: Boolean) : Event()
+	data class Visibility(val entity: Entity, var shouldRender: Boolean) : AbstractEvent()
 
 	data class Nametag @JvmOverloads constructor(
 		val entity: Entity,
@@ -32,5 +32,5 @@ object EntityNametagRenderEvents {
 		 * If `false`, the entity's regular nametag will not be rendered.
 		 */
 		var renderEntityName: Boolean = true,
-	) : Event()
+	) : AbstractEvent()
 }

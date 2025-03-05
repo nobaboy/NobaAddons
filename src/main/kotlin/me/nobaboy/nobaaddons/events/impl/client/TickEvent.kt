@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.client
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -13,47 +13,13 @@ import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.starProjectedType
 import kotlin.reflect.full.valueParameters
 
-data class TickEvent(val client: MinecraftClient) : Event() {
+/**
+ * Wrapper event around the Fabric API [ClientTickEvents.END_CLIENT_TICK] event
+ */
+data class TickEvent(val client: MinecraftClient) : AbstractEvent() {
 	companion object : EventDispatcher<TickEvent>() {
 		init {
 			ClientTickEvents.END_CLIENT_TICK.register { invoke(TickEvent(it)) }
-		}
-
-		override fun registerFunction(function: KFunction<*>, instance: Any?) {
-			when {
-				function.hasAnnotation<Cooldown>() -> registerCooldownFunction(function, instance)
-				function.hasAnnotation<Every>() -> registerEveryFunction(function, instance)
-				else -> super.registerFunction(function, instance)
-			}
-		}
-
-		private fun registerEveryFunction(function: KFunction<*>, instance: Any?) {
-			require(function.valueParameters.size == 1) { "Provided function must accept exactly one parameter" }
-			var ticks = 0u
-			val every = function.findAnnotation<Every>()!!.nthTick
-			val eventParam = function.valueParameters.first()
-			register { event ->
-				if(ticks++ % every != 0u) return@register
-				function.callBy(buildMap {
-					function.instanceParameter?.let { put(it, instance) }
-					put(eventParam, event)
-				})
-			}
-		}
-
-		private fun registerCooldownFunction(function: KFunction<*>, instance: Any?) {
-			require(function.valueParameters.size == 2) { "Provided function must accept exactly two parameters" }
-			val cooldown = CooldownManager()
-			val eventParam = function.valueParameters.first { it.type.isSubtypeOf(TickEvent::class.starProjectedType) }
-			val cooldownParam = function.valueParameters.first { it.type.isSubtypeOf(CooldownManager::class.starProjectedType) }
-			register { event ->
-				if(cooldown.isOnCooldown()) return@register
-				function.callBy(buildMap {
-					function.instanceParameter?.let { put(it, instance) }
-					put(eventParam, event)
-					put(cooldownParam, cooldown)
-				})
-			}
 		}
 
 		/**
@@ -69,6 +35,8 @@ data class TickEvent(val client: MinecraftClient) : Event() {
 
 		/**
 		 * Convenience alias for `.every(20) { ... }`
+		 *
+		 * @see every
 		 */
 		inline fun everySecond(crossinline listener: (TickEvent) -> Unit) {
 			every(20u, listener)
@@ -76,6 +44,20 @@ data class TickEvent(val client: MinecraftClient) : Event() {
 
 		/**
 		 * Register the provided [listener] with a cooldown manager
+		 *
+		 * **Note:** The cooldowns used by this event are relatively inaccurate due to the use of [kotlin.time.Duration] instead
+		 * of whole ticks; if you need precise tick cooldowns, consider using [me.nobaboy.nobaaddons.utils.Scheduler]
+		 * or handling this yourself instead.
+		 *
+		 * ## Example
+		 *
+		 * ```kt
+		 * TickEvent.cooldown { event, cooldown ->
+		 *     // ... do something you want to guard with a cooldown ...
+		 *     cooldown.startCooldown(1.5.seconds)
+		 *     // now this event will be skipped for the next (about) 30 ticks, or 1.5 seconds
+		 * }
+		 * ```
 		 */
 		inline fun cooldown(crossinline listener: (TickEvent, CooldownManager) -> Unit) {
 			val manager = CooldownManager()
@@ -84,42 +66,5 @@ data class TickEvent(val client: MinecraftClient) : Event() {
 				listener(it, manager)
 			}
 		}
-
-		/**
-		 * Use on an `EventListener` annotated function to mark that it should only be invoked every [nthTick]
-		 *
-		 * ## Example
-		 *
-		 * ```kt
-		 * @Event.Listener
-		 * @TickEvent.Every(2)
-		 * fun everySecondTick(event: TickEvent) {
-		 *     // ...
-		 * }
-		 * ```
-		 */
-		@MustBeDocumented
-		@Target(AnnotationTarget.FUNCTION)
-		@Retention(AnnotationRetention.RUNTIME)
-		annotation class Every(val nthTick: UInt)
-
-		/**
-		 * Use on an `EventListener` annotated function to mark that it should also be given a [CooldownManager];
-		 * __this breaks the default requirement that functions should only have one parameter!__
-		 *
-		 * ## Example
-		 *
-		 * ```kt
-		 * @Event.Listener
-		 * @TickEvent.Cooldown
-		 * fun cooldownTickListener(event: TickEvent, cooldown: CooldownManager) {
-		 *     // ...
-		 * }
-		 * ```
-		 */
-		@MustBeDocumented
-		@Target(AnnotationTarget.FUNCTION)
-		@Retention(AnnotationRetention.RUNTIME)
-		annotation class Cooldown
 	}
 }

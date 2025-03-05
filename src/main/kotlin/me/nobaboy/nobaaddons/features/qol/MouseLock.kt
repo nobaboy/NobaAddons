@@ -8,7 +8,6 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.option.booleanController
 import me.nobaboy.nobaaddons.config.option.intSlider
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.events.EventListener
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.Feature
@@ -86,12 +85,10 @@ object MouseLock : Feature(
 	}
 
 	override fun init() {
-		listen(SkyBlockEvents.ISLAND_CHANGE) { locked = false }
-		// TODO
-		PacketEvents.EarlyReceive.registerFunction(this::onEarlyPacketReceive.also { it.isAccessible = true }, this)
+		SkyBlockEvents.IslandChange.register { locked = false }
+		PacketEvents.EarlyReceive.register(::onEarlyPacketReceive)
 	}
 
-	@EventListener
 	private fun onEarlyPacketReceive(event: PacketEvents.EarlyReceive) {
 		if(!autoUnlockMouseOnTeleport) return
 		if(!locked) return

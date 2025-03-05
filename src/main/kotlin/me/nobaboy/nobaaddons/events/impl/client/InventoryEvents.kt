@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.events.impl.client
 
 import me.nobaboy.nobaaddons.data.InventoryData
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
@@ -32,9 +32,9 @@ object InventoryEvents {
 	 */
 	@JvmField val SLOT_UPDATE = EventDispatcher<SlotUpdate>()
 
-	data class Open(val inventory: InventoryData) : Event()
-	data class Update(val inventory: InventoryData) : Event()
-	data class Close(val sameName: Boolean) : Event()
-	data class SlotClick(val itemStack: ItemStack, val button: Int, val slot: Int, val actionType: SlotActionType) : Event()
-	data class SlotUpdate(val itemStack: ItemStack, val slot: Int) : Event()
+	data class Open(val inventory: InventoryData) : AbstractEvent()
+	data class Update(val inventory: InventoryData) : AbstractEvent()
+	data class Close(val sameName: Boolean) : AbstractEvent()
+	data class SlotClick(val itemStack: ItemStack, val button: Int, val slot: Int, val actionType: SlotActionType) : AbstractEvent()
+	data class SlotUpdate(val itemStack: ItemStack, val slot: Int) : AbstractEvent()
 }

@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.SkyBlockProfile
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
@@ -83,7 +83,7 @@ object SkyBlockAPI {
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
 	fun init() {
-		TickEvents.TICK.everySecond { update() }
+		TickEvent.everySecond { update() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()

@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.skyblock
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -19,8 +19,8 @@ object MythologicalEvents {
 	@JvmField
 	val INQUISITOR_SPAWN = EventDispatcher<InquisitorSpawn>()
 
-	data class BurrowGuess(val location: NobaVec) : Event()
-	data class BurrowFind(val location: NobaVec, val type: BurrowType) : Event()
-	data class BurrowDig(val location: NobaVec) : Event()
-	data class InquisitorSpawn(val entity: OtherClientPlayerEntity) : Event()
+	data class BurrowGuess(val location: NobaVec) : AbstractEvent()
+	data class BurrowFind(val location: NobaVec, val type: BurrowType) : AbstractEvent()
+	data class BurrowDig(val location: NobaVec) : AbstractEvent()
+	data class InquisitorSpawn(val entity: OtherClientPlayerEntity) : AbstractEvent()
 }

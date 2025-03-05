@@ -60,7 +60,7 @@ object MiniBossFeatures : Feature("slayerMiniBosses", tr("nobaaddons.feature.sla
 	private var lastAlert = Timestamp.distantPast()
 
 	override fun init() {
-		listen(SoundEvents.SOUND, listener = this::onSound)
+		SoundEvents.Sound.register(::onSound)
 		listen(SlayerEvents.MINI_BOSS_SPAWN, listener = this::onMiniBossSpawn)
 	}
 

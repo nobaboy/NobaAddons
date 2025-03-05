@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
@@ -54,7 +54,7 @@ object VoidgloomSeraphFeatures {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		SlayerEvents.QUEST_CLEAR.register { reset() }
-		TickEvents.TICK.register { onTick() }
+		TickEvent.register { onTick() }
 		EntityEvents.SPAWN.register(this::onEntitySpawn)
 		EntityEvents.VEHICLE_CHANGE.register(this::onEntityVehicleChange)
 		WorldEvents.BLOCK_UPDATE.register(this::onWorldBlockUpdate)

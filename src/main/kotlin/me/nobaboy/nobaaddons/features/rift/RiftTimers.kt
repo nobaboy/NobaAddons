@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
@@ -49,7 +49,7 @@ object RiftTimers {
 	private var notifiedSplitStealCooldown = false
 
 	fun init() {
-		TickEvents.TICK.everySecond { onSecondPassed() }
+		TickEvent.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onOpenInventory)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		ItemTooltipCallback.EVENT.register(this::addSplitStealItemCooldown)

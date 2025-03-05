@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.chat
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.events.ReturningEventDispatcher
 import me.nobaboy.nobaaddons.utils.chat.Message
@@ -32,7 +32,7 @@ object ChatMessageEvents {
 	 * This event is invoked **before** Fabric API events, and as such runs before [Allow] and [Modify],
 	 * and is not dependent on mod load order.
 	 */
-	data class Chat(val message: Text) : Event() {
+	data class Chat(val message: Text) : AbstractEvent() {
 		companion object : EventDispatcher<Chat>()
 	}
 
@@ -44,7 +44,7 @@ object ChatMessageEvents {
 	 *
 	 * Note that this event is invoked **after** [Chat].
 	 */
-	data class Allow(val message: Text) : Event(true) {
+	data class Allow(val message: Text) : AbstractEvent(true) {
 		companion object : EventDispatcher<Allow>()
 	}
 
@@ -54,7 +54,7 @@ object ChatMessageEvents {
 	 * This event is a wrapper around the Fabric API event, and as such is dependent on mod load order,
 	 * and will reflect any modifications applied by previous listeners.
 	 */
-	data class Modify(var message: Text) : Event() {
+	data class Modify(var message: Text) : AbstractEvent() {
 		companion object : ReturningEventDispatcher<Modify, Text>({ it.message })
 	}
 
@@ -64,7 +64,7 @@ object ChatMessageEvents {
 	 * This event provides access to the underlying [net.minecraft.client.gui.hud.ChatHudLine], and the visible
 	 * counterparts, along with an easy way to remove them afterward ([Message.remove]).
 	 */
-	data class Added(val message: Message) : Event() {
+	data class Added(val message: Message) : AbstractEvent() {
 		companion object : EventDispatcher<Added>()
 	}
 }

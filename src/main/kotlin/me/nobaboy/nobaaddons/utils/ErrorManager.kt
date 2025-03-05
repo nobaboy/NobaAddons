@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.red
@@ -19,7 +19,7 @@ object ErrorManager {
 	private val queuedMessages: Queue<Text> = LinkedList()
 
 	init {
-		TickEvents.TICK.register { attemptSendQueuedMessages() }
+		TickEvent.register { attemptSendQueuedMessages() }
 	}
 
 	fun clearPreviousErrors() {

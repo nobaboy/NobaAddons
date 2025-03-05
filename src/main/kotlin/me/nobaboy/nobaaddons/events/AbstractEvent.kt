@@ -1,8 +1,11 @@
 package me.nobaboy.nobaaddons.events
 
-abstract class Event(val isCancelable: Boolean = false) {
-	@get:JvmName("isCanceled")
-	var canceled: Boolean = false
+interface Event {
+	val canceled: Boolean
+}
+
+abstract class AbstractEvent(val isCancelable: Boolean = false) : Event {
+	final override var canceled: Boolean = false
 		private set
 
 	open fun cancel() {

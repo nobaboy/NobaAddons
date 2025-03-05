@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -36,13 +36,13 @@ object InventoryAPI {
 	private fun shouldSuppressItemLogUpdate(): Boolean = inventorySuppressTime.elapsedSeconds() < 2
 
 	fun init() {
-		TickEvents.TICK.every(5, this::onQuarterSecond)
-		PacketEvents.SEND.register(this::onPacketSend)
-		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
+		TickEvent.every(5u, this::onQuarterSecond)
+		PacketEvents.Send.register(this::onPacketSend)
+		PacketEvents.PostReceive.register(this::onPacketReceive)
 		WorldEvents.LOAD.register { debounceItemLog() }
 	}
 
-	private fun onQuarterSecond(event: TickEvents.Tick) {
+	private fun onQuarterSecond(event: TickEvent) {
 		val player = event.client.player
 		if(!SkyBlockAPI.inSkyBlock || player == null) {
 			previousItemCounts = null
@@ -68,7 +68,7 @@ object InventoryAPI {
 		}
 	}
 
-	private fun onPacketReceive(event: PacketEvents.Receive) {
+	private fun onPacketReceive(event: PacketEvents.PostReceive) {
 		when(val packet = event.packet) {
 			is OpenScreenS2CPacket -> onScreenOpen(packet)
 			is InventoryS2CPacket -> onInventory(packet)

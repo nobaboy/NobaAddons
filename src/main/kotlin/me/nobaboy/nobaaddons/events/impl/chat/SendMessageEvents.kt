@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.chat
 
-import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.AbstractEvent
 import me.nobaboy.nobaaddons.events.EventDispatcher
 
 object SendMessageEvents {
@@ -12,5 +12,5 @@ object SendMessageEvents {
 	 */
 	@JvmField val SEND_COMMAND = EventDispatcher.cancelable<SendCommand>()
 
-	data class SendCommand(val command: String) : Event(isCancelable = true)
+	data class SendCommand(val command: String) : AbstractEvent(isCancelable = true)
 }

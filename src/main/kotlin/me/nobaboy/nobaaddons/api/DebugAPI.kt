@@ -17,20 +17,19 @@ import javax.swing.JTextArea
  */
 object DebugAPI {
 	private const val HISTORY_LIMIT = 50
-	private val recentSounds = mutableListOf<Sound>()
+	private val recentSounds = mutableListOf<SoundEvents.Sound>()
 	private var debugWindow: SoundHistory? = null
 
 	lateinit var lastLocationPacket: ClientboundLocationPacket
 		private set
 
 	fun init() {
-		SoundEvents.SOUND.register { addSound(it) }
-		SoundEvents.SOUND_CANCELED.register { addSound(it, canceled = true) }
+		SoundEvents.Sound.register(::addSound)
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket> { lastLocationPacket = it }
 	}
 
-	private fun addSound(event: SoundEvents.Sound, canceled: Boolean = false) {
-		recentSounds.add(Sound(event.id, event.category, event.pitch, event.volume, canceled))
+	private fun addSound(event: SoundEvents.Sound) {
+		recentSounds.add(event)
 		while(recentSounds.size > HISTORY_LIMIT) {
 			recentSounds.removeFirst()
 		}
@@ -47,11 +46,6 @@ object DebugAPI {
 
 	object RequiresAWT : Supplier<Boolean> {
 		override fun get(): Boolean = isAwtAvailable
-	}
-
-	data class Sound(val id: Identifier, val category: SoundCategory, val pitch: Float, val volume: Float, val canceled: Boolean) {
-		override fun toString(): String =
-			"${if(canceled) "(X) " else ""}${if(id.namespace == "minecraft") id.path else id} ($category) : $pitch / $volume"
 	}
 
 	private class SoundHistory : JFrame("Sound Event Log") {

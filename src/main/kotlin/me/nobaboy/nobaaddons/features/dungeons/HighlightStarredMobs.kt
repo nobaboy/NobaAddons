@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.dungeons
 
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvent
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -23,7 +23,7 @@ object HighlightStarredMobs {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { starredMobs.clear() }
-		TickEvents.TICK.register { getStarredMobs() }
+		TickEvent.register { getStarredMobs() }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
 	}
 
