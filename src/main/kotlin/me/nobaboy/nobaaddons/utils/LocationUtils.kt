@@ -10,7 +10,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 object LocationUtils {
-	fun playerLocation() = MCUtils.player?.getNobaVec() ?: NobaVec()
+	val playerLocation: NobaVec get() = MCUtils.player?.getNobaVec() ?: NobaVec()
+
 	fun playerCoords(): String {
 		MCUtils.player!!.let {
 			val (x, y, z) = listOf(it.x, it.y, it.z).map { it.toInt() }
@@ -18,13 +19,13 @@ object LocationUtils {
 		}
 	}
 
-	fun blockBelowPlayer() = playerLocation().roundToBlock().lower()
+	fun blockBelowPlayer() = playerLocation.roundToBlock().lower()
 
-	fun NobaVec.distanceToPlayer() = distance(playerLocation())
-	fun NobaVec.distanceSqToPlayer() = distanceSq(playerLocation())
+	fun NobaVec.distanceToPlayer() = distance(playerLocation)
+	fun NobaVec.distanceSqToPlayer() = distanceSq(playerLocation)
 
-	fun NobaVec.distanceToPlayerIgnoreY() = distanceIgnoreY(playerLocation())
-	fun NobaVec.distanceToPlayerSqIgnoreY() = distanceSqIgnoreY(playerLocation())
+	fun NobaVec.distanceToPlayerIgnoreY() = distanceIgnoreY(playerLocation)
+	fun NobaVec.distanceToPlayerSqIgnoreY() = distanceSqIgnoreY(playerLocation)
 
 	fun Entity.distanceToPlayer() = getNobaVec().distanceToPlayer()
 

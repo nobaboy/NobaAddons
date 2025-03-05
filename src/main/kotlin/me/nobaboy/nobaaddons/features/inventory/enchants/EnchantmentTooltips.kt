@@ -54,7 +54,7 @@ object EnchantmentTooltips {
 		if(!item.isSkyBlockItem || item.asSkyBlockItem?.enchantments?.isEmpty() != false) return
 
 		// Find the first line with an enchantment
-		val firstEnchant = lines.indexOfFirst { ENCHANT_LINE matches it.string.cleanFormatting() }
+		val firstEnchant = lines.indexOfFirst { ENCHANT_LINE.matches(it.string.cleanFormatting()) }
 		if(firstEnchant == -1) return
 
 		val enchants = mutableListOf<ParsedEnchant>()
@@ -63,7 +63,7 @@ object EnchantmentTooltips {
 			val string = line.string.takeIf { it.isNotBlank() } ?: break
 
 			val lineEnchants: Map<String, String>
-			if(ENCHANT_LINE matches string) {
+			if(ENCHANT_LINE.matches(string)) {
 				lineEnchants = string.split(", ")
 					.mapNotNull { ENCHANT_LINE.find(it) }
 					.associate { it.groups["name"]!!.value to it.groups["tier"]!!.value }

@@ -31,7 +31,7 @@ object EntityUtils {
 		getEntities<T>().filter { it.distanceToIgnoreY(location) < radius }
 
 	inline fun <reified T : Entity> getEntitiesNearPlayer(radius: Double): Sequence<T> =
-		getEntitiesNear<T>(LocationUtils.playerLocation(), radius)
+		getEntitiesNear<T>(LocationUtils.playerLocation, radius)
 
 	inline fun <reified T : Entity> getClosestEntity(location: NobaVec): T? =
 		getEntities<T>().minBy { it.distanceTo(location) }
