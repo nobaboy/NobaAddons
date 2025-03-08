@@ -10,6 +10,8 @@ import java.util.UUID
 
 class DianaProfileData private constructor(profile: UUID?) : AbstractPerProfileConfig(profile, "diana.json") {
 	var burrowsDug: Long by Property.of("burrowsDug", Serializer.long, 0L)
+	var chainsFinished: Long by Property.of("chainsFinished", Serializer.long, 0L)
+	var mobsSinceInquisitor: Long by Property.of("mobsSinceInquisitor", Serializer.long, 0L)
 	val drops: MutableMap<MythologicalDrops, Long> by Property.of("drops", Serializer.enumMap<MythologicalDrops, Long>(), EnumMap(MythologicalDrops::class.java))
 	val mobs: MutableMap<MythologicalMobs, Long> by Property.of("mobs", Serializer.enumMap<MythologicalMobs, Long>(), EnumMap(MythologicalMobs::class.java))
 

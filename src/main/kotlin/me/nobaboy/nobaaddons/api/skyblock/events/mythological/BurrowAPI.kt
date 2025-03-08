@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.events.MythologicalDrops
 import me.nobaboy.nobaaddons.core.events.MythologicalMobs
+import me.nobaboy.nobaaddons.core.profile.DianaProfileData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
@@ -29,7 +30,7 @@ object BurrowAPI {
 	private val CLEAR_BURROWS_MESSAGE by "Poof! You have cleared your griffin burrows!".fromRepo("mythological.clear_burrows")
 	private val DEFEAT_MOBS_MESSAGE by "Defeat all the burrow defenders in order to dig it!".fromRepo("mythological.defeat_mobs")
 
-	private val DIG_BURROW_PATTERN by Regex("^(?:You dug out a Griffin Burrow|You finished the Griffin burrow chain)! \\(\\d/4\\)").fromRepo("mythological.dig_burrow")
+	private val DIG_BURROW_PATTERN by Regex("^(?:You dug out a Griffin Burrow|You finished the Griffin burrow chain)! \\((?<chain>\\d)/4\\)").fromRepo("mythological.dig_burrow")
 	private val DIG_MOB_PATTERN by Regex("^(?:Oi|Uh oh|Yikes|Woah|Oh|Danger|Good Grief)! You dug out (?:a )?(?<mob>[A-z ]+)!").fromRepo("mythological.dig_mob")
 	private val DIG_TREASURE_PATTERN by Regex("^(RARE DROP|Wow)! You dug out (?:a )?(?<treasure>[A-z0-9- ]+)(?: coins)?!").fromRepo("mythological.dig_treasure")
 
@@ -41,6 +42,8 @@ object BurrowAPI {
 	private var mobBurrow: Burrow? = null
 
 	private var lastBurrowChatMessage = Timestamp.distantPast()
+
+	private val data get() = DianaProfileData.PROFILE
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
@@ -97,13 +100,16 @@ object BurrowAPI {
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
 
-		if(message == CLEAR_BURROWS_MESSAGE) reset()
+		when {
+			message == CLEAR_BURROWS_MESSAGE -> reset()
+			message == DEFEAT_MOBS_MESSAGE -> lastBurrowChatMessage = Timestamp.now()
+			message.startsWith(" ☠ You were killed by") -> burrows.remove(mobBurrow)
+		}
 
-		if(message == DEFEAT_MOBS_MESSAGE) lastBurrowChatMessage = Timestamp.now()
+		DIG_BURROW_PATTERN.onFullMatch(message) {
+			data.burrowsDug += 1L
+			if(groups["chain"]?.value?.toInt() == 4) data.chainsFinished += 1L
 
-		if(message.startsWith(" ☠ You were killed by")) burrows.remove(mobBurrow)
-
-		if(DIG_BURROW_PATTERN.matches(message)) {
 			lastBurrowChatMessage = Timestamp.now()
 			lastDugBurrow?.let { tryDigBurrow(it.location) } ?: return
 			fakeBurrow = lastDugBurrow

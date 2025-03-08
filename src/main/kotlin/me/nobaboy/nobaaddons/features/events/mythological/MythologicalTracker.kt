@@ -11,10 +11,10 @@ import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
-import net.minecraft.util.Formatting
 
 // TODO: Allow for Four-Eyed Fish coins to be tracked, would require some extensive rework of PetAPI
 object MythologicalTracker {
@@ -32,12 +32,15 @@ object MythologicalTracker {
 
 	private fun onMobDig(event: MythologicalEvents.MobDig) {
 		if(!enabled) return
-		event.mob.let { data.mobs[it] = data.mobs.getOrDefault(it, 0L) + 1L }
+
+		val mob = event.mob
+		data.mobs[mob] = data.mobs.getOrDefault(mob, 0L) + 1L
+		data.mobsSinceInquisitor = if(mob == MythologicalMobs.MINOS_INQUISITOR) 0L else data.mobsSinceInquisitor + 1L
 	}
 
 	private fun onTreasureDig(event: MythologicalEvents.TreasureDig) {
 		if(!enabled) return
-		event.drop.let { data.drops[it] = data.drops.getOrDefault(it, 0L) + event.amount }
+		data.drops[event.drop] = data.drops.getOrDefault(event.drop, 0L) + event.amount
 	}
 
 	object MythologicalTrackerHudElement : TextHudElement(UISettings.mythologicalTracker) {
@@ -48,8 +51,12 @@ object MythologicalTracker {
 		override fun renderText(context: DrawContext) {
 			renderLines(context, buildList {
 				add(buildText {
-					append(tr("nobaaddons.ui.mythologicalTracker.burrowsDug", "Burrows Dug").formatted(Formatting.GOLD))
+					append(tr("nobaaddons.ui.mythologicalTracker.burrowsDug", "Burrows Dug").gold())
 					append(": ${data.burrowsDug.addSeparators()}")
+				})
+				if(config.showChainsFinished) add(buildText {
+					append(tr("nobaaddons.ui.mythologicalTracker.chainsFinished", "Chains Finished").gold())
+					append(": ${data.chainsFinished.addSeparators()}")
 				})
 				add(Text.empty())
 				MythologicalMobs.entries.forEach {

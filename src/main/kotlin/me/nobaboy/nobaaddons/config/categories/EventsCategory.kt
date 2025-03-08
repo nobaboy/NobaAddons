@@ -94,7 +94,8 @@ object EventsCategory {
 				property = config.events.mythological::inquisitorFocusMode
 			) requires alertInquis
 
-			label(CommonText.Config.LABEL_MISC)
+			// TODO: Questionable label
+			label(tr("nobaaddons.config.events.mythological.label.tracker", "Tracker"))
 
 			boolean(
 				tr("nobaaddons.config.events.mythological.tracker", "Mythological Tracker"),
@@ -102,11 +103,21 @@ object EventsCategory {
 				property = config.events.mythological::tracker
 			)
 			boolean(
+				tr("nobaaddons.config.events.mythological.showChainsFinished", "Show Chains Finished"),
+				tr("nobaaddons.config.events.mythological.showChainsFinished.tooltip", "Shows how many burrow chains have been completed on the tracker"),
+				default = defaults.events.mythological.showChainsFinished,
+				property = defaults.events.mythological::showChainsFinished
+			)
+
+			label(CommonText.Config.LABEL_MISC)
+
+			boolean(
 				tr("nobaaddons.config.events.mythological.announceRareDrops", "Announce Rare Drops"),
 				tr("nobaaddons.config.events.mythological.announceRareDrops.tooltip", "Sends rare drop messages for items that don't have one (like Dwarf Turtle Shelmet, Crochet Plushie, etc.)"),
 				default = defaults.events.mythological.announceRareDrops,
 				property = config.events.mythological::announceRareDrops
 			)
+
 
 			label(tr("nobaaddons.config.events.mythological.label.warpLocations", "Warp Locations"))
 
