@@ -125,7 +125,7 @@ object PetAPI {
 
 	fun getPetData(itemStack: ItemStack): PetData? {
 		val item = itemStack.asSkyBlockItem ?: return null
-		if(item.id != "PET") return null
+		if(item.id != "PET" || item.petInfo == null) return null
 
 		val petInfo: PetInfo = NobaAddons.GSON.fromJson(item.petInfo, PetInfo::class.java)
 		val name = petNamePattern.getGroupFromFullMatch(itemStack.name.string, "name") ?: itemStack.name.string

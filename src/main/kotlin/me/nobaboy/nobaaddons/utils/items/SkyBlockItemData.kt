@@ -102,7 +102,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val tunedTransmission: Int by CacheOf(this::nbt) { nbt.getInt("tuned_transmission") }
 
 	// Pets
-	val petInfo: String by CacheOf(this::nbt) { nbt.getString("petInfo") }
+	val petInfo: String? by CacheOf(this::nbt) { nbt.get("petInfo")?.asString() }
 
 	val newYearsCake: Int by CacheOf(this::nbt) { nbt.getInt("new_years_cake") }
 
