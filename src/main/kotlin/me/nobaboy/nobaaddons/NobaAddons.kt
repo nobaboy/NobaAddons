@@ -35,8 +35,8 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
-import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsManager
+import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.hoppity.HoppityEggGuess
@@ -49,6 +49,7 @@ import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentTooltips
+import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.features.mining.WormAlert
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
@@ -65,7 +66,6 @@ import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomSeraphFeatures
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
-import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.CommonText

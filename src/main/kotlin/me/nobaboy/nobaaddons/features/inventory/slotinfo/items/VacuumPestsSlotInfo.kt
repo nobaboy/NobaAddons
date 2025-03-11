@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.features.visuals.slotinfo.items
+package me.nobaboy.nobaaddons.features.inventory.slotinfo.items
 
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
-import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
+import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.NumberUtils.formatLong
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
