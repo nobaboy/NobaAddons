@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.mixins.accessors;
 
 //? if >=1.21.5-pre2 {
-import net.minecraft.entity.player.PlayerInventory;
+/*import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,4 +12,4 @@ public interface PlayerInventoryAccessor {
 	@Accessor
 	DefaultedList<ItemStack> getMain();
 }
-//?}
+*///?}

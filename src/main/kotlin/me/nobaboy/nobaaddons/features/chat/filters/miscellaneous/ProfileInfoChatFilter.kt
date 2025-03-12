@@ -21,9 +21,9 @@ object ProfileInfoChatFilter : IChatFilter {
 		if(suggestPattern.matches(message.string)) {
 			val clickAction = message.style.clickEvent ?: return false
 			//? if >=1.21.5-pre2 {
-			val value = (clickAction as? ClickEvent.SuggestCommand)?.command ?: return false
-			//?} else {
-			/*val value = clickAction.value*/
+			/*val value = (clickAction as? ClickEvent.SuggestCommand)?.command ?: return false
+			*///?} else {
+			val value = clickAction.value
 			//?}
 			return CommonPatterns.UUID.matches(value)
 		}

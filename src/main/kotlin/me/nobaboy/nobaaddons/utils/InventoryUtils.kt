@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.utils
 
 //? if >=1.21.5-pre2 {
-import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
-//?}
+/*import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
+*///?}
 
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen
 import net.minecraft.item.ItemStack
@@ -12,9 +12,9 @@ object InventoryUtils {
 
 	fun getInventoryItemsOrNull(): List<ItemStack>? {
 		//? if >=1.21.5-pre2 {
-		return (MCUtils.player?.inventory as? PlayerInventoryAccessor)?.main
-		//?} else {
-		/*return MCUtils.player?.inventory?.main*/
+		/*return (MCUtils.player?.inventory as? PlayerInventoryAccessor)?.main
+		*///?} else {
+		return MCUtils.player?.inventory?.main
 		//?}
 	}
 	fun getInventoryItems(): List<ItemStack> = getInventoryItemsOrNull()?.filterNotNull().orEmpty()

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack
 import java.lang.ref.WeakReference
 
 object ItemUtils {
+	// TODO change this to store this on the ItemStack itself?
 	private val ITEM_CACHE: LoadingCache<ItemStack, SkyBlockItemData> = CacheBuilder.newBuilder()
 		.weakKeys()
 		.build(object : CacheLoader<ItemStack, SkyBlockItemData>() {

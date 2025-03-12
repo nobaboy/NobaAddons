@@ -56,9 +56,9 @@ object TextUtils {
 
 	fun Style.hoverText(text: Text): Style = apply {
 		//? if >=1.21.5-pre2 {
-		withHoverEvent(HoverEvent.ShowText(text))
-		//?} else {
-		/*HoverEvent(HoverEvent.Action.SHOW_TEXT, text)*/
+		/*withHoverEvent(HoverEvent.ShowText(text))
+		*///?} else {
+		HoverEvent(HoverEvent.Action.SHOW_TEXT, text)
 		//?}
 	}
 
@@ -67,9 +67,9 @@ object TextUtils {
 		return styled {
 			it.withClickEvent(
 				//? if >=1.21.5-pre2 {
-				ClickEvent.RunCommand(command)
-				//?} else {
-				/*ClickEvent(ClickEvent.Action.RUN_COMMAND, command)*/
+				/*ClickEvent.RunCommand(command)
+				*///?} else {
+				ClickEvent(ClickEvent.Action.RUN_COMMAND, command)
 				//?}
 			)
 		}
@@ -77,22 +77,22 @@ object TextUtils {
 	fun MutableText.openUrl(url: String): MutableText = styled {
 		it.withClickEvent(
 			//? if >=1.21.5-pre2 {
-			ClickEvent.OpenUrl(URI.create(url))
-			//?} else {
-			/*ClickEvent(ClickEvent.Action.OPEN_URL, url)*/
+			/*ClickEvent.OpenUrl(URI.create(url))
+			*///?} else {
+			ClickEvent(ClickEvent.Action.OPEN_URL, url)
 			//?}
 		)
 	}
 
 	fun ClickEvent.command(): String? {
 		//? if >=1.21.5-pre2 {
-		return when(this) {
+		/*return when(this) {
 			is ClickEvent.RunCommand -> command
 			is ClickEvent.SuggestCommand -> command
 			else -> null
 		}
-		//?} else {
-		/*return value*/
+		*///?} else {
+		return value
 		//?}
 	}
 

@@ -50,9 +50,9 @@ object EntityUtils {
 		}
 
 	fun ArmorStandEntity.armorSkullTexture(texture: String): Boolean {
-		val armor = /*? if >=1.21.5-pre2 {*/equipmentSlots.values/*? } else {*//*armorItems ?: return false*//*?}*/
+		val armor = /*? if >=1.21.5-pre2 {*//*equipmentSlots.values*//*?} else {*/armorItems ?: return false/*?}*/
 		return armor.any {
-			/*? if >=1.21.5-pre2 {*/@Suppress("SENSELESS_COMPARISON")/*?}*/
+			/*? if >=1.21.5-pre2 {*//*@Suppress("SENSELESS_COMPARISON")*//*?}*/
 			it != null && it.getSkullTexture() == texture
 		}
 	}
