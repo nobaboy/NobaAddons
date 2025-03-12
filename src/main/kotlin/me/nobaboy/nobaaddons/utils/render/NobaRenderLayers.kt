@@ -11,6 +11,7 @@ import net.minecraft.client.render.RenderPhase.Transparency
 import net.minecraft.client.render.VertexFormat.DrawMode
 import net.minecraft.client.render.VertexFormats
 
+// FIXME https://github.com/ChampionAsh5357/neoforged-github/blob/port/1215/primers/1.21.5/index.md#render-pipeline-rework
 object NobaRenderLayers {
 	val DEFAULT_TRANSPARENCY: Transparency = Transparency(
 		"nobaaddons_default_transparency",

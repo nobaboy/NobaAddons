@@ -7,6 +7,7 @@ import net.minecraft.text.MutableText
 import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
+import java.net.URI
 import java.util.function.UnaryOperator
 
 object TextUtils {
@@ -53,14 +54,50 @@ object TextUtils {
 	fun MutableText.strikethrough(strikethrough: Boolean = true): MutableText = this.styled { it.withStrikethrough(strikethrough) }
 	fun MutableText.obfuscated(obfuscated: Boolean = true): MutableText = this.styled { it.withObfuscated(obfuscated) }
 
+	fun Style.hoverText(text: Text): Style = apply {
+		//? if >=1.21.5-pre2 {
+		withHoverEvent(HoverEvent.ShowText(text))
+		//?} else {
+		/*HoverEvent(HoverEvent.Action.SHOW_TEXT, text)*/
+		//?}
+	}
+
 	fun MutableText.runCommand(command: String = this.string): MutableText {
 		require(command.startsWith("/"))
-		return styled { it.withClickEvent(ClickEvent(ClickEvent.Action.RUN_COMMAND, command)) }
+		return styled {
+			it.withClickEvent(
+				//? if >=1.21.5-pre2 {
+				ClickEvent.RunCommand(command)
+				//?} else {
+				/*ClickEvent(ClickEvent.Action.RUN_COMMAND, command)*/
+				//?}
+			)
+		}
 	}
-	fun MutableText.openUrl(url: String): MutableText = styled { it.withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, url)) }
+	fun MutableText.openUrl(url: String): MutableText = styled {
+		it.withClickEvent(
+			//? if >=1.21.5-pre2 {
+			ClickEvent.OpenUrl(URI.create(url))
+			//?} else {
+			/*ClickEvent(ClickEvent.Action.OPEN_URL, url)*/
+			//?}
+		)
+	}
+
+	fun ClickEvent.command(): String? {
+		//? if >=1.21.5-pre2 {
+		return when(this) {
+			is ClickEvent.RunCommand -> command
+			is ClickEvent.SuggestCommand -> command
+			else -> null
+		}
+		//?} else {
+		/*return value*/
+		//?}
+	}
 
 	fun MutableText.hoverText(text: String): MutableText = hoverText(text.toText())
-	fun MutableText.hoverText(text: Text): MutableText = styled { it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, text)) }
+	fun MutableText.hoverText(text: Text): MutableText = styled { it.hoverText(text) }
 
 	fun MutableText.hoverText(builder: MutableText.() -> Unit): MutableText = hoverText(buildText(builder))
 

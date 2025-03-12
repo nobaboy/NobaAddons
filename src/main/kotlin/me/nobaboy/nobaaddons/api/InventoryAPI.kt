@@ -1,5 +1,9 @@
 package me.nobaboy.nobaaddons.api
 
+//? if >=1.21.5-pre2 {
+import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
+//?}
+
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.InventoryData
@@ -80,7 +84,11 @@ object InventoryAPI {
 	private fun onClickSlot(packet: ClickSlotC2SPacket) {
 		if(packet.syncId != currentWindow?.id) return
 
-		InventoryEvents.SLOT_CLICK.invoke(InventoryEvents.SlotClick(packet.stack, packet.button, packet.slot, packet.actionType))
+		//? if >=1.21.5-pre2 {
+		TODO("hashed item stacks???")
+		//?} else {
+		/*InventoryEvents.SLOT_CLICK.invoke(InventoryEvents.SlotClick(packet.stack, packet.button, packet.slot, packet.actionType))*/
+		//?}
 	}
 
 	private fun onScreenOpen(packet: OpenScreenS2CPacket) {
@@ -169,6 +177,9 @@ object InventoryAPI {
 	}
 
 	private fun PlayerInventory.itemNamesToCount(): Map<Text, Int> = buildMap {
+		//? if >=1.21.5-pre2 {
+		val main = (this@itemNamesToCount as PlayerInventoryAccessor).main
+		//?}
 		for(slot in 0 until main.size) {
 			if(slot == SKYBLOCK_MENU_SLOT) {
 				continue
@@ -180,7 +191,8 @@ object InventoryAPI {
 
 			merge(name, item.count, Int::plus)
 		}
-		offHand.firstOrNull()?.let { merge(name, it.count, Int::plus) }
+		// TODO fix for 1.21.5
+//		offHand.firstOrNull()?.let { merge(name, it.count, Int::plus) }
 	}
 
 	data class Window(val id: Int, val title: String)

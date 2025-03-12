@@ -25,6 +25,7 @@ val mod = ModData()
 val deps = ModDependencies()
 val mcVersion = stonecutter.current.version
 val mcDep = property("mod.mc_dep").toString()
+val isSnapshot = runCatching { property("mc.snapshot") }.getOrNull() != null
 
 val isCi = System.getenv("CI") != null
 
@@ -49,8 +50,8 @@ repositories {
 }
 
 dependencies {
-	fun devEnvOnly(dependencyNotation: String) {
-		if(!isCi) modRuntimeOnly(dependencyNotation)
+	fun devEnvOnly(dependencyNotation: String, allowInSnapshot: Boolean = false) {
+		if(!isCi && (allowInSnapshot || !isSnapshot)) modRuntimeOnly(dependencyNotation)
 	}
 
 	fun includeImplementation(dependencyNotation: String, mod: Boolean = false, configuration: Action<ExternalModuleDependency> = Action { }) {
@@ -62,7 +63,8 @@ dependencies {
 	mappings("net.fabricmc:yarn:${mcVersion}+build.${deps["yarn_build"]}:v2")
 	modImplementation("net.fabricmc:fabric-loader:${deps["fabric_loader"]}")
 
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+${mcVersion}")
+	// strip out -pre and -rc versions
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+${mcVersion.takeWhile { it != '-' }}")
 	modImplementation("net.fabricmc:fabric-language-kotlin:${deps["kotlin"]}")
 
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
@@ -75,11 +77,11 @@ dependencies {
 	implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
 	devEnvOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
 
-	devEnvOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
+	devEnvOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}", allowInSnapshot = true) // DevAuth
 
 	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}-fabric") // Sodium
-	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // No Telemetry
-	devEnvOnly("maven.modrinth:compacting:${deps["compacting"]}") // Compacting
+	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}", allowInSnapshot = true) // No Telemetry
+	devEnvOnly("maven.modrinth:compacting:${deps["compacting"]}", allowInSnapshot = true) // Compacting
 
 	if(DefaultNativePlatform.getCurrentOperatingSystem().isLinux) {
 		devEnvOnly("maven.modrinth:fix-keyboard-on-linux:${deps["fix-linux-keyboard"]}")
@@ -98,7 +100,7 @@ loom {
 	}
 }
 
-val targetJava = if(stonecutter.compare(mcVersion, "1.20.6") >= 0) 21 else 17
+val targetJava = 21
 
 java {
 	targetCompatibility = JavaVersion.toVersion(targetJava)

@@ -229,7 +229,8 @@ fun BlockPos.toNobaVec(): NobaVec = NobaVec(x, y, z)
 fun BlockHitResult.toNobaVec(): NobaVec = pos.toNobaVec()
 
 fun Entity.getNobaVec(): NobaVec = NobaVec(x, y, z)
-fun Entity.getPrevNobaVec(): NobaVec = NobaVec(prevX, prevY, prevZ)
+// unused; don't feel like stonecutter-ing this as such
+//fun Entity.getPrevNobaVec(): NobaVec = NobaVec(prevX, prevY, prevZ)
 fun Entity.getMotionNobaVec(): NobaVec = NobaVec(movement.x, movement.y, movement.z)
 
 fun Vec3d.toNobaVec(): NobaVec = NobaVec(x, y, z)

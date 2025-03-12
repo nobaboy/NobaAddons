@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.toAbbreviatedString
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.command
 import me.nobaboy.nobaaddons.utils.TextUtils.darkPurple
 import me.nobaboy.nobaaddons.utils.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.TextUtils.green
@@ -137,7 +138,7 @@ object CompactSlayerMessages {
 		}
 
 		RNG_METER.onFullMatch(string) {
-			rngMeter = groups["xp"]!!.value.replace(",", "").toInt() to text.style.clickEvent!!.value
+			rngMeter = groups["xp"]!!.value.replace(",", "").toInt() to text.style.clickEvent!!.command()!!
 			if(!autoslayer) send()
 			event.cancel()
 			return

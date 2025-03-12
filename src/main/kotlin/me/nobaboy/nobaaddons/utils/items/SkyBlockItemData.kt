@@ -15,9 +15,12 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 import java.lang.ref.WeakReference
+import kotlin.jvm.optionals.getOrDefault
+import kotlin.jvm.optionals.getOrNull
 
 private val RARITY_PATTERN by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("item_tag")
 
+// FIXME 1.21.5 changed nbt to use Optional<T> instead of simply returning a (nullable/defaulted) T
 class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	private val nbt: NbtCompound get() = item.get()!!.nbt.nbt
 	private val lore: LoreComponent get() = item.get()!!.lore

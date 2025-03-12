@@ -5,8 +5,11 @@ import me.nobaboy.nobaaddons.utils.LocationUtils.distanceTo
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToIgnoreY
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EquipmentSlot
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.item.ItemStack
 
 object EntityUtils {
 	fun PlayerEntity.isRealPlayer() = uuid?.let { it.version() == 4 } == true
@@ -41,9 +44,17 @@ object EntityUtils {
 
 	fun getNextEntity(entity: Entity, offset: Int) = getEntityById(entity.id + offset)
 
+	val LivingEntity.equipmentSlots: Map<EquipmentSlot, ItemStack>
+		get() = buildMap {
+			EquipmentSlot.entries.forEach { put(it, getEquippedStack(it)) }
+		}
+
 	fun ArmorStandEntity.armorSkullTexture(texture: String): Boolean {
-		val armor = this.armorItems ?: return false
-		return armor.any { it != null && it.getSkullTexture() == texture }
+		val armor = /*? if >=1.21.5-pre2 {*/equipmentSlots.values/*? } else {*//*armorItems ?: return false*//*?}*/
+		return armor.any {
+			/*? if >=1.21.5-pre2 {*/@Suppress("SENSELESS_COMPARISON")/*?}*/
+			it != null && it.getSkullTexture() == texture
+		}
 	}
 
 	fun ArmorStandEntity.heldSkullTexture(texture: String): Boolean {

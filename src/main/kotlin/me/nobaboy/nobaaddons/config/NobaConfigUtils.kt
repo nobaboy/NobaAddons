@@ -30,7 +30,7 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import net.minecraft.text.Text
-import net.minecraft.util.PathUtil
+import net.minecraft.util/*? if >=1.21.5-pre2 {*/.path/*?}*/.PathUtil
 import net.minecraft.util.TranslatableOption
 import java.awt.Color
 import java.nio.file.Path
