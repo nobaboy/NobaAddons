@@ -26,7 +26,6 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
 
-// TODO: Requires actual testing in dungeons
 object SimonSaysTimer {
 	private val config get() = NobaConfig.INSTANCE.dungeons.simonSaysTimer
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7)
