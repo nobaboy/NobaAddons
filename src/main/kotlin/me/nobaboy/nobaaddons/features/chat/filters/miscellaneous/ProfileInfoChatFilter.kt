@@ -14,12 +14,12 @@ object ProfileInfoChatFilter : IChatFilter {
 		Regex("^Profile ID: [A-z0-9-]+").fromRepo("filter.profile.id"),
 	)
 
-	private val suggestPattern by Regex("^§e§lCLICK THIS TO SUGGEST IT IN CHAT §7§l\\[(?:NO )?DASHES]").fromRepo("filter.profile.suggest")
+	private val UUID_SUGGEST_REGEX by Regex("^§e§lCLICK THIS TO SUGGEST IT IN CHAT §7§l\\[(?:NO )?DASHES]").fromRepo("filter.profile.uuid_suggest")
 
 	private fun isSuggestProfile(message: Text): Boolean {
-		if(suggestPattern.matches(message.string)) {
+		if(UUID_SUGGEST_REGEX.matches(message.string)) {
 			val clickAction = message.style.clickEvent ?: return false
-			return CommonPatterns.UUID.matches(clickAction.value)
+			return CommonPatterns.UUID_REGEX.matches(clickAction.value)
 		}
 		return false
 	}
