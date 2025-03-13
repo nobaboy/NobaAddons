@@ -39,7 +39,7 @@ object RiftTimers {
 	private val config = NobaConfig.INSTANCE.rift
 	private val data get() = ProfileData.PROFILE.riftTimers
 
-	private val warpLocation by config::warpTarget
+	private val warpLocation get() = config.warpTarget
 	private fun clickToWarp() = tr("nobaaddons.rift.clickToWarp", "Click to warp to ${warpLocation.displayName}").yellow()
 
 	private val FREE_INFUSIONS_REGEX by Regex("Free infusions: (?<count>\\d)/\\d").fromRepo("rift.free_infusions")

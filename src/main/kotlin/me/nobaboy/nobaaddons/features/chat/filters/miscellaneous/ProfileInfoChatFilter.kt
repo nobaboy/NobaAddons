@@ -11,7 +11,7 @@ import net.minecraft.text.Text
 object ProfileInfoChatFilter : IChatFilter {
 	private val profileInfoPatterns: List<Regex> by Repo.list(
 		Regex("^You are playing on profile: [A-z-() ]+").fromRepo("filter.profile.playing_on"),
-		Regex("^Profile ID: [A-z0-9-]+").fromRepo("filter.profile.id"),
+		Regex("^Profile ID: [A-z0-9-]+").fromRepo("filter.profile.uuid"),
 	)
 
 	private val UUID_SUGGEST_REGEX by Regex("^§e§lCLICK THIS TO SUGGEST IT IN CHAT §7§l\\[(?:NO )?DASHES]").fromRepo("filter.profile.uuid_suggest")
