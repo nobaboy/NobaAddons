@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 - Slayer spawn time not resetting - nobaboy
+- Added Backwater Bayou as a possible island - celeste
 
 ## 0.1.0-Alpha.13 - 2025-01-21
 

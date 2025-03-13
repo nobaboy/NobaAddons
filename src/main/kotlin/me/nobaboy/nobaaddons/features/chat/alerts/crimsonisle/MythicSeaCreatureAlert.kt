@@ -14,7 +14,7 @@ object MythicSeaCreatureAlert : IAlert {
 
 	override fun shouldAlert(message: String): Boolean {
 		val seaCreature = SeaCreature.getBySpawnMessage(message) ?: return false
-		if(seaCreature.id != "THUNDER" && seaCreature.id != "LORD_JAWBUS") return false
+		if("crimson_isle_mythic" !in seaCreature.tags) return false
 
 		val location = LocationUtils.playerCoords()
 		val randomString = StringUtils.randomAlphanumeric()
