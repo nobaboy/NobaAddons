@@ -1,7 +1,7 @@
-package me.nobaboy.nobaaddons.features.visuals.slotinfo.items
+package me.nobaboy.nobaaddons.features.inventory.slotinfo.items
 
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
-import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
+import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 
 object PotionLevelSlotInfo : ISlotInfo {

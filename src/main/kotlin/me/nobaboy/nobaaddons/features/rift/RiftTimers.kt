@@ -91,7 +91,7 @@ object RiftTimers {
 		if(!config.splitStealItemCooldown) return
 		val cooldown = data.nextSplitSteal?.takeIf { it.isFuture() }?.timeRemaining()?.toShortString()?.toText()?.yellow() ?: return
 
-		val index = lines.map { it.string.cleanFormatting() }.indexOfFirstFullMatch(CommonPatterns.COOLDOWN)
+		val index = lines.map { it.string.cleanFormatting() }.indexOfFirstFullMatch(CommonPatterns.ITEM_COOLDOWN_REGEX)
 		if(index == -1) return
 
 		lines.add(index + 1, tr("nobaaddons.rift.ubikCube.itemCooldown", "On cooldown for: $cooldown").darkGray())

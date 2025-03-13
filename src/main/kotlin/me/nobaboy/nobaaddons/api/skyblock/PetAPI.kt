@@ -23,15 +23,15 @@ import org.lwjgl.glfw.GLFW
 object PetAPI {
 	val constants by Repo.create("pets/constants.json", PetConstants.serializer())
 
-	private val petsMenuPattern by Regex("^Pets(?: \\(\\d+/\\d+\\) )?").fromRepo("pets.menu_title")
-	private val petNamePattern by Regex("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)").fromRepo("pets.name")
+	private val PETS_MENU_REGEX by Regex("^Pets(?: \\(\\d+/\\d+\\) )?").fromRepo("pets.menu_title")
+	private val PET_NAME_REGEX by Regex("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)").fromRepo("pets.name")
 
 	// TODO cache autopet rule pets to allow for getting complete data
-	private val autopetPattern by Regex(
+	private val AUTOPET_REGEX by Regex(
 		"^§cAutopet §eequipped your §7\\[Lvl (?<level>\\d+)] (?:§.\\[.*] )?§(?<rarity>.)(?<name>[A-z ]+)(?:§. ✦)?§e! §a§lVIEW RULE"
 	).fromRepo("pets.autopet")
 
-	private val petUnequipPattern by Regex("^You despawned your (?<name>[A-z ]+)(?: ✦)?!").fromRepo("pets.despawn")
+	private val PET_DESPAWN_REGEX by Regex("^You despawned your (?<name>[A-z ]+)(?: ✦)?!").fromRepo("pets.despawn")
 
 	private var inPetsMenu = false
 
@@ -47,7 +47,7 @@ object PetAPI {
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
-		inPetsMenu = petsMenuPattern.matches(event.inventory.title)
+		inPetsMenu = PETS_MENU_REGEX.matches(event.inventory.title)
 		if(!inPetsMenu) return
 
 		event.inventory.items.values.forEach { itemStack ->
@@ -67,11 +67,11 @@ object PetAPI {
 	}
 
 	private fun onChatMessage(message: String) {
-		petUnequipPattern.onFullMatch(message.cleanFormatting()) {
+		PET_DESPAWN_REGEX.onFullMatch(message.cleanFormatting()) {
 			changePet(null)
 		}
 
-		autopetPattern.onFullMatch(message) {
+		AUTOPET_REGEX.onFullMatch(message) {
 			val name = groups["name"]?.value ?: return
 			val id = name.uppercase().replace(" ", "_")
 			val level = groups["level"]?.value?.toInt() ?: return
@@ -125,10 +125,10 @@ object PetAPI {
 
 	fun getPetData(itemStack: ItemStack): PetData? {
 		val item = itemStack.asSkyBlockItem ?: return null
-		if(item.id != "PET") return null
+		if(item.id != "PET" || item.petInfo == null) return null
 
 		val petInfo: PetInfo = NobaAddons.GSON.fromJson(item.petInfo, PetInfo::class.java)
-		val name = petNamePattern.getGroupFromFullMatch(itemStack.name.string, "name") ?: itemStack.name.string
+		val name = PET_NAME_REGEX.getGroupFromFullMatch(itemStack.name.string, "name") ?: itemStack.name.string
 		val rarity = Rarity.getRarity(petInfo.tier)
 
 		return PetData(

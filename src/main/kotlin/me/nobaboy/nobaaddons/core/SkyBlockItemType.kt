@@ -31,5 +31,5 @@ enum class SkyBlockItemType {
 	SHEARS,
 
 	// Misc
-	WAND
+	WAND;
 }

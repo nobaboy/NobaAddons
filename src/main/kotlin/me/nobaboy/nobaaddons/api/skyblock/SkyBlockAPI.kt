@@ -30,14 +30,14 @@ import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
-	private val profileIdPattern by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN})").fromRepo("skyblock.profile_id")
-	private val profileTypePattern by Regex("^. (?<type>Ironman|Stranded|Bingo)").fromRepo("skyblock.profile_type")
+	private val PROFILE_ID_REGEX by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN})").fromRepo("skyblock.profile_id")
+	private val PROFILE_TYPE_REGEX by Regex("^. (?<type>Ironman|Stranded|Bingo)").fromRepo("skyblock.profile_type")
 
-	private val levelPattern by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("skyblock.level")
-	private val xpPattern by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
+	private val SKYBLOCK_LEVEL_REGEX by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("skyblock.level")
+	private val SKYBLOCK_XP_REGEX by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
 
-	private val zonePattern by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
-	private val currencyPattern by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
+	private val ZONE_REGEX by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
+	private val CURRENCY_REGEX by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
 
 	var currentServer: ServerType? = null
 		private set
@@ -106,17 +106,17 @@ object SkyBlockAPI {
 
 		val lore = itemStack.lore.stringLines
 
-		levelPattern.firstFullMatch(lore) {
+		SKYBLOCK_LEVEL_REGEX.firstFullMatch(lore) {
 			level = groups["level"]?.value?.toInt()
 		}
 
-		xpPattern.firstFullMatch(lore) {
+		SKYBLOCK_XP_REGEX.firstFullMatch(lore) {
 			xp = groups["xp"]?.value?.toInt()
 		}
 	}
 
 	private fun onChatMessage(message: String) {
-		val profileId = UUID.fromString(profileIdPattern.getGroupFromFullMatch(message, "id") ?: return)
+		val profileId = UUID.fromString(PROFILE_ID_REGEX.getGroupFromFullMatch(message, "id") ?: return)
 		if(profileId == currentProfile) return
 
 		SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
@@ -131,19 +131,19 @@ object SkyBlockAPI {
 
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 
-		profileTypePattern.firstFullMatch(scoreboard) {
+		PROFILE_TYPE_REGEX.firstFullMatch(scoreboard) {
 			val type = groups["type"]?.value ?: return@firstFullMatch
 			profileType = SkyBlockProfile.getByName(type)
 		}
 
 		// I originally planned to make an enum including all the zones but after realising
 		// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.
-		zonePattern.firstFullMatch(scoreboard) {
+		ZONE_REGEX.firstFullMatch(scoreboard) {
 			currentZone = groups["zone"]?.value
 		}
 
 		// This can be further expanded to include other types like Pelts, North Stars, etc.
-		currencyPattern.forEachFullMatch(scoreboard) {
+		CURRENCY_REGEX.forEachFullMatch(scoreboard) {
 			val currency = groups["currency"]?.value ?: return@forEachFullMatch
 			val amount = (groups["amount"]?.value ?: "0").replace(",", "").toLongOrNull()
 
