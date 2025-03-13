@@ -7,7 +7,6 @@ import net.minecraft.sound.SoundEvent
 import net.minecraft.sound.SoundEvents
 import kotlin.math.pow
 
-// TODO: Either drop this or expand on this so complex sequences are allowed (basically multiple sound events)
 object SoundUtils {
 	private val ARROW_HIT_PLAYER = SoundEvents.ENTITY_ARROW_HIT_PLAYER
 	private val EXPERIENCE_ORB_PICKUP = SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP

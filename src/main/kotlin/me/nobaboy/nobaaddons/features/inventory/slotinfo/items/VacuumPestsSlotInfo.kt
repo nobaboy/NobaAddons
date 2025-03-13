@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 
 // TODO: Add cap option of 40 (which is max fortune), and consider red !!! if >=100k
 object VacuumPestsSlotInfo : ISlotInfo {
-	private val vacuumPestsPattern by Regex("Vacuum Bag: (?<amount>\\d+) Pests").fromRepo("slot_info.vacuum_pests")
+	private val VACUUM_PESTS_REGEX by Regex("Vacuum Bag: (?<amount>\\d+) Pests").fromRepo("slot_info.vacuum_pests")
 
 	private val gardenVacuums = listOf(
 		"SKYMART_VACUUM",
@@ -33,7 +33,7 @@ object VacuumPestsSlotInfo : ISlotInfo {
 
 		// This doesn't use toAbbreviatedString() here since 4 characters would extend past the slot,
 		// so we're compacting down to millions at >=100k
-		vacuumPestsPattern.firstFullMatch(lore) {
+		VACUUM_PESTS_REGEX.firstFullMatch(lore) {
 			val pests = groups["amount"]!!.value.formatLong()
 			val count = when {
 				pests < 1_000 -> "$pests"

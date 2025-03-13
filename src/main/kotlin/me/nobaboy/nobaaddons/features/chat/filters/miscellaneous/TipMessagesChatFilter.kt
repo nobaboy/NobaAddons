@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 
 object TipMessagesChatFilter : IChatFilter {
-	private val alreadyTippedPattern by Regex(
+	private val ALREADY_TIPPED_REGEX by Regex(
 		"You've already tipped someone in the past hour in [A-z ]+! Wait a bit and try again!"
 	).fromRepo("filter.tips.already_tipped")
 
@@ -22,7 +22,7 @@ object TipMessagesChatFilter : IChatFilter {
 	override val enabled: Boolean get() = config.hideTipMessages
 
 	override fun shouldFilter(message: String): Boolean =
-		alreadyTippedPattern.matches(message) ||
+		ALREADY_TIPPED_REGEX.matches(message) ||
 			message.startsWith(tipSentPrefix) ||
 			message.startsWith(tipReceivedPrefix) ||
 			message in tipMessages
