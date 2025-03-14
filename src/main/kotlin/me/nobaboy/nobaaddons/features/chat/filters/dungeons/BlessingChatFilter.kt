@@ -23,10 +23,10 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object BlessingChatFilter : IChatFilter {
-	private val blessingFindPattern by Regex(
+	private val BLESSING_FOUND_REGEX by Regex(
 		"^DUNGEON BUFF! ([A-z0-9_]+ found a|A) Blessing of (?<blessing>[A-z]+) [IV]+( was found)?!( \\([A-z0-9 ]+\\))?"
-	).fromRepo("filter.blessings.find")
-	private val blessingStatsPattern by Regex(
+	).fromRepo("filter.blessings.found")
+	private val BLESSING_STATS_REGEX by Regex(
 		"(?<value>\\+[\\d.]+x?(?: & \\+[\\d.]+x?)?) (?<stat>❁ Strength|☠ Crit Damage|❈ Defense|❁ Damage|HP|❣ Health Regen|✦ Speed|✎ Intelligence)"
 	).fromRepo("filter.blessings.stats")
 	private val statMessages = listOf("     Granted you", "     Also granted you")
@@ -39,7 +39,7 @@ object BlessingChatFilter : IChatFilter {
 	override fun shouldFilter(message: String): Boolean {
 		val filterMode = config.blessingMessage
 
-		blessingFindPattern.onFullMatch(message) {
+		BLESSING_FOUND_REGEX.onFullMatch(message) {
 			if(filterMode == ChatFilterOption.COMPACT) {
 				blessingType = BlessingType.valueOf(groups["blessing"]!!.value.uppercase())
 				stats.clear()
@@ -54,7 +54,7 @@ object BlessingChatFilter : IChatFilter {
 				return false
 			}
 			if(filterMode == ChatFilterOption.COMPACT) {
-				blessingStatsPattern.forEachMatch(message) {
+				BLESSING_STATS_REGEX.forEachMatch(message) {
 					val statType = StatType.entries.firstOrNull {
 						groups["stat"]!!.value == it.text || groups["stat"]!!.value == it.identifier
 					} ?: return@forEachMatch

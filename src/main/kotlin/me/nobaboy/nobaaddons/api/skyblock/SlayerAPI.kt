@@ -101,6 +101,7 @@ object SlayerAPI {
 		}
 	}
 
+	// TODO: Use regexes as a slayer feature already has some of these
 	private fun onChatMessage(message: String) {
 		if(!SkyBlockAPI.inSkyBlock) return
 		if(currentQuest == null) return

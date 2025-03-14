@@ -30,7 +30,7 @@ import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
 
 object SkyBlockAPI {
-	private val PROFILE_ID_REGEX by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN})").fromRepo("skyblock.profile_id")
+	private val PROFILE_ID_REGEX by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN_STRING})").fromRepo("skyblock.profile_id")
 	private val PROFILE_TYPE_REGEX by Regex("^. (?<type>Ironman|Stranded|Bingo)").fromRepo("skyblock.profile_type")
 
 	private val SKYBLOCK_LEVEL_REGEX by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("skyblock.level")

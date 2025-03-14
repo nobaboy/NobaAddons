@@ -26,20 +26,20 @@ import me.nobaboy.nobaaddons.utils.tr
 object CompactSlayerMessages {
 	private val config get() = NobaConfig.INSTANCE.slayers.compactMessages
 
-	private val SLAYER_QUEST_COMPLETE by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.questComplete")
-	private val SLAYER_LEVEL by Regex("^[ ]+(?<slayer>[A-z]+) Slayer LVL (?<level>\\d) - (?:LVL MAXED OUT!|Next LVL in (?<nextLevel>[\\d,]+) XP)").fromRepo("slayer.slayerXp")
-	private val RNG_METER by Regex("^[ ]+RNG Meter - (?<xp>[\\d,]+) Stored XP").fromRepo("slayer.rngMeter")
+	private val QUEST_STARTED_REGEX by Regex("^[ ]+SLAYER QUEST STARTED!").fromRepo("slayer.quest_started")
+	private val QUEST_COMPLETE_REGEX by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.quest_complate")
 
-	private val SLAYER_QUEST_STARTED by Regex("^[ ]+SLAYER QUEST STARTED!").fromRepo("slayer.questStarted")
-	private val SLAYER_QUEST_TO_SPAWN by Regex("^[ ]+» Slay [\\d,]+ Combat XP worth of .+").fromRepo("slayer.toSpawnBoss")
+	private val SLAY_TO_SPAWN_REGEX by Regex("^[ ]+» Slay [\\d,]+ Combat XP worth of .+").fromRepo("slayer.slay_to_spawn")
+	private val BOSS_SLAIN_REGEX by Regex("^[ ]+NICE! SLAYER BOSS SLAIN!").fromRepo("slayer.boss_slain")
+	private val TALK_TO_MADDOX_REGEX by Regex("^[ ]+» Talk to Maddox to claim your [A-z]+ Slayer XP!").fromRepo("slayer.talk_to_maddox")
 
-	private val BOSS_SLAIN by Regex("^[ ]+NICE! SLAYER BOSS SLAIN!").fromRepo("slayer.bossSlain")
-	private val TALK_TO_MADDOX by Regex("[ ]+» Talk to Maddox to claim your [A-z]+ Slayer XP!").fromRepo("slayer.talkToMaddox")
+	private val SLAYER_LEVEL_REGEX by Regex("^[ ]+(?<slayer>[A-z]+) Slayer LVL (?<level>\\d) - (?:LVL MAXED OUT!|Next LVL in (?<nextLevel>[\\d,]+) XP)").fromRepo("slayer.level")
+	private val RNG_METER_REGEX by Regex("^[ ]+RNG Meter - (?<xp>[\\d,]+) Stored XP").fromRepo("slayer.rng_meter")
 
 	private var lastMessage: Message? = null
 
 	// used to determine when the compacted message should be sent
-	private var autoslayer = false
+	private var autoSlayer = false
 
 	private var slayer: String? = null
 	private var level: Pair<Int, Int?>? = null
@@ -92,20 +92,20 @@ object CompactSlayerMessages {
 	}
 
 	// Completing a quest with auto slayer:
-	//  SLAYER_QUEST_COMPLETE
-	//  SLAYER_LEVEL
-	//  RNG_METER
-	//  SLAYER_QUEST_STARTED
-	//  SLAYER_QUEST_TO_SPAWN
+	//  QUEST_COMPLETE_REGEX
+	//  SLAYER_LEVEL_REGEX
+	//  RNG_METER_REGEX
+	//  QUEST_STARTED_REGEX
+	//  SLAY_TO_SPAWN_REGEX
 
 	// Completing a quest without auto slayer:
-	//  BOSS_SLAIN
-	//  TALK_TO_MADDOX
+	//  BOSS_SLAIN_REGEX
+	//  TALK_TO_MADDOX_REGEX
 
 	// Claiming at Maddox:
-	//  SLAYER_QUEST_COMPLETE
-	//  SLAYER_LEVEL
-	//  RNG_METER
+	//  QUEST_COMPLETE_REGEX
+	//  SLAYER_LEVEL_REGEX
+	//  RNG_METER_REGEX
 
 	// We're canceling messages from completing a slayer quest with auto slayer active, and when claiming at Maddox;
 	// quest completion messages without auto slayer are also used to know the correct order, but we don't
@@ -116,7 +116,7 @@ object CompactSlayerMessages {
 		val text = event.message
 		val string = text.string.cleanFormatting()
 
-		SLAYER_QUEST_COMPLETE.onFullMatch(string) {
+		QUEST_COMPLETE_REGEX.onFullMatch(string) {
 			slayer = null
 			level = null
 			rngMeter = null
@@ -124,33 +124,33 @@ object CompactSlayerMessages {
 			return
 		}
 
-		listOf(BOSS_SLAIN, TALK_TO_MADDOX).firstFullMatch(string) {
-			autoslayer = false
+		listOf(BOSS_SLAIN_REGEX, TALK_TO_MADDOX_REGEX).firstFullMatch(string) {
+			autoSlayer = false
 			return
 		}
 
-		SLAYER_LEVEL.onFullMatch(string) {
+		SLAYER_LEVEL_REGEX.onFullMatch(string) {
 			slayer = groups["slayer"]!!.value
 			level = groups["level"]!!.value.toInt() to groups["nextLevel"]?.value?.replace(",", "")?.toIntOrNull()
 			event.cancel()
 			return
 		}
 
-		RNG_METER.onFullMatch(string) {
+		RNG_METER_REGEX.onFullMatch(string) {
 			rngMeter = groups["xp"]!!.value.replace(",", "").toInt() to text.style.clickEvent!!.value
-			if(!autoslayer) send()
+			if(!autoSlayer) send()
 			event.cancel()
 			return
 		}
 
-		SLAYER_QUEST_STARTED.onFullMatch(string) {
+		QUEST_STARTED_REGEX.onFullMatch(string) {
 			event.cancel()
 			return
 		}
 
-		SLAYER_QUEST_TO_SPAWN.onFullMatch(string) {
-			if(autoslayer) send()
-			autoslayer = true
+		SLAY_TO_SPAWN_REGEX.onFullMatch(string) {
+			if(autoSlayer) send()
+			autoSlayer = true
 			event.cancel()
 			return
 		}
