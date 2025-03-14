@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -25,10 +25,6 @@ import net.minecraft.entity.player.PlayerEntity
 object CorpseLocator {
 	private val config get() = NobaConfig.INSTANCE.mining.glaciteMineshaft
 	private val enabled: Boolean get() = config.corpseLocator && SkyBlockIsland.MINESHAFT.inIsland()
-
-	private val chatCoordsPattern by Regex(
-		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
-	).fromRepo("chat_coordinates")
 
 	private val corpses = mutableListOf<Corpse>()
 
@@ -50,7 +46,7 @@ object CorpseLocator {
 	private fun onChatMessage(message: String) {
 		if(!enabled) return
 
-		chatCoordsPattern.onPartialMatch(message) {
+		CommonPatterns.CHAT_COORDINATES_REGEX.onPartialMatch(message) {
 			val username = groups["username"]!!.value
 			if(username == MCUtils.playerName) return
 

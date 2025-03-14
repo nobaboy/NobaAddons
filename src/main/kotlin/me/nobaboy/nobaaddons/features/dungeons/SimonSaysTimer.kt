@@ -26,12 +26,12 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
 
-// TODO: Requires actual testing in dungeons
 object SimonSaysTimer {
 	private val config get() = NobaConfig.INSTANCE.dungeons.simonSaysTimer
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7)
 
-	private val completionPattern by Regex("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)").fromRepo("dungeons.complete_device")
+	// Change to terminal_completed and add type group
+	private val DEVICE_COMPLETED_REGEX by Regex("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)").fromRepo("dungeons.device_completed")
 	private val buttonLocation = NobaVec(110, 121, 91)
 
 	private var startTime = Timestamp.distantPast()
@@ -106,7 +106,7 @@ object SimonSaysTimer {
 	private fun onChatMessage(message: String) {
 		if(!enabled || !buttonPressed || deviceCompleted) return
 
-		completionPattern.onFullMatch(message) {
+		DEVICE_COMPLETED_REGEX.onFullMatch(message) {
 			val username = groups["username"]!!.value
 			if(username != MCUtils.playerName) return
 

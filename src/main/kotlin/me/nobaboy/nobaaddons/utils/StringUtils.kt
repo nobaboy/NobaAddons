@@ -6,6 +6,7 @@ import net.minecraft.util.Formatting
 object StringUtils {
 	private val TRAILING_ZERO = Regex("\\.0+(.)$")
 
+	// TODO: Move to CollectionUtils
 	fun List<String>.anyEquals(other: String, ignoreCase: Boolean = false) = this.any { it.equals(other, ignoreCase = ignoreCase) }
 	fun List<String>.anyContains(other: String, ignoreCase: Boolean = false) = this.any { it.contains(other, ignoreCase = ignoreCase) }
 
