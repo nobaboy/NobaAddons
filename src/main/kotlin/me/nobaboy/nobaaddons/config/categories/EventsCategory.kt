@@ -44,8 +44,8 @@ object EventsCategory {
 				property = config.events.mythological::findNearbyBurrows
 			)
 			boolean(
-				tr("nobaaddons.config.events.mythological.pingOnBurrowFind", "Ping on Burrow Find"),
-				tr("nobaaddons.config.events.mythological.pingOnBurrowFind.tooltip", "Plays a sound when a burrow is found nearby"),
+				tr("nobaaddons.config.events.mythological.dingOnBurrowFind", "Ding on Burrow Find"),
+				tr("nobaaddons.config.events.mythological.dingOnBurrowFind.tooltip", "Plays a ding sound when a burrow is found nearby"),
 				default = defaults.events.mythological.dingOnBurrowFind,
 				property = config.events.mythological::dingOnBurrowFind
 			) requires findNearby
@@ -106,7 +106,7 @@ object EventsCategory {
 				tr("nobaaddons.config.events.mythological.showChainsFinished", "Show Chains Finished"),
 				tr("nobaaddons.config.events.mythological.showChainsFinished.tooltip", "Shows how many burrow chains have been completed on the tracker"),
 				default = defaults.events.mythological.showChainsFinished,
-				property = defaults.events.mythological::showChainsFinished
+				property = config.events.mythological::showChainsFinished
 			)
 
 			label(CommonText.Config.LABEL_MISC)
@@ -117,7 +117,6 @@ object EventsCategory {
 				default = defaults.events.mythological.announceRareDrops,
 				property = config.events.mythological::announceRareDrops
 			)
-
 
 			label(tr("nobaaddons.config.events.mythological.label.warpLocations", "Warp Locations"))
 

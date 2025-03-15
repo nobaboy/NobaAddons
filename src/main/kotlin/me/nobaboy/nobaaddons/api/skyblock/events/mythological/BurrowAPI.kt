@@ -32,7 +32,7 @@ object BurrowAPI {
 
 	private val DIG_BURROW_PATTERN by Regex("^(?:You dug out a Griffin Burrow|You finished the Griffin burrow chain)! \\((?<chain>\\d)/4\\)").fromRepo("mythological.dig_burrow")
 	private val DIG_MOB_PATTERN by Regex("^(?:Oi|Uh oh|Yikes|Woah|Oh|Danger|Good Grief)! You dug out (?:a )?(?<mob>[A-z ]+)!").fromRepo("mythological.dig_mob")
-	private val DIG_TREASURE_PATTERN by Regex("^(RARE DROP|Wow)! You dug out (?:a )?(?<treasure>[A-z0-9- ]+)(?: coins)?!").fromRepo("mythological.dig_treasure")
+	private val DIG_TREASURE_PATTERN by Regex("^(RARE DROP|Wow)! You dug out (?:a )?(?<treasure>[A-z0-9-, ]+)(?: coins)?!").fromRepo("mythological.dig_treasure")
 
 	val burrows = mutableSetOf<Burrow>()
 	private val recentlyDugBurrows = TimedSet<Burrow>(1.minutes)
@@ -70,7 +70,7 @@ object BurrowAPI {
 			BurrowParticleType.TREASURE -> burrow.type = BurrowType.TREASURE
 		}
 
-		if(!burrow.found || !burrow.hasEnchant || burrow.type == BurrowType.UNKNOWN) return
+		if(burrow.found || !burrow.hasEnchant || burrow.type == BurrowType.UNKNOWN) return
 
 		MythologicalEvents.BURROW_FIND.invoke(MythologicalEvents.BurrowFind(location, burrow.type))
 		burrow.found = true
@@ -78,7 +78,7 @@ object BurrowAPI {
 
 	private fun onBlockInteract(event: InteractEvents.BlockInteraction) {
 		if(!enabled) return
-		if(DianaAPI.hasSpadeInHand(event.player)) return
+		if(!DianaAPI.hasSpadeInHand(event.player)) return
 
 		val location = event.location
 		if(location.getBlockAt() != Blocks.GRASS_BLOCK) return
@@ -93,7 +93,7 @@ object BurrowAPI {
 		lastDugBurrow = burrow
 
 		Scheduler.schedule(20) {
-			if(lastBurrowChatMessage.elapsedSince() > 2.seconds) burrows.remove(burrow)
+			if(lastBurrowChatMessage.elapsedSince() > 2.seconds) burrows.removeIf { it == burrow }
 		}
 	}
 
@@ -111,7 +111,7 @@ object BurrowAPI {
 			if(groups["chain"]?.value?.toInt() == 4) data.chainsFinished += 1L
 
 			lastBurrowChatMessage = Timestamp.now()
-			lastDugBurrow?.let { tryDigBurrow(it.location) } ?: return
+			if(lastDugBurrow?.let { tryDigBurrow(it.location) } != true) return
 			fakeBurrow = lastDugBurrow
 		}
 
@@ -140,7 +140,7 @@ object BurrowAPI {
 		val burrow = burrows.firstOrNull { it.location == location } ?: return false
 		if(!burrow.found && !ignoreFound) return false
 
-		burrows.remove(burrow)
+		burrows.removeIf { it == burrow }
 		recentlyDugBurrows.add(burrow)
 		lastDugBurrow = null
 
