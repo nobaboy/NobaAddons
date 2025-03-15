@@ -32,7 +32,7 @@ object BurrowAPI {
 
 	private val DIG_BURROW_PATTERN by Regex("^(?:You dug out a Griffin Burrow|You finished the Griffin burrow chain)! \\((?<chain>\\d)/4\\)").fromRepo("mythological.dig_burrow")
 	private val DIG_MOB_PATTERN by Regex("^(?:Oi|Uh oh|Yikes|Woah|Oh|Danger|Good Grief)! You dug out (?:a )?(?<mob>[A-z ]+)!").fromRepo("mythological.dig_mob")
-	private val DIG_TREASURE_PATTERN by Regex("^(RARE DROP|Wow)! You dug out (?:a )?(?<treasure>[A-z0-9-, ]+)(?: coins)?!").fromRepo("mythological.dig_treasure")
+	private val DIG_TREASURE_PATTERN by Regex("^(?:RARE DROP|Wow)! You dug out (?:a )?(?<treasure>[A-z0-9-, ]+)(?: coins)?!").fromRepo("mythological.dig_treasure")
 
 	val burrows = mutableSetOf<Burrow>()
 	private val recentlyDugBurrows = TimedSet<Burrow>(1.minutes)
