@@ -52,8 +52,6 @@ object BurrowAPI {
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
-	// remove mobBurrow from burrows on player death
-
 	private fun onParticle(event: ParticleEvents.Particle) {
 		if(!enabled) return
 
@@ -103,7 +101,7 @@ object BurrowAPI {
 		when {
 			message == CLEAR_BURROWS_MESSAGE -> reset()
 			message == DEFEAT_MOBS_MESSAGE -> lastBurrowChatMessage = Timestamp.now()
-			message.startsWith(" ☠ You were killed by") -> burrows.remove(mobBurrow)
+			message.startsWith(" ☠ You were killed by") -> burrows.removeIf { it == mobBurrow }
 		}
 
 		DIG_BURROW_PATTERN.onFullMatch(message) {
