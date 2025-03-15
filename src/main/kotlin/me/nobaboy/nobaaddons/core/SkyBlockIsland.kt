@@ -5,7 +5,7 @@ enum class SkyBlockIsland(val apiName: String?) {
 	GARDEN("garden"),
 	HUB("hub"),
 
-	BACKWATER_BAYOU("backwater_bayou"),
+	BACKWATER_BAYOU("fishing_1"),
 
 	FARMING_ISLANDS("farming_1"),
 
