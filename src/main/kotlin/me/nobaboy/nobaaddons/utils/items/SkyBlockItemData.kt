@@ -16,7 +16,7 @@ import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 import java.lang.ref.WeakReference
 
-private val RARITY_PATTERN by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("item_tag")
+private val ITEM_TAG_REGEX by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("skyblock.item_tag")
 
 class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	private val nbt: NbtCompound get() = item.get()!!.nbt.nbt
@@ -64,16 +64,16 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val stars: Int by CacheOf(this::nbt) { nbt.getInt("upgrade_level") }
 	val powerScroll: String? by CacheOf(this::nbt) { nbt.get("power_ability_scroll")?.asString() }
 
-	private val rarityLine: MatchResult? by CacheOf(this::lore) {
+	private val itemTagLine: MatchResult? by CacheOf(this::lore) {
 		lore.lines()
 			.reversed()
 			.asSequence()
 			.map { it.string }
-			.firstNotNullOfOrNull(RARITY_PATTERN::matchEntire)
+			.firstNotNullOfOrNull(ITEM_TAG_REGEX::matchEntire)
 	}
 
 	val rarity: Rarity by CacheOf(this::lore) {
-		Rarity.getRarity(rarityLine?.groups["rarity"]?.value ?: return@CacheOf Rarity.UNKNOWN)
+		Rarity.getRarity(itemTagLine?.groups["rarity"]?.value ?: return@CacheOf Rarity.UNKNOWN)
 	}
 
 	val id: String by CacheOf(this::nbt) { nbt.getString("id") }
@@ -102,7 +102,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val tunedTransmission: Int by CacheOf(this::nbt) { nbt.getInt("tuned_transmission") }
 
 	// Pets
-	val petInfo: String by CacheOf(this::nbt) { nbt.getString("petInfo") }
+	val petInfo: String? by CacheOf(this::nbt) { nbt.get("petInfo")?.asString() }
 
 	val newYearsCake: Int by CacheOf(this::nbt) { nbt.getInt("new_years_cake") }
 

@@ -48,6 +48,7 @@ import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentTooltips
+import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.features.mining.WormAlert
 import me.nobaboy.nobaaddons.features.mining.glacitemineshaft.CorpseLocator
@@ -64,7 +65,6 @@ import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomSeraphFeatures
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpHelper
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
-import me.nobaboy.nobaaddons.features.visuals.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.CommonText

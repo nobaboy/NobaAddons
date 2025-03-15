@@ -19,7 +19,7 @@ object TrophyFishAPI {
 
 	private val ODGER_RARITY_REGEX by Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?").fromRepo("trophy_fish.odger")
 	// .* is required to catch any extra text added afterward from compact chat mods like Compacting
-	private val TROPHY_FISH_REGEX by Regex("^TROPHY FISH! You caught an? (?<fish>[A-z 0-9]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*").fromRepo("trophy_fish.catch")
+	private val TROPHY_FISH_REGEX by Regex("^TROPHY FISH! You caught an? (?<fish>[A-z 0-9-]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*").fromRepo("trophy_fish.catch")
 	private val inventorySlots = 10..31
 
 	fun init() {

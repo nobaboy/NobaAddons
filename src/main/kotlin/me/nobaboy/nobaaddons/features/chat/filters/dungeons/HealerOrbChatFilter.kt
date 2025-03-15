@@ -13,8 +13,8 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object HealerOrbChatFilter : IChatFilter {
-	private val otherPickupUserOrbPattern by Regex("◕ [A-z0-9_]+ picked up your [A-z ]+!").fromRepo("filter.healer_orb.other_pickup")
-	private val userPickupHealerOrbPattern by Regex(
+	private val ORB_OTHER_PICKUP_REGEX by Regex("◕ [A-z0-9_]+ picked up your [A-z ]+!").fromRepo("filter.healer_orb.other_pickup")
+	private val ORB_PICKUP_REGEX by Regex(
 		"^◕ You picked up a (?<orb>[A-z ]+) from (?<player>[A-z0-9_]+) healing you for (?<health>[0-9.]+)❤ and granting you (?<buff>[0-9+%]+) (?<stat>[A-z ]+) for (?<duration>[0-9]+) seconds\\."
 	).fromRepo("filter.healer_orb.pickup")
 
@@ -23,7 +23,7 @@ object HealerOrbChatFilter : IChatFilter {
 	override fun shouldFilter(message: String): Boolean {
 		val filterMode = config.healerOrbMessage
 
-		userPickupHealerOrbPattern.onFullMatch(message) {
+		ORB_PICKUP_REGEX.onFullMatch(message) {
 			if(filterMode == ChatFilterOption.COMPACT) {
 				val statType = StatType.entries.firstOrNull {
 					groups["stat"]!!.value == it.text || groups["stat"]!!.value == it.identifier
@@ -36,7 +36,7 @@ object HealerOrbChatFilter : IChatFilter {
 			return true
 		}
 
-		return otherPickupUserOrbPattern.matches(message)
+		return ORB_OTHER_PICKUP_REGEX.matches(message)
 	}
 
 	private fun compileHealerOrbMessage(

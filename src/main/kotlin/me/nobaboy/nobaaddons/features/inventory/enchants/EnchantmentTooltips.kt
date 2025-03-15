@@ -53,9 +53,14 @@ object EnchantmentTooltips {
 		if(InputUtil.isKeyPressed(MCUtils.window.handle, GLFW.GLFW_KEY_RIGHT_SHIFT)) return
 		if(!item.isSkyBlockItem || item.asSkyBlockItem?.enchantments?.isEmpty() != false) return
 
-		// Find the first line with an enchantment
-		val firstEnchant = lines.indexOfFirst { ENCHANT_LINE.matches(it.string.cleanFormatting()) }
-		if(firstEnchant == -1) return
+		// Find the first blank line to avoid matching on item name like 'Jasper Drill X'
+		val firstBlankLine = lines.indexOfFirst { it.string.cleanFormatting().isBlank() }
+		if(firstBlankLine == -1) return
+
+		// Find the first enchantment line after the blank line
+		val firstEnchant = lines.subList(firstBlankLine, lines.size)
+			.indexOfFirst { ENCHANT_LINE.matches(it.string.cleanFormatting()) }
+			.takeIf { it != -1 }?.let { it + firstBlankLine } ?: return
 
 		val enchants = mutableListOf<ParsedEnchant>()
 		var lastEnchant: ParsedEnchant? = null

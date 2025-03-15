@@ -9,19 +9,19 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 
 object PickupObtainChatFilter : IChatFilter {
-	private val itemPickupPattern by Regex("A (?<item>[A-z ]+) was picked up!").fromRepo("filter.pickup.item")
-	private val playerObtainPattern by Regex("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!").fromRepo("filter.pickup.player_obtain")
+	private val ITEM_PICKUP_REGEX by Regex("A (?<item>[A-z ]+) was picked up!").fromRepo("filter.pickup.item")
+	private val ITEM_OBTAINED_REGEX by Regex("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!").fromRepo("filter.pickup.item_obtained")
 
 	private val items by Repo.create("filters/pickup.json", Items.serializer())
 
 	override val enabled: Boolean get() = config.pickupObtainMessage && SkyBlockIsland.DUNGEONS.inIsland()
 
 	override fun shouldFilter(message: String): Boolean {
-		itemPickupPattern.onFullMatch(message) {
+		ITEM_PICKUP_REGEX.onFullMatch(message) {
 			return config.allowKeyMessage && groups["item"]!!.value !in (items?.allowed ?: emptySet())
 		}
 
-		playerObtainPattern.onFullMatch(message) {
+		ITEM_OBTAINED_REGEX.onFullMatch(message) {
 			val item = groups["item"]!!.value
 
 			return when {
