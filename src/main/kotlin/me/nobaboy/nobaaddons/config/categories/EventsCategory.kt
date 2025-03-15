@@ -44,8 +44,8 @@ object EventsCategory {
 				property = config.events.mythological::findNearbyBurrows
 			)
 			boolean(
-				tr("nobaaddons.config.events.mythological.pingOnBurrowFind", "Ping on Burrow Find"),
-				tr("nobaaddons.config.events.mythological.pingOnBurrowFind.tooltip", "Plays a sound when a burrow is found nearby"),
+				tr("nobaaddons.config.events.mythological.dingOnBurrowFind", "Ding on Burrow Find"),
+				tr("nobaaddons.config.events.mythological.dingOnBurrowFind.tooltip", "Plays a ding sound when a burrow is found nearby"),
 				default = defaults.events.mythological.dingOnBurrowFind,
 				property = config.events.mythological::dingOnBurrowFind
 			) requires findNearby
@@ -93,6 +93,21 @@ object EventsCategory {
 				default = defaults.events.mythological.inquisitorFocusMode,
 				property = config.events.mythological::inquisitorFocusMode
 			) requires alertInquis
+
+			// TODO: Questionable label
+			label(tr("nobaaddons.config.events.mythological.label.tracker", "Tracker"))
+
+			boolean(
+				tr("nobaaddons.config.events.mythological.tracker", "Mythological Tracker"),
+				default = defaults.events.mythological.tracker,
+				property = config.events.mythological::tracker
+			)
+			boolean(
+				tr("nobaaddons.config.events.mythological.showChainsFinished", "Show Chains Finished"),
+				tr("nobaaddons.config.events.mythological.showChainsFinished.tooltip", "Shows how many burrow chains have been completed on the tracker"),
+				default = defaults.events.mythological.showChainsFinished,
+				property = config.events.mythological::showChainsFinished
+			)
 
 			label(CommonText.Config.LABEL_MISC)
 

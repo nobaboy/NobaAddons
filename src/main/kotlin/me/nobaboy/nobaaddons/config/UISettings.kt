@@ -11,4 +11,5 @@ object UISettings : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("ui.json")) {
 	}
 
 	val itemPickupLog by TextElement("itemPickupLog")
+	val mythologicalTracker by TextElement("mythologicalTracker")
 }
