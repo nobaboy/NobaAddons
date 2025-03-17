@@ -4,22 +4,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MayorJson(
-	val mayor: MayorInfo,
-	val current: MayorElection? = null
+	val mayor: Mayor
 )
 
 @Serializable
-data class MayorInfo(
-	val key: String,
+data class Mayor(
 	val name: String,
 	val perks: List<Perk>,
-	val minister: Minister? = null, // Special mayors don't have ministers
-	val election: MayorElection
+	val minister: Minister? = null // Special mayors don't have ministers
 )
 
 @Serializable
 data class Minister(
-	val key: String,
 	val name: String,
 	val perk: Perk
 )
@@ -29,18 +25,4 @@ data class Perk(
 	val name: String,
 	val description: String,
 	val minister: Boolean = false
-)
-
-@Serializable
-data class MayorElection(
-	val year: Int,
-	val candidates: List<MayorCandidate>
-)
-
-@Serializable
-data class MayorCandidate(
-	val key: String,
-	val name: String,
-	val perks: List<Perk>,
-	val votes: Int? = null
 )
