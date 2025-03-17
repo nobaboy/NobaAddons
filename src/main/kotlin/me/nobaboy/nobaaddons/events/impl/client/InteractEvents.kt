@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.client
 
-//? if <=1.21.1 {
+//? if <1.21.2 {
 /*import net.minecraft.util.TypedActionResult
 *///?}
 
@@ -25,7 +25,7 @@ object InteractEvents {
 			if(player is ClientPlayerEntity) {
 				USE_ITEM.invoke(UseItem(player, hand))
 			}
-			//? if <=1.21.1 {
+			//? if <1.21.2 {
 			/*TypedActionResult.pass(player.getStackInHand(hand))
 			*///?} else {
 			ActionResult.PASS
