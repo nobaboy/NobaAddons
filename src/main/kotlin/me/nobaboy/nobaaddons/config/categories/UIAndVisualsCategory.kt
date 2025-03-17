@@ -108,9 +108,6 @@ object UIAndVisualsCategory {
 				default = defaults.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson,
 				property = config.uiAndVisuals.renderingTweaks::removeFrontFacingThirdPerson
 			)
-
-			label(tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hotbarElements", "Hotbar Elements"))
-
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideAbsorptionHearts", "Hide Absorption Hearts"),
 				default = defaults.uiAndVisuals.renderingTweaks.hideAbsorptionHearts,
