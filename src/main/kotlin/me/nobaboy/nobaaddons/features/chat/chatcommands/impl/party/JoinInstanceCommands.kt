@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
+import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -8,11 +9,21 @@ import kotlin.time.Duration.Companion.seconds
 
 class JoinInstanceCommands : ChatCommand(2.seconds) {
 	private val floors = mapOf(
-		1 to "one", 2 to "two", 3 to "three", 4 to "four", 5 to "five", 6 to "six", 7 to "seven"
+		1 to "one",
+		2 to "two",
+		3 to "three",
+		4 to "four",
+		5 to "five",
+		6 to "six",
+		7 to "seven"
 	)
 
 	private val kuudraTiers = mapOf(
-		1 to "normal", 2 to "hot", 3 to "burning", 4 to "fiery", 5 to "infernal"
+		1 to "normal",
+		2 to "hot",
+		3 to "burning",
+		4 to "fiery",
+		5 to "infernal"
 	)
 
 	override val enabled: Boolean = config.party.joinInstanced
@@ -20,12 +31,14 @@ class JoinInstanceCommands : ChatCommand(2.seconds) {
 	override val name: String = "f1"
 	override val aliases: List<String> = listOf(
 		/*f1,*/ "f2", "f3", "f4", "f5", "f6", "f7", // Catacombs
-		"m1",   "m2", "m3", "m4", "m5", "m6", "m7", // Master Mode Catacombs
-		"t1",   "t2", "t3", "t4", "t5",             // Kuudra
+		"m1", "m2", "m3", "m4", "m5", "m6", "m7", // Master Mode Catacombs
+		"t1", "t2", "t3", "t4", "t5",             // Kuudra
 	)
 	override val usage: String = "f(1-7), m(1-7), t(1-5)"
 
 	override fun run(ctx: ChatContext) {
+		if(PartyAPI.party?.isLeader != true) return
+
 		val type = ctx.command.first().lowercase()
 		val tier = ctx.command.last().toString().toInt()
 
