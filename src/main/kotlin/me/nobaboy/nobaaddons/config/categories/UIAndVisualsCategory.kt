@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.button
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.conflicts
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
@@ -107,10 +108,18 @@ object UIAndVisualsCategory {
 				default = defaults.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson,
 				property = config.uiAndVisuals.renderingTweaks::removeFrontFacingThirdPerson
 			)
+
+			label(tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hotbarElements", "Hotbar Elements"))
+
 			boolean(
 				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideAbsorptionHearts", "Hide Absorption Hearts"),
 				default = defaults.uiAndVisuals.renderingTweaks.hideAbsorptionHearts,
 				property = config.uiAndVisuals.renderingTweaks::hideAbsorptionHearts
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideAirBubbles", "Hide Air Bubbles"),
+				default = defaults.uiAndVisuals.renderingTweaks.hideAirBubbles,
+				property = config.uiAndVisuals.renderingTweaks::hideAirBubbles
 			)
 		}
 		// endregion
