@@ -78,7 +78,7 @@ object MayorAPI {
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
 		if(!SkyBlockAPI.inSkyBlock) return
-		if(event.inventory.title != "Calender and Events") return
+		if(event.inventory.title != "Calendar and Events") return
 
 		val item = event.inventory.items.values.firstOrNull {
 			MAYOR_NAME_REGEX.getGroupFromFullMatch(it.name.string.cleanFormatting(), "name") == "Jerry"
