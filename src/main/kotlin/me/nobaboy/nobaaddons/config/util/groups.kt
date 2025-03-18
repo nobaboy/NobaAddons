@@ -5,11 +5,18 @@ import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionGroup
 import net.minecraft.text.Text
 
+/**
+ * Convenience method creating a [ConfigCategory.Builder], providing it to [builder], and returns the built [ConfigCategory]
+ */
 inline fun category(name: Text, builder: ConfigCategory.Builder.() -> Unit): ConfigCategory = ConfigCategory.createBuilder().apply {
 	name(name)
 	builder(this)
 }.build()
 
+/**
+ * Convenience method creating a [OptionGroup.Builder], providing it to [builder], and then adding it to the
+ * current [ConfigCategory.Builder]
+ */
 inline fun ConfigCategory.Builder.group(
 	name: Text,
 	description: Text? = null,

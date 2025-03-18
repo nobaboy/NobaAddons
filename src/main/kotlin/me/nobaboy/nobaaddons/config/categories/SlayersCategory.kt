@@ -1,12 +1,6 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
-import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.add
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
 import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral

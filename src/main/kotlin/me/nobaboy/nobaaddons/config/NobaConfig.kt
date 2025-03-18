@@ -54,11 +54,10 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 		val DEFAULTS get() = NobaConfig()
 
 		fun getConfigScreen(parent: Screen?): Screen = YetAnotherConfigLib.createBuilder().apply {
-			val defaults = NobaConfig()
 			title(CommonText.NOBAADDONS)
 
 			category(GeneralCategory.create())
-			category(UIAndVisualsCategory.create(defaults, INSTANCE))
+			category(UIAndVisualsCategory.create())
 			category(InventoryCategory.create())
 			category(EventsCategory.create())
 			category(SlayersCategory.create())

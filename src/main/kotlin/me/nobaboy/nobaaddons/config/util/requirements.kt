@@ -50,5 +50,5 @@ fun <T> Option<T>.require(condition: OptionRequirement): Option<T> = apply {
 	}
 }
 
-infix fun <T> Option<T>.require(builder: OptionRequirementBuilder.() -> OptionRequirement): Option<T> =
+fun <T> Option<T>.require(builder: OptionRequirementBuilder.() -> OptionRequirement): Option<T> =
 	require(builder(OptionRequirementBuilder))
