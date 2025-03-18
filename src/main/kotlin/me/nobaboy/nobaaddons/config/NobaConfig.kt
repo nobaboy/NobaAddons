@@ -48,29 +48,29 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 		@JvmField
 		val INSTANCE = NobaConfig()
 
+		/**
+		 * Returns a newly created instance of [NobaConfig] to allow for accessing default values
+		 */
 		val DEFAULTS get() = NobaConfig()
 
-		fun getConfigScreen(parent: Screen?): Screen {
+		fun getConfigScreen(parent: Screen?): Screen = YetAnotherConfigLib.createBuilder().apply {
 			val defaults = NobaConfig()
+			title(CommonText.NOBAADDONS)
 
-			return YetAnotherConfigLib.createBuilder().apply {
-				title(CommonText.NOBAADDONS)
+			category(GeneralCategory.create(defaults, INSTANCE))
+			category(UIAndVisualsCategory.create(defaults, INSTANCE))
+			category(InventoryCategory.create(defaults, INSTANCE))
+			category(EventsCategory.create())
+			category(SlayersCategory.create(defaults, INSTANCE))
+			category(FishingCategory.create())
+			category(MiningCategory.create(defaults, INSTANCE))
+			category(DungeonsCategory.create())
+			category(RiftCategory.create(defaults, INSTANCE))
+			category(ChatCategory.create())
+			category(QOLCategory.create(defaults, INSTANCE))
+			category(ApiCategory.create())
 
-				category(GeneralCategory.create(defaults, INSTANCE))
-				category(UIAndVisualsCategory.create(defaults, INSTANCE))
-				category(InventoryCategory.create(defaults, INSTANCE))
-				category(EventsCategory.create(defaults, INSTANCE))
-				category(SlayersCategory.create(defaults, INSTANCE))
-				category(FishingCategory.create(defaults, INSTANCE))
-				category(MiningCategory.create(defaults, INSTANCE))
-				category(DungeonsCategory.create(defaults, INSTANCE))
-				category(RiftCategory.create(defaults, INSTANCE))
-				category(ChatCategory.create())
-				category(QOLCategory.create(defaults, INSTANCE))
-				category(ApiCategory.create())
-
-				save(INSTANCE::save)
-			}.build().generateScreen(parent)
-		}
+			save(INSTANCE::save)
+		}.build().generateScreen(parent)
 	}
 }

@@ -11,6 +11,9 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import net.minecraft.text.Text
 import kotlin.reflect.KMutableProperty
 
+/**
+ * Generic config option builder
+ */
 class OptionBuilder<T>(
 	val getter: (NobaConfig) -> T,
 	val setter: (NobaConfig, T) -> Unit,
@@ -45,25 +48,37 @@ class OptionBuilder<T>(
 	}
 }
 
+/**
+ * Convenience parameter wrapping the provided [Text] in an [OptionDescription]
+ */
 var OptionBuilder<*>.descriptionText: Text?
 	get() = description?.text()
-	set(value) { description = OptionDescription.of(value) }
+	set(value) { description = value?.let { OptionDescription.of(it) } }
 
+/**
+ * Create a new config option, mapping the stored value type to another for use in YACL.
+ */
 fun <A, B> OptionAddable.add(
 	property: NobaConfig.() -> KMutableProperty<A>,
-	mapping: ReversibleMapping<A, B>,
+	mapping: BiMapper<A, B>,
 	builder: OptionBuilder<B>.() -> Unit,
 ): Option<B> = OptionBuilder<B>(
 	getter = { mapping.to(property(it).getter.call()) },
 	setter = { config, value -> property(config).setter.call(mapping.from(value)) }
-).apply(builder).build()
+).apply(builder).build().also(::option)
 
+/**
+ * Create a new config option
+ */
 fun <T> OptionAddable.add(
 	property: NobaConfig.() -> KMutableProperty<T>,
 	builder: OptionBuilder<T>.() -> Unit,
 ): Option<T> =
 	OptionBuilder<T>(property).apply(builder).build().also(::option)
 
+/**
+ * Create a new button option
+ */
 fun OptionAddable.button(
 	name: Text,
 	description: Text? = null,

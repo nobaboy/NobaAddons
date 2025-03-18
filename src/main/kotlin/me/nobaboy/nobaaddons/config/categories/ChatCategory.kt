@@ -1,14 +1,7 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
-import me.nobaboy.nobaaddons.config.util.OptionBuilder
-import me.nobaboy.nobaaddons.config.util.add
-import me.nobaboy.nobaaddons.config.util.group
-import me.nobaboy.nobaaddons.config.util.booleanController
-import me.nobaboy.nobaaddons.config.util.category
-import me.nobaboy.nobaaddons.config.util.descriptionText
-import me.nobaboy.nobaaddons.config.util.enumController
-import me.nobaboy.nobaaddons.config.util.label
+import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -122,7 +115,7 @@ object ChatCategory {
 			}
 			add({ chat.filters::seaCreatureMaximumRarity }) {
 				name = tr("nobaaddons.config.chat.filters.seaCreatureMaximumRarity", "Hide Rarity and Below")
-				enumController((Rarity.COMMON..Rarity.MYTHIC).toArray())
+				enumController(onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray())
 			}
 			// endregion
 

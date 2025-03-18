@@ -1,13 +1,7 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
-import me.nobaboy.nobaaddons.config.util.add
-import me.nobaboy.nobaaddons.config.util.group
-import me.nobaboy.nobaaddons.config.util.category
-import me.nobaboy.nobaaddons.config.util.descriptionText
-import me.nobaboy.nobaaddons.config.util.label
-import me.nobaboy.nobaaddons.config.util.stringController
-import me.nobaboy.nobaaddons.config.util.tickBoxController
+import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TextUtils.underline

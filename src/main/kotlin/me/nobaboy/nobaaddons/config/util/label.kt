@@ -14,6 +14,18 @@ class LabelBuilder {
 	fun newLine() = +Text.empty()
 }
 
+/**
+ * Create and add a new [LabelOption] to the current [OptionAddable]
+ *
+ * ## Example
+ * ```kt
+ * label {
+ *     +Text.literal("Shello!")
+ *     newLine()
+ *     +Text.literal("Now with an empty line!")
+ * }
+ * ```
+ */
 fun OptionAddable.label(builder: LabelBuilder.() -> Unit): LabelOption = LabelOption.createBuilder().apply {
 	lines(LabelBuilder().apply(builder).text)
-}.build()
+}.build().also(::option)
