@@ -28,7 +28,6 @@
       }
     ]
   },
-  "accesswidener": "nobaaddons.accesswidener",
   "mixins": ["nobaaddons.mixins.json"],
   "depends": {
     "minecraft": "$mcdep",
