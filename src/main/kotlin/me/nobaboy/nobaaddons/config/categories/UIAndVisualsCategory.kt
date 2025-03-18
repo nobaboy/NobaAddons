@@ -107,6 +107,16 @@ object UIAndVisualsCategory {
 				default = defaults.uiAndVisuals.renderingTweaks.removeFrontFacingThirdPerson,
 				property = config.uiAndVisuals.renderingTweaks::removeFrontFacingThirdPerson
 			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideAbsorptionHearts", "Hide Absorption Hearts"),
+				default = defaults.uiAndVisuals.renderingTweaks.hideAbsorptionHearts,
+				property = config.uiAndVisuals.renderingTweaks::hideAbsorptionHearts
+			)
+			boolean(
+				tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideAirBubbles", "Hide Air Bubbles"),
+				default = defaults.uiAndVisuals.renderingTweaks.hideAirBubbles,
+				property = config.uiAndVisuals.renderingTweaks::hideAirBubbles
+			)
 		}
 		// endregion
 

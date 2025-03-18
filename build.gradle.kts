@@ -87,6 +87,8 @@ dependencies {
 }
 
 loom {
+	accessWidenerPath = file("../../src/main/resources/nobaaddons.accesswidener")
+
 	runConfigs {
 		removeIf { it.environment == "server" }
 	}
