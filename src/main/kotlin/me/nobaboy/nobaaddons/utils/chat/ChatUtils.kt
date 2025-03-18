@@ -11,6 +11,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -75,6 +76,11 @@ object ChatUtils {
 	 */
 	fun addMessage(message: Text, prefix: Boolean = true, color: Formatting? = Formatting.WHITE) {
 		if(!MCUtils.client.isOnThread) {
+			if(FabricLoader.getInstance().isDevelopmentEnvironment) {
+				// log when this happens in a dev env to make it easier to spot when this might cause messages
+				// to be out of order
+				NobaAddons.LOGGER.warn("[Debug] Moving ChatUtils.addMessage() call to the client thread")
+			}
 			MCUtils.client.execute { addMessage(message, prefix, color) }
 			return
 		}
