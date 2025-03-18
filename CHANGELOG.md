@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 0.1.0-Beta.1 - 2025-03-?
+## 1.0.0-Beta.1 - 2025-03-18
 
 ### Added
 
@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Profile type not being reset after switching profiles - nobaboy
 - Slayer features (e.g. kill timer) occasionally not working - nobaboy
 - Enchantment tooltips not functioning properly on certain items, like Jasper Drill X - nobaboy
+- A rare error that can occur when sending mod chat messages from chat commands with certain compact chat mods - celeste
 
 ## 0.1.0-Alpha.13.1 - 2025-01-21
 
