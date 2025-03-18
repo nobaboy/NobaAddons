@@ -215,7 +215,7 @@ add({ property }) {
 add({ property }) {
 	this@OptionBuilder.name = name
 	descriptionText = description
-	colorController()
+	colorController(allowAlpha)
 }
 	"""))
 	fun <G : OptionAddable> G.color(

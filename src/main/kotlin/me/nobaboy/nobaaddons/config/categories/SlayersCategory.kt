@@ -1,13 +1,13 @@
 package me.nobaboy.nobaaddons.config.categories
 
+import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
+import me.nobaboy.nobaaddons.config.NobaConfigUtils.add
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
-import me.nobaboy.nobaaddons.config.util.require
+import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
@@ -21,162 +21,173 @@ private fun Text.wip(): Text = buildText {
 }
 
 object SlayersCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.slayers", "Slayers")) {
-		buildGroup(tr("nobaaddons.config.slayers.bossAlert", "Boss Alert")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED,
-				default = defaults.slayers.bossAlert.enabled,
-				property = config.slayers.bossAlert::enabled
-			)
-			color(
-				CommonText.Config.ALERT_COLOR,
-				default = defaults.slayers.bossAlert.alertColor,
-				property = config.slayers.bossAlert::alertColor
-			) require { option(enabled) }
+	fun create() = category(tr("nobaaddons.config.slayers", "Slayers")) {
+		bossAlert()
+		miniBossAlert()
+		highlightMiniBosses()
+		killTime()
+		compactQuestMessages()
+
+		sven()
+		voidgloom()
+		demonlord()
+	}
+
+	private fun ConfigCategory.Builder.bossAlert() {
+		group(tr("nobaaddons.config.slayers.bossAlert", "Boss Alert")) {
+			val enabled = add({ slayers.bossAlert::enabled }) {
+				name = CommonText.Config.ENABLED
+				booleanController()
+			}
+			add({ slayers.bossAlert::alertColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.ALERT_COLOR
+				require { option(enabled) }
+				colorController()
+			}
 		}
+	}
 
-		buildGroup(tr("nobaaddons.config.slayers.miniBossAlert", "MiniBoss Alert")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED,
-				default = defaults.slayers.miniBossAlert.enabled,
-				property = config.slayers.miniBossAlert::enabled
-			)
-			color(
-				CommonText.Config.ALERT_COLOR,
-				default = defaults.slayers.miniBossAlert.alertColor,
-				property = config.slayers.miniBossAlert::alertColor
-			) require { option(enabled) }
+	private fun ConfigCategory.Builder.miniBossAlert() {
+		group(tr("nobaaddons.config.slayers.miniBossAlert", "MiniBoss Alert")) {
+			val enabled = add({ slayers.miniBossAlert::enabled }) {
+				name = CommonText.Config.ENABLED
+				booleanController()
+			}
+			add({ slayers.miniBossAlert::alertColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.ALERT_COLOR
+				require { option(enabled) }
+				colorController()
+			}
 		}
+	}
 
-		buildGroup(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED.wip(),
-				default = defaults.slayers.highlightMiniBosses.enabled,
-				property = config.slayers.highlightMiniBosses::enabled
-			)
-			color(
-				CommonText.Config.HIGHLIGHT_COLOR.wip(),
-				default = defaults.slayers.highlightMiniBosses.highlightColor,
-				property = config.slayers.highlightMiniBosses::highlightColor
-			) require { option(enabled) }
+	private fun ConfigCategory.Builder.highlightMiniBosses() {
+		group(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
+			val enabled = add({ slayers.highlightMiniBosses::enabled }) {
+				name = CommonText.Config.ENABLED.wip()
+				booleanController()
+			}
+			add({ slayers.highlightMiniBosses::highlightColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.HIGHLIGHT_COLOR.wip()
+				require { option(enabled) }
+				colorController()
+			}
 		}
+	}
 
-		buildGroup(tr("nobaaddons.config.slayers.bossKillTime", "Slayer Boss Kill Time")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED,
-				default = defaults.slayers.bossKillTime.enabled,
-				property = config.slayers.bossKillTime::enabled
-			)
-			cycler(
-				tr("nobaaddons.config.slayers.bossKillTime.timeSource", "Time Source"),
-				tr("nobaaddons.config.slayers.bossKillTime.timeSource.tooltip", "Determines the source for the boss kill time\n\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag"),
-				default = defaults.slayers.bossKillTime.timeSource,
-				property = config.slayers.bossKillTime::timeSource
-			) require { option(enabled) }
+	private fun ConfigCategory.Builder.killTime() {
+		group(tr("nobaaddons.config.slayers.bossKillTime", "Slayer Boss Kill Time")) {
+			val enabled = add({ slayers.bossKillTime::enabled }) {
+				name = CommonText.Config.ENABLED
+				booleanController()
+			}
+			add({ slayers.bossKillTime::timeSource }) {
+				name = tr("nobaaddons.config.slayers.bossKillTime.timeSource", "Time Source")
+				descriptionText = tr("nobaaddons.config.slayers.bossKillTime.timeSource.tooltip", "Determines the source for the boss kill time\n\nThe boss time remaining does not support decimals, and as such the kill time will only show full seconds while using it, but will account for server lag")
+				require { option(enabled) }
+				enumController()
+			}
 		}
+	}
 
-		buildGroup(tr("nobaaddons.config.slayers.compactMessages", "Compact Quest Messages")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED,
-				tr("nobaaddons.config.slayers.compactMessages.enabled.tooltip", "Condenses messages from Auto-Slayer and manually claiming a Slayer quest at Maddox into one message while enabled"),
-				default = defaults.slayers.compactMessages.enabled,
-				property = config.slayers.compactMessages::enabled,
-			)
-			boolean(
-				tr("nobaaddons.config.slayers.compactMessages.removeLastMessage", "Remove Previous Message"),
-				tr("nobaaddons.config.slayers.compactMessages.removeLastMessage.tooltip", "The last compacted message will also be removed upon completing another slayer quest"),
-				default = defaults.slayers.compactMessages.removeLastMessage,
-				property = config.slayers.compactMessages::removeLastMessage,
-			) require { option(enabled) }
+	private fun ConfigCategory.Builder.compactQuestMessages() {
+		group(tr("nobaaddons.config.slayers.compactMessages", "Compact Quest Messages")) {
+			val enabled = add({ slayers.compactMessages::enabled }) {
+				name = CommonText.Config.ENABLED
+				descriptionText = tr("nobaaddons.config.slayers.compactMessages.enabled.tooltip", "Condenses messages from Auto-Slayer and manually claiming a Slayer quest at Maddox into one message while enabled")
+				booleanController()
+			}
+			add({ slayers.compactMessages::removeLastMessage }) {
+				name = tr("nobaaddons.config.slayers.compactMessages.removeLastMessage", "Remove Previous Message")
+				descriptionText = tr("nobaaddons.config.slayers.compactMessages.removeLastMessage.tooltip", "The last compacted message will also be removed upon completing another slayer quest")
+				require { option(enabled) }
+				booleanController()
+			}
 		}
+	}
 
-		buildGroup(tr("nobaaddons.config.slayers.sven", "Sven Packmaster")) {
-			boolean(
-				tr("nobaaddons.config.slayers.sven.hidePupNametags", "Hide Pup Nametags"),
-				default = defaults.slayers.sven.hidePupNametags,
-				property = config.slayers.sven::hidePupNametags
-			)
+	private fun ConfigCategory.Builder.sven() {
+		group(tr("nobaaddons.config.slayers.sven", "Sven Packmaster")) {
+			add({ slayers.sven::hidePupNametags }) {
+				name = tr("nobaaddons.config.slayers.sven.hidePupNametags", "Hide Pup Nametags")
+				booleanController()
+			}
 		}
+	}
 
-		buildGroup(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
-			val highlightPhases = boolean(
-				tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases").wip(),
-				tr("nobaaddons.config.slayers.voidgloom.highlightPhases.tooltip", "Highlights the Voidgloom Seraph based on its current phase\n\nThe priority of the phases are:\n - Beacon Phase\n - Hits Phase\n - Damage Phase"),
-				default = defaults.slayers.voidgloom.highlightPhases,
-				property = config.slayers.voidgloom::highlightPhases
-			)
-			color(
-				tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color").wip(),
-				default = defaults.slayers.voidgloom.beaconPhaseColor,
-				property = config.slayers.voidgloom::beaconPhaseColor,
-				allowAlpha = true,
-			) require { option(highlightPhases) }
-			color(
-				tr("nobaaddons.config.slayers.voidgloom.hitsPhaseColor", "Hits Phase Color").wip(),
-				default = defaults.slayers.voidgloom.hitsPhaseColor,
-				property = config.slayers.voidgloom::hitsPhaseColor,
-				allowAlpha = true,
-			) require { option(highlightPhases) }
-			color(
-				tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color").wip(),
-				default = defaults.slayers.voidgloom.damagePhaseColor,
-				property = config.slayers.voidgloom::damagePhaseColor,
-				allowAlpha = true,
-			) require { option(highlightPhases) }
+	private fun ConfigCategory.Builder.voidgloom() {
+		group(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
+			val highlightPhases = add({ slayers.voidgloom::highlightPhases }) {
+				name = tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases").wip()
+				descriptionText = tr("nobaaddons.config.slayers.voidgloom.highlightPhases.tooltip", "Highlights the Voidgloom Seraph based on its current phase\n\nThe priority of the phases are:\n - Beacon Phase\n - Hits Phase\n - Damage Phase")
+				booleanController()
+			}
+			add({ slayers.voidgloom::beaconPhaseColor }) {
+				name = tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color").wip()
+				require { option(highlightPhases) }
+				colorController(allowAlpha = true)
+			}
+			add({ slayers.voidgloom::hitsPhaseColor }) {
+				name = tr("nobaaddons.config.slayers.voidgloom.hitsPhaseColor", "Hits Phase Color").wip()
+				require { option(highlightPhases) }
+				colorController(allowAlpha = true)
+			}
+			add({ slayers.voidgloom::damagePhaseColor }) {
+				name = tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color").wip()
+				require { option(highlightPhases) }
+				colorController(allowAlpha = true)
+			}
 
-			label(tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs"))
+			label { +tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs") }
 
-			val yangGlyphAlert = boolean(
-				tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert", "Yang Glyph Alert"),
-				tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert.tooltip", "Displays an alert when a Yang Glyph (commonly known as a Beacon) is placed by the Voidgloom Seraph."),
-				default = defaults.slayers.voidgloom.yangGlyphAlert,
-				property = config.slayers.voidgloom::yangGlyphAlert
-			)
-			color(
-				CommonText.Config.ALERT_COLOR,
-				default = defaults.slayers.voidgloom.yangGlyphAlertColor,
-				property = config.slayers.voidgloom::yangGlyphAlertColor
-			) require { option(yangGlyphAlert) }
-			val highlightYangGlyph = boolean(
-				tr("nobaaddons.config.slayers.voidgloom.highlightYangGlyph", "Highlight Yang Glyphs"),
-				default = defaults.slayers.voidgloom.highlightYangGlyphs,
-				property = config.slayers.voidgloom::highlightYangGlyphs
-			)
-			color(
-				CommonText.Config.HIGHLIGHT_COLOR,
-				default = defaults.slayers.voidgloom.yangGlyphHighlightColor,
-				property = config.slayers.voidgloom::yangGlyphHighlightColor
-			) require { option(highlightYangGlyph) }
+			val yangGlyphAlert = add({ slayers.voidgloom::yangGlyphAlert }) {
+				name = tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert", "Yang Glyph Alert")
+				descriptionText = tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert.tooltip", "Displays an alert when a Yang Glyph (commonly known as a Beacon) is placed by the Voidgloom Seraph.")
+				booleanController()
+			}
+			add({ slayers.voidgloom::yangGlyphAlertColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.ALERT_COLOR
+				require { option(yangGlyphAlert) }
+				colorController()
+			}
+			val highlightYangGlyph = add({ slayers.voidgloom::highlightYangGlyphs }) {
+				name = tr("nobaaddons.config.slayers.voidgloom.highlightYangGlyph", "Highlight Yang Glyphs")
+				booleanController()
+			}
+			add({ slayers.voidgloom::yangGlyphHighlightColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.HIGHLIGHT_COLOR
+				require { option(highlightYangGlyph) }
+				colorController()
+			}
 
-			label(tr("nobaaddons.config.slayers.voidgloom.label.nukekubiFixations", "Nukekubi Fixations"))
+			label { +tr("nobaaddons.config.slayers.voidgloom.label.nukekubiFixations", "Nukekubi Fixations") }
 
-			val highlightNukekubiFixations = boolean(
-				tr("nobaaddons.config.slayers.voidgloom.highlightNukekubiFixations", "Highlight Nukekubi Fixations"),
-				default = defaults.slayers.voidgloom.highlightNukekubiFixations,
-				property = config.slayers.voidgloom::highlightNukekubiFixations
-			)
-			color(
-				CommonText.Config.HIGHLIGHT_COLOR,
-				default = defaults.slayers.voidgloom.nukekubiFixationHighlightColor,
-				property = config.slayers.voidgloom::nukekubiFixationHighlightColor
-			) require { option(highlightNukekubiFixations) }
+			val highlightNukekubiFixations = add({ slayers.voidgloom::highlightNukekubiFixations }) {
+				name = tr("nobaaddons.config.slayers.voidgloom.highlightNukekubiFixations", "Highlight Nukekubi Fixations")
+				booleanController()
+			}
+			add({ slayers.voidgloom::nukekubiFixationHighlightColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.HIGHLIGHT_COLOR
+				require { option(highlightNukekubiFixations) }
+				colorController()
+			}
 
-			label(CommonText.Config.LABEL_MISC)
+			label { +CommonText.Config.LABEL_MISC }
 
-			boolean(
-				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer"),
-				tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer.tooltip", "Displays a timer on the Voidgloom Seraph indicating how much time is left for its Broken Heart Radiation (commonly known as Lazer Phase)"),
-				default = defaults.slayers.voidgloom.brokenHeartRadiationTimer,
-				property = config.slayers.voidgloom::brokenHeartRadiationTimer
-			)
+			add({ slayers.voidgloom::brokenHeartRadiationTimer }) {
+				name = tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer")
+				descriptionText = tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer.tooltip", "Displays a timer on the Voidgloom Seraph indicating how much time is left for its Broken Heart Radiation (commonly known as Lazer Phase)")
+				booleanController()
+			}
 		}
+	}
 
-		buildGroup(tr("nobaaddons.config.slayers.inferno", "Inferno Demonlord")) {
-			boolean(
-				tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield").wip(),
-				default = defaults.slayers.inferno.highlightHellionShield,
-				property = config.slayers.inferno::highlightHellionShield
-			)
+	private fun ConfigCategory.Builder.demonlord() {
+		group(tr("nobaaddons.config.slayers.inferno", "Inferno Demonlord")) {
+			add({ slayers.inferno::highlightHellionShield }) {
+				name = tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield").wip()
+				booleanController()
+			}
 		}
 	}
 }

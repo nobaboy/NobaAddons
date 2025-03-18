@@ -42,13 +42,13 @@ class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
 	}
 }
 
-fun <T> (NobaConfig.() -> KMutableProperty<T>).binding(): Binding<T> {
+internal fun <T> (NobaConfig.() -> KMutableProperty<T>).binding(): Binding<T> {
 	val getter: (NobaConfig) -> T = { this(it).getter.call() }
 	val setter: (NobaConfig, T) -> Unit = { config, value -> this(config).setter.call(value) }
 	return Binding.generic(getter(NobaConfig.DEFAULTS), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) })
 }
 
-fun <A, B> (NobaConfig.() -> KMutableProperty<A>).binding(biMapper: BiMapper<A, B>): Binding<B> {
+internal fun <A, B> (NobaConfig.() -> KMutableProperty<A>).binding(biMapper: BiMapper<A, B>): Binding<B> {
 	val getter: (NobaConfig) -> B = { biMapper.to(this(it).getter.call()) }
 	val setter: (NobaConfig, B) -> Unit = { config, value -> this(config).setter.call(biMapper.from(value)) }
 	return Binding.generic(getter(NobaConfig.DEFAULTS), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) })
@@ -71,7 +71,7 @@ fun <T> OptionAddable.add(
 	OptionBuilder<T>(property).apply(builder).build().also(::option)
 
 /**
- * Create a new config option, mapping the stored value type to another for use in YACL.
+ * Create a new config option, mapping the stored value type to another for use in YACL
  */
 fun <A, B> OptionAddable.add(
 	property: NobaConfig.() -> KMutableProperty<A>,

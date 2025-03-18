@@ -1,68 +1,62 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
-import me.nobaboy.nobaaddons.config.util.require
+import dev.isxander.yacl3.api.ConfigCategory
+import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
 object MiningCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.mining", "Mining")) {
-		// region Worm Alert
-		buildGroup(tr("nobaaddons.config.mining.wormAlert", "Worm Alert")) {
-			val enabled = boolean(
-				CommonText.Config.ENABLED,
-				default = defaults.mining.wormAlert.enabled,
-				property = defaults.mining.wormAlert::enabled
-			)
-			color(
-				CommonText.Config.ALERT_COLOR,
-				default = defaults.mining.wormAlert.alertColor,
-				property = defaults.mining.wormAlert::alertColor
-			) require { option(enabled) }
+	fun create() = category(tr("nobaaddons.config.mining", "Mining")) {
+		wormAlert()
+		glaciteMineshaft()
+	}
+
+	private fun ConfigCategory.Builder.wormAlert() {
+		group(tr("nobaaddons.config.mining.wormAlert", "Worm Alert")) {
+			val enabled = add({ mining.wormAlert::enabled }) {
+				name = CommonText.Config.ENABLED
+				booleanController()
+			}
+			add({ mining.wormAlert::alertColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.ALERT_COLOR
+				require { option(enabled) }
+				colorController()
+			}
 		}
-		// endregion
+	}
 
-		// region Glacite Mineshaft
-		buildGroup(tr("nobaaddons.config.mining.glaciteMineshaft", "Glacite Mineshaft")) {
+	private fun ConfigCategory.Builder.glaciteMineshaft() {
+		group(tr("nobaaddons.config.mining.glaciteMineshaft", "Glacite Mineshaft")) {
 			// region Corpses
-			label(tr("nobaaddons.config.mining.glaciteMineshaft.label.corpses", "Corpses"))
+			label { +tr("nobaaddons.config.mining.glaciteMineshaft.label.corpses", "Corpses") }
 
-			val locate = boolean(
-				tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator", "Locate Corpses"),
-				tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator.tooltip", "Marks corpses with a waypoint when they're in your line of sight"),
-				default = defaults.mining.glaciteMineshaft.corpseLocator,
-				property = config.mining.glaciteMineshaft::corpseLocator
-			)
-			boolean(
-				tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpses", "Auto Share Corpses"),
-				tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpses.tooltip", "Automatically shares the coordinates of the nearest corpse within 5 blocks in party chat"),
-				default = defaults.mining.glaciteMineshaft.autoShareCorpses,
-				property = config.mining.glaciteMineshaft::autoShareCorpses
-			) require { option(locate) }
+			val locate = add({ mining.glaciteMineshaft::corpseLocator }) {
+				name = tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator", "Locate Corpses")
+				descriptionText = tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator.tooltip", "Marks corpses with a waypoint when they're in your line of sight")
+				booleanController()
+			}
+			add({ mining.glaciteMineshaft::autoShareCorpses }) {
+				name = tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpses", "Auto Share Corpses")
+				descriptionText = tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpses.tooltip", "Automatically shares the coordinates of the nearest corpse within 5 blocks in party chat")
+				require { option(locate) }
+				booleanController()
+			}
 			// endregion
 
 			// region Miscellaneous
-			label(CommonText.Config.LABEL_MISC)
+			label { +CommonText.Config.LABEL_MISC }
 
-			boolean(
-				tr("nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint", "Entrance Waypoint"),
-				tr("nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint.tooltip", "Adds a waypoint at the mineshaft entrance"),
-				default = defaults.mining.glaciteMineshaft.entranceWaypoint,
-				property = config.mining.glaciteMineshaft::entranceWaypoint
-			)
-			boolean(
-				tr("nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint", "Ladder Waypoint"),
-				tr("nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint.tooltip", "Adds a waypoint at the bottom of the entrance ladder shaft"),
-				default = defaults.mining.glaciteMineshaft.ladderWaypoint,
-				property = config.mining.glaciteMineshaft::ladderWaypoint
-			)
+			add({ mining.glaciteMineshaft::entranceWaypoint }) {
+				name = tr("nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint", "Entrance Waypoint")
+				descriptionText = tr("nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint.tooltip", "Adds a waypoint at the mineshaft entrance")
+				booleanController()
+			}
+			add({ mining.glaciteMineshaft::ladderWaypoint }) {
+				name = tr("nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint", "Ladder Waypoint")
+				descriptionText = tr("nobaaddons.config.mining.glaciteMineshaft.ladderWaypoint.tooltip", "Adds a waypoint at the bottom of the entrance ladder shaft")
+				booleanController()
+			}
 			// endregion
 		}
-		// endregion
 	}
 }

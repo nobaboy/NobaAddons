@@ -7,6 +7,7 @@ import net.minecraft.text.Text
 class LabelBuilder {
 	internal val text: MutableList<Text> = mutableListOf()
 
+	// abusing kotlin language features, simply for the hell of it
 	operator fun Text.unaryPlus() {
 		text.add(this)
 	}
