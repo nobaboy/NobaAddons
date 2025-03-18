@@ -19,6 +19,7 @@ class LabelBuilder {
  * Create and add a new [LabelOption] to the current [OptionAddable]
  *
  * ## Example
+ *
  * ```kt
  * label {
  *     +Text.literal("Shello!")

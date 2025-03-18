@@ -17,11 +17,11 @@ private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.RO
 /**
  * Attempts to load the associated [AbstractConfig], logging an error and renaming the config file if it fails.
  */
-fun AbstractConfig.safeLoad(pathSupplier: AbstractConfig.() -> Path = { (this as AbstractConfigAccessor).callGetPath() }) {
+fun AbstractConfig.safeLoad(pathSupplier: () -> Path = { (this as AbstractConfigAccessor).callGetPath() }) {
 	try {
 		load()
 	} catch(ex: Throwable) {
-		val path = pathSupplier(this)
+		val path = pathSupplier()
 		ErrorManager.logError("Failed to load a config file", ex)
 
 		val date = DATE_FORMATTER.format(ZonedDateTime.now())
