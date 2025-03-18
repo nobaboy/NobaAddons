@@ -47,6 +47,7 @@ class JoinInstanceCommands : ChatCommand(2.seconds) {
 			"t" -> "kuudra_${kuudraTiers[tier]}"
 			else -> throw MatchException(null, null)
 		}
+
 		ChatUtils.addMessage(tr("nobaaddons.chat.partyCommands.joiningInstance", "Joining ${type.uppercase()}$tier"))
 		ChatUtils.queueCommand("joininstance $instanceName")
 		startCooldown()
