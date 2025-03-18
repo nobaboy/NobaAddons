@@ -88,7 +88,7 @@ object CompactSlayerMessages {
 		if(config.removeLastMessage) {
 			lastMessage?.remove()
 		}
-		lastMessage = ChatUtils.addMessage(compile(), prefix = false, color = null)
+		lastMessage = ChatUtils.addAndCaptureMessage(compile(), prefix = false, color = null)
 	}
 
 	// Completing a quest with auto slayer:
