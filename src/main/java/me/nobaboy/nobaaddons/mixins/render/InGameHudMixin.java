@@ -13,6 +13,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.function.Function;
 
@@ -37,11 +38,11 @@ abstract class InGameHudMixin {
 		return true;
 	}
 
-	@WrapWithCondition(method = "renderHealthBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawHeart(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/gui/hud/InGameHud$HeartType;IIZZZ)V"))
-	public boolean nobaaddons$hideAbsorptionHearts(InGameHud instance, DrawContext context, InGameHud.HeartType type, int x, int y, boolean hardcore, boolean blinking, boolean half) {
+	@ModifyVariable(method = "renderHealthBar", at = @At("HEAD"), argsOnly = true, ordinal = 6)
+	public int nobaaddons$hideAbsorptionHearts(int absorption) {
 		if(SkyBlockAPI.inSkyBlock() && NobaConfig.INSTANCE.getUiAndVisuals().getRenderingTweaks().getHideAbsorptionHearts()) {
-			return type != InGameHud.HeartType.ABSORBING;
+			return 0;
 		}
-		return true;
+		return absorption;
 	}
 }
