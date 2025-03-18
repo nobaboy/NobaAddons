@@ -10,6 +10,6 @@ data class HoppityData(val eggLocations: Map<SkyBlockIsland, List<NobaVec>>) {
 	companion object {
 		val HOPPITY by Repo.create("data/hoppity.json", serializer())
 
-		fun getEggsByIsland(island: SkyBlockIsland) = HOPPITY?.eggLocations[island]
+		fun getEggsByIsland(island: SkyBlockIsland): List<NobaVec>? = HOPPITY?.eggLocations[island]
 	}
 }

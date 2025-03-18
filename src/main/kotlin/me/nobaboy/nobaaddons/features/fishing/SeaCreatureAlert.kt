@@ -33,7 +33,7 @@ object SeaCreatureAlert {
 			HypixelCommands.partyChat("[NobaAddons] Caught a ${seaCreature.displayName}!")
 		}
 
-		RenderUtils.drawTitle(text, (seaCreature.rarity.color ?: NobaColor.GOLD))
+		RenderUtils.drawTitle(text, (seaCreature.rarity.color ?: NobaColor.GOLD), id = "sea_creature_alert")
 		config.notificationSound.play()
 	}
 
