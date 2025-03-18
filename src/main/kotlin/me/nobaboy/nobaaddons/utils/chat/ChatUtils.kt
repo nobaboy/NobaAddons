@@ -75,9 +75,8 @@ object ChatUtils {
 	 * Add a chat message to the player's chat
 	 */
 	fun addMessage(message: Text, prefix: Boolean = true, color: Formatting? = Formatting.WHITE) {
-		val client = MinecraftClient.getInstance()
-		if(!client.isOnThread) {
-			client.execute { addMessage(message, prefix, color) }
+		if(!MCUtils.client.isOnThread) {
+			MCUtils.client.execute { addMessage(message, prefix, color) }
 			return
 		}
 
