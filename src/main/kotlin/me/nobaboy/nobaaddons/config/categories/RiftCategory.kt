@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requiresAny
+import me.nobaboy.nobaaddons.config.util.require
 import me.nobaboy.nobaaddons.utils.tr
 
 object RiftCategory {
@@ -34,7 +34,7 @@ object RiftCategory {
 				tr("nobaaddons.config.rift.timers.warpTarget.tooltip", "Where clicking on the sent chat message should warp you"),
 				default = defaults.rift.warpTarget,
 				property = config.rift::warpTarget
-			) requiresAny listOf(infusion, ss)
+			) require { option(infusion) or option(ss) }
 		}
 	}
 }

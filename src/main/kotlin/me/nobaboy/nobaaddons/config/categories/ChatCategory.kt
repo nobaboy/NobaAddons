@@ -1,12 +1,15 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
+import me.nobaboy.nobaaddons.config.util.add
+import me.nobaboy.nobaaddons.config.util.group
+import me.nobaboy.nobaaddons.config.util.booleanController
+import me.nobaboy.nobaaddons.config.util.category
+import me.nobaboy.nobaaddons.config.util.enumController
+import me.nobaboy.nobaaddons.config.util.label
+import me.nobaboy.nobaaddons.config.util.require
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -14,22 +17,25 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
 object ChatCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.chat", "Chat")) {
+	fun create(defaults: NobaConfig, config: NobaConfig) = category(tr("nobaaddons.config.chat", "Chat")) {
 		// region Copy Chat
-		buildGroup(tr("nobaaddons.config.chat.copyChat", "Copy Chat")) {
-			val enabled = boolean(CommonText.Config.ENABLED, default = defaults.chat.copyChat.enabled, property = config.chat.copyChat::enabled)
-			cycler(
-				tr("nobaaddons.config.chat.copyChat.mode", "Copy Chat With"),
-				default = defaults.chat.copyChat.mode,
-				property = config.chat.copyChat::mode
-			) requires enabled
+		group(tr("nobaaddons.config.chat.copyChat", "Copy Chat")) {
+			val enabled = add({ chat.copyChat::enabled }) {
+				name = CommonText.Config.ENABLED
+				booleanController()
+			}
+			add({ chat.copyChat::mode }) {
+				name = tr("nobaaddons.config.chat.copyChat.mode", "Copy Chat With")
+				enumController()
+				require { option(enabled) }
+			}
 		}
 		// endregion
 
 		// region Alerts
-		buildGroup(tr("nobaaddons.config.chat.alerts", "Alerts")) {
+		group(tr("nobaaddons.config.chat.alerts", "Alerts")) {
 			// region Crimson Isle
-			label(CommonText.Config.LABEL_CRIMSON_ISLE)
+			label { +CommonText.Config.LABEL_CRIMSON_ISLE }
 
 			boolean(
 				tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn", "Alert Mythic Sea Creature Catches"),
@@ -48,9 +54,9 @@ object ChatCategory {
 		// endregion
 
 		// region Filters
-		buildGroup(tr("nobaaddons.config.chat.filters", "Filters")) {
+		group(tr("nobaaddons.config.chat.filters", "Filters")) {
 			// region Crimson Isle
-			label(CommonText.Config.LABEL_CRIMSON_ISLE)
+			label { +CommonText.Config.LABEL_CRIMSON_ISLE }
 
 			fun abilityDamageTitle(source: Text) = tr("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Hide $source Damage")
 			fun abilityDamageDescription(source: Text) = tr("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Hides the ability damage message from $source")
@@ -100,7 +106,7 @@ object ChatCategory {
 			// endregion
 
 			// region Mobs
-			label(CommonText.Config.LABEL_MOBS)
+			label { +CommonText.Config.LABEL_MOBS }
 
 			boolean(
 				tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage", "Hide Sea Creature Catch Message"),
@@ -117,7 +123,7 @@ object ChatCategory {
 			// endregion
 
 			// region Dungeons
-			label(CommonText.Config.LABEL_DUNGEONS)
+			label { +CommonText.Config.LABEL_DUNGEONS }
 
 			cycler(
 				tr("nobaaddons.config.chat.filters.blessingMessage", "Blessing Message"),
@@ -149,7 +155,7 @@ object ChatCategory {
 			// endregion
 
 			// region Miscellaneous
-			label(CommonText.Config.LABEL_MISC)
+			label { +CommonText.Config.LABEL_MISC }
 
 			boolean(
 				tr("nobaaddons.config.chat.filters.hideTipMessages", "Hide Tip Messages"),
@@ -168,9 +174,9 @@ object ChatCategory {
 		// endregion
 
 		// region Chat Commands
-		buildGroup(tr("nobaaddons.config.chat.chatCommands", "Chat Commands")) {
+		group(tr("nobaaddons.config.chat.chatCommands", "Chat Commands")) {
 			// region DM
-			label(tr("nobaaddons.config.chat.chatCommands.label.dm", "DM Commands"))
+			label { +tr("nobaaddons.config.chat.chatCommands.label.dm", "DM Commands") }
 
 			val helpTitle = tr("nobaaddons.config.chat.chatCommands.help", "!help Command")
 			val helpDescription = tr("nobaaddons.config.chat.chatCommands.help.tooltip", "Responds with a list of available commands")
@@ -188,28 +194,28 @@ object ChatCategory {
 				helpTitle, helpDescription,
 				default = defaults.chat.chatCommands.dm.help,
 				property = config.chat.chatCommands.dm::help
-			) requires dmEnabled
+			) require { option(dmEnabled) }
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.dm.warpMe", "!warpme Command"),
 				tr("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip", "Warps the messaging player to your lobby"),
 				default = defaults.chat.chatCommands.dm.warpMe,
 				property = config.chat.chatCommands.dm::warpMe
-			) requires dmEnabled
+			) require { option(dmEnabled) }
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.dm.partyMe", "!partyme Command"),
 				tr("nobaaddons.config.chat.chatCommands.dm.partyMe.tooltip", "Invites the messaging player to your party"),
 				default = defaults.chat.chatCommands.dm.partyMe,
 				property = config.chat.chatCommands.dm::partyMe
-			) requires dmEnabled
+			) require { option(dmEnabled) }
 			boolean(
 				warpOutTitle, warpOutDescription,
 				default = defaults.chat.chatCommands.dm.warpOut,
 				property = config.chat.chatCommands.dm::warpOut
-			) requires dmEnabled
+			) require { option(dmEnabled) }
 			// endregion
 
 			// region Party
-			label(tr("nobaaddons.config.chat.chatCommands.label.party", "Party Commands"))
+			label { +tr("nobaaddons.config.chat.chatCommands.label.party", "Party Commands") }
 
 			val partyEnabled = boolean(
 				CommonText.Config.ENABLED,
@@ -221,41 +227,41 @@ object ChatCategory {
 				helpTitle, helpDescription,
 				default = defaults.chat.chatCommands.party.help,
 				property = config.chat.chatCommands.party::help
-			) requires partyEnabled
+			) require { option(partyEnabled) }
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.allInvite", "!allinvite Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip", "Runs '/p settings allinvite' when used if you're the party leader"),
 				default = defaults.chat.chatCommands.party.allInvite,
 				property = config.chat.chatCommands.party::allInvite
-			) requires partyEnabled
+			) require { option(partyEnabled) }
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.transfer", "!transfer Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.transfer.tooltip", "Transfers the party to the player using the command (or the specified player, if any) if you're the party leader"),
 				default = defaults.chat.chatCommands.party.transfer,
 				property = config.chat.chatCommands.party::transfer
-			) requires partyEnabled
+			) require { option(partyEnabled) }
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.warp", "!warp Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.warp.tooltip", "Warps the party to your current lobby (with an optional seconds delay) if you're the leader"),
 				default = defaults.chat.chatCommands.party.warp,
 				property = config.chat.chatCommands.party::warp
-			) requires partyEnabled
+			) require { option(partyEnabled) }
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.coords", "!coords Command"),
 				tr("nobaaddons.config.chat.chatCommands.party.coords.tooltip", "Responds with your current in-game coordinates"),
 				default = defaults.chat.chatCommands.party.coords,
 				property = config.chat.chatCommands.party::coords
-			) requires partyEnabled
+			) require { option(partyEnabled) }
 			boolean(
 				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced", "Instance Commands"),
 				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced.tooltip", "Commands such as !m6 (Master Mode Catacombs), !f7 (Catacombs), !t5 (Kuudra), etc."),
 				default = defaults.chat.chatCommands.party.joinInstanced,
 				property = config.chat.chatCommands.party::joinInstanced
-			) requires partyEnabled
+			) require { option(partyEnabled) }
 			// endregion
 
 			// region Guild
-			label(tr("nobaaddons.config.chat.chatCommands.label.guild", "Guild Command"))
+			label { +tr("nobaaddons.config.chat.chatCommands.label.guild", "Guild Command") }
 
 			val guildEnabled = boolean(
 				CommonText.Config.ENABLED,
@@ -267,12 +273,12 @@ object ChatCategory {
 				helpTitle, helpDescription,
 				default = defaults.chat.chatCommands.guild.help,
 				property = config.chat.chatCommands.guild::help
-			) requires guildEnabled
+			) require { option(guildEnabled) }
 			boolean(
 				warpOutTitle, warpOutDescription,
 				default = defaults.chat.chatCommands.guild.warpOut,
 				property = config.chat.chatCommands.guild::warpOut
-			) requires guildEnabled
+			) require { option(guildEnabled) }
 			// endregion
 		}
 		// endregion

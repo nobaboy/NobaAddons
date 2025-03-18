@@ -48,6 +48,8 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 		@JvmField
 		val INSTANCE = NobaConfig()
 
+		val DEFAULTS get() = NobaConfig()
+
 		fun getConfigScreen(parent: Screen?): Screen {
 			val defaults = NobaConfig()
 
@@ -65,7 +67,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 				category(RiftCategory.create(defaults, INSTANCE))
 				category(ChatCategory.create(defaults, INSTANCE))
 				category(QOLCategory.create(defaults, INSTANCE))
-				category(ApiCategory.create(defaults, INSTANCE))
+				category(ApiCategory.create())
 
 				save(INSTANCE::save)
 			}.build().generateScreen(parent)

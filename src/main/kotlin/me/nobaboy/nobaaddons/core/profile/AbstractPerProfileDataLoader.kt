@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.core.profile
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
+import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import java.util.UUID
 

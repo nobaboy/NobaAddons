@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
+import me.nobaboy.nobaaddons.config.util.require
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
@@ -36,7 +36,7 @@ object FishingCategory {
 				tr("nobaaddons.config.fishing.bobberTimer.crimsonIsleOnly", "Show on Crimson Isle Only"),
 				default = defaults.fishing.bobberTimer.crimsonIsleOnly,
 				property = config.fishing.bobberTimer::crimsonIsleOnly
-			) requires enabled
+			) require { option(enabled) }
 		}
 		// endregion
 
@@ -55,13 +55,13 @@ object FishingCategory {
 				tr("nobaaddons.config.fishing.trophyFishing.compactCatches.tooltip", "Removes the previous catch message of the same trophy fish & rarity while enabled; note that this may conflict with certain compact chat mods."),
 				default = defaults.fishing.trophyFishing.compactMessages,
 				property = config.fishing.trophyFishing::compactMessages,
-			) requires modify
+			) require { option(modify) }
 			cycler(
 				tr("nobaaddons.config.fishing.trophyFishing.compactMaxRarity", "Compact Max Rarity"),
 				tr("nobaaddons.config.fishing.trophyFishing.compactMaxRarity.tooltip", "The maximum rarity to compact catch messages for. If this is set to Diamond, this will effectively compact all catch messages."),
 				default = defaults.fishing.trophyFishing.compactMaxRarity,
 				property = config.fishing.trophyFishing::compactMaxRarity,
-			) requires listOf(modify, compact)
+			) require { option(modify) and option(compact) }
 		}
 		// endregion
 
@@ -77,31 +77,31 @@ object FishingCategory {
 				tr("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity.tooltip", "Uses the sea creature's name instead when displaying the notification, instead of 'Legendary Catch!'"),
 				default = defaults.fishing.seaCreatureAlert.nameInsteadOfRarity,
 				property = config.fishing.seaCreatureAlert::nameInsteadOfRarity
-			) requires enabled
+			) require { option(enabled) }
 			cycler(
 				tr("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity", "Minimum Rarity"),
 				tr("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity.tooltip", "The minimum rarity to display a catch notification for"),
 				default = defaults.fishing.seaCreatureAlert.minimumRarity,
 				property = config.fishing.seaCreatureAlert::minimumRarity,
 				onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray()
-			) requires enabled
+			) require { option(enabled) }
 			boolean(
 				tr("nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare", "Carrot King is Rare"),
 				tr("nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare.tooltip", "Carrot King will be considered rare even if the above minimum rarity isn't low enough for it (since not many people fish for it)"),
 				default = defaults.fishing.seaCreatureAlert.carrotKingIsRare,
 				property = config.fishing.seaCreatureAlert::carrotKingIsRare
-			) requires enabled
+			) require { option(enabled) }
 			boolean(
 				tr("nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat", "Announce in Party Chat"),
 				tr("nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat.tooltip", "A chat message will also be sent in party chat when catching a rare creature"),
 				default = defaults.fishing.seaCreatureAlert.announceInPartyChat,
 				property = config.fishing.seaCreatureAlert::announceInPartyChat
-			) requires enabled
+			) require { option(enabled) }
 			cycler(
 				CommonText.Config.NOTIFICATION_SOUND,
 				default = defaults.fishing.seaCreatureAlert.notificationSound,
 				property = config.fishing.seaCreatureAlert::notificationSound
-			) requires enabled
+			) require { option(enabled) }
 		}
 		// endregion
 
@@ -116,12 +116,12 @@ object FishingCategory {
 				CommonText.Config.HIGHLIGHT_COLOR,
 				default = defaults.fishing.highlightThunderSparks.highlightColor,
 				property = config.fishing.highlightThunderSparks::highlightColor
-			) requires enabled
+			) require { option(enabled) }
 			boolean(
 				tr("nobaaddons.config.fishing.highlightThunderSparks.showText", "Show Text"),
 				default = defaults.fishing.highlightThunderSparks.showText,
 				property = config.fishing.highlightThunderSparks::showText
-			) requires enabled
+			) require { option(enabled) }
 		}
 		// endregion
 	}

@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
+import me.nobaboy.nobaaddons.config.util.require
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
@@ -23,7 +23,7 @@ object MiningCategory {
 				CommonText.Config.ALERT_COLOR,
 				default = defaults.mining.wormAlert.alertColor,
 				property = defaults.mining.wormAlert::alertColor
-			) requires enabled
+			) require { option(enabled) }
 		}
 		// endregion
 
@@ -43,7 +43,7 @@ object MiningCategory {
 				tr("nobaaddons.config.mining.glaciteMineshaft.autoShareCorpses.tooltip", "Automatically shares the coordinates of the nearest corpse within 5 blocks in party chat"),
 				default = defaults.mining.glaciteMineshaft.autoShareCorpses,
 				property = config.mining.glaciteMineshaft::autoShareCorpses
-			) requires locate
+			) require { option(locate) }
 			// endregion
 
 			// region Miscellaneous

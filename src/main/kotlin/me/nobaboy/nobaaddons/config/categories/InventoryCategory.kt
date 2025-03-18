@@ -2,16 +2,15 @@ package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.availableIf
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.color
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.tickBox
 import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.config.util.require
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentDisplayMode
 import me.nobaboy.nobaaddons.ui.TextShadow
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -176,38 +175,38 @@ object InventoryCategory {
 				tr("nobaaddons.config.inventory.enchantmentTooltips.replaceRomanNumerals.tooltip", "Enchantment tiers will be replaced with their number representation instead of the original roman numerals used"),
 				default = defaults.inventory.enchantmentTooltips.replaceRomanNumerals,
 				property = config.inventory.enchantmentTooltips::replaceRomanNumerals
-			) requires enabled
+			) require { option(enabled) }
 			val display = cycler(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.displayMode", "Display Mode"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.displayMode.tooltip", "Changes how enchantments are displayed on items; Default will follow roughly the same behavior as Hypixel and compact at 6 or more enchants, while Compact will always condense them into as few lines as possible."),
 				default = defaults.inventory.enchantmentTooltips.displayMode,
 				property = config.inventory.enchantmentTooltips::displayMode
-			) requires enabled
+			) require { option(enabled) }
 			boolean(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.showDescriptions", "Show Descriptions"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.showDescriptions.tooltip", "Controls whether enchant descriptions will be shown when enchantments aren't compacted (only when Hypixel adds the descriptions); this does not affect enchanted books with a single enchantment, and is not applicable with Compact display mode."),
 				default = defaults.inventory.enchantmentTooltips.showDescriptions,
 				property = config.inventory.enchantmentTooltips::showDescriptions
-			).availableIf(enabled, display) { display.pendingValue() != EnchantmentDisplayMode.COMPACT && enabled.pendingValue() }
+			) require { option(enabled) and option(display) { it != EnchantmentDisplayMode.COMPACT } }
 			boolean(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.showStacking", "Show Stacking Enchant Progress"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.showStacking.tooltip", "Shows the total value (and progress to next tier if applicable) on stacking enchantments like Champion, Expertise, etc."),
 				default = defaults.inventory.enchantmentTooltips.showStackingProgress,
 				property = config.inventory.enchantmentTooltips::showStackingProgress
-			) requires enabled
+			) require { option(enabled) }
 
 			color(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.maxColor", "Max Enchant Color"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.maxColor.tooltip", "The color used for enchantments at their maximum level"),
 				default = defaults.inventory.enchantmentTooltips.maxColor,
 				property = config.inventory.enchantmentTooltips::maxColor
-			) requires enabled
+			) require { option(enabled) }
 			color(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.goodColor", "Good Enchant Color"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.goodColor.tooltip", "The color used for enchantments that are above their max normally obtainable level"),
 				default = defaults.inventory.enchantmentTooltips.goodColor,
 				property = config.inventory.enchantmentTooltips::goodColor
-			) requires enabled
+			) require { option(enabled) }
 			color(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.averageColor", "Max Normally Obtainable Enchant Color"),
 				// if only mc-auto-translations supported splitting strings onto multiple lines :(
@@ -217,13 +216,13 @@ object InventoryCategory {
 				),
 				default = defaults.inventory.enchantmentTooltips.averageColor,
 				property = config.inventory.enchantmentTooltips::averageColor
-			) requires enabled
+			) require { option(enabled) }
 			color(
 				tr("nobaaddons.config.inventory.enchantmentTooltips.badColor", "Bad Enchant Color"),
 				tr("nobaaddons.config.inventory.enchantmentTooltips.badColor.tooltip", "The color used for enchantments that aren't at any of the above tiers"),
 				default = defaults.inventory.enchantmentTooltips.badColor,
 				property = config.inventory.enchantmentTooltips::badColor
-			) requires enabled
+			) require { option(enabled) }
 		}
 		// endregion
 
@@ -242,12 +241,12 @@ object InventoryCategory {
 				default = defaults.inventory.itemPickupLog.timeoutSeconds,
 				property = defaults.inventory.itemPickupLog::timeoutSeconds,
 				format = CommonText.Config::seconds
-			) requires enabled
+			) require { option(enabled) }
 			cycler(
 				tr("nobaaddons.config.inventory.itemPickupLog.style", "Text Style"),
 				default = TextShadow.SHADOW,
 				property = UISettings.itemPickupLog::textShadow
-			) requires enabled
+			) require { option(enabled) }
 		}
 		// endregion
 	}

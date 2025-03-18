@@ -5,8 +5,8 @@ import me.nobaboy.nobaaddons.config.NobaConfigUtils
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
 import me.nobaboy.nobaaddons.config.NobaConfigUtils.slider
+import me.nobaboy.nobaaddons.config.util.require
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.darkAqua
@@ -92,7 +92,7 @@ object QOLCategory {
 				min = 2,
 				max = 10,
 				step = 1
-			) requires reduce
+			) require { option(reduce) }
 			boolean(
 				tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport", "Auto Unlock Mouse on Teleport"),
 				tr("nobaaddons.config.qol.garden.autoUnlockMouseOnTeleport.tooltip", "Automatically unlocks your mouse when teleporting more than 5 blocks if locked with $lockMouseCommand"),
