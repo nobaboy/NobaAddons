@@ -144,13 +144,13 @@ object DebugCommands {
 	}
 
 	@Command
-	suspend fun sendAsyncChatMessage(ctx: Context) {
+	suspend fun sendAsyncChatMessage() {
 		delay(0L) // just to ensure that kotlin doesn't try to optimize the suspend out
 		ChatUtils.addMessage("boat goes binted")
 	}
 
 	@Command
-	fun updateNotification(ctx: Context) {
+	fun updateNotification() {
 		UpdateNotifier.sendUpdateNotification()
 	}
 
