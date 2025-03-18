@@ -5,6 +5,7 @@ import dev.isxander.yacl3.api.controller.ColorControllerBuilder
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder
 import dev.isxander.yacl3.api.controller.StringControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
+import net.minecraft.text.Text
 import java.awt.Color
 
 fun OptionBuilder<Boolean>.booleanController() {
@@ -29,4 +30,8 @@ fun <T : Enum<T>> OptionBuilder<T>.enumController(onlyInclude: Array<T>) {
 
 fun OptionBuilder<Color>.colorController(allowAlpha: Boolean = false) {
 	controller = { ColorControllerBuilder.create(it).allowAlpha(allowAlpha) }
+}
+
+fun OptionBuilder<Int>.intSliderController(min: Int, max: Int, step: Int = 1, format: ((Int) -> Text)? = null) {
+	//
 }

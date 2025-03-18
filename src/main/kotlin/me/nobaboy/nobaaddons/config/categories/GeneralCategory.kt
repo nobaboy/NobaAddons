@@ -1,31 +1,26 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
+import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.tr
 
 object GeneralCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.general", "General")) {
-		boolean(
-			tr("nobaaddons.config.general.allowKeybindsOutsideSkyBlock", "Allow Keybinds Outside SkyBlock"),
-			tr("nobaaddons.config.general.allowKeybindsOutsideSkyBlock.tooltip", "Enables the use of keybinds while not in SkyBlock"),
-			default = defaults.general.allowKeybindsOutsideSkyBlock,
-			property = config.general::allowKeybindsOutsideSkyBlock
-		)
+	fun create() = category(tr("nobaaddons.config.general", "General")) {
+		add({ general::allowKeybindsOutsideSkyBlock }) {
+			name = tr("nobaaddons.config.general.allowKeybindsOutsideSkyBlock", "Allow Keybinds Outside SkyBlock")
+			descriptionText = tr("nobaaddons.config.general.allowKeybindsOutsideSkyBlock.tooltip", "Enables the use of keybinds while not in SkyBlock")
+			booleanController()
+		}
 
-		boolean(
-			tr("nobaaddons.config.general.wikiCommandAutoOpen", "Auto Open /swiki Results"),
-			tr("nobaaddons.config.general.wikiCommandAutoOpen.tooltip", "Automatically opens your browser with the page from /swiki"),
-			default = defaults.general.wikiCommandAutoOpen,
-			property = config.general::wikiCommandAutoOpen
-		)
+		add({ general::wikiCommandAutoOpen }) {
+			name = tr("nobaaddons.config.general.wikiCommandAutoOpen", "Auto Open /swiki Results")
+			descriptionText = tr("nobaaddons.config.general.wikiCommandAutoOpen.tooltip", "Automatically opens your browser with the page from /swiki")
+			booleanController()
+		}
 
-		boolean(
-			tr("nobaaddons.config.general.updateNotifier", "Update Notifier"),
-			tr("nobaaddons.config.general.updateNotifier.tooltip", "Sends a message in chat when a new update is available"),
-			default = defaults.general.updateNotifier,
-			property = config.general::updateNotifier
-		)
+		add({ general::updateNotifier }) {
+			name = tr("nobaaddons.config.general.updateNotifier", "Update Notifier")
+			descriptionText = tr("nobaaddons.config.general.updateNotifier.tooltip", "Sends a message in chat when a new update is available")
+			booleanController()
+		}
 	}
 }

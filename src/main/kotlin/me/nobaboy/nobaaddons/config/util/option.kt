@@ -14,14 +14,8 @@ import kotlin.reflect.KMutableProperty
 /**
  * Generic config option builder
  */
-class OptionBuilder<T>(
-	val getter: (NobaConfig) -> T,
-	val setter: (NobaConfig, T) -> Unit,
-) {
-	constructor(property: NobaConfig.() -> KMutableProperty<T>) : this(
-		getter = { property(it).getter.call() },
-		setter = { config, value -> property(config).setter.call(value) },
-	)
+class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
+	internal constructor(property: NobaConfig.() -> KMutableProperty<T>) : this(binding = property.binding())
 
 	lateinit var name: Text
 	var description: OptionDescription? = null
@@ -38,7 +32,7 @@ class OptionBuilder<T>(
 		val option = Option.createBuilder<T>().apply {
 			name(name)
 			description?.let(::description)
-			binding(Binding.generic(getter(NobaConfig.DEFAULTS), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) }))
+			binding(binding)
 			controller(controller)
 		}.build()
 
@@ -46,6 +40,18 @@ class OptionBuilder<T>(
 
 		return option
 	}
+}
+
+fun <T> (NobaConfig.() -> KMutableProperty<T>).binding(): Binding<T> {
+	val getter: (NobaConfig) -> T = { this(it).getter.call() }
+	val setter: (NobaConfig, T) -> Unit = { config, value -> this(config).setter.call(value) }
+	return Binding.generic(getter(NobaConfig.DEFAULTS), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) })
+}
+
+fun <A, B> (NobaConfig.() -> KMutableProperty<A>).binding(biMapper: BiMapper<A, B>): Binding<B> {
+	val getter: (NobaConfig) -> B = { biMapper.to(this(it).getter.call()) }
+	val setter: (NobaConfig, B) -> Unit = { config, value -> this(config).setter.call(biMapper.from(value)) }
+	return Binding.generic(getter(NobaConfig.DEFAULTS), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) })
 }
 
 /**
@@ -56,18 +62,6 @@ var OptionBuilder<*>.descriptionText: Text?
 	set(value) { description = value?.let { OptionDescription.of(it) } }
 
 /**
- * Create a new config option, mapping the stored value type to another for use in YACL.
- */
-fun <A, B> OptionAddable.add(
-	property: NobaConfig.() -> KMutableProperty<A>,
-	mapping: BiMapper<A, B>,
-	builder: OptionBuilder<B>.() -> Unit,
-): Option<B> = OptionBuilder<B>(
-	getter = { mapping.to(property(it).getter.call()) },
-	setter = { config, value -> property(config).setter.call(mapping.from(value)) }
-).apply(builder).build().also(::option)
-
-/**
  * Create a new config option
  */
 fun <T> OptionAddable.add(
@@ -75,6 +69,21 @@ fun <T> OptionAddable.add(
 	builder: OptionBuilder<T>.() -> Unit,
 ): Option<T> =
 	OptionBuilder<T>(property).apply(builder).build().also(::option)
+
+/**
+ * Create a new config option, mapping the stored value type to another for use in YACL.
+ */
+fun <A, B> OptionAddable.add(
+	property: NobaConfig.() -> KMutableProperty<A>,
+	mapping: BiMapper<A, B>,
+	builder: OptionBuilder<B>.() -> Unit,
+): Option<B> = OptionBuilder<B>(property.binding(mapping)).apply(builder).build().also(::option)
+
+/**
+ * Create a new config option with a custom [Binding]
+ */
+fun <T> OptionAddable.add(binding: Binding<T>, builder: OptionBuilder<T>.() -> Unit): Option<T> =
+	OptionBuilder<T>(binding).apply(builder).build().also(::option)
 
 /**
  * Create a new button option

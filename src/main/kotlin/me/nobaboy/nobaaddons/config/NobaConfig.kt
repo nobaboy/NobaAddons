@@ -57,9 +57,9 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 			val defaults = NobaConfig()
 			title(CommonText.NOBAADDONS)
 
-			category(GeneralCategory.create(defaults, INSTANCE))
+			category(GeneralCategory.create())
 			category(UIAndVisualsCategory.create(defaults, INSTANCE))
-			category(InventoryCategory.create(defaults, INSTANCE))
+			category(InventoryCategory.create())
 			category(EventsCategory.create())
 			category(SlayersCategory.create(defaults, INSTANCE))
 			category(FishingCategory.create())

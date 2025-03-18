@@ -136,7 +136,13 @@ add({ property }) {
 		return add(name, description, ::createBooleanController, default, property)
 	}
 
-	@Deprecated("Use add { tickBoxController() } instead")
+	@Deprecated("Use add { tickBoxController() } instead", replaceWith = ReplaceWith("""
+add({ property }) {
+	this@OptionBuilder.name = name
+	descriptionText = description
+	tickBoxController()
+}
+	"""))
 	fun <G : OptionAddable> G.tickBox(
 		name: Text,
 		description: Text? = null,
@@ -156,7 +162,13 @@ add({ property }) {
 		return add(name, description, ::createStringController, default, property)
 	}
 
-	@Deprecated("Use add { enumController() } instead")
+	@Deprecated("Use add { enumController() } instead", replaceWith = ReplaceWith("""
+add({ property }) {
+	this@OptionBuilder.name = name
+	descriptionText = description
+	enumController()
+}
+	"""))
 	inline fun <G : OptionAddable, reified E : Enum<E>> G.cycler(
 		name: Text,
 		description: Text? = null,
@@ -199,7 +211,13 @@ add({ property }) {
 		return add(name, description, controller, default, property)
 	}
 
-	@Deprecated("Use add { colorController() } instead")
+	@Deprecated("Use add { colorController() } instead", replaceWith = ReplaceWith("""
+add({ property }) {
+	this@OptionBuilder.name = name
+	descriptionText = description
+	colorController()
+}
+	"""))
 	fun <G : OptionAddable> G.color(
 		name: Text,
 		description: Text? = null,
@@ -217,7 +235,13 @@ add({ property }) {
 		return option
 	}
 
-	@Deprecated("Use add { colorController() } instead")
+	@Deprecated("Use add { colorController() } instead", replaceWith = ReplaceWith("""
+add({ property }, BiMapper.NobaAWTColorMapper) {
+	this@OptionBuilder.name = name
+	descriptionText = description
+	colorController()
+}
+	"""))
 	fun <G : OptionAddable> G.color(
 		name: Text,
 		description: Text? = null,
