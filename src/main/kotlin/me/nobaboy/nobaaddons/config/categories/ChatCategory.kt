@@ -1,15 +1,14 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
+import dev.isxander.yacl3.api.ConfigCategory
+import me.nobaboy.nobaaddons.config.util.OptionBuilder
 import me.nobaboy.nobaaddons.config.util.add
 import me.nobaboy.nobaaddons.config.util.group
 import me.nobaboy.nobaaddons.config.util.booleanController
 import me.nobaboy.nobaaddons.config.util.category
+import me.nobaboy.nobaaddons.config.util.descriptionText
 import me.nobaboy.nobaaddons.config.util.enumController
 import me.nobaboy.nobaaddons.config.util.label
-import me.nobaboy.nobaaddons.config.util.require
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -17,8 +16,14 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
 object ChatCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = category(tr("nobaaddons.config.chat", "Chat")) {
-		// region Copy Chat
+	fun create() = category(tr("nobaaddons.config.chat", "Chat")) {
+		copyChat()
+		alerts()
+		filters()
+		chatCommands()
+	}
+
+	private fun ConfigCategory.Builder.copyChat() {
 		group(tr("nobaaddons.config.chat.copyChat", "Copy Chat")) {
 			val enabled = add({ chat.copyChat::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -30,150 +35,141 @@ object ChatCategory {
 				require { option(enabled) }
 			}
 		}
-		// endregion
+	}
 
-		// region Alerts
+	private fun ConfigCategory.Builder.alerts() {
 		group(tr("nobaaddons.config.chat.alerts", "Alerts")) {
 			// region Crimson Isle
 			label { +CommonText.Config.LABEL_CRIMSON_ISLE }
 
-			boolean(
-				tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn", "Alert Mythic Sea Creature Catches"),
-				tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip", "Sends your current location in all chat when catching a mythic sea creature"),
-				default = defaults.chat.alerts.mythicSeaCreatureSpawn,
-				property = config.chat.alerts::mythicSeaCreatureSpawn
-			)
-			boolean(
-				tr("nobaaddons.config.chat.alerts.vanquisherSpawn", "Alert Vanquisher Spawn"),
-				tr("nobaaddons.config.chat.alerts.vanquisherSpawn.tooltip", "Sends your current location in all chat when you spawn a Vanquisher"),
-				default = defaults.chat.alerts.vanquisherSpawn,
-				property = config.chat.alerts::vanquisherSpawn
-			)
+			add({ chat.alerts::mythicSeaCreatureSpawn }) {
+				name = tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn", "Alert Mythic Sea Creature Catches")
+				descriptionText = tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip", "Sends your current location in all chat when catching a mythic sea creature")
+				booleanController()
+			}
+			add({ chat.alerts::vanquisherSpawn }) {
+				name = tr("nobaaddons.config.chat.alerts.vanquisherSpawn", "Alert Vanquisher Spawn")
+				booleanController()
+			}
 			// endregion
 		}
-		// endregion
+	}
 
-		// region Filters
+	private fun OptionBuilder<Boolean>.itemAbilityFilterName(ability: Text, item: Text?) {
+		this.name = tr("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Hide $ability Damage")
+		descriptionText = tr("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Hides the ability damage message from ${item ?: ability}")
+	}
+
+	private fun ConfigCategory.Builder.filters() {
 		group(tr("nobaaddons.config.chat.filters", "Filters")) {
 			// region Crimson Isle
 			label { +CommonText.Config.LABEL_CRIMSON_ISLE }
 
-			fun abilityDamageTitle(source: Text) = tr("nobaaddons.config.chat.filters.hideAbilityDamageMessage", "Hide $source Damage")
-			fun abilityDamageDescription(source: Text) = tr("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Hides the ability damage message from $source")
+			add({ chat.filters::hideAbilityCooldownMessage }) {
+				name = tr("nobaaddons.config.chat.filters.hideAbilityCooldownMessage", "Hide Ability Cooldown Messages")
+				descriptionText = tr("nobaaddons.config.chat.filters.hideAbilityCooldownMessage.tooltip", "Hides the 'This ability is on cooldown for Xs.' message from chat")
+				booleanController()
+			}
 
-			boolean(
-				tr("nobaaddons.config.chat.filters.hideAbilityCooldownMessage", "Hide Ability Cooldown Messages"),
-				tr("nobaaddons.config.chat.filters.hideAbilityCooldownMessage.tooltip", "Hides the 'This ability is on cooldown for Xs.' message from chat"),
-				default = defaults.chat.filters.hideAbilityCooldownMessage,
-				property = config.chat.filters::hideAbilityCooldownMessage
-			)
-			boolean(
-				abilityDamageTitle(tr("nobaaddons.label.ability.implosion", "Implosion")),
-				abilityDamageDescription(tr("nobaaddons.label.ability.implosionOrImpact", "Implosion/Wither Impact")),
-				default = defaults.chat.filters.hideImplosionDamageMessage,
-				property = config.chat.filters::hideImplosionDamageMessage
-			)
-			boolean(
-				abilityDamageTitle(tr("nobaaddons.label.ability.moltenWave", "Molten Wave")),
-				abilityDamageDescription(tr("nobaaddons.label.item.midasStaff", "Midas Staff")),
-				default = defaults.chat.filters.hideMoltenWaveDamageMessage,
-				property = config.chat.filters::hideMoltenWaveDamageMessage
-			)
-			boolean(
-				abilityDamageTitle(tr("nobaaddons.label.ability.guidedBat", "Guided Bat")),
-				abilityDamageDescription(tr("nobaaddons.label.item.spiritSceptre", "Spirit Sceptre")),
-				default = defaults.chat.filters.hideGuidedBatDamageMessage,
-				property = config.chat.filters::hideGuidedBatDamageMessage
-			)
-			boolean(
-				abilityDamageTitle(tr("nobaaddons.label.ability.giantsSlam", "Giant's Slam")),
-				abilityDamageDescription(tr("nobaaddons.label.item.giantsSword", "Giant's Sword")),
-				default = defaults.chat.filters.hideGiantsSlamDamageMessage,
-				property = config.chat.filters::hideGiantsSlamDamageMessage
-			)
-			boolean(
-				abilityDamageTitle(tr("nobaaddons.label.item.lividDagger", "Livid Dagger")),
-				abilityDamageDescription(tr("nobaaddons.label.item.lividDagger", "Livid Dagger")),
-				default = defaults.chat.filters.hideThrowDamageMessage,
-				property = config.chat.filters::hideThrowDamageMessage
-			)
-			boolean(
-				abilityDamageTitle(tr("nobaaddons.label.ability.rayOfHope", "Ray of Hope")),
-				abilityDamageDescription(tr("nobaaddons.label.item.staffOfRisingSun", "Staff of the Rising Sun")),
-				default = defaults.chat.filters.hideRayOfHopeDamageMessage,
-				property = config.chat.filters::hideRayOfHopeDamageMessage
-			)
+			add({ chat.filters::hideImplosionDamageMessage }) {
+				itemAbilityFilterName(
+					tr("nobaaddons.label.ability.implosion", "Implosion"),
+					tr("nobaaddons.label.ability.implosionOrImpact", "Implosion/Wither Impact")
+				)
+				booleanController()
+			}
+			add({ chat.filters::hideMoltenWaveDamageMessage }) {
+				itemAbilityFilterName(
+					tr("nobaaddons.label.ability.moltenWave", "Molten Wave"),
+					tr("nobaaddons.label.item.midasStaff", "Midas Staff")
+				)
+				booleanController()
+			}
+			add({ chat.filters::hideGuidedBatDamageMessage }) {
+				itemAbilityFilterName(
+					tr("nobaaddons.label.ability.guidedBat", "Guided Bat"),
+					tr("nobaaddons.label.item.spiritSceptre", "Spirit Sceptre")
+				)
+				booleanController()
+			}
+			add({ chat.filters::hideGiantsSlamDamageMessage }) {
+				itemAbilityFilterName(
+					tr("nobaaddons.label.ability.giantsSlam", "Giant's Slam"),
+					tr("nobaaddons.label.item.giantsSword", "Giant's Sword")
+				)
+				booleanController()
+			}
+			add({ chat.filters::hideThrowDamageMessage }) {
+				itemAbilityFilterName(tr("nobaaddons.label.item.lividDagger", "Livid Dagger"), null)
+				booleanController()
+			}
+			add({ chat.filters::hideRayOfHopeDamageMessage }) {
+				itemAbilityFilterName(
+					tr("nobaaddons.label.ability.rayOfHope", "Ray of Hope"),
+					tr("nobaaddons.label.item.staffOfRisingSun", "Staff of the Rising Sun")
+				)
+				booleanController()
+			}
 			// endregion
 
 			// region Mobs
 			label { +CommonText.Config.LABEL_MOBS }
 
-			boolean(
-				tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage", "Hide Sea Creature Catch Message"),
-				tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip", "Hides the catch message for sea creatures of the below set rarity and under"),
-				default = defaults.chat.filters.hideSeaCreatureSpawnMessage,
-				property = config.chat.filters::hideSeaCreatureSpawnMessage
-			)
-			cycler(
-				tr("nobaaddons.config.chat.filters.seaCreatureMaximumRarity", "Hide Rarity and Below"),
-				default = defaults.chat.filters.seaCreatureMaximumRarity,
-				property = config.chat.filters::seaCreatureMaximumRarity,
-				onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray()
-			)
+			add({ chat.filters::hideSeaCreatureSpawnMessage }) {
+				name = tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage", "Hide Sea Creature Catch Message")
+				descriptionText = tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip", "Hides the catch message for sea creatures of the below set rarity and under")
+				booleanController()
+			}
+			add({ chat.filters::seaCreatureMaximumRarity }) {
+				name = tr("nobaaddons.config.chat.filters.seaCreatureMaximumRarity", "Hide Rarity and Below")
+				enumController((Rarity.COMMON..Rarity.MYTHIC).toArray())
+			}
 			// endregion
 
 			// region Dungeons
 			label { +CommonText.Config.LABEL_DUNGEONS }
 
-			cycler(
-				tr("nobaaddons.config.chat.filters.blessingMessage", "Blessing Message"),
-				default = defaults.chat.filters.blessingMessage,
-				property = config.chat.filters::blessingMessage
-			)
-			cycler(
-				tr("nobaaddons.config.chat.filters.healerOrbMessage", "Healer Orb Message"),
-				default = defaults.chat.filters.healerOrbMessage,
-				property = config.chat.filters::healerOrbMessage
-			)
-			boolean(
-				tr("nobaaddons.config.chat.filters.pickupObtainMessage", "Hide Item Obtain Messages"),
-				default = defaults.chat.filters.pickupObtainMessage,
-				property = config.chat.filters::pickupObtainMessage
-			)
-			boolean(
-				tr("nobaaddons.config.chat.filters.allowKeyMessage", "Allow Key Message"),
-				tr("nobaaddons.config.chat.filters.allowKeyMessage.tooltip", "Allows key messages even when item obtain messages are hidden"),
-				default = defaults.chat.filters.allowKeyMessage,
-				property = config.chat.filters::allowKeyMessage
-			)
-			boolean(
-				tr("nobaaddons.config.chat.filters.allow5050ItemMessage", "Allow 50/50 Item Messages"),
-				tr("nobaaddons.config.chat.filters.allow5050ItemMessage.tooltip", "Allows 50/50 item quality pickups to be shown even when item obtain messages are hidden"),
-				default = defaults.chat.filters.allow5050ItemMessage,
-				property = config.chat.filters::allow5050ItemMessage
-			)
+			add({ chat.filters::blessingMessage }) {
+				name = tr("nobaaddons.config.chat.filters.blessingMessage", "Blessing Message")
+				enumController()
+			}
+			add({ chat.filters::healerOrbMessage }) {
+				name = tr("nobaaddons.config.chat.filters.healerOrbMessage", "Healer Orb Message")
+				enumController()
+			}
+			add({ chat.filters::pickupObtainMessage }) {
+				name = tr("nobaaddons.config.chat.filters.pickupObtainMessage", "Hide Item Obtain Messages")
+				booleanController()
+			}
+			add({ chat.filters::allowKeyMessage }) {
+				name = tr("nobaaddons.config.chat.filters.allowKeyMessage", "Allow Key Message")
+				descriptionText = tr("nobaaddons.config.chat.filters.allowKeyMessage.tooltip", "Allows key messages even when item obtain messages are hidden")
+				booleanController()
+			}
+			add({ chat.filters::allow5050ItemMessage }) {
+				name = tr("nobaaddons.config.chat.filters.allow5050ItemMessage", "Allow 50/50 Item Messages")
+				descriptionText = tr("nobaaddons.config.chat.filters.allow5050ItemMessage.tooltip", "Allows 50/50 item quality pickups to be shown even when item obtain messages are hidden")
+				booleanController()
+			}
 			// endregion
 
 			// region Miscellaneous
 			label { +CommonText.Config.LABEL_MISC }
 
-			boolean(
-				tr("nobaaddons.config.chat.filters.hideTipMessages", "Hide Tip Messages"),
-				tr("nobaaddons.config.chat.filters.hideTipMessages.tooltip", "Hides messages related to /tip"),
-				default = defaults.chat.filters.hideTipMessages,
-				property = config.chat.filters::hideTipMessages
-			)
-			boolean(
-				tr("nobaaddons.config.chat.filters.hideProfileInfo", "Hide Profile Info Messages"),
-				tr("nobaaddons.config.chat.filters.hideProfileInfo.tooltip", "Hides messages showing the active profile and profile ID"),
-				default = defaults.chat.filters.hideProfileInfo,
-				property = config.chat.filters::hideProfileInfo
-			)
+			add({ chat.filters::hideTipMessages }) {
+				name = tr("nobaaddons.config.chat.filters.hideTipMessages", "Hide /tip Messages")
+				booleanController()
+			}
+			add({ chat.filters::hideProfileInfo }) {
+				name = tr("nobaaddons.config.chat.filters.hideProfileInfo", "Hide Profile Info Messages")
+				descriptionText = tr("nobaaddons.config.chat.filters.hideProfileInfo.tooltip", "Hides messages showing the active profile and profile ID")
+				booleanController()
+			}
 			// endregion
 		}
-		// endregion
+	}
 
-		// region Chat Commands
+	private fun ConfigCategory.Builder.chatCommands() {
 		group(tr("nobaaddons.config.chat.chatCommands", "Chat Commands")) {
 			// region DM
 			label { +tr("nobaaddons.config.chat.chatCommands.label.dm", "DM Commands") }
@@ -184,103 +180,104 @@ object ChatCategory {
 			val warpOutTitle = tr("nobaaddons.config.chat.chatCommands.warpOut", "!warpout Command")
 			val warpOutDescription = tr("nobaaddons.config.chat.chatCommands.warpOut.tooltip", "Warps the specified player to your lobby when used")
 
-			val dmEnabled = boolean(
-				CommonText.Config.ENABLED,
-				tr("nobaaddons.config.chat.chatCommands.dm.enabled.tooltip", "Enables chat commands when other players /msg you"),
-				default = defaults.chat.chatCommands.dm.enabled,
-				property = config.chat.chatCommands.dm::enabled
-			)
-			boolean(
-				helpTitle, helpDescription,
-				default = defaults.chat.chatCommands.dm.help,
-				property = config.chat.chatCommands.dm::help
-			) require { option(dmEnabled) }
-			boolean(
-				tr("nobaaddons.config.chat.chatCommands.dm.warpMe", "!warpme Command"),
-				tr("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip", "Warps the messaging player to your lobby"),
-				default = defaults.chat.chatCommands.dm.warpMe,
-				property = config.chat.chatCommands.dm::warpMe
-			) require { option(dmEnabled) }
-			boolean(
-				tr("nobaaddons.config.chat.chatCommands.dm.partyMe", "!partyme Command"),
-				tr("nobaaddons.config.chat.chatCommands.dm.partyMe.tooltip", "Invites the messaging player to your party"),
-				default = defaults.chat.chatCommands.dm.partyMe,
-				property = config.chat.chatCommands.dm::partyMe
-			) require { option(dmEnabled) }
-			boolean(
-				warpOutTitle, warpOutDescription,
-				default = defaults.chat.chatCommands.dm.warpOut,
-				property = config.chat.chatCommands.dm::warpOut
-			) require { option(dmEnabled) }
+			val dmEnabled = add({ chat.chatCommands.dm::enabled }) {
+				name = CommonText.Config.ENABLED
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.dm.enabled.tooltip", "Enables chat commands when other players /msg you")
+				booleanController()
+			}
+			add({ chat.chatCommands.dm::help }) {
+				name = helpTitle
+				descriptionText = helpDescription
+				require { option(dmEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.dm::warpMe }) {
+				name = tr("nobaaddons.config.chat.chatCommands.dm.warpMe", "!warpme Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip", "Warps the messaging player to your lobby")
+				require { option(dmEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.dm::partyMe }) {
+				name = tr("nobaaddons.config.chat.chatCommands.dm.partyMe", "!partyme Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.dm.partyMe.tooltip", "Invites the messaging player to your party")
+				require { option(dmEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.dm::warpOut }) {
+				name = warpOutTitle
+				descriptionText = warpOutDescription
+				require { option(dmEnabled) }
+				booleanController()
+			}
 			// endregion
 
 			// region Party
 			label { +tr("nobaaddons.config.chat.chatCommands.label.party", "Party Commands") }
 
-			val partyEnabled = boolean(
-				CommonText.Config.ENABLED,
-				tr("nobaaddons.config.chat.chatCommands.party.enabled.tooltip", "Enables chat commands in party chat"),
-				default = defaults.chat.chatCommands.party.enabled,
-				property = config.chat.chatCommands.party::enabled
-			)
-			boolean(
-				helpTitle, helpDescription,
-				default = defaults.chat.chatCommands.party.help,
-				property = config.chat.chatCommands.party::help
-			) require { option(partyEnabled) }
-			boolean(
-				tr("nobaaddons.config.chat.chatCommands.party.allInvite", "!allinvite Command"),
-				tr("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip", "Runs '/p settings allinvite' when used if you're the party leader"),
-				default = defaults.chat.chatCommands.party.allInvite,
-				property = config.chat.chatCommands.party::allInvite
-			) require { option(partyEnabled) }
-			boolean(
-				tr("nobaaddons.config.chat.chatCommands.party.transfer", "!transfer Command"),
-				tr("nobaaddons.config.chat.chatCommands.party.transfer.tooltip", "Transfers the party to the player using the command (or the specified player, if any) if you're the party leader"),
-				default = defaults.chat.chatCommands.party.transfer,
-				property = config.chat.chatCommands.party::transfer
-			) require { option(partyEnabled) }
-			boolean(
-				tr("nobaaddons.config.chat.chatCommands.party.warp", "!warp Command"),
-				tr("nobaaddons.config.chat.chatCommands.party.warp.tooltip", "Warps the party to your current lobby (with an optional seconds delay) if you're the leader"),
-				default = defaults.chat.chatCommands.party.warp,
-				property = config.chat.chatCommands.party::warp
-			) require { option(partyEnabled) }
-			boolean(
-				tr("nobaaddons.config.chat.chatCommands.party.coords", "!coords Command"),
-				tr("nobaaddons.config.chat.chatCommands.party.coords.tooltip", "Responds with your current in-game coordinates"),
-				default = defaults.chat.chatCommands.party.coords,
-				property = config.chat.chatCommands.party::coords
-			) require { option(partyEnabled) }
-			boolean(
-				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced", "Instance Commands"),
-				tr("nobaaddons.config.chat.chatCommands.party.joinInstanced.tooltip", "Commands such as !m6 (Master Mode Catacombs), !f7 (Catacombs), !t5 (Kuudra), etc."),
-				default = defaults.chat.chatCommands.party.joinInstanced,
-				property = config.chat.chatCommands.party::joinInstanced
-			) require { option(partyEnabled) }
+			val partyEnabled = add({ chat.chatCommands.party::enabled }) {
+				name = CommonText.Config.ENABLED
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.enabled.tooltip", "Enables chat commands in party chat")
+				booleanController()
+			}
+			add({ chat.chatCommands.party::help }) {
+				name = helpTitle
+				descriptionText = helpDescription
+				require { option(partyEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.party::allInvite }) {
+				name = tr("nobaaddons.config.chat.chatCommands.party.allInvite", "!allinvite Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip", "Runs '/p settings allinvite' when used if you're the party leader")
+				require { option(partyEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.party::transfer }) {
+				name = tr("nobaaddons.config.chat.chatCommands.party.transfer", "!transfer Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.transfer.tooltip", "Transfers the party to the player using the command (or the specified player, if any) if you're the party leader")
+				require { option(partyEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.party::warp }) {
+				name = tr("nobaaddons.config.chat.chatCommands.party.warp", "!warp Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.warp.tooltip", "Warps the party to your current lobby (with an optional seconds delay) if you're the leader")
+				require { option(partyEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.party::coords }) {
+				name = tr("nobaaddons.config.chat.chatCommands.party.coords", "!coords Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.coords.tooltip", "Responds with your current in-game coordinates")
+				require { option(partyEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.party::joinInstanced }) {
+				name = tr("nobaaddons.config.chat.chatCommands.party.joinInstanced", "Instance Commands")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.joinInstanced.tooltip", "Commands such as !m6 (Master Mode Catacombs), !f7 (Catacombs), !t5 (Kuudra), etc.")
+				require { option(partyEnabled) }
+				booleanController()
+			}
 			// endregion
 
 			// region Guild
 			label { +tr("nobaaddons.config.chat.chatCommands.label.guild", "Guild Command") }
 
-			val guildEnabled = boolean(
-				CommonText.Config.ENABLED,
-				tr("nobaaddons.config.chat.chatCommands.guild.enabled.tooltip", "Enables chat commands in guild chat"),
-				default = defaults.chat.chatCommands.guild.enabled,
-				property = config.chat.chatCommands.guild::enabled
-			)
-			boolean(
-				helpTitle, helpDescription,
-				default = defaults.chat.chatCommands.guild.help,
-				property = config.chat.chatCommands.guild::help
-			) require { option(guildEnabled) }
-			boolean(
-				warpOutTitle, warpOutDescription,
-				default = defaults.chat.chatCommands.guild.warpOut,
-				property = config.chat.chatCommands.guild::warpOut
-			) require { option(guildEnabled) }
+			val guildEnabled = add({ chat.chatCommands.guild::enabled }) {
+				name = CommonText.Config.ENABLED
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.guild.enabled.tooltip", "Enables chat commands in guild chat")
+				booleanController()
+			}
+			add({ chat.chatCommands.guild::help }) {
+				name = helpTitle
+				descriptionText = helpDescription
+				require { option(guildEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.guild::warpOut }) {
+				name = warpOutTitle
+				descriptionText = warpOutDescription
+				require { option(guildEnabled) }
+				booleanController()
+			}
 			// endregion
 		}
-		// endregion
 	}
 }

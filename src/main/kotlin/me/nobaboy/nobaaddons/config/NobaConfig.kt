@@ -65,7 +65,7 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 				category(MiningCategory.create(defaults, INSTANCE))
 				category(DungeonsCategory.create(defaults, INSTANCE))
 				category(RiftCategory.create(defaults, INSTANCE))
-				category(ChatCategory.create(defaults, INSTANCE))
+				category(ChatCategory.create())
 				category(QOLCategory.create(defaults, INSTANCE))
 				category(ApiCategory.create())
 

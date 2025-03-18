@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.config.categories
 
+import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.add
 import me.nobaboy.nobaaddons.config.util.group
 import me.nobaboy.nobaaddons.config.util.category
@@ -27,6 +28,10 @@ object ApiCategory {
 			+tr("nobaaddons.config.apis.disclaimer.line2", "Modifying these settings has the potential to break the mod!").yellow()
 		}
 
+		repo()
+	}
+
+	private fun ConfigCategory.Builder.repo() {
 		group(tr("nobaaddons.config.apis.repo", "Repo")) {
 			add({ repo::username }) {
 				name = tr("nobaaddons.config.apis.repo.username", "Repo Username")

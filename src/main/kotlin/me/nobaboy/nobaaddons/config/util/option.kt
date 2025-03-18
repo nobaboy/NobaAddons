@@ -62,7 +62,7 @@ fun <T> OptionAddable.add(
 	property: NobaConfig.() -> KMutableProperty<T>,
 	builder: OptionBuilder<T>.() -> Unit,
 ): Option<T> =
-	OptionBuilder<T>(property).apply(builder).build()
+	OptionBuilder<T>(property).apply(builder).build().also(::option)
 
 fun OptionAddable.button(
 	name: Text,

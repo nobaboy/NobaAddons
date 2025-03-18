@@ -25,6 +25,7 @@ import net.minecraft.text.Text
 import java.awt.Color
 import kotlin.reflect.KMutableProperty
 
+@Deprecated("Split into the config.util package")
 object NobaConfigUtils {
 	@Deprecated("")
 	fun createBooleanController(option: Option<Boolean>): BooleanControllerBuilder {
@@ -117,7 +118,15 @@ object NobaConfigUtils {
 			.also { option(it) }
 	}
 
-	@Deprecated("Use add { booleanController() } instead")
+	// intellij isn't perfect with properly interpreting this ReplaceWith (hence the this@OptionBuilder), but its accurate enough
+	// to do a lot of the really obnoxious work for me.
+	@Deprecated("Use add { booleanController() } instead", replaceWith = ReplaceWith("""
+add({ property }) {
+	this@OptionBuilder.name = name
+	descriptionText = description
+	booleanController()
+}
+	"""))
 	fun <G : OptionAddable> G.boolean(
 		name: Text,
 		description: Text? = null,
