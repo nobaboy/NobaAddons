@@ -11,6 +11,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
+import net.minecraft.client.MinecraftClient
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -73,7 +74,13 @@ object ChatUtils {
 	/**
 	 * Add a chat message to the player's chat
 	 */
-	fun addMessage(message: Text, prefix: Boolean = true, color: Formatting? = Formatting.WHITE): Message {
+	fun addMessage(message: Text, prefix: Boolean = true, color: Formatting? = Formatting.WHITE) {
+		val client = MinecraftClient.getInstance()
+		if(!client.isOnThread) {
+			client.executeSync { addMessage(message, prefix, color) }
+			return
+		}
+
 		val message = if(prefix || color != null) {
 			buildText {
 				if(prefix) append(NobaAddons.PREFIX)
@@ -82,20 +89,30 @@ object ChatUtils {
 			}
 		} else message
 
-		SHOULD_CAPTURE.set(true)
 		MCUtils.client.inGameHud.chatHud.addMessage(message)
+	}
+
+	/**
+	 * Adds a message with [addMessage], and captures the added message in a [Message] object to allow for removal
+	 * from the chat HUD later.
+	 */
+	fun addAndCaptureMessage(message: Text, prefix: Boolean = true, color: Formatting? = Formatting.WHITE): Message {
+		check(MCUtils.client.isOnThread) { "Capturing a message can only be done on the client thread" }
+
+		SHOULD_CAPTURE.set(true)
+		addMessage(message, prefix, color)
 		SHOULD_CAPTURE.set(false)
 
-		val captured = CAPTURED_MESSAGE.get() ?: error("Mixin did not capture message")
+		val message = CAPTURED_MESSAGE.get() ?: error("Mixin did not capture message")
 		CAPTURED_MESSAGE.remove()
-		return captured
+		return message
 	}
 
 	/**
 	 * Add an untranslated chat message to the player's chat
 	 */
 	@UntranslatedMessage
-	fun addMessage(message: String, prefix: Boolean = true, color: Formatting? = Formatting.WHITE): Message =
+	fun addMessage(message: String, prefix: Boolean = true, color: Formatting? = Formatting.WHITE) =
 		addMessage(Text.literal(message), prefix, color)
 
 	/**
@@ -108,7 +125,7 @@ object ChatUtils {
 		ttl: Duration = 1.minutes,
 		builder: MutableText.() -> Unit = {},
 		clickAction: () -> Unit,
-	): Message = addMessage(buildText {
+	) = addMessage(buildText {
 		if(prefix) append(NobaAddons.PREFIX)
 		append(text)
 
@@ -131,7 +148,7 @@ object ChatUtils {
 		ttl: Duration = 1.minutes,
 		builder: MutableText.() -> Unit = {},
 		clickAction: () -> Unit,
-	): Message = addMessageWithClickAction(text.toText(), prefix, color, ttl, builder, clickAction)
+	) = addMessageWithClickAction(text.toText(), prefix, color, ttl, builder, clickAction)
 
 	/**
 	 * Internal method called to invoke a click action from [addMessageWithClickAction]
