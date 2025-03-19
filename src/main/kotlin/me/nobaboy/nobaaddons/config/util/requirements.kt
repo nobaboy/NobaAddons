@@ -30,7 +30,10 @@ object OptionRequirementBuilder {
 		this.check() || other.check()
 	}
 
-	fun OptionRequirement.invert(): OptionRequirement = OptionRequirement(depends) { !check() }
+	operator fun OptionRequirement.not(): OptionRequirement = object : OptionRequirement {
+		override val depends: Set<Option<*>> by this@not::depends
+		override fun check(): Boolean = this@not.check()
+	}
 
 	fun option(option: Option<Boolean>): OptionRequirement = OptionRequirement(option, option::pendingValue)
 

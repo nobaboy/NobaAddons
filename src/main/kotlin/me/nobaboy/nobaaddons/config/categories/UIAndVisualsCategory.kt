@@ -146,7 +146,7 @@ object UIAndVisualsCategory {
 			add({ uiAndVisuals.itemPosition::cancelItemUpdateAnimation }) {
 				name = tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate", "Cancel Item Update Animation")
 				descriptionText = tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelItemUpdate.tooltip", "Prevents the item update animation from playing when your held item is updated")
-				require { option(cancelReequip).invert() }
+				require { !option(cancelReequip) }
 				booleanController()
 			}
 			add({ uiAndVisuals.itemPosition::cancelDrinkAnimation }) {
@@ -190,7 +190,7 @@ object UIAndVisualsCategory {
 				booleanController()
 			}
 
-			fix.require { option(remove).invert() }
+			fix.require { !option(remove) }
 		}
 	}
 }
