@@ -6,6 +6,7 @@ import dev.isxander.yacl3.api.LabelOption
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionAddable
 import dev.isxander.yacl3.api.OptionDescription
+import dev.isxander.yacl3.api.OptionEventListener
 import dev.isxander.yacl3.api.controller.ControllerBuilder
 import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -31,6 +32,12 @@ class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
 		this.requirement = builder(OptionRequirementBuilder)
 	}
 
+	val updateListeners: MutableList<OptionEventListener<T>> = mutableListOf()
+
+	fun onUpdate(listener: OptionEventListener<T>) {
+		updateListeners.add(listener)
+	}
+
 	internal fun build(): Option<T> {
 		val option = Option.createBuilder<T>().apply {
 			name(name)
@@ -40,6 +47,7 @@ class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
 		}.build()
 
 		requirement?.let(option::require)
+		updateListeners.forEach(option::addEventListener)
 
 		return option
 	}

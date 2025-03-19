@@ -4,6 +4,7 @@ import dev.isxander.yacl3.api.controller.BooleanControllerBuilder
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder
+import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.StringControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
@@ -53,4 +54,8 @@ fun OptionBuilder<Float>.floatSliderController(min: Float, max: Float, step: Flo
 			format?.let(::formatValue)
 		}
 	}
+}
+
+fun OptionBuilder<Int>.intFieldController() {
+	controller = IntegerFieldControllerBuilder::create
 }
