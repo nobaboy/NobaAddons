@@ -7,11 +7,26 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.tr
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.Text
 
 private fun Text.wip(): Text = buildText {
 	append(buildLiteral("[WIP] ") { red() })
 	append(this@wip)
+}
+
+private fun OptionBuilder<*>.incompatibleWithIris() {
+	require {
+		val iris = !mod("iris")
+		requirement?.let { it and iris } ?: iris
+	}
+	if(FabricLoader.getInstance().isModLoaded("iris")) {
+		descriptionText = buildText {
+			descriptionText?.let(::append)
+			append("\n")
+			append(tr("nobaaddons.config.slayers.incompatibleWithIris", "This feature is currently incompatible with Iris").red())
+		}
+	}
 }
 
 object SlayersCategory {
@@ -59,11 +74,13 @@ object SlayersCategory {
 		group(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
 			val enabled = add({ slayers.highlightMiniBosses::enabled }) {
 				name = CommonText.Config.ENABLED.wip()
+				incompatibleWithIris()
 				booleanController()
 			}
 			add({ slayers.highlightMiniBosses::highlightColor }, BiMapper.NobaAWTColorMapper) {
 				name = CommonText.Config.HIGHLIGHT_COLOR.wip()
 				require { option(enabled) }
+				incompatibleWithIris()
 				colorController()
 			}
 		}
@@ -114,21 +131,25 @@ object SlayersCategory {
 			val highlightPhases = add({ slayers.voidgloom::highlightPhases }) {
 				name = tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases").wip()
 				descriptionText = tr("nobaaddons.config.slayers.voidgloom.highlightPhases.tooltip", "Highlights the Voidgloom Seraph based on its current phase\n\nThe priority of the phases are:\n - Beacon Phase\n - Hits Phase\n - Damage Phase")
+				incompatibleWithIris()
 				booleanController()
 			}
 			add({ slayers.voidgloom::beaconPhaseColor }) {
 				name = tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color").wip()
 				require { option(highlightPhases) }
+				incompatibleWithIris()
 				colorController(allowAlpha = true)
 			}
 			add({ slayers.voidgloom::hitsPhaseColor }) {
 				name = tr("nobaaddons.config.slayers.voidgloom.hitsPhaseColor", "Hits Phase Color").wip()
 				require { option(highlightPhases) }
+				incompatibleWithIris()
 				colorController(allowAlpha = true)
 			}
 			add({ slayers.voidgloom::damagePhaseColor }) {
 				name = tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color").wip()
 				require { option(highlightPhases) }
+				incompatibleWithIris()
 				colorController(allowAlpha = true)
 			}
 
@@ -180,6 +201,7 @@ object SlayersCategory {
 		group(tr("nobaaddons.config.slayers.inferno", "Inferno Demonlord")) {
 			add({ slayers.inferno::highlightHellionShield }) {
 				name = tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield").wip()
+				incompatibleWithIris()
 				booleanController()
 			}
 		}

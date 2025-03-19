@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.entity.LivingEntity
 import java.awt.Color
 
@@ -12,6 +13,7 @@ object EntityOverlay {
 	var overlay = false
 		private set
 
+	// FIXME replace this with the overlay code from firmament before a full 1.0.0 release
 	private val texture by MCUtils.client.gameRenderer::overlayTexture
 	private val entities = mutableMapOf<LivingEntity, Color>()
 
@@ -42,10 +44,12 @@ object EntityOverlay {
 	}
 
 	fun set(entity: LivingEntity, color: Color) {
+		if(FabricLoader.getInstance().isModLoaded("iris")) return // TODO figure out how to make this play nicely with iris
 		entities[entity] = Color(color.red, color.green, color.blue, color.alpha)
 	}
 
 	fun set(entity: LivingEntity, color: NobaColor, alpha: Int = 175) {
+		if(FabricLoader.getInstance().isModLoaded("iris")) return // TODO figure out how to make this play nicely with iris
 		entities[entity] = Color(color.red, color.green, color.blue, alpha)
 	}
 
