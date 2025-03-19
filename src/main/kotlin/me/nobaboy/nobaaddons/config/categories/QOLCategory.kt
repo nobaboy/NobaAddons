@@ -16,7 +16,7 @@ object QOLCategory {
 	private fun ConfigCategory.Builder.soundFilters() {
 		group(tr("nobaaddons.config.qol.soundFilters", "Sound Filters")) {
 			// region Item Abilities
-			label { +CommonText.Config.LABEL_ITEM_ABILITIES }
+			label(CommonText.Config.LABEL_ITEM_ABILITIES)
 
 			add({ qol.soundFilters::muteWitherSkullAbilities }) {
 				name = tr("nobaaddons.config.qol.soundFilters.muteWitherSkullAbilities", "Mute Wither Skull Abilities")
@@ -26,7 +26,7 @@ object QOLCategory {
 			// endregion
 
 			// region Mobs
-			label { +CommonText.Config.LABEL_MOBS }
+			label(CommonText.Config.LABEL_MOBS)
 
 			add({ qol.soundFilters::muteReindrakeSpawn }) {
 				name = tr("nobaaddons.config.qol.soundFilters.muteReindrakeSpawn", "Mute Reindrake Spawning")
@@ -39,7 +39,7 @@ object QOLCategory {
 			// endregion
 
 			// region Dwarven Mines
-			label { +tr("nobaaddons.config.qol.label.dwarvenMines", "Dwarven Mines") }
+			label(tr("nobaaddons.config.qol.label.dwarvenMines", "Dwarven Mines"))
 
 			add({ qol.soundFilters::muteGoneWithTheWind }) {
 				name = tr("nobaaddons.config.qol.soundFilters.muteGoneWithTheWind", "Mute Gone With The Wind")
@@ -48,7 +48,7 @@ object QOLCategory {
 			// endregion
 
 			// region Rift
-			label { +CommonText.Config.LABEL_RIFT }
+			label(CommonText.Config.LABEL_RIFT)
 
 			add({ qol.soundFilters::muteKillerSpring }) {
 				name = tr("nobaaddons.config.qol.soundFilters.muteKillerSpring", "Mute Killer Spring")
@@ -57,7 +57,7 @@ object QOLCategory {
 			// endregion
 
 			// region Misc
-			label { +CommonText.Config.LABEL_MISC }
+			label(CommonText.Config.LABEL_MISC)
 
 			add({ qol.soundFilters::mutePunch }) {
 				name = tr("nobaaddons.config.qol.soundFilters.mutePunch", "Mute Punch Sound")

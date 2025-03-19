@@ -153,7 +153,7 @@ object SlayersCategory {
 				colorController(allowAlpha = true)
 			}
 
-			label { +tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs") }
+			label(tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs"))
 
 			val yangGlyphAlert = add({ slayers.voidgloom::yangGlyphAlert }) {
 				name = tr("nobaaddons.config.slayers.voidgloom.yangGlyphAlert", "Yang Glyph Alert")
@@ -175,7 +175,7 @@ object SlayersCategory {
 				colorController()
 			}
 
-			label { +tr("nobaaddons.config.slayers.voidgloom.label.nukekubiFixations", "Nukekubi Fixations") }
+			label(tr("nobaaddons.config.slayers.voidgloom.label.nukekubiFixations", "Nukekubi Fixations"))
 
 			val highlightNukekubiFixations = add({ slayers.voidgloom::highlightNukekubiFixations }) {
 				name = tr("nobaaddons.config.slayers.voidgloom.highlightNukekubiFixations", "Highlight Nukekubi Fixations")
@@ -187,7 +187,7 @@ object SlayersCategory {
 				colorController()
 			}
 
-			label { +CommonText.Config.LABEL_MISC }
+			label(CommonText.Config.LABEL_MISC)
 
 			add({ slayers.voidgloom::brokenHeartRadiationTimer }) {
 				name = tr("nobaaddons.config.slayers.voidgloom.brokenHeartRadiationTimer", "Broken Heart Radiation Timer")

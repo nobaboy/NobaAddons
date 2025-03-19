@@ -56,7 +56,7 @@ object EventsCategory {
 				booleanController()
 			}
 
-			label { +tr("nobaaddons.config.events.mythological.label.inquisitorSharing", "Inquisitor Sharing") }
+			label(tr("nobaaddons.config.events.mythological.label.inquisitorSharing", "Inquisitor Sharing"))
 
 			val alertInquis = add({ events.mythological::alertInquisitor }) {
 				name = tr("nobaaddons.config.events.mythological.alertInquisitor", "Alert Inquisitor")
@@ -87,7 +87,7 @@ object EventsCategory {
 				booleanController()
 			}
 
-			label { +CommonText.Config.LABEL_MISC }
+			label(CommonText.Config.LABEL_MISC)
 
 			add({ events.mythological::announceRareDrops }) {
 				name = tr("nobaaddons.config.events.mythological.announceRareDrops", "Announce Rare Drops")
@@ -95,7 +95,7 @@ object EventsCategory {
 				booleanController()
 			}
 
-			label { +tr("nobaaddons.config.events.mythological.label.warpLocations", "Warp Locations") }
+			label(tr("nobaaddons.config.events.mythological.label.warpLocations", "Warp Locations"))
 
 			add({ events.mythological::ignoreCrypt }) {
 				name = tr("nobaaddons.config.events.mythological.ignoreCrypt", "Ignore /warp crypt")

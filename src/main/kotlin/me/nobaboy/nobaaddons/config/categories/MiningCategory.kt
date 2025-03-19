@@ -28,7 +28,7 @@ object MiningCategory {
 	private fun ConfigCategory.Builder.glaciteMineshaft() {
 		group(tr("nobaaddons.config.mining.glaciteMineshaft", "Glacite Mineshaft")) {
 			// region Corpses
-			label { +tr("nobaaddons.config.mining.glaciteMineshaft.label.corpses", "Corpses") }
+			label(tr("nobaaddons.config.mining.glaciteMineshaft.label.corpses", "Corpses"))
 
 			val locate = add({ mining.glaciteMineshaft::corpseLocator }) {
 				name = tr("nobaaddons.config.mining.glaciteMineshaft.corpseLocator", "Locate Corpses")
@@ -44,7 +44,7 @@ object MiningCategory {
 			// endregion
 
 			// region Miscellaneous
-			label { +CommonText.Config.LABEL_MISC }
+			label(CommonText.Config.LABEL_MISC)
 
 			add({ mining.glaciteMineshaft::entranceWaypoint }) {
 				name = tr("nobaaddons.config.mining.glaciteMineshaft.entranceWaypoint", "Entrance Waypoint")

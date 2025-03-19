@@ -27,7 +27,7 @@ object InventoryCategory {
 				booleanController()
 			}
 
-			label { +tr("nobaaddons.config.inventory.slotInfo.label.uiElements", "UI Elements") }
+			label(tr("nobaaddons.config.inventory.slotInfo.label.uiElements", "UI Elements"))
 
 			add({ inventory.slotInfo::bestiaryMilestone }) {
 				name = tr("nobaaddons.config.inventory.slotInfo.bestiaryMilestone", "Bestiary Milestone")
@@ -63,7 +63,7 @@ object InventoryCategory {
 				tickBoxController()
 			}
 
-			label { +tr("nobaaddons.config.inventory.slotInfo.label.items", "Items") }
+			label(tr("nobaaddons.config.inventory.slotInfo.label.items", "Items"))
 
 			add({ inventory.slotInfo::attributeShardLevel }) {
 				name = tr("nobaaddons.config.inventory.slotInfo.attributeShardLevel", "Attribute Shard Level")

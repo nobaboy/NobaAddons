@@ -2,12 +2,15 @@ package me.nobaboy.nobaaddons.config.util
 
 import dev.isxander.yacl3.api.Binding
 import dev.isxander.yacl3.api.ButtonOption
+import dev.isxander.yacl3.api.LabelOption
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionAddable
 import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.controller.ControllerBuilder
 import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import kotlin.reflect.KMutableProperty
 
@@ -99,3 +102,16 @@ fun OptionAddable.button(
 	text?.let(::text)
 	action { screen, _ -> action(screen) }
 }.build().also(::option)
+
+/**
+ * Create and add a new [LabelOption] to the current [OptionAddable] using [buildText]
+ */
+fun OptionAddable.label(builder: MutableText.() -> Unit): LabelOption = LabelOption.create(buildText(builder)).also(::option)
+
+/**
+ * Create and add a new [LabelOption] with one or more [Text] elements
+ */
+fun OptionAddable.label(text: Text, vararg extra: Text): LabelOption = LabelOption.createBuilder().apply {
+	line(text)
+	extra.toList().takeIf(List<*>::isNotEmpty)?.let(::lines)
+}.build()

@@ -33,7 +33,7 @@ object ChatCategory {
 	private fun ConfigCategory.Builder.alerts() {
 		group(tr("nobaaddons.config.chat.alerts", "Alerts")) {
 			// region Crimson Isle
-			label { +CommonText.Config.LABEL_CRIMSON_ISLE }
+			label(CommonText.Config.LABEL_CRIMSON_ISLE)
 
 			add({ chat.alerts::mythicSeaCreatureSpawn }) {
 				name = tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn", "Alert Mythic Sea Creature Catches")
@@ -56,7 +56,7 @@ object ChatCategory {
 	private fun ConfigCategory.Builder.filters() {
 		group(tr("nobaaddons.config.chat.filters", "Filters")) {
 			// region Crimson Isle
-			label { +CommonText.Config.LABEL_CRIMSON_ISLE }
+			label(CommonText.Config.LABEL_CRIMSON_ISLE)
 
 			add({ chat.filters::hideAbilityCooldownMessage }) {
 				name = tr("nobaaddons.config.chat.filters.hideAbilityCooldownMessage", "Hide Ability Cooldown Messages")
@@ -106,7 +106,7 @@ object ChatCategory {
 			// endregion
 
 			// region Mobs
-			label { +CommonText.Config.LABEL_MOBS }
+			label(CommonText.Config.LABEL_MOBS)
 
 			add({ chat.filters::hideSeaCreatureSpawnMessage }) {
 				name = tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage", "Hide Sea Creature Catch Message")
@@ -120,7 +120,7 @@ object ChatCategory {
 			// endregion
 
 			// region Dungeons
-			label { +CommonText.Config.LABEL_DUNGEONS }
+			label(CommonText.Config.LABEL_DUNGEONS)
 
 			add({ chat.filters::blessingMessage }) {
 				name = tr("nobaaddons.config.chat.filters.blessingMessage", "Blessing Message")
@@ -147,7 +147,7 @@ object ChatCategory {
 			// endregion
 
 			// region Miscellaneous
-			label { +CommonText.Config.LABEL_MISC }
+			label(CommonText.Config.LABEL_MISC)
 
 			add({ chat.filters::hideTipMessages }) {
 				name = tr("nobaaddons.config.chat.filters.hideTipMessages", "Hide /tip Messages")
@@ -165,7 +165,7 @@ object ChatCategory {
 	private fun ConfigCategory.Builder.chatCommands() {
 		group(tr("nobaaddons.config.chat.chatCommands", "Chat Commands")) {
 			// region DM
-			label { +tr("nobaaddons.config.chat.chatCommands.label.dm", "DM Commands") }
+			label(tr("nobaaddons.config.chat.chatCommands.label.dm", "DM Commands"))
 
 			val helpTitle = tr("nobaaddons.config.chat.chatCommands.help", "!help Command")
 			val helpDescription = tr("nobaaddons.config.chat.chatCommands.help.tooltip", "Responds with a list of available commands")
@@ -205,7 +205,7 @@ object ChatCategory {
 			// endregion
 
 			// region Party
-			label { +tr("nobaaddons.config.chat.chatCommands.label.party", "Party Commands") }
+			label(tr("nobaaddons.config.chat.chatCommands.label.party", "Party Commands"))
 
 			val partyEnabled = add({ chat.chatCommands.party::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -251,7 +251,7 @@ object ChatCategory {
 			// endregion
 
 			// region Guild
-			label { +tr("nobaaddons.config.chat.chatCommands.label.guild", "Guild Command") }
+			label(tr("nobaaddons.config.chat.chatCommands.label.guild", "Guild Command"))
 
 			val guildEnabled = add({ chat.chatCommands.guild::enabled }) {
 				name = CommonText.Config.ENABLED

@@ -12,14 +12,14 @@ import net.fabricmc.loader.api.FabricLoader
 object ApiCategory {
 	fun create() = category(tr("nobaaddons.config.apis", "APIs")) {
 		label {
-			+tr(
-				"nobaaddons.config.apis.disclaimer.line1",
-				"You should not be modifying these settings unless you've been explicitly instructed to after requesting support!"
-			).red().underline()
-
-			newLine()
-
-			+tr("nobaaddons.config.apis.disclaimer.line2", "Modifying these settings has the potential to break the mod!").yellow()
+			append(
+				tr(
+					"nobaaddons.config.apis.disclaimer.line1",
+					"You should not be modifying these settings unless you've been explicitly instructed to after requesting support!"
+				).red().underline()
+			)
+			append("\n\n")
+			append(tr("nobaaddons.config.apis.disclaimer.line2", "Modifying these settings has the potential to break the mod!").yellow())
 		}
 
 		repo()
