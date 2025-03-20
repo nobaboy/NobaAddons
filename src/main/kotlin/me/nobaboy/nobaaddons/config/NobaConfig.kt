@@ -6,6 +6,7 @@ import dev.isxander.yacl3.api.YetAnotherConfigLib
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.config.configs.*
+import me.nobaboy.nobaaddons.config.util.OptionBuilder
 import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
 
@@ -48,13 +49,9 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 		@JvmField
 		val INSTANCE = NobaConfig()
 
-		/**
-		 * Returns a newly created instance of [NobaConfig] to allow for accessing default values
-		 */
-		val DEFAULTS get() = NobaConfig()
-
 		fun getConfigScreen(parent: Screen?): Screen = YetAnotherConfigLib.createBuilder().apply {
 			title(CommonText.NOBAADDONS)
+			OptionBuilder.defaults = NobaConfig()
 
 			category(GeneralCategory.create())
 			category(UIAndVisualsCategory.create())

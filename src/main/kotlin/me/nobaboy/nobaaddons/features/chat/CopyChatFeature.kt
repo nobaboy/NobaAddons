@@ -44,10 +44,16 @@ object CopyChatFeature {
 		if(index == -1) return false
 
 		val visibleLine = hud.visibleMessages[index]
-		val cleaned = messages[visibleLine]?.get()?.content?.string?.cleanFormatting() ?: return false
+		val cleaned = messages[visibleLine]?.get()?.content?.let {
+			if(Screen.hasAltDown()) it.toString() else it.string.cleanFormatting()
+		} ?: return false
 
 		MCUtils.copyToClipboard(cleaned)
-		ChatUtils.addMessage(tr("nobaaddons.chat.copiedMessage", "Copied chat message to clipboard"))
+		if(Screen.hasAltDown()) {
+			ChatUtils.addMessage(tr("nobaaddons.chat.copiedMessageRaw", "Copied message text component to clipboard"))
+		} else {
+			ChatUtils.addMessage(tr("nobaaddons.chat.copiedMessage", "Copied chat message to clipboard"))
+		}
 		return true
 	}
 
