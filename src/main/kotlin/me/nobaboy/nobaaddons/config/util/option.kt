@@ -51,18 +51,22 @@ class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
 
 		return option
 	}
+
+	companion object {
+		lateinit var defaults: NobaConfig
+	}
 }
 
 internal fun <T> (NobaConfig.() -> KMutableProperty<T>).binding(): Binding<T> {
 	val getter: (NobaConfig) -> T = { this(it).getter.call() }
 	val setter: (NobaConfig, T) -> Unit = { config, value -> this(config).setter.call(value) }
-	return Binding.generic(getter(NobaConfig.DEFAULTS), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) })
+	return Binding.generic(getter(OptionBuilder.defaults), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) })
 }
 
 internal fun <A, B> (NobaConfig.() -> KMutableProperty<A>).binding(biMapper: BiMapper<A, B>): Binding<B> {
 	val getter: (NobaConfig) -> B = { biMapper.to(this(it).getter.call()) }
 	val setter: (NobaConfig, B) -> Unit = { config, value -> this(config).setter.call(biMapper.from(value)) }
-	return Binding.generic(getter(NobaConfig.DEFAULTS), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) })
+	return Binding.generic(getter(OptionBuilder.defaults), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) })
 }
 
 /**
