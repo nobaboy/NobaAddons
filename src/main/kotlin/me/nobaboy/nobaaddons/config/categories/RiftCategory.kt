@@ -1,40 +1,37 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requiresAny
+import dev.isxander.yacl3.api.ConfigCategory
+import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.tr
 
 object RiftCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.rift", "Rift")) {
-		buildGroup(tr("nobaaddons.config.rift.timers", "Rift Timers")) {
-			val infusion = boolean(
-				tr("nobaaddons.config.rift.timers.freeInfusions", "Free Infusions"),
-				tr("nobaaddons.config.rift.timers.freeInfusions.tooltip", "Sends a message in chat when you regain a free Rift infusion"),
-				default = defaults.rift.freeInfusionAlert,
-				property = config.rift::freeInfusionAlert
-			)
-			val ss = boolean(
-				tr("nobaaddons.config.rift.timers.splitSteal", "Split or Steal"),
-				tr("nobaaddons.config.rift.timers.splitSteal.tooltip", "Sends a message in chat when the Split or Steal cooldown ends"),
-				default = defaults.rift.splitStealAlert,
-				property = config.rift::splitStealAlert
-			)
-			boolean(
-				tr("nobaaddons.config.rift.timers.splitStealItemCooldown", "Display Cooldown on Ubik's Cube"),
-				tr("nobaaddons.config.rift.timers.splitStealItemCooldown.tooltip", "Adds the Split or Steal cooldown time remaining to the Ubik's Cube item tooltip"),
-				default = defaults.rift.splitStealItemCooldown,
-				property = config.rift::splitStealItemCooldown
-			)
-			cycler(
-				tr("nobaaddons.config.rift.timers.warpTarget", "Warp To"),
-				tr("nobaaddons.config.rift.timers.warpTarget.tooltip", "Where clicking on the sent chat message should warp you"),
-				default = defaults.rift.warpTarget,
-				property = config.rift::warpTarget
-			) requiresAny listOf(infusion, ss)
+	fun create() = category(tr("nobaaddons.config.rift", "Rift")) {
+		riftTimers()
+	}
+
+	private fun ConfigCategory.Builder.riftTimers() {
+		group(tr("nobaaddons.config.rift.timers", "Rift Timers")) {
+			val infusion = add({ rift::freeInfusionAlert }) {
+				name = tr("nobaaddons.config.rift.timers.freeInfusions", "Free Infusions")
+				descriptionText = tr("nobaaddons.config.rift.timers.freeInfusions.tooltip", "Sends a message in chat when you regain a free Rift infusion")
+				booleanController()
+			}
+			val ss = add({ rift::splitStealAlert }) {
+				name = tr("nobaaddons.config.rift.timers.splitSteal", "Split or Steal")
+				descriptionText = tr("nobaaddons.config.rift.timers.splitSteal.tooltip", "Sends a message in chat when the Split or Steal cooldown ends")
+				booleanController()
+			}
+			add({ rift::splitStealItemCooldown }) {
+				name = tr("nobaaddons.config.rift.timers.splitStealItemCooldown", "Display Cooldown on Ubik's Cube")
+				descriptionText = tr("nobaaddons.config.rift.timers.splitStealItemCooldown.tooltip", "Adds the Split or Steal cooldown time remaining to the Ubik's Cube item tooltip")
+				booleanController()
+			}
+			add({ rift::warpTarget }) {
+				name = tr("nobaaddons.config.rift.timers.warpTarget", "Warp To")
+				descriptionText = tr("nobaaddons.config.rift.timers.warpTarget.tooltip", "Where clicking on the sent chat message should warp you")
+				require { option(infusion) or option(ss) }
+				enumController()
+			}
 		}
 	}
 }
