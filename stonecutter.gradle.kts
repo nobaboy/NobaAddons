@@ -1,6 +1,6 @@
 plugins {
 	id("dev.kikugie.stonecutter")
-	id("fabric-loom") version "1.9-SNAPSHOT" apply false
+	id("fabric-loom") version "1.10-SNAPSHOT" apply false
 	id("me.modmuss50.mod-publish-plugin") version "0.7.+" apply false
 }
 stonecutter active "1.21.4" /* [SC] DO NOT EDIT */
@@ -17,7 +17,7 @@ stonecutter registerChiseled tasks.register("chiseledPublishMods", stonecutter.c
 	ofTask("publishMods")
 }
 
-stonecutter configureEach {
-	/* https://stonecutter.kikugie.dev/ */
+/*stonecutter configureEach {
+	/^ https://stonecutter.kikugie.dev/ ^/
 	dependency("fapi", project.property("deps.fabric_api").toString())
-}
+}*/

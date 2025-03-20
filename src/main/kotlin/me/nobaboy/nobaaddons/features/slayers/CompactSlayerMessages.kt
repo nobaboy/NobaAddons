@@ -27,7 +27,7 @@ object CompactSlayerMessages {
 	private val config get() = NobaConfig.INSTANCE.slayers.compactMessages
 
 	private val QUEST_STARTED_REGEX by Regex("^[ ]+SLAYER QUEST STARTED!").fromRepo("slayer.quest_started")
-	private val QUEST_COMPLETE_REGEX by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.quest_complate")
+	private val QUEST_COMPLETE_REGEX by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.quest_complete")
 
 	private val SLAY_TO_SPAWN_REGEX by Regex("^[ ]+» Slay [\\d,]+ Combat XP worth of .+").fromRepo("slayer.slay_to_spawn")
 	private val BOSS_SLAIN_REGEX by Regex("^[ ]+NICE! SLAYER BOSS SLAIN!").fromRepo("slayer.boss_slain")
@@ -88,7 +88,7 @@ object CompactSlayerMessages {
 		if(config.removeLastMessage) {
 			lastMessage?.remove()
 		}
-		lastMessage = ChatUtils.addMessage(compile(), prefix = false, color = null)
+		lastMessage = ChatUtils.addAndCaptureMessage(compile(), prefix = false, color = null)
 	}
 
 	// Completing a quest with auto slayer:

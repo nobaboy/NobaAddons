@@ -20,7 +20,7 @@ class FormattingHandler<S : CommandSource> : ArgumentHandler<Formatting, S> {
 	)
 
 	object ColorFormattingArgumentType : EnumArgumentType<Formatting>(
-		StringIdentifiable.createCodec { Formatting.entries.filter {  it.colorValue != null }.toTypedArray() },
+		StringIdentifiable.createCodec { Formatting.entries.filter { it.colorValue != null }.toTypedArray() },
 		{ Formatting.entries.filter { it.colorValue != null }.toTypedArray() }
 	)
 

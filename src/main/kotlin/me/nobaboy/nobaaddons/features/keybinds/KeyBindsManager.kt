@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.keybinds
 import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
+import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.features.events.mythological.MythologicalWaypoints
 import me.nobaboy.nobaaddons.features.keybinds.impl.NobaKeyBind
 import me.nobaboy.nobaaddons.utils.CooldownManager

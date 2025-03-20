@@ -5,6 +5,7 @@ import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.EnabledIf
 import dev.celestialfault.commander.annotations.Group
 import dev.celestialfault.commander.annotations.RootCommand
+import kotlinx.coroutines.delay
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
@@ -36,6 +37,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import kotlin.jvm.optionals.getOrNull
 
+@OptIn(UntranslatedMessage::class)
 @Suppress("unused")
 @Group("debug")
 object DebugCommands {
@@ -57,7 +59,6 @@ object DebugCommands {
 		source.sendFeedback(text)
 	}
 
-	@OptIn(UntranslatedMessage::class)
 	@Command
 	fun dev() {
 		PersistentCache.devMode = !PersistentCache.devMode
@@ -120,7 +121,6 @@ object DebugCommands {
 	}
 
 	@Command
-	@OptIn(UntranslatedMessage::class)
 	fun clickAction(ctx: Context) {
 		ChatUtils.addMessageWithClickAction("Click me!") { ChatUtils.addMessage("You clicked me!") }
 	}
@@ -145,7 +145,13 @@ object DebugCommands {
 	}
 
 	@Command
-	fun updateNotification(ctx: Context) {
+	suspend fun sendAsyncChatMessage() {
+		delay(0L) // just to ensure that kotlin doesn't try to optimize the suspend out
+		ChatUtils.addMessage("boat goes binted")
+	}
+
+	@Command
+	fun updateNotification() {
 		UpdateNotifier.sendUpdateNotification()
 	}
 
@@ -180,10 +186,9 @@ object DebugCommands {
 	private var lastResponse: Message? = null
 
 	@Command
-	@OptIn(UntranslatedMessage::class)
 	fun removeLastResponse() {
 		lastResponse?.remove()
-		lastResponse = ChatUtils.addMessage("Debug message ${StringUtils.randomAlphanumeric()}")
+		lastResponse = ChatUtils.addAndCaptureMessage("Debug message ${StringUtils.randomAlphanumeric()}".toText())
 	}
 
 	val item = NobaClientCommandGroup(ItemDebugCommands)

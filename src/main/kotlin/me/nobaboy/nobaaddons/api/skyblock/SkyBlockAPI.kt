@@ -15,6 +15,7 @@ import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFirstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.SkyBlockSeason
@@ -131,10 +132,8 @@ object SkyBlockAPI {
 
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 
-		PROFILE_TYPE_REGEX.firstFullMatch(scoreboard) {
-			val type = groups["type"]?.value ?: return@firstFullMatch
-			profileType = SkyBlockProfile.getByName(type)
-		}
+		val newProfileType = PROFILE_TYPE_REGEX.getGroupFromFirstFullMatch(scoreboard, "type")
+		profileType = newProfileType?.let { SkyBlockProfile.getByName(it) } ?: SkyBlockProfile.CLASSIC
 
 		// I originally planned to make an enum including all the zones but after realising
 		// that Skyblock has more than 227 zones, which is what I counted, yea maybe not.

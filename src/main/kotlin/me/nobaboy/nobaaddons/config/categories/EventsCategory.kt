@@ -1,144 +1,133 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.boolean
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.buildGroup
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.cycler
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.label
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.requires
+import dev.isxander.yacl3.api.ConfigCategory
+import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
 object EventsCategory {
-	fun create(defaults: NobaConfig, config: NobaConfig) = NobaConfigUtils.buildCategory(tr("nobaaddons.config.events", "Events")) {
-		// region Hoppity's Hunt
-		buildGroup(tr("nobaaddons.config.events.hoppity", "Hoppity's Hunt")) {
-			boolean(
-				tr("nobaaddons.config.events.hoppity.eggGuess", "Egg Guess"),
-				tr("nobaaddons.config.events.hoppity.eggGuess.tooltip", "Guesses the eggs location from the Egglocator's ability"),
-				default = defaults.events.hoppity.eggGuess,
-				property = config.events.hoppity::eggGuess
-			)
-			boolean(
-				tr("nobaaddons.config.events.hoppity.requireMythicRabbit", "Require Mythic Rabbit"),
-				tr("nobaaddons.config.events.hoppity.requireMythicRabbit.tooltip", "Blocks opening /cf and displays a warning when using an Egglocator if you don't have a mythic Rabbit spawned"),
-				default = defaults.events.hoppity.requireMythicRabbit,
-				property = config.events.hoppity::requireMythicRabbit
-			)
-		}
-		// endregion
+	fun create() = category(tr("nobaaddons.config.events", "Events")) {
+		hoppity()
+		mythologicalRitual()
+	}
 
-		// region Mythological Ritual
-		buildGroup(tr("nobaaddons.config.events.mythological", "Mythological Ritual")) {
-			val burrowGuess = boolean(
-				tr("nobaaddons.config.events.mythological.burrowGuess", "Burrow Guess"),
-				tr("nobaaddons.config.events.mythological.burrowGuess.tooltip", "Guesses the next burrow location from the Ancestral Spade's Echo ability"),
-				default = defaults.events.mythological.burrowGuess,
-				property = config.events.mythological::burrowGuess
-			)
-			val findNearby = boolean(
-				tr("nobaaddons.config.events.mythological.findNearbyBurrows", "Find Nearby Burrows"),
-				tr("nobaaddons.config.events.mythological.findNearbyBurrows.tooltip", "Highlights nearby burrows with a waypoint"),
-				default = defaults.events.mythological.findNearbyBurrows,
-				property = config.events.mythological::findNearbyBurrows
-			)
-			boolean(
-				tr("nobaaddons.config.events.mythological.dingOnBurrowFind", "Ding on Burrow Find"),
-				tr("nobaaddons.config.events.mythological.dingOnBurrowFind.tooltip", "Plays a ding sound when a burrow is found nearby"),
-				default = defaults.events.mythological.dingOnBurrowFind,
-				property = config.events.mythological::dingOnBurrowFind
-			) requires findNearby
-			boolean(
-				tr("nobaaddons.config.events.mythological.removeGuessOnBurrowFind", "Hide Guess Near Burrows"),
-				tr("nobaaddons.config.events.mythological.removeGuessOnBurrowFind.tooltip", "Automatically hides any guesses when nearby burrows are found"),
-				default = defaults.events.mythological.removeGuessOnBurrowFind,
-				property = config.events.mythological::removeGuessOnBurrowFind
-			) requires listOf(findNearby, burrowGuess)
-			val warp = boolean(
-				tr("nobaaddons.config.events.mythological.findNearestWarp", "Find Nearest Warp"),
-				tr("nobaaddons.config.events.mythological.findNearestWarp.tooltip", "Finds the nearest /warp to the guess, which can automatically be warped to with the associated key configured in Controls"),
-				default = defaults.events.mythological.findNearestWarp,
-				property = config.events.mythological::findNearestWarp
-			)
+	private fun ConfigCategory.Builder.hoppity() {
+		group(tr("nobaaddons.config.events.hoppity", "Hoppity's Hunt")) {
+			add({ events.hoppity::eggGuess }) {
+				name = tr("nobaaddons.config.events.hoppity.eggGuess", "Egg Guess")
+				descriptionText = tr("nobaaddons.config.events.hoppity.eggGuess.tooltip", "Guesses the eggs location from the Egglocator's ability")
+				booleanController()
+			}
+			add({ events.hoppity::requireMythicRabbit }) {
+				name = tr("nobaaddons.config.events.hoppity.requireMythicRabbit", "Require Mythic Rabbit")
+				descriptionText = tr("nobaaddons.config.events.hoppity.requireMythicRabbit.tooltip", "Blocks opening /cf and displays a warning when using an Egglocator if you don't have a mythic Rabbit spawned")
+				booleanController()
+			}
+		}
+	}
+
+	private fun ConfigCategory.Builder.mythologicalRitual() {
+		group(tr("nobaaddons.config.events.mythological", "Mythological Ritual")) {
+			val burrowGuess = add({ events.mythological::burrowGuess }) {
+				name = tr("nobaaddons.config.events.mythological.burrowGuess", "Burrow Guess")
+				descriptionText = tr("nobaaddons.config.events.mythological.burrowGuess.tooltip", "Guesses the next burrow location from the Ancestral Spade's Echo ability")
+				booleanController()
+			}
+			val findNearby = add({ events.mythological::findNearbyBurrows }) {
+				name = tr("nobaaddons.config.events.mythological.findNearbyBurrows", "Find Nearby Burrows")
+				descriptionText = tr("nobaaddons.config.events.mythological.findNearbyBurrows.tooltip", "Highlights nearby burrows with a waypoint")
+				booleanController()
+			}
+			add({ events.mythological::dingOnBurrowFind }) {
+				name = tr("nobaaddons.config.events.mythological.pingOnBurrowFind", "Ping on Burrow Find")
+				descriptionText = tr("nobaaddons.config.events.mythological.pingOnBurrowFind.tooltip", "Plays a sound when a burrow is found nearby")
+				require { option(findNearby) }
+				booleanController()
+			}
+			add({ events.mythological::removeGuessOnBurrowFind }) {
+				name = tr("nobaaddons.config.events.mythological.removeGuessOnBurrowFind", "Hide Guess Near Burrows")
+				descriptionText = tr("nobaaddons.config.events.mythological.removeGuessOnBurrowFind.tooltip", "Automatically hides any guesses when nearby burrows are found")
+				require { option(findNearby) and option(burrowGuess) }
+				booleanController()
+			}
+			val warp = add({ events.mythological::findNearestWarp }) {
+				name = tr("nobaaddons.config.events.mythological.findNearestWarp", "Find Nearest Warp")
+				descriptionText = tr("nobaaddons.config.events.mythological.findNearestWarp.tooltip", "Finds the nearest /warp to the guess, which can automatically be warped to with the associated key configured in Controls")
+				booleanController()
+			}
 
 			label(tr("nobaaddons.config.events.mythological.label.inquisitorSharing", "Inquisitor Sharing"))
 
-			val alertInquis = boolean(
-				tr("nobaaddons.config.events.mythological.alertInquisitor", "Alert Inquisitor"),
-				tr("nobaaddons.config.events.mythological.alertInquisitor.tooltip", "Send a message in chat when you find a Minos Inquisitor"),
-				default = defaults.events.mythological.alertInquisitor,
-				property = config.events.mythological::alertInquisitor
-			)
-			boolean(
-				tr("nobaaddons.config.events.mythological.alertOnlyInParty", "Only Alert in Party Chat"),
-				tr("nobaaddons.config.events.mythological.alertOnlyInParty.tooltip", "The Inquisitor alert message will always be sent in party chat, instead of your current selected /chat"),
-				default = defaults.events.mythological.alertOnlyInParty,
-				property = config.events.mythological::alertOnlyInParty
-			) requires alertInquis
-			cycler(
-				CommonText.Config.NOTIFICATION_SOUND,
-				default = defaults.events.mythological.notificationSound,
-				property = config.events.mythological::notificationSound
-			) requires alertInquis
-			boolean(
-				tr("nobaaddons.config.events.mythological.showInquisitorDespawnTime", "Show Inquisitor Despawn Time"),
-				tr("nobaaddons.config.events.mythological.showInquisitorDespawnTime.tooltip", "Displays how much time is left until the Minos Inquisitor despawns"),
-				default = defaults.events.mythological.showInquisitorDespawnTime,
-				property = config.events.mythological::showInquisitorDespawnTime
-			) requires alertInquis
-			boolean(
-				tr("nobaaddons.config.events.mythological.inquisitorFocusMode", "Inquisitor Focus Mode"),
-				tr("nobaaddons.config.events.mythological.inquisitorFocusMode.tooltip", "Hides all other waypoints when an Inquisitor spawn is detected"),
-				default = defaults.events.mythological.inquisitorFocusMode,
-				property = config.events.mythological::inquisitorFocusMode
-			) requires alertInquis
+			val alertInquis = add({ events.mythological::alertInquisitor }) {
+				name = tr("nobaaddons.config.events.mythological.alertInquisitor", "Alert Inquisitor")
+				descriptionText = tr("nobaaddons.config.events.mythological.alertInquisitor.tooltip", "Send a message in chat when you find a Minos Inquisitor")
+				booleanController()
+			}
+			add({ events.mythological::alertOnlyInParty }) {
+				name = tr("nobaaddons.config.events.mythological.alertOnlyInParty", "Only Alert in Party Chat")
+				descriptionText = tr("nobaaddons.config.events.mythological.alertOnlyInParty.tooltip", "The Inquisitor alert message will always be sent in party chat, instead of your current selected /chat")
+				require { option(alertInquis) }
+				booleanController()
+			}
+			add({ events.mythological::notificationSound }) {
+				name = CommonText.Config.NOTIFICATION_SOUND
+				require { option(alertInquis) }
+				enumController()
+			}
+			add({ events.mythological::showInquisitorDespawnTime }) {
+				name = tr("nobaaddons.config.events.mythological.showInquisitorDespawnTime", "Show Inquisitor Despawn Time")
+				descriptionText = tr("nobaaddons.config.events.mythological.showInquisitorDespawnTime.tooltip", "Displays how much time is left until the Minos Inquisitor despawns")
+				require { option(alertInquis) }
+				booleanController()
+			}
+			add({ events.mythological::inquisitorFocusMode }) {
+				name = tr("nobaaddons.config.events.mythological.inquisitorFocusMode", "Inquisitor Focus Mode")
+				descriptionText = tr("nobaaddons.config.events.mythological.inquisitorFocusMode.tooltip", "Hides all other waypoints when an Inquisitor spawn is detected")
+				require { option(alertInquis) }
+				booleanController()
+			}
 
-			// TODO: Questionable label
 			label(tr("nobaaddons.config.events.mythological.label.tracker", "Tracker"))
 
-			boolean(
-				tr("nobaaddons.config.events.mythological.tracker", "Mythological Tracker"),
-				default = defaults.events.mythological.tracker,
-				property = config.events.mythological::tracker
-			)
-			boolean(
-				tr("nobaaddons.config.events.mythological.showChainsFinished", "Show Chains Finished"),
-				tr("nobaaddons.config.events.mythological.showChainsFinished.tooltip", "Shows how many burrow chains have been completed on the tracker"),
-				default = defaults.events.mythological.showChainsFinished,
-				property = config.events.mythological::showChainsFinished
-			)
+			val tracker = add({ events.mythological::tracker }) {
+				name = tr("nobaaddons.config.events.mythological.tracker", "Mythological Tracker")
+				booleanController()
+			}
+			add({ events.mythological::showChainsFinished }) {
+				name = tr("nobaaddons.config.events.mythological.showChainsFinished", "Show Chains Finished")
+				descriptionText = tr("nobaaddons.config.events.mythological.showChainsFinished.tooltip", "Shows how many burrow chains have been completed on the tracker")
+				require { option(tracker) }
+				booleanController()
+			}
 
 			label(CommonText.Config.LABEL_MISC)
 
-			boolean(
-				tr("nobaaddons.config.events.mythological.announceRareDrops", "Announce Rare Drops"),
-				tr("nobaaddons.config.events.mythological.announceRareDrops.tooltip", "Sends rare drop messages for items that don't have one (like Dwarf Turtle Shelmet, Crochet Plushie, etc.)"),
-				default = defaults.events.mythological.announceRareDrops,
-				property = config.events.mythological::announceRareDrops
-			)
+			add({ events.mythological::announceRareDrops }) {
+				name = tr("nobaaddons.config.events.mythological.announceRareDrops", "Announce Rare Drops")
+				descriptionText = tr("nobaaddons.config.events.mythological.announceRareDrops.tooltip", "Sends rare drop messages for items that don't have one (like Dwarf Turtle Shelmet, Crochet Plushie, etc.)")
+				booleanController()
+			}
 
 			label(tr("nobaaddons.config.events.mythological.label.warpLocations", "Warp Locations"))
 
-			boolean(
-				tr("nobaaddons.config.events.mythological.ignoreCrypt", "Ignore /warp crypt"),
-				tr("nobaaddons.config.events.mythological.ignoreCrypt.tooltip", "Because leaving the crypts may be inconvenient"),
-				default = defaults.events.mythological.ignoreCrypt,
-				property = config.events.mythological::ignoreCrypt
-			) requires warp
-			boolean(
-				tr("nobaaddons.config.events.mythological.ignoreWizard", "Ignore /warp wizard"),
-				tr("nobaaddons.config.events.mythological.ignoreWizard.tooltip", "Because it's easy to accidentally fall into the Rift from it"),
-				default = defaults.events.mythological.ignoreWizard,
-				property = config.events.mythological::ignoreWizard
-			) requires warp
-			boolean(
-				tr("nobaaddons.config.events.mythological.ignoreStonks", "Ignore /warp stonks"),
-				tr("nobaaddons.config.events.mythological.ignoreStonks.tooltip", "Because it's new"),
-				default = defaults.events.mythological.ignoreStonks,
-				property = config.events.mythological::ignoreStonks
-			) requires warp
+			add({ events.mythological::ignoreCrypt }) {
+				name = tr("nobaaddons.config.events.mythological.ignoreCrypt", "Ignore /warp crypt")
+				descriptionText = tr("nobaaddons.config.events.mythological.ignoreCrypt.tooltip", "Because leaving the crypts may be inconvenient")
+				require { option(warp) }
+				booleanController()
+			}
+			add({ events.mythological::ignoreWizard }) {
+				name = tr("nobaaddons.config.events.mythological.ignoreWizard", "Ignore /warp wizard")
+				descriptionText = tr("nobaaddons.config.events.mythological.ignoreWizard.tooltip", "Because it's easy to accidentally fall into the Rift from it")
+				require { option(warp) }
+				booleanController()
+			}
+			add({ events.mythological::ignoreStonks }) {
+				name = tr("nobaaddons.config.events.mythological.ignoreStonks", "Ignore /warp stonks")
+				descriptionText = tr("nobaaddons.config.events.mythological.ignoreStonks.tooltip", "Because it's new")
+				require { option(warp) }
+				booleanController()
+			}
 		}
-		// endregion
 	}
 }

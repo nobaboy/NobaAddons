@@ -23,7 +23,7 @@ import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.NobaConfigUtils.safeLoad
+import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier

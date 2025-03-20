@@ -98,7 +98,7 @@ loom {
 	}
 }
 
-val targetJava = if(stonecutter.compare(mcVersion, "1.20.6") >= 0) 21 else 17
+val targetJava = 21
 
 java {
 	targetCompatibility = JavaVersion.toVersion(targetJava)
@@ -118,6 +118,7 @@ val collectTranslations by tasks.registering(CollectTranslations::class) {
 	this.classes.from(sourceSets.main.get().kotlin.classesDirectory)
 }
 
+// TODO this is terrible and should be replaced
 // require that this is registered on the root project to avoid running this multiple times per build
 val includeBackupRepo = runCatching { rootProject.tasks.withType<DownloadBackupRepo>().named("includeBackupRepo").get() }.getOrNull()
 	?: rootProject.tasks.create("includeBackupRepo", DownloadBackupRepo::class) {
