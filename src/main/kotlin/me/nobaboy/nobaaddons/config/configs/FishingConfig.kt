@@ -12,11 +12,11 @@ import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	var hideOtherPeopleFishing by Property.of<Boolean>("hideOtherPeopleFishing", false)
 
-	val bobberTimer by BobberTimer()
 	val seaCreatureAlert by SeaCreatureAlert()
+	val announceSeaCreatures by AnnounceSeaCreatures()
+	val bobberTimer by BobberTimer()
 	val trophyFishing by TrophyFishing()
 	val highlightThunderSparks by HighlightThunderSparks()
-	val announceSeaCreatures by AnnounceSeaCreatures()
 
 	class SeaCreatureAlert : ObjectProperty<SeaCreatureAlert>("seaCreatureAlert") {
 		var enabled by Property.of<Boolean>("enabled", false)
