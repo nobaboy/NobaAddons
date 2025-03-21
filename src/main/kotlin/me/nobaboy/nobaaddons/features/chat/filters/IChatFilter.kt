@@ -53,7 +53,6 @@ interface IChatFilter {
 						ErrorManager.logError("${filter::class.simpleName} threw an error while processing a chat message", ex)
 					}
 				}
-//				}
 			}
 		}
 	}
