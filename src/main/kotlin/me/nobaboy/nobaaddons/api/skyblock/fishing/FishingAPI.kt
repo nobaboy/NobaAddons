@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 object FishingAPI {
 	private val DOUBLE_HOOK_REGEX by Regex("^It's a Double Hook!(?: Woot woot!)?").fromRepo("fishing.double_hook")
 
-	private var doubleHookEvent: ChatMessageEvents.Allow? = null
+	private var doubleHook: Boolean = false
 
 	fun init() {
 		ChatMessageEvents.ALLOW.register(this::onChatMessage)
@@ -20,11 +20,10 @@ object FishingAPI {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		val message = event.message.string.cleanFormatting()
-
-		if(DOUBLE_HOOK_REGEX.matches(message)) doubleHookEvent = event
+		doubleHook = DOUBLE_HOOK_REGEX.matches(message)
 
 		val seaCreature = SeaCreature.getBySpawnMessage(message) ?: return
-		FishingEvents.SEA_CREATURE_CATCH.invoke(FishingEvents.SeaCreatureCatch(seaCreature, doubleHookEvent != null))
-		doubleHookEvent = null
+		FishingEvents.SEA_CREATURE_CATCH.invoke(FishingEvents.SeaCreatureCatch(seaCreature, doubleHook))
+		doubleHook = false
 	}
 }
