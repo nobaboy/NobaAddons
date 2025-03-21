@@ -13,6 +13,7 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.text.Text
 
+// TODO: Rework to allow multiple messages being filtered, and to filter on an event invoke maybe?
 interface IChatFilter {
 	val config get() = NobaConfig.INSTANCE.chat.filters
 

@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.chat.filters.mobs
 import me.nobaboy.nobaaddons.core.fishing.SeaCreature
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 
+// TODO: Filter double hook message
 object SeaCreatureSpawnMessageChatFilter : IChatFilter {
 	override val enabled: Boolean get() = config.hideSeaCreatureSpawnMessage
 
