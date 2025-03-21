@@ -5,7 +5,6 @@ import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
-import me.nobaboy.nobaaddons.features.fishing.SeaCreatureType
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
@@ -19,25 +18,22 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	val highlightThunderSparks by HighlightThunderSparks()
 	val announceSeaCreatures by AnnounceSeaCreatures()
 
-	class BobberTimer : ObjectProperty<BobberTimer>("bobberTimer") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var crimsonIsleOnly by Property.of<Boolean>("crimsonIsleOnly", true)
-	}
-
 	class SeaCreatureAlert : ObjectProperty<SeaCreatureAlert>("seaCreatureAlert") {
 		var enabled by Property.of<Boolean>("enabled", false)
 		var nameInsteadOfRarity by Property.of<Boolean>("nameInsteadOfRarity", false)
 		var minimumRarity by Property.of("minimumRarity", Serializer.enum(), Rarity.LEGENDARY)
-		var carrotKingIsRare by Property.of<Boolean>("carrotKingIsRare", false)
-		var announceInPartyChat by Property.of<Boolean>("announceInPartyChat", false)
 		var notificationSound by Property.of("notificationSound", Serializer.enum(), NotificationSound.DING)
 	}
 
 	class AnnounceSeaCreatures : ObjectProperty<AnnounceSeaCreatures>("announceSeaCreatures") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var seaCreatureType by Property.of("seaCreatureType", Serializer.enum(), SeaCreatureType.RARITY)
-		var minimumRarity by Property.of("minimumRarity", Serializer.enum(), Rarity.MYTHIC)
+		var minimumRarity by Property.of("minimumRarity", Serializer.enum(), Rarity.LEGENDARY)
 		var onlyInPartyChat by Property.of<Boolean>("onlyInPartyChat", false)
+	}
+
+	class BobberTimer : ObjectProperty<BobberTimer>("bobberTimer") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var crimsonIsleOnly by Property.of<Boolean>("crimsonIsleOnly", true)
 	}
 
 	class TrophyFishing : ObjectProperty<TrophyFishing>("trophyFishing") {

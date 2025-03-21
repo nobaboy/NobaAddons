@@ -1,7 +1,14 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
-import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.BiMapper
+import me.nobaboy.nobaaddons.config.util.add
+import me.nobaboy.nobaaddons.config.util.booleanController
+import me.nobaboy.nobaaddons.config.util.category
+import me.nobaboy.nobaaddons.config.util.colorController
+import me.nobaboy.nobaaddons.config.util.descriptionText
+import me.nobaboy.nobaaddons.config.util.enumController
+import me.nobaboy.nobaaddons.config.util.group
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
@@ -19,10 +26,57 @@ object FishingCategory {
 			booleanController()
 		}
 
+		seaCreatureAlert()
+		announceSeaCreatures()
 		bobberTimer()
 		trophyFishing()
-		seaCreatureAlert()
 		highlightThunderSparks()
+	}
+
+	private fun ConfigCategory.Builder.seaCreatureAlert() {
+		group(tr("nobaaddons.config.fishing.seaCreatureAlert", "Sea Creature Alert")) {
+			val enabled = add({ fishing.seaCreatureAlert::enabled }) {
+				name = CommonText.Config.ENABLED
+				booleanController()
+			}
+			add({ fishing.seaCreatureAlert::nameInsteadOfRarity }) {
+				name = tr("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity", "Use Name instead of Rarity")
+				descriptionText = tr("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity.tooltip", "Uses the sea creature's name instead when displaying the notification, instead of 'Legendary Catch!'")
+				require { option(enabled) }
+				booleanController()
+			}
+			add({ fishing.seaCreatureAlert::minimumRarity }) {
+				name = tr("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity", "Minimum Rarity")
+				descriptionText = tr("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity.tooltip", "The minimum rarity to display a catch notification for")
+				require { option(enabled) }
+				enumController(onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray())
+			}
+			add({ fishing.seaCreatureAlert::notificationSound }) {
+				name = CommonText.Config.NOTIFICATION_SOUND
+				require { option(enabled) }
+				enumController()
+			}
+		}
+	}
+
+	private fun ConfigCategory.Builder.announceSeaCreatures() {
+		group(tr("nobaaddons.config.fishing.announceSeaCreatures", "Announce Sea Creatures")) {
+			val enabled = add({ fishing.announceSeaCreatures::enabled }) {
+				name = CommonText.Config.ENABLED
+				booleanController()
+			}
+			add({ fishing.announceSeaCreatures::minimumRarity }) {
+				name = tr("nobaaddons.config.fishing.announceSeaCreatures.minimumRarity", "Minimum Rarity")
+				descriptionText = tr("nobaaddons.config.fishing.announceSeaCreatures.minimumRarity.tooltip", "The minimum rarity to announce for")
+				require { option(enabled) }
+				enumController(onlyInclude = (Rarity.LEGENDARY..Rarity.MYTHIC).toArray())
+			}
+			add({ fishing.announceSeaCreatures::onlyInPartyChat }) {
+				name = tr("nobaaddons.config.fishing.announceSeaCreatures.onlyInPartyChat", "Only in Party Chat")
+				require { option(enabled) }
+				booleanController()
+			}
+		}
 	}
 
 	private fun ConfigCategory.Builder.bobberTimer() {
@@ -58,44 +112,6 @@ object FishingCategory {
 				name = tr("nobaaddons.config.fishing.trophyFishing.compactMaxRarity", "Compact Max Rarity")
 				descriptionText = tr("nobaaddons.config.fishing.trophyFishing.compactMaxRarity.tooltip", "The maximum rarity to compact catch messages for. If this is set to Diamond, this will effectively compact all catch messages.")
 				require { option(modify) and option(compact) }
-				enumController()
-			}
-		}
-	}
-
-	private fun ConfigCategory.Builder.seaCreatureAlert() {
-		group(tr("nobaaddons.config.fishing.seaCreatureAlert", "Sea Creature Alert")) {
-			val enabled = add({ fishing.seaCreatureAlert::enabled }) {
-				name = CommonText.Config.ENABLED
-				booleanController()
-			}
-			add({ fishing.seaCreatureAlert::nameInsteadOfRarity }) {
-				name = tr("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity", "Use Name instead of Rarity")
-				descriptionText = tr("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity.tooltip", "Uses the sea creature's name instead when displaying the notification, instead of 'Legendary Catch!'")
-				require { option(enabled) }
-				booleanController()
-			}
-			add({ fishing.seaCreatureAlert::minimumRarity }) {
-				name = tr("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity", "Minimum Rarity")
-				descriptionText = tr("nobaaddons.config.fishing.seaCreatureAlert.minimumRarity.tooltip", "The minimum rarity to display a catch notification for")
-				require { option(enabled) }
-				enumController(onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray())
-			}
-			add({ fishing.seaCreatureAlert::carrotKingIsRare }) {
-				name = tr("nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare", "Carrot King is Rare")
-				descriptionText = tr("nobaaddons.config.fishing.seaCreatureAlert.carrotKingIsRare.tooltip", "Carrot King will be considered rare even if the above minimum rarity isn't low enough for it (since not many people fish for it)")
-				require { option(enabled) }
-				booleanController()
-			}
-			add({ fishing.seaCreatureAlert::announceInPartyChat }) {
-				name = tr("nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat", "Announce in Party Chat")
-				descriptionText = tr("nobaaddons.config.fishing.seaCreatureAlert.announceInPartyChat.tooltip", "A chat message will also be sent in party chat when catching a rare creature")
-				require { option(enabled) }
-				booleanController()
-			}
-			add({ fishing.seaCreatureAlert::notificationSound }) {
-				name = CommonText.Config.NOTIFICATION_SOUND
-				require { option(enabled) }
 				enumController()
 			}
 		}
