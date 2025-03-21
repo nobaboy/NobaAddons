@@ -29,7 +29,13 @@ object SeaCreatureAlert {
 			"${seaCreature.rarity} Catch!"
 		}
 
-		RenderUtils.drawTitle(text, (seaCreature.rarity.color ?: NobaColor.RED), subtext = tr("nobaaddons.fishing.seaCreatureAlert.doubleHook", "DOUBLE HOOK!").yellow().bold(), id = "sea_creature_alert")
+		val subtext = if(event.doubleHook) {
+			tr("nobaaddons.fishing.seaCreatureAlert.doubleHook", "DOUBLE HOOK!").yellow().bold()
+		} else {
+			null
+		}
+
+		RenderUtils.drawTitle(text, (seaCreature.rarity.color ?: NobaColor.RED), subtext = subtext, id = "sea_creature_alert")
 		config.notificationSound.play()
 	}
 }
