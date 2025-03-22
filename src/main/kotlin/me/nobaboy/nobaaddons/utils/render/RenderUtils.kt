@@ -221,7 +221,7 @@ object RenderUtils {
 		val matrices = context.matrixStack() ?: return
 		val cameraPos = context.camera().pos.toNobaVec()
 
-		val distSq = location.distanceSq(cameraPos)
+		val distSq = location.distanceSq(cameraPos, center = true)
 		if(distSq <= hideThreshold * hideThreshold) return
 
 		matrices.push()
@@ -267,7 +267,7 @@ object RenderUtils {
 		val green = color.green / 255f
 		val blue = color.blue / 255f
 
-		val distSq = location.distanceSq(cameraPos)
+		val distSq = location.distanceSq(cameraPos, center = true)
 		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.7f, 1f)
 
 		val box = Box(
@@ -320,7 +320,7 @@ object RenderUtils {
 		val green = color.green / 255f
 		val blue = color.blue / 255f
 
-		val distSq = location.distanceSq(cameraPos)
+		val distSq = location.distanceSq(cameraPos, center = true)
 		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.2f, 0.7f)
 
 		val box = Box(
