@@ -31,11 +31,11 @@ abstract class TextHudElement(element: AbstractTextElement<*>) : HudElement(elem
 	 * @param y How much to offset the Y value for this line
 	 * @param line Automatically adds `line * fontRenderer.fontHeight` to [y]
 	 */
-	protected fun renderLine(context: DrawContext, text: Text, x: Int = 0, y: Int = 0, line: Int = 0) {
+	protected fun renderLine(context: DrawContext, text: Text, x: Int = 0, y: Int = 0, line: Int = 0, autoAlign: Boolean = true) {
 		require(line >= 0) { "line must not be negative" }
 
 		val x = this.x + x + let {
-			if(alignment == ElementAlignment.RIGHT) this.size.first - text.getWidth() else 0
+			if(alignment == ElementAlignment.RIGHT && autoAlign) this.size.first - text.getWidth() else 0
 		}
 		val y = (this.y + y + line * (MCUtils.textRenderer.fontHeight + 1) * scale).toInt()
 

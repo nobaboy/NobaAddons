@@ -8,6 +8,7 @@ object CommonText {
 
 	object Config {
 		val ENABLED get() = tr("nobaaddons.config.enabled", "Enabled")
+		val TEXT_STYLE get() = tr("nobaaddons.config.textStyle", "Text Style")
 
 		val ALERT_COLOR get() = tr("nobaaddons.config.alertColor", "Alert Color")
 		val HIGHLIGHT_COLOR get() = tr("nobaaddons.config.highlightColor", "Highlight Color")
