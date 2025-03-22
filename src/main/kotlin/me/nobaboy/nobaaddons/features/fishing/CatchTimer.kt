@@ -10,17 +10,13 @@ import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.bold
-import me.nobaboy.nobaaddons.utils.TextUtils.red
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.text.Text
 
 object CatchTimer {
-	private val enabled by NobaConfig.INSTANCE.fishing::catchTimerHudElement
+	private val enabled get() = NobaConfig.INSTANCE.fishing.catchTimerHudElement && SkyBlockAPI.inSkyBlock
 	private var timer: ArmorStandEntity? = null
 
 	private val TIMER_REGEX by Regex("^(?:\\d+\\.\\d+|!{3})$").fromRepo("fishing.catch_timer")
@@ -31,12 +27,9 @@ object CatchTimer {
 	}
 
 	private fun hideTimer(event: EntityNametagRenderEvents.Visibility) {
-		if(!enabled || !SkyBlockAPI.inSkyBlock) return
-		if(MCUtils.player?.fishHook == null) return
-		val entity = event.entity
-		if(entity !is ArmorStandEntity) return
-		val name = entity.displayName ?: return
-		if(TIMER_REGEX.matchEntire(name.string.cleanFormatting()) == null) return
+		if(!enabled || MCUtils.player?.fishHook == null) return
+		val entity = event.entity as? ArmorStandEntity ?: return
+		if(TIMER_REGEX.matchEntire(entity.name.string.cleanFormatting()) == null) return
 		timer = entity
 		event.shouldRender = false
 	}
