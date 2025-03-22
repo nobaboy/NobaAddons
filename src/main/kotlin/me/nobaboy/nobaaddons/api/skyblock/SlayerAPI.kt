@@ -63,11 +63,11 @@ object SlayerAPI {
 		val armorStandName = metadata[2]?.let { (it as? Optional<*>)?.getOrNull() as? Text }?.string ?: return
 		if(armorStandName != "Spawned by: $playerName") return
 
-		val entity = EntityUtils.getNextEntity(ownerArmorStand, -3) as? LivingEntity ?: return
+		val entity = EntityUtils.getNextEntity<LivingEntity>(ownerArmorStand, -3) ?: return
 		if(entity.type != currentQuest.boss.entityType) return
 
-		val armorStand = EntityUtils.getNextEntity(ownerArmorStand, -2) as? ArmorStandEntity ?: return
-		val timerArmorStand = EntityUtils.getNextEntity(ownerArmorStand, -1) as? ArmorStandEntity ?: return
+		val armorStand = EntityUtils.getNextEntity<ArmorStandEntity>(ownerArmorStand, -2) ?: return
+		val timerArmorStand = EntityUtils.getNextEntity<ArmorStandEntity>(ownerArmorStand, -1) ?: return
 
 		currentQuest.apply {
 			this.entity = entity
@@ -86,12 +86,12 @@ object SlayerAPI {
 		if(entity.type != currentQuest.boss.entityType) return
 		if(entity in miniBosses) return
 
-		val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return
+		val armorStand = EntityUtils.getNextEntity<ArmorStandEntity>(entity, 1) ?: return
 		val armorStandName = armorStand.name.string
 
 		if(armorStandName.contains(currentQuest.boss.displayName)) {
 			val playerName = MCUtils.playerName ?: return
-			val ownerArmorStand = EntityUtils.getNextEntity(entity, 3) as? ArmorStandEntity ?: return
+			val ownerArmorStand = EntityUtils.getNextEntity<ArmorStandEntity>(entity, 3) ?: return
 			if(ownerArmorStand.name.string != "Spawned by: $playerName") return
 
 			currentQuest.entity = entity

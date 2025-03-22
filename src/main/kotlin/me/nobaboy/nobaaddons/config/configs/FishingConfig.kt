@@ -11,8 +11,10 @@ import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	var hideOtherPeopleFishing by Property.of<Boolean>("hideOtherPeopleFishing", false)
+	var hotspotLocator by Property.of<Boolean>("hotspotLocator", false)
 
 	val seaCreatureAlert by SeaCreatureAlert()
+	val announceSeaCreatures by AnnounceSeaCreatures()
 	val bobberTimer by BobberTimer()
 	val trophyFishing by TrophyFishing()
 	val highlightThunderSparks by HighlightThunderSparks()
@@ -21,9 +23,13 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 		var enabled by Property.of<Boolean>("enabled", false)
 		var nameInsteadOfRarity by Property.of<Boolean>("nameInsteadOfRarity", false)
 		var minimumRarity by Property.of("minimumRarity", Serializer.enum(), Rarity.LEGENDARY)
-		var carrotKingIsRare by Property.of<Boolean>("carrotKingIsRare", false)
-		var announceInPartyChat by Property.of<Boolean>("announceInPartyChat", false)
 		var notificationSound by Property.of("notificationSound", Serializer.enum(), NotificationSound.DING)
+	}
+
+	class AnnounceSeaCreatures : ObjectProperty<AnnounceSeaCreatures>("announceSeaCreatures") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var minimumRarity by Property.of("minimumRarity", Serializer.enum(), Rarity.LEGENDARY)
+		var onlyInPartyChat by Property.of<Boolean>("onlyInPartyChat", false)
 	}
 
 	class BobberTimer : ObjectProperty<BobberTimer>("bobberTimer") {
