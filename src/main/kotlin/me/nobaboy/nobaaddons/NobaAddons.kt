@@ -46,6 +46,7 @@ import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
 import me.nobaboy.nobaaddons.features.fishing.AnnounceSeaCreatures
 import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
+import me.nobaboy.nobaaddons.features.fishing.HotspotWaypoints
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
@@ -211,6 +212,7 @@ object NobaAddons : ClientModInitializer {
 		AnnounceSeaCreatures.init()
 		FishingBobberTweaks.init()
 		HighlightThunderSparks.init()
+		HotspotWaypoints.init()
 		SeaCreatureAlert.init()
 		TrophyFishChat.init()
 		// endregion
