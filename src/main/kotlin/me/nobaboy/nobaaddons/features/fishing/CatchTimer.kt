@@ -1,0 +1,63 @@
+package me.nobaboy.nobaaddons.features.fishing
+
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
+import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.ui.ElementAlignment
+import me.nobaboy.nobaaddons.ui.TextHudElement
+import me.nobaboy.nobaaddons.ui.UIManager
+import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.TextUtils.bold
+import me.nobaboy.nobaaddons.utils.TextUtils.red
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.tr
+import net.minecraft.client.gui.DrawContext
+import net.minecraft.entity.decoration.ArmorStandEntity
+import net.minecraft.text.Text
+
+object CatchTimer {
+	private val enabled by NobaConfig.INSTANCE.fishing::catchTimerHudElement
+	private var timer: ArmorStandEntity? = null
+
+	private val TIMER_REGEX by Regex("^(?:\\d+\\.\\d+|!{3})$").fromRepo("fishing.catch_timer")
+
+	fun init() {
+		EntityNametagRenderEvents.VISIBILITY.register(this::hideTimer)
+		UIManager.add(CatchTimerHudElement)
+	}
+
+	private fun hideTimer(event: EntityNametagRenderEvents.Visibility) {
+		if(!enabled || !SkyBlockAPI.inSkyBlock) return
+		if(MCUtils.player?.fishHook == null) return
+		val entity = event.entity
+		if(entity !is ArmorStandEntity) return
+		val name = entity.displayName ?: return
+		if(TIMER_REGEX.matchEntire(name.string.cleanFormatting()) == null) return
+		timer = entity
+		event.shouldRender = false
+	}
+
+	private object CatchTimerHudElement : TextHudElement(UISettings.catchTimer) {
+		override val name: Text = tr("nobaaddons.ui.fishingCatchTimer", "Fishing Catch Timer")
+		override val size: Pair<Int, Int> = 20 to 20
+		override val enabled: Boolean by CatchTimer::enabled
+
+		// allowing the positional alignment doesn't make sense for this element with how small it is
+		override val alignment: ElementAlignment = ElementAlignment.LEFT
+
+		override fun renderText(context: DrawContext) {
+			// TODO allow for aligning this text to the center of the element
+			timer?.let {
+				if(it.isRemoved) {
+					timer = null
+					return
+				}
+				renderLine(context, it.displayName!!)
+			}
+		}
+	}
+}
