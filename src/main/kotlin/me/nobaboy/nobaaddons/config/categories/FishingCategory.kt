@@ -26,6 +26,11 @@ object FishingCategory {
 			booleanController()
 		}
 
+		add({ fishing::hotspotLocator }) {
+			name = tr("nobaaddons.config.fishing.hotspotLocator", "Locate Hotspots")
+			booleanController()
+		}
+
 		seaCreatureAlert()
 		announceSeaCreatures()
 		bobberTimer()

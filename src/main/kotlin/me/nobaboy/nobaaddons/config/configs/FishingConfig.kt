@@ -11,6 +11,7 @@ import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	var hideOtherPeopleFishing by Property.of<Boolean>("hideOtherPeopleFishing", false)
+	var hotspotLocator by Property.of<Boolean>("hotspotLocator", false)
 
 	val seaCreatureAlert by SeaCreatureAlert()
 	val announceSeaCreatures by AnnounceSeaCreatures()

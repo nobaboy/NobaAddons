@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.fishing
 
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
@@ -16,7 +17,8 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 object HotspotWaypoints {
-	private val enabled: Boolean get() = true
+	private val config get() = NobaConfig.INSTANCE.fishing
+	private val enabled: Boolean get() = config.hotspotLocator
 
 	// TODO: At some point when a player stats core file is made, use that instead
 	private val hotspotColors = mutableMapOf(
