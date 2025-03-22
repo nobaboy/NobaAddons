@@ -47,9 +47,10 @@ object HotspotWaypoints {
 		if(armorStand.name.string != "HOTSPOT") return
 
 		val statsArmorString = EntityUtils.getNextEntity<ArmorStandEntity>(armorStand, 1) ?: return
-		val timestamp = Timestamp.now() + 4.5.minutes - (armorStand.age / 20).seconds
+		val color = getHotspotColor(statsArmorString.name.string)
 
-		hotspots.add(Hotspot(armorStand, statsArmorString, timestamp))
+		val timestamp = Timestamp.now() + 4.5.minutes - (armorStand.age / 20).seconds
+		hotspots.add(Hotspot(armorStand, color, timestamp))
 	}
 
 	private fun renderWaypoints(context: WorldRenderContext) {
@@ -57,9 +58,7 @@ object HotspotWaypoints {
 
 		hotspots.removeIf { !it.isValid }
 		hotspots.forEach {
-			val color = getHotspotColor(it.statsArmorstand.name.string)
-
-			RenderUtils.renderBeaconBeam(context, it.location, color)
+			RenderUtils.renderBeaconBeam(context, it.location, it.color)
 			RenderUtils.renderText(it.location.center().raise(2), it.remainingTime, yOffset = 15f, throughBlocks = true)
 		}
 	}
@@ -68,12 +67,10 @@ object HotspotWaypoints {
 		hotspots.clear()
 	}
 
-	// The color is defaulted to dark gray if the name doesn't match solely for the reason that the armorstand's name
-	// will not show if it's not rendered and defaults to `Armor Stand`, (and if by chance there is a new stat)
 	private fun getHotspotColor(name: String) =
 		hotspotColors.entries.firstOrNull { name.contains(it.key) }?.value ?: NobaColor.DARK_GRAY
 
-	data class Hotspot(val armorStand: ArmorStandEntity, val statsArmorstand: ArmorStandEntity, val timestamp: Timestamp) {
+	data class Hotspot(val armorStand: ArmorStandEntity, val color: NobaColor, val timestamp: Timestamp) {
 		val location = armorStand.pos.toNobaVec().lower(2).roundToBlock()
 
 		val isValid get() = armorStand.isAlive
