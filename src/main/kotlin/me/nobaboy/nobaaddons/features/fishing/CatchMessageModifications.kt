@@ -11,7 +11,7 @@ import net.minecraft.util.Formatting
 object CatchMessageModifications {
 	private val config by NobaConfig.INSTANCE.fishing::catchMessages
 
-	private val TREASURE_CATCH_MESSAGE by Regex("^⛃ (?<rarity>GOOD|GREAT|OUTSTANDING)(?<treasureType> JUNK)? CATCH! You caught .+").fromRepo("fishing.treasureCatch")
+	private val TREASURE_CATCH_MESSAGE by Regex("^⛃ (?<rarity>GOOD|GREAT|OUTSTANDING)(?<treasureType> JUNK)? CATCH! You caught .+").fromRepo("fishing.treasure_catch")
 
 	private val colorOverride = mapOf(
 		"GOOD" to Formatting.GOLD,
