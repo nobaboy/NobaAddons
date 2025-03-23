@@ -10,6 +10,7 @@ import net.minecraft.client.gui.DrawContext
  */
 object UIManager : ForwardingSet<HudElement>() {
 	private val elements = mutableSetOf<HudElement>()
+	var renderElementBounds: Boolean = false
 
 	fun init() {
 		HudRenderCallback.EVENT.register { context, _ -> render(context) }
@@ -19,6 +20,9 @@ object UIManager : ForwardingSet<HudElement>() {
 		for(element in this) {
 			try {
 				if(!element.enabled || !element.shouldRender()) continue
+				if(renderElementBounds) {
+					element.renderGUIBackground(ctx, hovered = false, renderExample = false)
+				}
 				element.render(ctx)
 			} catch(error: Throwable) {
 				ErrorManager.logError(

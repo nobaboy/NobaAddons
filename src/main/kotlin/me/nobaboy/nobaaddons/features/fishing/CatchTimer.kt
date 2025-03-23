@@ -38,19 +38,24 @@ object CatchTimer {
 		override val name: Text = tr("nobaaddons.ui.fishingCatchTimer", "Fishing Catch Timer")
 		override val size: Pair<Int, Int> = 20 to 20
 		override val enabled: Boolean by CatchTimer::enabled
-
-		// allowing the positional alignment doesn't make sense for this element with how small it is
-		override val alignment: ElementAlignment = ElementAlignment.LEFT
+		override val minScale: Float = 1.5f
 
 		override fun renderText(context: DrawContext) {
-			// TODO allow for aligning this text to the center of the element
 			timer?.let {
 				if(it.isRemoved) {
 					timer = null
 					return
 				}
-				renderLine(context, it.displayName!!)
+				renderLine(context, it.displayName!!, alignment = ElementAlignment.CENTER)
 			}
+		}
+
+		override fun reset() {
+			scale = 2f
+			// TODO scaling up causes element positions to shift slightly between different screen sizes,
+			//      which is especially noticeable with this
+			elementPosition.x = 0.475
+			elementPosition.y = 0.6
 		}
 	}
 }

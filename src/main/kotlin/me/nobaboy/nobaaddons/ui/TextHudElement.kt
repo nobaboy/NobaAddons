@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.getWidth
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
+import kotlin.math.roundToInt
 
 /**
  * Generic text display [HudElement], providing helper methods to render text
@@ -30,12 +31,29 @@ abstract class TextHudElement(element: AbstractTextElement<*>) : HudElement(elem
 	 * @param x How much to offset the X value for this line
 	 * @param y How much to offset the Y value for this line
 	 * @param line Automatically adds `line * fontRenderer.fontHeight` to [y]
+	 * @param allowAlignment If `false`, [alignment] will be entirely ignored.
+	 * @param alignment Overrides the class-level text alignment for the current line
 	 */
-	protected fun renderLine(context: DrawContext, text: Text, x: Int = 0, y: Int = 0, line: Int = 0, autoAlign: Boolean = true) {
-		require(line >= 0) { "line must not be negative" }
+	protected fun renderLine(
+		context: DrawContext,
+		text: Text,
+		x: Int = 0,
+		y: Int = 0,
+		line: Int = 0,
+		allowAlignment: Boolean = true,
+		alignment: ElementAlignment? = null,
+	) {
+		require(line >= 0) { "line must be zero or a positive integer" }
 
-		val x = this.x + x + let {
-			if(alignment == ElementAlignment.RIGHT && autoAlign) this.size.first - text.getWidth() else 0
+		val x = this.x + x + run {
+			if(!allowAlignment) return@run 0
+			val size = scaledSize
+			val textWidth = if(allowScaling) (text.getWidth() * scale).roundToInt() else text.getWidth()
+			when(alignment ?: this.alignment) {
+				ElementAlignment.LEFT -> 0
+				ElementAlignment.CENTER -> (size.first - textWidth) / 2 + 1
+				ElementAlignment.RIGHT -> size.first - textWidth
+			}
 		}
 		val y = (this.y + y + line * (MCUtils.textRenderer.fontHeight + 1) * scale).toInt()
 

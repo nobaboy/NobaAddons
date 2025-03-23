@@ -82,8 +82,14 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	/**
 	 * How large this element is on screen in pixels
 	 */
-	// TODO does this need to be manually scaled for different GUI scales for custom values?
 	abstract val size: Pair<Int, Int>
+
+	val scaledSize: Pair<Int, Int>
+		get() {
+			if(!allowScaling) return size
+			val (width, height) = size
+			return (width * scale).roundToInt() to (height * scale).roundToInt()
+		}
 
 	/**
 	 * Implement this method with your element's rendering logic
@@ -115,7 +121,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	/**
 	 * Renders the background for this element in the HUD editor screen
 	 */
-	fun renderGUIBackground(context: DrawContext, hovered: Boolean) {
+	fun renderGUIBackground(context: DrawContext, hovered: Boolean, renderExample: Boolean = true) {
 		val color = if(hovered) 0xFF85858A else 0xFF343738
 
 		val offset = (1 * scale).roundToInt().coerceAtLeast(1)
@@ -125,13 +131,27 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 		context.drawBorder(bounds.x - offset - 1, bounds.y - offset - 1, bounds.width + 2 * offset + 2, bounds.height + 2 * offset + 2, color.toInt())
 
 		val yOffset = if(scale < 1f) 10 else 0
-		RenderUtils.drawCenteredText(context, name, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2 - 4 - yOffset)
+		if(renderExample) {
+			renderExampleText(context, bounds, yOffset)
+		}
+	}
+
+	/**
+	 * Display example text in the UI; the default implementation of this method simply renders [name].
+	 */
+	protected open fun renderExampleText(context: DrawContext, bounds: ElementBounds, yOffset: Int) {
+		RenderUtils.drawCenteredText(
+			context,
+			name,
+			bounds.x + bounds.width / 2,
+			bounds.y + bounds.height / 2 - 4 - yOffset
+		)
 	}
 
 	/**
 	 * Internal method, returns the element's [ElementBounds] used by the HUD editor screen
 	 */
-	fun getBounds(): ElementBounds = ElementBounds(x, y, size)
+	fun getBounds(): ElementBounds = ElementBounds(x, y, scaledSize)
 
 	open fun moveTo(x: Int, y: Int) {
 		val offset = scaleOffset + 1
@@ -148,7 +168,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	}
 
 	open fun reset() {
-		scale = 1f
+		scale = 1f.coerceIn(minScale, maxScale)
 		moveTo(0, 0)
 	}
 }
