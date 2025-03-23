@@ -58,8 +58,10 @@ object HotspotWaypoints {
 
 		hotspots.removeIf { !it.isValid }
 		hotspots.forEach {
+			val time = it.remainingTime.ifEmpty { "Soon" }
+
 			RenderUtils.renderBeaconBeam(context, it.location, it.color)
-			RenderUtils.renderText(it.location.center().raise(2), it.remainingTime, yOffset = 15f, throughBlocks = true)
+			RenderUtils.renderText(it.location.center().raise(2), time, yOffset = 15f, throughBlocks = true)
 		}
 	}
 
