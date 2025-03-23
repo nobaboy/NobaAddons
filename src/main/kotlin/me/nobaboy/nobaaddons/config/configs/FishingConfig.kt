@@ -16,6 +16,7 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	val seaCreatureAlert by SeaCreatureAlert()
 	val bobberTimer by BobberTimer()
 	val trophyFishing by TrophyFishing()
+	val catchMessages by CatchMessages()
 	val highlightThunderSparks by HighlightThunderSparks()
 
 	class SeaCreatureAlert : ObjectProperty<SeaCreatureAlert>("seaCreatureAlert") {
@@ -36,6 +37,11 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 		var modifyChatMessages by Property.of<Boolean>("modifyChatMessages", false)
 		var compactMessages by Property.of<Boolean>("compactMessages", false)
 		var compactMaxRarity by Property.of<TrophyFishRarity>("compactMaxRarity", Serializer.enum(), TrophyFishRarity.SILVER)
+	}
+
+	class CatchMessages : ObjectProperty<CatchMessages>("catchMessages") {
+		var revertTreasureMessages by Property.of<Boolean>("revertTreasureMessages", false)
+		// TODO add a custom sea creature catch message formatting, like what skyhanni has
 	}
 
 	class HighlightThunderSparks : ObjectProperty<HighlightThunderSparks>("highlightThunderSparks") {
