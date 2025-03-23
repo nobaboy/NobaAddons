@@ -37,7 +37,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	 * if(elementPosition.x > 0.5) ElementAlignment.RIGHT else ElementAlignment.LEFT
 	 * ```
 	 */
-	val alignment: ElementAlignment
+	open val alignment: ElementAlignment
 		get() = if(elementPosition.x > 0.5) ElementAlignment.RIGHT else ElementAlignment.LEFT
 
 	/**
