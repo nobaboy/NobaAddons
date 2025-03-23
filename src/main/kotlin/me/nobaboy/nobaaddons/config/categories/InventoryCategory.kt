@@ -210,7 +210,7 @@ object InventoryCategory {
 				intSliderController(min = 2, max = 10, format = CommonText.Config::seconds)
 			}
 			add(Binding.generic(TextShadow.SHADOW, UISettings.itemPickupLog::textShadow, UISettings.itemPickupLog::textShadow.setter)) {
-				name = tr("nobaaddons.config.inventory.itemPickupLog.style", "Text Style")
+				name = CommonText.Config.TEXT_STYLE
 				require { option(enabled) }
 				enumController()
 			}

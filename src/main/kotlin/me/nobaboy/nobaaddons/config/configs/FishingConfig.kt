@@ -12,11 +12,13 @@ import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	var hideOtherPeopleFishing by Property.of<Boolean>("hideOtherPeopleFishing", false)
 	var hotspotLocator by Property.of<Boolean>("hotspotLocator", false)
+	var catchTimerHudElement by Property.of<Boolean>("catchTimerHudElement", false)
 
 	val seaCreatureAlert by SeaCreatureAlert()
 	val announceSeaCreatures by AnnounceSeaCreatures()
 	val bobberTimer by BobberTimer()
 	val trophyFishing by TrophyFishing()
+	val catchMessages by CatchMessages()
 	val highlightThunderSparks by HighlightThunderSparks()
 
 	class SeaCreatureAlert : ObjectProperty<SeaCreatureAlert>("seaCreatureAlert") {
@@ -41,6 +43,11 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 		var modifyChatMessages by Property.of<Boolean>("modifyChatMessages", false)
 		var compactMessages by Property.of<Boolean>("compactMessages", false)
 		var compactMaxRarity by Property.of<TrophyFishRarity>("compactMaxRarity", Serializer.enum(), TrophyFishRarity.SILVER)
+	}
+
+	class CatchMessages : ObjectProperty<CatchMessages>("catchMessages") {
+		var revertTreasureMessages by Property.of<Boolean>("revertTreasureMessages", false)
+		// TODO add a custom sea creature catch message formatting, like what skyhanni has
 	}
 
 	class HighlightThunderSparks : ObjectProperty<HighlightThunderSparks>("highlightThunderSparks") {
