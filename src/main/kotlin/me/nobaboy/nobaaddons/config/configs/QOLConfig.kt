@@ -10,6 +10,7 @@ class QOLConfig : ObjectProperty<QOLConfig>("qol") {
 	class SoundFilters : ObjectProperty<SoundFilters>("soundFilters") {
 		var muteWitherSkullAbilities by Property.of<Boolean>("muteWitherSkullAbilities", false)
 
+		var muteBanshee by Property.of<Boolean>("muteBanshee", false)
 		var muteReindrakeSpawn by Property.of<Boolean>("muteReindrakeSpawn", false)
 		var muteReindrakeGiftDrop by Property.of<Boolean>("muteReindrakeGiftDrop", false)
 
