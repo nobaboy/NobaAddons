@@ -28,8 +28,10 @@ object CatchTimer {
 
 	private fun hideTimer(event: EntityNametagRenderEvents.Visibility) {
 		if(!enabled || MCUtils.player?.fishHook == null) return
+
 		val entity = event.entity as? ArmorStandEntity ?: return
 		if(TIMER_REGEX.matchEntire(entity.name.string.cleanFormatting()) == null) return
+
 		timer = entity
 		event.shouldRender = false
 	}
@@ -37,8 +39,9 @@ object CatchTimer {
 	private object CatchTimerHudElement : TextHudElement(UISettings.catchTimer) {
 		override val name: Text = tr("nobaaddons.ui.fishingCatchTimer", "Fishing Catch Timer")
 		override val size: Pair<Int, Int> = 20 to 20
-		override val enabled: Boolean by CatchTimer::enabled
 		override val minScale: Float = 1.5f
+
+		override val enabled: Boolean by CatchTimer::enabled
 
 		override fun renderText(context: DrawContext) {
 			timer?.let {
@@ -54,7 +57,7 @@ object CatchTimer {
 			scale = 2f
 			// TODO scaling up causes element positions to shift slightly between different screen sizes,
 			//      which is especially noticeable with this
-			elementPosition.x = 0.475
+			elementPosition.x = 0.48
 			elementPosition.y = 0.55
 		}
 	}
