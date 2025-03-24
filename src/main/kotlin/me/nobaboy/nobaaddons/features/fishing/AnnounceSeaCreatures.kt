@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 object AnnounceSeaCreatures {
 	private val config get() = NobaConfig.INSTANCE.fishing.announceSeaCreatures
-	private val enabled: Boolean get() = config.enabled
+	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
 	fun init() {
 		FishingEvents.SEA_CREATURE_CATCH.register(this::onSeaCreatureCatch)
