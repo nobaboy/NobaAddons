@@ -30,7 +30,7 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 
 	class AnnounceSeaCreatures : ObjectProperty<AnnounceSeaCreatures>("announceSeaCreatures") {
 		var enabled by Property.of<Boolean>("enabled", false)
-		var minimumRarity by Property.of("minimumRarity", Serializer.enum(), Rarity.LEGENDARY)
+		var minimumRarity by Property.of("minimumRarity", Serializer.enum(), Rarity.MYTHIC)
 		var onlyInPartyChat by Property.of<Boolean>("onlyInPartyChat", false)
 	}
 
