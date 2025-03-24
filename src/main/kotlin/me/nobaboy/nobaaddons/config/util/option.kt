@@ -127,4 +127,4 @@ fun OptionAddable.label(builder: MutableText.() -> Unit): LabelOption = LabelOpt
 fun OptionAddable.label(text: Text, vararg extra: Text): LabelOption = LabelOption.createBuilder().apply {
 	line(text)
 	extra.toList().takeIf(List<*>::isNotEmpty)?.let(::lines)
-}.build()
+}.build().also(::option)
