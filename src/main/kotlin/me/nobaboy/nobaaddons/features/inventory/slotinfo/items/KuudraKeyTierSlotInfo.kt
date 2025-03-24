@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 
-object KuudraKeyTierInfoSlot : ISlotInfo {
+object KuudraKeyTierSlotInfo : ISlotInfo {
 	override val enabled: Boolean get() = config.kuudraKeyTier
 
 	override fun handle(event: ScreenRenderEvents.DrawItem) {

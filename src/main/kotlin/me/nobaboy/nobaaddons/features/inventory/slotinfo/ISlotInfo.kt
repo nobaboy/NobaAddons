@@ -37,7 +37,7 @@ interface ISlotInfo {
 			// UI Elements
 			BestiarySlotInfo,
 			CollectionTierSlotInfo,
-			GardenPlotPestInfo,
+			GardenPlotPestSlotInfo,
 			SkillLevelSlotInfo,
 			SkyBlockLevelSlotInfo,
 			TuningPointsSlotInfo,
@@ -46,7 +46,7 @@ interface ISlotInfo {
 			AttributeShardSlotInfo,
 			DungeonHeadTierSlotInfo,
 			EnchantedBookSlotInfo,
-			KuudraKeyTierInfoSlot,
+			KuudraKeyTierSlotInfo,
 			MasterSkullTierSlotInfo,
 			MasterStarTierSlotInfo,
 			MinionTierSlotInfo,
