@@ -12,5 +12,5 @@ object UISettings : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("ui.json")) {
 	}
 
 	val itemPickupLog by TextElement("itemPickupLog")
-	val catchTimer by TextElement("catchTimer", position = ElementPosition(x = 0.475, y = 0.55, scale = 2f))
+	val catchTimer by TextElement("catchTimer", position = ElementPosition(x = 0.48, y = 0.55, scale = 2f))
 }
