@@ -22,7 +22,7 @@ object FishingCategory {
 			booleanController()
 		}
 
-    add({ fishing.catchMessages::revertTreasureMessages }) {
+    	add({ fishing.catchMessages::revertTreasureMessages }) {
 			name = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages", "Revert Treasure Catch Messages")
 			descriptionText = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages.tooltip", "Reverts treasure catch messages to the format used pre-Backwater Bayou")
 			booleanController()

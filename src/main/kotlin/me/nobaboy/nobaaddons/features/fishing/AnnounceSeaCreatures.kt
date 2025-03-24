@@ -26,7 +26,7 @@ object AnnounceSeaCreatures {
 		val location = LocationUtils.playerCoords()
 		val randomString = StringUtils.randomAlphanumeric()
 
-		val prefix = if(event.doubleHook) "DOUBLE HOOK " else ""
+		val prefix = if(event.doubleHook) "DOUBLE HOOK! " else ""
 		val message = "$location | $prefix${seaCreature.displayName} at [ ${SkyBlockAPI.prefixedZone} ] @$randomString"
 
 		if(config.onlyInPartyChat) {
