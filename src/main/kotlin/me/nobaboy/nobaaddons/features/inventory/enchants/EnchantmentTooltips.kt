@@ -52,30 +52,12 @@ object EnchantmentTooltips {
 		if(!config.modifyTooltips) return
 		if(InputUtil.isKeyPressed(MCUtils.window.handle, GLFW.GLFW_KEY_RIGHT_SHIFT)) return
 		if(!item.isSkyBlockItem || item.asSkyBlockItem?.enchantments?.isEmpty() != false) return
-
 		if(lines.size <= 1) return
-		val firstEnchant: Int = run {
-			for((index, line) in lines.withIndex()) {
-				if(index == 0) {
-					// Skip the first line to avoid incorrect matches on item names like Jasper Drill X
-					continue
-				}
-				val matching = if(index == 1) {
-					// Special case the second line to account for enchanted books, which don't have an empty line
-					// before the enchants
-					index to line
-				} else {
-					// But otherwise only attempt to match against lines immediately following an empty line
-					if(line.string.isNotBlank()) continue
-					val next = index + 1
-					next to (lines.getOrNull(next) ?: return)
-				}
-				if(ENCHANT_LINE.matches(matching.second.string.cleanFormatting())) {
-					return@run matching.first
-				}
-			}
-			return
-		}
+
+		val firstEnchant = lines.drop(1)
+			.indexOfFirst { ENCHANT_LINE.matches(it.string.cleanFormatting()) }
+			.takeIf { it != -1 }
+			?.let { it + 1 } ?: return
 
 		val enchants = mutableListOf<ParsedEnchant>()
 		var lastEnchant: ParsedEnchant? = null
