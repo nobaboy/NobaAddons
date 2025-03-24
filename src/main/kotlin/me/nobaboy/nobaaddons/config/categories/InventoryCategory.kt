@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.Binding
 import dev.isxander.yacl3.api.ConfigCategory
-import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentDisplayMode
 import me.nobaboy.nobaaddons.ui.TextShadow
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -210,7 +210,7 @@ object InventoryCategory {
 				intSliderController(min = 2, max = 10, format = CommonText.Config::seconds)
 			}
 			add(Binding.generic(TextShadow.SHADOW, UISettings.itemPickupLog::textShadow, UISettings.itemPickupLog::textShadow.setter)) {
-				name = tr("nobaaddons.config.inventory.itemPickupLog.style", "Text Style")
+				name = CommonText.Config.TEXT_STYLE
 				require { option(enabled) }
 				enumController()
 			}

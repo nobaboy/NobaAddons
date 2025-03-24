@@ -1,11 +1,14 @@
 package me.nobaboy.nobaaddons.config.categories
 
+import dev.isxander.yacl3.api.Binding
 import dev.isxander.yacl3.api.ConfigCategory
+import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
+import me.nobaboy.nobaaddons.ui.TextShadow
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.white
 import me.nobaboy.nobaaddons.utils.tr
@@ -19,7 +22,14 @@ object FishingCategory {
 			booleanController()
 		}
 
+		add({ fishing.catchMessages::revertTreasureMessages }) {
+			name = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages", "Revert Treasure Catch Messages")
+			descriptionText = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages.tooltip", "Reverts treasure catch messages to the format used pre-Backwater Bayou")
+			booleanController()
+		}
+
 		bobberTimer()
+		catchTimer()
 		trophyFishing()
 		seaCreatureAlert()
 		highlightThunderSparks()
@@ -29,12 +39,31 @@ object FishingCategory {
 		group(tr("nobaaddons.config.fishing.bobberTimer", "Bobber Timer")) {
 			val enabled = add({ fishing.bobberTimer::enabled }) {
 				name = CommonText.Config.ENABLED
+				descriptionText = tr(
+					"nobaaddons.config.fishing.bobberTimer.tooltip",
+					"Displays how long your fishing bobber has been spawned above it; the color will change to gold once it's been spawned long enough to catch a Slugfish."
+				)
 				booleanController()
 			}
 			add({ fishing.bobberTimer::crimsonIsleOnly }) {
-				name = tr("nobaaddons.config.fishing.bobberTimer.crimsonIsleOnly", "Show on Crimson Isle Only")
+				name = tr("nobaaddons.config.fishing.bobberTimer.crimsonIsleOnly", "Only Show on Crimson Isle")
 				require { option(enabled) }
 				booleanController()
+			}
+		}
+	}
+
+	private fun ConfigCategory.Builder.catchTimer() {
+		group(tr("nobaaddons.config.fishing.catchTimer", "Catch Timer")) {
+			val enabled = add({ fishing::catchTimerHudElement }) {
+				name = CommonText.Config.ENABLED
+				descriptionText = tr("nobaaddons.config.fishing.catchTimer.enabled.tooltip", "Moves the catch timer text displayed above your fishing bobber to a HUD element")
+				booleanController()
+			}
+			add(Binding.generic(TextShadow.SHADOW, UISettings.catchTimer::textShadow, UISettings.catchTimer::textShadow.setter)) {
+				name = CommonText.Config.TEXT_STYLE
+				require { option(enabled) }
+				enumController()
 			}
 		}
 	}
