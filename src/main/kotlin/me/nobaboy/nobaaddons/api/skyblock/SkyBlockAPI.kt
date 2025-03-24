@@ -17,6 +17,7 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFirstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
+import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.SkyBlockSeason
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
@@ -95,7 +96,9 @@ object SkyBlockAPI {
 	private fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentServer = packet.serverType.getOrNull()
 		currentIsland = SkyBlockIsland.getByName(packet.mode.getOrNull() ?: return)
-		if(currentIsland != SkyBlockIsland.UNKNOWN) SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
+		if(currentIsland != SkyBlockIsland.UNKNOWN) Scheduler.schedule(2) {
+			SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
+		}
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
