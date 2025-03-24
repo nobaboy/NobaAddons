@@ -151,7 +151,7 @@ abstract class HudElement(protected val elementPosition: ElementPosition) {
 	}
 
 	/**
-	 * Renders the background for this element
+	 * Renders the background for this element.
 	 */
 	fun renderBackground(context: DrawContext) {
 		val offset = scaleOffset
