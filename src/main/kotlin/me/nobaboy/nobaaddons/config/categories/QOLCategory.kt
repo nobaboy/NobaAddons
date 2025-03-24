@@ -28,6 +28,10 @@ object QOLCategory {
 			// region Mobs
 			label(CommonText.Config.LABEL_MOBS)
 
+			add({ qol.soundFilters::muteBanshee }) {
+				name = tr("nobaaddons.config.qol.soundFilters.muteBanshee", "Mute Banshee")
+				booleanController()
+			}
 			add({ qol.soundFilters::muteReindrakeSpawn }) {
 				name = tr("nobaaddons.config.qol.soundFilters.muteReindrakeSpawn", "Mute Reindrake Spawning")
 				booleanController()
