@@ -21,7 +21,7 @@ object UIManager : ForwardingSet<HudElement>() {
 			try {
 				if(!element.enabled || !element.shouldRender()) continue
 				if(renderElementBounds) {
-					element.renderGUIBackground(ctx, hovered = false, renderExample = false)
+					element.renderEditorBackground(ctx, hovered = false, renderExample = false)
 				}
 				element.render(ctx)
 			} catch(error: Throwable) {

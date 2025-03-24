@@ -51,7 +51,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 		var hovered: HudElement? = null
 		elements.forEach { element ->
 			val isHovered = hovered == null && clickInBounds(element, mouseX.toDouble(), mouseY.toDouble())
-			element.renderGUIBackground(context, isHovered)
+			element.renderEditorBackground(context, isHovered)
 			if(isHovered) hovered = element
 		}
 
