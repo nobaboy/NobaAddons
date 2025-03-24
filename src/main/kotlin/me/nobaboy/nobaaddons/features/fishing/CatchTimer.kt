@@ -55,7 +55,7 @@ object CatchTimer {
 			// TODO scaling up causes element positions to shift slightly between different screen sizes,
 			//      which is especially noticeable with this
 			elementPosition.x = 0.475
-			elementPosition.y = 0.6
+			elementPosition.y = 0.55
 		}
 	}
 }
