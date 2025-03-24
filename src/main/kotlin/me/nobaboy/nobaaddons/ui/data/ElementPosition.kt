@@ -19,9 +19,9 @@ class ElementPosition(key: String = "") : ObjectProperty<ElementPosition>(key) {
 		load(json)
 	}
 
-	var x by Property.of("x", Serializer.number(0.0, 1.0), 0.0)
-	var y by Property.of("y", Serializer.number(0.0, 1.0), 0.0)
-	var scale by Property.of("scale", Serializer.number(0.5f, 3f), 1f)
+	var x by Property.of<Double>("x", Serializer.number(0.0, 1.0), 0.0)
+	var y by Property.of<Double>("y", Serializer.number(0.0, 1.0), 0.0)
+	var scale by Property.of<Float>("scale", Serializer.number(0.5f, 3f), 1f)
 
 	fun copy() = ElementPosition(save() as JsonObject)
 }
