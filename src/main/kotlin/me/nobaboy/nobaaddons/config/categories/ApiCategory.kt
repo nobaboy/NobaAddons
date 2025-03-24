@@ -28,11 +28,7 @@ private fun createSimpleMathProblem(): Pair<String, Int> {
 }
 
 object ApiCategory {
-	private val captcha: Option<Boolean> = Option.createBuilder<Boolean>().apply {
-		name(Text.literal("internal captcha option"))
-		binding(false, NobaConfig.INSTANCE.repo::solvedCaptcha, NobaConfig.INSTANCE.repo::solvedCaptcha.setter)
-		controller(BooleanControllerBuilder::create)
-	}.build()
+	private lateinit var captcha: Option<Boolean>
 
 	fun create() = category(tr("nobaaddons.config.apis", "APIs")) {
 		label {
@@ -51,6 +47,12 @@ object ApiCategory {
 	}
 
 	private fun ConfigCategory.Builder.captcha() {
+		captcha = Option.createBuilder<Boolean>().apply {
+			name(Text.literal("internal captcha option"))
+			binding(false, NobaConfig.INSTANCE.repo::solvedCaptcha, NobaConfig.INSTANCE.repo::solvedCaptcha.setter)
+			controller(BooleanControllerBuilder::create)
+		}.build()
+
 		if(NobaConfig.INSTANCE.repo.solvedCaptcha) {
 			return
 		}
