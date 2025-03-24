@@ -30,6 +30,7 @@ object FishingCategory {
 
 		add({ fishing::hotspotLocator }) {
 			name = tr("nobaaddons.config.fishing.hotspotLocator", "Locate Hotspots")
+			descriptionText = tr("nobaaddons.config.fishing.hotspotLocator.tooltip", "Marks hotspots with a beacon and shows a timer when it's going to disappear")
 			booleanController()
 		}
 

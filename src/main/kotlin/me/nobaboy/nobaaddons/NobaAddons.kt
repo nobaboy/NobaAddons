@@ -48,7 +48,7 @@ import me.nobaboy.nobaaddons.features.fishing.CatchMessageModifications
 import me.nobaboy.nobaaddons.features.fishing.CatchTimer
 import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
-import me.nobaboy.nobaaddons.features.fishing.HotspotWaypoints
+import me.nobaboy.nobaaddons.features.fishing.HotspotLocator
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
 import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
@@ -216,7 +216,7 @@ object NobaAddons : ClientModInitializer {
 		CatchMessageModifications.init()
 		FishingBobberTweaks.init()
 		HighlightThunderSparks.init()
-		HotspotWaypoints.init()
+		HotspotLocator.init()
 		SeaCreatureAlert.init()
 		TrophyFishChat.init()
 		// endregion

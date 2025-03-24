@@ -17,7 +17,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-object HotspotWaypoints {
+object HotspotLocator {
 	private val config get() = NobaConfig.INSTANCE.fishing
 	private val enabled: Boolean get() = config.hotspotLocator && SkyBlockAPI.inSkyBlock
 
