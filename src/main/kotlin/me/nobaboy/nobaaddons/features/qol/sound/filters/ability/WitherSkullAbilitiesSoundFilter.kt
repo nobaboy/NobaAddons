@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.features.qol.sound.filters.ISoundFilter
 import net.minecraft.util.Identifier
 
 object WitherSkullAbilitiesSoundFilter : ISoundFilter {
-	private val SHOOT = Identifier.ofVanilla("entity.wither.shoot")
+	private val WITHER_SHOOT = Identifier.ofVanilla("entity.wither.shoot")
 	private val EXPLODE = Identifier.ofVanilla("entity.generic.explode")
 
 	private val SHOOT_VOLUMES = listOf(0.2f, 0.5f)
@@ -15,8 +15,8 @@ object WitherSkullAbilitiesSoundFilter : ISoundFilter {
 
 	override fun onSound(sound: SoundEvents.AllowSound) {
 		val shouldFilter = when(sound.id) {
-			EXPLODE -> sound.pitch in (0.55..0.85) && sound.volume == 4f
-			SHOOT -> sound.pitch == 1.4920635f && sound.volume in SHOOT_VOLUMES
+			WITHER_SHOOT -> sound.pitch == 1.4920635f && sound.volume in SHOOT_VOLUMES
+			EXPLODE -> sound.pitch in 0.55..0.85 && sound.volume == 4f
 			else -> false
 		}
 
