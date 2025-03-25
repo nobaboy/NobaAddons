@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.api
 
-//? if >=1.21.5-pre2 {
+//? if >=1.21.5 {
 /*import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
 *///?}
 
@@ -84,7 +84,7 @@ object InventoryAPI {
 	private fun onClickSlot(packet: ClickSlotC2SPacket) {
 		if(packet.syncId != currentWindow?.id) return
 
-		//? if >=1.21.5-pre2 {
+		//? if >=1.21.5 {
 		/*TODO("hashed item stacks???")
 		*///?} else {
 		InventoryEvents.SLOT_CLICK.invoke(InventoryEvents.SlotClick(packet.stack, packet.button, packet.slot, packet.actionType))
@@ -177,7 +177,7 @@ object InventoryAPI {
 	}
 
 	private fun PlayerInventory.itemNamesToCount(): Map<Text, Int> = buildMap {
-		//? if >=1.21.5-pre2 {
+		//? if >=1.21.5 {
 		/*val main = (this@itemNamesToCount as PlayerInventoryAccessor).main
 		*///?}
 		for(slot in 0 until main.size) {

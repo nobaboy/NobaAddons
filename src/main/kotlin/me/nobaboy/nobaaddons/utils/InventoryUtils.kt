@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
-//? if >=1.21.5-pre2 {
+//? if >=1.21.5 {
 /*import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
 *///?}
 
@@ -11,7 +11,7 @@ object InventoryUtils {
 	fun openInventoryName(): String? = (MCUtils.client.currentScreen as? GenericContainerScreen)?.title?.string
 
 	fun getInventoryItemsOrNull(): List<ItemStack>? {
-		//? if >=1.21.5-pre2 {
+		//? if >=1.21.5 {
 		/*return (MCUtils.player?.inventory as? PlayerInventoryAccessor)?.main
 		*///?} else {
 		return MCUtils.player?.inventory?.main

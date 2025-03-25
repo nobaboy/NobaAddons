@@ -23,7 +23,7 @@ object ProfileInfoChatFilter : IChatFilter {
 	private fun isSuggestProfile(message: Text): Boolean {
 		if(UUID_SUGGEST_REGEX.matches(message.string)) {
 			val clickAction = message.style.clickEvent ?: return false
-			//? if >=1.21.5-pre2 {
+			//? if >=1.21.5 {
 			/*val value = (clickAction as? ClickEvent.SuggestCommand)?.command ?: return false
 			*///?} else {
 			val value = clickAction.value

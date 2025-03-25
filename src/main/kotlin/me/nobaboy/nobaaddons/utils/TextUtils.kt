@@ -55,7 +55,7 @@ object TextUtils {
 	fun MutableText.obfuscated(obfuscated: Boolean = true): MutableText = this.styled { it.withObfuscated(obfuscated) }
 
 	fun Style.hoverText(text: Text): Style = apply {
-		//? if >=1.21.5-pre2 {
+		//? if >=1.21.5 {
 		/*withHoverEvent(HoverEvent.ShowText(text))
 		*///?} else {
 		HoverEvent(HoverEvent.Action.SHOW_TEXT, text)
@@ -66,7 +66,7 @@ object TextUtils {
 		require(command.startsWith("/"))
 		return styled {
 			it.withClickEvent(
-				//? if >=1.21.5-pre2 {
+				//? if >=1.21.5 {
 				/*ClickEvent.RunCommand(command)
 				*///?} else {
 				ClickEvent(ClickEvent.Action.RUN_COMMAND, command)
@@ -76,7 +76,7 @@ object TextUtils {
 	}
 	fun MutableText.openUrl(url: String): MutableText = styled {
 		it.withClickEvent(
-			//? if >=1.21.5-pre2 {
+			//? if >=1.21.5 {
 			/*ClickEvent.OpenUrl(URI.create(url))
 			*///?} else {
 			ClickEvent(ClickEvent.Action.OPEN_URL, url)
@@ -85,7 +85,7 @@ object TextUtils {
 	}
 
 	fun ClickEvent.command(): String? {
-		//? if >=1.21.5-pre2 {
+		//? if >=1.21.5 {
 		/*return when(this) {
 			is ClickEvent.RunCommand -> command
 			is ClickEvent.SuggestCommand -> command

@@ -29,7 +29,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 		buildMap {
 			 for((key, value) in compound.entries) {
 				val attribute = Attribute.getById(key) ?: continue
-				put(attribute, (value as? NbtInt)?./*? if >=1.21.5-pre2 {*//*value*//*?} else {*/intValue()/*?}*/ ?: continue)
+				put(attribute, (value as? NbtInt)?./*? if >=1.21.5 {*//*value*//*?} else {*/intValue()/*?}*/ ?: continue)
 			}
 		}
 	}
@@ -41,7 +41,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 				val enchant = Enchant.getById(key) ?: continue
 				put(
 					enchant,
-					/*? if >=1.21.5-pre2 {*//*value.asInt()?.getOrNull()*//*?} else {*/(value as? NbtInt)?.intValue()/*?}*/ ?: continue
+					/*? if >=1.21.5 {*//*value.asInt()?.getOrNull()*//*?} else {*/(value as? NbtInt)?.intValue()/*?}*/ ?: continue
 				)
 			}
 		}
@@ -97,9 +97,9 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 		buildList {
 			compounds.forEach {
 				it as? NbtCompound ?: return@forEach
-				val name = it.getString("effect")/*? if >=1.21.5-pre2 {*//*.orElseThrow()*//*?}*/
-				val level = it.getInt("level")/*? if >=1.21.5-pre2 {*//*.orElseThrow()*//*?}*/
-				val duration = it.getInt("duration_ticks")/*? if >=1.21.5-pre2 {*//*.orElseThrow()*//*?}*/
+				val name = it.getString("effect")/*? if >=1.21.5 {*//*.orElseThrow()*//*?}*/
+				val level = it.getInt("level")/*? if >=1.21.5 {*//*.orElseThrow()*//*?}*/
+				val duration = it.getInt("duration_ticks")/*? if >=1.21.5 {*//*.orElseThrow()*//*?}*/
 
 				add(Potion(name, level, duration))
 			}
@@ -118,7 +118,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val runes: Map<String, Int> by CacheOf(this::realNbt) {
 		nbt.getCompound("runes")?.let {
 			it.entries.mapValues {
-				//? if >=1.21.5-pre2 {
+				//? if >=1.21.5 {
 				/*it.value.asInt().orElseThrow()*/
 				//?} else {
 				(it.value as NbtInt).intValue()
