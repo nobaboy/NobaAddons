@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -27,10 +27,6 @@ object TemporaryWaypoints {
 	private val config get() = NobaConfig.INSTANCE.uiAndVisuals.temporaryWaypoints
 	val enabled: Boolean get() = config.enabled
 
-	private val chatCoordsPattern by Regex(
-		"(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)"
-	).fromRepo("temporary_waypoints.coordinates")
-
 	private val waypoints = mutableListOf<Waypoint>()
 
 	fun init() {
@@ -44,7 +40,7 @@ object TemporaryWaypoints {
 		if(!SkyBlockAPI.inSkyBlock) return
 		if(DianaAPI.isActive) return
 
-		chatCoordsPattern.onPartialMatch(message) {
+		CommonPatterns.CHAT_COORDINATES_REGEX.onPartialMatch(message) {
 			val username = groups["username"]!!.value
 			if(username == MCUtils.playerName) return
 

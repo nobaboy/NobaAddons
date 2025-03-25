@@ -63,8 +63,7 @@ dependencies {
 	mappings("net.fabricmc:yarn:${mcVersion}+build.${deps["yarn_build"]}:v2")
 	modImplementation("net.fabricmc:fabric-loader:${deps["fabric_loader"]}")
 
-	// strip out -pre and -rc versions
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+${mcVersion.takeWhile { it != '-' }}")
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+$mcVersion")
 	modImplementation("net.fabricmc:fabric-language-kotlin:${deps["kotlin"]}")
 
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
@@ -120,6 +119,7 @@ val collectTranslations by tasks.registering(CollectTranslations::class) {
 	this.classes.from(sourceSets.main.get().kotlin.classesDirectory)
 }
 
+// TODO this is terrible and should be replaced
 // require that this is registered on the root project to avoid running this multiple times per build
 val includeBackupRepo = runCatching { rootProject.tasks.withType<DownloadBackupRepo>().named("includeBackupRepo").get() }.getOrNull()
 	?: rootProject.tasks.create("includeBackupRepo", DownloadBackupRepo::class) {

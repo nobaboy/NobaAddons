@@ -42,9 +42,9 @@ object RiftTimers {
 	private val warpLocation by config::warpTarget
 	private fun clickToWarp() = tr("nobaaddons.rift.clickToWarp", "Click to warp to ${warpLocation.displayName}").yellow()
 
-	private val freeInfusions by Regex("Free infusions: (?<count>\\d)/\\d").fromRepo("rift.free_infusions")
-	private val nextFreeInfusion by Regex("Next infusion in: (?<time>(?:\\d+[hms] ?)+)").fromRepo("rift.next_free_infusion")
-	private val splitStealCooldown by Regex("SPLIT! You need to wait (?<time>(?:\\d+[hms] ?)+) before you can play again\\.").fromRepo("rift.split_steal_cooldown")
+	private val FREE_INFUSIONS_REGEX by Regex("Free infusions: (?<count>\\d)/\\d").fromRepo("rift.free_infusions")
+	private val NEXT_FREE_INFUSION_REGEX by Regex("Next infusion in: (?<time>(?:\\d+[hms] ?)+)").fromRepo("rift.next_free_infusion")
+	private val SPLIT_STEAL_COOLDOWN_REGEX by Regex("SPLIT! You need to wait (?<time>(?:\\d+[hms] ?)+) before you can play again\\.").fromRepo("rift.split_steal_cooldown")
 
 	private var notifiedSplitStealCooldown = false
 
@@ -80,7 +80,7 @@ object RiftTimers {
 				data.nextFreeInfusion = Timestamp.now() + 4.hours
 			}
 		} else if(string.startsWith("SPLIT! You need to wait")) {
-			val match = splitStealCooldown.matchEntire(string) ?: return
+			val match = SPLIT_STEAL_COOLDOWN_REGEX.matchEntire(string) ?: return
 			data.nextSplitSteal = match.groups["time"]!!.value.asTimestamp() ?: return
 			notifiedSplitStealCooldown = false
 		}
@@ -91,7 +91,7 @@ object RiftTimers {
 		if(!config.splitStealItemCooldown) return
 		val cooldown = data.nextSplitSteal?.takeIf { it.isFuture() }?.timeRemaining()?.toShortString()?.toText()?.yellow() ?: return
 
-		val index = lines.map { it.string.cleanFormatting() }.indexOfFirstFullMatch(CommonPatterns.COOLDOWN)
+		val index = lines.map { it.string.cleanFormatting() }.indexOfFirstFullMatch(CommonPatterns.ITEM_COOLDOWN_REGEX)
 		if(index == -1) return
 
 		lines.add(index + 1, tr("nobaaddons.rift.ubikCube.itemCooldown", "On cooldown for: $cooldown").darkGray())
@@ -144,10 +144,10 @@ object RiftTimers {
 		}
 		val lore = event.inventory.items.values.firstOrNull { it.name.string.cleanFormatting() == itemName }?.lore?.stringLines ?: return
 
-		val infusionCount = lore.firstFullMatch(freeInfusions)?.groups["count"]?.value?.toInt() ?: return
+		val infusionCount = lore.firstFullMatch(FREE_INFUSIONS_REGEX)?.groups["count"]?.value?.toInt() ?: return
 		data.freeRiftInfusions = infusionCount
 		data.nextFreeInfusion = if(infusionCount < 3) {
-			lore.firstFullMatch(nextFreeInfusion)?.groups["time"]?.value?.asTimestamp()
+			lore.firstFullMatch(NEXT_FREE_INFUSION_REGEX)?.groups["time"]?.value?.asTimestamp()
 		} else {
 			null
 		}

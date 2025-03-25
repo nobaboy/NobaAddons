@@ -6,6 +6,7 @@ import dev.isxander.yacl3.api.YetAnotherConfigLib
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.config.configs.*
+import me.nobaboy.nobaaddons.config.util.OptionBuilder
 import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
 
@@ -48,27 +49,24 @@ class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations 
 		@JvmField
 		val INSTANCE = NobaConfig()
 
-		fun getConfigScreen(parent: Screen?): Screen {
-			val defaults = NobaConfig()
+		fun getConfigScreen(parent: Screen?): Screen = YetAnotherConfigLib.createBuilder().apply {
+			title(CommonText.NOBAADDONS)
+			OptionBuilder.defaults = NobaConfig()
 
-			return YetAnotherConfigLib.createBuilder().apply {
-				title(CommonText.NOBAADDONS)
+			category(GeneralCategory.create())
+			category(UIAndVisualsCategory.create())
+			category(InventoryCategory.create())
+			category(EventsCategory.create())
+			category(SlayersCategory.create())
+			category(FishingCategory.create())
+			category(MiningCategory.create())
+			category(DungeonsCategory.create())
+			category(RiftCategory.create())
+			category(ChatCategory.create())
+			category(QOLCategory.create())
+			category(ApiCategory.create())
 
-				category(GeneralCategory.create(defaults, INSTANCE))
-				category(UIAndVisualsCategory.create(defaults, INSTANCE))
-				category(InventoryCategory.create(defaults, INSTANCE))
-				category(EventsCategory.create(defaults, INSTANCE))
-				category(SlayersCategory.create(defaults, INSTANCE))
-				category(FishingCategory.create(defaults, INSTANCE))
-				category(MiningCategory.create(defaults, INSTANCE))
-				category(DungeonsCategory.create(defaults, INSTANCE))
-				category(RiftCategory.create(defaults, INSTANCE))
-				category(ChatCategory.create(defaults, INSTANCE))
-				category(QOLCategory.create(defaults, INSTANCE))
-				category(ApiCategory.create(defaults, INSTANCE))
-
-				save(INSTANCE::save)
-			}.build().generateScreen(parent)
-		}
+			save(INSTANCE::save)
+		}.build().generateScreen(parent)
 	}
 }

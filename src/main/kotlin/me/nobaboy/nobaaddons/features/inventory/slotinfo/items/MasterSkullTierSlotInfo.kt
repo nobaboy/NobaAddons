@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.visuals.slotinfo.items
+package me.nobaboy.nobaaddons.features.inventory.slotinfo.items
 
 object MasterSkullTierSlotInfo : AbstractItemIdTierSlotInfo() {
 	override val pattern = Regex("MASTER_SKULL_TIER_(?<tier>\\d)")

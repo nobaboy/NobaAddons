@@ -32,11 +32,7 @@ import org.lwjgl.glfw.GLFW
 object EnchantmentTooltips {
 	private val config get() = NobaConfig.INSTANCE.inventory.enchantmentTooltips
 	// the extra [\d,]+ is to account for stacking enchants adding their value
-	// TODO it'd be nice to .findAll() with this, but this globs every prior enchantment
-	//      into the last one's name, so we're just extracting from groups this after splitting on `, `,
-	//      meaning we're matching each line up to 4 times total; this should be fine
-	//      for now, but ideally this would be changed in the future to not do this.
-	private val ENCHANT_LINE = Regex("^(?:(?<name>.+) (?<tier>[IVX]+)(?: [\\d,]+)?(?:$|,))+")
+	private val ENCHANT_LINE = Regex("^(?:.+ [IVX]+(?: [\\d,]+)?(?:$|,))+")
 
 	fun init() {
 		ItemTooltipCallback.EVENT.register { item, _, _, lines ->
@@ -52,39 +48,64 @@ object EnchantmentTooltips {
 		if(!config.modifyTooltips) return
 		if(InputUtil.isKeyPressed(MCUtils.window.handle, GLFW.GLFW_KEY_RIGHT_SHIFT)) return
 		if(!item.isSkyBlockItem || item.asSkyBlockItem?.enchantments?.isEmpty() != false) return
+		if(lines.size <= 1) return
 
-		// Find the first line with an enchantment
-		val firstEnchant = lines.indexOfFirst { ENCHANT_LINE.matches(it.string.cleanFormatting()) }
-		if(firstEnchant == -1) return
+		// Please do not try to shorten this unless you're keeping the behavior the exact same.
+		val firstEnchant: Int = run {
+			for((index, line) in lines.withIndex()) {
+				// Ignore the first line to avoid matching against item names like Jasper Drill X
+				if(index == 0) continue
+
+				// Attempt to match against the first line to account for items that have no stats, but do have
+				// enchantments (notably enchanted books)
+				if(index == 1 && ENCHANT_LINE.matches(line.string.cleanFormatting())) {
+					return@run index
+				}
+
+				// Only attempt to match against lines that immediately follow a blank line
+				if(line.siblings.isNotEmpty()) continue
+				val next = index + 1
+				val nextLine = lines.getOrNull(next) ?: return
+
+				if(ENCHANT_LINE.matches(nextLine.string.cleanFormatting())) {
+					return@run next
+				}
+			}
+			return
+		}
 
 		val enchants = mutableListOf<ParsedEnchant>()
 		var lastEnchant: ParsedEnchant? = null
+		// Start by just parsing the enchantments
 		for(line in lines.slice(firstEnchant until lines.size)) {
-			val string = line.string.takeIf { it.isNotBlank() } ?: break
+			if(line.siblings.isEmpty()) break
 
-			val lineEnchants: Map<String, String>
-			if(ENCHANT_LINE.matches(string)) {
-				lineEnchants = string.split(", ")
-					.mapNotNull { ENCHANT_LINE.find(it) }
-					.associate { it.groups["name"]!!.value to it.groups["tier"]!!.value }
-			} else {
+			// Do a quick sniff test to see if this looks like a line with enchants on it, and if not simply add it
+			// to the last enchantment's description
+			if(ENCHANT_LINE.matchEntire(line.string.cleanFormatting()) == null) {
 				lastEnchant?.description?.add(line)
 				continue
 			}
 
-			lineEnchants.forEach {
-				val enchant = ParsedEnchant(
-					item,
-					it.key,
-					it.value to it.value.romanToArabic(),
-					Enchant.getByName(it.key),
-				)
+			// Each enchantment is its own sibling in the empty parent text node, which makes it trivially
+			// easy to simply do a bit of string manipulation to parse them here.
+			line.siblings.forEach {
+				val string = it.string
+				// for whatever reason, there's an extra blank sibling before ult enchants?
+				if(string == ", " || string.isBlank()) return@forEach
+
+				val parts = string.split(" ").toMutableList()
+				val numeral = parts.removeLast()
+				val arabic = numeral.romanToArabic()
+				val name = parts.joinToString(" ")
+
+				val enchant = ParsedEnchant(item, name, numeral to arabic, Enchant.getByName(name))
 				enchants.add(enchant)
 				lastEnchant = enchant
 			}
 		}
 
-		// Start by removing everything up until the first blank line, or until we (somehow!?) consume everything
+		// Then, remove everything up until the first blank line, or until we (somehow!?) consume everything
 		while(!lines.getOrNull(firstEnchant)?.string.isNullOrBlank()) {
 			lines.removeAt(firstEnchant)
 		}
@@ -92,6 +113,7 @@ object EnchantmentTooltips {
 		val isSingleEnchantBook = item.skyBlockId == "ENCHANTED_BOOK" && enchants.size == 1
 		val shouldCompact = when(config.displayMode) {
 			EnchantmentDisplayMode.NORMAL -> enchants.size > 5
+			// Enchanted books should always display the description if there's only a single enchantment on it
 			EnchantmentDisplayMode.COMPACT -> !isSingleEnchantBook
 			EnchantmentDisplayMode.LINES -> false
 		}

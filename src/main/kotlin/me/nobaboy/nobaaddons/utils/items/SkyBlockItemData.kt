@@ -17,7 +17,7 @@ import net.minecraft.nbt.NbtInt
 import java.lang.ref.WeakReference
 import kotlin.jvm.optionals.getOrNull
 
-private val RARITY_PATTERN by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("item_tag")
+private val ITEM_TAG_REGEX by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("skyblock.item_tag")
 
 class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	private val realNbt: NbtCompound get() = item.get()!!.nbt.nbt
@@ -72,16 +72,16 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val stars: Int by CacheOf(this::realNbt) { nbt.getInt("upgrade_level") ?: 0 }
 	val powerScroll: String? by CacheOf(this::realNbt) { nbt.getString("power_ability_scroll") }
 
-	private val rarityLine: MatchResult? by CacheOf(this::lore) {
+	private val itemTagLine: MatchResult? by CacheOf(this::lore) {
 		lore.lines()
 			.reversed()
 			.asSequence()
 			.map { it.string }
-			.firstNotNullOfOrNull(RARITY_PATTERN::matchEntire)
+			.firstNotNullOfOrNull(ITEM_TAG_REGEX::matchEntire)
 	}
 
 	val rarity: Rarity by CacheOf(this::lore) {
-		Rarity.getRarity(rarityLine?.groups["rarity"]?.value ?: return@CacheOf Rarity.UNKNOWN)
+		Rarity.getRarity(itemTagLine?.groups["rarity"]?.value ?: return@CacheOf Rarity.UNKNOWN)
 	}
 
 	val id: String by CacheOf(this::realNbt) { nbt.getString("id")!! }

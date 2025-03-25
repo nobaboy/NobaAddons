@@ -1,10 +1,10 @@
-package me.nobaboy.nobaaddons.features.visuals.slotinfo
+package me.nobaboy.nobaaddons.features.inventory.slotinfo
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
-import me.nobaboy.nobaaddons.features.visuals.slotinfo.items.*
-import me.nobaboy.nobaaddons.features.visuals.slotinfo.uielements.*
+import me.nobaboy.nobaaddons.features.inventory.slotinfo.items.*
+import me.nobaboy.nobaaddons.features.inventory.slotinfo.uielements.*
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.minecraft.client.font.TextRenderer
@@ -37,7 +37,7 @@ interface ISlotInfo {
 			// UI Elements
 			BestiarySlotInfo,
 			CollectionTierSlotInfo,
-			GardenPlotPestInfo,
+			GardenPlotPestSlotInfo,
 			SkillLevelSlotInfo,
 			SkyBlockLevelSlotInfo,
 			TuningPointsSlotInfo,
@@ -46,7 +46,7 @@ interface ISlotInfo {
 			AttributeShardSlotInfo,
 			DungeonHeadTierSlotInfo,
 			EnchantedBookSlotInfo,
-			KuudraKeyTierInfoSlot,
+			KuudraKeyTierSlotInfo,
 			MasterSkullTierSlotInfo,
 			MasterStarTierSlotInfo,
 			MinionTierSlotInfo,

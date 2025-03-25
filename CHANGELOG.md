@@ -8,7 +8,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Fishing catch timer HUD element - celeste
+- Option to revert fishing treasure catch messages to the pre-Backwater Bayou format - celeste
+- Option to mute Banshee - nobaboy
+
+### Changed
+
+- Enchantment tooltip parsing is now slightly more strict in where it matches - celeste
+
+### Fixed
+
+- Overlapping sea creature notification titles - nobaboy
+  - This is most visible if you have the minimum rarity set low enough
+- Various config menu settings not correctly saving - celeste
+- Enchantment tooltip parsing properly works on enchanted books again - celeste
+
+## 1.0.0-Beta.1 - 2025-03-18
+
+### Added
+
 - Compact Slayer quest completion messages - celeste
+- Support for Backwater Bayou - celeste
+- Options to hide absorption hearts & air bubbles - celeste
+
+### Fixed
+
+- Jerry Diana not being correctly detected - celeste
+- Join instance commands attempting to join when you're not the party leader - nobaboy
+- Profile type not being reset after switching profiles - nobaboy
+- Slayer features (e.g. kill timer) occasionally not working - nobaboy
+- Enchantment tooltips not functioning properly on certain items, like Jasper Drill X - nobaboy
+- A rare error that can occur when sending mod chat messages from chat commands with certain compact chat mods - celeste
 
 ## 0.1.0-Alpha.13.1 - 2025-01-21
 

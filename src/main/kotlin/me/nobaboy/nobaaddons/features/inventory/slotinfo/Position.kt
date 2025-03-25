@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.visuals.slotinfo
+package me.nobaboy.nobaaddons.features.inventory.slotinfo
 
 enum class Position {
 	TOP_LEFT,

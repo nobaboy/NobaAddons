@@ -16,8 +16,3 @@ stonecutter registerChiseled tasks.register("chiseledPublishMods", stonecutter.c
 	group = "project"
 	ofTask("publishMods")
 }
-
-/*stonecutter parameters {
-	/^ https://stonecutter.kikugie.dev/ ^/
-	dependency("fapi", project.property("deps.fabric_api").toString())
-}*/

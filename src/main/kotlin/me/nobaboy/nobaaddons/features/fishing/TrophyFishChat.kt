@@ -52,7 +52,7 @@ object TrophyFishChat {
 		if(shouldCompact(rarity)) {
 			lastMessage[fish to rarity]?.remove()
 		}
-		lastMessage[fish to rarity] = ChatUtils.addMessage(
+		lastMessage[fish to rarity] = ChatUtils.addAndCaptureMessage(
 			message = format(fish.displayName, rarity, count, total),
 			prefix = false,
 			color = null,

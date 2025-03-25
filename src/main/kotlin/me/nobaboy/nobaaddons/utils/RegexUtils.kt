@@ -68,4 +68,10 @@ object RegexUtils {
 	 * Returns the value of the requested group from the given [text] if it fully matches the current pattern
 	 */
 	fun Regex.getGroupFromFullMatch(text: String, group: String): String? = mapFullMatch(text) { groups[group]?.value }
+
+	/**
+	 * Returns the value of the requested group from the first line in [lines] if it fully matches the current pattern
+	 */
+	fun Regex.getGroupFromFirstFullMatch(lines: List<String>, group: String): String? =
+		lines.firstNotNullOfOrNull { mapFullMatch(it) { groups[group]?.value } }
 }
