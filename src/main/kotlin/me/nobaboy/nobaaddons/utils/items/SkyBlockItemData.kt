@@ -119,8 +119,8 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 		nbt.getCompound("runes")?.let {
 			it.entries.mapValues {
 				//? if >=1.21.5 {
-				/*it.value.asInt().orElseThrow()*/
-				//?} else {
+				/*it.value.asInt().orElseThrow()
+				*///?} else {
 				(it.value as NbtInt).intValue()
 				//?}
 			}

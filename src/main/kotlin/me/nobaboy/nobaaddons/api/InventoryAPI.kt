@@ -16,7 +16,6 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket
 import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
@@ -66,8 +65,7 @@ object InventoryAPI {
 	}
 
 	private fun onPacketSend(event: PacketEvents.Send) {
-		when(val packet = event.packet) {
-			is ClickSlotC2SPacket -> onClickSlot(packet)
+		when(event.packet) {
 			is CloseHandledScreenC2SPacket -> close()
 		}
 	}
@@ -79,16 +77,6 @@ object InventoryAPI {
 			is ScreenHandlerSlotUpdateS2CPacket -> onSlotUpdate(packet)
 			is CloseScreenS2CPacket -> close()
 		}
-	}
-
-	private fun onClickSlot(packet: ClickSlotC2SPacket) {
-		if(packet.syncId != currentWindow?.id) return
-
-		//? if >=1.21.5 {
-		/*TODO("hashed item stacks???")
-		*///?} else {
-		InventoryEvents.SLOT_CLICK.invoke(InventoryEvents.SlotClick(packet.stack, packet.button, packet.slot, packet.actionType))
-		//?}
 	}
 
 	private fun onScreenOpen(packet: OpenScreenS2CPacket) {
