@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.chat.filters.miscellaneous
 
-//? if <1.21.5 {
-import net.minecraft.text.ClickEvent
-//?}
+//? if >=1.21.5 {
+/*import net.minecraft.text.ClickEvent
+*///?}
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
