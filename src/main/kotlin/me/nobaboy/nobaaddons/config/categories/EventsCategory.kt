@@ -87,6 +87,19 @@ object EventsCategory {
 				booleanController()
 			}
 
+			label(tr("nobaaddons.config.events.mythological.label.tracker", "Tracker"))
+
+			val tracker = add({ events.mythological::tracker }) {
+				name = tr("nobaaddons.config.events.mythological.tracker", "Mythological Tracker")
+				booleanController()
+			}
+			add({ events.mythological::showChainsFinished }) {
+				name = tr("nobaaddons.config.events.mythological.showChainsFinished", "Show Chains Finished")
+				descriptionText = tr("nobaaddons.config.events.mythological.showChainsFinished.tooltip", "Shows how many burrow chains have been completed on the tracker")
+				require { option(tracker) }
+				booleanController()
+			}
+
 			label(CommonText.Config.LABEL_MISC)
 
 			add({ events.mythological::announceRareDrops }) {
