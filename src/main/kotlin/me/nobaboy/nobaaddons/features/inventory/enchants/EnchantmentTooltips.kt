@@ -95,6 +95,15 @@ object EnchantmentTooltips {
 				if(string == ", " || string.isBlank()) return@forEach
 
 				val parts = string.split(" ").toMutableList()
+
+				// account for stacking enchants displaying counts
+				if(parts.last().isBlank()) {
+					parts.removeLast()
+				}
+				if(parts.size == 1 && parts.last().all { it in ('0'..'9') || it == ',' }) {
+					return@forEach
+				}
+
 				val numeral = parts.removeLast()
 				val arabic = numeral.romanToArabic()
 				val name = parts.joinToString(" ")
