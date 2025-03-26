@@ -9,7 +9,6 @@ import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.StringControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import dev.isxander.yacl3.api.controller.ValueFormatter
-import net.minecraft.text.Text
 import java.awt.Color
 
 fun OptionBuilder<Boolean>.booleanController() {

@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fishing catch timer HUD element - celeste
 - Option to revert fishing treasure catch messages to the pre-Backwater Bayou format - celeste
 - Option to mute Banshee - nobaboy
+- Announce Sea Creatures - nobaboy
+- Hotspot Waypoints - nobaboy
 
 ### Changed
 
@@ -22,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - This is most visible if you have the minimum rarity set low enough
 - Various config menu settings not correctly saving - celeste
 - Enchantment tooltip parsing properly works on enchanted books again - celeste
+- Inconsistency with Mineshaft Entrance/Ladder waypoints - nobaboy
+- YACL labels not showing - nobaboy
 
 ## 1.0.0-Beta.1 - 2025-03-18
 
