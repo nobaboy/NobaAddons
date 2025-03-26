@@ -4,21 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 1.0.0-Beta.2 - Unreleased
+## Unreleased
 
 ### Added
 
-- Revert Treasure Catch Message - celeste
-- Catch Timer Hud - celeste
-- Mute Banshe Sound Filter - nobaboy
+- Fishing catch timer HUD element - celeste
+- Option to revert fishing treasure catch messages to the pre-Backwater Bayou format - celeste
+- Option to mute Banshee - nobaboy
 - Announce Sea Creatures - nobaboy
 - Hotspot Waypoints - nobaboy
 
+### Changed
+
+- Enchantment tooltip parsing is now slightly more strict in where it matches - celeste
+
 ### Fixed
 
-- YACL labels not showing - nobaboy
-- Enchantment Tooltips not working on enchanted books - celeste
+- Overlapping sea creature notification titles - nobaboy
+  - This is most visible if you have the minimum rarity set low enough
+- Various config menu settings not correctly saving - celeste
+- Enchantment tooltip parsing properly works on enchanted books again - celeste
 - Inconsistency with Mineshaft Entrance/Ladder waypoints - nobaboy
+- YACL labels not showing - nobaboy
 
 ## 1.0.0-Beta.1 - 2025-03-18
 
