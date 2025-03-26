@@ -22,6 +22,7 @@
   - Fix (or remove) armor enchantment glints
   - Arm swing animation tweaks
   - First-person item model positioning options
+  - Hide absorption hearts
 
 <details>
 <summary>Info Boxes</summary>
@@ -80,6 +81,7 @@ Info Boxes display any provided text on-screen, and also replace the following p
 - Boss and MiniBoss alerts
 - Highlight MiniBosses
 - Announce slayer boss kill time
+- Compact slayer quest completion messages
 - Wolf slayer:
   - Hide Sven Pup nametags
 - Enderman slayer:
@@ -95,6 +97,8 @@ Info Boxes display any provided text on-screen, and also replace the following p
 <details>
 <summary>Fishing</summary>
 
+- Catch timer HUD element
+- Revert treasure catch message format
 - Hide other player's fishing rods
 - Sea creature catch notifications
 - Bobber timer for Slugfish
