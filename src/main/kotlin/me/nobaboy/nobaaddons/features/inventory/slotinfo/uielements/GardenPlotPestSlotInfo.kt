@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
-object GardenPlotPestInfo : ISlotInfo {
+object GardenPlotPestSlotInfo : ISlotInfo {
 	private const val ICON = "ൠ"
 
 	private val PEST_COUNT_REGEX by Regex("ൠ This plot has (?<count>\\d+) Pests?!").fromRepo("slot_info.desk_pest_count")

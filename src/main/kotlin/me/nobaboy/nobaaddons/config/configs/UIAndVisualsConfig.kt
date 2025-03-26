@@ -33,6 +33,8 @@ class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
 		var removeFrontFacingThirdPerson by Property.of<Boolean>("removeFrontFacingThirdPerson", false)
 		var fixEnchantedArmorGlint by Property.of<Boolean>("fixEnchantedArmorGlint", false)
 		var removeArmorGlints by Property.of<Boolean>("removeArmorGlints", false)
+		var hideAbsorptionHearts by Property.of<Boolean>("hideAbsorptionHearts", false)
+		var hideAirBubbles by Property.of<Boolean>("hideAirBubbles", false)
 	}
 
 	class SwingAnimation : ObjectProperty<SwingAnimation>("swingAnimation") {
