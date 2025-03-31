@@ -125,7 +125,7 @@ object UIAndVisualsCategory {
 					when(it) {
 						1 -> ScreenTexts.OFF.toText().red()
 						6 -> tr("nobaaddons.config.label.default", "Default")
-						else -> it.toString().toText()
+						else -> it.toText()
 					}
 				}
 			}

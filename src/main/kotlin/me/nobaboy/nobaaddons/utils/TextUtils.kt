@@ -64,6 +64,7 @@ object TextUtils {
 
 	fun MutableText.hoverText(builder: MutableText.() -> Unit): MutableText = hoverText(buildText(builder))
 
+	fun Text.toText(): MutableText = copy()
 	fun Any?.toText(): MutableText = toString().toText()
 	fun String.toText(): MutableText = if(this.isEmpty()) Text.empty() else Text.literal(this)
 	fun String.formatted(vararg formatting: Formatting): MutableText = toText().formatted(*formatting)
