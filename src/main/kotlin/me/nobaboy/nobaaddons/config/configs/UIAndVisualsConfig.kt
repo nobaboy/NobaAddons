@@ -10,7 +10,7 @@ class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
 	var renderInfoBoxesOutsideSkyBlock by Property.of<Boolean>("renderInfoBoxesOutsideSkyBlock", false)
 
 	val temporaryWaypoints by TemporaryWaypoints()
-	val etherwarpHelper by EtherwarpHelper()
+	val etherwarpOverlay by EtherwarpOverlay()
 	val renderingTweaks by RenderingTweaks()
 	val swingAnimation by SwingAnimation()
 	val itemPosition by FirstPersonItemPosition()
@@ -21,9 +21,10 @@ class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
 		var expirationTime by Property.of<Int>("expirationTime", 30)
 	}
 
-	class EtherwarpHelper : ObjectProperty<EtherwarpHelper>("etherwarpHelper") {
+	class EtherwarpOverlay : ObjectProperty<EtherwarpOverlay>("etherwarpOverlay") {
 		var enabled by Property.of<Boolean>("enabled", false)
 		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.BLUE)
+		var failHighlightColor by Property.of("failHighlightColor", Serializer.color, NobaColor.GRAY)
 		var showFailText by Property.of<Boolean>("showFailText", false)
 		var allowOverlayOnAir by Property.of<Boolean>("allowOverlayOnAir", false)
 	}
