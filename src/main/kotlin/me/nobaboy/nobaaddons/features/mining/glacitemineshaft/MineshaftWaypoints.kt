@@ -53,12 +53,11 @@ object MineshaftWaypoints {
 				MineshaftWaypointType.ENTRANCE -> config.entranceWaypoint
 				MineshaftWaypointType.LADDER -> config.ladderWaypoint
 				MineshaftWaypointType.CORPSE -> config.corpseLocator
-				else -> false
 			}
 
 			if(!shouldRender) return
 			RenderUtils.renderWaypoint(context, it.location, it.color, throughBlocks = true)
-			RenderUtils.renderText(it.location.center().raise(), it.text, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(context, it.location.center().raise(), it.text, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 
