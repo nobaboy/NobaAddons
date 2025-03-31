@@ -1,5 +1,9 @@
 package me.nobaboy.nobaaddons.utils
 
+//? if >=1.21.5 {
+/*import java.net.URI
+*///?}
+
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
@@ -7,7 +11,6 @@ import net.minecraft.text.MutableText
 import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import java.net.URI
 import java.util.function.UnaryOperator
 
 object TextUtils {
@@ -101,6 +104,7 @@ object TextUtils {
 
 	fun MutableText.hoverText(builder: MutableText.() -> Unit): MutableText = hoverText(buildText(builder))
 
+	fun Text.toText(): MutableText = copy()
 	fun Any?.toText(): MutableText = toString().toText()
 	fun String.toText(): MutableText = if(this.isEmpty()) Text.empty() else Text.literal(this)
 	fun String.formatted(vararg formatting: Formatting): MutableText = toText().formatted(*formatting)
