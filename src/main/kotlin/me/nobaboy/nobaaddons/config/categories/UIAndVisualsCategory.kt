@@ -34,7 +34,7 @@ object UIAndVisualsCategory {
 		}
 
 		temporaryWaypoints()
-		etherwarp()
+		etherwarpOverlay()
 		renderingTweaks()
 		armSwingAnimation()
 		firstPersonItem()
@@ -61,26 +61,31 @@ object UIAndVisualsCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.etherwarp() {
-		group(tr("nobaaddons.config.uiAndVisuals.etherwarpHelper", "Etherwarp Overlay")) {
-			val enabled = add({ uiAndVisuals.etherwarpHelper::enabled }) {
+	private fun ConfigCategory.Builder.etherwarpOverlay() {
+		group(tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay", "Etherwarp Overlay")) {
+			val enabled = add({ uiAndVisuals.etherwarpOverlay::enabled }) {
 				name = CommonText.Config.ENABLED
 				booleanController()
 			}
-			add({ uiAndVisuals.etherwarpHelper::highlightColor }, BiMapper.NobaAWTColorMapper) {
+			add({ uiAndVisuals.etherwarpOverlay::highlightColor }, BiMapper.NobaAWTColorMapper) {
 				name = CommonText.Config.HIGHLIGHT_COLOR
 				require { option(enabled) }
 				colorController()
 			}
-			add({ uiAndVisuals.etherwarpHelper::showFailText }) {
-				name = tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText", "Show Fail Text")
-				descriptionText = tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.showFailText.tooltip", "Displays the reason for an Etherwarp failure below the crosshair")
+			add({ uiAndVisuals.etherwarpOverlay::failHighlightColor }, BiMapper.NobaAWTColorMapper) {
+				name = tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.failHighlightColor", "Fail Highlight Color")
+				require { option(enabled) }
+				colorController()
+			}
+			add({ uiAndVisuals.etherwarpOverlay::showFailText }) {
+				name = tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.showFailText", "Show Fail Text")
+				descriptionText = tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.showFailText.tooltip", "Displays the reason for an Etherwarp failure below the crosshair")
 				require { option(enabled) }
 				booleanController()
 			}
-			add({ uiAndVisuals.etherwarpHelper::allowOverlayOnAir }) {
-				name = tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir", "Allow Overlay on Air")
-				descriptionText = tr("nobaaddons.config.uiAndVisuals.etherwarpHelper.allowOverlayOnAir.tooltip", "Allows the overlay to render on air blocks displaying how far you're allowed to teleport")
+			add({ uiAndVisuals.etherwarpOverlay::allowOverlayOnAir }) {
+				name = tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.allowOverlayOnAir", "Allow Overlay on Air")
+				descriptionText = tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.allowOverlayOnAir.tooltip", "Allows the overlay to render on air blocks displaying how far you're allowed to teleport")
 				require { option(enabled) }
 				booleanController()
 			}
@@ -117,7 +122,7 @@ object UIAndVisualsCategory {
 				descriptionText = tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip", "Controls how long your arm swing animation duration is, ignoring all effects like Haste")
 				intSliderController(min = 1, max = 60) {
 					when(it) {
-						1 -> tr("nobaaddons.config.label.off", "Off").red()
+						1 -> tr("nobaaddons.config.label.off", "OFF").red()
 						6 -> tr("nobaaddons.config.label.default", "Default")
 						else -> it.toString().toText()
 					}
