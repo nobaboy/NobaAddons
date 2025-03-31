@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.strikethrough
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
+import net.minecraft.screen.ScreenTexts
 import net.minecraft.text.Text
 import net.minecraft.text.Texts
 import java.util.Calendar
@@ -122,7 +123,7 @@ object UIAndVisualsCategory {
 				descriptionText = tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration.tooltip", "Controls how long your arm swing animation duration is, ignoring all effects like Haste")
 				intSliderController(min = 1, max = 60) {
 					when(it) {
-						1 -> tr("nobaaddons.config.label.off", "OFF").red()
+						1 -> ScreenTexts.OFF.toText().red()
 						6 -> tr("nobaaddons.config.label.default", "Default")
 						else -> it.toString().toText()
 					}
