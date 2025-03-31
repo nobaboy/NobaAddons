@@ -1,6 +1,11 @@
 package me.nobaboy.nobaaddons.utils.items
 
+//? if >=1.21.5 {
+/*import kotlin.jvm.optionals.getOrNull*/
+//?}
+
 import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.SkyBlockItemType
 import me.nobaboy.nobaaddons.core.attributes.Attribute
 import me.nobaboy.nobaaddons.core.enchants.Enchant
 import me.nobaboy.nobaaddons.core.enchants.EnchantBase
@@ -15,7 +20,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtInt
 import java.lang.ref.WeakReference
-import kotlin.jvm.optionals.getOrNull
 
 private val ITEM_TAG_REGEX by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("skyblock.item_tag")
 
@@ -78,6 +82,11 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 			.asSequence()
 			.map { it.string }
 			.firstNotNullOfOrNull(ITEM_TAG_REGEX::matchEntire)
+	}
+
+	val type: SkyBlockItemType? by CacheOf(this::lore) {
+		val type = itemTagLine?.groups["type"]?.value ?: return@CacheOf null
+		SkyBlockItemType.entries.firstOrNull { it.name == type.replace(" ", "_") }
 	}
 
 	val rarity: Rarity by CacheOf(this::lore) {
