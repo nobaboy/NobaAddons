@@ -16,6 +16,7 @@ import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
+import me.nobaboy.nobaaddons.core.profile.DianaProfileData
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -158,6 +159,7 @@ object DebugCommands {
 	fun flushCaches() {
 		PersistentCache.save()
 		ProfileData.saveAll()
+		DianaProfileData.saveAll()
 	}
 
 	@Command
