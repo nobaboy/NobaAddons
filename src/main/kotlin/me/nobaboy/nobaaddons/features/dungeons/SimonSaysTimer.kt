@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
@@ -45,16 +46,13 @@ object SimonSaysTimer {
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		InteractEvents.BLOCK_INTERACT.register { if(it is InteractEvents.UseBlockInteraction) onInteract(it) }
 
-		try {
-			SimonSaysTimes.load()
+		SimonSaysTimes.safeLoad().onSuccess {
 			SimonSaysTimes.times.minOrNull()?.takeIf { !it.isNaN() }?.let { newPersonalBest ->
 				if(newPersonalBest != SimonSaysTimes.personalBest) {
 					SimonSaysTimes.personalBest = newPersonalBest
 					SimonSaysTimes.save()
 				}
 			}
-		} catch(ex: IOException) {
-			ErrorManager.logError("Failed to load Simon Says time data", ex)
 		}
 	}
 

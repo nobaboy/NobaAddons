@@ -13,11 +13,13 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.io.path.nameWithoutExtension
 
-private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT)
+@PublishedApi
+internal val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT)
 
-fun <R> safeLoad(path: Path, loader: () -> R): Result<R> = runCatching {
-	loader()
-}.onFailure {
+/**
+ * Attempts to call [loader], logging an error and renaming [path] if an error is encountered.
+ */
+inline fun <R> safeLoad(path: Path, loader: () -> R): Result<R> = runCatching(loader).onFailure {
 	ErrorManager.logError("Failed to load a config file", it)
 
 	val date = DATE_FORMATTER.format(ZonedDateTime.now())
@@ -34,18 +36,18 @@ fun <R> safeLoad(path: Path, loader: () -> R): Result<R> = runCatching {
 /**
  * Attempts to load the associated [AbstractConfig], logging an error and renaming the config file if it fails.
  */
-fun AbstractConfig.safeLoad(pathSupplier: () -> Path = { (this as AbstractConfigAccessor).callGetPath() }) =
-	safeLoad(pathSupplier(), ::load)
+@Deprecated("Use Histoire instead of AbstractConfig")
+fun AbstractConfig.safeLoad() = safeLoad((this as AbstractConfigAccessor).callGetPath(), ::load)
 
 /**
  * Attempts to load the associated [Histoire] instance, logging an error and renaming the file if it fails.
  */
-fun Histoire.safeLoad() =
-	safeLoad(file.toPath(), ::load)
+fun Histoire.safeLoad() = safeLoad(file.toPath(), ::load)
 
 /**
  * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [AbstractConfig.save]
  */
+@Deprecated("Use Histoire instead of AbstractConfig")
 fun AbstractConfig.saveOnExit(onlyIfDirty: Boolean = false) {
 	ClientLifecycleEvents.CLIENT_STOPPING.register {
 		if(onlyIfDirty && !dirty) return@register
@@ -57,6 +59,9 @@ fun AbstractConfig.saveOnExit(onlyIfDirty: Boolean = false) {
 	}
 }
 
+/**
+ * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [AbstractConfig.save]
+ */
 fun Histoire.saveOnExit() {
 	ClientLifecycleEvents.CLIENT_STOPPING.register {
 		try {

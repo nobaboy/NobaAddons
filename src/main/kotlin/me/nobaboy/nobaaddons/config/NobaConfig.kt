@@ -18,7 +18,6 @@ import net.minecraft.client.gui.screen.Screen
  * NOT supported and will cause player configs to completely break, so avoid doing so.
  */
 private val migrations = Migrations("configVersion", buildList<Migration> {
-	// TODO this has not been tested under histoire
 	add(::`001_removeYaclVersion`)
 	add(::`002_inventoryCategory`)
 	add(::`003_renameGlaciteMineshaftShareCorpses`)
