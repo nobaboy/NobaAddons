@@ -7,8 +7,8 @@ import me.nobaboy.nobaaddons.ui.TextShadow
  * your element, or use [GenericTextElement] if you just need an instance for [me.nobaboy.nobaaddons.ui.TextHudElement].
  */
 interface TextElement {
-	var textShadow: TextShadow
-	var color: Int
-	var outlineColor: Int
+	val textShadow: TextShadow
+	val color: Int
+	val outlineColor: Int
 	val position: ElementPosition
 }
