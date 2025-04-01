@@ -24,17 +24,16 @@ private val migrations = Migrations("configVersion") {
 	}
 }
 
-// FIXME temporary sealed class workaround for histoire not properly supporting objects
-sealed class AbstractInfoBoxesConfig protected constructor() : Histoire(NobaAddons.CONFIG_DIR.resolve("infoboxes.json").toFile(), migrations = migrations) {
+object InfoBoxesConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("infoboxes.json").toFile(), migrations = migrations) {
 	var infoBoxes: MutableList<InfoBoxElement> = mutableListOf()
 
+	// this cannot be private in any capacity (not even a `private set`), as reflection totally shits the bed
+	// and behaves incredibly inconsistently when encountering a private var in an object class
 	@Suppress("unused")
-	private var configVersion: Int = migrations.currentVersion
+	var configVersion: Int = migrations.currentVersion
 
 	override fun load() {
 		super.load()
 		InfoBoxesManager.recreateUIElements()
 	}
 }
-
-object InfoBoxesConfig : AbstractInfoBoxesConfig()
