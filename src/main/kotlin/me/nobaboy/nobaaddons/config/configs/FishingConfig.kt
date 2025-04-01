@@ -42,7 +42,7 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	class TrophyFishing : ObjectProperty<TrophyFishing>("trophyFishing") {
 		var modifyChatMessages by Property.of<Boolean>("modifyChatMessages", false)
 		var compactMessages by Property.of<Boolean>("compactMessages", false)
-		var compactMaxRarity by Property.of<TrophyFishRarity>("compactMaxRarity", Serializer.enum(), TrophyFishRarity.SILVER)
+		var compactMaxRarity by Property.of("compactMaxRarity", Serializer.enum(), TrophyFishRarity.SILVER)
 	}
 
 	class CatchMessages : ObjectProperty<CatchMessages>("catchMessages") {
@@ -53,6 +53,6 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	class HighlightThunderSparks : ObjectProperty<HighlightThunderSparks>("highlightThunderSparks") {
 		var enabled by Property.of<Boolean>("enabled", false)
 		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor(0x24DDE5))
-		var showText by Property.of<Boolean>("showText", false)
+		var showText by Property.of<Boolean>("showText", true)
 	}
 }

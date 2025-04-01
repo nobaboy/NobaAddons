@@ -8,17 +8,17 @@ import me.nobaboy.nobaaddons.utils.render.HighlightMode
 import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 
 class DungeonsConfig : ObjectProperty<DungeonsConfig>("dungeons") {
-	val simonSaysTimer by SimonSaysTimerConfig()
 	val highlightStarredMobs by HighlightStarredMobs()
-
-	class SimonSaysTimerConfig : ObjectProperty<SimonSaysTimerConfig>("simonSaysTimer") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var timeInPartyChat by Property.of<Boolean>("timeInPartyChat", false)
-	}
+	val simonSaysTimer by SimonSaysTimerConfig()
 
 	class HighlightStarredMobs : ObjectProperty<HighlightStarredMobs>("highlightStarredMobs") {
 		var enabled by Property.of<Boolean>("enabled", false)
 		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.YELLOW)
 		var highlightMode by Property.of("highlightMode", Serializer.enum(), HighlightMode.FILLED_OUTLINE)
+	}
+
+	class SimonSaysTimerConfig : ObjectProperty<SimonSaysTimerConfig>("simonSaysTimer") {
+		var enabled by Property.of<Boolean>("enabled", false)
+		var timeInPartyChat by Property.of<Boolean>("timeInPartyChat", false)
 	}
 }

@@ -37,3 +37,8 @@ internal fun `004_moveHideOtherPeopleFishing`(json: JsonObject) {
 	val fishing = json["fishing"]?.asJsonObject ?: JsonObject().also { json.add("fishing", it) }
 	fishing.add("hideOtherPeopleFishing", renderingTweaks.remove("hideOtherPeopleFishing"))
 }
+
+internal fun `005_renameEtherwarpHelper`(json: JsonObject) {
+	val uiAndVisuals = json["uiAndVisuals"]?.asJsonObject ?: return
+	uiAndVisuals.add("etherwarpOverlay", uiAndVisuals.remove("etherwarpHelper"))
+}

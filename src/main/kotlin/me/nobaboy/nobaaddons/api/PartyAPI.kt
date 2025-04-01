@@ -115,7 +115,7 @@ object PartyAPI {
 			val text = buildText {
 				append(" - ".toText().formatted(Formatting.AQUA))
 				append(member.name.toText().styled {
-					val uuid = member.uuid.toString().toText().formatted(Formatting.GRAY)
+					val uuid = member.uuid.toText().formatted(Formatting.GRAY)
 					it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, uuid)).withColor(Formatting.GRAY).withBold(member.isMe)
 				})
 				if(member.isLeader) {

@@ -117,7 +117,7 @@ class ChatNotificationsListWidget(
 		private fun changeMode() {
 			val newMode = notification.mode.next
 			notification.mode = newMode
-			modeButton.message = newMode.toString().toText()
+			modeButton.message = newMode.toText()
 
 			refreshEntries()
 			hasChanges = true

@@ -20,6 +20,7 @@ private val migrations = Migrations.create {
 	add(migration = ::`002_inventoryCategory`)
 	add(migration = ::`003_renameGlaciteMineshaftShareCorpses`)
 	add(migration = ::`004_moveHideOtherPeopleFishing`)
+	add(migration = ::`005_renameEtherwarpHelper`)
 }
 
 private val CONFIG_PATH = NobaAddons.CONFIG_DIR.resolve("config.json")
