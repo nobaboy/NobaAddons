@@ -24,7 +24,8 @@ private val migrations = Migrations("configVersion") {
 	}
 }
 
-object InfoBoxesConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("infoboxes.json").toFile(), migrations = migrations) {
+// FIXME temporary sealed class workaround for histoire not properly supporting objects
+sealed class AbstractInfoBoxesConfig protected constructor() : Histoire(NobaAddons.CONFIG_DIR.resolve("infoboxes.json").toFile(), migrations = migrations) {
 	var infoBoxes: MutableList<InfoBoxElement> = mutableListOf()
 
 	@Suppress("unused")
@@ -35,3 +36,5 @@ object InfoBoxesConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("infoboxes.json"
 		InfoBoxesManager.recreateUIElements()
 	}
 }
+
+object InfoBoxesConfig : AbstractInfoBoxesConfig()
