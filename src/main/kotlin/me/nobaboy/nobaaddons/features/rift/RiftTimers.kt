@@ -75,7 +75,7 @@ object RiftTimers {
 	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		val string = event.message.string.cleanFormatting()
 		if(string == "INFUSED! Used one of your free Rift charges!") {
-			data.freeRiftInfusions -= 1
+			data.freeInfusions -= 1
 			if(data.nextFreeInfusion == null) {
 				data.nextFreeInfusion = Timestamp.now() + 4.hours
 			}
@@ -103,15 +103,15 @@ object RiftTimers {
 		val gained = floor((nextInfusion - 4.hours).elapsedSince() / 4.hours).toInt().coerceIn(0, 3)
 		if(gained == 0) return
 
-		data.freeRiftInfusions = (data.freeRiftInfusions + gained).coerceAtMost(3)
-		data.nextFreeInfusion = if(data.freeRiftInfusions < 3) {
+		data.freeInfusions = (data.freeInfusions + gained).coerceAtMost(3)
+		data.nextFreeInfusion = if(data.freeInfusions < 3) {
 			nextInfusion + (gained * 4).hours
 		} else {
 			null
 		}
 
 		if(config.freeInfusionAlert) {
-			val count = buildLiteral("(${data.freeRiftInfusions}/3)") { gray() }
+			val count = buildLiteral("(${data.freeInfusions}/3)") { gray() }
 			ChatUtils.addMessageWithClickAction(
 				tr("nobaaddons.rift.gainedFreeInfusion", "You've regained a free Rift infusion! $count"),
 				builder = { hoverText(clickToWarp()) }
@@ -145,7 +145,7 @@ object RiftTimers {
 		val lore = event.inventory.items.values.firstOrNull { it.name.string.cleanFormatting() == itemName }?.lore?.stringLines ?: return
 
 		val infusionCount = lore.firstFullMatch(FREE_INFUSIONS_REGEX)?.groups["count"]?.value?.toInt() ?: return
-		data.freeRiftInfusions = infusionCount
+		data.freeInfusions = infusionCount
 		data.nextFreeInfusion = if(infusionCount < 3) {
 			lore.firstFullMatch(NEXT_FREE_INFUSION_REGEX)?.groups["time"]?.value?.asTimestamp()
 		} else {

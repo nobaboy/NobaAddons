@@ -37,13 +37,14 @@ inline fun <R> safeLoad(path: Path, loader: () -> R): Result<R> = runCatching(lo
 fun Histoire.safeLoad() = safeLoad(file.toPath(), ::load)
 
 /**
- * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [AbstractConfig.save]
+ * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [Histoire.save]
  */
 fun Histoire.saveOnExit() {
 	ClientLifecycleEvents.CLIENT_STOPPING.register {
 		try {
 			save()
 		} catch(ex: Throwable) {
+			// nothing we can do at this point other than just log an error and give up
 			NobaAddons.LOGGER.error("Failed to save ${this::class.simpleName} before shutdown", ex)
 		}
 	}
