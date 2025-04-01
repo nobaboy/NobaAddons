@@ -34,8 +34,11 @@ class NobaConfig private constructor() : Histoire(
 	@Object val qol = QOLConfig()
 	@Object val repo = RepoConfig()
 
+	// this must be present for use by migrations; this property is never directly referenced,
+	// but it is read by migrations to determine if the loaded JsonObject needs to be modified.
+	// histoire requires that this is a var, but it doesn't care about the visibility of it.
 	@Suppress("unused")
-	var configVersion: Int = migrations.currentVersion
+	private var configVersion: Int = migrations.currentVersion
 
 	companion object {
 		@JvmField
