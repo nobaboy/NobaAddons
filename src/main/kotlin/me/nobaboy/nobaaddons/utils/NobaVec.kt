@@ -34,8 +34,8 @@ data class NobaVec(
 		return Box(vec.x, vec.y, vec.z, vec.x + 1.0, vec.y + 1.0, vec.z + 1.0)
 	}
 
-	fun distance(other: NobaVec, center: Boolean = false): Double = sqrt(distanceSq(other, center))
 	fun distance(x: Double, y: Double, z: Double): Double = distance(NobaVec(x, y, z), center = false)
+	fun distance(other: NobaVec, center: Boolean = false): Double = sqrt(distanceSq(other, center = center))
 
 	fun distanceSq(x: Double, y: Double, z: Double): Double = distanceSq(NobaVec(x, y, z), center = false)
 	fun distanceSq(other: NobaVec, center: Boolean = false): Double {
@@ -48,10 +48,16 @@ data class NobaVec(
 		return dx * dx + dy * dy + dz * dz
 	}
 
-	fun distanceIgnoreY(other: NobaVec): Double = sqrt(distanceSqIgnoreY(other))
-	fun distanceSqIgnoreY(other: NobaVec): Double {
-		val dx = other.x - x
-		val dz = other.z - z
+	fun distanceIgnoreY(x: Double, z: Double): Double = distanceIgnoreY(NobaVec(x, 0.0, z), center = false)
+	fun distanceIgnoreY(other: NobaVec, center: Boolean = false): Double = sqrt(distanceSqIgnoreY(other, center = center))
+
+	fun distanceSqIgnoreY(x: Double, z: Double): Double = distanceSqIgnoreY(NobaVec(x, 0.0, z), center = false)
+	fun distanceSqIgnoreY(other: NobaVec, center: Boolean = false): Double {
+		var vec = this
+		if(center) vec = center()
+
+		val dx = other.x - vec.x
+		val dz = other.z - vec.z
 		return dx * dx + dz * dz
 	}
 

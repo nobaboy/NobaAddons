@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.utils.items
 
 //? if >=1.21.5 {
-/*import kotlin.jvm.optionals.getOrNull*/
-//?}
+/*import kotlin.jvm.optionals.getOrNull
+*///?}
 
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.SkyBlockItemType
