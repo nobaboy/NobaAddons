@@ -21,6 +21,7 @@ object EntityOverlay {
 
 	init {
 		EntityEvents.PRE_RENDER.register { overlay = entities.getIfPresent(it.entity) }
+		EntityEvents.POST_RENDER.register { overlay = null }
 		EntityEvents.DESPAWN.register { entities.invalidate(it.entity) }
 	}
 
