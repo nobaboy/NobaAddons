@@ -1,15 +1,12 @@
 package me.nobaboy.nobaaddons.features.chat.filters.miscellaneous
 
-//? if >=1.21.5 {
-/*import net.minecraft.text.ClickEvent
-*///?}
-
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.anyFullMatch
+import me.nobaboy.nobaaddons.utils.TextUtils.commandOrNull
 import net.minecraft.text.Text
 
 object ProfileInfoChatFilter : IChatFilter {
@@ -23,11 +20,7 @@ object ProfileInfoChatFilter : IChatFilter {
 	private fun isSuggestProfile(message: Text): Boolean {
 		if(UUID_SUGGEST_REGEX.matches(message.string)) {
 			val clickAction = message.style.clickEvent ?: return false
-			//? if >=1.21.5 {
-			/*val value = (clickAction as? ClickEvent.SuggestCommand)?.command ?: return false
-			*///?} else {
-			val value = clickAction.value
-			//?}
+			val value = clickAction.commandOrNull() ?: return false
 			return CommonPatterns.UUID_REGEX.matches(value)
 		}
 		return false

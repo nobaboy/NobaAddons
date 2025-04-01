@@ -138,7 +138,7 @@ object CompactSlayerMessages {
 		}
 
 		RNG_METER_REGEX.onFullMatch(string) {
-			rngMeter = groups["xp"]!!.value.replace(",", "").toInt() to text.style.clickEvent!!.command()!!
+			rngMeter = groups["xp"]!!.value.replace(",", "").toInt() to text.style.clickEvent!!.command()
 			if(!autoSlayer) send()
 			event.cancel()
 			return

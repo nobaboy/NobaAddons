@@ -66,7 +66,7 @@ object TextUtils {
 	}
 
 	fun MutableText.runCommand(command: String = this.string): MutableText {
-		require(command.startsWith("/"))
+		require(command.startsWith("/")) { "The provided command string must start with a /" }
 		return styled {
 			it.withClickEvent(
 				//? if >=1.21.5 {
@@ -77,6 +77,7 @@ object TextUtils {
 			)
 		}
 	}
+
 	fun MutableText.openUrl(url: String): MutableText = styled {
 		it.withClickEvent(
 			//? if >=1.21.5 {
@@ -87,7 +88,7 @@ object TextUtils {
 		)
 	}
 
-	fun ClickEvent.command(): String? {
+	fun ClickEvent.commandOrNull(): String? {
 		//? if >=1.21.5 {
 		/*return when(this) {
 			is ClickEvent.RunCommand -> command
@@ -98,6 +99,8 @@ object TextUtils {
 		return value
 		//?}
 	}
+
+	fun ClickEvent.command(): String = commandOrNull() ?: error("Cannot find command on click event")
 
 	fun MutableText.hoverText(text: String): MutableText = hoverText(text.toText())
 	fun MutableText.hoverText(text: Text): MutableText = styled { it.hoverText(text) }
