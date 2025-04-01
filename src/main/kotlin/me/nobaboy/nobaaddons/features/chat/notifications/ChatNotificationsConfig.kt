@@ -8,7 +8,7 @@ import net.minecraft.util.Formatting
 private val COLOR_REGEX = Regex("&([a-z0-9])", RegexOption.IGNORE_CASE)
 
 object ChatNotificationsConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("chat-notifications.json").toFile()) {
-	var notifications: List<Notification> = mutableListOf()
+	var notifications: MutableList<Notification> = mutableListOf()
 
 	@Serializable
 	data class Notification(
