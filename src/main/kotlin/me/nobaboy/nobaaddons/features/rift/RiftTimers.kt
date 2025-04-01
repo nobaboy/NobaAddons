@@ -36,7 +36,7 @@ import kotlin.math.floor
 import kotlin.time.Duration.Companion.hours
 
 object RiftTimers {
-	private val config = NobaConfig.INSTANCE.rift
+	private val config = NobaConfig.rift
 	private val data get() = ProfileData.PROFILE.riftTimers
 
 	private val warpLocation by config::warpTarget

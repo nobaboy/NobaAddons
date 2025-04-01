@@ -26,7 +26,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.loader.api.Version
 
 object UpdateNotifier {
-	private val config get() = NobaConfig.INSTANCE.general
+	private val config get() = NobaConfig.general
 
 	private var inWorld: Boolean = false
 	private var notifiedUpdate: Boolean = false

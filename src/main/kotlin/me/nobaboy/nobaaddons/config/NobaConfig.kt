@@ -13,9 +13,10 @@ import net.minecraft.client.gui.screen.Screen
 /*
  * If you are adding a new category and config, please add it in alphabetically in its designated group.
  */
-class NobaConfig private constructor() : Histoire(
+sealed class AbstractNobaConfig protected constructor() : Histoire(
 	NobaAddons.CONFIG_DIR.resolve("config.json").toFile(),
 	migrations = migrations,
+	json = NobaAddons.JSON,
 ) {
 	@Object val general = GeneralConfig()
 	@Object val uiAndVisuals = UIAndVisualsConfig()
@@ -39,29 +40,36 @@ class NobaConfig private constructor() : Histoire(
 	// histoire requires that this is a var, but it doesn't care about the visibility of it.
 	@Suppress("unused")
 	private var configVersion: Int = migrations.currentVersion
+}
 
-	companion object {
-		@JvmField
-		val INSTANCE = NobaConfig()
+object NobaConfig : AbstractNobaConfig() {
+	fun getConfigScreen(parent: Screen?): Screen = YetAnotherConfigLib.createBuilder().apply {
+		title(CommonText.NOBAADDONS)
+		OptionBuilder.defaults = NobaConfigDefaults()
 
-		fun getConfigScreen(parent: Screen?): Screen = YetAnotherConfigLib.createBuilder().apply {
-			title(CommonText.NOBAADDONS)
-			OptionBuilder.defaults = NobaConfig()
+		category(GeneralCategory.create())
+		category(UIAndVisualsCategory.create())
+		category(InventoryCategory.create())
+		category(EventsCategory.create())
+		category(SlayersCategory.create())
+		category(FishingCategory.create())
+		category(MiningCategory.create())
+		category(DungeonsCategory.create())
+		category(RiftCategory.create())
+		category(ChatCategory.create())
+		category(QOLCategory.create())
+		category(ApiCategory.create())
 
-			category(GeneralCategory.create())
-			category(UIAndVisualsCategory.create())
-			category(InventoryCategory.create())
-			category(EventsCategory.create())
-			category(SlayersCategory.create())
-			category(FishingCategory.create())
-			category(MiningCategory.create())
-			category(DungeonsCategory.create())
-			category(RiftCategory.create())
-			category(ChatCategory.create())
-			category(QOLCategory.create())
-			category(ApiCategory.create())
+		save(::save)
+	}.build().generateScreen(parent)
+}
 
-			save(INSTANCE::save)
-		}.build().generateScreen(parent)
+internal class NobaConfigDefaults : AbstractNobaConfig() {
+	override fun save() {
+		throw UnsupportedOperationException()
+	}
+
+	override fun load() {
+		throw UnsupportedOperationException()
 	}
 }

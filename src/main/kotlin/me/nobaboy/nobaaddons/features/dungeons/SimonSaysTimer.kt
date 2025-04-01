@@ -28,7 +28,7 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
 
 object SimonSaysTimer {
-	private val config get() = NobaConfig.INSTANCE.dungeons.simonSaysTimer
+	private val config get() = NobaConfig.dungeons.simonSaysTimer
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7)
 
 	// Change to terminal_completed and add type group

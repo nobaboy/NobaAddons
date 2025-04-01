@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.features.qol.sound.filters.mobs.ReindrakeSoundFilte
 import me.nobaboy.nobaaddons.features.qol.sound.filters.rift.KillerSpringSoundFilter
 
 interface ISoundFilter {
-	val config get() = NobaConfig.INSTANCE.qol.soundFilters
+	val config get() = NobaConfig.qol.soundFilters
 
 	val enabled: Boolean
 	fun onSound(sound: SoundEvents.AllowSound)

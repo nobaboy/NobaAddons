@@ -30,7 +30,7 @@ import org.lwjgl.glfw.GLFW
 
 // TODO: Could do with caching the lore
 object EnchantmentTooltips {
-	private val config get() = NobaConfig.INSTANCE.inventory.enchantmentTooltips
+	private val config get() = NobaConfig.inventory.enchantmentTooltips
 	// the extra [\d,]+ is to account for stacking enchants adding their value
 	private val ENCHANT_LINE = Regex("^(?:.+ [IVX]+(?: [\\d,]+)?(?:$|,))+")
 

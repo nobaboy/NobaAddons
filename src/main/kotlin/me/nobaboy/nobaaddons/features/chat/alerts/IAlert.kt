@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 interface IAlert {
-	val config get() = NobaConfig.INSTANCE.chat.alerts
+	val config get() = NobaConfig.chat.alerts
 
 	val enabled: Boolean
 	fun shouldAlert(message: String): Boolean

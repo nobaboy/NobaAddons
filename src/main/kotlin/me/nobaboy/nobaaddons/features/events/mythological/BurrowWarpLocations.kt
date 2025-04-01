@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 
 object BurrowWarpLocations {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 
 	fun getNearestWarp(location: NobaVec): NearestWarp? {
 		val warpPoint = WarpPoint.entries.filter { it.unlocked && !it.ignored() }

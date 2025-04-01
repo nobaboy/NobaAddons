@@ -49,11 +49,11 @@ object ApiCategory {
 	private fun ConfigCategory.Builder.captcha() {
 		captcha = Option.createBuilder<Boolean>().apply {
 			name(Text.literal("internal captcha option"))
-			binding(false, NobaConfig.INSTANCE.repo::solvedCaptcha, NobaConfig.INSTANCE.repo::solvedCaptcha.setter)
+			binding(false, NobaConfig.repo::solvedCaptcha, NobaConfig.repo::solvedCaptcha.setter)
 			controller(BooleanControllerBuilder::create)
 		}.build()
 
-		if(NobaConfig.INSTANCE.repo.solvedCaptcha) {
+		if(NobaConfig.repo.solvedCaptcha) {
 			return
 		}
 
