@@ -1,59 +1,62 @@
 package me.nobaboy.nobaaddons.utils.render
 
-import me.nobaboy.nobaaddons.ducks.OverlayTextureDuck
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.RemovalNotification
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
-import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.entity.LivingEntity
+import net.minecraft.client.render.OverlayTexture
+import net.minecraft.entity.Entity
 import java.awt.Color
 
 object EntityOverlay {
-	var overlay = false
+	var overlay: OverlayTexture? = null
 		private set
 
-	// FIXME replace this with the overlay code from firmament before a full 1.0.0 release
-	private val texture by MCUtils.client.gameRenderer::overlayTexture
-	private val entities = mutableMapOf<LivingEntity, Color>()
+	private val entities = CacheBuilder.newBuilder()
+		.weakKeys()
+		.removalListener(this::teardown)
+		.build<Entity, TintOverlayTexture>()
 
 	init {
-		EntityEvents.PRE_RENDER.register {
-			val color = entities[it.entity] ?: return@register
-			(texture as OverlayTextureDuck).`nobaaddons$setColor`(color)
-			overlay = true
-		}
-
-		EntityEvents.POST_RENDER.register {
-			if(!overlay) return@register
-			(texture as OverlayTextureDuck).`nobaaddons$setColor`(null)
-			overlay = false
-		}
-
-		ClientEntityEvents.ENTITY_UNLOAD.register { entity, _ ->
-			if(entity is LivingEntity) entities.remove(entity)
-		}
+		EntityEvents.PRE_RENDER.register { overlay = entities.getIfPresent(it.entity) }
+		EntityEvents.DESPAWN.register { entities.invalidate(it.entity) }
 	}
 
-	fun LivingEntity.highlight(color: Color) {
+	// TODO remove this
+	@Deprecated("Use of AWT Color is deprecated, and is converted to NobaColor internally")
+	fun Entity.highlight(color: Color) {
+		set(this, color.toNobaColor())
+	}
+
+	fun Entity.highlight(color: NobaColor) {
 		set(this, color)
 	}
 
-	fun LivingEntity.highlight(color: NobaColor, alpha: Int = 175) {
-		set(this, color, alpha)
-	}
+	operator fun get(entity: Entity): NobaColor? = entities.getIfPresent(entity)?.lastColor
+	operator fun contains(entity: Entity): Boolean = entities.getIfPresent(entity) != null
 
-	fun set(entity: LivingEntity, color: Color) {
+	operator fun set(entity: Entity, color: NobaColor) {
 		if(FabricLoader.getInstance().isModLoaded("iris")) return // TODO figure out how to make this play nicely with iris
-		entities[entity] = Color(color.red, color.green, color.blue, color.alpha)
+		val overlay: TintOverlayTexture = run {
+			val overlay = entities.getIfPresent(entity)
+			if(overlay == null) {
+				val created = TintOverlayTexture()
+				entities.put(entity, created)
+				created
+			} else {
+				overlay
+			}
+		}
+		overlay.setColor(color)
 	}
 
-	fun set(entity: LivingEntity, color: NobaColor, alpha: Int = 175) {
-		if(FabricLoader.getInstance().isModLoaded("iris")) return // TODO figure out how to make this play nicely with iris
-		entities[entity] = Color(color.red, color.green, color.blue, alpha)
+	private fun teardown(notification: RemovalNotification<Entity, TintOverlayTexture>) {
+		notification.value?.close()
 	}
 
-	fun remove(entity: LivingEntity) {
-		entities.remove(entity)
+	fun remove(entity: Entity) {
+		entities.invalidate(entity)
 	}
 }

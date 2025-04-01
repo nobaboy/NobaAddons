@@ -66,6 +66,7 @@ object VoidgloomSeraphFeatures {
 
 		SlayerAPI.currentQuest?.takeIf { it.spawned && it.entity != null }?.let {
 			val color = getHighlightColor(it.entity, it.armorStand)
+			// TODO change this to NobaColor
 			it.entity?.highlight(color)
 		}
 	}
@@ -174,6 +175,7 @@ object VoidgloomSeraphFeatures {
 		val isHoldingBeacon = (entity as? EndermanEntity)?.carriedBlock?.block == Blocks.BEACON
 
 		return when {
+			// TODO migrate these to NobaColor when histoire refactor is merged
 			armorStandName.contains("Hits") && !inBeaconPhase -> config.hitsPhaseColor
 			isHoldingBeacon || inBeaconPhase -> config.beaconPhaseColor
 			else -> config.damagePhaseColor
