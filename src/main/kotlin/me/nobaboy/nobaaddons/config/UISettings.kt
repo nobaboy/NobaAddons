@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.config.util.saveOnExit
 import me.nobaboy.nobaaddons.ui.data.ElementPosition
 import me.nobaboy.nobaaddons.ui.data.TextElement
 
+// TODO migrate to histoire - this is much more deeply embedded with celestial config
 object UISettings : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("ui.json")) {
 	init {
 		saveOnExit()

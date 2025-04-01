@@ -33,15 +33,24 @@ group = mod.group
 base { archivesName.set(mod.id) }
 
 repositories {
-	fun strictMaven(url: String, vararg groups: String) = exclusiveContent {
-		forRepository { maven(url) }
+	fun strictMaven(url: String, vararg groups: String, includeLocal: Boolean = false) = exclusiveContent {
+		if(includeLocal) {
+			forRepositories(maven(url), mavenLocal())
+		} else {
+			forRepository { maven(url) }
+		}
+		filter { groups.forEach(::includeGroup) }
+	}
+
+	fun strictMaven(urls: List<String>, vararg groups: String) = exclusiveContent {
+		forRepositories(*urls.map { maven(it) }.toTypedArray())
 		filter { groups.forEach(::includeGroup) }
 	}
 
 	mavenCentral()
 	strictMaven("https://maven.isxander.dev/releases", "dev.isxander", "org.quiltmc.parsers") // YACL
 	strictMaven("https://maven.terraformersmc.com/", "com.terraformersmc") // ModMenu
-	strictMaven("https://maven.celestialfault.dev/releases", "dev.celestialfault") // CelestialConfig, Commander
+	strictMaven(listOf("https://maven.celestialfault.dev/releases", "https://maven.celestialfault.dev/snapshots"), "dev.celestialfault") // CelestialConfig, Histoire, Commander
 	strictMaven("https://repo.hypixel.net/repository/Hypixel/", "net.hypixel") // Hypixel Mod API
 	strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "me.djtheredstoner") // DevAuth
 	strictMaven("https://repo.nea.moe/releases", "moe.nea.mcautotranslations") // mc-auto-translations (which doesn't document anywhere that you need this!!!!)
@@ -70,6 +79,7 @@ dependencies {
 
 	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true) { isTransitive = false }
 	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
+	includeImplementation("dev.celestialfault:histoire:${deps["histoire"]}") { isTransitive = false }
 	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
 
 	implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")

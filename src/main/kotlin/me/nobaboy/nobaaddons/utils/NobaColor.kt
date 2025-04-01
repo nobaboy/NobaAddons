@@ -1,10 +1,13 @@
 package me.nobaboy.nobaaddons.utils
 
+import kotlinx.serialization.Serializable
+import me.nobaboy.nobaaddons.utils.serializers.NobaColorKSerializer
 import net.minecraft.util.Formatting
 import org.jetbrains.annotations.Unmodifiable
 import java.awt.Color
 import java.util.Collections
 
+@Serializable(with = NobaColorKSerializer::class)
 data class NobaColor(val rgb: Int, val formatting: Formatting? = null) {
 	constructor(formatting: Formatting) : this(formatting.colorValue!!, formatting)
 

@@ -1,7 +1,9 @@
 package me.nobaboy.nobaaddons.config
 
-import dev.celestialfault.celestialconfig.AbstractConfig
-import dev.celestialfault.celestialconfig.migrations.Migrations
+import dev.celestialfault.histoire.Histoire
+import dev.celestialfault.histoire.Object
+import dev.celestialfault.histoire.migrations.Migration
+import dev.celestialfault.histoire.migrations.Migrations
 import dev.isxander.yacl3.api.YetAnotherConfigLib
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.categories.*
@@ -15,36 +17,40 @@ import net.minecraft.client.gui.screen.Screen
  * applied are skipped, so new changes must be added as separate migrations. Removing pre-existing migrations is
  * NOT supported and will cause player configs to completely break, so avoid doing so.
  */
-private val migrations = Migrations.create {
-	add(migration = ::`001_removeYaclVersion`)
-	add(migration = ::`002_inventoryCategory`)
-	add(migration = ::`003_renameGlaciteMineshaftShareCorpses`)
-	add(migration = ::`004_moveHideOtherPeopleFishing`)
-	add(migration = ::`005_renameEtherwarpHelper`)
-}
+private val migrations = Migrations("configVersion", buildList<Migration> {
+	// TODO this has not been tested under histoire
+	add(::`001_removeYaclVersion`)
+	add(::`002_inventoryCategory`)
+	add(::`003_renameGlaciteMineshaftShareCorpses`)
+	add(::`004_moveHideOtherPeopleFishing`)
+	add(::`005_renameEtherwarpHelper`)
+})
 
 private val CONFIG_PATH = NobaAddons.CONFIG_DIR.resolve("config.json")
 
 /*
  * If you are adding a new category and config, please add it in alphabetically in its designated group.
  */
-class NobaConfig private constructor() : AbstractConfig(CONFIG_PATH, migrations = migrations) {
-	val general by GeneralConfig()
-	val uiAndVisuals by UIAndVisualsConfig()
-	val inventory by InventoryConfig()
-	val events by EventsConfig()
-	val slayers by SlayersConfig()
+class NobaConfig private constructor() : Histoire(CONFIG_PATH.toFile(), migrations = migrations) {
+	@Object val general = GeneralConfig()
+	@Object val uiAndVisuals = UIAndVisualsConfig()
+	@Object val inventory = InventoryConfig()
+	@Object val events = EventsConfig()
+	@Object val slayers = SlayersConfig()
 	// region Skills
-	val fishing by FishingConfig()
-	val mining by MiningConfig()
+	@Object val fishing = FishingConfig()
+	@Object val mining = MiningConfig()
 	// endregion
 	// region Islands
-	val dungeons by DungeonsConfig()
-	val rift by RiftConfig()
+	@Object val dungeons = DungeonsConfig()
+	@Object val rift = RiftConfig()
 	// endregion
-	val chat by ChatConfig()
-	val qol by QOLConfig()
-	val repo by RepoConfig()
+	@Object val chat = ChatConfig()
+	@Object val qol = QOLConfig()
+	@Object val repo = RepoConfig()
+
+	@Suppress("unused")
+	var configVersion: Int = migrations!!.currentVersion
 
 	companion object {
 		@JvmField

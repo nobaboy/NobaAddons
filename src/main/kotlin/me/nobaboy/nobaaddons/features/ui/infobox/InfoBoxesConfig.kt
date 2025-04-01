@@ -25,6 +25,7 @@ private val migrations = Migrations.create {
 	}
 }
 
+// TODO migrate to histoire - same deal as UISettings, this entire HUD system is too deeply intertwined with celestial-config
 object InfoBoxesConfig : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("infoboxes.json"), migrations = migrations) {
 	val infoBoxes by Property.of("infoboxes", Serializer.list(Serializer.obj<InfoBoxElement>()), mutableListOf())
 }
