@@ -11,7 +11,7 @@ sealed class AbstractPerProfileConfig(val profile: UUID?, file: String) : Histoi
 	PROFILES_DIR.resolve(profile?.toString() ?: "unknown").resolve(file).toFile()
 ) {
 	init {
-		saveOnExit()
+		if(profile != null) saveOnExit()
 	}
 
 	override fun load() {

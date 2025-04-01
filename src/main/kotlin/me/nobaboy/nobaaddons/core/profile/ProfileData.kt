@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.core.profile
 
-import dev.celestialfault.histoire.Object
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
@@ -9,7 +8,7 @@ import java.util.UUID
 
 class ProfileData private constructor(profile: UUID?) : AbstractPerProfileConfig(profile, "data.json") {
 	var pet: PetData? = null
-	@Object val riftTimers = RiftTimerData()
+	var riftTimers: RiftTimerData = RiftTimerData()
 	var trophyFish: MutableMap<String, MutableMap<TrophyFishRarity, Int>> = mutableMapOf()
 
 	companion object : AbstractPerProfileDataLoader<ProfileData>() {

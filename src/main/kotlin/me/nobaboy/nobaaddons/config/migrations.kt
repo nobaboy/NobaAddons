@@ -3,15 +3,29 @@
 
 package me.nobaboy.nobaaddons.config
 
+import dev.celestialfault.histoire.migrations.Migrations
 import kotlinx.serialization.json.JsonPrimitive
 
-internal typealias JsonMap = MutableMap<String, Any>
+private typealias JsonMap = MutableMap<String, Any>
 
-internal fun `001_removeYaclVersion`(json: JsonMap) {
+/*
+ * Migrations MUST be added at the end of this block, otherwise they will NOT run. Migrations that have already been
+ * applied are skipped, so new changes must be added as separate migrations. Removing pre-existing migrations is
+ * NOT supported and will cause player configs to completely break, so avoid doing so.
+ */
+internal val migrations = Migrations("configVersion") {
+	add(::`001_removeYaclVersion`)
+	add(::`002_inventoryCategory`)
+	add(::`003_renameGlaciteMineshaftShareCorpses`)
+	add(::`004_moveHideOtherPeopleFishing`)
+	add(::`005_renameEtherwarpHelper`)
+}
+
+private fun `001_removeYaclVersion`(json: JsonMap) {
 	json.remove("version")
 }
 
-internal fun `002_inventoryCategory`(json: JsonMap) {
+private fun `002_inventoryCategory`(json: JsonMap) {
 	val uiAndVisuals = json["uiAndVisuals"] as? JsonMap ?: return
 	val inventory = json.getOrPut("inventory") { mutableMapOf<String, Any>() } as JsonMap
 
@@ -29,18 +43,18 @@ internal fun `002_inventoryCategory`(json: JsonMap) {
 	}
 }
 
-internal fun `003_renameGlaciteMineshaftShareCorpses`(json: JsonMap) {
+private fun `003_renameGlaciteMineshaftShareCorpses`(json: JsonMap) {
 	val glaciteMineshaft = json["mining"]?.let { it as? JsonMap }?.get("glaciteMineshaft") as? JsonMap ?: return
 	glaciteMineshaft.put("autoShareCorpses", glaciteMineshaft.remove("autoShareCorpseCoords") ?: return)
 }
 
-internal fun `004_moveHideOtherPeopleFishing`(json: JsonMap) {
+private fun `004_moveHideOtherPeopleFishing`(json: JsonMap) {
 	val renderingTweaks = json["uiAndVisuals"]?.let { it as? JsonMap }?.get("renderingTweaks") as? JsonMap ?: return
 	val fishing = json.getOrPut("fishing") { mutableMapOf<String, Any>() } as JsonMap
 	fishing.put("hideOtherPeopleFishing", renderingTweaks.remove("hideOtherPeopleFishing") ?: return)
 }
 
-internal fun `005_renameEtherwarpHelper`(json: JsonMap) {
+private fun `005_renameEtherwarpHelper`(json: JsonMap) {
 	val uiAndVisuals = json["uiAndVisuals"] as? JsonMap ?: return
 	uiAndVisuals.put("etherwarpOverlay", uiAndVisuals.remove("etherwarpHelper") ?: return)
 }
