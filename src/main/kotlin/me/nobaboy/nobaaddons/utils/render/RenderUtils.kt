@@ -285,7 +285,7 @@ object RenderUtils {
 		val blue = color.blue / 255f
 
 		val distSq = location.distanceSq(cameraPos, center = true)
-		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.2f, 0.7f)
+		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.3f, 0.7f)
 
 		val box = Box(
 			location.x - extraSize, location.y - extraSizeBottomY, location.z - extraSize,

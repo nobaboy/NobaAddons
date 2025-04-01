@@ -144,19 +144,19 @@ object VoidgloomSeraphFeatures {
 		if(config.highlightYangGlyphs) yangGlyphs.forEach { (location, timestamp) ->
 			if(location.distanceToPlayer() > 24) return@forEach
 
-			val adjustedLocation = location.center().raise()
-
+			val textLocation = location.center()
 			val seconds = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
+
 			RenderUtils.renderOutlinedFilledBox(context, location, config.yangGlyphHighlightColor, throughBlocks = true)
 			RenderUtils.renderText(
 				context,
-				adjustedLocation,
+				textLocation,
 				tr("nobaaddons.slayers.yangGlyph.name", "Yang Glyph"),
 				color = config.yangGlyphHighlightColor,
 				yOffset = -10f,
 				throughBlocks = true
 			)
-			RenderUtils.renderText(context, adjustedLocation, seconds, NobaColor.WHITE, throughBlocks = true)
+			RenderUtils.renderText(context, textLocation, seconds, NobaColor.WHITE, throughBlocks = true)
 		}
 
 		if(config.highlightNukekubiFixations) {
