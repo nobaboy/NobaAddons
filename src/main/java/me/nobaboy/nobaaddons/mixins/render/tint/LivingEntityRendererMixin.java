@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.ducks.EntityStateCaptureDuck;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 //?} else {
 /*import net.minecraft.entity.LivingEntity;
- *///?}
+*///?}
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
