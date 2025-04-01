@@ -78,7 +78,6 @@ dependencies {
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
 	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true) { isTransitive = false }
-	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
 	includeImplementation("dev.celestialfault:histoire:${deps["histoire"]}") { isTransitive = false }
 	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
 

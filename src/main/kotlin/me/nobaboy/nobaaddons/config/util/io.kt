@@ -1,9 +1,7 @@
 package me.nobaboy.nobaaddons.config.util
 
-import dev.celestialfault.celestialconfig.AbstractConfig
 import dev.celestialfault.histoire.Histoire
 import me.nobaboy.nobaaddons.NobaAddons
-import me.nobaboy.nobaaddons.mixins.accessors.AbstractConfigAccessor
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import net.minecraft.util.PathUtil
@@ -34,30 +32,9 @@ inline fun <R> safeLoad(path: Path, loader: () -> R): Result<R> = runCatching(lo
 }
 
 /**
- * Attempts to load the associated [AbstractConfig], logging an error and renaming the config file if it fails.
- */
-@Deprecated("Use Histoire instead of AbstractConfig")
-fun AbstractConfig.safeLoad() = safeLoad((this as AbstractConfigAccessor).callGetPath(), ::load)
-
-/**
  * Attempts to load the associated [Histoire] instance, logging an error and renaming the file if it fails.
  */
 fun Histoire.safeLoad() = safeLoad(file.toPath(), ::load)
-
-/**
- * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [AbstractConfig.save]
- */
-@Deprecated("Use Histoire instead of AbstractConfig")
-fun AbstractConfig.saveOnExit(onlyIfDirty: Boolean = false) {
-	ClientLifecycleEvents.CLIENT_STOPPING.register {
-		if(onlyIfDirty && !dirty) return@register
-		try {
-			save()
-		} catch(ex: Throwable) {
-			NobaAddons.LOGGER.error("Failed to save ${this::class.simpleName} before shutdown", ex)
-		}
-	}
-}
 
 /**
  * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [AbstractConfig.save]
