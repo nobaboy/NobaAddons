@@ -1,8 +1,5 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.celestialfault.celestialconfig.ObjectProperty
-import dev.celestialfault.celestialconfig.Property
-import dev.celestialfault.celestialconfig.Serializer
 import dev.celestialfault.histoire.Object
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
@@ -59,7 +56,7 @@ class ChatConfig {
 			var warpOut = false
 		}
 
-		class PartyCommands : ObjectProperty<PartyCommands>("party") {
+		class PartyCommands {
 			var enabled = false
 			var help = false
 			var allInvite = false
@@ -69,7 +66,7 @@ class ChatConfig {
 			var joinInstanced = false
 		}
 
-		class GuildCommands : ObjectProperty<GuildCommands>("guild") {
+		class GuildCommands {
 			var enabled = false
 			var help = false
 			var warpOut = false

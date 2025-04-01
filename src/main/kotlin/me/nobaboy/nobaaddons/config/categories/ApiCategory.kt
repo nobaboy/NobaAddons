@@ -58,12 +58,12 @@ object ApiCategory {
 		}
 
 		var solved = 0
-		val toSolve = createSimpleMathProblem()
+		val (problem, solution) = createSimpleMathProblem()
 		add(Binding.generic(0, { solved }, { solved = it })) {
-			name = tr("nobaaddons.config.apis.captcha", "Solve: ${toSolve.first} =")
+			name = tr("nobaaddons.config.apis.captcha", "Solve: $problem =")
 			intFieldController()
 			onUpdate { option, event ->
-				captcha.requestSet(option.pendingValue() == toSolve.second)
+				captcha.requestSet(option.pendingValue() == solution)
 				captcha.applyValue()
 			}
 		}
