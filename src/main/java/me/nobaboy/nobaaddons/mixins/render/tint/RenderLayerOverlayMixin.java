@@ -14,7 +14,7 @@ abstract class RenderLayerOverlayMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getOverlayTexture()Lnet/minecraft/client/render/OverlayTexture;")
 	)
 	private static OverlayTexture nobaaddons$replaceOverlayTexture(OverlayTexture original) {
-		var overlay = EntityOverlay.INSTANCE.getOverlay();
+		var overlay = EntityOverlay.getOverlay();
 		return overlay != null ? overlay : original;
 	}
 }

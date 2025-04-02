@@ -55,8 +55,8 @@ class TintOverlayTexture : OverlayTexture() {
 		*///?} else if 1.21.4 {
 		image.upload(0, 0, 0, 0, 0, image.width, image.height, false)
 		//?} else {
-		/*image.upload(0, 0, 0, 0, 0, image.width, image.height, false, true, false, false)*/
-		//?}
+		/*image.upload(0, 0, 0, 0, 0, image.width, image.height, false, true, false, false)
+		*///?}
 
 		//? if <1.21.5 {
 		RenderSystem.activeTexture(GlConst.GL_TEXTURE0)

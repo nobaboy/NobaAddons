@@ -12,6 +12,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.util.Nullables;
 import net.minecraft.util.math.ColorHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -44,7 +45,7 @@ abstract class LivingEntityRendererMixin {
 		@Local(argsOnly = true) LivingEntity entity
 	) {
 	*///?}
-		return (entity == null || !EntityOverlay.INSTANCE.contains(entity)) && original/*? if <=1.21.1 {*/ /*> 0 ? original : 0*//*?}*/;
+		return (entity == null || !EntityOverlay.contains(entity)) && original/*? if <=1.21.1 {*/ /*> 0 ? original : 0*//*?}*/;
 	}
 
 	//? if >=1.21.2 {
@@ -54,9 +55,9 @@ abstract class LivingEntityRendererMixin {
 		@Local(argsOnly = true) LivingEntityRenderState state
 	) {
 		var entity = ((EntityStateCaptureDuck) state).nobaaddons$getEntity();
-		var overlay = entity != null ? EntityOverlay.INSTANCE.get(entity) : null;
+		var overlay = Nullables.map(entity, EntityOverlay::getRgb);
 		if(overlay != null) {
-			return ColorHelper/*? if <1.21.2 {*//*.Argb*//*?}*/.fullAlpha(overlay.getRgb());
+			return ColorHelper/*? if <1.21.2 {*//*.Argb*//*?}*/.fullAlpha(overlay);
 		}
 		return original;
 	}
@@ -76,6 +77,6 @@ abstract class LivingEntityRendererMixin {
 		/*@Local(argsOnly = true) LivingEntity entity
 	) {
 	*///?}
-		return entity != null && EntityOverlay.INSTANCE.contains(entity) ? 1f : whiteOverlayProgress;
+		return entity != null && EntityOverlay.contains(entity) ? 1f : whiteOverlayProgress;
 	}
 }

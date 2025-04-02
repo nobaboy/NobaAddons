@@ -14,6 +14,6 @@ abstract class SkullBlockEntityRendererMixin {
 		at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/OverlayTexture;DEFAULT_UV:I")
 	)
 	private static int nobaaddons$replaceUv(int original) {
-		return EntityOverlay.INSTANCE.getOverlay() != null ? OverlayTexture.packUv(15, 10) : original;
+		return EntityOverlay.getOverlay() != null ? OverlayTexture.packUv(15, 10) : original;
 	}
 }

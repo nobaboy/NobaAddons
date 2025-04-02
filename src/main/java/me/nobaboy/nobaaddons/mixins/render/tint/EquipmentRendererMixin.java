@@ -25,7 +25,7 @@ abstract class EquipmentRendererMixin {
 		*///?}
 	)
 	public RenderLayer nobaaddons$replaceRenderLayer(Identifier texture, Operation<RenderLayer> original) {
-		return EntityOverlay.INSTANCE.getOverlay() != null ? RenderLayer.getEntityTranslucent(texture) : original.call(texture);
+		return EntityOverlay.getOverlay() != null ? RenderLayer.getEntityTranslucent(texture) : original.call(texture);
 	}
 
 	@ModifyExpressionValue(
@@ -38,7 +38,7 @@ abstract class EquipmentRendererMixin {
 		*///?}
 	)
 	public int nobaaddons$replaceUv(int original) {
-		return EntityOverlay.INSTANCE.getOverlay() != null ? OverlayTexture.packUv(15, 10) : original;
+		return EntityOverlay.getOverlay() != null ? OverlayTexture.packUv(15, 10) : original;
 	}
 }
 //?}
