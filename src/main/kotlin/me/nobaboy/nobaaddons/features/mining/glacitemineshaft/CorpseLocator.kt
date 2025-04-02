@@ -23,7 +23,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
 
 object CorpseLocator {
-	private val config get() = NobaConfig.INSTANCE.mining.glaciteMineshaft
+	private val config get() = NobaConfig.mining.glaciteMineshaft
 	private val enabled: Boolean get() = config.corpseLocator && SkyBlockIsland.MINESHAFT.inIsland()
 
 	private val corpses = mutableListOf<Corpse>()

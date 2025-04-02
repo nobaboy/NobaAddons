@@ -24,7 +24,7 @@ import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
 
 object HoppityEggGuess {
-	private val config get() = NobaConfig.INSTANCE.events.hoppity
+	private val config get() = NobaConfig.events.hoppity
 	private val enabled: Boolean get() = config.eggGuess && HoppityAPI.isActive
 
 	private const val MAX_STEPS = 2500

@@ -1,73 +1,75 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.celestialfault.celestialconfig.ObjectProperty
-import dev.celestialfault.celestialconfig.Property
-import dev.celestialfault.celestialconfig.Serializer
+import dev.celestialfault.histoire.Object
+import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.features.slayers.BossTimeSource
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.awtColor
-import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
+import me.nobaboy.nobaaddons.utils.serializers.ColorKSerializer
 import java.awt.Color
 
-class SlayersConfig : ObjectProperty<SlayersConfig>("slayers") {
-	val bossAlert by BossAlert()
-	val miniBossAlert by MiniBossAlert()
-	val highlightMiniBosses by HighlightMiniBosses()
+class SlayersConfig {
+	@Object val bossAlert = BossAlert()
+	@Object val miniBossAlert = MiniBossAlert()
+	@Object val highlightMiniBosses = HighlightMiniBosses()
 
-	val bossKillTime by BossKillTime()
-	val compactMessages by CompactMessages()
+	@Object val bossKillTime = BossKillTime()
+	@Object val compactMessages = CompactMessages()
 
-	val sven by Sven()
-	val voidgloom by Voidgloom()
-	val inferno by Inferno()
+	@Object val sven = Sven()
+	@Object val voidgloom = Voidgloom()
+	@Object val inferno = Inferno()
 
-	class BossAlert : ObjectProperty<BossAlert>("bossAlert") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.RED)
+	class BossAlert {
+		var enabled = false
+		var alertColor = NobaColor.RED
 	}
 
-	class MiniBossAlert : ObjectProperty<MiniBossAlert>("miniBossAlert") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var alertColor by Property.of("alertColor", Serializer.color, NobaColor.RED)
+	class MiniBossAlert {
+		var enabled = false
+		var alertColor = NobaColor.RED
 	}
 
-	class HighlightMiniBosses : ObjectProperty<HighlightMiniBosses>("highlightMiniBosses") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.GOLD)
+	class HighlightMiniBosses {
+		var enabled = false
+		var highlightColor = NobaColor.GOLD
 	}
 
-	class BossKillTime : ObjectProperty<BossKillTime>("bossKillTime") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var timeSource by Property.of("timeSource", Serializer.enum(), BossTimeSource.REAL_TIME)
+	class BossKillTime {
+		var enabled = false
+		var timeSource = BossTimeSource.REAL_TIME
 	}
 
-	class CompactMessages : ObjectProperty<CompactMessages>("compactMessages") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var removeLastMessage by Property.of<Boolean>("removeLastMessage", false)
+	class CompactMessages {
+		var enabled = false
+		var removeLastMessage = false
 	}
 
-	class Sven : ObjectProperty<Sven>("sven") {
-		var hidePupNametags by Property.of<Boolean>("hidePupNametags", false)
+	class Sven {
+		var hidePupNametags = false
 	}
 
-	class Voidgloom : ObjectProperty<Voidgloom>("voidgloom") {
-		var highlightPhases by Property.of<Boolean>("highlightPhases", false)
-		var beaconPhaseColor by Property.of("beaconPhaseColor", Serializer.awtColor, Color(255, 45, 156, 175))
-		var hitsPhaseColor by Property.of("hitsPhaseColor", Serializer.awtColor, Color(255, 156, 70, 175))
-		var damagePhaseColor by Property.of("damagePhaseColor", Serializer.awtColor, Color(103, 136, 255, 175))
+	class Voidgloom {
+		var highlightPhases = false
 
-		var yangGlyphAlert by Property.of<Boolean>("yangGlyphAlert", false)
-		var yangGlyphAlertColor by Property.of("yangGlyphAlertColor", Serializer.color, NobaColor.RED)
-		var highlightYangGlyphs by Property.of<Boolean>("highlightYangGlyphs", false)
-		var yangGlyphHighlightColor by Property.of("yangGlyphHighlightColor", Serializer.color, NobaColor.RED)
+		@Serializable(ColorKSerializer::class)
+		var beaconPhaseColor = Color(255, 45, 156, 175)
+		@Serializable(ColorKSerializer::class)
+		var hitsPhaseColor = Color(255, 156, 70, 175)
+		@Serializable(ColorKSerializer::class)
+		var damagePhaseColor = Color(103, 136, 255, 175)
 
-		var highlightNukekubiFixations by Property.of<Boolean>("highlightNukekubiFixations", false)
-		var nukekubiFixationHighlightColor by Property.of("nukekubiFixationHighlightColor", Serializer.color, NobaColor.RED)
+		var yangGlyphAlert = false
+		var yangGlyphAlertColor = NobaColor.RED
+		var highlightYangGlyphs = false
+		var yangGlyphHighlightColor = NobaColor.RED
 
-		var brokenHeartRadiationTimer by Property.of<Boolean>("brokenHeartRadiationTimer", false)
+		var highlightNukekubiFixations = false
+		var nukekubiFixationHighlightColor = NobaColor.RED
+
+		var brokenHeartRadiationTimer = false
 	}
 
-	class Inferno : ObjectProperty<Inferno>("inferno") {
-		var highlightHellionShield by Property.of<Boolean>("highlightHellionShield", false)
+	class Inferno {
+		var highlightHellionShield = false
 	}
 }

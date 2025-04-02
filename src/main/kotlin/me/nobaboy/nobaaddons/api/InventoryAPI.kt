@@ -57,7 +57,7 @@ object InventoryAPI {
 		}
 
 		itemLog.entries.removeIf { (_, diff) ->
-			diff.timestamp.elapsedSeconds() > NobaConfig.INSTANCE.inventory.itemPickupLog.timeoutSeconds
+			diff.timestamp.elapsedSeconds() > NobaConfig.inventory.itemPickupLog.timeoutSeconds
 		}
 	}
 

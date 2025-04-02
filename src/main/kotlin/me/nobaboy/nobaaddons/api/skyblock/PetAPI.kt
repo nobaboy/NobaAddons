@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.data.PetData
-import me.nobaboy.nobaaddons.data.json.PetInfo
+import me.nobaboy.nobaaddons.data.json.PetNbt
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
@@ -127,19 +127,19 @@ object PetAPI {
 		val item = itemStack.asSkyBlockItem ?: return null
 		if(item.id != "PET" || item.petInfo == null) return null
 
-		val petInfo: PetInfo = NobaAddons.GSON.fromJson(item.petInfo, PetInfo::class.java)
+		val petNbt = NobaAddons.JSON.decodeFromString<PetNbt>(item.petInfo ?: return null)
 		val name = PET_NAME_REGEX.getGroupFromFullMatch(itemStack.name.string, "name") ?: itemStack.name.string
-		val rarity = Rarity.getRarity(petInfo.tier)
+		val rarity = Rarity.getRarity(petNbt.tier)
 
 		return PetData(
 			name,
-			petInfo.type,
-			petInfo.exp,
+			petNbt.type,
+			petNbt.exp,
 			rarity,
-			petInfo.candyUsed,
-			petInfo.active,
-			petInfo.heldItem,
-			petInfo.uuid
+			petNbt.candyUsed,
+			petNbt.active,
+			petNbt.heldItem,
+			petNbt.uuid
 		)
 	}
 

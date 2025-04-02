@@ -38,10 +38,15 @@ repositories {
 		filter { groups.forEach(::includeGroup) }
 	}
 
+	fun strictMaven(urls: List<String>, vararg groups: String) = exclusiveContent {
+		forRepositories(*urls.map { maven(it) }.toTypedArray())
+		filter { groups.forEach(::includeGroup) }
+	}
+
 	mavenCentral()
 	strictMaven("https://maven.isxander.dev/releases", "dev.isxander", "org.quiltmc.parsers") // YACL
 	strictMaven("https://maven.terraformersmc.com/", "com.terraformersmc") // ModMenu
-	strictMaven("https://maven.celestialfault.dev/releases", "dev.celestialfault") // CelestialConfig, Commander
+	strictMaven(listOf("https://maven.celestialfault.dev/releases", "https://maven.celestialfault.dev/snapshots"), "dev.celestialfault") // Histoire, Commander
 	strictMaven("https://repo.hypixel.net/repository/Hypixel/", "net.hypixel") // Hypixel Mod API
 	strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "me.djtheredstoner") // DevAuth
 	strictMaven("https://repo.nea.moe/releases", "moe.nea.mcautotranslations") // mc-auto-translations (which doesn't document anywhere that you need this!!!!)
@@ -69,7 +74,7 @@ dependencies {
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
 
 	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true) { isTransitive = false }
-	includeImplementation("dev.celestialfault:celestial-config:${deps["celestialconfig"]}")
+	includeImplementation("dev.celestialfault:histoire:${deps["histoire"]}") { isTransitive = false }
 	includeImplementation("com.moulberry:mixinconstraints:${deps["mixinconstraints"]}") { isTransitive = false }
 
 	implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
@@ -118,13 +123,13 @@ val collectTranslations by tasks.registering(CollectTranslations::class) {
 	this.classes.from(sourceSets.main.get().kotlin.classesDirectory)
 }
 
-// TODO this is terrible and should be replaced
 // require that this is registered on the root project to avoid running this multiple times per build
-val includeBackupRepo = runCatching { rootProject.tasks.withType<DownloadBackupRepo>().named("includeBackupRepo").get() }.getOrNull()
-	?: rootProject.tasks.create("includeBackupRepo", DownloadBackupRepo::class) {
+val includeBackupRepo = runCatching { rootProject.tasks.withType<DownloadBackupRepo>().named("includeBackupRepo").get() }.getOrElse {
+	rootProject.tasks.register<DownloadBackupRepo>("includeBackupRepo") {
 		this.outputDirectory = rootProject.layout.buildDirectory.dir("downloadedRepo")
 		this.branch = "main"
 	}
+}
 
 tasks.processResources {
 	inputs.property("id", mod.id)

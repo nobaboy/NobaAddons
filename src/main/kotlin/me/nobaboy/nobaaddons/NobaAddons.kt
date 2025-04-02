@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons
 
-import com.google.gson.Gson
 import com.mojang.logging.LogUtils
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
@@ -99,8 +98,6 @@ object NobaAddons : ClientModInitializer {
 	val LOGGER: Logger = LogUtils.getLogger()
 	val CONFIG_DIR: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
 
-	val GSON = Gson()
-
 	@OptIn(ExperimentalSerializationApi::class)
 	val JSON = Json {
 		ignoreUnknownKeys = true
@@ -129,7 +126,7 @@ object NobaAddons : ClientModInitializer {
 	// immediately ran).
 	override fun onInitializeClient() {
 		/* region Core */
-		NobaConfig.INSTANCE.safeLoad()
+		NobaConfig.safeLoad()
 		PersistentCache.safeLoad()
 		RepoManager.init()
 		UISettings.safeLoad()

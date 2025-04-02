@@ -16,7 +16,7 @@ import java.util.WeakHashMap
 object CopyChatFeature {
 	private val messages = WeakHashMap<ChatHudLine.Visible, WeakReference<ChatHudLine>>(200)
 
-	private val config get() = NobaConfig.INSTANCE.chat.copyChat
+	private val config get() = NobaConfig.chat.copyChat
 
 	fun init() {
 		ChatMessageEvents.ADDED.register(this::onChatAdded)
