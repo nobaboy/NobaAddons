@@ -44,10 +44,10 @@ import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
 import me.nobaboy.nobaaddons.features.fishing.AnnounceSeaCreatures
-import me.nobaboy.nobaaddons.features.fishing.RevertTreasureMessages
 import me.nobaboy.nobaaddons.features.fishing.CatchTimer
 import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
 import me.nobaboy.nobaaddons.features.fishing.HotspotLocator
+import me.nobaboy.nobaaddons.features.fishing.RevertTreasureMessages
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
 import me.nobaboy.nobaaddons.features.fishing.crimsonisle.HighlightThunderSparks
 import me.nobaboy.nobaaddons.features.fishing.crimsonisle.TrophyFishChat
@@ -146,11 +146,11 @@ object NobaAddons : ClientModInitializer {
 		DebugAPI.init()
 		DianaAPI.init()
 		DungeonsAPI.init()
-		SeaCreatureAPI.init()
 		InventoryAPI.init()
 		MayorAPI.init()
 		PartyAPI.init()
 		PetAPI.init()
+		SeaCreatureAPI.init()
 		SkyBlockAPI.init()
 		SlayerAPI.init()
 		TrophyFishAPI.init()
@@ -213,10 +213,10 @@ object NobaAddons : ClientModInitializer {
 		// region Fishing
 		AnnounceSeaCreatures.init()
 		CatchTimer.init()
-		RevertTreasureMessages.init()
 		FishingBobberTweaks.init()
 		HighlightThunderSparks.init()
 		HotspotLocator.init()
+		RevertTreasureMessages.init()
 		SeaCreatureAlert.init()
 		TrophyFishChat.init()
 		// endregion

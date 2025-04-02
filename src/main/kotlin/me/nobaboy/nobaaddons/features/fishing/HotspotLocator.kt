@@ -62,7 +62,7 @@ object HotspotLocator {
 			val time = it.remainingTime.ifEmpty { "Soon" }
 
 			RenderUtils.renderBeaconBeam(context, it.location, it.color)
-			RenderUtils.renderText(context, it.location.center().raise(2), time, yOffset = 15f, throughBlocks = true)
+			RenderUtils.renderText(context, it.location.center().raise(1.5), time, throughBlocks = true)
 		}
 	}
 
