@@ -9,21 +9,34 @@ import me.nobaboy.nobaaddons.NobaAddons
 private val migrations = Migrations("configVersion") {
 	add {
 		val infoBoxes = it["infoboxes"] as? MutableList<Any> ?: return@add
-		for(box in infoBoxes) {
-			val box = box as MutableMap<String, Any>
-			val mode = box["textMode"].let { it as? JsonPrimitive }?.takeIf { it.isString }?.content
-			if(mode == "PURE") box.put("textMode", JsonPrimitive("NONE"))
-			val position = box.remove("element") as MutableMap<String, Any> // pop element to rename later
-			position.remove("identifier") // remove identifier
+
+		infoBoxes.forEach { infoBox ->
+			val infoBox = infoBox as MutableMap<String, Any>
+
+			val mode = infoBox["textMode"].let { it as? JsonPrimitive }?.takeIf { it.isString }?.content
+			if(mode == "PURE") infoBox["textMode"] = JsonPrimitive("NONE")
+
+			val element = infoBox.remove("element") as MutableMap<String, Any> // pop element to rename later
+			element.remove("identifier")
+			element.remove("color")?.let { infoBox["color"] = it }
 			// reset positioning to top left corner to account for change from pixels to a 0..1 double range
-			position.put("x", JsonPrimitive(0.0))
-			position.put("y", JsonPrimitive(0.0))
-			position.remove("color")?.let { box.put("color", it) }
-			box.put("position", position) // finally, rename element -> position
+			element["x"] = JsonPrimitive(0.0)
+			element["y"] = JsonPrimitive(0.0)
+
+			infoBox["position"] = element // finally, rename element -> position
 		}
 	}
 
-	add { it["infoBoxes"] = it.remove("infoboxes") ?: return@add }
+	add {
+		val infoBoxes = (it.remove("infoboxes") ?: return@add) as MutableList<Any>
+
+		infoBoxes.forEach { infoBox ->
+			val infoBox = infoBox as MutableMap<String, Any>
+			infoBox.remove("textMode")?.let { infoBox["textShadow"] = it }
+		}
+
+		it["infoBoxes"] = infoBoxes
+	}
 }
 
 object InfoBoxesConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("infoboxes.json").toFile(), migrations = migrations) {
