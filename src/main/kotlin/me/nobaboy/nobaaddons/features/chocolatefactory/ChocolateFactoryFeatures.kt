@@ -17,7 +17,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.util.Formatting
 
 object ChocolateFactoryFeatures {
-	private val config get() = NobaConfig.INSTANCE.events.hoppity
+	private val config get() = NobaConfig.events.hoppity
 	private val enabled: Boolean get() = config.requireMythicRabbit && SkyBlockAPI.inSkyBlock
 
 	private val hasMythicRabbitSpawned: Boolean get() =

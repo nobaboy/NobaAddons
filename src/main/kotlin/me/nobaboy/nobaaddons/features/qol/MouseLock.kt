@@ -18,7 +18,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
 
 object MouseLock {
-	val config = NobaConfig.INSTANCE.qol.garden
+	val config = NobaConfig.qol.garden
 
 	private val FARMING_TOOLS: List<String> = buildList {
 		val gardeningTools = listOf("HOE", "AXE")

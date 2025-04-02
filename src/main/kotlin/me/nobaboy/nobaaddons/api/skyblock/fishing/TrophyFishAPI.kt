@@ -15,7 +15,7 @@ import net.minecraft.text.Text
 import java.util.EnumMap
 
 object TrophyFishAPI {
-	val trophyFish: MutableMap<String, EnumMap<TrophyFishRarity, Int>> get() = ProfileData.PROFILE.trophyFish
+	val trophyFish get() = ProfileData.PROFILE.trophyFish
 
 	private val ODGER_RARITY_REGEX by Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?").fromRepo("trophy_fish.odger")
 	// .* is required to catch any extra text added afterward from compact chat mods like Compacting

@@ -25,7 +25,7 @@ import me.nobaboy.nobaaddons.utils.tr
 
 @Suppress("RegExpSimplifiable") // [ ] is used to make it clear the spaces are not a mistake
 object CompactSlayerMessages {
-	private val config get() = NobaConfig.INSTANCE.slayers.compactMessages
+	private val config get() = NobaConfig.slayers.compactMessages
 
 	private val QUEST_STARTED_REGEX by Regex("^[ ]+SLAYER QUEST STARTED!").fromRepo("slayer.quest_started")
 	private val QUEST_COMPLETE_REGEX by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.quest_complete")

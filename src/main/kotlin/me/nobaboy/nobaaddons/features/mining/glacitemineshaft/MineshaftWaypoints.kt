@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.text.Text
 
 object MineshaftWaypoints {
-	private val config get() = NobaConfig.INSTANCE.mining.glaciteMineshaft
+	private val config get() = NobaConfig.mining.glaciteMineshaft
 
 	val waypoints = mutableListOf<MineshaftWaypoint>()
 

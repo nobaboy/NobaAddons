@@ -17,7 +17,7 @@ import net.minecraft.util.Util
 
 // TODO change this to replace the response of /wiki if invalid
 object SWikiCommand {
-	private val config get() = NobaConfig.INSTANCE.general
+	private val config get() = NobaConfig.general
 
 	fun init() {
 		CommandUtil.register(NobaClientCommand(this::swiki, this))

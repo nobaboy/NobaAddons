@@ -37,7 +37,7 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
 object VoidgloomSeraphFeatures {
-	private val config get() = NobaConfig.INSTANCE.slayers.voidgloom
+	private val config get() = NobaConfig.slayers.voidgloom
 	private val enabled: Boolean
 		get() = SkyBlockIsland.THE_END.inIsland() && SlayerAPI.currentQuest?.boss == SlayerBoss.VOIDGLOOM
 

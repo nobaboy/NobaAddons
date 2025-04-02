@@ -14,7 +14,7 @@ import org.lwjgl.glfw.GLFW
 import kotlin.time.Duration.Companion.milliseconds
 
 object KeyBindsManager {
-	private val config = NobaConfig.INSTANCE.general
+	private val config = NobaConfig.general
 
 	private val cooldownManager = CooldownManager(100.milliseconds)
 

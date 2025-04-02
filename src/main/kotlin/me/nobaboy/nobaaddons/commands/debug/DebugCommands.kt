@@ -19,7 +19,7 @@ import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
@@ -178,7 +178,7 @@ object DebugCommands {
 			return
 		}
 
-		entity.highlight(NobaColor.COLORS.first { it.formatting == formatting })
+		entity.highlight(formatting.toNobaColor())
 	}
 
 	private var lastResponse: Message? = null

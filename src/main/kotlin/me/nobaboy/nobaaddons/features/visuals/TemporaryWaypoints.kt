@@ -24,7 +24,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 object TemporaryWaypoints {
-	private val config get() = NobaConfig.INSTANCE.uiAndVisuals.temporaryWaypoints
+	private val config get() = NobaConfig.uiAndVisuals.temporaryWaypoints
 	val enabled: Boolean get() = config.enabled
 
 	private val waypoints = mutableListOf<Waypoint>()

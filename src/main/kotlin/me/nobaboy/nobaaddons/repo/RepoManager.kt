@@ -28,7 +28,7 @@ import kotlin.random.Random
  */
 object RepoManager {
 	private val LOCK = Any()
-	private val config get() = NobaConfig.INSTANCE.repo
+	private val config get() = NobaConfig.repo
 
 	private val client by HTTPUtils::client
 	internal val objects = mutableSetOf<IRepoObject>()

@@ -17,7 +17,7 @@ import net.minecraft.text.Text
 import kotlin.time.DurationUnit
 
 object FishingBobberTweaks {
-	private val config get() = NobaConfig.INSTANCE.fishing
+	private val config get() = NobaConfig.fishing
 
 	private val GREEN = NobaColor.GREEN.rgb
 	private val GOLD = NobaColor.GOLD.rgb

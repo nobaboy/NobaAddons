@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.utils.ErrorManager
 
 object ChatNotificationsManager {
-	val notifications by ChatNotificationsConfig::notifications
+	val notifications get() = ChatNotificationsConfig.notifications
 
 	fun init() {
 		ChatNotificationsConfig.safeLoad()

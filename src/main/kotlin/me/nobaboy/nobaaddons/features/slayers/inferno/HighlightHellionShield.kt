@@ -15,7 +15,7 @@ import net.minecraft.entity.mob.ZombifiedPiglinEntity
 
 // TODO: Allow entity highlight to work on armor layer
 object HighlightHellionShield {
-	private val config get() = NobaConfig.INSTANCE.slayers.inferno
+	private val config get() = NobaConfig.slayers.inferno
 	private val enabled: Boolean
 		get() = config.highlightHellionShield && SlayerAPI.currentQuest?.let { it.boss == SlayerBoss.INFERNO && it.spawned } == true
 

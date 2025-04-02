@@ -13,7 +13,7 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object DMCommands : ChatCommandManager() {
-	private val config get() = NobaConfig.INSTANCE.chat.chatCommands.dm
+	private val config get() = NobaConfig.chat.chatCommands.dm
 
 	override val source: ChatContext.ChatCommandSource = ChatContext.ChatCommandSource.MESSAGE
 	override val enabled: Boolean get() = config.enabled && onHypixel()

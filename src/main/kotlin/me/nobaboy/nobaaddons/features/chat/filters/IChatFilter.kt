@@ -14,7 +14,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.text.Text
 
 interface IChatFilter {
-	val config get() = NobaConfig.INSTANCE.chat.filters
+	val config get() = NobaConfig.chat.filters
 
 	val enabled: Boolean
 

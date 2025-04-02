@@ -14,7 +14,7 @@ interface BiMapper<A, B> {
 	fun from(b: B): A
 
 	object NobaAWTColorMapper : BiMapper<NobaColor, Color> {
-		override fun to(a: NobaColor): Color = a.toColor()
+		override fun to(a: NobaColor): Color = a.toJavaColor()
 		override fun from(b: Color): NobaColor = b.toNobaColor()
 	}
 }

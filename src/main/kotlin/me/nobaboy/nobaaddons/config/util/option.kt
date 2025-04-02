@@ -9,6 +9,7 @@ import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionEventListener
 import dev.isxander.yacl3.api.controller.ControllerBuilder
 import dev.isxander.yacl3.gui.YACLScreen
+import me.nobaboy.nobaaddons.config.AbstractNobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import net.minecraft.text.MutableText
@@ -19,7 +20,7 @@ import kotlin.reflect.KMutableProperty
  * Generic config option builder
  */
 class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
-	internal constructor(property: NobaConfig.() -> KMutableProperty<T>) : this(binding = property.binding())
+	internal constructor(property: AbstractNobaConfig.() -> KMutableProperty<T>) : this(binding = property.binding())
 
 	lateinit var name: Text
 	var description: OptionDescription? = null
@@ -53,19 +54,19 @@ class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
 	}
 
 	companion object {
-		lateinit var defaults: NobaConfig
+		lateinit var defaults: AbstractNobaConfig
 	}
 }
 
-internal fun <T> binding(getter: (NobaConfig) -> T, setter: (NobaConfig, T) -> Unit): Binding<T> =
-	Binding.generic(getter(OptionBuilder.defaults), { getter(NobaConfig.INSTANCE) }, { setter(NobaConfig.INSTANCE, it) })
+internal fun <T> binding(getter: (AbstractNobaConfig) -> T, setter: (AbstractNobaConfig, T) -> Unit): Binding<T> =
+	Binding.generic(getter(OptionBuilder.defaults), { getter(NobaConfig) }, { setter(NobaConfig, it) })
 
-internal fun <T> (NobaConfig.() -> KMutableProperty<T>).binding(): Binding<T> = binding(
+internal fun <T> (AbstractNobaConfig.() -> KMutableProperty<T>).binding(): Binding<T> = binding(
 	getter = { this(it).getter.call() },
 	setter = { config, value -> this(config).setter.call(value) }
 )
 
-internal fun <A, B> (NobaConfig.() -> KMutableProperty<A>).binding(biMapper: BiMapper<A, B>): Binding<B> = binding(
+internal fun <A, B> (AbstractNobaConfig.() -> KMutableProperty<A>).binding(biMapper: BiMapper<A, B>): Binding<B> = binding(
 	getter = { biMapper.to(this(it).getter.call()) },
 	setter = { config, value -> this(config).setter.call(biMapper.from(value)) },
 )
@@ -81,7 +82,7 @@ var OptionBuilder<*>.descriptionText: Text?
  * Create a new config option
  */
 fun <T> OptionAddable.add(
-	property: NobaConfig.() -> KMutableProperty<T>,
+	property: AbstractNobaConfig.() -> KMutableProperty<T>,
 	builder: OptionBuilder<T>.() -> Unit,
 ): Option<T> =
 	OptionBuilder<T>(property).apply(builder).build().also(::option)
@@ -90,7 +91,7 @@ fun <T> OptionAddable.add(
  * Create a new config option, mapping the stored value type to another for use in YACL
  */
 fun <A, B> OptionAddable.add(
-	property: NobaConfig.() -> KMutableProperty<A>,
+	property: AbstractNobaConfig.() -> KMutableProperty<A>,
 	mapping: BiMapper<A, B>,
 	builder: OptionBuilder<B>.() -> Unit,
 ): Option<B> = OptionBuilder<B>(property.binding(mapping)).apply(builder).build().also(::option)

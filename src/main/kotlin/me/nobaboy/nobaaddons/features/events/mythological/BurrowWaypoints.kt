@@ -24,7 +24,7 @@ import net.minecraft.block.Blocks
 import kotlin.time.Duration.Companion.seconds
 
 object BurrowWaypoints {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = DianaAPI.isActive
 
 	private val validBlocks = listOf(
