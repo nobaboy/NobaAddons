@@ -15,7 +15,9 @@ import kotlin.math.roundToInt
  *
  * @see TextHudElement
  */
-abstract class HudElement(protected val elementPosition: ElementPosition) {
+abstract class HudElement {
+	protected abstract val elementPosition: ElementPosition
+
 	/**
 	 * Returns an absolute pixel value for the top left corner of this element.
 	 */

@@ -15,7 +15,7 @@ import net.minecraft.text.Text
 import kotlin.math.abs
 
 object ItemPickupLog {
-	private val config get() = NobaConfig.INSTANCE.inventory.itemPickupLog
+	private val config get() = NobaConfig.inventory.itemPickupLog
 
 	fun init() {
 		UIManager.add(PickupLogHudElement)

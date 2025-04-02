@@ -27,6 +27,7 @@ object ErrorManager {
 	}
 
 	private fun attemptSendQueuedMessages() {
+		if(MCUtils.world == null) return
 		MCUtils.chatHud.addMessage(queuedMessages.poll() ?: return)
 	}
 

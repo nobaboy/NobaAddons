@@ -20,7 +20,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 object BurrowAPI {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.findNearbyBurrows && DianaAPI.isActive
 
 	private val burrowDugPattern by Regex("^(You dug out a Griffin Burrow!|You finished the Griffin burrow chain!) \\(\\d/4\\)").fromRepo("mythological.dig_burrow")

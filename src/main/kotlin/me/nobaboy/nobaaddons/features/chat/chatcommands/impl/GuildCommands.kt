@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object GuildCommands : ChatCommandManager() {
-	private val config get() = NobaConfig.INSTANCE.chat.chatCommands.guild
+	private val config get() = NobaConfig.chat.chatCommands.guild
 
 	override val source: ChatContext.ChatCommandSource = ChatContext.ChatCommandSource.GUILD
 	override val enabled: Boolean get() = config.enabled && onHypixel()

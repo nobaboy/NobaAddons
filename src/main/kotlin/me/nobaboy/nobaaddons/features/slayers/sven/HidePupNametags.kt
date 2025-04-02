@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents
 import net.minecraft.entity.decoration.ArmorStandEntity
 
 object HidePupNametags {
-	private val config get() = NobaConfig.INSTANCE.slayers.sven
+	private val config get() = NobaConfig.slayers.sven
 	private val enabled: Boolean get() = config.hidePupNametags && SkyBlockAPI.inSkyBlock
 
 	fun init() {

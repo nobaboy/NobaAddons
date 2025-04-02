@@ -24,7 +24,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 object TemporaryWaypoints {
-	private val config get() = NobaConfig.INSTANCE.uiAndVisuals.temporaryWaypoints
+	private val config get() = NobaConfig.uiAndVisuals.temporaryWaypoints
 	val enabled: Boolean get() = config.enabled
 
 	private val waypoints = mutableListOf<Waypoint>()
@@ -70,8 +70,8 @@ object TemporaryWaypoints {
 			val formattedDistance = distance.toInt().addSeparators()
 
 			RenderUtils.renderWaypoint(context, location, color, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), waypoint.text, color, yOffset = -10f, hideThreshold = 5.0, throughBlocks = true)
-			RenderUtils.renderText(location.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(context, location.center().raise(), waypoint.text, color = color, yOffset = -10f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(context, location.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 

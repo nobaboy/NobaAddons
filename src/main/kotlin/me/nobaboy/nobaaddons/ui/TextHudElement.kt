@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.ui
 
-import me.nobaboy.nobaaddons.ui.data.AbstractTextElement
+import me.nobaboy.nobaaddons.ui.data.ElementPosition
+import me.nobaboy.nobaaddons.ui.data.TextElement
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -13,7 +14,9 @@ import kotlin.math.roundToInt
  * Generic text display [HudElement], providing helper methods to render text
  * on screen.
  */
-abstract class TextHudElement(element: AbstractTextElement<*>) : HudElement(element.position) {
+abstract class TextHudElement(private val element: TextElement) : HudElement() {
+	override val elementPosition: ElementPosition get() = element.position
+
 	open val color: Int by element::color
 	open val textShadow: TextShadow by element::textShadow
 	open val outlineColor: Int by element::outlineColor

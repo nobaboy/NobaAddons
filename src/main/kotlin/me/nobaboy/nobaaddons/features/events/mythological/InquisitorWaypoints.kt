@@ -29,7 +29,7 @@ import net.minecraft.client.network.OtherClientPlayerEntity
 import kotlin.time.Duration.Companion.seconds
 
 object InquisitorWaypoints {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.alertInquisitor && DianaAPI.isActive
 
 	private val inquisitorDigUpPattern by Regex("^[A-z ]+! You dug out a Minos Inquisitor!").fromRepo("mythological.inquisitor")

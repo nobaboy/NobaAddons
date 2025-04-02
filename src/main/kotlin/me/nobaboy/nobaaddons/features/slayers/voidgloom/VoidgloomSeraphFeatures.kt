@@ -37,7 +37,7 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
 object VoidgloomSeraphFeatures {
-	private val config get() = NobaConfig.INSTANCE.slayers.voidgloom
+	private val config get() = NobaConfig.slayers.voidgloom
 	private val enabled: Boolean
 		get() = SkyBlockIsland.THE_END.inIsland() && SlayerAPI.currentQuest?.boss == SlayerBoss.VOIDGLOOM
 
@@ -135,7 +135,7 @@ object VoidgloomSeraphFeatures {
 		if(!currentQuest.spawned || currentQuest.entity == null) return
 
 		if(config.brokenHeartRadiationTimer) brokenHeartRadiation?.takeIf { it.isValid }?.let {
-			RenderUtils.renderText(it.entity.getNobaVec().raise(1.5), it.remainingTime, NobaColor.GOLD)
+			RenderUtils.renderText(context, it.entity.getNobaVec().raise(1.5), it.remainingTime, color = NobaColor.GOLD)
 		} ?: run {
 			brokenHeartRadiation = null
 		}
@@ -147,8 +147,15 @@ object VoidgloomSeraphFeatures {
 
 			val seconds = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
 			RenderUtils.renderOutlinedFilledBox(context, location, config.yangGlyphHighlightColor, throughBlocks = true)
-			RenderUtils.renderText(adjustedLocation, tr("nobaaddons.slayers.yangGlyph.name", "Yang Glyph"), config.yangGlyphHighlightColor, yOffset = -10f, throughBlocks = true)
-			RenderUtils.renderText(adjustedLocation, seconds, NobaColor.WHITE, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				adjustedLocation,
+				tr("nobaaddons.slayers.yangGlyph.name", "Yang Glyph"),
+				color = config.yangGlyphHighlightColor,
+				yOffset = -10f,
+				throughBlocks = true
+			)
+			RenderUtils.renderText(context, adjustedLocation, seconds, NobaColor.WHITE, throughBlocks = true)
 		}
 
 		if(config.highlightNukekubiFixations) {

@@ -1,26 +1,15 @@
 package me.nobaboy.nobaaddons.utils.render
 
-import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.RenderLayer.MultiPhase
 import net.minecraft.client.render.RenderLayer.MultiPhaseParameters
 import net.minecraft.client.render.RenderPhase
-import net.minecraft.client.render.RenderPhase.Cull
-import net.minecraft.client.render.RenderPhase.DepthTest
-import net.minecraft.client.render.RenderPhase.Transparency
 import net.minecraft.client.render.VertexFormat.DrawMode
 import net.minecraft.client.render.VertexFormats
+import net.minecraft.util.Util
+import java.util.OptionalDouble
 
 object NobaRenderLayers {
-	val DEFAULT_TRANSPARENCY: Transparency = Transparency(
-		"nobaaddons_default_transparency",
-		{
-			RenderSystem.enableBlend()
-			RenderSystem.defaultBlendFunc()
-		},
-		{ RenderSystem::disableBlend }
-	)
-
 	val FILLED: MultiPhase = RenderLayer.of(
 		"nobaaddons_filled",
 		VertexFormats.POSITION_COLOR,
@@ -34,10 +23,10 @@ object NobaRenderLayers {
 			//?} else {
 			/*.program(RenderPhase.COLOR_PROGRAM)
 			*///?}
-			.cull(Cull.DISABLE_CULLING)
-			.layering(RenderPhase.POLYGON_OFFSET_LAYERING)
-			.transparency(DEFAULT_TRANSPARENCY)
-			.depthTest(DepthTest.LEQUAL_DEPTH_TEST)
+			.transparency(RenderLayer.TRANSLUCENT_TRANSPARENCY)
+			.depthTest(RenderLayer.LEQUAL_DEPTH_TEST)
+			.cull(RenderLayer.DISABLE_CULLING)
+			.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
 			.build(false)
 	)
 
@@ -54,10 +43,54 @@ object NobaRenderLayers {
 			//?} else {
 			/*.program(RenderPhase.COLOR_PROGRAM)
 			*///?}
-			.cull(Cull.DISABLE_CULLING)
-			.layering(RenderPhase.POLYGON_OFFSET_LAYERING)
-			.transparency(DEFAULT_TRANSPARENCY)
-			.depthTest(DepthTest.ALWAYS_DEPTH_TEST)
+			.transparency(RenderLayer.TRANSLUCENT_TRANSPARENCY)
+			.depthTest(RenderLayer.ALWAYS_DEPTH_TEST)
+			.cull(RenderLayer.DISABLE_CULLING)
+			.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
 			.build(false)
 	)
+
+	// wtf am I doing here, I don't get it and this might be a bad way to do it, but hey, it works.
+	private val LINES = Util.memoize { lineWidth: Double ->
+		RenderLayer.of(
+			"nobaaddons:lines",
+			VertexFormats.LINES,
+			DrawMode.LINES,
+			RenderLayer.DEFAULT_BUFFER_SIZE,
+			false,
+			false,
+			MultiPhaseParameters.builder()
+				.program(RenderPhase.LINES_PROGRAM)
+				.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+				.depthTest(RenderPhase.LEQUAL_DEPTH_TEST)
+				.cull(RenderPhase.DISABLE_CULLING)
+				.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
+				.writeMaskState(RenderPhase.ALL_MASK)
+				.lineWidth(RenderPhase.LineWidth(OptionalDouble.of(lineWidth)))
+				.build(false)
+		)
+	}
+
+	private val LINES_THROUGH_WALLS = Util.memoize { lineWidth: Double ->
+		RenderLayer.of(
+			"nobaaddons:lines_through_walls",
+			VertexFormats.LINES,
+			DrawMode.LINES,
+			RenderLayer.DEFAULT_BUFFER_SIZE,
+			false,
+			false,
+			MultiPhaseParameters.builder()
+				.program(RenderPhase.LINES_PROGRAM)
+				.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+				.depthTest(RenderPhase.ALWAYS_DEPTH_TEST)
+				.cull(RenderPhase.DISABLE_CULLING)
+				.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
+				.writeMaskState(RenderPhase.ALL_MASK)
+				.lineWidth(RenderPhase.LineWidth(OptionalDouble.of(lineWidth)))
+				.build(false)
+		)
+	}
+
+	fun getLines(lineWidth: Float): MultiPhase = LINES.apply(lineWidth.toDouble())
+	fun getLinesThroughWalls(lineWidth: Float): MultiPhase = LINES_THROUGH_WALLS.apply(lineWidth.toDouble())
 }

@@ -10,7 +10,6 @@ object InfoBoxesManager {
 
 	fun init() {
 		InfoBoxesConfig.safeLoad()
-		recreateUIElements()
 	}
 
 	fun save() {

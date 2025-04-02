@@ -12,7 +12,7 @@ import me.nobaboy.nobaaddons.utils.tr
 object InventoryCategory {
 	fun create() = category(tr("nobaaddons.config.inventory", "Inventory")) {
 		slotInfo()
-		enchantTooltips()
+		enchantmentTooltips()
 		itemPickupLog()
 	}
 
@@ -135,7 +135,7 @@ object InventoryCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.enchantTooltips() {
+	private fun ConfigCategory.Builder.enchantmentTooltips() {
 		group(tr("nobaaddons.config.inventory.enchantmentTooltips", "Enchantment Tooltips")) {
 			val enabled = add({ inventory.enchantmentTooltips::modifyTooltips }) {
 				name = tr("nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips", "Modify Enchant Tooltips")

@@ -5,7 +5,7 @@ import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.ui.ElementAlignment
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
-import me.nobaboy.nobaaddons.ui.data.TextElement
+import me.nobaboy.nobaaddons.ui.data.GenericTextElement
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
@@ -26,7 +26,7 @@ object HudDebugCommands {
 	private class DebugHudElement(
 		private val text: String,
 		private val align: ElementAlignment?,
-	) : TextHudElement(TextElement(color = randomLightColor())) {
+	) : TextHudElement(GenericTextElement(color = randomLightColor())) {
 		override fun renderText(context: DrawContext) {
 			renderLine(context, text.toText(), alignment = align)
 		}

@@ -12,7 +12,7 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 
 interface ISlotInfo {
-	val config get() = NobaConfig.INSTANCE.inventory.slotInfo
+	val config get() = NobaConfig.inventory.slotInfo
 
 	val enabled: Boolean
 	fun handle(event: ScreenRenderEvents.DrawItem)

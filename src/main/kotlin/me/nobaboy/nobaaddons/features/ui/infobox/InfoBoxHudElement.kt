@@ -20,7 +20,7 @@ class InfoBoxHudElement(val textElement: InfoBoxElement) : TextHudElement(textEl
 	override val size: Pair<Int, Int> get() = getBoundsFrom(text)
 
 	override val enabled: Boolean
-		get() = SkyBlockAPI.inSkyBlock || NobaConfig.INSTANCE.uiAndVisuals.renderInfoBoxesOutsideSkyBlock
+		get() = SkyBlockAPI.inSkyBlock || NobaConfig.uiAndVisuals.renderInfoBoxesOutsideSkyBlock
 
 	override fun shouldRender(): Boolean =
 		super.shouldRender() && MCUtils.client.currentScreen !is InfoBoxesScreen
