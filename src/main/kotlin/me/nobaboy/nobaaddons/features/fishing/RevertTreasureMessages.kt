@@ -9,17 +9,17 @@ import net.minecraft.text.MutableText
 import net.minecraft.util.Formatting
 
 object RevertTreasureMessages {
-	private val config by NobaConfig.INSTANCE.fishing::catchMessages
+	private val config get() = NobaConfig.INSTANCE.fishing.catchMessages
 
 	private val TREASURE_CATCH_MESSAGE by Regex("^⛃ (?<rarity>GOOD|GREAT|OUTSTANDING)(?<treasureType> JUNK)? CATCH! You caught .+").fromRepo("fishing.treasure_catch")
 
-	private val colorOverride = mapOf(
+	private val treasureCatchColors = mapOf(
 		"GOOD" to Formatting.GOLD,
 		"GREAT" to Formatting.DARK_PURPLE,
 	)
 
 	fun init() {
-		ChatMessageEvents.MODIFY.register(::modifyMessage)
+		ChatMessageEvents.MODIFY.register(this::modifyMessage)
 	}
 
 	/*
@@ -53,13 +53,12 @@ object RevertTreasureMessages {
 		siblings.removeFirst() // drop the icon
 
 		val rarity = match.groups["rarity"]!!.value
-		val overrideColor = colorOverride[rarity] ?: return
+		val catchColor = treasureCatchColors[rarity] ?: return
 		val isJunk = match.groups["treasureType"] != null
 
-		(siblings[0] as MutableText).styled { it.withColor(overrideColor) }
-		if(isJunk) {
-			(siblings[2] as MutableText).styled { it.withColor(overrideColor) }
-		}
+		// revert the color of the catch tier
+		(siblings[0] as MutableText).styled { it.withColor(catchColor) }
+		if(isJunk) (siblings[2] as MutableText).styled { it.withColor(catchColor) }
 
 		event.message = buildText {
 			siblings.forEach(::append)
