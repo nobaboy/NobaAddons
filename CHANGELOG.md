@@ -11,7 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fishing catch timer HUD element - celeste
 - Option to revert fishing treasure catch messages to the pre-Backwater Bayou format - celeste
 - Option to mute Banshee - nobaboy
+- Compact Sea Creature catch messages - nobaboy
 - Announce Sea Creatures - nobaboy
+  - This is only limited to Legendary and Mythic rarities
 - Hotspot Waypoints - nobaboy
 
 ### Changed
