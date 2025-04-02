@@ -11,6 +11,7 @@ is handled internally, and as such things could potentially break.
 
 ### Added
 
+- Support for 1.21.5 - celeste, nobaboy
 - Fishing catch timer HUD element - celeste
 - Option to revert fishing treasure catch messages to the pre-Backwater Bayou format - celeste
 - Option to mute Banshee - nobaboy
@@ -26,6 +27,10 @@ is handled internally, and as such things could potentially break.
 - Various config menu settings not correctly saving - celeste
 - Enchantment tooltip parsing properly works on enchanted books again - celeste
 - Certain config options re-using the same key - celeste
+
+### Removed
+
+- Support for 1.21.2 & 1.21.3 - celeste
 
 ## 1.0.0-Beta.1 - 2025-03-18
 

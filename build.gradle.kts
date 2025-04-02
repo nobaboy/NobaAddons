@@ -25,7 +25,6 @@ val mod = ModData()
 val deps = ModDependencies()
 val mcVersion = stonecutter.current.version
 val mcDep = property("mod.mc_dep").toString()
-val isSnapshot = runCatching { property("mc.snapshot") }.getOrNull() != null
 
 val isCi = System.getenv("CI") != null
 
@@ -55,8 +54,8 @@ repositories {
 }
 
 dependencies {
-	fun devEnvOnly(dependencyNotation: String, allowInSnapshot: Boolean = false) {
-		if(!isCi && (allowInSnapshot || !isSnapshot)) modRuntimeOnly(dependencyNotation)
+	fun devEnvOnly(dependencyNotation: String) {
+		if(!isCi) modRuntimeOnly(dependencyNotation)
 	}
 
 	fun includeImplementation(dependencyNotation: String, mod: Boolean = false, configuration: Action<ExternalModuleDependency> = Action { }) {
@@ -81,11 +80,11 @@ dependencies {
 	implementation("net.hypixel:mod-api:${deps["hypixel_mod_api"]}")
 	devEnvOnly("maven.modrinth:hypixel-mod-api:${deps["hypixel_mod_api_mod"]}")
 
-	devEnvOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}", allowInSnapshot = true) // DevAuth
+	devEnvOnly("me.djtheredstoner:DevAuth-fabric:${deps["devauth"]}") // DevAuth
 
 	devEnvOnly("maven.modrinth:sodium:${deps["sodium"]}-fabric") // Sodium
-	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}", allowInSnapshot = true) // No Telemetry
-	devEnvOnly("maven.modrinth:compacting:${deps["compacting"]}", allowInSnapshot = true) // Compacting
+	devEnvOnly("maven.modrinth:no-telemetry:${deps["no_telemetry"]}") // No Telemetry
+	devEnvOnly("maven.modrinth:compacting:${deps["compacting"]}") // Compacting
 
 	if(DefaultNativePlatform.getCurrentOperatingSystem().isLinux) {
 		devEnvOnly("maven.modrinth:fix-keyboard-on-linux:${deps["fix-linux-keyboard"]}")
