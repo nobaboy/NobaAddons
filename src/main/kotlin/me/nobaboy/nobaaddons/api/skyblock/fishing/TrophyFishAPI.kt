@@ -14,7 +14,7 @@ import net.minecraft.item.Items
 import java.util.EnumMap
 
 object TrophyFishAPI {
-	val trophyFish: MutableMap<String, EnumMap<TrophyFishRarity, Int>> get() = ProfileData.PROFILE.trophyFish
+	val trophyFish get() = ProfileData.PROFILE.trophyFish
 
 	// .* is required to catch any extra text added afterward from compact chat mods like Compacting
 	private val TROPHY_FISH_CATCH_REGEX by Regex("^TROPHY FISH! You caught an? (?<fish>[A-z 0-9-]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*").fromRepo("fishing.trophy_fish_catch")

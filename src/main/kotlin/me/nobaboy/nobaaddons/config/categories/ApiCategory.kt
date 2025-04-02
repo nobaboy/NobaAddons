@@ -49,21 +49,21 @@ object ApiCategory {
 	private fun ConfigCategory.Builder.captcha() {
 		captcha = Option.createBuilder<Boolean>().apply {
 			name(Text.literal("internal captcha option"))
-			binding(false, NobaConfig.INSTANCE.repo::solvedCaptcha, NobaConfig.INSTANCE.repo::solvedCaptcha.setter)
+			binding(false, NobaConfig.repo::solvedCaptcha, NobaConfig.repo::solvedCaptcha.setter)
 			controller(BooleanControllerBuilder::create)
 		}.build()
 
-		if(NobaConfig.INSTANCE.repo.solvedCaptcha) {
+		if(NobaConfig.repo.solvedCaptcha) {
 			return
 		}
 
 		var solved = 0
-		val toSolve = createSimpleMathProblem()
+		val (problem, solution) = createSimpleMathProblem()
 		add(Binding.generic(0, { solved }, { solved = it })) {
-			name = tr("nobaaddons.config.apis.captcha", "Solve: ${toSolve.first} =")
+			name = tr("nobaaddons.config.apis.captcha", "Solve: $problem =")
 			intFieldController()
 			onUpdate { option, event ->
-				captcha.requestSet(option.pendingValue() == toSolve.second)
+				captcha.requestSet(option.pendingValue() == solution)
 				captcha.applyValue()
 			}
 		}

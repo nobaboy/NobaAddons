@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier
 import kotlin.time.Duration.Companion.seconds
 
 object MiniBossFeatures {
-	private val config get() = NobaConfig.INSTANCE.slayers
+	private val config get() = NobaConfig.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false
 
 	private val EXPLODE = Identifier.ofVanilla("entity.generic.explode")

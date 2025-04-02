@@ -41,7 +41,7 @@ class InfoBoxesListWidget(
 	}
 
 	fun create() {
-		val newInfoBox = InfoBoxElement(ElementPosition(x = 0.025, y = 0.025))
+		val newInfoBox = InfoBoxElement(position = ElementPosition(x = 0.025, y = 0.025))
 		infoBoxes.add(newInfoBox)
 
 		screen.addButton.active = infoBoxes.size < 20

@@ -17,7 +17,7 @@ import me.nobaboy.nobaaddons.utils.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
 
 object SeaCreatureAPI {
-	private val config get() = NobaConfig.INSTANCE.fishing.catchMessages
+	private val config get() = NobaConfig.fishing.catchMessages
 
 	private val DOUBLE_HOOK_REGEX by Regex("^It's a Double Hook!(?: Woot woot!)?").fromRepo("fishing.double_hook")
 

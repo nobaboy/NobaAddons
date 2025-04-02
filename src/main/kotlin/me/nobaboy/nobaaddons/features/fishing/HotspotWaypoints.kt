@@ -18,7 +18,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 object HotspotWaypoints {
-	private val config get() = NobaConfig.INSTANCE.fishing
+	private val config get() = NobaConfig.fishing
 	private val enabled: Boolean get() = config.hotspotWaypoints && SkyBlockAPI.inSkyBlock
 
 	// TODO: At some point when a player stats core file is made, use that instead

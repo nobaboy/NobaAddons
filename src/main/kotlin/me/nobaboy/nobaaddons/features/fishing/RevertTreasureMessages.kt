@@ -9,7 +9,7 @@ import net.minecraft.text.MutableText
 import net.minecraft.util.Formatting
 
 object RevertTreasureMessages {
-	private val config get() = NobaConfig.INSTANCE.fishing.catchMessages
+	private val config get() = NobaConfig.fishing.catchMessages
 
 	private val TREASURE_CATCH_REGEX by Regex("^⛃ (?<rarity>GOOD|GREAT|OUTSTANDING)(?<treasureType> JUNK)? CATCH! You caught .+").fromRepo("fishing.treasure_catch")
 

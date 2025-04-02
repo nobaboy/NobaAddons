@@ -20,7 +20,7 @@ import net.minecraft.util.hit.HitResult
 import net.minecraft.world.World
 
 object EtherwarpOverlay {
-	private val config get() = NobaConfig.INSTANCE.uiAndVisuals.etherwarpOverlay
+	private val config get() = NobaConfig.uiAndVisuals.etherwarpOverlay
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock && MCUtils.options.sneakKey.isPressed
 
 	private const val BASE_DISTANCE = 57

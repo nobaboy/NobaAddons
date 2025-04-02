@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 object AnnounceSeaCreatures {
-	private val config get() = NobaConfig.INSTANCE.fishing.announceSeaCreatures
+	private val config get() = NobaConfig.fishing.announceSeaCreatures
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
 	fun init() {

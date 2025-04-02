@@ -19,7 +19,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
 object TrophyFishChat {
-	private val config get() = NobaConfig.INSTANCE.fishing.trophyFishing
+	private val config get() = NobaConfig.fishing.trophyFishing
 
 	private val lastMessage: MutableMap<Pair<TrophyFish, TrophyFishRarity>, Message> = mutableMapOf()
 

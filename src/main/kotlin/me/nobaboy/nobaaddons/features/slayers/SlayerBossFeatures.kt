@@ -13,7 +13,7 @@ import kotlin.time.DurationUnit
 
 // TODO: Add boss soon warning
 object SlayerBossFeatures {
-	private val config get() = NobaConfig.INSTANCE.slayers
+	private val config get() = NobaConfig.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest != null
 
 	private var bossSpawnTime = Timestamp.distantPast()

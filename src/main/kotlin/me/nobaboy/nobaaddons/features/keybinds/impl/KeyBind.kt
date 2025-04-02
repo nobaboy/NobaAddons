@@ -1,15 +1,18 @@
 package me.nobaboy.nobaaddons.features.keybinds.impl
 
-import com.google.gson.annotations.Expose
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import org.lwjgl.glfw.GLFW
 import kotlin.time.Duration.Companion.milliseconds
 
+@Serializable
 data class KeyBind(
-	@Expose var command: String = "",
-	@Expose var key: Int = GLFW.GLFW_KEY_UNKNOWN
+	var command: String = "",
+	var key: Int = GLFW.GLFW_KEY_UNKNOWN,
 ) {
+	@Transient
 	private val cooldownManager = CooldownManager(500.milliseconds)
 
 	fun maybePress() {

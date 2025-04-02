@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 
 object SeaCreatureAlert {
-	private val config get() = NobaConfig.INSTANCE.fishing.seaCreatureAlert
+	private val config get() = NobaConfig.fishing.seaCreatureAlert
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
 	fun init() {

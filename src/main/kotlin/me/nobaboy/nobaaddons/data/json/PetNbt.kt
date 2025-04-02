@@ -1,12 +1,15 @@
 package me.nobaboy.nobaaddons.data.json
 
-data class PetInfo(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class PetNbt(
 	val type: String,
 	val active: Boolean,
 	val exp: Double,
 	val tier: String,
-	val heldItem: String?,
+	val heldItem: String? = null,
 	val candyUsed: Int,
-	val skin: String?,
+	val skin: String? = null,
 	val uuid: String
 )

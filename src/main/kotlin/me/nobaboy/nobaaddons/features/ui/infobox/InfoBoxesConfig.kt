@@ -1,30 +1,39 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
-import com.google.gson.JsonPrimitive
-import dev.celestialfault.celestialconfig.AbstractConfig
-import dev.celestialfault.celestialconfig.Property
-import dev.celestialfault.celestialconfig.Serializer
-import dev.celestialfault.celestialconfig.migrations.Migrations
+import dev.celestialfault.histoire.Histoire
+import dev.celestialfault.histoire.migrations.Migrations
+import kotlinx.serialization.json.JsonPrimitive
 import me.nobaboy.nobaaddons.NobaAddons
 
-private val migrations = Migrations.create {
+@Suppress("UNCHECKED_CAST")
+private val migrations = Migrations("configVersion") {
 	add {
-		val infoBoxes = it["infoboxes"]?.asJsonArray ?: return@add
+		val infoBoxes = it["infoboxes"] as? MutableList<Any> ?: return@add
 		for(box in infoBoxes) {
-			val box = box.asJsonObject
-			val mode = box["textMode"].let { it as? JsonPrimitive }?.takeIf { it.isString }?.asString
-			if(mode == "PURE") box.addProperty("textMode", "NONE")
-			val position = box.remove("element").asJsonObject // pop element to rename later
+			val box = box as MutableMap<String, Any>
+			val mode = box["textMode"].let { it as? JsonPrimitive }?.takeIf { it.isString }?.content
+			if(mode == "PURE") box.put("textMode", JsonPrimitive("NONE"))
+			val position = box.remove("element") as MutableMap<String, Any> // pop element to rename later
 			position.remove("identifier") // remove identifier
 			// reset positioning to top left corner to account for change from pixels to a 0..1 double range
-			position.addProperty("x", 0.0)
-			position.addProperty("y", 0.0)
-			box.add("color", position.remove("color")) // element.color -> color
-			box.add("position", position) // finally, rename element -> position
+			position.put("x", JsonPrimitive(0.0))
+			position.put("y", JsonPrimitive(0.0))
+			position.remove("color")?.let { box.put("color", it) }
+			box.put("position", position) // finally, rename element -> position
 		}
 	}
 }
 
-object InfoBoxesConfig : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("infoboxes.json"), migrations = migrations) {
-	val infoBoxes by Property.of("infoboxes", Serializer.list(Serializer.obj<InfoBoxElement>()), mutableListOf())
+object InfoBoxesConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("infoboxes.json").toFile(), migrations = migrations) {
+	var infoBoxes: MutableList<InfoBoxElement> = mutableListOf()
+
+	// this cannot be private in any capacity (not even a `private set`), as reflection totally shits the bed
+	// and behaves incredibly inconsistently when encountering a private var in an object class
+	@Suppress("unused")
+	var configVersion: Int = migrations.currentVersion
+
+	override fun load() {
+		super.load()
+		InfoBoxesManager.recreateUIElements()
+	}
 }

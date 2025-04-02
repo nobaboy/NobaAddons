@@ -46,7 +46,7 @@ object ItemUtils {
 
 	@JvmStatic
 	fun shouldArmorHaveEnchantGlint(item: ItemStack, original: Boolean): Boolean {
-		val config = NobaConfig.INSTANCE.uiAndVisuals.renderingTweaks
+		val config = NobaConfig.uiAndVisuals.renderingTweaks
 
 		if(config.removeArmorGlints) return false
 		if(!config.fixEnchantedArmorGlint) return original
