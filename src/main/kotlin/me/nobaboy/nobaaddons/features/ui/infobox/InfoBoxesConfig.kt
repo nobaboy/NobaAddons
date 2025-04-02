@@ -22,6 +22,8 @@ private val migrations = Migrations("configVersion") {
 			box.put("position", position) // finally, rename element -> position
 		}
 	}
+
+	add { it["infoBoxes"] = it.remove("infoboxes") ?: return@add }
 }
 
 object InfoBoxesConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("infoboxes.json").toFile(), migrations = migrations) {
