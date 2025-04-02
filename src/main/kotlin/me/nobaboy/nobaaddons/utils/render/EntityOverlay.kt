@@ -37,7 +37,7 @@ object EntityOverlay {
 	}
 
 	@JvmStatic
-	operator fun get(entity: Entity): NobaColor? = entities.getIfPresent(entity)?.lastColor
+	fun get(entity: Entity): NobaColor? = entities.getIfPresent(entity)?.lastColor
 
 	// java, for whatever reason, inexplicably refuses to acknowledge .get() as a valid method?
 	// so the simple fix is to just do this, i guess.
@@ -45,7 +45,7 @@ object EntityOverlay {
 	fun getRgb(entity: Entity): Int? = get(entity)?.rgb
 
 	@JvmStatic
-	operator fun contains(entity: Entity): Boolean = entities.getIfPresent(entity) != null
+	fun contains(entity: Entity): Boolean = entities.getIfPresent(entity) != null
 
 	fun set(entity: Entity, color: NobaColor) {
 		if(FabricLoader.getInstance().isModLoaded("iris")) return // TODO figure out how to make this play nicely with iris
