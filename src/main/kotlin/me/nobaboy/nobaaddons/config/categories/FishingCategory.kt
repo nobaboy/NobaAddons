@@ -51,18 +51,6 @@ object FishingCategory {
 				booleanController()
 			}
 
-			val hideCatchMessage = add({ fishing.catchMessages::hideCatchMessage }) {
-				name = tr("nobaaddons.config.fishing.catchMessages.hideCatchMessage", "Hide Catch Message")
-				descriptionText = tr("nobaaddons.config.fishing.catchMessages.hideCatchMessage.tooltip", "")
-				booleanController()
-			}
-			add({ fishing.catchMessages::hideMaxRarity }) {
-				name = tr("nobaaddons.config.fishing.catchMessages.hideMaxRarity", "Hide Max Rarity")
-				descriptionText = tr("nobaaddons.config.fishing.catchMessages.hideMaxRarity.tooltip", "The maximum rarity to hide messages for. If this is set to Mythic, this will effectively hide all catch messages.")
-				require { option(hideCatchMessage) }
-				enumController(onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray())
-			}
-
 			label(CommonText.Config.LABEL_MISC)
 
 			add({ fishing.catchMessages::revertTreasureMessages }) {

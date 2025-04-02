@@ -34,7 +34,7 @@ object SeaCreatureAPI {
 		val message = event.message.string.cleanFormatting()
 
 		if(DOUBLE_HOOK_REGEX.matches(message)) {
-			if(config.compactSeaCreatureMessages || config.hideCatchMessage) event.cancel()
+			if(config.compactSeaCreatureMessages) event.cancel()
 			doubleHook = true
 			return
 		}
@@ -43,11 +43,8 @@ object SeaCreatureAPI {
 
 		if(config.compactSeaCreatureMessages) {
 			event.cancel()
-
-			if(!config.hideCatchMessage || seaCreature.rarity > config.hideMaxRarity) {
-				if(config.removeLastCatchMessage) lastChatMessage?.remove()
-				lastChatMessage = ChatUtils.addAndCaptureMessage(compileCatchMessage(seaCreature.spawnMessage), prefix = false, color = null)
-			}
+			if(config.removeLastCatchMessage) lastChatMessage?.remove()
+			lastChatMessage = ChatUtils.addAndCaptureMessage(compileCatchMessage(seaCreature.spawnMessage), prefix = false, color = null)
 		}
 
 		FishingEvents.SEA_CREATURE_CATCH.invoke(FishingEvents.SeaCreatureCatch(seaCreature, doubleHook))
