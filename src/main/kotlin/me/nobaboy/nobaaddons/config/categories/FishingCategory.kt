@@ -112,10 +112,7 @@ object FishingCategory {
 		group(tr("nobaaddons.config.fishing.bobberTimer", "Bobber Timer")) {
 			val enabled = add({ fishing.bobberTimer::enabled }) {
 				name = CommonText.Config.ENABLED
-				descriptionText = tr(
-					"nobaaddons.config.fishing.bobberTimer.tooltip",
-					"Displays how long your fishing bobber has been spawned above it; the color will change to gold once it's been spawned long enough to catch a Slugfish."
-				)
+				descriptionText = tr("nobaaddons.config.fishing.bobberTimer.tooltip", "Displays how long your fishing bobber has been spawned above it; the color will change to gold once it's been spawned long enough to catch a Slugfish.")
 				booleanController()
 			}
 			add({ fishing.bobberTimer::crimsonIsleOnly }) {

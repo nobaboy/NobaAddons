@@ -35,7 +35,9 @@ object SeaCreatureAlert {
 			null
 		}
 
-		RenderUtils.drawTitle(text, (seaCreature.rarity.color ?: NobaColor.RED), subtext = subtext, id = "sea_creature_alert")
+		val color = seaCreature.rarity.color ?: NobaColor.RED
+
+		RenderUtils.drawTitle(text, color, subtext = subtext, id = "sea_creature_alert")
 		config.notificationSound.play()
 	}
 }
