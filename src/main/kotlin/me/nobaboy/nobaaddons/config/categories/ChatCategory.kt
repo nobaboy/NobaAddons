@@ -2,8 +2,6 @@ package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
-import me.nobaboy.nobaaddons.core.Rarity
-import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
@@ -11,7 +9,6 @@ import net.minecraft.text.Text
 object ChatCategory {
 	fun create() = category(tr("nobaaddons.config.chat", "Chat")) {
 		copyChat()
-		alerts()
 		filters()
 		chatCommands()
 	}
@@ -27,24 +24,6 @@ object ChatCategory {
 				enumController()
 				require { option(enabled) }
 			}
-		}
-	}
-
-	private fun ConfigCategory.Builder.alerts() {
-		group(tr("nobaaddons.config.chat.alerts", "Alerts")) {
-			// region Crimson Isle
-			label(CommonText.Config.LABEL_CRIMSON_ISLE)
-
-			add({ chat.alerts::mythicSeaCreatureSpawn }) {
-				name = tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn", "Alert Mythic Sea Creature Catches")
-				descriptionText = tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip", "Sends your current location in all chat when catching a mythic sea creature")
-				booleanController()
-			}
-			add({ chat.alerts::vanquisherSpawn }) {
-				name = tr("nobaaddons.config.chat.alerts.vanquisherSpawn", "Alert Vanquisher Spawn")
-				booleanController()
-			}
-			// endregion
 		}
 	}
 
@@ -102,20 +81,6 @@ object ChatCategory {
 					tr("nobaaddons.label.item.staffOfRisingSun", "Staff of the Rising Sun")
 				)
 				booleanController()
-			}
-			// endregion
-
-			// region Mobs
-			label(CommonText.Config.LABEL_MOBS)
-
-			add({ chat.filters::hideSeaCreatureSpawnMessage }) {
-				name = tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage", "Hide Sea Creature Catch Message")
-				descriptionText = tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip", "Hides the catch message for sea creatures of the below set rarity and under")
-				booleanController()
-			}
-			add({ chat.filters::seaCreatureMaximumRarity }) {
-				name = tr("nobaaddons.config.chat.filters.seaCreatureMaximumRarity", "Hide Rarity and Below")
-				enumController(onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray())
 			}
 			// endregion
 

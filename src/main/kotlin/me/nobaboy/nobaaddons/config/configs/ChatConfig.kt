@@ -3,12 +3,10 @@ package me.nobaboy.nobaaddons.config.configs
 import dev.celestialfault.celestialconfig.ObjectProperty
 import dev.celestialfault.celestialconfig.Property
 import dev.celestialfault.celestialconfig.Serializer
-import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 
 class ChatConfig : ObjectProperty<ChatConfig>("chat") {
-	val alerts by Alerts()
 	val filters by Filters()
 	val chatCommands by ChatCommands()
 	val copyChat by CopyChat()
@@ -16,11 +14,6 @@ class ChatConfig : ObjectProperty<ChatConfig>("chat") {
 	class CopyChat : ObjectProperty<CopyChat>("copy") {
 		var enabled by Property.of("enabled", false)
 		var mode by Property.of("button", Serializer.enum(), CopyChatFeature.CopyWith.RIGHT_CLICK)
-	}
-
-	class Alerts : ObjectProperty<Alerts>("alerts") {
-		var mythicSeaCreatureSpawn by Property.of<Boolean>("mythicSeaCreatureSpawn", false)
-		var vanquisherSpawn by Property.of<Boolean>("mythicSeaCreatureSpawn", false)
 	}
 
 	class Filters : ObjectProperty<Filters>("filters") {
@@ -31,9 +24,6 @@ class ChatConfig : ObjectProperty<ChatConfig>("chat") {
 		var hideGiantsSlamDamageMessage by Property.of<Boolean>("hideGiantsSlamDamageMessage", false)
 		var hideThrowDamageMessage by Property.of<Boolean>("hideThrowDamageMessage", false)
 		var hideRayOfHopeDamageMessage by Property.of<Boolean>("hideRayOfHopeDamageMessage", false)
-
-		var hideSeaCreatureSpawnMessage by Property.of<Boolean>("hideSeaCreatureSpawnMessage", false)
-		var seaCreatureMaximumRarity by Property.of("seaCreatureMaximumRarity", Serializer.enum(), Rarity.RARE)
 
 		var blessingMessage by Property.of("blessingMessage", Serializer.enum(), ChatFilterOption.SHOWN)
 		var healerOrbMessage by Property.of("healerOrbMessage",Serializer.enum(), ChatFilterOption.SHOWN)
