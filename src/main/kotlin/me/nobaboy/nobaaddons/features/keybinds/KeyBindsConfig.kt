@@ -10,7 +10,7 @@ private val migrations = Migrations("configVersion") {
 }
 
 object KeyBindsConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("keybinds.json").toFile(), migrations = migrations) {
-	val keyBinds: MutableList<KeyBind> = mutableListOf()
+	var keyBinds: MutableList<KeyBind> = mutableListOf()
 
 	// this cannot be private in any capacity (not even a `private set`), as reflection totally shits the bed
 	// and behaves incredibly inconsistently when encountering a private var in an object class
