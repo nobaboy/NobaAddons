@@ -46,8 +46,12 @@ class FishingConfig : ObjectProperty<FishingConfig>("fishing") {
 	}
 
 	class CatchMessages : ObjectProperty<CatchMessages>("catchMessages") {
+		var compactSeaCreatureMessages by Property.of<Boolean>("compactSeaCreatureMessages", false)
+		var removeLastCatchMessage by Property.of<Boolean>("removeLastCatchMessage", false)
+		var hideCatchMessage by Property.of<Boolean>("hideCatchMessage", false)
+		var hideMaxRarity by Property.of("hideMaxRarity", Serializer.enum(), Rarity.EPIC)
+
 		var revertTreasureMessages by Property.of<Boolean>("revertTreasureMessages", false)
-		// TODO add a custom sea creature catch message formatting, like what skyhanni has
 	}
 
 	class HighlightThunderSparks : ObjectProperty<HighlightThunderSparks>("highlightThunderSparks") {

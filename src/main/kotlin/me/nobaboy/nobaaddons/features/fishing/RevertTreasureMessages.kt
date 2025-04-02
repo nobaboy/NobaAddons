@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import net.minecraft.text.MutableText
 import net.minecraft.util.Formatting
 
-object CatchMessageModifications {
+object RevertTreasureMessages {
 	private val config by NobaConfig.INSTANCE.fishing::catchMessages
 
 	private val TREASURE_CATCH_MESSAGE by Regex("^⛃ (?<rarity>GOOD|GREAT|OUTSTANDING)(?<treasureType> JUNK)? CATCH! You caught .+").fromRepo("fishing.treasure_catch")
@@ -53,7 +53,7 @@ object CatchMessageModifications {
 		siblings.removeFirst() // drop the icon
 
 		val rarity = match.groups["rarity"]!!.value
-		val overrideColor = colorOverride[rarity].also(::println) ?: return
+		val overrideColor = colorOverride[rarity] ?: return
 		val isJunk = match.groups["treasureType"] != null
 
 		(siblings[0] as MutableText).styled { it.withColor(overrideColor) }

@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
-import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
+import me.nobaboy.nobaaddons.features.fishing.crimsonisle.TrophyFishChat
 import me.nobaboy.nobaaddons.ui.TextShadow
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.white
@@ -22,24 +22,56 @@ object FishingCategory {
 			booleanController()
 		}
 
-    	add({ fishing.catchMessages::revertTreasureMessages }) {
-			name = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages", "Revert Treasure Catch Messages")
-			descriptionText = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages.tooltip", "Reverts treasure catch messages to the format used pre-Backwater Bayou")
-			booleanController()
-		}
-
 		add({ fishing::hotspotLocator }) {
 			name = tr("nobaaddons.config.fishing.hotspotLocator", "Locate Hotspots")
 			descriptionText = tr("nobaaddons.config.fishing.hotspotLocator.tooltip", "Marks hotspots with a beacon and shows a timer when it's going to disappear")
 			booleanController()
 		}
 
+		catchMessages()
 		seaCreatureAlert()
 		announceSeaCreatures()
 		bobberTimer()
 		catchTimer()
 		trophyFishing()
 		highlightThunderSparks()
+	}
+
+	private fun ConfigCategory.Builder.catchMessages() {
+		group(tr("nobaaddons.config.fishing.catchMessages", "Catch Messages")) {
+			val compactSeaCreatureMessages = add({ fishing.catchMessages::compactSeaCreatureMessages }) {
+				name = tr("nobaaddons.config.fishing.catchMessages.compactSeaCreatureMessages", "Compact Sea Creature Messages")
+				descriptionText = tr("nobaaddons.config.fishing.catchMessages.compactSeaCreatureMessages.tooltip", "")
+				booleanController()
+			}
+			add({ fishing.catchMessages::removeLastCatchMessage }) {
+				name = tr("nobaaddons.config.fishing.catchMessages.removeLastCatchMessage", "Remove Previous Catch Message")
+				descriptionText = tr("nobaaddons.config.fishing.catchMessages.removeLastCatchMessage.tooltip", "The last compacted message will also be removed upon catching another sea creature")
+				require { option(compactSeaCreatureMessages) }
+				booleanController()
+			}
+
+			val hideCatchMessage = add({ fishing.catchMessages::hideCatchMessage }) {
+				name = tr("nobaaddons.config.fishing.catchMessages.hideCatchMessage", "Hide Catch Message")
+				descriptionText = tr("nobaaddons.config.fishing.catchMessages.hideCatchMessage.tooltip", "")
+				booleanController()
+			}
+			add({ fishing.catchMessages::hideMaxRarity }) {
+				name = tr("nobaaddons.config.fishing.catchMessages.hideMaxRarity", "Hide Max Rarity")
+				descriptionText = tr("nobaaddons.config.fishing.catchMessages.hideMaxRarity.tooltip", "The maximum rarity to hide messages for. If this is set to Mythic, this will effectively hide all catch messages.")
+				require { option(hideCatchMessage) }
+				enumController(onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray())
+			}
+
+			label(CommonText.Config.LABEL_MISC)
+
+			add({ fishing.catchMessages::revertTreasureMessages }) {
+				name = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages", "Revert Treasure Catch Messages")
+				descriptionText = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages.tooltip", "Reverts treasure catch messages to the format used pre-Backwater Bayou")
+				booleanController()
+
+			}
+		}
 	}
 
 	private fun ConfigCategory.Builder.seaCreatureAlert() {
@@ -49,7 +81,7 @@ object FishingCategory {
 				booleanController()
 			}
 			add({ fishing.seaCreatureAlert::nameInsteadOfRarity }) {
-				name = tr("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity", "Use Name instead of Rarity")
+				name = tr("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity", "Use Name Instead of Rarity")
 				descriptionText = tr("nobaaddons.config.fishing.seaCreatureAlert.nameInsteadOfRarity.tooltip", "Uses the sea creature's name instead when displaying the notification, instead of 'Legendary Catch!'")
 				require { option(enabled) }
 				booleanController()
