@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.dungeons.HealerOrbChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.PickupObtainChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.ProfileInfoChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessagesChatFilter
+import me.nobaboy.nobaaddons.features.chat.filters.mobs.SeaCreatureCatchMessageChatFilter
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.text.Text
@@ -25,6 +26,8 @@ interface IChatFilter {
 		private val filters = arrayOf(
 			// Item Abilities
 			AbilityChatFilter,
+			// Mobs
+			SeaCreatureCatchMessageChatFilter,
 			// Dungeons
 			BlessingChatFilter,
 			HealerOrbChatFilter,

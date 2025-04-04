@@ -38,8 +38,6 @@ class FishingConfig {
 
 	class CatchMessages {
 		var compactSeaCreatureMessages = false
-		var removeLastCatchMessage = false
-
 		var revertTreasureMessages = false
 	}
 

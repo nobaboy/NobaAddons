@@ -9,11 +9,7 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.green
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
 
 object SeaCreatureAPI {
@@ -21,11 +17,11 @@ object SeaCreatureAPI {
 
 	private val DOUBLE_HOOK_REGEX by Regex("^It's a Double Hook!(?: Woot woot!)?").fromRepo("fishing.double_hook")
 
-	private var lastChatMessage: Message? = null
 	private var doubleHook: Boolean = false
 
 	fun init() {
 		ChatMessageEvents.ALLOW.register(this::onChatMessage)
+		ChatMessageEvents.MODIFY.register(this::modifyMessage)
 	}
 
 	private fun onChatMessage(event: ChatMessageEvents.Allow) {
@@ -36,27 +32,29 @@ object SeaCreatureAPI {
 		if(DOUBLE_HOOK_REGEX.matches(message)) {
 			if(config.compactSeaCreatureMessages) event.cancel()
 			doubleHook = true
-			return
 		}
-
-		val seaCreature = SeaCreature.getBySpawnMessage(message) ?: return
-
-		if(config.compactSeaCreatureMessages) {
-			event.cancel()
-			if(config.removeLastCatchMessage) lastChatMessage?.remove()
-			lastChatMessage = ChatUtils.addAndCaptureMessage(compileCatchMessage(seaCreature.spawnMessage), prefix = false, color = null)
-		}
-
-		FishingEvents.SEA_CREATURE_CATCH.invoke(FishingEvents.SeaCreatureCatch(seaCreature, doubleHook))
-		doubleHook = false
 	}
 
-	private fun compileCatchMessage(spawnMessage: String) = buildText {
-		if(doubleHook) {
-			append(tr("nobaaddons.fishing.doubleHook", "DOUBLE HOOK!").yellow().bold())
-			append(" ")
+	private fun modifyMessage(event: ChatMessageEvents.Modify) {
+		if(!SkyBlockAPI.inSkyBlock) return
+
+		val message = event.message
+
+		val seaCreature = SeaCreature.getBySpawnMessage(message.string.cleanFormatting()) ?: return
+		FishingEvents.SEA_CREATURE_CATCH.invoke(FishingEvents.SeaCreatureCatch(seaCreature, doubleHook))
+
+		if(config.compactSeaCreatureMessages) {
+			event.message = buildText {
+				if(doubleHook) {
+					append(tr("nobaaddons.fishing.doubleHook.prefix", "DOUBLE HOOK!").yellow().bold())
+					append(" ")
+				}
+
+				message.siblings.forEach(::append)
+				style = message.style
+			}
 		}
 
-		append(spawnMessage.toText().green())
+		doubleHook = false
 	}
 }

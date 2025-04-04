@@ -5,18 +5,20 @@ import dev.celestialfault.histoire.migrations.Migrations
 import kotlinx.serialization.json.JsonPrimitive
 import me.nobaboy.nobaaddons.NobaAddons
 
+private typealias JsonMap = MutableMap<String, Any>
+
 @Suppress("UNCHECKED_CAST")
 private val migrations = Migrations("configVersion") {
 	add {
 		val infoBoxes = it["infoboxes"] as? MutableList<Any> ?: return@add
 
 		infoBoxes.forEach { infoBox ->
-			val infoBox = infoBox as MutableMap<String, Any>
+			val infoBox = infoBox as JsonMap
 
 			val mode = infoBox["textMode"].let { it as? JsonPrimitive }?.takeIf { it.isString }?.content
 			if(mode == "PURE") infoBox["textMode"] = JsonPrimitive("NONE")
 
-			val element = infoBox.remove("element") as MutableMap<String, Any> // pop element to rename later
+			val element = infoBox.remove("element") as JsonMap // pop element to rename later
 			element.remove("identifier")
 			element.remove("color")?.let { infoBox["color"] = it }
 			// reset positioning to top left corner to account for change from pixels to a 0..1 double range
@@ -31,7 +33,7 @@ private val migrations = Migrations("configVersion") {
 		val infoBoxes = (it.remove("infoboxes") ?: return@add) as MutableList<Any>
 
 		infoBoxes.forEach { infoBox ->
-			val infoBox = infoBox as MutableMap<String, Any>
+			val infoBox = infoBox as JsonMap
 			infoBox.remove("textMode")?.let { infoBox["textShadow"] = it }
 		}
 

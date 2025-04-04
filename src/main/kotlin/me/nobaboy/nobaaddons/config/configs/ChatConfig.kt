@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.celestialfault.histoire.Object
+import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 
@@ -22,6 +23,9 @@ class ChatConfig {
 		var hideGiantsSlamDamageMessage = false
 		var hideThrowDamageMessage = false
 		var hideRayOfHopeDamageMessage = false
+
+		var hideSeaCreatureCatchMessage = false
+		var seaCreatureMaxRarity = Rarity.RARE
 
 		var blessingMessage = ChatFilterOption.SHOWN
 		var healerOrbMessage = ChatFilterOption.SHOWN

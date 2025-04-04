@@ -30,7 +30,7 @@ object SeaCreatureAlert {
 		}
 
 		val subtext = if(event.doubleHook) {
-			tr("nobaaddons.fishing.doubleHook", "DOUBLE HOOK!").yellow().bold()
+			tr("nobaaddons.fishing.doubleHook.prefix", "DOUBLE HOOK!").yellow().bold()
 		} else {
 			null
 		}

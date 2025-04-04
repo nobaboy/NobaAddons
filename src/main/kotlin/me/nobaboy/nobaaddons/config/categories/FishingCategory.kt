@@ -39,15 +39,9 @@ object FishingCategory {
 
 	private fun ConfigCategory.Builder.catchMessages() {
 		group(tr("nobaaddons.config.fishing.catchMessages", "Catch Messages")) {
-			val compactSeaCreatureMessages = add({ fishing.catchMessages::compactSeaCreatureMessages }) {
+			add({ fishing.catchMessages::compactSeaCreatureMessages }) {
 				name = tr("nobaaddons.config.fishing.catchMessages.compactSeaCreatureMessages", "Compact Sea Creature Messages")
 				descriptionText = tr("nobaaddons.config.fishing.catchMessages.compactSeaCreatureMessages.tooltip", "")
-				booleanController()
-			}
-			add({ fishing.catchMessages::removeLastCatchMessage }) {
-				name = tr("nobaaddons.config.fishing.catchMessages.removeLastCatchMessage", "Remove Previous Catch Message")
-				descriptionText = tr("nobaaddons.config.fishing.catchMessages.removeLastCatchMessage.tooltip", "The last compacted message will also be removed upon catching another sea creature")
-				require { option(compactSeaCreatureMessages) }
 				booleanController()
 			}
 
