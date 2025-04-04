@@ -4,6 +4,7 @@ import dev.celestialfault.histoire.Object
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.enums.AnnounceChannel
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class FishingConfig {
@@ -28,7 +29,7 @@ class FishingConfig {
 	class AnnounceSeaCreatures {
 		var enabled = false
 		var minimumRarity = Rarity.MYTHIC
-		var onlyInPartyChat = false
+		var announceChannel = AnnounceChannel.PARTY
 	}
 
 	class BobberTimer {

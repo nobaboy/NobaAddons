@@ -11,6 +11,7 @@ import me.nobaboy.nobaaddons.features.fishing.crimsonisle.TrophyFishChat
 import me.nobaboy.nobaaddons.ui.TextShadow
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.white
+import me.nobaboy.nobaaddons.utils.enums.AnnounceChannel
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
@@ -94,10 +95,10 @@ object FishingCategory {
 				require { option(enabled) }
 				enumController(onlyInclude = (Rarity.LEGENDARY..Rarity.MYTHIC).toArray())
 			}
-			add({ fishing.announceSeaCreatures::onlyInPartyChat }) {
-				name = tr("nobaaddons.config.fishing.announceSeaCreatures.onlyInPartyChat", "Only in Party Chat")
+			add({ fishing.announceSeaCreatures::announceChannel }) {
+				name = CommonText.Config.ANNOUNCE_CHANNEL
 				require { option(enabled) }
-				booleanController()
+				enumController(onlyInclude = arrayOf(AnnounceChannel.ALL, AnnounceChannel.PARTY))
 			}
 		}
 	}

@@ -15,6 +15,8 @@ object CommonText {
 
 		val NOTIFICATION_SOUND get() = tr("nobaaddons.config.notificationSound", "Notification Sound")
 
+		val ANNOUNCE_CHANNEL get() = tr("nobaaddons.config.announceChannel", "Announce Channel")
+
 		val LABEL_MISC get() = tr("nobaaddons.config.label.miscellaneous", "Miscellaneous")
 		val LABEL_CRIMSON_ISLE get() = tr("nobaaddons.config.label.crimsonIsle", "Crimson Isle")
 		val LABEL_MOBS get() = tr("nobaaddons.config.label.mobs", "Mobs")
