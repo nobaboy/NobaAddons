@@ -3,6 +3,8 @@ package me.nobaboy.nobaaddons.utils
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 
 object CommonPatterns {
+	val COLOR_REGEX = Regex("&([0-9a-fk-orz])", RegexOption.IGNORE_CASE)
+
 	const val UUID_PATTERN_STRING = "[0-9a-f]{8}-?(?:[0-9a-f]{4}-?){3}[0-9a-f]{12}"
 	val UUID_REGEX = Regex(UUID_PATTERN_STRING, RegexOption.IGNORE_CASE)
 

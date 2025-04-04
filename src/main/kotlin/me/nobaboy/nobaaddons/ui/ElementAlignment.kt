@@ -1,6 +1,11 @@
 package me.nobaboy.nobaaddons.ui
 
-enum class ElementAlignment {
+import net.minecraft.util.StringIdentifiable
+
+enum class ElementAlignment : StringIdentifiable {
 	LEFT,
+	CENTER,
 	RIGHT;
+
+	override fun asString(): String = name
 }

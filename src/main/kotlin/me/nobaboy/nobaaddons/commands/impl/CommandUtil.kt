@@ -5,6 +5,7 @@ import dev.celestialfault.commander.Commander
 import dev.celestialfault.commander.ICommand
 import me.nobaboy.nobaaddons.commands.adapters.*
 import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.ui.ElementAlignment
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.argument.NbtPathArgumentType
@@ -23,6 +24,7 @@ object CommandUtil {
 		commander.addHandler(Formatting::class, FormattingHandler())
 		commander.addHandler(NbtPathArgumentType.NbtPath::class, NbtPathHandler)
 		commander.addHandler(Rarity::class, RarityHandler)
+		commander.addHandler(ElementAlignment::class, ElementAlignmentHandler)
 
 		ClientCommandRegistrationCallback.EVENT.register { dispatch, access ->
 			commander.addHandler(Text::class, TextHandler(access))
