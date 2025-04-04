@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
-import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -21,7 +20,6 @@ import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
@@ -117,12 +115,7 @@ object InquisitorWaypoints {
 			val (x, y, z) = inquisitor.getNobaVec().roundToBlock().toDoubleArray()
 
 			val message = "x: $x, y: $y, z: $z | Minos Inquisitor at [ ${SkyBlockAPI.prefixedZone} ]"
-
-			if(config.alertOnlyInParty) {
-				if(PartyAPI.party != null) HypixelCommands.partyChat(message)
-			} else {
-				ChatUtils.sendChatAsPlayer(message)
-			}
+			config.announceChannel.send(message)
 		}
 	}
 

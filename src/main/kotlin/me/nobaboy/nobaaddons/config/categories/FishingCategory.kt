@@ -29,32 +29,18 @@ object FishingCategory {
 			booleanController()
 		}
 
-		catchMessages()
+		add({ fishing.catchMessages::revertTreasureMessages }) {
+			name = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages", "Revert Treasure Catch Messages")
+			descriptionText = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages.tooltip", "Reverts treasure catch messages to the format used pre-Backwater Bayou")
+			booleanController()
+		}
+
 		seaCreatureAlert()
 		announceSeaCreatures()
 		bobberTimer()
 		catchTimer()
 		trophyFishing()
 		highlightThunderSparks()
-	}
-
-	private fun ConfigCategory.Builder.catchMessages() {
-		group(tr("nobaaddons.config.fishing.catchMessages", "Catch Messages")) {
-			add({ fishing.catchMessages::compactSeaCreatureMessages }) {
-				name = tr("nobaaddons.config.fishing.catchMessages.compactSeaCreatureMessages", "Compact Sea Creature Messages")
-				descriptionText = tr("nobaaddons.config.fishing.catchMessages.compactSeaCreatureMessages.tooltip", "Compacts the double hook message with the sea creature's catch message")
-				booleanController()
-			}
-
-			label(CommonText.Config.LABEL_MISC)
-
-			add({ fishing.catchMessages::revertTreasureMessages }) {
-				name = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages", "Revert Treasure Catch Messages")
-				descriptionText = tr("nobaaddons.config.fishing.catchMessages.revertTreasureMessages.tooltip", "Reverts treasure catch messages to the format used pre-Backwater Bayou")
-				booleanController()
-
-			}
-		}
 	}
 
 	private fun ConfigCategory.Builder.seaCreatureAlert() {

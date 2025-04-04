@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.celestialfault.histoire.Object
+import me.nobaboy.nobaaddons.utils.enums.AnnounceChannel
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class EventsConfig {
@@ -20,7 +21,7 @@ class EventsConfig {
 		var findNearestWarp = false
 
 		var alertInquisitor = false
-		var alertOnlyInParty = false
+		var announceChannel = AnnounceChannel.PARTY
 		var notificationSound = NotificationSound.DING
 		var showInquisitorDespawnTime = false
 		var inquisitorFocusMode = false
