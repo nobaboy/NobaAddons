@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.slayers
 
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.client.SoundEvents
@@ -14,7 +15,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object MiniBossFeatures {
 	private val config get() = NobaConfig.slayers
-	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false
+	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false && SkyBlockAPI.inSkyBlock
 
 	private val EXPLODE = Identifier.ofVanilla("entity.generic.explode")
 

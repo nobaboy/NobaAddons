@@ -9,4 +9,7 @@ object CommonPatterns {
 	val CHAT_COORDINATES_REGEX by Regex("(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)").fromRepo("chat_coordinates")
 
 	val ITEM_COOLDOWN_REGEX by Regex("^Cooldown: (?<cooldown>(?:\\d+[hms] ?)+)").fromRepo("skyblock.item_cooldown")
+
+	val SLAYER_QUEST_COMPLETE_REGEX by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.quest_complete")
+	val SLAYER_BOSS_SLAIN_REGEX by Regex("^[ ]+NICE! SLAYER BOSS SLAIN!").fromRepo("slayer.boss_slain")
 }

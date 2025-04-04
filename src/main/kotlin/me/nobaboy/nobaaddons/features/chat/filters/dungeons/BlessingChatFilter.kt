@@ -92,7 +92,7 @@ object BlessingChatFilter : IChatFilter {
 	}
 
 	private fun compileBlessingMessage() = buildText {
-		val blessingType = this@BlessingChatFilter.blessingType ?: throw IllegalStateException("blessingType is null")
+		val blessingType = blessingType ?: throw IllegalStateException("blessingType is null")
 		var previousValue: String? = null
 
 		formatted(Formatting.GRAY)
