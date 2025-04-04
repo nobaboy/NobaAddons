@@ -7,9 +7,14 @@ import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
+import me.nobaboy.nobaaddons.repo.Repo
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.RegexUtils.anyFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.entity.LivingEntity
@@ -20,10 +25,15 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 object SlayerAPI {
+	private val QUEST_CLEAR_REGEXES: List<Regex> by Repo.list(
+		Regex("^[ ]+SLAYER QUEST FAILED!").fromRepo("slayer.quest_failed"),
+		Regex("^Your Slayer Quest has been cancelled!").fromRepo("slayer.quest_clear")
+	)
+
 	var currentQuest: SlayerQuest? = null
 		private set
 
-	private val miniBosses = mutableSetOf<LivingEntity>()
+	private val miniBosses = mutableListOf<LivingEntity>()
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
@@ -40,8 +50,8 @@ object SlayerAPI {
 
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 		val bossNameLine = scoreboard.nextAfter("Slayer Quest") ?: return
-		val slayerBoss = SlayerBoss.getByName(bossNameLine) ?: return
 
+		val slayerBoss = SlayerBoss.getByName(bossNameLine) ?: return
 		if(currentQuest?.boss != slayerBoss) currentQuest = SlayerQuest(slayerBoss)
 
 		val previousState = currentQuest?.spawned
@@ -86,41 +96,40 @@ object SlayerAPI {
 		if(entity.type != currentQuest.boss.entityType) return
 		if(entity in miniBosses) return
 
-		val armorStand = EntityUtils.getNextEntity<ArmorStandEntity>(entity, 1) ?: return
+		val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return
 		val armorStandName = armorStand.name.string
 
-		if(armorStandName.contains(currentQuest.boss.displayName)) {
-			val playerName = MCUtils.playerName ?: return
-			val ownerArmorStand = EntityUtils.getNextEntity<ArmorStandEntity>(entity, 3) ?: return
-			if(ownerArmorStand.name.string != "Spawned by: $playerName") return
-
-			currentQuest.entity = entity
-		} else if(currentQuest.boss.miniBossNames?.any { armorStandName.contains(it) } == true) {
+		if(currentQuest.boss.miniBossNames?.any { armorStandName.contains(it) } == true) {
 			SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
 			miniBosses.add(entity)
 		}
 	}
 
-	// TODO: Use regexes as a slayer feature already has some of these
 	private fun onChatMessage(message: String) {
 		if(!SkyBlockAPI.inSkyBlock) return
-		if(currentQuest == null) return
 
-		when(message.trim()) {
-			"SLAYER QUEST FAILED!", "Your Slayer Quest has been cancelled!" -> {
-				SlayerEvents.QUEST_CLEAR.invoke(SlayerEvents.QuestClear())
-				currentQuest = null
-			}
-			"SLAYER QUEST COMPLETE!", "NICE! SLAYER BOSS SLAIN!" -> {
-				SlayerEvents.QUEST_CLEAR.invoke(SlayerEvents.QuestClear())
-				SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest?.entity, currentQuest?.timerArmorStand))
+		val currentQuest = currentQuest ?: return
 
-				currentQuest?.apply {
-					this.entity = null
-					this.armorStand = null
-					this.timerArmorStand = null
-				}
+		CommonPatterns.SLAYER_BOSS_SLAIN_REGEX.onFullMatch(message) {
+			SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest.entity, currentQuest.timerArmorStand))
+			this@SlayerAPI.currentQuest = null
+			return
+		}
+
+		CommonPatterns.SLAYER_QUEST_COMPLETE_REGEX.onFullMatch(message) {
+			SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest.entity, currentQuest.timerArmorStand))
+			this@SlayerAPI.currentQuest?.apply {
+				this.entity = null
+				this.armorStand = null
+				this.timerArmorStand = null
 			}
+			return
+		}
+
+		if(QUEST_CLEAR_REGEXES.anyFullMatch(message)) {
+			SlayerEvents.QUEST_CLEAR.invoke(SlayerEvents.QuestClear())
+			this@SlayerAPI.currentQuest = null
+			return
 		}
 	}
 
