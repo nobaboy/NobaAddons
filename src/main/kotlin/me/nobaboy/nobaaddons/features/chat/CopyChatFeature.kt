@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.hud.ChatHudLine
 import net.minecraft.client.gui.screen.Screen
+import net.minecraft.text.Text
 import java.lang.ref.WeakReference
 import java.util.WeakHashMap
 
@@ -62,7 +63,7 @@ object CopyChatFeature {
 		CTRL_CLICK,
 		;
 
-		override fun getDisplayName() = when(this) {
+		override fun getDisplayName(): Text = when(this) {
 			RIGHT_CLICK -> tr("nobaaddons.label.copyButton.rightClick", "Right Click")
 			CTRL_CLICK -> tr("nobaaddons.label.copyButton.ctrlClick", "Control Held")
 		}
