@@ -18,13 +18,14 @@ import net.minecraft.util.Formatting
 import net.minecraft.util.math.MathHelper
 import java.util.LinkedList
 import java.util.Queue
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 object ChatUtils {
 	private val commandQueue: Queue<String> = LinkedList()
-	private val clickActions: MutableMap<String, ClickAction> = mutableMapOf()
+	private val clickActions: MutableMap<String, ClickAction> = ConcurrentHashMap()
 
 	private val SHOULD_CAPTURE: ThreadLocal<Boolean> = ThreadLocal.withInitial { false }
 	private val CAPTURED_MESSAGE: ThreadLocal<Message?> = ThreadLocal()
@@ -36,9 +37,8 @@ object ChatUtils {
 	}
 
 	private fun removeExpiredClickActions() {
-		// .toMap() is to create a copy in order to avoid causing a ConcurrentModificationException
-		clickActions.toMap().forEach {
-			if(it.value.createdAt.elapsedSince() > it.value.ttl) clickActions.remove(it.key)
+		clickActions.entries.removeIf {
+			it.value.createdAt.elapsedSince() > it.value.ttl
 		}
 	}
 
@@ -120,7 +120,19 @@ object ChatUtils {
 		addMessage(Text.literal(message), prefix, color)
 
 	/**
-	 * Sends a chat message with a clickable action
+	 * Register a click action on the current [MutableText] component
+	 */
+	fun MutableText.clickAction(ttl: Duration = 1.minutes, action: () -> Unit) {
+		val uuid = MathHelper.randomUuid().toString()
+		clickActions[uuid] = ClickAction(action, ttl = ttl)
+		runCommand("/nobaaddons internal action $uuid")
+	}
+
+	/**
+	 * Add a chat message that executes [action] when the player clicks on it to the player's chat
+	 *
+	 * This attaches the click action to the root text component, allowing for also clicking the prefix
+	 * to execute the provided [action].
 	 */
 	fun addMessageWithClickAction(
 		text: Text,
@@ -128,21 +140,19 @@ object ChatUtils {
 		color: Formatting? = Formatting.WHITE,
 		ttl: Duration = 1.minutes,
 		builder: MutableText.() -> Unit = {},
-		clickAction: () -> Unit,
+		action: () -> Unit,
 	) = addMessage(buildText {
 		if(prefix) append(NobaAddons.PREFIX)
 		append(text)
 
-		val uuid = MathHelper.randomUuid().toString()
-		clickActions[uuid] = ClickAction(clickAction, ttl = ttl)
-		runCommand("/nobaaddons internal action $uuid")
+		clickAction(ttl, action)
 
 		color?.let { formatted(it) }
 		builder(this)
 	}, prefix = false, color = null)
 
 	/**
-	 * Sends an untranslated chat message with a clickable action
+	 * Add an untranslated chat message that executes [action] when the player clicks on it to the player's chat
 	 */
 	@UntranslatedMessage
 	fun addMessageWithClickAction(
@@ -151,8 +161,8 @@ object ChatUtils {
 		color: Formatting? = Formatting.WHITE,
 		ttl: Duration = 1.minutes,
 		builder: MutableText.() -> Unit = {},
-		clickAction: () -> Unit,
-	) = addMessageWithClickAction(text.toText(), prefix, color, ttl, builder, clickAction)
+		action: () -> Unit,
+	) = addMessageWithClickAction(text.toText(), prefix, color, ttl, builder, action)
 
 	/**
 	 * Internal method called to invoke a click action from [addMessageWithClickAction]
