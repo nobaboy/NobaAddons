@@ -135,7 +135,7 @@ object VoidgloomSeraphFeatures {
 		if(!currentQuest.spawned || currentQuest.entity == null) return
 
 		if(config.brokenHeartRadiationTimer) brokenHeartRadiation?.takeIf { it.isValid }?.let {
-			RenderUtils.renderText(context, it.entity.getNobaVec().raise(1.5), it.remainingTime, color = NobaColor.GOLD)
+			RenderUtils.renderText(context, it.entity.getNobaVec().raise(1.5), it.remainingTime, color = NobaColor.GOLD, throughBlocks = true)
 		} ?: run {
 			brokenHeartRadiation = null
 		}
