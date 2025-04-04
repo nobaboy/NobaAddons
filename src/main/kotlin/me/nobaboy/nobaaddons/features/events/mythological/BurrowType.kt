@@ -9,7 +9,8 @@ enum class BurrowType(val color: NobaColor) : NameableEnum {
 	START(NobaColor.GREEN),
 	MOB(NobaColor.RED),
 	TREASURE(NobaColor.GOLD),
-	UNKNOWN(NobaColor.GRAY);
+	UNKNOWN(NobaColor.GRAY),
+	;
 
 	override fun getDisplayName(): Text = when(this) {
 		START -> tr("nobaaddons.label.mythological.burrowType.start", "Start")

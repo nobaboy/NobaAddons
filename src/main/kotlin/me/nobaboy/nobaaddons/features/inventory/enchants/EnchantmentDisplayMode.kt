@@ -6,7 +6,8 @@ import me.nobaboy.nobaaddons.utils.tr
 enum class EnchantmentDisplayMode : NameableEnum {
 	NORMAL,
 	COMPACT,
-	LINES;
+	LINES,
+	;
 
 	override fun getDisplayName() = when(this) {
 		NORMAL -> tr("nobaaddons.label.enchantDisplayMode.normal", "Default")

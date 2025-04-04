@@ -7,7 +7,8 @@ import net.minecraft.text.Text
 enum class NotificationSound(val sound: PlayableSound? = null) : NameableEnum {
 	DING(SoundUtils.dingLowSound),
 	ZELDA_SECRET_SOUND(SoundUtils.zeldaSecretSound),
-	NONE;
+	NONE,
+	;
 
 	fun play() {
 		sound?.play()

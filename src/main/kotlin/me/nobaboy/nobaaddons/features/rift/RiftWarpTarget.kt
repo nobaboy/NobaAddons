@@ -5,7 +5,8 @@ import me.nobaboy.nobaaddons.utils.tr
 
 enum class RiftWarpTarget(val warpName: String) : NameableEnum {
 	WIZARD_TOWER("wiz"),
-	RIFT("rift");
+	RIFT("rift"),
+	;
 
 	override fun getDisplayName() = when(this) {
 		WIZARD_TOWER -> tr("nobaaddons.label.riftWarpTarget.wizardTower", "Wizard Tower")

@@ -13,7 +13,8 @@ enum class CorpseType(
 	LAPIS(NobaColor.BLUE, "LAPIS_ARMOR_HELMET"),
 	UMBER(NobaColor.GOLD, "ARMOR_OF_YOG_HELMET", "UMBER_KEY"),
 	TUNGSTEN(NobaColor.GRAY, "MINERAL_HELMET", "UMBER_KEY"),
-	VANGUARD(NobaColor.AQUA, "VANGUARD_HELMET", "SKELETON_KEY");
+	VANGUARD(NobaColor.AQUA, "VANGUARD_HELMET", "SKELETON_KEY"),
+	;
 
 	val formattedName: Text by lazy { displayName.copy().formatted(color.formatting) }
 

@@ -28,7 +28,8 @@ enum class SkyBlockIsland(val apiName: String?) {
 	JERRYS_WORKSHOP("winter"),
 	DARK_AUCTION("dark_action"),
 	RIFT("rift"),
-	UNKNOWN(null);
+	UNKNOWN(null),
+	;
 
 	companion object {
 		val ISLANDS = entries.filter { it.apiName != null }.associateBy { it.apiName!! }

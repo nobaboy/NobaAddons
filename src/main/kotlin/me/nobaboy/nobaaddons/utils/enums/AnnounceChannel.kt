@@ -9,7 +9,8 @@ import net.minecraft.text.Text
 enum class AnnounceChannel : NameableEnum {
 	ALL,
 	PARTY,
-	GUILD;
+	GUILD,
+	;
 
 	fun send(message: String) {
 		when(this) {
