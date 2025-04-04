@@ -73,10 +73,10 @@ object HotspotWaypoints {
 	private fun getHotspotColor(name: String) =
 		hotspotColors.entries.firstOrNull { name.contains(it.key) }?.value ?: NobaColor.DARK_GRAY
 
-	data class Hotspot(val armorStand: ArmorStandEntity, val color: NobaColor, val timestamp: Timestamp) {
+	private data class Hotspot(val armorStand: ArmorStandEntity, val color: NobaColor, val timestamp: Timestamp) {
 		val location = armorStand.pos.toNobaVec().lower(2).roundToBlock()
 
-		val isValid get() = armorStand.isAlive
+		val isValid: Boolean get() = armorStand.isAlive
 		val remainingTime: String get() = timestamp.timeRemaining().toShortString()
 	}
 }
