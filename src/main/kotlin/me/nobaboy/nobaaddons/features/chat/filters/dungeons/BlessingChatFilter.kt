@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.filters.dungeons
 
+import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
@@ -7,18 +8,14 @@ import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.ErrorManager
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.startsWith
-import me.nobaboy.nobaaddons.utils.TextUtils.blue
-import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
-import me.nobaboy.nobaaddons.utils.TextUtils.darkGreen
-import me.nobaboy.nobaaddons.utils.TextUtils.lightPurple
-import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
@@ -92,7 +89,7 @@ object BlessingChatFilter : IChatFilter {
 		var previousValue: String? = null
 
 		formatted(Formatting.GRAY)
-		append(blessingType.displayName)
+		append(blessingType.formattedName)
 		append(" ")
 		stats.forEachIndexed { i, stat ->
 			if(previousValue != stat.value) {
@@ -112,13 +109,24 @@ object BlessingChatFilter : IChatFilter {
 		}
 	}
 
-	private enum class BlessingType(val displayName: Text, val expectedStats: Int) {
-		POWER(tr("nobaaddons.label.blessingType.power", "POWER BUFF!").red().bold(), 2),
-		WISDOM(tr("nobaaddons.label.blessingType.wisdom", "WISDOM BUFF!").blue().bold(), 2),
-		STONE(tr("nobaaddons.label.blessingType.stone", "STONE BUFF!").darkGray().bold(), 2),
-		LIFE(tr("nobaaddons.label.blessingType.life", "LIFE BUFF!").lightPurple().bold(), 2),
-		TIME(tr("nobaaddons.label.blessingType.time", "TIME BUFF!").darkGreen().bold(), 4);
+	private enum class BlessingType(color: NobaColor, val expectedStats: Int) : NameableEnum {
+		POWER(NobaColor.RED, 2),
+		WISDOM(NobaColor.BLUE, 2),
+		STONE(NobaColor.DARK_GRAY, 2),
+		LIFE(NobaColor.LIGHT_PURPLE, 2),
+		TIME(NobaColor.DARK_GREEN, 4);
+
+		val formatting: Formatting = color.formatting!!
+		val formattedName: Text by lazy { displayName.append(" BUFF!").formatted(formatting, Formatting.BOLD) }
+
+		override fun getDisplayName(): MutableText = when(this) {
+			POWER -> tr("nobaaddons.label.blessingType.power", "POWER")
+			WISDOM -> tr("nobaaddons.label.blessingType.wisdom", "WISDOM")
+			STONE -> tr("nobaaddons.label.blessingType.stone", "STONE")
+			LIFE -> tr("nobaaddons.label.blessingType.life", "LIFE")
+			TIME -> tr("nobaaddons.label.blessingType.time", "TIME")
+		}
 	}
 
-	private class Stat(val statType: StatType, val value: String)
+	private data class Stat(val statType: StatType, val value: String)
 }
