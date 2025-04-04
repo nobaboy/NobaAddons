@@ -33,7 +33,7 @@ object HotspotWaypoints {
 	private val hotspots = mutableListOf<Hotspot>()
 
 	fun init() {
-		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
+		SkyBlockEvents.ISLAND_CHANGE.register { hotspots.clear() }
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
@@ -57,7 +57,7 @@ object HotspotWaypoints {
 	private fun renderWaypoints(context: WorldRenderContext) {
 		if(!enabled) return
 
-		hotspots.removeIf { !it.isValid }
+		hotspots.removeIf { !it.armorStand.isAlive }
 		hotspots.forEach {
 			val time = it.remainingTime.ifEmpty { "Soon" }
 
@@ -66,17 +66,12 @@ object HotspotWaypoints {
 		}
 	}
 
-	private fun reset() {
-		hotspots.clear()
-	}
-
 	private fun getHotspotColor(name: String) =
 		hotspotColors.entries.firstOrNull { name.contains(it.key) }?.value ?: NobaColor.DARK_GRAY
 
 	private data class Hotspot(val armorStand: ArmorStandEntity, val color: NobaColor, val timestamp: Timestamp) {
 		val location = armorStand.pos.toNobaVec().lower(2).roundToBlock()
 
-		val isValid: Boolean get() = armorStand.isAlive
 		val remainingTime: String get() = timestamp.timeRemaining().toShortString()
 	}
 }
