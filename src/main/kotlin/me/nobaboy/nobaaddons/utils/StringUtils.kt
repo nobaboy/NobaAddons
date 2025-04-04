@@ -34,6 +34,4 @@ object StringUtils {
 			else -> this.toString()
 		}.replace(TRAILING_ZERO, "$1")
 	}
-
-	fun String.stripWhitespace(): String = dropWhile(Char::isWhitespace).dropLastWhile(Char::isWhitespace)
 }
