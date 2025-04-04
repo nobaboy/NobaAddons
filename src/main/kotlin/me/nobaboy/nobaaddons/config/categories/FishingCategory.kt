@@ -42,7 +42,7 @@ object FishingCategory {
 		group(tr("nobaaddons.config.fishing.catchMessages", "Catch Messages")) {
 			add({ fishing.catchMessages::compactSeaCreatureMessages }) {
 				name = tr("nobaaddons.config.fishing.catchMessages.compactSeaCreatureMessages", "Compact Sea Creature Messages")
-				descriptionText = tr("nobaaddons.config.fishing.catchMessages.compactSeaCreatureMessages.tooltip", "")
+				descriptionText = tr("nobaaddons.config.fishing.catchMessages.compactSeaCreatureMessages.tooltip", "Compacts the double hook message with the sea creature's catch message")
 				booleanController()
 			}
 
