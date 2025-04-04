@@ -42,18 +42,19 @@ object BlessingChatFilter : IChatFilter {
 				blessingType = BlessingType.valueOf(groups["blessing"]!!.value.uppercase())
 				blessingStats.clear()
 			}
+
 			return true
 		}
 
 		if(message.startsWith(statMessages)) {
 			val blessingType = this.blessingType
+
 			if(blessingType == null) {
 				ErrorManager.logError("Found blessing stats messages before the blessing type", Error())
 				return false
 			}
-			if(filterMode == ChatFilterOption.COMPACT) {
-				println(message)
 
+			if(filterMode == ChatFilterOption.COMPACT) {
 				BLESSING_STATS_REGEX.forEachMatch(message) {
 					val stat = groups["stat"]?.value ?: return@forEachMatch
 					val type = SkyBlockStat.entries.firstOrNull {
@@ -83,6 +84,7 @@ object BlessingChatFilter : IChatFilter {
 					)
 				}
 			}
+
 			return true
 		}
 

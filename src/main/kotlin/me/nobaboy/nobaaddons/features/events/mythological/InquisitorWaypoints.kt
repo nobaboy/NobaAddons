@@ -15,6 +15,7 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
@@ -113,8 +114,9 @@ object InquisitorWaypoints {
 			if(!inquisitor.isAlive) return
 
 			val (x, y, z) = inquisitor.getNobaVec().roundToBlock().toDoubleArray()
+			val randomString = StringUtils.randomAlphanumeric()
 
-			val message = "x: $x, y: $y, z: $z | Minos Inquisitor at [ ${SkyBlockAPI.prefixedZone} ]"
+			val message = "x: $x, y: $y, z: $z | Minos Inquisitor at [ ${SkyBlockAPI.prefixedZone} ] @$randomString"
 			config.announceChannel.send(message)
 		}
 	}
