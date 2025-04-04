@@ -11,6 +11,7 @@ is handled internally, and as such things could potentially break.
 
 ### Added
 
+- Support for 1.21.5 - celeste, nobaboy
 - Fishing catch timer HUD element - celeste
 - Option to revert fishing treasure catch messages to the pre-Backwater Bayou format - celeste
 - Option to mute Banshee - nobaboy
@@ -32,6 +33,10 @@ is handled internally, and as such things could potentially break.
 - Certain config options re-using the same key - celeste
 - Inconsistency with Mineshaft Entrance/Ladder waypoints - nobaboy
 - YACL labels not showing - nobaboy
+
+### Removed
+
+- Support for 1.21.2 & 1.21.3 - celeste
 
 ## 1.0.0-Beta.1 - 2025-03-18
 

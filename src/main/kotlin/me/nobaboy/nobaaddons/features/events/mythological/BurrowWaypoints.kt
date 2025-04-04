@@ -122,19 +122,19 @@ object BurrowWaypoints {
 			val distance = location.distance(LocationUtils.playerLocation)
 			val yOffset = if(config.showInquisitorDespawnTime) -20f else -10f
 
-			val adjustedLocation = location.center().raise()
+			val textLocation = location.center()
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
 			RenderUtils.renderText(
 				context,
-				adjustedLocation,
+				textLocation,
 				tr("nobaaddons.events.mythological.inquisitor", "Inquisitor"),
 				color = NobaColor.DARK_RED,
 				yOffset = yOffset,
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
-			RenderUtils.renderText(context, adjustedLocation, inquisitor.spawner, color = NobaColor.GOLD, yOffset = yOffset + 10f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(context, textLocation, inquisitor.spawner, color = NobaColor.GOLD, yOffset = yOffset + 10f, hideThreshold = 5.0, throughBlocks = true)
 
 			if(config.showInquisitorDespawnTime) {
 				val spawnTime = inquisitor.spawnTime
@@ -142,7 +142,7 @@ object BurrowWaypoints {
 
 				RenderUtils.renderText(
 					context,
-					adjustedLocation,
+					textLocation,
 					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${formattedTime}s"),
 					color = NobaColor.GRAY,
 					hideThreshold = 5.0,
@@ -157,7 +157,7 @@ object BurrowWaypoints {
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
 		burrows.forEach { location, type ->
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), type.displayName, color = type.color, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(context, location.center(), type.displayName, color = type.color, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 
@@ -169,7 +169,7 @@ object BurrowWaypoints {
 			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
 			RenderUtils.renderText(
 				context,
-				adjustedLocation.center().raise(),
+				adjustedLocation.center(),
 				tr("nobaaddons.events.mythological.burrowGuessWaypoint", "Burrow Guess"),
 				color = NobaColor.AQUA,
 				yOffset = -10f,
@@ -179,7 +179,7 @@ object BurrowWaypoints {
 
 			if(distance > 5) {
 				val formattedDistance = distance.toInt().addSeparators()
-				RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
+				RenderUtils.renderText(context, adjustedLocation.center(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 		}
 	}

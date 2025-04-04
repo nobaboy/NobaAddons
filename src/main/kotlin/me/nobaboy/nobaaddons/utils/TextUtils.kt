@@ -1,5 +1,9 @@
 package me.nobaboy.nobaaddons.utils
 
+//? if >=1.21.5 {
+/*import java.net.URI
+*///?}
+
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
@@ -53,14 +57,53 @@ object TextUtils {
 	fun MutableText.strikethrough(strikethrough: Boolean = true): MutableText = this.styled { it.withStrikethrough(strikethrough) }
 	fun MutableText.obfuscated(obfuscated: Boolean = true): MutableText = this.styled { it.withObfuscated(obfuscated) }
 
-	fun MutableText.runCommand(command: String = this.string): MutableText {
-		require(command.startsWith("/"))
-		return styled { it.withClickEvent(ClickEvent(ClickEvent.Action.RUN_COMMAND, command)) }
+	fun Style.hoverText(text: Text): Style = apply {
+		//? if >=1.21.5 {
+		/*withHoverEvent(HoverEvent.ShowText(text))
+		*///?} else {
+		HoverEvent(HoverEvent.Action.SHOW_TEXT, text)
+		//?}
 	}
-	fun MutableText.openUrl(url: String): MutableText = styled { it.withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, url)) }
+
+	fun MutableText.runCommand(command: String = this.string): MutableText {
+		require(command.startsWith("/")) { "The provided command string must start with a /" }
+		return styled {
+			it.withClickEvent(
+				//? if >=1.21.5 {
+				/*ClickEvent.RunCommand(command)
+				*///?} else {
+				ClickEvent(ClickEvent.Action.RUN_COMMAND, command)
+				//?}
+			)
+		}
+	}
+
+	fun MutableText.openUrl(url: String): MutableText = styled {
+		it.withClickEvent(
+			//? if >=1.21.5 {
+			/*ClickEvent.OpenUrl(URI.create(url))
+			*///?} else {
+			ClickEvent(ClickEvent.Action.OPEN_URL, url)
+			//?}
+		)
+	}
+
+	fun ClickEvent.commandOrNull(): String? {
+		//? if >=1.21.5 {
+		/*return when(this) {
+			is ClickEvent.RunCommand -> command
+			is ClickEvent.SuggestCommand -> command
+			else -> null
+		}
+		*///?} else {
+		return value
+		//?}
+	}
+
+	fun ClickEvent.command(): String = commandOrNull() ?: error("Cannot find command on click event")
 
 	fun MutableText.hoverText(text: String): MutableText = hoverText(text.toText())
-	fun MutableText.hoverText(text: Text): MutableText = styled { it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, text)) }
+	fun MutableText.hoverText(text: Text): MutableText = styled { it.hoverText(text) }
 
 	fun MutableText.hoverText(builder: MutableText.() -> Unit): MutableText = hoverText(buildText(builder))
 
