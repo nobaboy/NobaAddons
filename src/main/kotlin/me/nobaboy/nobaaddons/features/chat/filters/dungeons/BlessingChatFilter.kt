@@ -15,7 +15,6 @@ import me.nobaboy.nobaaddons.utils.StringUtils.startsWith
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
-import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
@@ -116,10 +115,9 @@ object BlessingChatFilter : IChatFilter {
 		LIFE(NobaColor.LIGHT_PURPLE, 2),
 		TIME(NobaColor.DARK_GREEN, 4);
 
-		val formatting: Formatting = color.formatting!!
-		val formattedName: Text by lazy { displayName.append(" BUFF!").formatted(formatting, Formatting.BOLD) }
+		val formattedName: Text by lazy { displayName.copy().append(" BUFF!").formatted(color.formatting, Formatting.BOLD) }
 
-		override fun getDisplayName(): MutableText = when(this) {
+		override fun getDisplayName(): Text = when(this) {
 			POWER -> tr("nobaaddons.label.blessingType.power", "POWER")
 			WISDOM -> tr("nobaaddons.label.blessingType.wisdom", "WISDOM")
 			STONE -> tr("nobaaddons.label.blessingType.stone", "STONE")
