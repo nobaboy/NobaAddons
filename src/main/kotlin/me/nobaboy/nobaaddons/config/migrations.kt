@@ -19,6 +19,7 @@ internal val migrations = Migrations("configVersion") {
 	add(::`003_renameGlaciteMineshaftShareCorpses`)
 	add(::`004_moveHideOtherPeopleFishing`)
 	add(::`005_renameEtherwarpHelper`)
+	add(::`006_renameSeaCreatureChatFilter`)
 }
 
 private fun `001_removeYaclVersion`(json: JsonMap) {
@@ -57,4 +58,10 @@ private fun `004_moveHideOtherPeopleFishing`(json: JsonMap) {
 private fun `005_renameEtherwarpHelper`(json: JsonMap) {
 	val uiAndVisuals = json["uiAndVisuals"] as? JsonMap ?: return
 	uiAndVisuals.put("etherwarpOverlay", uiAndVisuals.remove("etherwarpHelper") ?: return)
+}
+
+private fun `006_renameSeaCreatureChatFilter`(json: JsonMap) {
+	val filters = json["chat"]?.let { it as? JsonMap }?.get("filters") as? JsonMap ?: return
+	filters.remove("hideSeaCreatureSpawnMessage")?.let { filters.put("hideSeaCreatureCatchMessage", it) }
+	filters.remove("seaCreatureMaximumRarity")?.let { filters.put("seaCreatureMaxRarity", it) }
 }

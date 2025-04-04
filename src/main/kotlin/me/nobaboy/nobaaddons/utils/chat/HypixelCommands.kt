@@ -2,6 +2,10 @@ package me.nobaboy.nobaaddons.utils.chat
 
 object HypixelCommands {
 	// Messaging Commands
+	fun allChat(message: String) {
+		send("ac $message")
+	}
+
 	fun privateChat(player: String, message: String) {
 		send("msg $player $message")
 	}
@@ -56,7 +60,7 @@ object HypixelCommands {
 		send("party list")
 	}
 
-	// Helper function to send commands through queue system.
+	// Helper function to send commands through queue system
 	private fun send(command: String) {
 		ChatUtils.queueCommand(command)
 	}

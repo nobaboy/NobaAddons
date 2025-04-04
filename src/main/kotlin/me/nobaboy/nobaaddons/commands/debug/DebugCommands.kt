@@ -103,6 +103,11 @@ object DebugCommands {
 		fun rareDrop() {
 			SoundUtils.rareDropSound.play()
 		}
+
+		@Command
+		fun zeldaSecret() {
+			SoundUtils.zeldaSecretSound.play()
+		}
 	}
 
 	@Command

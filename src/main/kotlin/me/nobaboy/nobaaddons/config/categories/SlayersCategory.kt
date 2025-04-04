@@ -31,59 +31,15 @@ private fun OptionBuilder<*>.incompatibleWithIris() {
 
 object SlayersCategory {
 	fun create() = category(tr("nobaaddons.config.slayers", "Slayers")) {
-		bossAlert()
-		miniBossAlert()
-		highlightMiniBosses()
 		killTime()
 		compactQuestMessages()
+
+		spawnAlerts()
+		highlightMiniBosses()
 
 		sven()
 		voidgloom()
 		demonlord()
-	}
-
-	private fun ConfigCategory.Builder.bossAlert() {
-		group(tr("nobaaddons.config.slayers.bossAlert", "Boss Alert")) {
-			val enabled = add({ slayers.bossAlert::enabled }) {
-				name = CommonText.Config.ENABLED
-				booleanController()
-			}
-			add({ slayers.bossAlert::alertColor }, BiMapper.NobaAWTColorMapper) {
-				name = CommonText.Config.ALERT_COLOR
-				require { option(enabled) }
-				colorController()
-			}
-		}
-	}
-
-	private fun ConfigCategory.Builder.miniBossAlert() {
-		group(tr("nobaaddons.config.slayers.miniBossAlert", "MiniBoss Alert")) {
-			val enabled = add({ slayers.miniBossAlert::enabled }) {
-				name = CommonText.Config.ENABLED
-				booleanController()
-			}
-			add({ slayers.miniBossAlert::alertColor }, BiMapper.NobaAWTColorMapper) {
-				name = CommonText.Config.ALERT_COLOR
-				require { option(enabled) }
-				colorController()
-			}
-		}
-	}
-
-	private fun ConfigCategory.Builder.highlightMiniBosses() {
-		group(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
-			val enabled = add({ slayers.highlightMiniBosses::enabled }) {
-				name = CommonText.Config.ENABLED.wip()
-				incompatibleWithIris()
-				booleanController()
-			}
-			add({ slayers.highlightMiniBosses::highlightColor }, BiMapper.NobaAWTColorMapper) {
-				name = CommonText.Config.HIGHLIGHT_COLOR.wip()
-				require { option(enabled) }
-				incompatibleWithIris()
-				colorController()
-			}
-		}
 	}
 
 	private fun ConfigCategory.Builder.killTime() {
@@ -113,6 +69,46 @@ object SlayersCategory {
 				descriptionText = tr("nobaaddons.config.slayers.compactMessages.removeLastMessage.tooltip", "The last compacted message will also be removed upon completing another slayer quest")
 				require { option(enabled) }
 				booleanController()
+			}
+		}
+	}
+
+	private fun ConfigCategory.Builder.spawnAlerts() {
+		group(tr("nobaaddons.config.slayers.spawnAlerts", "Spawn Alerts")) {
+			val bossAlert = add({ slayers.bossAlert::enabled }) {
+				name = tr("nobaaddons.config.slayers.spawnAlerts.slayerBoss", "Slayer Boss Spawn Alert")
+				booleanController()
+			}
+			add({ slayers.bossAlert::alertColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.ALERT_COLOR
+				require { option(bossAlert) }
+				colorController()
+			}
+
+			val miniBossAlert = add({ slayers.miniBossAlert::enabled }) {
+				name = tr("nobaaddons.config.slayers.spawnAlerts.miniBoss", "MiniBoss Spawn Alert")
+				booleanController()
+			}
+			add({ slayers.miniBossAlert::alertColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.ALERT_COLOR
+				require { option(miniBossAlert) }
+				colorController()
+			}
+		}
+	}
+
+	private fun ConfigCategory.Builder.highlightMiniBosses() {
+		group(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
+			val enabled = add({ slayers.highlightMiniBosses::enabled }) {
+				name = CommonText.Config.ENABLED.wip()
+				incompatibleWithIris()
+				booleanController()
+			}
+			add({ slayers.highlightMiniBosses::highlightColor }, BiMapper.NobaAWTColorMapper) {
+				name = CommonText.Config.HIGHLIGHT_COLOR.wip()
+				require { option(enabled) }
+				incompatibleWithIris()
+				colorController()
 			}
 		}
 	}

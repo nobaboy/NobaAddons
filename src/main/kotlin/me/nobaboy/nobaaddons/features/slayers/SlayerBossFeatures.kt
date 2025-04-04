@@ -28,7 +28,7 @@ object SlayerBossFeatures {
 
 		if(config.bossKillTime.enabled) bossSpawnTime = Timestamp.now()
 		if(config.bossAlert.enabled) {
-			RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds, id = "slayer.alert")
+			RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds, id = "slayer_alert")
 			SoundUtils.dingLowSound.play()
 		}
 	}

@@ -19,16 +19,16 @@ import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowGuessAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
+import me.nobaboy.nobaaddons.api.skyblock.fishing.SeaCreatureAPI
 import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
 import me.nobaboy.nobaaddons.commands.SWikiCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
-import me.nobaboy.nobaaddons.features.chat.alerts.IAlert
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
@@ -42,12 +42,14 @@ import me.nobaboy.nobaaddons.features.events.hoppity.HoppityEggGuess
 import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
+import me.nobaboy.nobaaddons.features.fishing.AnnounceSeaCreatures
 import me.nobaboy.nobaaddons.features.fishing.CatchTimer
-import me.nobaboy.nobaaddons.features.fishing.CatchMessageModifications
 import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
-import me.nobaboy.nobaaddons.features.fishing.HighlightThunderSparks
+import me.nobaboy.nobaaddons.features.fishing.HotspotWaypoints
+import me.nobaboy.nobaaddons.features.fishing.RevertTreasureMessages
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
-import me.nobaboy.nobaaddons.features.fishing.TrophyFishChat
+import me.nobaboy.nobaaddons.features.fishing.crimsonisle.HighlightThunderSparks
+import me.nobaboy.nobaaddons.features.fishing.crimsonisle.TrophyFishChat
 import me.nobaboy.nobaaddons.features.inventory.ItemPickupLog
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentTooltips
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
@@ -145,6 +147,7 @@ object NobaAddons : ClientModInitializer {
 		MayorAPI.init()
 		PartyAPI.init()
 		PetAPI.init()
+		SeaCreatureAPI.init()
 		SkyBlockAPI.init()
 		SlayerAPI.init()
 		TrophyFishAPI.init()
@@ -205,10 +208,12 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Fishing
+		AnnounceSeaCreatures.init()
 		CatchTimer.init()
-		CatchMessageModifications.init()
 		FishingBobberTweaks.init()
 		HighlightThunderSparks.init()
+		HotspotWaypoints.init()
+		RevertTreasureMessages.init()
 		SeaCreatureAlert.init()
 		TrophyFishChat.init()
 		// endregion
@@ -227,7 +232,6 @@ object NobaAddons : ClientModInitializer {
 		// region Chat
 		CopyChatFeature.init()
 		ChatNotifications.init()
-		IAlert.init()
 		IChatFilter.init()
 		/* region Chat Commands */
 		DMCommands.init()

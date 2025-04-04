@@ -85,9 +85,7 @@ object CompactSlayerMessages {
 	}
 
 	private fun send() {
-		if(config.removeLastMessage) {
-			lastMessage?.remove()
-		}
+		if(config.removeLastMessage) lastMessage?.remove()
 		lastMessage = ChatUtils.addAndCaptureMessage(compile(), prefix = false, color = null)
 	}
 
