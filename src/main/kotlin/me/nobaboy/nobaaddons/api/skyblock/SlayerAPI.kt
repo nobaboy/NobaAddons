@@ -7,13 +7,11 @@ import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
-import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.RegexUtils.anyFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -25,10 +23,8 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 object SlayerAPI {
-	private val QUEST_CLEAR_REGEXES: List<Regex> by Repo.list(
-		Regex("^[ ]+SLAYER QUEST FAILED!").fromRepo("slayer.quest_failed"),
-		Regex("^Your Slayer Quest has been cancelled!").fromRepo("slayer.quest_clear")
-	)
+	private val QUEST_FAILED_REGEX by Regex("^[ ]+SLAYER QUEST FAILED!").fromRepo("slayer.quest_failed")
+	private val QUEST_CANCEL_MESSAGE by "Your Slayer Quest has been cancelled!".fromRepo("slayer.quest_cancel")
 
 	var currentQuest: SlayerQuest? = null
 		private set
@@ -126,7 +122,7 @@ object SlayerAPI {
 			return
 		}
 
-		if(QUEST_CLEAR_REGEXES.anyFullMatch(message)) {
+		if(QUEST_FAILED_REGEX.matches(message) || message == QUEST_CANCEL_MESSAGE) {
 			SlayerEvents.QUEST_CLEAR.invoke(SlayerEvents.QuestClear())
 			this@SlayerAPI.currentQuest = null
 			return
