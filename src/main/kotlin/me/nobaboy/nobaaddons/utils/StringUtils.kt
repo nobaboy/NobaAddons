@@ -20,7 +20,7 @@ object StringUtils {
 
 	fun String.cleanFormatting(): String = Formatting.strip(this)!!
 
-	fun randomAlphanumeric(length: Int = 8): String {
+	fun randomAlphanumeric(length: Int = 12): String {
 		val allowedChars = ('0'..'9') + ('A'..'Z') + ('a'..'z')
 		return (1..length)
 			.map { allowedChars.random() }
