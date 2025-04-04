@@ -15,8 +15,11 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.text.Text
 
+// FIXME: Does not work again if the bobber was cast too fast (consistently shown with a double click)
 object CatchTimer {
-	private val enabled get() = NobaConfig.fishing.catchTimerHudElement && SkyBlockAPI.inSkyBlock
+	private val config get() = NobaConfig.fishing
+	private val enabled: Boolean get() = config.catchTimerHudElement && SkyBlockAPI.inSkyBlock
+
 	private var timer: ArmorStandEntity? = null
 
 	private val TIMER_REGEX by Regex("^(?:\\d+\\.\\d+|!{3})$").fromRepo("fishing.catch_timer")

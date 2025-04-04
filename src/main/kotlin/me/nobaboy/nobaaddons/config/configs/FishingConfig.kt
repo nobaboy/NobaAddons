@@ -37,8 +37,8 @@ class FishingConfig {
 		var crimsonIsleOnly = true
 	}
 
+	// TODO: Add compact double hook catch message (again)
 	class CatchMessages {
-		var compactSeaCreatureMessages = false
 		var revertTreasureMessages = false
 	}
 

@@ -122,10 +122,11 @@ object ChatUtils {
 	/**
 	 * Register a click action on the current [MutableText] component
 	 */
-	fun MutableText.clickAction(ttl: Duration = 1.minutes, action: () -> Unit) {
+	fun MutableText.clickAction(ttl: Duration = 1.minutes, action: () -> Unit): MutableText {
 		val uuid = MathHelper.randomUuid().toString()
 		clickActions[uuid] = ClickAction(action, ttl = ttl)
 		runCommand("/nobaaddons internal action $uuid")
+		return this
 	}
 
 	/**

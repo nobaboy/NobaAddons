@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.visuals
 
+import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
@@ -90,9 +91,16 @@ object EtherwarpOverlay {
 		return if(stateAbove.isSolid && !stateAbove.isAir || !stateTwoAbove.isAir) ValidationType.NO_AIR_ABOVE else null
 	}
 
-	private enum class ValidationType(val displayName: Text) {
-		TOO_FAR(tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.validationType.tooFar", "Too far!")),
-		NOT_SOLID(tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.validationType.notSolid", "Not solid!")),
-		NO_AIR_ABOVE(tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.validationType.noAirAbove", "No air above!"))
+	private enum class ValidationType : NameableEnum {
+		TOO_FAR,
+		NOT_SOLID,
+		NO_AIR_ABOVE,
+		;
+
+		override fun getDisplayName(): Text = when(this) {
+			TOO_FAR -> tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.validationType.tooFar", "Too far!")
+			NOT_SOLID -> tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.validationType.notSolid", "Not solid!")
+			NO_AIR_ABOVE -> tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay.validationType.noAirAbove", "No air above!")
+		}
 	}
 }

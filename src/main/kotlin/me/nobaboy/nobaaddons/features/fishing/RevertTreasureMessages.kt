@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.fishing
 
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -10,6 +11,7 @@ import net.minecraft.util.Formatting
 
 object RevertTreasureMessages {
 	private val config get() = NobaConfig.fishing.catchMessages
+	private val enabled: Boolean get() = config.revertTreasureMessages && !SkyBlockAPI.inSkyBlock
 
 	private val TREASURE_CATCH_REGEX by Regex("^⛃ (?<rarity>GOOD|GREAT|OUTSTANDING)(?<treasureType> JUNK)? CATCH! You caught .+").fromRepo("fishing.treasure_catch")
 
@@ -45,7 +47,7 @@ object RevertTreasureMessages {
 	 */
 
 	private fun modifyMessage(event: ChatMessageEvents.Modify) {
-		if(!config.revertTreasureMessages) return
+		if(!enabled) return
 
 		val message = event.message
 		val match = TREASURE_CATCH_REGEX.matchEntire(message.string.cleanFormatting()) ?: return

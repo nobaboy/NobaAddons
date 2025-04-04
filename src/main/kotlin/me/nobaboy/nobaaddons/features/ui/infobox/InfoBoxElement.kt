@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.features.ui.infobox
 
 import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.ui.TextShadow
-import me.nobaboy.nobaaddons.ui.data.TextElement
 import me.nobaboy.nobaaddons.ui.data.ElementPosition
+import me.nobaboy.nobaaddons.ui.data.TextElement
 
 @Serializable
 data class InfoBoxElement(

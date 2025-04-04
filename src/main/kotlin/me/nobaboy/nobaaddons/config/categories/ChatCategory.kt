@@ -2,6 +2,8 @@ package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
@@ -81,6 +83,20 @@ object ChatCategory {
 					tr("nobaaddons.label.item.staffOfRisingSun", "Staff of the Rising Sun")
 				)
 				booleanController()
+			}
+			// endregion
+
+			// region Mobs
+			label(CommonText.Config.LABEL_MOBS)
+
+			add({ chat.filters::hideSeaCreatureCatchMessage }) {
+				name = tr("nobaaddons.config.chat.filters.hideSeaCreatureCatchMessage", "Hide Sea Creature Catch Message")
+				descriptionText = tr("nobaaddons.config.chat.filters.hideSeaCreatureCatchMessage.tooltip", "Hides the catch message for sea creatures of the below set rarity and under")
+				booleanController()
+			}
+			add({ chat.filters::seaCreatureMaxRarity }) {
+				name = tr("nobaaddons.config.chat.filters.seaCreatureMaxRarity", "Sea Creature Max Rarity")
+				enumController(onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray())
 			}
 			// endregion
 

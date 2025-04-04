@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.utils.enums
 
 import dev.isxander.yacl3.api.NameableEnum
-import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
@@ -9,12 +8,13 @@ import net.minecraft.text.Text
 enum class AnnounceChannel : NameableEnum {
 	ALL,
 	PARTY,
-	GUILD;
+	GUILD,
+	;
 
 	fun send(message: String) {
 		when(this) {
 			ALL -> HypixelCommands.allChat(message)
-			PARTY -> if(PartyAPI.party != null) HypixelCommands.partyChat(message)
+			PARTY -> HypixelCommands.partyChat(message)
 			// TODO: some how figure out if the user is in a guild
 			GUILD -> HypixelCommands.guildChat(message)
 		}

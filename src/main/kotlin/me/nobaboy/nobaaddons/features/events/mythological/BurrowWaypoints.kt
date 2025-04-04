@@ -165,6 +165,7 @@ object BurrowWaypoints {
 		guessLocation?.let {
 			val adjustedLocation = findValidLocation(it)
 			val distance = adjustedLocation.distance(LocationUtils.playerLocation)
+			val formattedDistance = distance.toInt().addSeparators()
 
 			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
 			RenderUtils.renderText(
@@ -176,11 +177,7 @@ object BurrowWaypoints {
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
-
-			if(distance > 5) {
-				val formattedDistance = distance.toInt().addSeparators()
-				RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
-			}
+			RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 

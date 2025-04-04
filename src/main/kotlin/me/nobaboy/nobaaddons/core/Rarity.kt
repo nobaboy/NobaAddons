@@ -24,7 +24,8 @@ enum class Rarity(val color: NobaColor? = null) : StringIdentifiable, NameableEn
 	VERY_SPECIAL(NobaColor.RED),
 	ULTIMATE(NobaColor.DARK_RED),
 	ADMIN(NobaColor.RED),
-	UNKNOWN;
+	UNKNOWN,
+	;
 
 	val formatting: Formatting? by lazy { color?.formatting }
 	val colorCode: Char? by lazy { color?.colorCode }

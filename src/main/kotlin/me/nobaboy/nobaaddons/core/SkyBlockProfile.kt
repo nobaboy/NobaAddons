@@ -4,7 +4,8 @@ enum class SkyBlockProfile(val displayName: String) {
 	CLASSIC("Classic"),
 	IRONMAN("Ironman"),
 	STRANDED("Stranded"),
-	BINGO("Bingo");
+	BINGO("Bingo"),
+	;
 
 	companion object {
 		fun getByName(name: String): SkyBlockProfile = entries.firstOrNull { it.displayName == name } ?: CLASSIC
