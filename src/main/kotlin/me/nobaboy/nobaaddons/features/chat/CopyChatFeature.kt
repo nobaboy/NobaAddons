@@ -15,9 +15,9 @@ import java.lang.ref.WeakReference
 import java.util.WeakHashMap
 
 object CopyChatFeature {
-	private val messages = WeakHashMap<ChatHudLine.Visible, WeakReference<ChatHudLine>>(200)
-
 	private val config get() = NobaConfig.chat.copyChat
+
+	private val messages = WeakHashMap<ChatHudLine.Visible, WeakReference<ChatHudLine>>(200)
 
 	fun init() {
 		ChatMessageEvents.ADDED.register(this::onChatAdded)
@@ -55,6 +55,7 @@ object CopyChatFeature {
 		} else {
 			ChatUtils.addMessage(tr("nobaaddons.chat.copiedMessage", "Copied chat message to clipboard"))
 		}
+
 		return true
 	}
 
