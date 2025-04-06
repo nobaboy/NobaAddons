@@ -73,6 +73,7 @@ class PerProfileDataLoader<T : Any>(private val serializer: KSerializer<T>, priv
 			if(key == currentProfileId) {
 				loadedProfileId = key
 				loaded = value
+				invokeLoadEvent()
 			}
 		}
 	}
