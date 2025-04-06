@@ -139,7 +139,7 @@ object PetAPI {
 			petNbt.candyUsed,
 			petNbt.active,
 			petNbt.heldItem,
-			petNbt.uuid
+			item.uuid
 		)
 	}
 
