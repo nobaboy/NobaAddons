@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.events.impl.skyblock
 
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.core.profile.ProfileData
+import me.nobaboy.nobaaddons.profiles.LegacyProfileData
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
@@ -19,5 +19,5 @@ object SkyBlockEvents {
 	data class IslandChange(val island: SkyBlockIsland) : Event()
 	data class PetChange(val oldPet: PetData?, val newPet: PetData?) : Event()
 	data class ProfileChange(val profileId: UUID) : Event()
-	data class ProfileDataLoad(val profileId: UUID, val data: ProfileData) : Event()
+	data class ProfileDataLoad(val profileId: UUID, val data: Any) : Event()
 }

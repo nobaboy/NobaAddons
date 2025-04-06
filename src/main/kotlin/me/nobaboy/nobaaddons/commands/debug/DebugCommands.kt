@@ -13,10 +13,10 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.adapters.FormattingHandler
 import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
+import me.nobaboy.nobaaddons.config.util.PerProfileDataLoader
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
-import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
@@ -162,12 +162,12 @@ object DebugCommands {
 	@Command
 	fun flushCaches() {
 		PersistentCache.save()
-		ProfileData.saveAll()
+		PerProfileDataLoader.ALL_LOADERS.forEach { it.saveAll() }
 	}
 
 	@Command
 	fun profile(ctx: Context) {
-		ctx.dumpInfo("Current profile" to ProfileData.PROFILE.profile)
+		ctx.dumpInfo("Current profile" to PersistentCache.lastProfile)
 	}
 
 	@Command

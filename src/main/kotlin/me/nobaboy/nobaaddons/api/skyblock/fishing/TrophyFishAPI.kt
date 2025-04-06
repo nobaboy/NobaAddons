@@ -2,9 +2,9 @@ package me.nobaboy.nobaaddons.api.skyblock.fishing
 
 import me.nobaboy.nobaaddons.core.fishing.TrophyFish
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
-import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
+import me.nobaboy.nobaaddons.profiles.TrophyFishCache
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
@@ -14,7 +14,7 @@ import net.minecraft.item.Items
 import java.util.EnumMap
 
 object TrophyFishAPI {
-	val trophyFish get() = ProfileData.PROFILE.trophyFish
+	val trophyFish get() = TrophyFishCache.PROFILE
 
 	// .* is required to catch any extra text added afterward from compact chat mods like Compacting
 	private val TROPHY_FISH_CATCH_REGEX by Regex("^TROPHY FISH! You caught an? (?<fish>[A-z 0-9-]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*").fromRepo("fishing.trophy_fish_catch")
