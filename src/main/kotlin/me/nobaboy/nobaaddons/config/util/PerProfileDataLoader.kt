@@ -14,6 +14,7 @@ import kotlin.collections.iterator
 import kotlin.io.path.createParentDirectories
 import kotlin.io.path.exists
 import kotlin.io.path.readText
+import kotlin.io.path.writeText
 import kotlin.reflect.KProperty
 
 // TODO prune profiles that don't exist anymore (e.g. bingo profiles)
@@ -92,7 +93,7 @@ class PerProfileDataLoader<T : Any>(private val serializer: KSerializer<T>, priv
 			if(profile == null) continue
 			val file = file(profile)
 			file.createParentDirectories()
-			file.toFile().writeAtomic(createBackup = false) { it.write(NobaAddons.JSON.encodeToString(serializer, data)) }
+			file.writeText(NobaAddons.JSON.encodeToString(serializer, data))
 		}
 	}
 
