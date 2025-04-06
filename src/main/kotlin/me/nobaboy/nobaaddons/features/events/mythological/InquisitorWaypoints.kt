@@ -1,6 +1,5 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
-import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -16,12 +15,12 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
@@ -29,7 +28,7 @@ import net.minecraft.client.network.OtherClientPlayerEntity
 import kotlin.time.Duration.Companion.seconds
 
 object InquisitorWaypoints {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.alertInquisitor && DianaAPI.isActive
 
 	private val inquisitorDigUpPattern by Regex("^[A-z ]+! You dug out a Minos Inquisitor!").fromRepo("mythological.inquisitor")
@@ -115,14 +114,10 @@ object InquisitorWaypoints {
 			if(!inquisitor.isAlive) return
 
 			val (x, y, z) = inquisitor.getNobaVec().roundToBlock().toDoubleArray()
+			val randomString = StringUtils.randomAlphanumeric()
 
-			val message = "x: $x, y: $y, z: $z | Minos Inquisitor at [ ${SkyBlockAPI.prefixedZone} ]"
-
-			if(config.alertOnlyInParty) {
-				if(PartyAPI.party != null) HypixelCommands.partyChat(message)
-			} else {
-				ChatUtils.sendChatAsPlayer(message)
-			}
+			val message = "x: $x, y: $y, z: $z | Minos Inquisitor at [ ${SkyBlockAPI.prefixedZone} ] @$randomString"
+			config.announceChannel.send(message)
 		}
 	}
 

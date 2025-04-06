@@ -17,6 +17,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.particle.ParticleTypes
@@ -24,7 +25,7 @@ import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
 
 object HoppityEggGuess {
-	private val config get() = NobaConfig.INSTANCE.events.hoppity
+	private val config get() = NobaConfig.events.hoppity
 	private val enabled: Boolean get() = config.eggGuess && HoppityAPI.isActive
 
 	private const val MAX_STEPS = 2500
@@ -86,14 +87,18 @@ object HoppityEggGuess {
 
 		guessLocation?.let {
 			val distance = it.distanceToPlayer()
+			val formattedDistance = distance.toInt().addSeparators()
 
 			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = true)
-			RenderUtils.renderText(it.center().raise(), "Egg Guess", NobaColor.AQUA, yOffset = -10f, throughBlocks = true)
-
-			if(distance > 5) {
-				val formattedDistance = distance.toInt().addSeparators()
-				RenderUtils.renderText(it.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
-			}
+			RenderUtils.renderText(
+				context,
+				it.center().raise(),
+				tr("nobaaddons.events.hoppity.eggGuessWaypoint", "Egg Guess"),
+				color = NobaColor.AQUA,
+				yOffset = -10f,
+				throughBlocks = true
+			)
+			RenderUtils.renderText(context, it.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 

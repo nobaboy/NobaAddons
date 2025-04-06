@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 
 object BurrowWarpLocations {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 
 	fun getNearestWarp(location: NobaVec): NearestWarp? {
 		val warpPoint = WarpPoint.entries.filter { it.unlocked && !it.ignored() }
@@ -39,7 +39,8 @@ object BurrowWarpLocations {
 		DARK_AUCTION(NobaVec(91.5, 75.0, 173.5), 5, warpName = "da"),
 		MUSEUM(NobaVec(-75.5, 76.0, 80.5)),
 		WIZARD(NobaVec(42.5, 122.0, 69.0), 10, { config.ignoreWizard }),
-		STONKS(NobaVec(-52.5, 71.0, -52.5), 5, { config.ignoreStonks });
+		STONKS(NobaVec(-52.5, 71.0, -52.5), 5, { config.ignoreStonks }),
+		;
 
 		val warpName = warpName ?: name.lowercase()
 

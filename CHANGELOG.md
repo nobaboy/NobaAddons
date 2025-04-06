@@ -6,11 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+**Back up your configs before updating!** This release includes major changes to how the configuration
+is handled internally, and as such things could potentially break.
+
 ### Added
 
 - Fishing catch timer HUD element - celeste
 - Option to revert fishing treasure catch messages to the pre-Backwater Bayou format - celeste
 - Option to mute Banshee - nobaboy
+- Compact Sea Creature catch messages - nobaboy
+- Announce Sea Creatures - nobaboy
+  - This is only limited to Legendary and Mythic rarities
+- Hotspot Waypoints - nobaboy
 
 ### Changed
 
@@ -22,6 +29,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - This is most visible if you have the minimum rarity set low enough
 - Various config menu settings not correctly saving - celeste
 - Enchantment tooltip parsing properly works on enchanted books again - celeste
+- Certain config options re-using the same key - celeste
+- Inconsistency with Mineshaft Entrance/Ladder waypoints - nobaboy
+- YACL labels not showing - nobaboy
 
 ## 1.0.0-Beta.1 - 2025-03-18
 

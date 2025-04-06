@@ -6,16 +6,17 @@ import net.minecraft.util.Formatting
 object StringUtils {
 	private val TRAILING_ZERO = Regex("\\.0+(.)$")
 
-	// TODO: Move to CollectionUtils
-	fun List<String>.anyEquals(other: String, ignoreCase: Boolean = false) = this.any { it.equals(other, ignoreCase = ignoreCase) }
-	fun List<String>.anyContains(other: String, ignoreCase: Boolean = false) = this.any { it.contains(other, ignoreCase = ignoreCase) }
-
 	fun String.startsWith(list: List<String>): Boolean = list.any { this.startsWith(it) }
 
 	fun String.title(): String = lowercase().split(" ").joinToString(" ") {
 		if(it == "of" || it == "the") it
 		else it.replaceFirstChar(Char::uppercase)
 	}.replaceFirstChar(Char::uppercase) // ensure that the first character is always uppercase, even if the string starts with 'the' or 'of'
+
+	fun String.toId(): String = lowercase()
+		.replace(' ', '_')
+		.filter { it in 'a'..'z' || it == '_'}
+		.trim('_')
 
 	fun String.cleanFormatting(): String = Formatting.strip(this)!!
 
@@ -34,6 +35,4 @@ object StringUtils {
 			else -> this.toString()
 		}.replace(TRAILING_ZERO, "$1")
 	}
-
-	fun String.stripWhitespace(): String = dropWhile(Char::isWhitespace).dropLastWhile(Char::isWhitespace)
 }

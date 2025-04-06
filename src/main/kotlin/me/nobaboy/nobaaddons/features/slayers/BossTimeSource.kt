@@ -6,7 +6,8 @@ import net.minecraft.text.Text
 
 enum class BossTimeSource : NameableEnum {
 	REAL_TIME,
-	BOSS_TIME_REMAINING;
+	BOSS_TIME_REMAINING,
+	;
 
 	override fun getDisplayName(): Text = when(this) {
 		REAL_TIME -> tr("nobaaddons.label.bossTimeSource.realTime", "Real Time")

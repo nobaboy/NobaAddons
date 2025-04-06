@@ -7,7 +7,8 @@ import net.minecraft.text.Text
 enum class HighlightMode : NameableEnum {
 	OUTLINE,
 	FILLED,
-	FILLED_OUTLINE;
+	FILLED_OUTLINE,
+	;
 
 	override fun getDisplayName(): Text = when(this) {
 		OUTLINE -> tr("nobaaddons.label.highlightMode.outline", "Outline")

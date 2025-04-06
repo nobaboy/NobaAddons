@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
@@ -27,7 +28,7 @@ import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
 
 object SimonSaysTimer {
-	private val config get() = NobaConfig.INSTANCE.dungeons.simonSaysTimer
+	private val config get() = NobaConfig.dungeons.simonSaysTimer
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7)
 
 	// Change to terminal_completed and add type group
@@ -45,16 +46,13 @@ object SimonSaysTimer {
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		InteractEvents.BLOCK_INTERACT.register { if(it is InteractEvents.UseBlockInteraction) onInteract(it) }
 
-		try {
-			SimonSaysTimes.load()
+		SimonSaysTimes.safeLoad().onSuccess {
 			SimonSaysTimes.times.minOrNull()?.takeIf { !it.isNaN() }?.let { newPersonalBest ->
 				if(newPersonalBest != SimonSaysTimes.personalBest) {
 					SimonSaysTimes.personalBest = newPersonalBest
 					SimonSaysTimes.save()
 				}
 			}
-		} catch(ex: IOException) {
-			ErrorManager.logError("Failed to load Simon Says time data", ex)
 		}
 	}
 
@@ -62,12 +60,12 @@ object SimonSaysTimer {
 		val times = SimonSaysTimes.times
 
 		if(times.isEmpty()) {
-			ChatUtils.addMessage(tr("nobaaddons.command.ss.noTimes", "You have not completed a Simon Says device."))
+			ChatUtils.addMessage(tr("nobaaddons.command.simonSaysTimer.noTimes", "You have not completed a Simon Says device."))
 			return
 		}
 
 		try {
-			ChatUtils.addMessage(tr("nobaaddons.command.ss.cleared", "Successfully cleared Simon Says Times."))
+			ChatUtils.addMessage(tr("nobaaddons.command.simonSaysTimer.cleared", "Successfully cleared Simon Says Times."))
 			SimonSaysTimes.personalBest = null
 			SimonSaysTimes.times.clear()
 			SimonSaysTimes.save()
@@ -80,7 +78,7 @@ object SimonSaysTimer {
 		val times = SimonSaysTimes.times
 
 		if(times.isEmpty()) {
-			ChatUtils.addMessage(tr("nobaaddons.command.ss.noTimes", "You have not completed a Simon Says device."))
+			ChatUtils.addMessage(tr("nobaaddons.command.simonSaysTimer.noTimes", "You have not completed a Simon Says device."))
 			return
 		}
 
@@ -89,18 +87,18 @@ object SimonSaysTimer {
 		val average = sum / size
 
 		val formattedAverage = "%.3f".format(average)
-		ChatUtils.addMessage(tr("nobaaddons.command.ss.average", "Your average time for Simon Says is: ${formattedAverage}s (Total Count: $size)"))
+		ChatUtils.addMessage(tr("nobaaddons.command.simonSaysTimer.average", "Your average time for Simon Says is: ${formattedAverage}s (Total Count: $size)"))
 	}
 
 	fun sendPersonalBest() {
 		val personalBest = SimonSaysTimes.personalBest
 
 		if(personalBest == null) {
-			ChatUtils.addMessage(tr("nobaaddons.command.ss.noTimes", "You have not completed a Simon Says device."))
+			ChatUtils.addMessage(tr("nobaaddons.command.simonSaysTimer.noTimes", "You have not completed a Simon Says device."))
 			return
 		}
 
-		ChatUtils.addMessage(tr("nobaadons.command.ss.personalBest", "Your personal best Simon Says time is $personalBest"))
+		ChatUtils.addMessage(tr("nobaadons.command.simonSaysTimer.personalBest", "Your personal best Simon Says time is $personalBest"))
 	}
 
 	private fun onChatMessage(message: String) {
@@ -130,17 +128,18 @@ object SimonSaysTimer {
 		times.add(timeTaken)
 
 		val personalBest = SimonSaysTimes.personalBest?.takeIf { timeTaken >= it } ?: timeTaken.also { SimonSaysTimes.personalBest = it }
-		val message = tr("nobaaddons.dungeons.ssTimer.completion", "Simon Says took ${timeTaken}s to complete")
+		val message = tr("nobaaddons.dungeons.simonSaysTimer.completion", "Simon Says took ${timeTaken}s to complete")
 
 		val chatMessage = if(timeTaken < personalBest) {
-			tr("nobaaddons.dungeons.ssTimer.beatPb", "PERSONAL BEST!").lightPurple().bold() + " " + message
+			tr("nobaaddons.dungeons.simonSaysTimer.personalBest", "PERSONAL BEST!").lightPurple().bold() + " " + message
 		} else {
 			message + buildLiteral(" ($personalBest)") { gray() }
 		}
 
-		ChatUtils.addMessage(chatMessage)
 		if(config.timeInPartyChat && PartyAPI.party != null) {
 			HypixelCommands.partyChat(message.string)
+		} else {
+			ChatUtils.addMessage(chatMessage)
 		}
 
 		try {
