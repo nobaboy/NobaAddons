@@ -8,14 +8,15 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.ui.ElementAlignment
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
+import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.entity.decoration.ArmorStandEntity
+import net.minecraft.entity.projectile.FishingBobberEntity
 import net.minecraft.text.Text
 
-// FIXME: Does not work again if the bobber was cast too fast (consistently shown with a double click)
 object CatchTimer {
 	private val config get() = NobaConfig.fishing
 	private val enabled: Boolean get() = config.catchTimerHudElement && SkyBlockAPI.inSkyBlock
@@ -30,7 +31,7 @@ object CatchTimer {
 	}
 
 	private fun hideTimer(event: EntityNametagRenderEvents.Visibility) {
-		if(!enabled || MCUtils.player?.fishHook == null) return
+		if(!enabled || EntityUtils.getEntities<FishingBobberEntity>().none { it.playerOwner == MCUtils.player }) return
 		val entity = event.entity as? ArmorStandEntity ?: return
 		if(TIMER_REGEX.matchEntire(entity.name.string.cleanFormatting()) == null) return
 		timer = entity
