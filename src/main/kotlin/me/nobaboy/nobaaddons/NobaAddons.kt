@@ -6,7 +6,6 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
@@ -101,16 +100,8 @@ object NobaAddons : ClientModInitializer {
 	val LOGGER: Logger = LogUtils.getLogger()
 	val CONFIG_DIR: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
 
-	@OptIn(ExperimentalSerializationApi::class)
 	val JSON = Json {
 		ignoreUnknownKeys = true
-		allowStructuredMapKeys = true
-
-		// allow some quality of life
-		allowComments = true
-		allowTrailingComma = true
-
-		// encoding related
 		encodeDefaults = true
 		prettyPrint = true
 	}
