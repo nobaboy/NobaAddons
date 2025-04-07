@@ -64,7 +64,7 @@ object NobaConfig : AbstractNobaConfig() {
 	}.build().generateScreen(parent)
 }
 
-internal class NobaConfigDefaults : AbstractNobaConfig() {
+private class NobaConfigDefaults : AbstractNobaConfig() {
 	override fun save() {
 		throw UnsupportedOperationException()
 	}

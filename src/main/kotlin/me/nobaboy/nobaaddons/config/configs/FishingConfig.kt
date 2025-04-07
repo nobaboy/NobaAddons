@@ -11,6 +11,7 @@ class FishingConfig {
 	var hideOtherPeopleFishing = false
 	var hotspotWaypoints = false
 	var catchTimerHudElement = false
+	var fixFishHookFieldDesync = true
 
 	@Object val seaCreatureAlert = SeaCreatureAlert()
 	@Object val announceSeaCreatures = AnnounceSeaCreatures()

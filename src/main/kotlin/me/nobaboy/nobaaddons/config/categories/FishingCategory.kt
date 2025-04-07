@@ -35,6 +35,15 @@ object FishingCategory {
 			booleanController()
 		}
 
+		add({ fishing::fixFishHookFieldDesync }) {
+			name = tr("nobaaddons.config.fishing.fixFishHookFieldDesync", "Fix Fishing Hook Desync")
+			descriptionText = tr(
+				"nobaaddons.config.fishing.fixFishHookFieldDesync.tooltip",
+				"Fixes a desync that can occur if you catch and throw your rod too fast, which is especially noticeable with high ping, which causes the fishing rod texture to appear incorrect."
+			)
+			booleanController()
+		}
+
 		seaCreatureAlert()
 		announceSeaCreatures()
 		bobberTimer()
@@ -108,7 +117,7 @@ object FishingCategory {
 		group(tr("nobaaddons.config.fishing.catchTimer", "Catch Timer")) {
 			val enabled = add({ fishing::catchTimerHudElement }) {
 				name = CommonText.Config.ENABLED
-				descriptionText = tr("nobaaddons.config.fishing.catchTimer.enabled.tooltip", "Moves the catch timer text displayed above your fishing bobber to a HUD element")
+				descriptionText = tr("nobaaddons.config.fishing.catchTimer.enabled.tooltip", "Moves the catch timer text displayed above your fishing bobber to a HUD element\n\nNote that with high ping, you'll want to enable Fix Fishing Hook Desync as well.")
 				booleanController()
 			}
 			add(Binding.generic(TextShadow.SHADOW, UISettings.catchTimer::textShadow, UISettings.catchTimer::textShadow.setter)) {
