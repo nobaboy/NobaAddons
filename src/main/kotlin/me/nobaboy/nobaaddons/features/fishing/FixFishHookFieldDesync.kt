@@ -20,7 +20,7 @@ object FixFishHookFieldDesync {
 		if(!enabled) return
 		val player = MCUtils.player ?: return
 		val bobber = EntityUtils.getEntities<FishingBobberEntity>().firstOrNull { it.playerOwner == player }
-		// using a mixin to FishingBobberEntity#setPlayerOwner to more directly fix this issue is *technically*
+		// using a mixin to FishingBobberEntity#setPlayerFishHook to more directly fix this issue is *technically*
 		// possible, and may be better, but this also works, and takes a lot less effort. therefore, this is good enough.
 		player.fishHook = bobber
 	}
