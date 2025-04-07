@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.api.skyblock
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
-import me.nobaboy.nobaaddons.data.json.MayorJson
+import me.nobaboy.nobaaddons.data.json.Election
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
@@ -25,6 +25,7 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
+// TODO: Use repo for mayor descriptions except for Foxy
 object MayorAPI {
 	private const val ELECTION_API_URL = "https://api.hypixel.net/v2/resources/skyblock/election"
 
@@ -34,7 +35,7 @@ object MayorAPI {
 	private val MAYOR_NAME_REGEX by Regex("Mayor (?<name>[A-z]+)").fromRepo("mayor.name")
 	private val ELECTION_END_MESSAGE by "The election room is now closed. Clerk Seraphine is doing a final count of the votes...".fromRepo("mayor.election_end")
 
-	val FOXY_EVENT_REGEX by Regex("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
+//	private val FOXY_EVENT_REGEX by Regex("Schedules an extra §(?<color>.)(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
 
 	var currentMayor: ActiveMayor = Mayor.UNKNOWN.withNone()
 		private set
@@ -111,8 +112,8 @@ object MayorAPI {
 	private suspend fun getCurrentMayor() {
 		lastUpdate = Timestamp.now()
 
-		val mayorJson = HTTPUtils.fetchJson<MayorJson>(ELECTION_API_URL).await()
-		val mayor = mayorJson.mayor
+		val election = HTTPUtils.fetchJson<Election>(ELECTION_API_URL).await()
+		val mayor = election.mayor
 		if(lastMayor?.displayName == mayor.name) return
 
 		currentMayor = Mayor.getByName(mayor.name)?.with(mayor.perks) ?: Mayor.UNKNOWN.withNone()

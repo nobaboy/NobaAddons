@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.data.json
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MayorJson(
+data class Election(
 	val mayor: Mayor
 )
 
