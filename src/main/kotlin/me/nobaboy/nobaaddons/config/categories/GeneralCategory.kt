@@ -22,5 +22,11 @@ object GeneralCategory {
 			descriptionText = tr("nobaaddons.config.general.updateNotifier.tooltip", "Sends a message in chat when a new update is available")
 			booleanController()
 		}
+
+		add({ general::compactModMessagePrefix }) {
+			name = tr("nobaaddons.config.general.compactModMessagePrefix", "Compact Mod Message Prefix")
+			descriptionText = tr("nobaaddons.config.general.compactModMessagePrefix.tooltip", "Chat messages added by the mod will use a shorter prefix when enabled")
+			booleanController()
+		}
 	}
 }

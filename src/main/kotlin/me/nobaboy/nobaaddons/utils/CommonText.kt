@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.utils
 
 object CommonText {
 	val NOBAADDONS get() = tr("nobaaddons.name", "NobaAddons")
+	val NOBA get() = tr("nobaaddons.name.short", "Noba")
 
 	val SCREEN_OPEN get() = tr("nobaaddons.screen.button.open", "Open")
 	val SCREEN_DELETE get() = tr("nobaaddons.screen.button.delete", "Delete")
