@@ -34,7 +34,7 @@ inline fun <R> safeLoad(path: Path, loader: () -> R): Result<R> = runCatching(lo
 /**
  * Attempts to load the associated [Histoire] instance, logging an error and renaming the file if it fails.
  */
-fun Histoire.safeLoad() = safeLoad(file.toPath(), ::load)
+fun Histoire.safeLoad() = safeLoad(getFile().toPath(), ::load)
 
 /**
  * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [Histoire.save]

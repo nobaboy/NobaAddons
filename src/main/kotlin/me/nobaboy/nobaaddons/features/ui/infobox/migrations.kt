@@ -6,6 +6,7 @@ import dev.celestialfault.histoire.migrations.Migrations
 import kotlinx.serialization.json.JsonPrimitive
 import me.nobaboy.nobaaddons.config.util.JsonList
 import me.nobaboy.nobaaddons.config.util.JsonMap
+import me.nobaboy.nobaaddons.config.util.getList
 import me.nobaboy.nobaaddons.config.util.mapAndRename
 import me.nobaboy.nobaaddons.config.util.moveTo
 import me.nobaboy.nobaaddons.config.util.rename
@@ -17,12 +18,12 @@ internal val migrations = Migrations("configVersion") {
 }
 
 private fun `001_uiElementRefactor`(json: JsonMap) {
-	val infoBoxes = json["infoboxes"] as? JsonList ?: return
+	val infoBoxes = json.getList("infoboxes")
 
 	infoBoxes.forEach { infoBox ->
-		val infoBox = infoBox as JsonMap
+		infoBox as JsonMap
 
-		val mode = infoBox["textMode"].let { it as? JsonPrimitive }?.takeIf { it.isString }?.content
+		val mode = (infoBox["textMode"] as? JsonPrimitive)?.takeIf { it.isString }?.content
 		if(mode == "PURE") infoBox["textMode"] = JsonPrimitive("NONE")
 
 		val element = infoBox.remove("element") as JsonMap // pop element to rename later
@@ -38,6 +39,6 @@ private fun `001_uiElementRefactor`(json: JsonMap) {
 
 private fun `002_histoireMigration`(json: JsonMap) {
 	json.mapAndRename("infoboxes", "infoBoxes") {
-		(it as JsonMap).forEach { infoBox -> (infoBox as JsonMap).rename("textMode", "textShadow") }
+		(it as JsonList).forEach { infoBox -> (infoBox as JsonMap).rename("textMode", "textShadow") }
 	}
 }
