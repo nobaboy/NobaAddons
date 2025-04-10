@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.config.util.ProfileData
 import me.nobaboy.nobaaddons.data.PetData
 import java.util.UUID
 
-class SpawnedPetCache(profile: UUID?) : ProfileData(profile, "current_pet.json") {
+class SpawnedPetCache private constructor(profile: UUID?) : ProfileData(profile, "current_pet.json") {
 	var pet: PetData? = null
 
 	companion object {

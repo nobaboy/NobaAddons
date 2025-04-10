@@ -32,8 +32,8 @@ object SkyBlockEvents {
 	 */
 	val PROFILE_DATA_LOADED = EventDispatcher<ProfileDataLoaded<*>>()
 
-	data class IslandChange(val island: SkyBlockIsland) : Event()
-	data class PetChange(val oldPet: PetData?, val newPet: PetData?) : Event()
-	data class ProfileChange(val profileId: UUID) : Event()
-	data class ProfileDataLoaded<T : ProfileData>(val profileId: UUID, val data: T) : Event()
+	data class IslandChange(val island: SkyBlockIsland) : Event
+	data class PetChange(val oldPet: PetData?, val newPet: PetData?) : Event
+	data class ProfileChange(val profileId: UUID) : Event
+	data class ProfileDataLoaded<T : ProfileData>(val profileId: UUID, val data: T) : Event
 }

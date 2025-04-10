@@ -7,5 +7,5 @@ import me.nobaboy.nobaaddons.events.EventDispatcher
 object FishingEvents {
 	val SEA_CREATURE_CATCH = EventDispatcher<SeaCreatureCatch>()
 
-	data class SeaCreatureCatch(val seaCreature: SeaCreature, val doubleHook: Boolean) : Event()
+	data class SeaCreatureCatch(val seaCreature: SeaCreature, val doubleHook: Boolean) : Event
 }

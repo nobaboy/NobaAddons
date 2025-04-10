@@ -53,7 +53,7 @@ abstract class EventDispatcher<T : Event, R : Any?> protected constructor(
 				if(!gracefulExceptions) throw e
 				ErrorManager.logError("Encountered an exception while processing ${eventName(event)}", e)
 			}
-			if(event.canceled && exitEarlyOnCancel) {
+			if(event is CancelableEvent && event.canceled && exitEarlyOnCancel) {
 				if(LOG_CANCELED || shouldLog(event)) println("Canceled $event")
 				return
 			}
@@ -64,9 +64,9 @@ abstract class EventDispatcher<T : Event, R : Any?> protected constructor(
 
 	companion object {
 		/**
-		 * Convenience method to generate an [EventDispatcher] yielding the value of [Event.canceled]
+		 * Convenience method to generate an [EventDispatcher] yielding the value of [CancelableEvent.canceled]
 		 */
-		fun <T : Event> cancelable() = EventDispatcher<T, Boolean>(returns = Event::canceled)
+		fun <T : CancelableEvent> cancelable() = EventDispatcher<T, Boolean>(returns = CancelableEvent::canceled)
 	}
 }
 

@@ -62,7 +62,7 @@ object InteractEvents {
 	 */
 	val BLOCK_INTERACT = EventDispatcher<BlockInteraction>()
 
-	sealed class GenericInteractEvent protected constructor(val player: ClientPlayerEntity, val hand: Hand) : Event() {
+	sealed class GenericInteractEvent protected constructor(val player: ClientPlayerEntity, val hand: Hand) : Event {
 		val itemInHand: ItemStack = player.getStackInHand(hand)
 	}
 

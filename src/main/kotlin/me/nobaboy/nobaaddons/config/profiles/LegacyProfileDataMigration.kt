@@ -5,7 +5,6 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.util.ProfileDataLoader
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.data.PetData
-import me.nobaboy.nobaaddons.config.profiles.RiftTimerData
 import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.utils.Timestamp
 import kotlin.io.path.exists
