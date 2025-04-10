@@ -13,7 +13,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.adapters.FormattingHandler
 import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
-import me.nobaboy.nobaaddons.config.util.PerProfileDataLoader
+import me.nobaboy.nobaaddons.config.util.ProfileDataLoader
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
@@ -162,7 +162,7 @@ object DebugCommands {
 	@Command
 	fun flushCaches() {
 		PersistentCache.save()
-		PerProfileDataLoader.ALL_LOADERS.forEach { it.saveAll() }
+		ProfileDataLoader.ALL_LOADERS.forEach(ProfileDataLoader<*>::save)
 	}
 
 	@Command

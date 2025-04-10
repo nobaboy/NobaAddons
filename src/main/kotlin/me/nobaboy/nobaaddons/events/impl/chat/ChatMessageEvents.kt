@@ -12,7 +12,7 @@ import net.minecraft.text.Text
  * - [CHAT]
  * - [ALLOW]
  * - [MODIFY]
- * - [LATE_MODIFY]
+ * - [ADDED]
  */
 object ChatMessageEvents {
 	init {

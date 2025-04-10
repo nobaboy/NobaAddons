@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.data.json.PetNbt
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.profiles.SpawnedPetCache
+import me.nobaboy.nobaaddons.config.profiles.SpawnedPetCache
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.ErrorManager
@@ -21,7 +21,7 @@ import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
 
 object PetAPI {
-	val constants by Repo.create("pets/constants.json", PetConstants.serializer())
+	private val constants by Repo.create("pets/constants.json", PetConstants.serializer())
 
 	private val PETS_MENU_REGEX by Regex("^Pets(?: \\(\\d+/\\d+\\) )?").fromRepo("pets.menu_title")
 	private val PET_NAME_REGEX by Regex("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)").fromRepo("pets.name")
@@ -146,5 +146,5 @@ object PetAPI {
 	}
 
 	@Serializable
-	data class PetConstants(val petRarityOffset: Map<Rarity, Int>, val petLevels: List<Int>)
+	private data class PetConstants(val petRarityOffset: Map<Rarity, Int>, val petLevels: List<Int>)
 }

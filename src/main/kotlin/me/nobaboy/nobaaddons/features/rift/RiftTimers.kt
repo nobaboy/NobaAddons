@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.features.rift
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.profiles.RiftTimerData
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.profiles.LegacyProfileData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
@@ -86,6 +86,7 @@ object RiftTimers {
 		}
 	}
 
+	@Suppress("unused")
 	private fun addSplitStealItemCooldown(item: ItemStack, ctx: Item.TooltipContext, type: TooltipType, lines: MutableList<Text>) {
 		if(item.skyBlockId != "UBIKS_CUBE") return
 		if(!config.splitStealItemCooldown) return

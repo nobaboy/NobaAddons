@@ -3,14 +3,29 @@ package me.nobaboy.nobaaddons.events
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import java.util.concurrent.CopyOnWriteArrayList
 
+// -Dnobaaddons.events.print=RenderEvents.Render;PacketEvents.Send
+private val LOG_EVENTS = System.getProperty("nobaaddons.events.print").split(";")
+// -Dnobaaddons.events.print.all=true
+private val LOG_ALL_EVENTS = System.getProperty("nobaaddons.events.print.all") == "true"
+// -Dnobaaddons.events.print.canceled=true
+private val LOG_CANCELED = System.getProperty("nobaaddons.events.print.canceled") == "true"
+
+private fun eventName(event: Any): String? {
+	val parent = event::class.qualifiedName ?: return null
+	return parent.split(".").asReversed().takeWhile { it.any(Char::isUpperCase) }.reversed().joinToString(".")
+}
+
+private fun shouldLog(event: Any): Boolean {
+	if(LOG_ALL_EVENTS) return true
+	if(LOG_EVENTS.isEmpty()) return false
+	return eventName(event) in LOG_EVENTS
+}
+
 /**
  * Abstract event dispatcher implementation, providing a basic implementation of a Fabric-like event system
  * utilizing data classes as events
- *
- * @see EventDispatcher
- * @see ReturningEventDispatcher
  */
-abstract class AbstractEventDispatcher<T : Event, R : Any?>(
+abstract class EventDispatcher<T : Event, R : Any?> protected constructor(
 	/**
 	 * If `true`, the event dispatcher will stop invoking listeners upon the first one canceling the event.
 	 */
@@ -25,16 +40,12 @@ abstract class AbstractEventDispatcher<T : Event, R : Any?>(
 ) {
 	private val listeners = CopyOnWriteArrayList<(T) -> Unit>()
 
-	private fun eventName(event: T): String {
-		val parent = event::class.qualifiedName ?: "an event"
-		return parent.split(".").asReversed().takeWhile { it.any(Char::isUpperCase) }.reversed().joinToString(".")
-	}
-
 	open fun register(listener: (T) -> Unit) {
 		listeners.add(listener)
 	}
 
 	protected fun executeListeners(event: T) {
+		if(shouldLog(event)) println("Event invoked: $event")
 		listeners.forEach {
 			try {
 				it(event)
@@ -42,48 +53,45 @@ abstract class AbstractEventDispatcher<T : Event, R : Any?>(
 				if(!gracefulExceptions) throw e
 				ErrorManager.logError("Encountered an exception while processing ${eventName(event)}", e)
 			}
-			if(event.canceled && exitEarlyOnCancel) return
+			if(event.canceled && exitEarlyOnCancel) {
+				if(LOG_CANCELED || shouldLog(event)) println("Canceled $event")
+				return
+			}
 		}
 	}
 
 	abstract fun invoke(event: T): R
-}
-
-/**
- * Basic [AbstractEventDispatcher] implementation that doesn't return anything.
- */
-open class EventDispatcher<T : Event>(
-	exitEarlyOnCancel: Boolean = true,
-	gracefulExceptions: Boolean = true,
-) : AbstractEventDispatcher<T, Unit>(exitEarlyOnCancel, gracefulExceptions) {
-	override fun invoke(event: T) = executeListeners(event)
 
 	companion object {
 		/**
-		 * Convenience method to generate a [ReturningEventDispatcher] yielding the value of [Event.canceled]
+		 * Convenience method to generate an [EventDispatcher] yielding the value of [Event.canceled]
 		 */
-		fun <T : Event> cancelable() = EventDispatcher<T, Boolean> { it.canceled }
+		fun <T : Event> cancelable() = EventDispatcher<T, Boolean>(returns = Event::canceled)
 	}
 }
 
 /**
- * [AbstractEventDispatcher] implementation that returns the return value of [returns] when
- * an event is passed through it
+ * Create an [EventDispatcher] that returns nothing
  */
-class ReturningEventDispatcher<T : Event, R : Any?>(
+fun <T : Event> EventDispatcher(
 	exitEarlyOnCancel: Boolean = true,
 	gracefulExceptions: Boolean = true,
-	private val returns: (T) -> R
-) : AbstractEventDispatcher<T, R>(exitEarlyOnCancel, gracefulExceptions) {
+): EventDispatcher<T, Unit> = object : EventDispatcher<T, Unit>(exitEarlyOnCancel, gracefulExceptions) {
+	override fun invoke(event: T) {
+		executeListeners(event)
+	}
+}
+
+/**
+ * Create an [EventDispatcher] returning the value of [returns]
+ */
+inline fun <T : Event, R : Any?> EventDispatcher(
+	exitEarlyOnCancel: Boolean = true,
+	gracefulExceptions: Boolean = true,
+	crossinline returns: (T) -> R
+): EventDispatcher<T, R> = object : EventDispatcher<T, R>(exitEarlyOnCancel, gracefulExceptions) {
 	override fun invoke(event: T): R {
 		executeListeners(event)
 		return returns(event)
 	}
 }
-
-@Suppress("FunctionName")
-fun <T : Event, R : Any?> EventDispatcher(
-	exitEarlyOnCancel: Boolean = true,
-	gracefulExceptions: Boolean = true,
-	returns: (T) -> R
-) = ReturningEventDispatcher(exitEarlyOnCancel, gracefulExceptions, returns)

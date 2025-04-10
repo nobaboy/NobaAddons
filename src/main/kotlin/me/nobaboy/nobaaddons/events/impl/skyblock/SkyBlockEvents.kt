@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.skyblock
 
+import me.nobaboy.nobaaddons.config.util.ProfileData
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.data.PetData
 import me.nobaboy.nobaaddons.events.Event
@@ -23,12 +24,16 @@ object SkyBlockEvents {
 	val PROFILE_CHANGE = EventDispatcher<ProfileChange>()
 
 	/**
-	 * Event invoked when *any* profile data is loaded by a [me.nobaboy.nobaaddons.config.util.PerProfileDataLoader]
+	 * Event invoked when a [me.nobaboy.nobaaddons.config.util.ProfileDataLoader] detects a profile switch and loads
+	 * the new profile's data
+	 *
+	 * Note that this event is *only* invoked when a profile switch is detected, and is not invoked when
+	 * profile data is loaded through other means (e.g. [me.nobaboy.nobaaddons.config.util.ProfileDataLoader.getOrPut])
 	 */
-	val PROFILE_DATA_LOADED = EventDispatcher<ProfileDataLoad>()
+	val PROFILE_DATA_LOADED = EventDispatcher<ProfileDataLoaded<*>>()
 
 	data class IslandChange(val island: SkyBlockIsland) : Event()
 	data class PetChange(val oldPet: PetData?, val newPet: PetData?) : Event()
 	data class ProfileChange(val profileId: UUID) : Event()
-	data class ProfileDataLoad(val profileId: UUID, val data: Any) : Event()
+	data class ProfileDataLoaded<T : ProfileData>(val profileId: UUID, val data: T) : Event()
 }
