@@ -69,6 +69,7 @@ import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomSeraphFeatures
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpOverlay
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
+import me.nobaboy.nobaaddons.config.profiles.LegacyProfileDataMigration
 import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -125,6 +126,7 @@ object NobaAddons : ClientModInitializer {
 		RepoManager.init()
 		UISettings.safeLoad()
 		UIManager.init()
+		LegacyProfileDataMigration.migrate()
 
 		UpdateNotifier.init()
 		/* endregion */

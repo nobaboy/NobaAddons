@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.features.rift
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.profiles.RiftTimerData
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
@@ -37,7 +37,7 @@ import kotlin.time.Duration.Companion.hours
 
 object RiftTimers {
 	private val config = NobaConfig.rift
-	private val data get() = ProfileData.PROFILE.riftTimers
+	private val data get() = RiftTimerData.PROFILE
 
 	private val warpLocation by config::warpTarget
 	private fun clickToWarp() = tr("nobaaddons.rift.clickToWarp", "Click to warp to ${warpLocation.displayName}").yellow()
@@ -86,6 +86,7 @@ object RiftTimers {
 		}
 	}
 
+	@Suppress("unused")
 	private fun addSplitStealItemCooldown(item: ItemStack, ctx: Item.TooltipContext, type: TooltipType, lines: MutableList<Text>) {
 		if(item.skyBlockId != "UBIKS_CUBE") return
 		if(!config.splitStealItemCooldown) return

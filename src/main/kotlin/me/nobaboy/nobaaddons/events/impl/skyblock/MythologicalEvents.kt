@@ -19,8 +19,8 @@ object MythologicalEvents {
 	@JvmField
 	val INQUISITOR_SPAWN = EventDispatcher<InquisitorSpawn>()
 
-	data class BurrowGuess(val location: NobaVec) : Event()
-	data class BurrowFind(val location: NobaVec, val type: BurrowType) : Event()
-	data class BurrowDig(val location: NobaVec) : Event()
-	data class InquisitorSpawn(val entity: OtherClientPlayerEntity) : Event()
+	data class BurrowGuess(val location: NobaVec) : Event
+	data class BurrowFind(val location: NobaVec, val type: BurrowType) : Event
+	data class BurrowDig(val location: NobaVec) : Event
+	data class InquisitorSpawn(val entity: OtherClientPlayerEntity) : Event
 }

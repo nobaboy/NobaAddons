@@ -20,6 +20,6 @@ object PacketEvents {
 	 */
 	@JvmField val SEND = EventDispatcher<Send>()
 
-	data class Receive(val packet: Packet<*>) : Event()
-	data class Send(val packet: Packet<*>) : Event()
+	data class Receive(val packet: Packet<*>) : Event
+	data class Send(val packet: Packet<*>) : Event
 }

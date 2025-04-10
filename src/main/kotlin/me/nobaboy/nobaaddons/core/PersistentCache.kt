@@ -1,18 +1,20 @@
 package me.nobaboy.nobaaddons.core
 
 import dev.celestialfault.histoire.Histoire
+import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.util.saveOnExit
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import me.nobaboy.nobaaddons.utils.serializers.UUIDKSerializer
+import java.util.UUID
 
-@OptIn(ExperimentalUuidApi::class)
 object PersistentCache : Histoire(NobaAddons.CONFIG_DIR.resolve("cache.json").toFile()) {
 	init {
 		saveOnExit()
 	}
 
-	var lastProfile: Uuid? = null
+	@Serializable(UUIDKSerializer::class)
+	var lastProfile: UUID? = null
+
 	var repoCommit: String? = null
 	var devMode: Boolean = false
 }

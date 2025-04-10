@@ -18,7 +18,7 @@ internal val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.R
  * Attempts to call [loader], logging an error and renaming [path] if an error is encountered.
  */
 inline fun <R> safeLoad(path: Path, loader: () -> R): Result<R> = runCatching(loader).onFailure {
-	ErrorManager.logError("Failed to load a config file", it)
+	ErrorManager.logError("Failed to read a config file", it)
 
 	val date = DATE_FORMATTER.format(ZonedDateTime.now())
 	val name = "${path.nameWithoutExtension}-${date}"
@@ -34,7 +34,7 @@ inline fun <R> safeLoad(path: Path, loader: () -> R): Result<R> = runCatching(lo
 /**
  * Attempts to load the associated [Histoire] instance, logging an error and renaming the file if it fails.
  */
-fun Histoire.safeLoad() = safeLoad(file.toPath(), ::load)
+fun Histoire.safeLoad() = safeLoad(getFile().toPath(), ::load)
 
 /**
  * Attaches a [ClientLifecycleEvents] listener for when the client is stopping which calls [Histoire.save]
