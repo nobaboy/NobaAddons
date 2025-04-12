@@ -65,5 +65,5 @@ object TickEvents {
 		}
 	}
 
-	data class Tick(val client: MinecraftClient) : Event()
+	data class Tick(val client: MinecraftClient) : Event
 }

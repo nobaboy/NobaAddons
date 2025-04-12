@@ -20,7 +20,7 @@ private fun societyIsCrumbling(@Suppress("SameParameterValue") fromYear: Int): T
 	return Texts.join(buildList {
 		addAll((fromYear until year).map { it.toText().strikethrough() })
 		add(year.toText())
-	}, " ".toText())
+	}, ScreenTexts.SPACE)
 }
 
 object UIAndVisualsCategory {

@@ -16,6 +16,8 @@ import net.minecraft.client.gui.screen.Screen
 sealed class AbstractNobaConfig protected constructor() : Histoire(
 	NobaAddons.CONFIG_DIR.resolve("config.json").toFile(),
 	migrations = migrations,
+	atomicWrite = true,
+	createBackup = true,
 	json = NobaAddons.JSON,
 ) {
 	@Object val general = GeneralConfig()

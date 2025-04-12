@@ -16,5 +16,5 @@ object ScreenRenderEvents {
 		val itemStack: ItemStack,
 		val x: Int,
 		val y: Int
-	) : Event()
+	) : Event
 }

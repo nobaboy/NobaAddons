@@ -30,9 +30,6 @@ import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.toJavaUuid
-import kotlin.uuid.toKotlinUuid
 
 object SkyBlockAPI {
 	private val PROFILE_ID_REGEX by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN_STRING})").fromRepo("skyblock.profile_id")
@@ -52,11 +49,10 @@ object SkyBlockAPI {
 	val inSkyBlock: Boolean
 		get() = HypixelUtils.onHypixel && currentServer == GameType.SKYBLOCK
 
-	@OptIn(ExperimentalUuidApi::class)
 	var currentProfile: UUID? = null
 		private set(value) {
 			field = value
-			PersistentCache.lastProfile = value?.toKotlinUuid()
+			PersistentCache.lastProfile = value
 		}
 	var profileType: SkyBlockProfile = SkyBlockProfile.CLASSIC
 		private set
@@ -88,14 +84,13 @@ object SkyBlockAPI {
 	fun SkyBlockSeason.isSeason(): Boolean = inSkyBlock && currentSeason == this
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
-	@OptIn(ExperimentalUuidApi::class)
 	fun init() {
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 		TickEvents.everySecond { update() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		currentProfile = PersistentCache.lastProfile?.toJavaUuid()
+		currentProfile = PersistentCache.lastProfile
 	}
 
 	private fun onLocationPacket(packet: ClientboundLocationPacket) {
