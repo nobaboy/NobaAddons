@@ -22,6 +22,7 @@ internal val migrations = Migrations("configVersion") {
 	add(::`004_moveHideOtherPeopleFishing`)
 	add(::`005_renameEtherwarpHelper`)
 	add(::`006_renameSeaCreatureChatFilter`)
+	add(::`007_renameCopyChat`)
 }
 
 private fun `001_removeYaclVersion`(json: JsonMap) {
@@ -62,4 +63,9 @@ private fun `006_renameSeaCreatureChatFilter`(json: JsonMap) {
 	val filters = json.getMap("chat", "filters")
 	filters.rename("hideSeaCreatureSpawnMessage", "hideSeaCreatureCatchMessage")
 	filters.rename("seaCreatureMaximumRarity", "seaCreatureMaxRarity")
+}
+
+private fun `007_renameCopyChat`(json: JsonMap) {
+	val chat = json.getMap("chat")
+	chat.rename("copy", "copyChat")
 }
