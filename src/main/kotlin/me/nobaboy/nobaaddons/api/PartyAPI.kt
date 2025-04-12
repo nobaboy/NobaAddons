@@ -10,7 +10,6 @@ import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -40,23 +39,62 @@ object PartyAPI {
 
 	private val invalidatePartyStateMessages: List<Regex> by Repo.list(
 		// Join
-		Regex("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!").fromRepo("party.join"),
-		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\.").fromRepo("party.other_join"),
-		Regex("^Party Finder > (?<name>[A-z0-9_]+) joined the (?:dungeon )?group! \\([A-z0-9 ]+\\)").fromRepo("party.party_finder_join"),
+		Repo.regex(
+			"party.join",
+			"^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!"
+		),
+		Repo.regex(
+			"party.other_join",
+			"^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\."
+		),
+		Repo.regex(
+			"party.party_finder_join",
+			"^Party Finder > (?<name>[A-z0-9_]+) joined the (?:dungeon )?group! \\([A-z0-9 ]+\\)"
+		),
 
 		// Leave
-		Regex("^(?:You left the party\\.|The party was disbanded because all invites expired and the party was empty\\.|You are not currently in a party\\.)").fromRepo("party.leave"),
-		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has left the party\\.").fromRepo("party.other_leave"),
-		Regex("^You have been kicked from the party by (?:\\[[A-Z+]+] )?[A-z0-9_]+").fromRepo("party.kicked"),
-		Regex("^(?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+) has disbanded the party!").fromRepo("party.disbanded"),
-		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has been removed from the party\\.").fromRepo("party.other_kicked"),
-		Regex("^Kicked (?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) because they were offline\\.").fromRepo("party.offline_kicked"),
-		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) was removed from your party because they disconnected\\.").fromRepo("party.offline_removed"),
+		Repo.regex(
+			"party.leave",
+			"^(?:You left the party\\.|The party was disbanded because all invites expired and the party was empty\\.|You are not currently in a party\\.)"
+		),
+		Repo.regex(
+			"party.other_leave",
+			"^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has left the party\\."
+		),
+		Repo.regex(
+			"party.kicked",
+			"^You have been kicked from the party by (?:\\[[A-Z+]+] )?[A-z0-9_]+"
+		),
+		Repo.regex(
+			"party.disbanded",
+			"^(?:\\[[A-Z+]+] )?(?<former>[A-z0-9_]+) has disbanded the party!"
+		),
+		Repo.regex(
+			"party.other_kicked",
+			"^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) has been removed from the party\\."
+		),
+		Repo.regex(
+			"party.offline_kicked",
+			"^Kicked (?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) because they were offline\\."
+		),
+		Repo.regex(
+			"party.offline_removed",
+			"^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) was removed from your party because they disconnected\\."
+		),
 
 		// Transfer
-		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left").fromRepo("party.transfer_leave"),
-		Regex("^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)").fromRepo("party.transfer"),
-		Regex("^(?:\\[[A-Z+]+] )?[A-z0-9_]+ has (?:promoted|demoted) (?:\\[[A-Z+]+] )?[A-z0-9_]+ to Party (?:Member|Moderator|Leader)").fromRepo("party.promote_demote"),
+		Repo.regex(
+			"party.transfer_leave",
+			"^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) because (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+) left"
+		),
+		Repo.regex(
+			"party.transfer",
+			"^The party was transferred to (?:\\[[A-Z+]+] )?(?<newLeader>[A-z0-9_]+) by (?:\\[[A-Z+]+] )?(?<formerLeader>[A-z0-9_]+)"
+		),
+		Repo.regex(
+			"party.promote_demote",
+			"^(?:\\[[A-Z+]+] )?[A-z0-9_]+ has (?:promoted|demoted) (?:\\[[A-Z+]+] )?[A-z0-9_]+ to Party (?:Member|Moderator|Leader)"
+		),
 	)
 
 	private var refreshPartyList = false

@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.data.json.MayorJson
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.mapFullMatch
@@ -31,10 +31,16 @@ object MayorAPI {
 	private const val ELECTION_END_MONTH = 3
 	private const val ELECTION_END_DAY = 27
 
-	private val electionEndMessage by "The election room is now closed. Clerk Seraphine is doing a final count of the votes...".fromRepo("mayor.election_end")
-	private val mayorHeadPattern by Regex("Mayor (?<name>[A-z]+)").fromRepo("mayor.skull_item")
+	private val electionEndMessage by Repo.string(
+		"mayor.election_end",
+		"The election room is now closed. Clerk Seraphine is doing a final count of the votes..."
+	)
+	private val mayorHeadPattern by Repo.regex("mayor.skull_item", "Mayor (?<name>[A-z]+)")
 
-	val foxyExtraEventPattern by Regex("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
+	val foxyExtraEventPattern by Repo.regex(
+		"mayor.foxy_event",
+		"Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\."
+	)
 
 	var currentMayor: Mayor = Mayor.UNKNOWN
 		private set

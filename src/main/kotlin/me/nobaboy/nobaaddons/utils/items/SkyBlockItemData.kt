@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.core.attributes.Attribute
 import me.nobaboy.nobaaddons.core.enchants.Enchant
 import me.nobaboy.nobaaddons.core.enchants.EnchantBase
 import me.nobaboy.nobaaddons.core.enchants.StackingEnchant
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.nbt
@@ -16,7 +16,10 @@ import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 import java.lang.ref.WeakReference
 
-private val ITEM_TAG_REGEX by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("skyblock.item_tag")
+private val ITEM_TAG_REGEX by Repo.regex(
+	"skyblock.item_tag",
+	"^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$"
+)
 
 class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	private val nbt: NbtCompound get() = item.get()!!.nbt.nbt

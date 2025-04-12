@@ -4,11 +4,11 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.core.fishing.SeaCreature
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.FishingEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object SeaCreatureAPI {
-	private val DOUBLE_HOOK_REGEX by Regex("^It's a Double Hook!(?: Woot woot!)?").fromRepo("fishing.double_hook")
+	private val DOUBLE_HOOK_REGEX by Repo.regex("fishing.double_hook", "^It's a Double Hook!(?: Woot woot!)?")
 
 	private var doubleHook: Boolean = false
 

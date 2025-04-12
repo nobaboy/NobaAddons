@@ -32,7 +32,7 @@ object UpdateNotifier {
 	private var notifiedUpdate: Boolean = false
 
 	private val CURRENT = NobaAddons.VERSION_INFO
-	private val UPDATE_INFO by Repo.create("update.json", UpdateInfo.serializer())
+	private val UPDATE_INFO by Repo.create<UpdateInfo>("update.json")
 
 	fun init() {
 		TickEvents.TICK.register {

@@ -18,8 +18,8 @@ data class TrophyFish(val id: String, val name: String, val rarity: Rarity) {
 	}
 
 	companion object {
-		val FISH by Repo.createList("fishing/trophy_fish.json", serializer())
+		val FISH by Repo.createList<TrophyFish>("fishing/trophy_fish.json")
 
-		fun get(fish: String) = FISH.firstOrNull { it.name == fish }
+		fun get(fish: String) = FISH?.firstOrNull { it.name == fish }
 	}
 }

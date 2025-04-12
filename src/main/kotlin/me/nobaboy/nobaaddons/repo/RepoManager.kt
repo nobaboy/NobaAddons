@@ -5,7 +5,6 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.events.impl.RepoReloadEvent
 import me.nobaboy.nobaaddons.repo.data.GithubCommitResponse
-import me.nobaboy.nobaaddons.repo.objects.IRepoObject
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HTTPUtils.get
@@ -31,7 +30,7 @@ object RepoManager {
 	private val config get() = NobaConfig.repo
 
 	private val client by HTTPUtils::client
-	internal val objects = mutableSetOf<IRepoObject>()
+	internal val objects = mutableSetOf<IRepoSource>()
 	val REPO_DIRECTORY: File = run {
 		System.getProperty("nobaaddons.repoDir")?.let { return@run Path.of(it).toFile() }
 		NobaAddons.CONFIG_DIR.resolve("repo").toFile()
@@ -116,7 +115,7 @@ object RepoManager {
 		RepoReloadEvent.invoke()
 	}
 
-	fun performInitialLoad(obj: IRepoObject) {
+	fun performInitialLoad(obj: IRepoSource) {
 		synchronized(LOCK) {
 			try {
 				if(REPO_DIRECTORY.exists()) obj.load()

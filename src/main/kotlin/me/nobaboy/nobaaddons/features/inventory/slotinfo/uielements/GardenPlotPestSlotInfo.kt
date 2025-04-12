@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.inventory.slotinfo.uielements
 
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
@@ -14,8 +14,11 @@ import net.minecraft.util.Formatting
 object GardenPlotPestSlotInfo : ISlotInfo {
 	private const val ICON = "ൠ"
 
-	private val PEST_COUNT_REGEX by Regex("ൠ This plot has (?<count>\\d+) Pests?!").fromRepo("slot_info.desk_pest_count")
-	private val sprayedWith by "Sprayed with".fromRepo("slot_info.desk_sprayed_with_prefix")
+	private val PEST_COUNT_REGEX by Repo.regex(
+		"slot_info.desk_pest_count",
+		"ൠ This plot has (?<count>\\d+) Pests?!"
+	)
+	private val sprayedWith by Repo.string("slot_info.desk_sprayed_with_prefix", "Sprayed with")
 
 	override val enabled: Boolean get() = config.gardenPlotPests
 

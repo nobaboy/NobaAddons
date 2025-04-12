@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.SkyBlockStat
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.NumberUtils.formatDouble
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
@@ -14,10 +14,14 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object HealerOrbChatFilter : IChatFilter {
-	private val ORB_OTHER_PICKUP_REGEX by Regex("◕ [A-z0-9_]+ picked up your [A-z ]+!").fromRepo("filter.healer_orb.other_pickup")
-	private val ORB_PICKUP_REGEX by Regex(
+	private val ORB_OTHER_PICKUP_REGEX by Repo.regex(
+		"filter.healer_orb.other_pickup",
+		"◕ [A-z0-9_]+ picked up your [A-z ]+!"
+	)
+	private val ORB_PICKUP_REGEX by Repo.regex(
+		"filter.healer_orb.pickup",
 		"^◕ You picked up a (?<orb>[A-z ]+) from (?<player>[A-z0-9_]+) healing you for (?<health>[0-9.]+)❤ and granting you (?<buff>[0-9+%]+) (?<stat>[A-z ]+) for (?<duration>[0-9]+) seconds\\."
-	).fromRepo("filter.healer_orb.pickup")
+	)
 
 	override val enabled: Boolean get() = config.healerOrbMessage.enabled && SkyBlockIsland.DUNGEONS.inIsland()
 

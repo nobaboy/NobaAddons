@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysTimes
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -32,7 +32,10 @@ object SimonSaysTimer {
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7)
 
 	// Change to terminal_completed and add type group
-	private val DEVICE_COMPLETED_REGEX by Regex("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)").fromRepo("dungeons.device_completed")
+	private val DEVICE_COMPLETED_REGEX by Repo.regex(
+		"dungeons.device_completed",
+		"^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)"
+	)
 	private val buttonLocation = NobaVec(110, 121, 91)
 
 	private var startTime = Timestamp.distantPast()

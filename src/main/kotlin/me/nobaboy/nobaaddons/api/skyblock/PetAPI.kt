@@ -10,7 +10,6 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
@@ -21,17 +20,24 @@ import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
 
 object PetAPI {
-	val constants by Repo.create("pets/constants.json", PetConstants.serializer())
+	val constants by Repo.create<PetConstants>("pets/constants.json")
 
-	private val PETS_MENU_REGEX by Regex("^Pets(?: \\(\\d+/\\d+\\) )?").fromRepo("pets.menu_title")
-	private val PET_NAME_REGEX by Regex("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)").fromRepo("pets.name")
+	private val PETS_MENU_REGEX by Repo.regex("pets.menu_title", "^Pets(?: \\(\\d+/\\d+\\) )?")
+	private val PET_NAME_REGEX by Repo.regex(
+		"pets.name",
+		"^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|$)"
+	)
 
 	// TODO cache autopet rule pets to allow for getting complete data
-	private val AUTOPET_REGEX by Regex(
+	private val AUTOPET_REGEX by Repo.regex(
+		"pets.autopet",
 		"^§cAutopet §eequipped your §7\\[Lvl (?<level>\\d+)] (?:§.\\[.*] )?§(?<rarity>.)(?<name>[A-z ]+)(?:§. ✦)?§e! §a§lVIEW RULE"
-	).fromRepo("pets.autopet")
+	)
 
-	private val PET_DESPAWN_REGEX by Regex("^You despawned your (?<name>[A-z ]+)(?: ✦)?!").fromRepo("pets.despawn")
+	private val PET_DESPAWN_REGEX by Repo.regex(
+		"pets.despawn",
+		"^You despawned your (?<name>[A-z ]+)(?: ✦)?!"
+	)
 
 	private var inPetsMenu = false
 

@@ -2,12 +2,18 @@ package me.nobaboy.nobaaddons.features.chat.filters.ability
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 
 object AbilityChatFilter : IChatFilter {
-	private val ABILITY_DAMAGE_REGEX by Regex("Your (?<ability>[A-z' ]+) hit [0-9]+ (enemies|enemy) for [0-9,.]+ damage\\.").fromRepo("filter.abilities.damage")
-	private val ABILITY_COOLDOWN_REGEX by Regex("This ability is on cooldown for [0-9]+s\\.").fromRepo("filter.abilities.cooldown")
+	private val ABILITY_DAMAGE_REGEX by Repo.regex(
+		"filter.abilities.damage",
+		"Your (?<ability>[A-z' ]+) hit [0-9]+ (enemies|enemy) for [0-9,.]+ damage\\."
+	)
+	private val ABILITY_COOLDOWN_REGEX by Repo.regex(
+		"filter.abilities.cooldown",
+		"This ability is on cooldown for [0-9]+s\\."
+	)
 
 	override val enabled: Boolean get() = SkyBlockAPI.inSkyBlock
 

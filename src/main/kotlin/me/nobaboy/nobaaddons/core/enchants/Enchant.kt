@@ -12,7 +12,7 @@ data class Enchant(
 	val all: List<EnchantBase> by lazy { standard + stacking + ultimate }
 
 	companion object {
-		val ENCHANTS by Repo.create("item_modifiers/enchants.json", serializer())
+		val ENCHANTS by Repo.create<Enchant>("item_modifiers/enchants.json")
 
 		fun getById(id: String): EnchantBase? = ENCHANTS?.all?.firstOrNull { it.id == id }
 		fun getByName(name: String): EnchantBase? = ENCHANTS?.all?.firstOrNull { it.name == name }

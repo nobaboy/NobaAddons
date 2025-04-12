@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
@@ -35,14 +35,17 @@ import kotlin.uuid.toJavaUuid
 import kotlin.uuid.toKotlinUuid
 
 object SkyBlockAPI {
-	private val PROFILE_ID_REGEX by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN_STRING})").fromRepo("skyblock.profile_id")
-	private val PROFILE_TYPE_REGEX by Regex("^. (?<type>Ironman|Stranded|Bingo)").fromRepo("skyblock.profile_type")
+	private val PROFILE_ID_REGEX by Repo.regex(
+		"skyblock.profile_id",
+		"^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN_STRING})"
+	)
+	private val PROFILE_TYPE_REGEX by Repo.regex("skyblock.profile_type", "^. (?<type>Ironman|Stranded|Bingo)")
 
-	private val SKYBLOCK_LEVEL_REGEX by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("skyblock.level")
-	private val SKYBLOCK_XP_REGEX by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
+	private val SKYBLOCK_LEVEL_REGEX by Repo.regex("skyblock.level", "^Your SkyBlock Level: \\[(?<level>\\d+)]")
+	private val SKYBLOCK_XP_REGEX by Repo.regex("skyblock.xp", "^\\s+(?<xp>\\d+)/100 XP")
 
-	private val ZONE_REGEX by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
-	private val CURRENCY_REGEX by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
+	private val ZONE_REGEX by Repo.regex("skyblock.zone", "^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$")
+	private val CURRENCY_REGEX by Repo.regex("skyblock.currency", "^(?<currency>[A-z]+): (?<amount>[\\d,]+).*")
 
 	var currentServer: ServerType? = null
 		private set

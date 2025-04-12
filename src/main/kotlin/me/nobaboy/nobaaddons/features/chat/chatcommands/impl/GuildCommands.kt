@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHandler
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object GuildCommands : ChatCommandManager() {
@@ -15,7 +15,10 @@ object GuildCommands : ChatCommandManager() {
 
 	override val source: ChatContext.ChatCommandSource = ChatContext.ChatCommandSource.GUILD
 	override val enabled: Boolean get() = config.enabled && onHypixel()
-	override val pattern by Regex("^Guild > (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+)(?<grank> \\[[A-z0-9 ]+])?: [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?").fromRepo("chat_commands.guild")
+	override val pattern by Repo.regex(
+		"chat_commands.guild",
+		"^Guild > (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+)(?<grank> \\[[A-z0-9 ]+])?: [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?"
+	)
 
 	init {
 		register(HelpCommand(this, config::help))

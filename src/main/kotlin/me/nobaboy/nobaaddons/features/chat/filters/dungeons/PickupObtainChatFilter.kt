@@ -5,14 +5,19 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.repo.Repo
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 
 object PickupObtainChatFilter : IChatFilter {
-	private val ITEM_PICKUP_REGEX by Regex("A (?<item>[A-z ]+) was picked up!").fromRepo("filter.pickup.item")
-	private val ITEM_OBTAINED_REGEX by Regex("(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!").fromRepo("filter.pickup.item_obtained")
+	private val ITEM_PICKUP_REGEX by Repo.regex(
+		"filter.pickup.item",
+		"A (?<item>[A-z ]+) was picked up!"
+	)
+	private val ITEM_OBTAINED_REGEX by Repo.regex(
+		"filter.pickup.item_obtained",
+		"(?:\\[[A-Z+]+] )?[A-z0-9_]+ has obtained (?<item>[A-z ]+)!"
+	)
 
-	private val items by Repo.create("filters/pickup.json", Items.serializer())
+	private val items by Repo.create<Items>("filters/pickup.json")
 
 	override val enabled: Boolean get() = config.pickupObtainMessage && SkyBlockIsland.DUNGEONS.inIsland()
 

@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.JoinInstanceC
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.TransferCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.WarpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object PartyCommands : ChatCommandManager() {
@@ -19,7 +19,10 @@ object PartyCommands : ChatCommandManager() {
 
 	override val source: ChatContext.ChatCommandSource = ChatContext.ChatCommandSource.PARTY
 	override val enabled: Boolean get() = config.enabled && onHypixel()
-	override val pattern by Regex("^Party > (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?").fromRepo("chat_commands.party")
+	override val pattern by Repo.regex(
+		"chat_commands.party",
+		"^Party > (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?"
+	)
 
 	init {
 		register(HelpCommand(this, config::help))

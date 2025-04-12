@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.inventory.slotinfo.items
 
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.NumberUtils.formatLong
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
@@ -11,7 +11,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 
 // TODO: Add cap option of 40 (which is max fortune), and consider red !!! if >=100k
 object VacuumPestsSlotInfo : ISlotInfo {
-	private val VACUUM_PESTS_REGEX by Regex("Vacuum Bag: (?<amount>\\d+) Pests").fromRepo("slot_info.vacuum_pests")
+	private val VACUUM_PESTS_REGEX by Repo.regex("slot_info.vacuum_pests", "Vacuum Bag: (?<amount>\\d+) Pests")
 
 	private val gardenVacuums = listOf(
 		"SKYMART_VACUUM",

@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.EntityUtils
@@ -23,8 +23,9 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 object SlayerAPI {
-	private val QUEST_FAILED_REGEX by Regex("^[ ]+SLAYER QUEST FAILED!").fromRepo("slayer.quest_failed")
-	private val QUEST_CANCEL_MESSAGE by "Your Slayer Quest has been cancelled!".fromRepo("slayer.quest_cancel")
+	@Suppress("RegExpSimplifiable")
+	private val QUEST_FAILED_REGEX by Repo.regex("slayer.quest_failed", "^[ ]+SLAYER QUEST FAILED!")
+	private val QUEST_CANCEL_MESSAGE by Repo.string("slayer.quest_cancel", "Your Slayer Quest has been cancelled!")
 
 	var currentQuest: SlayerQuest? = null
 		private set

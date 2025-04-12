@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.ui.ElementAlignment
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
@@ -21,7 +21,7 @@ object CatchTimer {
 
 	private var timer: ArmorStandEntity? = null
 
-	private val TIMER_REGEX by Regex("^(?:\\d+\\.\\d+|!{3})$").fromRepo("fishing.catch_timer")
+	private val TIMER_REGEX by Repo.regex("fishing.catch_timer", "^(?:\\d+\\.\\d+|!{3})$")
 
 	fun init() {
 		EntityNametagRenderEvents.VISIBILITY.register(this::hideTimer)

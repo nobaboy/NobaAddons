@@ -57,8 +57,8 @@ data class SeaCreature(
 	}
 
 	companion object {
-		val CREATURES by Repo.createList("fishing/sea_creatures.json", serializer())
+		val CREATURES by Repo.createList<SeaCreature>("fishing/sea_creatures.json")
 
-		fun getBySpawnMessage(message: String): SeaCreature? = CREATURES.firstOrNull { it.spawnMessageMatches(message) }
+		fun getBySpawnMessage(message: String): SeaCreature? = CREATURES?.firstOrNull { it.spawnMessageMatches(message) }
 	}
 }

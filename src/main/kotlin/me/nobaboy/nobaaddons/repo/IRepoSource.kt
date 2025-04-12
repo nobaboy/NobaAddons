@@ -1,14 +1,13 @@
-package me.nobaboy.nobaaddons.repo.objects
+package me.nobaboy.nobaaddons.repo
 
 /**
  * Basic repository object type. Implement this on any custom objects that can't be easily
  * represented by any of the default types.
  *
- * @see RepoConstants
- * @see RepoObject
- * @see RepoObjectArray
- * @see RepoObjectMap
+ * @see RepoSource.Single
+ * @see RepoSource.Map
+ * @see RepoSource.List
  */
-interface IRepoObject {
+interface IRepoSource {
 	fun load()
 }

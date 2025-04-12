@@ -10,14 +10,14 @@ object RepoDebugCommands {
 	@Command
 	fun dumpStrings() {
 		println("--- KNOWN STRING KEYS ---")
-		Repo.knownStringKeys.forEach(::println)
+		Repo.usedStringKeys.forEach(::println)
 		println("-------------------------")
 	}
 
 	@Command
 	fun dumpRegex() {
 		println("--- KNOWN REGEX KEYS ---")
-		Repo.knownRegexKeys.forEach(::println)
+		Repo.usedRegexKeys.forEach(::println)
 		println("------------------------")
 	}
 
@@ -26,5 +26,10 @@ object RepoDebugCommands {
 		println("--- KNOWN REPO OBJECTS ---")
 		Repo.objects.forEach(::println)
 		println("--------------------------")
+	}
+
+	@Command
+	fun logMismatchedValues() {
+		Repo.logMismatchedHandles()
 	}
 }

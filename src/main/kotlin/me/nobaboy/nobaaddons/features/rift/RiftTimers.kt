@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.indexOfFirstFullMatch
@@ -42,9 +42,18 @@ object RiftTimers {
 	private val warpLocation by config::warpTarget
 	private fun clickToWarp() = tr("nobaaddons.rift.clickToWarp", "Click to warp to ${warpLocation.displayName}").yellow()
 
-	private val FREE_INFUSIONS_REGEX by Regex("Free infusions: (?<count>\\d)/\\d").fromRepo("rift.free_infusions")
-	private val NEXT_FREE_INFUSION_REGEX by Regex("Next infusion in: (?<time>(?:\\d+[hms] ?)+)").fromRepo("rift.next_free_infusion")
-	private val SPLIT_STEAL_COOLDOWN_REGEX by Regex("SPLIT! You need to wait (?<time>(?:\\d+[hms] ?)+) before you can play again\\.").fromRepo("rift.split_steal_cooldown")
+	private val FREE_INFUSIONS_REGEX by Repo.regex(
+		"rift.free_infusions",
+		"Free infusions: (?<count>\\d)/\\d"
+	)
+	private val NEXT_FREE_INFUSION_REGEX by Repo.regex(
+		"rift.next_free_infusion",
+		"Next infusion in: (?<time>(?:\\d+[hms] ?)+)"
+	)
+	private val SPLIT_STEAL_COOLDOWN_REGEX by Repo.regex(
+		"rift.split_steal_cooldown",
+		"SPLIT! You need to wait (?<time>(?:\\d+[hms] ?)+) before you can play again\\."
+	)
 
 	private var notifiedSplitStealCooldown = false
 

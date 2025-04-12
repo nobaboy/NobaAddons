@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.slayers
 
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
@@ -27,13 +27,22 @@ import me.nobaboy.nobaaddons.utils.tr
 object CompactSlayerMessages {
 	private val config get() = NobaConfig.slayers.compactMessages
 
-	private val QUEST_STARTED_REGEX by Regex("^[ ]+SLAYER QUEST STARTED!").fromRepo("slayer.quest_started")
+	private val QUEST_STARTED_REGEX by Repo.regex("slayer.quest_started", "^[ ]+SLAYER QUEST STARTED!")
 
-	private val SLAY_TO_SPAWN_REGEX by Regex("^[ ]+» Slay [\\d,]+ Combat XP worth of .+").fromRepo("slayer.slay_to_spawn")
-	private val TALK_TO_MADDOX_REGEX by Regex("^[ ]+» Talk to Maddox to claim your [A-z]+ Slayer XP!").fromRepo("slayer.talk_to_maddox")
+	private val SLAY_TO_SPAWN_REGEX by Repo.regex(
+		"slayer.slay_to_spawn",
+		"^[ ]+» Slay [\\d,]+ Combat XP worth of .+"
+	)
+	private val TALK_TO_MADDOX_REGEX by Repo.regex(
+		"slayer.talk_to_maddox",
+		"^[ ]+» Talk to Maddox to claim your [A-z]+ Slayer XP!"
+	)
 
-	private val SLAYER_LEVEL_REGEX by Regex("^[ ]+(?<slayer>[A-z]+) Slayer LVL (?<level>\\d) - (?:LVL MAXED OUT!|Next LVL in (?<nextLevel>[\\d,]+) XP)").fromRepo("slayer.level")
-	private val RNG_METER_REGEX by Regex("^[ ]+RNG Meter - (?<xp>[\\d,]+) Stored XP").fromRepo("slayer.rng_meter")
+	private val SLAYER_LEVEL_REGEX by Repo.regex(
+		"slayer.level",
+		"^[ ]+(?<slayer>[A-z]+) Slayer LVL (?<level>\\d) - (?:LVL MAXED OUT!|Next LVL in (?<nextLevel>[\\d,]+) XP)"
+	)
+	private val RNG_METER_REGEX by Repo.regex("slayer.rng_meter", "^[ ]+RNG Meter - (?<xp>[\\d,]+) Stored XP")
 
 	private var lastMessage: Message? = null
 

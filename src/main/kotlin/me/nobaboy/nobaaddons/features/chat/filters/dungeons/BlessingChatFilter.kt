@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.SkyBlockStat
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
@@ -20,12 +20,14 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 
 object BlessingChatFilter : IChatFilter {
-	private val BLESSING_FOUND_REGEX by Regex(
+	private val BLESSING_FOUND_REGEX by Repo.regex(
+		"filter.blessings.found",
 		"^DUNGEON BUFF! ([A-z0-9_]+ found a|A) Blessing of (?<blessing>[A-z]+) [IV]+( was found)?!( \\([A-z0-9 ]+\\))?"
-	).fromRepo("filter.blessings.found")
-	private val BLESSING_STATS_REGEX by Regex(
+	)
+	private val BLESSING_STATS_REGEX by Repo.regex(
+		"filter.blessings.stats",
 		"(?<value>\\+[\\d.]+x?(?: & \\+[\\d.]+x?)?) (?<stat>❁ Strength|☠ Crit Damage|❈ Defense|❁ Damage|HP|❣ Health Regen|✦ Speed|✎ Intelligence)"
-	).fromRepo("filter.blessings.stats")
+	)
 
 	private val statMessages = listOf("     Granted you", "     Also granted you")
 

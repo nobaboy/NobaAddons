@@ -9,7 +9,7 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.WarpMeCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHandler
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object DMCommands : ChatCommandManager() {
@@ -17,7 +17,10 @@ object DMCommands : ChatCommandManager() {
 
 	override val source: ChatContext.ChatCommandSource = ChatContext.ChatCommandSource.MESSAGE
 	override val enabled: Boolean get() = config.enabled && onHypixel()
-	override val pattern by Regex("^From (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?").fromRepo("chat_commands.dm")
+	override val pattern by Repo.regex(
+		"chat_commands.dm",
+		"^From (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?"
+	)
 
 	init {
 		register(HelpCommand(this, config::help))

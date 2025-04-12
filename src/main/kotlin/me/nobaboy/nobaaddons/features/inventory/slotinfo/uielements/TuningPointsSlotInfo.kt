@@ -2,14 +2,17 @@ package me.nobaboy.nobaaddons.features.inventory.slotinfo.uielements
 
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
-import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.utils.InventoryUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 
 object TuningPointsSlotInfo : ISlotInfo {
-	private val TUNING_POINTS_REGEX by Regex("^Stat has: (?<points>\\d+) points?").fromRepo("slot_info.tuning_points")
+	private val TUNING_POINTS_REGEX by Repo.regex(
+		"slot_info.tuning_points",
+		"^Stat has: (?<points>\\d+) points?"
+	)
 
 	override val enabled: Boolean get() = config.tuningPoints
 
