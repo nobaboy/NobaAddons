@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.config.util.saveOnExit
 import me.nobaboy.nobaaddons.utils.serializers.UUIDKSerializer
 import java.util.UUID
 
-object PersistentCache : Histoire(NobaAddons.CONFIG_DIR.resolve("cache.json").toFile()) {
+object PersistentCache : Histoire(NobaAddons.CONFIG_DIR.resolve("cache.json")) {
 	init {
 		saveOnExit()
 	}

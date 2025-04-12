@@ -46,6 +46,6 @@ object LegacyProfileDataMigration {
 
 			data.moveTo(dir.resolve("data.json.migrated"))
 		}
-		ProfileDataLoader.ALL_LOADERS.forEach(ProfileDataLoader<*>::save)
+		ProfileDataLoader.saveAll()
 	}
 }

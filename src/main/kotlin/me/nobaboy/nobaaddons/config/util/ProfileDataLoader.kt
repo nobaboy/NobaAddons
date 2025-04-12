@@ -3,9 +3,9 @@ package me.nobaboy.nobaaddons.config.util
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.core.PersistentCache
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import java.nio.file.Path
-import java.util.Collections
 import java.util.UUID
 import kotlin.collections.iterator
 import kotlin.io.path.createDirectories
@@ -35,7 +35,6 @@ import kotlin.reflect.KProperty
 class ProfileDataLoader<T : ProfileData>(private val constructor: (UUID?) -> T) {
 	init {
 		allLoaders.add(this)
-		ClientLifecycleEvents.CLIENT_STOPPING.register { save() }
 	}
 
 	private val profiles = mutableMapOf<UUID?, T>()
@@ -88,16 +87,33 @@ class ProfileDataLoader<T : ProfileData>(private val constructor: (UUID?) -> T) 
 	}
 
 	companion object {
+		init {
+			ClientLifecycleEvents.CLIENT_STOPPING.register { saveAll(shutdown = true) }
+		}
+
 		val PROFILES_DIR: Path = NobaAddons.CONFIG_DIR.resolve("profiles")
 
 		private val allLoaders = mutableListOf<ProfileDataLoader<*>>()
-		val ALL_LOADERS: List<ProfileDataLoader<*>> = Collections.unmodifiableList(allLoaders)
 
 		fun allProfiles(): Iterator<Pair<UUID, Path>> = iterator {
 			val dirs = PROFILES_DIR.listDirectoryEntries().filter { it.isDirectory() }
 			for(dir in dirs) {
 				val uuid = runCatching { UUID.fromString(dir.name) }.getOrNull() ?: continue
 				yield(uuid to dir)
+			}
+		}
+
+		fun saveAll(shutdown: Boolean = false) {
+			allLoaders.forEach {
+				try {
+					it.save()
+				} catch(ex: Throwable) {
+					if(shutdown) {
+						NobaAddons.LOGGER.error("Failed to save profile data {}", it::class, ex)
+					} else {
+						ErrorManager.logError("Failed to save profile data", ex, "In class" to it::class)
+					}
+				}
 			}
 		}
 	}

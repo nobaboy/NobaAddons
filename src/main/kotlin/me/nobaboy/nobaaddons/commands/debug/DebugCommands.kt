@@ -162,7 +162,7 @@ object DebugCommands {
 	@Command
 	fun flushCaches() {
 		PersistentCache.save()
-		ProfileDataLoader.ALL_LOADERS.forEach(ProfileDataLoader<*>::save)
+		ProfileDataLoader.saveAll()
 	}
 
 	@Command
