@@ -41,15 +41,14 @@ object CalculateCommands {
 	private fun requiredXp(xp: Number) = tr("nobaaddons.command.calculate.requiredXp", "Required XP: ${xp.addSeparators().toText().aqua()}")
 
 	@Command
-	fun pet(
-		rarity: Rarity,
-		startingLevel: @AllowedRange.Int(1, 200) Int,
-		targetLevel: @AllowedRange.Int(1, 200) Int,
-	) {
+	fun pet(rarity: Rarity, startingLevel: @AllowedRange.Int(1, 200) Int, targetLevel: @AllowedRange.Int(1, 200) Int) {
 		val startingXp = PetAPI.xpFromLevel(startingLevel, rarity, maxLevel = 200)
 		val targetXp = PetAPI.xpFromLevel(targetLevel, rarity, maxLevel = 200)
 		val difference = targetXp - startingXp
-		ChatUtils.addMessage(tr("nobaaddons.command.calculate.pet", "${difference.addSeparators()} XP is required to level a ${rarity.displayName} pet from $startingLevel to $targetLevel"))
+		ChatUtils.addMessage(tr(
+			"nobaaddons.command.calculate.pet",
+			"${difference.addSeparators()} XP is required to level a ${rarity.displayName} pet from $startingLevel to $targetLevel"
+		))
 	}
 
 	@Command
