@@ -55,12 +55,16 @@ object RevertTreasureMessages {
 		siblings.removeFirst() // drop the icon
 
 		val rarity = match.groups["rarity"]!!.value
-		val catchColor = treasureCatchColors[rarity] ?: return
-		val isJunk = match.groups["treasureType"] != null
+		val catchColor = treasureCatchColors[rarity]
+		if(catchColor != null) {
+			val isJunk = match.groups["treasureType"] != null
 
-		// revert the color of the catch tier
-		(siblings[0] as MutableText).styled { it.withColor(catchColor) }
-		if(isJunk) (siblings[2] as MutableText).styled { it.withColor(catchColor) }
+			// revert the color of the catch tier
+			(siblings[0] as MutableText).styled { it.withColor(catchColor) }
+			if(isJunk) {
+				(siblings[2] as MutableText).styled { it.withColor(catchColor) }
+			}
+		}
 
 		event.message = buildText {
 			siblings.forEach(::append)
