@@ -27,7 +27,7 @@ object StringUtils {
 			.joinToString("")
 	}
 
-	fun Int.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String {
+	fun Double.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String {
 		return when {
 			this >= 1_000_000_000 -> "${(this / 1_000_000_000.0).roundTo(billionPrecision)}b"
 			this >= 1_000_000 -> "${(this / 1_000_000.0).roundTo(millionPrecision)}m"
@@ -35,4 +35,7 @@ object StringUtils {
 			else -> this.toString()
 		}.replace(TRAILING_ZERO, "$1")
 	}
+
+	fun Int.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String =
+		toDouble().toAbbreviatedString(thousandPrecision, millionPrecision, billionPrecision)
 }
