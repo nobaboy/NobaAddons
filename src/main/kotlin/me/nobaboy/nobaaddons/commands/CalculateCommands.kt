@@ -4,6 +4,7 @@ import dev.celestialfault.commander.annotations.AllowedRange
 import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
+import me.nobaboy.nobaaddons.commands.adapters.RarityHandler
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Skill
 import me.nobaboy.nobaaddons.core.SkillData
@@ -41,14 +42,14 @@ object CalculateCommands {
 	private fun requiredXp(xp: Number) = tr("nobaaddons.command.calculate.requiredXp", "Required XP: ${xp.addSeparators().toText().aqua()}")
 
 	@Command
-	fun pet(rarity: Rarity, startingLevel: @AllowedRange.Int(1, 200) Int, targetLevel: @AllowedRange.Int(1, 200) Int) {
+	fun pet(
+		rarity: @RarityHandler.Max(Rarity.MYTHIC) Rarity,
+		startingLevel: @AllowedRange.Int(1, 200) Int,
+		targetLevel: @AllowedRange.Int(1, 200) Int,
+	) {
 		val startingXp = PetAPI.xpFromLevel(startingLevel, rarity, maxLevel = 200)
 		val targetXp = PetAPI.xpFromLevel(targetLevel, rarity, maxLevel = 200)
-		val difference = targetXp - startingXp
-		ChatUtils.addMessage(tr(
-			"nobaaddons.command.calculate.pet",
-			"${difference.addSeparators()} XP is required to level a ${rarity.displayName} pet from $startingLevel to $targetLevel"
-		))
+		ChatUtils.addMessage(requiredXp(targetXp - startingXp))
 	}
 
 	@Command

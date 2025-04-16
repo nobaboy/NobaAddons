@@ -49,9 +49,7 @@ enum class Rarity(val color: NobaColor? = null) : StringIdentifiable, NameableEn
 			entries.filter { it >= this.start && it <= this.endInclusive }.toTypedArray()
 	}
 
-	object RarityArgumentType : EnumArgumentType<Rarity>(CODEC, { entries.toTypedArray() }) {
-		fun getItemRarity(context: CommandContext<out CommandSource>, id: String): Rarity {
-			return context.getArgument(id, Rarity::class.java)
-		}
-	}
+	class RarityArgumentType(
+		private val only: Array<Rarity>? = null,
+	) : EnumArgumentType<Rarity>(CODEC, { only ?: entries.toTypedArray() })
 }
