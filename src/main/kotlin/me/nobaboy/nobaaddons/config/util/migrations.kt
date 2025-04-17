@@ -4,9 +4,10 @@
 
 package me.nobaboy.nobaaddons.config.util
 
-import dev.celestialfault.histoire.migrations.MutableJsonList
 import dev.celestialfault.histoire.migrations.MutableJsonMap
 import dev.celestialfault.histoire.migrations.takeAndRemove
+
+object DiscardValue
 
 /**
  * Move [key] from the current [MutableJsonMap] to the specified [target]
@@ -18,14 +19,13 @@ fun MutableJsonMap.moveTo(key: String, target: MutableJsonMap, newKey: String = 
 /**
  * Move [key] from the current [MutableJsonMap] to the specified [target]
  *
- * [mapping] may either return `null` to remove the value, or [Unit] to retain the same value
- * (e.g. if the value was a [MutableJsonMap] or [MutableJsonList] that was modified in-place)
+ * [mapping] may return [Unit] to retain the same value provided to the mapping function, or [DiscardValue] to discard it.
  */
-inline fun MutableJsonMap.mapAndMoveTo(key: String, target: MutableJsonMap, newKey: String = key, mapping: (Any) -> Any?) {
+inline fun MutableJsonMap.mapAndMoveTo(key: String, target: MutableJsonMap, newKey: String = key, mapping: (Any) -> Any) {
 	takeAndRemove(key) {
 		target[newKey] = when(val result = mapping(it)) {
-			null -> return
 			Unit -> it
+			DiscardValue -> return
 			else -> result
 		}
 	}
@@ -34,15 +34,8 @@ inline fun MutableJsonMap.mapAndMoveTo(key: String, target: MutableJsonMap, newK
 /**
  * Rename [old] to [new], while modifying the value stored in the process
  *
- * [mapping] may either return `null` to remove the value, or [Unit] to retain the same value
- * (e.g. if the value was a [MutableJsonMap] or [MutableJsonList] that was modified in-place)
+ * This is a convenience alias for `mapAndMoveTo(old, this, new) { ... }`
  */
-inline fun MutableJsonMap.mapAndRename(old: String, new: String, mapping: (Any) -> Any?) {
-	takeAndRemove(old) {
-		this[new] = when(val result = mapping(it)) {
-			null -> return
-			Unit -> it
-			else -> result
-		}
-	}
+inline fun MutableJsonMap.mapAndRename(old: String, new: String, mapping: (Any) -> Any) {
+	mapAndMoveTo(old, this, new, mapping)
 }
