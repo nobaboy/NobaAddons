@@ -24,13 +24,13 @@ object ChocolateFactoryFeatures {
 		PetAPI.currentPet?.id == "RABBIT" && PetAPI.currentPet?.rarity == Rarity.MYTHIC
 
 	fun init() {
-		InteractEvents.USE_ITEM.register(this::onInteract)
+		InteractEvents.ITEM_USE.register(this::onItemUse)
 		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 	}
 
-	private fun onInteract(event: InteractEvents.UseItem) {
-		if(!HoppityAPI.isSpring || !HoppityAPI.inRelevantIsland) return
+	private fun onItemUse(event: InteractEvents.ItemUse) {
 		if(!enabled) return
+		if(!HoppityAPI.isSpring || !HoppityAPI.inRelevantIsland) return
 
 		if(event.itemInHand.skyBlockId != HoppityAPI.LOCATOR) return
 		if(hasMythicRabbitSpawned) return

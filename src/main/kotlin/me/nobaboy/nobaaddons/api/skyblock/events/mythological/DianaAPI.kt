@@ -14,7 +14,7 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
 
 object DianaAPI {
-	private const val SPADE = "ANCESTRAL_SPADE"
+	const val SPADE = "ANCESTRAL_SPADE"
 
 	val isActive: Boolean get() = SkyBlockIsland.HUB.inIsland() && isRitualActive() && hasSpadeInHotbar()
 
