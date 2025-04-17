@@ -6,7 +6,6 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import me.nobaboy.nobaaddons.api.DebugAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
@@ -45,6 +44,7 @@ import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
 import me.nobaboy.nobaaddons.features.fishing.AnnounceSeaCreatures
 import me.nobaboy.nobaaddons.features.fishing.CatchTimer
 import me.nobaboy.nobaaddons.features.fishing.FishingBobberTweaks
+import me.nobaboy.nobaaddons.features.fishing.FixFishHookFieldDesync
 import me.nobaboy.nobaaddons.features.fishing.HotspotWaypoints
 import me.nobaboy.nobaaddons.features.fishing.RevertTreasureMessages
 import me.nobaboy.nobaaddons.features.fishing.SeaCreatureAlert
@@ -100,16 +100,8 @@ object NobaAddons : ClientModInitializer {
 	val LOGGER: Logger = LogUtils.getLogger()
 	val CONFIG_DIR: Path get() = FabricLoader.getInstance().configDir.resolve(MOD_ID)
 
-	@OptIn(ExperimentalSerializationApi::class)
 	val JSON = Json {
 		ignoreUnknownKeys = true
-		allowStructuredMapKeys = true
-
-		// allow some quality of life
-		allowComments = true
-		allowTrailingComma = true
-
-		// encoding related
 		encodeDefaults = true
 		prettyPrint = true
 	}
@@ -208,6 +200,7 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region Fishing
+		FixFishHookFieldDesync.init()
 		AnnounceSeaCreatures.init()
 		CatchTimer.init()
 		FishingBobberTweaks.init()
