@@ -11,9 +11,9 @@ import me.nobaboy.nobaaddons.config.util.mapAndMoveTo
 import me.nobaboy.nobaaddons.config.util.moveTo
 
 /*
- * Migrations MUST be added at the end of this block, otherwise they will NOT run. Migrations that have already been
- * applied are skipped, so new changes must be added as separate migrations. Removing pre-existing migrations is
- * NOT supported and will cause player configs to completely break, so avoid doing so.
+ * Migrations MUST be added at the end of this block, otherwise they won't run correctly. Migrations that have
+ * already been applied and saved are not run again, so new changes must be added as separate migrations. Removing
+ * migrations is NOT supported and will cause player configs to break, so avoid doing so.
  */
 internal val migrations = Migrations("configVersion") {
 	add(::`001_removeYaclVersion`)
