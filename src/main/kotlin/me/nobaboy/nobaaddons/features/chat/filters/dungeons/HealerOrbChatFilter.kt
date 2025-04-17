@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.core.SkyBlockStat
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.NumberUtils.formatDouble
+import me.nobaboy.nobaaddons.utils.NumberUtils.parseDouble
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -58,7 +58,7 @@ object HealerOrbChatFilter : IChatFilter {
 	) = buildText {
 		formatted(Formatting.GRAY)
 		append(Text.literal("HEALER ORB!").formatted(Formatting.YELLOW, Formatting.BOLD))
-		if(health.formatDouble() > 0.0) {
+		if(health.parseDouble() > 0.0) {
 			append("+$health ")
 			append(Text.literal("❤ Health").formatted(Formatting.RED))
 			append(" and ")
