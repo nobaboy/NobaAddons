@@ -214,10 +214,9 @@ data class NobaVec(
 			return NobaVec(x, z, y)
 		}
 
-		// Format: "x:y:z"
-		fun fromString(string: String): NobaVec {
-			val (x, y, z) = string.split(":").map { it.toDouble() }
-			return NobaVec(x, y, z)
+		fun List<Double>.toNobaVec(): NobaVec {
+			require(size == 3) { "Expected list of 3 elements to convert to NobaVec" }
+			return NobaVec(this[0], this[1], this[2])
 		}
 
 		val expandVector = NobaVec(0.0020000000949949026, 0.0020000000949949026, 0.0020000000949949026)
