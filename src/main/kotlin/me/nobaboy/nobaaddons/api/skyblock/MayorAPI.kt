@@ -35,7 +35,7 @@ object MayorAPI {
 	private val MAYOR_NAME_REGEX by Regex("Mayor (?<name>[A-z]+)").fromRepo("mayor.name")
 	private val ELECTION_END_MESSAGE by "The election room is now closed. Clerk Seraphine is doing a final count of the votes...".fromRepo("mayor.election_end")
 
-//	private val FOXY_EVENT_REGEX by Regex("Schedules an extra §(?<color>.)(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
+	val FOXY_EVENT_REGEX by Regex("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
 
 	var currentMayor: ActiveMayor = Mayor.UNKNOWN.withNone()
 		private set
