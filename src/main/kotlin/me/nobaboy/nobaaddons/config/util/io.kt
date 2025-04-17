@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.util
 
 import dev.celestialfault.histoire.Histoire
+import dev.celestialfault.histoire.Histoire.Companion.getFile
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
