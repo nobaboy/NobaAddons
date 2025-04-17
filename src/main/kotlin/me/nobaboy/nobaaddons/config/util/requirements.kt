@@ -21,7 +21,7 @@ fun OptionRequirement(wrapping: List<OptionRequirement>, requirement: OptionRequ
 	requirement,
 )
 
-object OptionRequirementBuilder {
+object OptionRequirementFactory {
 	infix fun OptionRequirement.and(other: OptionRequirement): OptionRequirement = OptionRequirement(listOf(this, other)) {
 		this.check() && other.check()
 	}
@@ -53,5 +53,5 @@ fun <T> Option<T>.require(condition: OptionRequirement): Option<T> = apply {
 	}
 }
 
-fun <T> Option<T>.require(builder: OptionRequirementBuilder.() -> OptionRequirement): Option<T> =
-	require(builder(OptionRequirementBuilder))
+fun <T> Option<T>.require(builder: OptionRequirementFactory.() -> OptionRequirement): Option<T> =
+	require(builder(OptionRequirementFactory))

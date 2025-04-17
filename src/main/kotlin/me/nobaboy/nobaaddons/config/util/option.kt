@@ -29,8 +29,8 @@ class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
 
 	var requirement: OptionRequirement? = null
 
-	fun require(builder: OptionRequirementBuilder.() -> OptionRequirement) {
-		this.requirement = builder(OptionRequirementBuilder)
+	fun require(builder: OptionRequirementFactory.() -> OptionRequirement) {
+		this.requirement = builder(OptionRequirementFactory)
 	}
 
 	val updateListeners: MutableList<OptionEventListener<T>> = mutableListOf()

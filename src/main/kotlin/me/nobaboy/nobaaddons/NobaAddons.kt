@@ -92,7 +92,7 @@ object NobaAddons : ClientModInitializer {
 	val VERSION: String = VERSION_INFO.friendlyString
 
 	val PREFIX: Text get() = buildText {
-		append(CommonText.NOBAADDONS)
+		append(if(NobaConfig.general.compactModMessagePrefix) CommonText.NOBA else CommonText.NOBAADDONS)
 		literal(" » ") { darkGray() }
 		blue().bold()
 	}
