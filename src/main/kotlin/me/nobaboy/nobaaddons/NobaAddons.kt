@@ -16,7 +16,6 @@ import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowGuessAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.api.skyblock.fishing.SeaCreatureAPI
 import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
@@ -40,6 +39,7 @@ import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.hoppity.HoppityEggGuess
 import me.nobaboy.nobaaddons.features.events.mythological.AnnounceRareDrops
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowWaypoints
+import me.nobaboy.nobaaddons.features.events.mythological.GriffinBurrowGuess
 import me.nobaboy.nobaaddons.features.events.mythological.InquisitorWaypoints
 import me.nobaboy.nobaaddons.features.fishing.AnnounceSeaCreatures
 import me.nobaboy.nobaaddons.features.fishing.CatchTimer
@@ -131,7 +131,6 @@ object NobaAddons : ClientModInitializer {
 
 		/* region APIs */
 		BurrowAPI.init()
-		BurrowGuessAPI.init()
 		DebugAPI.init()
 		DianaAPI.init()
 		DungeonsAPI.init()
@@ -179,6 +178,7 @@ object NobaAddons : ClientModInitializer {
 
 		/* region Mythological */
 		AnnounceRareDrops.init()
+		GriffinBurrowGuess.init()
 		BurrowWaypoints.init()
 		InquisitorWaypoints.init()
 		/* endregion*/

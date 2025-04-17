@@ -6,10 +6,13 @@ import me.nobaboy.nobaaddons.utils.math.PolynomialUtils.derivativeValueAt
 import me.nobaboy.nobaaddons.utils.math.PolynomialUtils.valueAt
 
 open class BezierFitter(private val degree: Int) {
-	private val fitters = List(3) { PolynomialFitter(degree) }
-	val points = mutableListOf<NobaVec>()
+	private val fitters = Array(3) { PolynomialFitter(degree) }
+	private val points = mutableListOf<NobaVec>()
 
 	private var cachedCurve: BezierCurve? = null
+
+	val lastPoint: NobaVec? get() = points.lastOrNull()
+	val isEmpty: Boolean get() = points.isEmpty()
 
 	fun addPoint(point: NobaVec) {
 		require(point.x.isFinite() && point.y.isFinite() && point.z.isFinite()) {

@@ -23,7 +23,7 @@ object InteractEvents {
 	init {
 		UseItemCallback.EVENT.register { player, _, hand ->
 			if(player is ClientPlayerEntity) {
-				USE_ITEM.invoke(UseItem(player, hand))
+				ITEM_USE.invoke(ItemUse(player, hand))
 			}
 			//? if <1.21.2 {
 			/*TypedActionResult.pass(player.getStackInHand(hand))
@@ -50,7 +50,7 @@ object InteractEvents {
 	 *
 	 * This event is a wrapper around the Fabric API [UseItemCallback] event.
 	 */
-	val USE_ITEM = EventDispatcher<UseItem>()
+	val ITEM_USE = EventDispatcher<ItemUse>()
 
 	/**
 	 * Event invoked whenever the client player interacts with a block (be it a left or right click)
@@ -66,7 +66,7 @@ object InteractEvents {
 		val itemInHand: ItemStack = player.getStackInHand(hand)
 	}
 
-	class UseItem(player: ClientPlayerEntity, hand: Hand) : GenericInteractEvent(player, hand)
+	class ItemUse(player: ClientPlayerEntity, hand: Hand) : GenericInteractEvent(player, hand)
 
 	sealed class BlockInteraction protected constructor(player: ClientPlayerEntity, hand: Hand) : GenericInteractEvent(player, hand) {
 		abstract val location: NobaVec
