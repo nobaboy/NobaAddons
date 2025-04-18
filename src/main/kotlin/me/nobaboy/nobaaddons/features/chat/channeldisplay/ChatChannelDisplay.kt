@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.green
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.tr
@@ -78,7 +79,14 @@ object ChatChannelDisplay {
 
 		ctx.drawText(
 			MCUtils.textRenderer,
-			tr("nobaaddons.chat.channel.current", "Currently in ${channel.toText()}").green(),
+			buildText {
+				append(tr("nobaaddons.chat.channel.current", "Current chat: ${channel.name}").green())
+				val extra = channel.extraInfo
+				if(extra != null) {
+					append(" ")
+					append(extra)
+				}
+			},
 			4,
 			screen.height - 26,
 			0xFFFFFF,
