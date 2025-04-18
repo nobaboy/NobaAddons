@@ -66,6 +66,7 @@ object FishingBobberTweaks {
 		} ?: 20.0
 
 		val color: Int = if(seconds >= slugTime) GOLD else GREEN
+
 		event.renderEntityName = false
 		event.tags.add(Text.literal(seconds.roundTo(1).toString()).withColor(color))
 	}

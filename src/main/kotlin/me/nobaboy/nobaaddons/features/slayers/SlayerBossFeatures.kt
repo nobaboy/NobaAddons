@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.slayers
 
+import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
@@ -14,7 +15,7 @@ import kotlin.time.DurationUnit
 // TODO: Add boss soon warning
 object SlayerBossFeatures {
 	private val config get() = NobaConfig.slayers
-	private val enabled: Boolean get() = SlayerAPI.currentQuest != null
+	private val enabled: Boolean get() = SlayerAPI.currentQuest != null && SkyBlockAPI.inSkyBlock
 
 	private var bossSpawnTime = Timestamp.distantPast()
 
@@ -28,7 +29,7 @@ object SlayerBossFeatures {
 
 		if(config.bossKillTime.enabled) bossSpawnTime = Timestamp.now()
 		if(config.bossAlert.enabled) {
-			RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds, id = "slayer.alert")
+			RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds, id = "slayer_alert")
 			SoundUtils.dingLowSound.play()
 		}
 	}

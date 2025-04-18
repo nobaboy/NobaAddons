@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.features.slayers
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
@@ -28,10 +29,8 @@ object CompactSlayerMessages {
 	private val config get() = NobaConfig.slayers.compactMessages
 
 	private val QUEST_STARTED_REGEX by Regex("^[ ]+SLAYER QUEST STARTED!").fromRepo("slayer.quest_started")
-	private val QUEST_COMPLETE_REGEX by Regex("^[ ]+SLAYER QUEST COMPLETE!").fromRepo("slayer.quest_complete")
 
 	private val SLAY_TO_SPAWN_REGEX by Regex("^[ ]+» Slay [\\d,]+ Combat XP worth of .+").fromRepo("slayer.slay_to_spawn")
-	private val BOSS_SLAIN_REGEX by Regex("^[ ]+NICE! SLAYER BOSS SLAIN!").fromRepo("slayer.boss_slain")
 	private val TALK_TO_MADDOX_REGEX by Regex("^[ ]+» Talk to Maddox to claim your [A-z]+ Slayer XP!").fromRepo("slayer.talk_to_maddox")
 
 	private val SLAYER_LEVEL_REGEX by Regex("^[ ]+(?<slayer>[A-z]+) Slayer LVL (?<level>\\d) - (?:LVL MAXED OUT!|Next LVL in (?<nextLevel>[\\d,]+) XP)").fromRepo("slayer.level")
@@ -86,9 +85,7 @@ object CompactSlayerMessages {
 	}
 
 	private fun send() {
-		if(config.removeLastMessage) {
-			lastMessage?.remove()
-		}
+		if(config.removeLastMessage) lastMessage?.remove()
 		lastMessage = ChatUtils.addAndCaptureMessage(compile(), prefix = false, color = null)
 	}
 
@@ -117,7 +114,7 @@ object CompactSlayerMessages {
 		val text = event.message
 		val string = text.string.cleanFormatting()
 
-		QUEST_COMPLETE_REGEX.onFullMatch(string) {
+		CommonPatterns.SLAYER_QUEST_COMPLETE_REGEX.onFullMatch(string) {
 			slayer = null
 			level = null
 			rngMeter = null
@@ -125,7 +122,7 @@ object CompactSlayerMessages {
 			return
 		}
 
-		listOf(BOSS_SLAIN_REGEX, TALK_TO_MADDOX_REGEX).firstFullMatch(string) {
+		listOf(CommonPatterns.SLAYER_BOSS_SLAIN_REGEX, TALK_TO_MADDOX_REGEX).firstFullMatch(string) {
 			autoSlayer = false
 			return
 		}

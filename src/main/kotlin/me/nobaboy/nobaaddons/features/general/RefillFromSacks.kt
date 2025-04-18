@@ -33,6 +33,5 @@ object RefillFromSacks {
 		}
 
 		HypixelCommands.getFromSacks(id, target - inInventory)
-		return
 	}
 }

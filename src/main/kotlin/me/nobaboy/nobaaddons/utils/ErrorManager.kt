@@ -110,4 +110,9 @@ object ErrorManager {
 		MCUtils.copyToClipboard(error)
 		MCUtils.chatHud.addMessage(tr("nobaaddons.error.copiedToClipboard", "Copied full error to clipboard, please report it in the Discord"))
 	}
+
+	inline fun <R> catching(errorMessage: String, exec: () -> R): Result<R> =
+		runCatching(exec).onFailure {
+			logError(errorMessage, it)
+		}
 }

@@ -1,7 +1,13 @@
 package me.nobaboy.nobaaddons.utils.chat
 
+import me.nobaboy.nobaaddons.api.PartyAPI
+
 object HypixelCommands {
 	// Messaging Commands
+	fun allChat(message: String) {
+		send("ac $message")
+	}
+
 	fun privateChat(player: String, message: String) {
 		send("msg $player $message")
 	}
@@ -10,7 +16,8 @@ object HypixelCommands {
 		send("gc $message")
 	}
 
-	fun partyChat(message: String) {
+	fun partyChat(message: String, partyCheck: Boolean = true) {
+		if(partyCheck && PartyAPI.party == null) return
 		send("pc $message")
 	}
 
@@ -56,7 +63,7 @@ object HypixelCommands {
 		send("party list")
 	}
 
-	// Helper function to send commands through queue system.
+	// Helper function to send commands through queue system
 	private fun send(command: String) {
 		ChatUtils.queueCommand(command)
 	}

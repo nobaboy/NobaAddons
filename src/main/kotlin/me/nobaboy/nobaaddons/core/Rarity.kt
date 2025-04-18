@@ -1,11 +1,9 @@
 package me.nobaboy.nobaaddons.core
 
-import com.mojang.brigadier.context.CommandContext
 import com.mojang.serialization.Codec
 import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils.title
-import net.minecraft.command.CommandSource
 import net.minecraft.command.argument.EnumArgumentType
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
@@ -24,7 +22,8 @@ enum class Rarity(val color: NobaColor? = null) : StringIdentifiable, NameableEn
 	VERY_SPECIAL(NobaColor.RED),
 	ULTIMATE(NobaColor.DARK_RED),
 	ADMIN(NobaColor.RED),
-	UNKNOWN;
+	UNKNOWN,
+	;
 
 	val formatting: Formatting? by lazy { color?.formatting }
 	val colorCode: Char? by lazy { color?.colorCode }
@@ -48,9 +47,7 @@ enum class Rarity(val color: NobaColor? = null) : StringIdentifiable, NameableEn
 			entries.filter { it >= this.start && it <= this.endInclusive }.toTypedArray()
 	}
 
-	object RarityArgumentType : EnumArgumentType<Rarity>(CODEC, { entries.toTypedArray() }) {
-		fun getItemRarity(context: CommandContext<out CommandSource>, id: String): Rarity {
-			return context.getArgument(id, Rarity::class.java)
-		}
-	}
+	class RarityArgumentType(
+		private val only: Array<Rarity>? = null,
+	) : EnumArgumentType<Rarity>(CODEC, { only ?: entries.toTypedArray() })
 }

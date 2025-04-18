@@ -17,6 +17,7 @@ sealed class AbstractNobaConfig protected constructor() : Histoire(
 	NobaAddons.CONFIG_DIR.resolve("config.json").toFile(),
 	migrations = migrations,
 	json = NobaAddons.JSON,
+	createBackup = true,
 ) {
 	@Object val general = GeneralConfig()
 	@Object val uiAndVisuals = UIAndVisualsConfig()
@@ -64,7 +65,7 @@ object NobaConfig : AbstractNobaConfig() {
 	}.build().generateScreen(parent)
 }
 
-internal class NobaConfigDefaults : AbstractNobaConfig() {
+private class NobaConfigDefaults : AbstractNobaConfig() {
 	override fun save() {
 		throw UnsupportedOperationException()
 	}
