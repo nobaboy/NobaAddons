@@ -10,6 +10,8 @@ class ChatConfig {
 	@Object val chatCommands = ChatCommands()
 	@Object val copyChat = CopyChat()
 
+	var displayCurrentChannel = false
+
 	class CopyChat {
 		var enabled = false
 		var mode = CopyChatFeature.CopyWith.RIGHT_CLICK
