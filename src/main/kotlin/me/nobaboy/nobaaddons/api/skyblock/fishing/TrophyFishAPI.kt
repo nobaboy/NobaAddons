@@ -17,7 +17,7 @@ object TrophyFishAPI {
 	val trophyFish get() = ProfileData.PROFILE.trophyFish
 
 	// .* is required to catch any extra text added afterward from compact chat mods like Compacting
-	private val TROPHY_FISH_CATCH_REGEX by Regex("^TROPHY FISH! You caught an? (?<fish>[A-z 0-9-]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*").fromRepo("fishing.trophy_fish_catch")
+	private val TROPHY_FISH_CATCH_REGEX by Regex("^♔ TROPHY FISH! You caught an? (?<fish>[A-z 0-9-]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*").fromRepo("fishing.trophy_fish_catch")
 	private val TROPHY_FISH_RARITY_REGEX by Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?").fromRepo("fishing.trophy_fish_rarity")
 
 	private val inventorySlots = 10..31

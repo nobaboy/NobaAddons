@@ -14,7 +14,7 @@
 <summary>UI & Visuals</summary>
 
 - Info Boxes (see below)
-- Etherwarp Helper
+- Etherwarp Overlay
 - Temporary Waypoints
 - Remove front-facing third-person camera view
 - Various rendering tweaks:

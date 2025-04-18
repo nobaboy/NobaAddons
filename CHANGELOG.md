@@ -18,10 +18,14 @@ is handled internally, and as such things could potentially break.
 - Announce Sea Creatures - nobaboy
   - This is only limited to Legendary and Mythic rarities
 - Hotspot Waypoints - nobaboy
+- Commands to calculate pet/skill level XP requirements and auction taxes - celeste
 
 ### Changed
 
-- Enchantment tooltip parsing is now slightly more strict in where it matches - celeste
+- Rewrote configuration saving and loading internals - celeste
+- Rewrote how the YACL config menu is built - celeste
+- Enchantment tooltip parsing is now more strict in where it matches - celeste
+- Improved Egglocator and Ancestral Spade guesses - nobaboy
 
 ### Fixed
 
@@ -31,7 +35,6 @@ is handled internally, and as such things could potentially break.
 - Enchantment tooltip parsing properly works on enchanted books again - celeste
 - Certain config options re-using the same key - celeste
 - Inconsistency with Mineshaft Entrance/Ladder waypoints - nobaboy
-- YACL labels not showing - nobaboy
 
 ## 1.0.0-Beta.1 - 2025-03-18
 
