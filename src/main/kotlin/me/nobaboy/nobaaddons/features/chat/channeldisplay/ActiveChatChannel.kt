@@ -33,7 +33,7 @@ data class ActiveChatChannel(val channel: ChatChannel, val dmWith: String? = nul
 				// < 1 second is *technically* incorrect for that one second, but it's easier than fixing this short
 				// format to properly display 0s in such a case
 				if(expires.timeRemaining() < 1.seconds) {
-					append(tr("nobaaddons.chat.channel.dm.expired", "Expired").red())
+					append(tr("nobaaddons.chat.channel.dmExpired", "Expired").red())
 				} else {
 					append(expires.timeRemaining().toShortString().toText().green())
 				}
