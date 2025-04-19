@@ -3,24 +3,28 @@ package me.nobaboy.nobaaddons.features.fishing
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.fishing.SeaCreature
-import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.skyblock.FishingEvents
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.TextUtils.bold
+import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.tr
 
 object SeaCreatureAlert {
 	private val config get() = NobaConfig.fishing.seaCreatureAlert
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
+	private val SeaCreature.isRare: Boolean
+		get() = rarity >= config.minimumRarity || (id == "CARROT_KING" && config.carrotKing) || (id == "NUTCRACKER" && config.nutcracker)
+
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		FishingEvents.SEA_CREATURE_CATCH.register(this::onSeaCreatureCatch)
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onSeaCreatureCatch(event: FishingEvents.SeaCreatureCatch) {
 		if(!enabled) return
 
-		val seaCreature = SeaCreature.getBySpawnMessage(message) ?: return
+		val seaCreature = event.seaCreature
 		if(!seaCreature.isRare) return
 
 		val text = if(config.nameInsteadOfRarity) {
@@ -29,14 +33,15 @@ object SeaCreatureAlert {
 			"${seaCreature.rarity} Catch!"
 		}
 
-		if(config.announceInPartyChat) {
-			HypixelCommands.partyChat("[NobaAddons] Caught a ${seaCreature.displayName}!")
+		val subtext = if(event.doubleHook) {
+			tr("nobaaddons.fishing.doubleHook.prefix", "DOUBLE HOOK!").yellow().bold()
+		} else {
+			null
 		}
 
-		RenderUtils.drawTitle(text, (seaCreature.rarity.color ?: NobaColor.GOLD), id = "sea_creature_alert")
+		val color = seaCreature.rarity.color ?: NobaColor.RED
+
+		RenderUtils.drawTitle(text, color, subtext = subtext, id = "sea_creature_alert")
 		config.notificationSound.play()
 	}
-
-	private val SeaCreature.isRare: Boolean
-		get() = rarity >= config.minimumRarity || (id == "CARROT_KING" && config.carrotKingIsRare)
 }

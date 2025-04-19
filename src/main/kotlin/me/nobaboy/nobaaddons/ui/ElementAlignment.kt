@@ -5,7 +5,8 @@ import net.minecraft.util.StringIdentifiable
 enum class ElementAlignment : StringIdentifiable {
 	LEFT,
 	CENTER,
-	RIGHT;
+	RIGHT,
+	;
 
 	override fun asString(): String = name
 }

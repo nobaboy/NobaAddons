@@ -39,19 +39,19 @@ object RegexUtils {
 	 * Executes [consumer] with the first full match from any of the patterns in the current iterable
 	 */
 	inline fun Iterable<Regex>.firstFullMatch(text: String, consumer: MatchResult.() -> Unit) =
-		this.firstNotNullOfOrNull { it.matchEntire(text) }?.let(consumer)
+		firstNotNullOfOrNull { it.matchEntire(text) }?.let(consumer)
 
 	/**
 	 * Executes [consumer] with the first partial match from any of the patterns in the current iterable
 	 */
 	inline fun Iterable<Regex>.firstPartialMatch(text: String, consumer: MatchResult.() -> Unit) =
-		this.firstNotNullOfOrNull { it.find(text) }?.let(consumer)
+		firstNotNullOfOrNull { it.find(text) }?.let(consumer)
 
 	/**
 	 * Returns `true` if any pattern in the current iterable fully matches the provided string
 	 */
 	fun Iterable<Regex>.anyFullMatch(text: String): Boolean =
-		this.firstNotNullOfOrNull { it.matchEntire(text) } != null
+		firstNotNullOfOrNull { it.matchEntire(text) } != null
 
 	/**
 	 * Returns a [MatchResult] for the first string that fully matches the provided [regex], or `null` if none match

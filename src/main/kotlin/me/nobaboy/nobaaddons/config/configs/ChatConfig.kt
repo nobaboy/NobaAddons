@@ -6,7 +6,6 @@ import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
 import me.nobaboy.nobaaddons.features.chat.filters.ChatFilterOption
 
 class ChatConfig {
-	@Object val alerts = Alerts()
 	@Object val filters = Filters()
 	@Object val chatCommands = ChatCommands()
 	@Object val copyChat = CopyChat()
@@ -14,11 +13,6 @@ class ChatConfig {
 	class CopyChat {
 		var enabled = false
 		var mode = CopyChatFeature.CopyWith.RIGHT_CLICK
-	}
-
-	class Alerts {
-		var mythicSeaCreatureSpawn = false
-		var vanquisherSpawn = false
 	}
 
 	class Filters {
@@ -30,8 +24,8 @@ class ChatConfig {
 		var hideThrowDamageMessage = false
 		var hideRayOfHopeDamageMessage = false
 
-		var hideSeaCreatureSpawnMessage = false
-		var seaCreatureMaximumRarity = Rarity.RARE
+		var hideSeaCreatureCatchMessage = false
+		var seaCreatureMaxRarity = Rarity.RARE
 
 		var blessingMessage = ChatFilterOption.SHOWN
 		var healerOrbMessage = ChatFilterOption.SHOWN

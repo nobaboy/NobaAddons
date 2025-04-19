@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.fishing
+package me.nobaboy.nobaaddons.features.fishing.crimsonisle
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig

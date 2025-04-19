@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.Binding
 import dev.isxander.yacl3.api.ConfigCategory
-import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentDisplayMode
 import me.nobaboy.nobaaddons.ui.TextShadow
 import me.nobaboy.nobaaddons.utils.CommonText

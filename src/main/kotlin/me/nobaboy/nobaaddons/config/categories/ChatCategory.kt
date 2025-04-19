@@ -11,7 +11,6 @@ import net.minecraft.text.Text
 object ChatCategory {
 	fun create() = category(tr("nobaaddons.config.chat", "Chat")) {
 		copyChat()
-		alerts()
 		filters()
 		chatCommands()
 	}
@@ -27,24 +26,6 @@ object ChatCategory {
 				enumController()
 				require { option(enabled) }
 			}
-		}
-	}
-
-	private fun ConfigCategory.Builder.alerts() {
-		group(tr("nobaaddons.config.chat.alerts", "Alerts")) {
-			// region Crimson Isle
-			label(CommonText.Config.LABEL_CRIMSON_ISLE)
-
-			add({ chat.alerts::mythicSeaCreatureSpawn }) {
-				name = tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn", "Alert Mythic Sea Creature Catches")
-				descriptionText = tr("nobaaddons.config.chat.alerts.mythicSeaCreatureSpawn.tooltip", "Sends your current location in all chat when catching a mythic sea creature")
-				booleanController()
-			}
-			add({ chat.alerts::vanquisherSpawn }) {
-				name = tr("nobaaddons.config.chat.alerts.vanquisherSpawn", "Alert Vanquisher Spawn")
-				booleanController()
-			}
-			// endregion
 		}
 	}
 
@@ -108,13 +89,13 @@ object ChatCategory {
 			// region Mobs
 			label(CommonText.Config.LABEL_MOBS)
 
-			add({ chat.filters::hideSeaCreatureSpawnMessage }) {
-				name = tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage", "Hide Sea Creature Catch Message")
-				descriptionText = tr("nobaaddons.config.chat.filters.hideSeaCreatureSpawnMessage.tooltip", "Hides the catch message for sea creatures of the below set rarity and under")
+			add({ chat.filters::hideSeaCreatureCatchMessage }) {
+				name = tr("nobaaddons.config.chat.filters.hideSeaCreatureCatchMessage", "Hide Sea Creature Catch Message")
+				descriptionText = tr("nobaaddons.config.chat.filters.hideSeaCreatureCatchMessage.tooltip", "Hides the catch message for sea creatures of the below set rarity and under")
 				booleanController()
 			}
-			add({ chat.filters::seaCreatureMaximumRarity }) {
-				name = tr("nobaaddons.config.chat.filters.seaCreatureMaximumRarity", "Hide Rarity and Below")
+			add({ chat.filters::seaCreatureMaxRarity }) {
+				name = tr("nobaaddons.config.chat.filters.seaCreatureMaxRarity", "Sea Creature Max Rarity")
 				enumController(onlyInclude = (Rarity.COMMON..Rarity.MYTHIC).toArray())
 			}
 			// endregion

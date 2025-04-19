@@ -4,4 +4,5 @@ class GeneralConfig {
 	var wikiCommandAutoOpen = false
 	var allowKeybindsOutsideSkyBlock = false
 	var updateNotifier = true
+	var compactModMessagePrefix = false
 }

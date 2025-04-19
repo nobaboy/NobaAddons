@@ -162,6 +162,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 	private enum class EditingMode {
 		IDLE,
 		DRAG,
-		MENU
+		MENU,
+		;
 	}
 }

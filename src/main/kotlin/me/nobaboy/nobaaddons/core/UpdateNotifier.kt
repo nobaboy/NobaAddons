@@ -59,7 +59,8 @@ object UpdateNotifier {
 	fun sendUpdateNotification() {
 		val update = UPDATE_INFO ?: return
 		if(MCUtils.VERSION_INFO !in update.forMinecraft) return
-		ChatUtils.addMessage(buildText {
+
+		val message = buildText {
 			appendLine()
 			append(NobaAddons.PREFIX)
 			append(tr("nobaaddons.updateAvailable", "A new update is available: ${update.latest}:").gold())
@@ -70,7 +71,9 @@ object UpdateNotifier {
 				.openUrl("https://modrinth.com/mod/nobaaddons/versions")
 				.underline())
 			appendLine()
-		}, prefix = false)
+		}
+
+		ChatUtils.addMessage(message, prefix = false)
 	}
 
 	@Serializable

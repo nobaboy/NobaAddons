@@ -5,7 +5,6 @@ import com.mojang.serialization.JsonOps
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.mixins.accessors.HandledScreenAccessor
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.stripWhitespace
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.client.gui.screen.ingame.HandledScreen
@@ -39,7 +38,7 @@ object DevFeatures {
 		// (ItemStack#toNbt(RegistryWrapper.WrapperLookup) also doesn't exist on 1.21.1)
 		val encoded = ItemStack.CODEC.encodeStart(MCUtils.player!!.registryManager.getOps(JsonOps.INSTANCE), item).orThrow
 		append(gson.toJson(encoded))
-	}.stripWhitespace()
+	}.trim()
 
 	@JvmStatic
 	fun shouldCopy(keyCode: Int): Boolean {

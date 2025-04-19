@@ -33,7 +33,7 @@ object HighlightStarredMobs {
 		EntityUtils.getEntities<ArmorStandEntity>().filter {
 			it !in starredMobs &&
 			it.hasCustomName() &&
-			it.shouldRenderName() == true &&
+			it.shouldRenderName() &&
 			it.customName!!.string.cleanFormatting().startsWith("✯ ") &&
 			it.customName!!.string.cleanFormatting().endsWith("❤")
 		}.forEach { starredMobs.add(it) }

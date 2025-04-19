@@ -5,6 +5,7 @@ import dev.celestialfault.commander.Commander
 import dev.celestialfault.commander.ICommand
 import me.nobaboy.nobaaddons.commands.adapters.*
 import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.core.Skill
 import me.nobaboy.nobaaddons.ui.ElementAlignment
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
@@ -17,15 +18,15 @@ typealias Context = CommandContext<FabricClientCommandSource>
 object CommandUtil {
 	private val commands: MutableList<ICommand<FabricClientCommandSource>> = mutableListOf()
 
-	val commander = Commander<FabricClientCommandSource>()
+	val commander = Commander<FabricClientCommandSource>().apply {
+		addHandler(ElementAlignment::class, ElementAlignmentHandler)
+		addHandler(Formatting::class, FormattingHandler())
+		addHandler(NbtPathArgumentType.NbtPath::class, NbtPathHandler)
+		addHandler(Rarity::class, RarityHandler)
+		addHandler(Skill::class, SkillHandler)
+	}
 
 	init {
-		val commander = Commander<FabricClientCommandSource>()
-		commander.addHandler(Formatting::class, FormattingHandler())
-		commander.addHandler(NbtPathArgumentType.NbtPath::class, NbtPathHandler)
-		commander.addHandler(Rarity::class, RarityHandler)
-		commander.addHandler(ElementAlignment::class, ElementAlignmentHandler)
-
 		ClientCommandRegistrationCallback.EVENT.register { dispatch, access ->
 			commander.addHandler(Text::class, TextHandler(access))
 			commands.forEach { commander.register(it, dispatch) }
