@@ -4,25 +4,32 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.chat.SendMessageEvents
+import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
-import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.green
 import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ChatScreen
+import net.minecraft.client.render.RenderTickCounter
 import kotlin.text.get
 import kotlin.time.Duration.Companion.minutes
 
 object ChatChannelDisplay {
+	private const val FADE_OUT_AT = 10
+
 	private val enabled by NobaConfig.chat::displayCurrentChannel
 	private var channel by PersistentCache::channel
+	private var displayTicks = 0
 
 	private val CHANNEL_SWITCH_REGEX by Regex("^You are now in the (?<channel>ALL|GUILD|PARTY) channel").fromRepo("chat.channel")
 
@@ -34,12 +41,9 @@ object ChatChannelDisplay {
 	private val NOT_IN_PARTY by "You are not in a party and were moved to the ALL channel.".fromRepo("chat.not_in_party")
 
 	fun init() {
-		ScreenEvents.AFTER_INIT.register { _, screen, _, _ ->
-			if(screen !is ChatScreen) return@register
-			ScreenEvents.afterRender(screen).register { _, ctx, _, _, _ ->
-				ErrorManager.catching("Chat channel display errored") { onRenderChatScreen(screen, ctx) }
-			}
-		}
+		TickEvents.TICK.register { if(displayTicks > 0) displayTicks-- }
+		ScreenRenderEvents.afterRender<ChatScreen> { _, ctx, _, _, _ -> onRenderChatScreen(ctx) }
+		HudRenderCallback.EVENT.register(this::onRenderHud)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		SendMessageEvents.SEND_CHAT_MESSAGE.register { onSendChatMessage() }
 	}
@@ -73,25 +77,38 @@ object ChatChannelDisplay {
 		}
 	}
 
-	// TODO it'd be nice if this displayed for ~2s after closing the chat screen
-	private fun onRenderChatScreen(screen: ChatScreen, ctx: DrawContext) {
+	private fun onRenderHud(ctx: DrawContext, delta: RenderTickCounter) {
+		if(!enabled) return
+		if(!HypixelUtils.onHypixel) return
+		if(MCUtils.client.currentScreen is ChatScreen) return
+		if(displayTicks <= 0) return
+
+		val alpha: Int = when {
+			displayTicks > FADE_OUT_AT -> 255
+			else -> RenderUtils.lerpAlpha(delta.getTickDelta(true), displayTicks, FADE_OUT_AT)
+		}
+
+		draw(ctx, alpha)
+	}
+
+	private fun onRenderChatScreen(ctx: DrawContext) {
 		if(!enabled) return
 		if(!HypixelUtils.onHypixel) return
 
-		ctx.drawText(
-			MCUtils.textRenderer,
-			buildText {
-				append(tr("nobaaddons.chat.channel.current", "Current chat: ${channel.name}").green())
-				val extra = channel.extraInfo
-				if(extra != null) {
-					append(" ")
-					append(extra)
-				}
-			},
-			4,
-			screen.height - 26,
-			0xFFFFFF,
-			true,
-		)
+		displayTicks = 40
+		draw(ctx)
+	}
+
+	private fun draw(ctx: DrawContext, alpha: Int = 255) {
+		ctx.drawText(MCUtils.textRenderer, buildText(), 4, ctx.scaledWindowHeight - 26, NobaColor.WHITE.withAlpha(alpha), true)
+	}
+
+	private fun buildText() = buildText {
+		append(tr("nobaaddons.chat.channel.current", "Current chat: ${channel.name}").green())
+		val extra = channel.extraInfo
+		if(extra != null) {
+			append(" ")
+			append(extra)
+		}
 	}
 }
