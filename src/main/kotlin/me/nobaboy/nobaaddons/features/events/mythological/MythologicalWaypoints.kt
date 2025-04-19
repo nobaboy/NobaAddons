@@ -24,6 +24,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
@@ -160,7 +161,7 @@ object MythologicalWaypoints {
 	private fun renderWaypoints(context: WorldRenderContext) {
 		if(!DianaAPI.isActive) return
 
-		inquisitors.removeIf { it.spawnTime.elapsedSince() > 75.seconds }
+		inquisitors.removeIf { it.timestamp.isPast() }
 		nearbyInquisitors.removeIf { !it.isAlive || EntityUtils.getEntityById(it.id) !== it }
 
 		suggestNearestWarp()
@@ -202,8 +203,8 @@ object MythologicalWaypoints {
 			}
 		}
 
-		inquisitors.forEach { inquisitor ->
-			val location = inquisitor.location
+		inquisitors.forEach {
+			val location = it.location
 			val adjustedLocation = location.center().raise()
 			val yOffset = if(config.showInquisitorDespawnTime) -20f else -10f
 
@@ -220,7 +221,7 @@ object MythologicalWaypoints {
 			RenderUtils.renderText(
 				context,
 				adjustedLocation,
-				inquisitor.spawner,
+				it.spawner,
 				color = NobaColor.GOLD,
 				yOffset = yOffset + 10f,
 				hideThreshold = 5.0,
@@ -228,11 +229,10 @@ object MythologicalWaypoints {
 			)
 
 			if(config.showInquisitorDespawnTime) {
-				val formattedTime = (75 - inquisitor.spawnTime.elapsedSince().inWholeSeconds)
 				RenderUtils.renderText(
 					context,
 					adjustedLocation,
-					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${formattedTime}s"),
+					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${it.remainingTime}s"),
 					color = NobaColor.GRAY,
 					hideThreshold = 5.0,
 					throughBlocks = true
@@ -316,5 +316,11 @@ object MythologicalWaypoints {
 		nearestWarp = null
 	}
 
-	data class Inquisitor(val spawner: String, val location: NobaVec, val spawnTime: Timestamp = Timestamp.now())
+	private data class Inquisitor(
+		val spawner: String,
+		val location: NobaVec,
+		val timestamp: Timestamp = Timestamp.now() + 75.seconds
+	) {
+		val remainingTime: String get() = timestamp.timeRemaining().toShortString()
+	}
 }

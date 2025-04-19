@@ -169,7 +169,7 @@ object BurrowAPI {
 		}
 	}
 
-	data class Burrow(
+	private data class Burrow(
 		var hasEnchant: Boolean = false,
 		var type: BurrowType = BurrowType.UNKNOWN,
 		var found: Boolean = false
