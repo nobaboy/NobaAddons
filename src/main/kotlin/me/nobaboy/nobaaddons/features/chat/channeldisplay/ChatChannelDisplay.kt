@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -25,11 +26,12 @@ import kotlin.text.get
 import kotlin.time.Duration.Companion.minutes
 
 object ChatChannelDisplay {
+	private const val DISPLAY_FOR_TICKS = 40
 	private const val FADE_OUT_AT = 10
 
 	private val enabled by NobaConfig.chat::displayCurrentChannel
 	private var channel by PersistentCache::channel
-	private var displayTicks = -1
+	private var ticksSinceChatOpen = DISPLAY_FOR_TICKS
 
 	private val CHANNEL_SWITCH_REGEX by Regex("^You are now in the (?<channel>ALL|GUILD|PARTY|SKYBLOCK CO-OP) channel").fromRepo("chat.channel")
 
@@ -41,11 +43,21 @@ object ChatChannelDisplay {
 	private val NOT_IN_PARTY by "You are not in a party and were moved to the ALL channel.".fromRepo("chat.not_in_party")
 
 	fun init() {
-		TickEvents.TICK.register { if(displayTicks > -1) displayTicks-- }
+		TickEvents.TICK.register(this::onTick)
 		ScreenRenderEvents.afterRender<ChatScreen> { _, ctx, _, _, _ -> onRenderChatScreen(ctx) }
-		HudRenderCallback.EVENT.register(this::onRenderHud)
+		HudRenderCallback.EVENT.register { ctx, delta ->
+			ErrorManager.catching("Failed to render chat display HUD") { onRenderHud(ctx, delta) }
+		}
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		SendMessageEvents.SEND_CHAT_MESSAGE.register { onSendChatMessage() }
+	}
+
+	private fun onTick(event: TickEvents.Tick) {
+		if(event.client.currentScreen is ChatScreen) {
+			ticksSinceChatOpen = 0
+		} else {
+			ticksSinceChatOpen++
+		}
 	}
 
 	private fun onSendChatMessage() {
@@ -82,15 +94,11 @@ object ChatChannelDisplay {
 		if(!HypixelUtils.onHypixel) return
 		if(MCUtils.client.currentScreen is ChatScreen) return
 
+		val displayTicks = DISPLAY_FOR_TICKS - ticksSinceChatOpen
 		val alpha: Int = when {
 			displayTicks <= 0 -> return
 			displayTicks > FADE_OUT_AT -> 255
 			else -> RenderUtils.lerpAlpha(delta.getTickDelta(true), displayTicks, FADE_OUT_AT)
-		}
-		if(alpha <= 15) {
-			// prevent the display from re-appearing at full alpha for a few frames by just forcing it to disappear
-			// next frame once it's close to fading out
-			displayTicks = -1
 		}
 
 		draw(ctx, alpha)
@@ -100,7 +108,6 @@ object ChatChannelDisplay {
 		if(!enabled) return
 		if(!HypixelUtils.onHypixel) return
 
-		displayTicks = 40
 		draw(ctx)
 	}
 
@@ -109,7 +116,7 @@ object ChatChannelDisplay {
 	}
 
 	private fun buildText() = buildText {
-		append(tr("nobaaddons.chat.channel.current", "Current chat: ${channel.name}").green())
+		append(tr("nobaaddons.chat.channel.current", "Chat: ${channel.name}").green())
 		val extra = channel.extraInfo
 		if(extra != null) {
 			append(" ")
