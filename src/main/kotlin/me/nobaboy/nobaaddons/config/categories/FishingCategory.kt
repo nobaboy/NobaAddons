@@ -75,6 +75,19 @@ object FishingCategory {
 				require { option(enabled) }
 				enumController()
 			}
+
+			label(CommonText.Config.LABEL_RARE_SEA_CREATURES)
+
+			add({ fishing.announceSeaCreatures::carrotKing }) {
+				name = CommonText.Config.CARROT_KING
+				require { option(enabled) }
+				booleanController()
+			}
+			add({ fishing.announceSeaCreatures::nutcracker }) {
+				name = CommonText.Config.NUTCRACKER
+				require { option(enabled) }
+				booleanController()
+			}
 		}
 	}
 
@@ -94,6 +107,19 @@ object FishingCategory {
 				name = CommonText.Config.ANNOUNCE_CHANNEL
 				require { option(enabled) }
 				enumController(onlyInclude = arrayOf(AnnounceChannel.ALL, AnnounceChannel.PARTY))
+			}
+
+			label(CommonText.Config.LABEL_RARE_SEA_CREATURES)
+
+			add({ fishing.announceSeaCreatures::carrotKing }) {
+				name = CommonText.Config.CARROT_KING
+				require { option(enabled) }
+				booleanController()
+			}
+			add({ fishing.announceSeaCreatures::nutcracker }) {
+				name = CommonText.Config.NUTCRACKER
+				require { option(enabled) }
+				booleanController()
 			}
 		}
 	}
