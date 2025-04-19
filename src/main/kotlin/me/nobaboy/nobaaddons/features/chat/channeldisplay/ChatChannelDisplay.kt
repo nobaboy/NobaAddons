@@ -29,7 +29,7 @@ object ChatChannelDisplay {
 
 	private val enabled by NobaConfig.chat::displayCurrentChannel
 	private var channel by PersistentCache::channel
-	private var displayTicks = 0
+	private var displayTicks = -1
 
 	private val CHANNEL_SWITCH_REGEX by Regex("^You are now in the (?<channel>ALL|GUILD|PARTY) channel").fromRepo("chat.channel")
 
@@ -41,7 +41,7 @@ object ChatChannelDisplay {
 	private val NOT_IN_PARTY by "You are not in a party and were moved to the ALL channel.".fromRepo("chat.not_in_party")
 
 	fun init() {
-		TickEvents.TICK.register { if(displayTicks > 0) displayTicks-- }
+		TickEvents.TICK.register { if(displayTicks > -1) displayTicks-- }
 		ScreenRenderEvents.afterRender<ChatScreen> { _, ctx, _, _, _ -> onRenderChatScreen(ctx) }
 		HudRenderCallback.EVENT.register(this::onRenderHud)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
@@ -81,11 +81,16 @@ object ChatChannelDisplay {
 		if(!enabled) return
 		if(!HypixelUtils.onHypixel) return
 		if(MCUtils.client.currentScreen is ChatScreen) return
-		if(displayTicks <= 0) return
 
 		val alpha: Int = when {
+			displayTicks <= 0 -> return
 			displayTicks > FADE_OUT_AT -> 255
 			else -> RenderUtils.lerpAlpha(delta.getTickDelta(true), displayTicks, FADE_OUT_AT)
+		}
+		if(alpha <= 15) {
+			// prevent the display from re-appearing at full alpha for a few frames by just forcing it to disappear
+			// next frame once it's close to fading out
+			displayTicks = -1
 		}
 
 		draw(ctx, alpha)
