@@ -8,16 +8,16 @@ import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.utils.NobaVec
 
 object MythologicalEvents {
-	@JvmField val BURROW_GUESS = EventDispatcher<BurrowGuess>()
+	val BURROW_FIND = EventDispatcher<BurrowFind>()
 
-	@JvmField val BURROW_FIND = EventDispatcher<BurrowFind>()
+	val BURROW_DIG = EventDispatcher<BurrowDig>()
 
-	@JvmField val MOB_DIG = EventDispatcher<MobDig>()
+	val MOB_DIG = EventDispatcher<MobDig>()
 
-	@JvmField val TREASURE_DIG = EventDispatcher<TreasureDig>()
+	val TREASURE_DIG = EventDispatcher<TreasureDig>()
 
-	data class BurrowGuess(val location: NobaVec) : Event()
 	data class BurrowFind(val location: NobaVec, val type: BurrowType) : Event()
+	data class BurrowDig(val location: NobaVec) : Event()
 	data class MobDig(val mob: MythologicalMobs) : Event()
 	data class TreasureDig(val drop: MythologicalDrops, val amount: Int = 1) : Event()
 }

@@ -11,9 +11,9 @@ import net.minecraft.entity.player.PlayerEntity
 object DianaAPI {
 	const val SPADE = "ANCESTRAL_SPADE"
 
-	val isActive: Boolean get() = SkyBlockIsland.HUB.inIsland() && isRitualActive && hasSpadeInHotbar()
+	val isActive: Boolean get() = SkyBlockIsland.HUB.inIsland() && isRitualActive && hasSpadeInHotbar
 	private val isRitualActive get() = MayorPerk.MYTHOLOGICAL_RITUAL.isActive()
 
+	private val hasSpadeInHotbar: Boolean get() = InventoryUtils.getItemsInHotbar().any { it.skyBlockId == SPADE }
 	fun hasSpadeInHand(player: PlayerEntity): Boolean = player.mainHandStack.skyBlockId == SPADE
-	private fun hasSpadeInHotbar(): Boolean = InventoryUtils.getItemsInHotbar().any { it.skyBlockId == SPADE }
 }

@@ -1,21 +1,18 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
-import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
-import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.events.MythologicalMobs
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
+import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
-import me.nobaboy.nobaaddons.utils.BlockUtils.inLoadedChunk
 import me.nobaboy.nobaaddons.utils.EntityUtils
-import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -28,15 +25,16 @@ import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
+import me.nobaboy.nobaaddons.utils.math.ParticlePathFitter
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
-import net.minecraft.block.Blocks
 import net.minecraft.client.network.OtherClientPlayerEntity
+import net.minecraft.particle.ParticleTypes
 import kotlin.time.Duration.Companion.seconds
 
 object MythologicalWaypoints {
@@ -48,60 +46,72 @@ object MythologicalWaypoints {
 		Regex("(?<username>[A-z0-9_]+): A MINOS INQUISITOR has spawned near \\[.*] at Coords (?<x>[0-9.-]+) (?<y>[0-9.-]+) (?<z>[0-9.-]+)").fromRepo("mythological.inquisitor_spawn.inquisitorchecker"),
 	)
 
+	private val burrows = mutableMapOf<NobaVec, BurrowType>()
+
+	private val particlePath = ParticlePathFitter(3)
 	private var guessLocation: NobaVec? = null
 
+	private var lastAbilityUse = Timestamp.distantPast()
+
 	private var inquisitors = mutableListOf<Inquisitor>()
-	private var lastInquisitorId: Int? = null
-	private var nearbyInquisitors = mutableListOf<OtherClientPlayerEntity>()
 	private val inquisitorSpawnTimes = mutableListOf<Timestamp>()
+	private var nearbyInquisitors = mutableListOf<OtherClientPlayerEntity>()
+	private var lastInquisitor: OtherClientPlayerEntity? = null
 
 	private var nearestWarp: BurrowWarpLocations.WarpPoint? = null
 	private var lastSuggestTime = Timestamp.distantPast()
 
-	private val validBlocks = listOf(
-		Blocks.AIR,
-		Blocks.OAK_LEAVES,
-		Blocks.SPRUCE_LEAVES,
-		Blocks.SPRUCE_FENCE,
-		Blocks.SHORT_GRASS,
-		Blocks.TALL_GRASS,
-		Blocks.FERN,
-		Blocks.POPPY,
-		Blocks.DANDELION,
-		Blocks.OXEYE_DAISY,
-		Blocks.BLUE_ORCHID,
-		Blocks.AZURE_BLUET,
-		Blocks.ROSE_BUSH,
-		Blocks.LILAC
-	)
-
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		MythologicalEvents.BURROW_GUESS.register(this::onBurrowGuess)
 		MythologicalEvents.BURROW_FIND.register(this::onBurrowFind)
+		MythologicalEvents.BURROW_DIG.register(this::onBurrowDig)
 		MythologicalEvents.MOB_DIG.register(this::onMobDig)
+		ParticleEvents.PARTICLE.register(this::onParticle)
+		InteractEvents.ITEM_USE.register(this::onItemUse)
 		EntityEvents.SPAWN.register(this::onEntitySpawn)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
-	private fun onBurrowGuess(event: MythologicalEvents.BurrowGuess) {
-		guessLocation = event.location
+	private fun onBurrowFind(event: MythologicalEvents.BurrowFind) {
+		burrows[event.location] = event.type
+
+		if(config.dingOnBurrowFind) SoundUtils.plingSound.play()
+		if(config.removeGuessOnBurrowFind) guessLocation = null
 	}
 
-	private fun onBurrowFind(event: MythologicalEvents.BurrowFind) {
-		if(config.dingOnBurrowFind) SoundUtils.plingSound.play()
-		if(!config.removeGuessOnBurrowFind) return
-
-		guessLocation?.let { guess ->
-			val adjustedGuess = findValidLocation(guess)
-			if(adjustedGuess.distance(event.location) < 10) guessLocation = null
-		}
+	private fun onBurrowDig(event: MythologicalEvents.BurrowDig) {
+		burrows.remove(event.location)
+		if(config.removeGuessOnBurrowFind) guessLocation = null
 	}
 
 	private fun onMobDig(event: MythologicalEvents.MobDig) {
 		if(!config.alertInquisitor || !DianaAPI.isActive) return
 		if(event.mob == MythologicalMobs.MINOS_INQUISITOR) checkInquisitor()
+	}
+
+	private fun onParticle(event: ParticleEvents.Particle) {
+		if(!config.burrowGuess || !DianaAPI.isActive) return
+		if(event.type != ParticleTypes.DRIPPING_LAVA) return
+		if(event.speed != -0.5f || event.count != 2) return
+		if(lastAbilityUse.elapsedSince() > 3.seconds) return
+
+		val location = event.location
+		val lastPoint = particlePath.lastPoint
+		if(lastPoint != null && lastPoint.distanceSq(location) > 9) return
+
+		particlePath.addPoint(location)
+		guessLocation = particlePath.solve()?.lower(0.5)?.roundToBlock() ?: return
+	}
+
+	private fun onItemUse(event: InteractEvents.ItemUse) {
+		if(!config.burrowGuess || !DianaAPI.isActive) return
+
+		val itemId = event.itemInHand.skyBlockId ?: return
+		if(itemId != DianaAPI.SPADE) return
+
+		particlePath.reset()
+		lastAbilityUse = Timestamp.now()
 	}
 
 	private fun onEntitySpawn(event: EntityEvents.Spawn) {
@@ -110,8 +120,8 @@ object MythologicalWaypoints {
 		val entity = event.entity as? OtherClientPlayerEntity ?: return
 		if(entity.name.string != "Minos Inquisitor") return
 
-		lastInquisitorId = entity.id
 		nearbyInquisitors.add(entity)
+		lastInquisitor = entity
 		checkInquisitor()
 	}
 
@@ -174,12 +184,8 @@ object MythologicalWaypoints {
 	}
 
 	private fun shareInquisitor() {
-		lastInquisitorId?.let {
-			val inquisitor = EntityUtils.getEntityById(it) ?: return
-			if(!inquisitor.isAlive) return
-
-			val (x, y, z) = inquisitor.getNobaVec().roundToBlock().toDoubleArray()
-
+		lastInquisitor?.takeIf { it.isAlive }?.let {
+			val (x, y, z) = it.getNobaVec().roundToBlock().toDoubleArray()
 			val message = "x: $x, y: $y, z: $z | Minos Inquisitor at [ ${SkyBlockAPI.prefixedZone} ]"
 
 			config.announceChannel.send(message)
@@ -206,7 +212,7 @@ object MythologicalWaypoints {
 				context,
 				adjustedLocation,
 				tr("nobaaddons.events.mythological.inquisitor", "Inquisitor"),
-				NobaColor.DARK_RED,
+				color = NobaColor.DARK_RED,
 				yOffset = yOffset,
 				hideThreshold = 5.0,
 				throughBlocks = true
@@ -215,7 +221,7 @@ object MythologicalWaypoints {
 				context,
 				adjustedLocation,
 				inquisitor.spawner,
-				NobaColor.GOLD,
+				color = NobaColor.GOLD,
 				yOffset = yOffset + 10f,
 				hideThreshold = 5.0,
 				throughBlocks = true
@@ -227,7 +233,7 @@ object MythologicalWaypoints {
 					context,
 					adjustedLocation,
 					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${formattedTime}s"),
-					NobaColor.GRAY,
+					color = NobaColor.GRAY,
 					hideThreshold = 5.0,
 					throughBlocks = true
 				)
@@ -237,61 +243,45 @@ object MythologicalWaypoints {
 
 	private fun renderGuessWaypoint(context: WorldRenderContext) {
 		guessLocation?.let {
-			val adjustedLocation = findValidLocation(it)
-			val distance = adjustedLocation.distanceToPlayer()
+			val adjustedLocation = it.center().raise()
 
-			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
+			val distance = it.distanceToPlayer()
+			val formattedDistance = distance.toInt().addSeparators()
+
+			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = distance > 10)
 			RenderUtils.renderText(
 				context,
-				adjustedLocation.center().raise(),
+				adjustedLocation,
 				tr("nobaaddons.events.mythological.burrowGuessWaypoint", "Burrow Guess"),
-				NobaColor.AQUA,
+				color = NobaColor.AQUA,
 				yOffset = -10f,
 				hideThreshold = 5.0,
 				throughBlocks = true
 			)
-
-			if(distance > 5) {
-				val formattedDistance = distance.toInt().addSeparators()
-				RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
-			}
+			RenderUtils.renderText(
+				context,
+				adjustedLocation,
+				"${formattedDistance}m",
+				color = NobaColor.GRAY,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 		}
 	}
 
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
-		BurrowAPI.burrows.forEach {
-			RenderUtils.renderWaypoint(context, it.location, it.type.color, throughBlocks = true)
-			RenderUtils.renderText(context, it.location.center().raise(), it.type.displayName, it.type.color, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
+		burrows.forEach { (location, type) ->
+			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				location.center().raise(),
+				type.displayName,
+				color = type.color,
+				yOffset = -5f,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 		}
-	}
-
-	private fun findValidLocation(location: NobaVec): NobaVec {
-		return when {
-			!location.inLoadedChunk() -> location.copy(y = LocationUtils.playerLocation.y)
-			else -> findGroundLevel(location) ?: findFirstSolidBlock(location)
-		}
-	}
-
-	private fun findGroundLevel(location: NobaVec): NobaVec? {
-		for(y in 140 downTo 65) {
-			if(location.isGroundAt(y)) return location.copy(y = y.toDouble())
-		}
-		return null
-	}
-
-	private fun findFirstSolidBlock(location: NobaVec): NobaVec {
-		for(y in 65..140) {
-			if(location.copy(y = y.toDouble()).getBlockAt() == Blocks.AIR) {
-				return location.copy(y = (y - 1).toDouble())
-			}
-		}
-		return location.copy(y = LocationUtils.playerLocation.y)
-	}
-
-	private fun NobaVec.isGroundAt(y: Int): Boolean {
-		val groundBlock = copy(y = y.toDouble()).getBlockAt()
-		val aboveBlock = copy(y = (y + 1).toDouble()).getBlockAt()
-		return groundBlock == Blocks.GRASS_BLOCK && aboveBlock in validBlocks
 	}
 
 	private fun suggestNearestWarp() {
@@ -305,8 +295,7 @@ object MythologicalWaypoints {
 		RenderUtils.drawTitle(tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp?.displayName}"), NobaColor.GRAY, 2f, 30, 1.seconds)
 	}
 
-	private fun getTargetLocation(): NobaVec? =
-		inquisitors.firstOrNull()?.location ?: guessLocation?.let { findValidLocation(it) }
+	private fun getTargetLocation(): NobaVec? = inquisitors.firstOrNull()?.location ?: guessLocation
 
 	fun useNearestWarp() {
 		if(!DianaAPI.isActive) return
@@ -318,10 +307,12 @@ object MythologicalWaypoints {
 	}
 
 	fun reset() {
+		particlePath.reset()
 		guessLocation = null
 		inquisitors.clear()
-		lastInquisitorId = null
 		inquisitorSpawnTimes.clear()
+		nearbyInquisitors.clear()
+		lastInquisitor = null
 		nearestWarp = null
 	}
 
