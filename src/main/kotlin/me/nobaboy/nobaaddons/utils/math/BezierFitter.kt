@@ -46,6 +46,5 @@ class BezierCurve(private val coefficients: List<DoubleArray>) {
 	}
 
 	fun at(t: Double): NobaVec = coefficients.map { it.valueAt(t) }.toNobaVec()
-
 	fun derivativeAt(t: Double): NobaVec = coefficients.map { it.derivativeValueAt(t) }.toNobaVec()
 }
