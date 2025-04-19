@@ -31,6 +31,7 @@ object ChatChannelDisplay {
 	).fromRepo("chat.message_channel")
 
 	private val MESSAGE_EXPIRED by "The conversation you were in expired and you have been moved back to the ALL channel.".fromRepo("chat.message_expired")
+	private val NOT_IN_PARTY by "You are not in a party and were moved to the ALL channel.".fromRepo("chat.not_in_party")
 
 	fun init() {
 		ScreenEvents.AFTER_INIT.register { _, screen, _, _ ->
@@ -67,7 +68,7 @@ object ChatChannelDisplay {
 			return
 		}
 
-		if(event.cleaned == MESSAGE_EXPIRED) {
+		if(event.cleaned == MESSAGE_EXPIRED || event.cleaned == NOT_IN_PARTY) {
 			channel = ActiveChatChannel(ChatChannel.ALL)
 		}
 	}

@@ -2,13 +2,14 @@ package me.nobaboy.nobaaddons.features.chat.channeldisplay
 
 import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.api.PartyAPI
+import me.nobaboy.nobaaddons.utils.TextUtils.aqua
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.gray
-import me.nobaboy.nobaaddons.utils.TextUtils.green
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TextUtils.withColor
+import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
 import me.nobaboy.nobaaddons.utils.tr
@@ -40,7 +41,7 @@ data class ActiveChatChannel(val channel: ChatChannel, val dmWith: String? = nul
 		val party = PartyAPI.party
 		append(when {
 			party?.members.isNullOrEmpty() -> tr("nobaaddons.chat.channel.emptyParty", "Empty party!").red()
-			else -> tr("nobaaddons.chat.channel.partyCount", "${party.members.size} in party").green()
+			else -> tr("nobaaddons.chat.channel.partyCount", "${party.members.size} in party").aqua()
 		})
 	}
 
@@ -48,7 +49,7 @@ data class ActiveChatChannel(val channel: ChatChannel, val dmWith: String? = nul
 		val expires = this@ActiveChatChannel.expires ?: Timestamp.distantPast()
 		append(when {
 			expires.timeRemaining() < 1.seconds -> tr("nobaaddons.chat.channel.dmExpired", "Expired!").red()
-			else -> expires.timeRemaining().toShortString().toText().green()
+			else -> expires.timeRemaining().toShortString().toText().yellow()
 		})
 	}
 }
