@@ -91,7 +91,7 @@ object ChatChannelDisplay {
 
 	private fun onRenderHud(ctx: DrawContext, delta: RenderTickCounter) {
 		if(!enabled) return
-//		if(!HypixelUtils.onHypixel) return
+		if(!HypixelUtils.onHypixel) return
 		if(MCUtils.client.currentScreen is ChatScreen) return
 
 		val displayTicks = DISPLAY_FOR_TICKS - ticksSinceChatOpen
@@ -113,7 +113,7 @@ object ChatChannelDisplay {
 
 	private fun onRenderChatScreen(ctx: DrawContext) {
 		if(!enabled) return
-//		if(!HypixelUtils.onHypixel) return
+		if(!HypixelUtils.onHypixel) return
 
 		draw(ctx)
 	}
