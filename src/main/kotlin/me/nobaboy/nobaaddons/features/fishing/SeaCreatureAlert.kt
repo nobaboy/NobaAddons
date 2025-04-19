@@ -14,8 +14,8 @@ object SeaCreatureAlert {
 	private val config get() = NobaConfig.fishing.seaCreatureAlert
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
-	private val SeaCreature.isRare: Boolean get() =
-		rarity >= config.minimumRarity || (id == "CARROT_KING" && config.carrotKing) || (id == "NUTCRACKER" && config.nutcracker)
+	private val SeaCreature.isRare: Boolean
+		get() = rarity >= config.minimumRarity || (id == "CARROT_KING" && config.carrotKing) || (id == "NUTCRACKER" && config.nutcracker)
 
 	fun init() {
 		FishingEvents.SEA_CREATURE_CATCH.register(this::onSeaCreatureCatch)
