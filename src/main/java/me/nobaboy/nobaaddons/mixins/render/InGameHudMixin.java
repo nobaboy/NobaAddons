@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.mixins.render;
 
 //? if <1.21.2 {
-/*import org.spongepowered.asm.mixin.injection.Slice;*/
-//?}
+/*import org.spongepowered.asm.mixin.injection.Slice;
+*///?}
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI;

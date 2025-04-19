@@ -5,7 +5,7 @@ import dev.celestialfault.histoire.Histoire.Companion.getFile
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
-import net.minecraft.util.PathUtil
+import net.minecraft.util/*? if >=1.21.5 {*//*.path*//*?}*/.PathUtil
 import java.nio.file.Path
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter

@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.anyFullMatch
+import me.nobaboy.nobaaddons.utils.TextUtils.commandOrNull
 import net.minecraft.text.Text
 
 object ProfileInfoChatFilter : IChatFilter {
@@ -19,7 +20,8 @@ object ProfileInfoChatFilter : IChatFilter {
 	private fun isSuggestProfile(message: Text): Boolean {
 		if(UUID_SUGGEST_REGEX.matches(message.string)) {
 			val clickAction = message.style.clickEvent ?: return false
-			return CommonPatterns.UUID_REGEX.matches(clickAction.value)
+			val value = clickAction.commandOrNull() ?: return false
+			return CommonPatterns.UUID_REGEX.matches(value)
 		}
 		return false
 	}

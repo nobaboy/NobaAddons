@@ -9,7 +9,18 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(BeaconBlockEntityRenderer.class)
 public interface BeaconBlockEntityRendererInvoker {
 	@Invoker
-	static void invokeRenderBeam(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float tickDelta, long worldTime, int yOffset, int maxY, int color) {
+	static void invokeRenderBeam(
+		MatrixStack matrices,
+		VertexConsumerProvider vertexConsumers,
+		float tickDelta,
+		//? if >=1.21.5 {
+		/*float scale,
+		*///?}
+		long worldTime,
+		int yOffset,
+		int maxY,
+		int color
+	) {
 		throw new UnsupportedOperationException();
 	}
 }

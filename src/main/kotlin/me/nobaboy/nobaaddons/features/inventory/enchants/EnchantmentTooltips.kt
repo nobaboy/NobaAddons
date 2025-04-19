@@ -94,12 +94,10 @@ object EnchantmentTooltips {
 				// for whatever reason, there's an extra blank sibling before ult enchants?
 				if(string == ", " || string.isBlank()) return@forEach
 
-				val parts = string.split(" ").toMutableList()
+				// trim() to account for stacking enchants
+				val parts = string.trim().split(" ").toMutableList()
 
-				// account for stacking enchants displaying counts
-				if(parts.last().isBlank()) {
-					parts.removeLast()
-				}
+				// ignore components that are just counts from stacking enchants
 				if(parts.size == 1 && parts.last().all { it in ('0'..'9') || it == ',' }) {
 					return@forEach
 				}

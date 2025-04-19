@@ -18,16 +18,15 @@ import net.minecraft.client.gui.widget.GridWidget
 import net.minecraft.client.gui.widget.ThreePartsLayoutWidget
 import net.minecraft.screen.ScreenTexts
 
-private const val SPACING = 8
-private const val BUTTON_WIDTH = 200
-private const val BUTTON_WIDTH_HALF = 96
-
 class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOBAADDONS) {
-	private var initialized = false
-	private var layout: ThreePartsLayoutWidget = ThreePartsLayoutWidget(this, 150, 20)
+	private val layout: ThreePartsLayoutWidget = ThreePartsLayoutWidget(this, 150, 20)
 
 	companion object {
 		private const val GITHUB_ROOT = "https://github.com/nobaboy/NobaAddons"
+
+		private const val SPACING = 8
+		private const val BUTTON_WIDTH = 200
+		private const val BUTTON_WIDTH_HALF = 96
 
 		private val TITLE_TEXT = CommonText.NOBAADDONS
 		private val VERSION_TEXT = "v${NobaAddons.VERSION}"
@@ -42,13 +41,6 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 	}
 
 	override fun init() {
-		// allow bypassing this screen from mod menu by pressing shift
-		if(!initialized && hasShiftDown()) {
-			MCUtils.client.setScreen(NobaConfig.getConfigScreen(parent))
-			return
-		}
-		initialized = true
-
 		val gridWidget = layout.addBody(GridWidget()).setSpacing(SPACING)
 		gridWidget.mainPositioner.alignHorizontalCenter()
 		val adder = gridWidget.createAdder(2)
