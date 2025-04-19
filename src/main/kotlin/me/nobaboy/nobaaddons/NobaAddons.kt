@@ -26,6 +26,7 @@ import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
+import me.nobaboy.nobaaddons.features.chat.channeldisplay.ChatChannelDisplay
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
@@ -231,6 +232,7 @@ object NobaAddons : ClientModInitializer {
 		CopyChatFeature.init()
 		ChatNotifications.init()
 		IChatFilter.init()
+		ChatChannelDisplay.init()
 		/* region Chat Commands */
 		DMCommands.init()
 		PartyCommands.init()

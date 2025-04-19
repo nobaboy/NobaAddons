@@ -10,6 +10,12 @@ import net.minecraft.text.Text
 
 object ChatCategory {
 	fun create() = category(tr("nobaaddons.config.chat", "Chat")) {
+		add({ chat::displayCurrentChannel }) {
+			name = tr("nobaaddons.config.chat.displayCurrentChannel", "Display Current Chat Channel")
+			descriptionText = tr("nobaaddons.config.chat.displayCurrentChannel.tooltip", "Displays the current /chat channel you're in above the chat text box")
+			booleanController()
+		}
+
 		copyChat()
 		filters()
 		chatCommands()
