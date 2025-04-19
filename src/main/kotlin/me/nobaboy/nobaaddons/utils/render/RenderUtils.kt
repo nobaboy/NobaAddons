@@ -423,10 +423,7 @@ object RenderUtils {
 	 * Returns a lerped alpha for [displayTicks], gradually becoming more transparent the closer it is to 0 from [threshold]
 	 */
 	fun lerpAlpha(partialTick: Float, displayTicks: Int, threshold: Int): Int {
-		if(displayTicks > threshold) {
-			return 255
-		}
 		val lerped = MathHelper.lerp(partialTick, displayTicks.toFloat(), displayTicks - 1f)
-		return ((lerped / threshold.toDouble()) * 255.0).roundToInt()
+		return ((lerped / threshold.toDouble()) * 255.0).roundToInt().coerceIn(0, 255)
 	}
 }
