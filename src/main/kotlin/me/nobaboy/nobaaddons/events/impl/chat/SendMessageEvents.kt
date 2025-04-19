@@ -9,7 +9,6 @@ object SendMessageEvents {
 		ClientSendMessageEvents.CHAT.register { SEND_CHAT_MESSAGE.invoke(SendMessage(it)) }
 	}
 
-	// TODO is there any use in adding a chat message event?
 	// TODO could this be changed to be a wrapper around the fabric send message events?
 
 	/**
