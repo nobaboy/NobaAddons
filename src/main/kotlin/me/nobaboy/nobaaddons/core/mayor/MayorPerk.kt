@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.core.mayor
 
-import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.foxyExtraEventPattern
+import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.FOXY_EVENT_REGEX
 import me.nobaboy.nobaaddons.data.json.Perk
-import me.nobaboy.nobaaddons.utils.RegexUtils.mapFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 
 enum class MayorPerk(val perkName: String) {
 	// Aatrox
@@ -68,33 +68,26 @@ enum class MayorPerk(val perkName: String) {
 	BRIBE("Bribe"),
 	DARKER_AUCTIONS("Darker Auctions");
 
-	// FIXME noba why the fuck are these values mutable
-	var isActive = false
-	var description = "Failed to load description from API"
-	var minister = false
+	var description: String = "Failed to load perk description from the API"
 
-	override fun toString(): String = "$perkName: $description"
+	override fun toString(): String = "$perkName\n$description"
 
 	companion object {
 		fun getByName(name: String): MayorPerk? = entries.firstOrNull { it.perkName == name }
 
-		fun disableAll() = entries.forEach { it.isActive = false }
-
 		fun Perk.toPerk(): MayorPerk? = getByName(this.renameFoxyPerks())?.apply {
 			description = this@toPerk.description
-			minister = this@toPerk.minister
 		}
 
 		private fun Perk.renameFoxyPerks(): String {
-			val foxyExtraEventPairs = mapOf(
-				"Mining Fiesta" to "Extra Event (Mining)",
-				"Fishing Festival" to "Extra Event (Fishing)",
-				"Spooky Festival" to "Extra Event (Spooky)"
-			)
-
-			return foxyExtraEventPattern.mapFullMatch(this.description) {
-				foxyExtraEventPairs.entries.firstOrNull { it.key == groups["event"]?.value }?.value
-			} ?: this.name
+			return FOXY_EVENT_REGEX.getGroupFromFullMatch(description, "event")?.let { event ->
+				when(event) {
+					"Mining Fiesta" -> "Extra Event (Mining)"
+					"Fishing Festival" -> "Extra Event (Fishing)"
+					"Spooky Festival" -> "Extra Event (Spooky)"
+					else -> name
+				}
+			} ?: name
 		}
 	}
 }

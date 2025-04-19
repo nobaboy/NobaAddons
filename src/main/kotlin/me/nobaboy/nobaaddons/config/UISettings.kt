@@ -1,17 +1,18 @@
 package me.nobaboy.nobaaddons.config
 
-import dev.celestialfault.celestialconfig.AbstractConfig
+import dev.celestialfault.histoire.Histoire
+import dev.celestialfault.histoire.Object
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.util.saveOnExit
 import me.nobaboy.nobaaddons.ui.data.ElementPosition
-import me.nobaboy.nobaaddons.ui.data.TextElement
+import me.nobaboy.nobaaddons.ui.data.GenericTextElement
 
-object UISettings : AbstractConfig(NobaAddons.CONFIG_DIR.resolve("ui.json")) {
+object UISettings : Histoire(NobaAddons.CONFIG_DIR.resolve("ui.json").toFile()) {
 	init {
 		saveOnExit()
 	}
 
-	val catchTimer by TextElement("catchTimer", position = ElementPosition(x = 0.485, y = 0.55, scale = 2f))
-	val itemPickupLog by TextElement("itemPickupLog")
-	val mythologicalTracker by TextElement("mythologicalTracker")
+	@Object val itemPickupLog = GenericTextElement()
+	@Object val catchTimer = GenericTextElement(position = ElementPosition(x = 0.485, y = 0.55, scale = 2f))
+	@Object val mythologicalTracker = GenericTextElement()
 }

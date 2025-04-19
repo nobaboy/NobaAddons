@@ -152,6 +152,7 @@ object NobaCommand {
 		ChatUtils.addMessage(tr("nobaaddons.command.currentDay", "This lobby is at day $day"))
 	}
 
+	val calc = NobaClientCommandGroup(CalculateCommands)
 	val repo = NobaClientCommandGroup(RepoCommands)
 	val debug = NobaClientCommandGroup(DebugCommands)
 	val internal = NobaClientCommandGroup(InternalCommands)

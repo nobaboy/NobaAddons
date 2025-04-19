@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.config.categories
 import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.CommonText
+import me.nobaboy.nobaaddons.utils.enums.AnnounceChannel
 import me.nobaboy.nobaaddons.utils.tr
 
 object EventsCategory {
@@ -63,11 +64,10 @@ object EventsCategory {
 				descriptionText = tr("nobaaddons.config.events.mythological.alertInquisitor.tooltip", "Send a message in chat when you find a Minos Inquisitor")
 				booleanController()
 			}
-			add({ events.mythological::alertOnlyInParty }) {
-				name = tr("nobaaddons.config.events.mythological.alertOnlyInParty", "Only Alert in Party Chat")
-				descriptionText = tr("nobaaddons.config.events.mythological.alertOnlyInParty.tooltip", "The Inquisitor alert message will always be sent in party chat, instead of your current selected /chat")
+			add({ events.mythological::announceChannel }) {
+				name = CommonText.Config.ANNOUNCE_CHANNEL
 				require { option(alertInquis) }
-				booleanController()
+				enumController(onlyInclude = arrayOf(AnnounceChannel.ALL, AnnounceChannel.PARTY))
 			}
 			add({ events.mythological::notificationSound }) {
 				name = CommonText.Config.NOTIFICATION_SOUND

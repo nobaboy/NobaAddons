@@ -8,13 +8,13 @@ import me.nobaboy.nobaaddons.features.chat.filters.dungeons.HealerOrbChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.PickupObtainChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.ProfileInfoChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessagesChatFilter
-import me.nobaboy.nobaaddons.features.chat.filters.mobs.SeaCreatureSpawnMessageChatFilter
+import me.nobaboy.nobaaddons.features.chat.filters.mobs.SeaCreatureCatchMessageChatFilter
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.text.Text
 
 interface IChatFilter {
-	val config get() = NobaConfig.INSTANCE.chat.filters
+	val config get() = NobaConfig.chat.filters
 
 	val enabled: Boolean
 
@@ -27,7 +27,7 @@ interface IChatFilter {
 			// Item Abilities
 			AbilityChatFilter,
 			// Mobs
-			SeaCreatureSpawnMessageChatFilter,
+			SeaCreatureCatchMessageChatFilter,
 			// Dungeons
 			BlessingChatFilter,
 			HealerOrbChatFilter,
@@ -53,7 +53,6 @@ interface IChatFilter {
 						ErrorManager.logError("${filter::class.simpleName} threw an error while processing a chat message", ex)
 					}
 				}
-//				}
 			}
 		}
 	}

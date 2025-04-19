@@ -20,10 +20,14 @@ import me.nobaboy.nobaaddons.core.profile.DianaProfileData
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.NobaColor
+import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils
+import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.gray
+import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.TextUtils.underline
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.Message
@@ -34,6 +38,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.entity.LivingEntity
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
+import net.minecraft.text.Texts
 import net.minecraft.util.Formatting
 import kotlin.jvm.optionals.getOrNull
 
@@ -79,16 +84,27 @@ object DebugCommands {
 		val mayor = MayorAPI.currentMayor
 		val minister = MayorAPI.currentMinister
 
-		if(mayor == Mayor.UNKNOWN && minister == Mayor.UNKNOWN) {
+		if(mayor.mayor == Mayor.UNKNOWN && minister.mayor == Mayor.UNKNOWN) {
 			ctx.source.sendError(Text.literal("Current Mayor and Minister are still unknown"))
 			return
 		}
 
 		ctx.dumpInfo(
-			"Current Mayor" to mayor.mayorName,
-			"Mayor Perks" to mayor.activePerks,
-			"Current Minister" to minister.mayorName,
-			"Minister Perk" to minister.activePerks,
+			"Current Mayor" to buildLiteral(mayor.displayName) {
+				if(mayor.perks.isNotEmpty()) {
+					hoverText(Texts.join(mayor.perks.map { it.toString().toText().gray() }, Text.literal("\n\n")))
+					underline()
+				}
+				gray()
+			},
+
+			"Current Minister" to buildLiteral(minister.displayName) {
+				if(minister.perks.isNotEmpty()) {
+					hoverText(Texts.join(minister.perks.map { it.toString().toText().gray() }, Text.literal("\n\n")))
+					underline()
+				}
+				gray()
+			}
 		)
 	}
 
@@ -103,6 +119,11 @@ object DebugCommands {
 		@Command
 		fun rareDrop() {
 			SoundUtils.rareDropSound.play()
+		}
+
+		@Command
+		fun zeldaSecret() {
+			SoundUtils.zeldaSecretSound.play()
 		}
 	}
 
@@ -159,12 +180,14 @@ object DebugCommands {
 	fun flushCaches() {
 		PersistentCache.save()
 		ProfileData.saveAll()
-		DianaProfileData.saveAll()
 	}
 
 	@Command
 	fun profile(ctx: Context) {
-		ctx.dumpInfo("Current profile" to ProfileData.PROFILE.profile)
+		ctx.dumpInfo(
+			"Current Profile" to ProfileData.PROFILE.profile,
+			"Profile Type" to SkyBlockAPI.profileType.displayName
+		)
 	}
 
 	@Command
@@ -180,7 +203,7 @@ object DebugCommands {
 			return
 		}
 
-		entity.highlight(NobaColor.COLORS.first { it.formatting == formatting })
+		entity.highlight(formatting.toNobaColor())
 	}
 
 	private var lastResponse: Message? = null

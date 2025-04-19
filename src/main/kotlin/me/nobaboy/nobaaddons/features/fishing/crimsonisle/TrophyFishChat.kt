@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.fishing
+package me.nobaboy.nobaaddons.features.fishing.crimsonisle
 
 import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.NumberUtils.ordinalSuffix
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.aqua
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
@@ -18,7 +19,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
 object TrophyFishChat {
-	private val config get() = NobaConfig.INSTANCE.fishing.trophyFishing
+	private val config get() = NobaConfig.fishing.trophyFishing
 
 	private val lastMessage: MutableMap<Pair<TrophyFish, TrophyFishRarity>, Message> = mutableMapOf()
 
@@ -43,7 +44,7 @@ object TrophyFishChat {
 
 	private fun modifyChatMessage(event: ChatMessageEvents.Allow) {
 		if(!config.modifyChatMessages) return
-		val (fish, rarity) = TrophyFishAPI.parseFromChatMessage(event.message.string) ?: return
+		val (fish, rarity) = TrophyFishAPI.parseFromChatMessage(event.message.string.cleanFormatting()) ?: return
 
 		val count: Int = TrophyFishAPI.trophyFish[fish.id]?.let { it[rarity] } ?: -1
 		val total: Int = TrophyFishAPI.trophyFish[fish.id]?.values?.sum() ?: -1

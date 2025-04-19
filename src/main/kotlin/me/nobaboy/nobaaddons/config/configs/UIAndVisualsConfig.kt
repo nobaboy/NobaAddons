@@ -1,55 +1,53 @@
 package me.nobaboy.nobaaddons.config.configs
 
-import dev.celestialfault.celestialconfig.ObjectProperty
-import dev.celestialfault.celestialconfig.Property
-import dev.celestialfault.celestialconfig.Serializer
+import dev.celestialfault.histoire.Object
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.serializers.ExtraSerializers.color
 
-class UIAndVisualsConfig : ObjectProperty<UIAndVisualsConfig>("uiAndVisuals") {
-	var renderInfoBoxesOutsideSkyBlock by Property.of<Boolean>("renderInfoBoxesOutsideSkyBlock", false)
+class UIAndVisualsConfig {
+	var renderInfoBoxesOutsideSkyBlock = false
 
-	val temporaryWaypoints by TemporaryWaypoints()
-	val etherwarpHelper by EtherwarpHelper()
-	val renderingTweaks by RenderingTweaks()
-	val swingAnimation by SwingAnimation()
-	val itemPosition by FirstPersonItemPosition()
+	@Object val temporaryWaypoints = TemporaryWaypoints()
+	@Object val etherwarpOverlay = EtherwarpOverlay()
+	@Object val renderingTweaks = RenderingTweaks()
+	@Object val swingAnimation = SwingAnimation()
+	@Object val itemPosition = FirstPersonItemPosition()
 
-	class TemporaryWaypoints : ObjectProperty<TemporaryWaypoints>("temporaryWaypoints") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var waypointColor by Property.of("waypointColor", Serializer.color, NobaColor.YELLOW)
-		var expirationTime by Property.of<Int>("expirationTime", 30)
+	class TemporaryWaypoints {
+		var enabled = false
+		var waypointColor = NobaColor.YELLOW
+		var expirationTime = 30
 	}
 
-	class EtherwarpHelper : ObjectProperty<EtherwarpHelper>("etherwarpHelper") {
-		var enabled by Property.of<Boolean>("enabled", false)
-		var highlightColor by Property.of("highlightColor", Serializer.color, NobaColor.BLUE)
-		var showFailText by Property.of<Boolean>("showFailText", false)
-		var allowOverlayOnAir by Property.of<Boolean>("allowOverlayOnAir", false)
+	class EtherwarpOverlay {
+		var enabled = false
+		var highlightColor = NobaColor.BLUE
+		var failHighlightColor = NobaColor.GRAY
+		var showFailText = false
+		var allowOverlayOnAir = false
 	}
 
-	class RenderingTweaks : ObjectProperty<RenderingTweaks>("renderingTweaks") {
-		var hideLightningBolt by Property.of<Boolean>("hideLightningBolt", false)
-		var removeFrontFacingThirdPerson by Property.of<Boolean>("removeFrontFacingThirdPerson", false)
-		var fixEnchantedArmorGlint by Property.of<Boolean>("fixEnchantedArmorGlint", false)
-		var removeArmorGlints by Property.of<Boolean>("removeArmorGlints", false)
-		var hideAbsorptionHearts by Property.of<Boolean>("hideAbsorptionHearts", false)
-		var hideAirBubbles by Property.of<Boolean>("hideAirBubbles", false)
+	class RenderingTweaks {
+		var hideLightningBolt = false
+		var removeFrontFacingThirdPerson = false
+		var fixEnchantedArmorGlint = false
+		var removeArmorGlints = false
+		var hideAbsorptionHearts = false
+		var hideAirBubbles = false
 	}
 
-	class SwingAnimation : ObjectProperty<SwingAnimation>("swingAnimation") {
-		var swingDuration by Property.of<Int>("swingDuration", 1)
-		var applyToAllPlayers by Property.of<Boolean>("applyToAllPlayers", false)
-		var staticSwingPosition by Property.of<Boolean>("staticSwingPosition", false)
+	class SwingAnimation {
+		var swingDuration = 1
+		var applyToAllPlayers = false
+		var staticSwingPosition = false
 	}
 
-	class FirstPersonItemPosition : ObjectProperty<FirstPersonItemPosition>("itemPosition") {
-		var cancelEquipAnimation by Property.of<Boolean>("applyToAllPlayers", false)
-		var cancelItemUpdateAnimation by Property.of<Boolean>("cancelItemUpdateAnimation", false)
-		var cancelDrinkAnimation by Property.of<Boolean>("cancelDrinkAnimation", false)
-		var x by Property.of("x", Serializer.number<Int>(min = -150, max = 150), 0)
-		var y by Property.of("y", Serializer.number<Int>(min = -150, max = 150), 0)
-		var z by Property.of("z", Serializer.number<Int>(min = -150, max = 50), 0)
-		var scale by Property.of("scale", Serializer.number<Float>(min = 0.1f, max = 2f), 1f)
+	class FirstPersonItemPosition {
+		var cancelEquipAnimation = false
+		var cancelItemUpdateAnimation = false
+		var cancelDrinkAnimation = false
+		var x = 0
+		var y = 0
+		var z = 0
+		var scale = 1f
 	}
 }

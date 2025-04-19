@@ -7,5 +7,6 @@ enum class DungeonClass {
 	ARCHER,
 	TANK,
 	DEAD,
-	EMPTY
+	EMPTY,
+	;
 }

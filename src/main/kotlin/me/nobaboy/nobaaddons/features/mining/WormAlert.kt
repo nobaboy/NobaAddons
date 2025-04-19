@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.tr
 
 // TODO: Move into crystal hollows category later on, also a tracker would be nice
 object WormAlert {
-	private val config get() = NobaConfig.INSTANCE.mining.wormAlert
+	private val config get() = NobaConfig.mining.wormAlert
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.CRYSTAL_HOLLOWS.inIsland()
 
 	fun init() {

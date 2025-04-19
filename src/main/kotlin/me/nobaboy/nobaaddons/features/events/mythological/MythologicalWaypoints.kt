@@ -40,7 +40,7 @@ import net.minecraft.client.network.OtherClientPlayerEntity
 import kotlin.time.Duration.Companion.seconds
 
 object MythologicalWaypoints {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 
 	private val INQUISITOR_DEAD_REGEX by Regex("(?<username>[A-z0-9_]+): Inquisitor dead!").fromRepo("mythological.inquisitor_dead")
 	private val INQUISITOR_SPAWN_REGEXES by Repo.list(
@@ -182,11 +182,7 @@ object MythologicalWaypoints {
 
 			val message = "x: $x, y: $y, z: $z | Minos Inquisitor at [ ${SkyBlockAPI.prefixedZone} ]"
 
-			if(config.alertOnlyInParty) {
-				if(PartyAPI.party != null) HypixelCommands.partyChat(message)
-			} else {
-				ChatUtils.sendChatAsPlayer(message)
-			}
+			config.announceChannel.send(message)
 		}
 	}
 
@@ -207,6 +203,7 @@ object MythologicalWaypoints {
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
 			RenderUtils.renderText(
+				context,
 				adjustedLocation,
 				tr("nobaaddons.events.mythological.inquisitor", "Inquisitor"),
 				NobaColor.DARK_RED,
@@ -215,6 +212,7 @@ object MythologicalWaypoints {
 				throughBlocks = true
 			)
 			RenderUtils.renderText(
+				context,
 				adjustedLocation,
 				inquisitor.spawner,
 				NobaColor.GOLD,
@@ -226,6 +224,7 @@ object MythologicalWaypoints {
 			if(config.showInquisitorDespawnTime) {
 				val formattedTime = (75 - inquisitor.spawnTime.elapsedSince().inWholeSeconds)
 				RenderUtils.renderText(
+					context,
 					adjustedLocation,
 					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${formattedTime}s"),
 					NobaColor.GRAY,
@@ -243,6 +242,7 @@ object MythologicalWaypoints {
 
 			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
 			RenderUtils.renderText(
+				context,
 				adjustedLocation.center().raise(),
 				tr("nobaaddons.events.mythological.burrowGuessWaypoint", "Burrow Guess"),
 				NobaColor.AQUA,
@@ -253,7 +253,7 @@ object MythologicalWaypoints {
 
 			if(distance > 5) {
 				val formattedDistance = distance.toInt().addSeparators()
-				RenderUtils.renderText(adjustedLocation.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
+				RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
 			}
 		}
 	}
@@ -261,7 +261,7 @@ object MythologicalWaypoints {
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
 		BurrowAPI.burrows.forEach {
 			RenderUtils.renderWaypoint(context, it.location, it.type.color, throughBlocks = true)
-			RenderUtils.renderText(it.location.center().raise(), it.type.displayName, it.type.color, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(context, it.location.center().raise(), it.type.displayName, it.type.color, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
 		}
 	}
 

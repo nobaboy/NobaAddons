@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 
 object BurrowWarpLocations {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 	private val unlockedWarps = mutableSetOf<WarpPoint>()
 
 	fun getNearestWarp(location: NobaVec): WarpPoint? {
@@ -43,7 +43,8 @@ object BurrowWarpLocations {
 		DARK_AUCTION("Dark Auction", "da", NobaVec(91.5, 75.0, 173.5), 5),
 		MUSEUM("Museum", "museum", NobaVec(-75.5, 76.0, 80.5)),
 		WIZARD("Wizard", "wizard", NobaVec(42.5, 122.0, 69.0), 10, { config.ignoreWizard }),
-		STONKS("Stonks", "stonks", NobaVec(-52.5, 71.0, -52.5), 5, { config.ignoreStonks });
+		STONKS("Stonks", "stonks", NobaVec(-52.5, 71.0, -52.5), 5, { config.ignoreStonks }),
+		;
 
 		fun distance(other: NobaVec): Double = other.distance(location) + extraBlocks
 	}

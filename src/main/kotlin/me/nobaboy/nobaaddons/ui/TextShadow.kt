@@ -8,7 +8,8 @@ import net.minecraft.text.Text
 enum class TextShadow : NameableEnum {
 	NONE,
 	SHADOW,
-	OUTLINE;
+	OUTLINE,
+	;
 
 	val next: TextShadow by lazy { BY_ID.apply(ordinal + 1) }
 

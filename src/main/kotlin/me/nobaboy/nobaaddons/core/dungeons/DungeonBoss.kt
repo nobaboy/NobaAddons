@@ -13,7 +13,8 @@ enum class DungeonBoss(val displayName: String?) {
 	GOLDOR("Goldor"),
 	NECRON("Necron"),
 	WITHER_KING("Wither King"),
-	UNKNOWN(null);
+	UNKNOWN(null),
+	;
 
 	companion object {
 		fun getByMessage(text: String): DungeonBoss = entries.firstOrNull { it.displayName != null && text.contains(it.displayName) } ?: UNKNOWN

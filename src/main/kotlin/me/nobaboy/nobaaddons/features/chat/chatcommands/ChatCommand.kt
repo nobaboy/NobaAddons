@@ -6,7 +6,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 abstract class ChatCommand(defaultCooldown: Duration = 1.seconds) : CooldownManager(defaultCooldown) {
-	val config get() = NobaConfig.INSTANCE.chat.chatCommands
+	val config get() = NobaConfig.chat.chatCommands
 
 	abstract val enabled: Boolean
 	abstract val name: String

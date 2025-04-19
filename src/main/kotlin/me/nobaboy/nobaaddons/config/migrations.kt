@@ -1,39 +1,71 @@
 // This file intentionally violates this style rule to make the migration application order unquestionably clear.
-@file:Suppress("FunctionName")
+@file:Suppress("FunctionName", "UNCHECKED_CAST")
 
 package me.nobaboy.nobaaddons.config
 
-import com.google.gson.JsonObject
+import dev.celestialfault.histoire.migrations.Migrations
+import dev.celestialfault.histoire.migrations.MutableJsonMap
+import dev.celestialfault.histoire.migrations.getMap
+import dev.celestialfault.histoire.migrations.rename
+import me.nobaboy.nobaaddons.config.util.mapAndMoveTo
+import me.nobaboy.nobaaddons.config.util.moveTo
 
-internal fun `001_removeYaclVersion`(json: JsonObject) {
+/*
+ * Migrations MUST be added at the end of this block, otherwise they won't run correctly. Migrations that have
+ * already been applied and saved are not run again, so new changes must be added as separate migrations. Removing
+ * migrations is NOT supported and will cause player configs to break, so avoid doing so.
+ */
+internal val migrations = Migrations("configVersion") {
+	add(::`001_removeYaclVersion`)
+	add(::`002_inventoryCategory`)
+	add(::`003_renameGlaciteMineshaftShareCorpses`)
+	add(::`004_moveHideOtherPeopleFishing`)
+	add(::`005_renameEtherwarpHelper`)
+	add(::`006_renameSeaCreatureChatFilter`)
+	add(::`007_renameCopyChat`)
+}
+
+private fun `001_removeYaclVersion`(json: MutableJsonMap) {
 	json.remove("version")
 }
 
-internal fun `002_inventoryCategory`(json: JsonObject) {
-	val uiAndVisuals = json["uiAndVisuals"]?.asJsonObject ?: return
-	val inventory = json["inventory"]?.asJsonObject ?: JsonObject().also { json.add("inventory", it) }
+private fun `002_inventoryCategory`(json: MutableJsonMap) {
+	val uiAndVisuals = json.getMap("uiAndVisuals")
+	val inventory = json.getMap("inventory")
 
-	uiAndVisuals.remove("slotInfo")?.asJsonObject?.let { slotInfo ->
-		slotInfo.remove("enabled")
-		inventory.add("slotInfo", slotInfo)
+	uiAndVisuals.mapAndMoveTo("slotInfo", inventory) {
+		(it as MutableJsonMap).remove("enabled")
+		Unit
 	}
 
-	uiAndVisuals.remove("enchantments")?.asJsonObject?.let { enchantments ->
-		enchantments.remove("parseItemEnchants")?.asBoolean?.let { parseItemEnchants ->
-			enchantments.addProperty("modifyTooltips", parseItemEnchants)
-		}
-
-		inventory.add("enchantmentTooltips", enchantments)
+	uiAndVisuals.mapAndMoveTo("enchantments", inventory, newKey = "enchantmentTooltips") {
+		(it as MutableJsonMap).rename("parseItemEnchants", "modifyTooltips")
 	}
 }
 
-internal fun `003_renameGlaciteMineshaftShareCorpses`(json: JsonObject) {
-	val glaciteMineshaft = json["mining"]?.asJsonObject["glaciteMineshaft"]?.asJsonObject ?: return
-	glaciteMineshaft.add("autoShareCorpses", glaciteMineshaft.remove("autoShareCorpseCoords") ?: return)
+private fun `003_renameGlaciteMineshaftShareCorpses`(json: MutableJsonMap) {
+	val glaciteMineshaft = json.getMap("mining", "glaciteMineshaft")
+	glaciteMineshaft.rename("autoShareCorpseCoords", "autoShareCorpses")
 }
 
-internal fun `004_moveHideOtherPeopleFishing`(json: JsonObject) {
-	val renderingTweaks = json["uiAndVisuals"]?.asJsonObject["renderingTweaks"]?.asJsonObject ?: return
-	val fishing = json["fishing"]?.asJsonObject ?: JsonObject().also { json.add("fishing", it) }
-	fishing.add("hideOtherPeopleFishing", renderingTweaks.remove("hideOtherPeopleFishing"))
+private fun `004_moveHideOtherPeopleFishing`(json: MutableJsonMap) {
+	val renderingTweaks = json.getMap("uiAndVisuals", "renderingTweaks")
+	val fishing = json.getMap("fishing")
+	renderingTweaks.moveTo("hideOtherPeopleFishing", fishing)
+}
+
+private fun `005_renameEtherwarpHelper`(json: MutableJsonMap) {
+	val uiAndVisuals = json.getMap("uiAndVisuals")
+	uiAndVisuals.rename("etherwarpHelper", "etherwarpOverlay")
+}
+
+private fun `006_renameSeaCreatureChatFilter`(json: MutableJsonMap) {
+	val filters = json.getMap("chat", "filters")
+	filters.rename("hideSeaCreatureSpawnMessage", "hideSeaCreatureCatchMessage")
+	filters.rename("seaCreatureMaximumRarity", "seaCreatureMaxRarity")
+}
+
+private fun `007_renameCopyChat`(json: MutableJsonMap) {
+	val chat = json.getMap("chat")
+	chat.rename("copy", "copyChat")
 }

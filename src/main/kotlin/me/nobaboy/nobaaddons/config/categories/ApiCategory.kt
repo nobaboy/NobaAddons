@@ -28,11 +28,7 @@ private fun createSimpleMathProblem(): Pair<String, Int> {
 }
 
 object ApiCategory {
-	private val captcha: Option<Boolean> = Option.createBuilder<Boolean>().apply {
-		name(Text.literal("internal captcha option"))
-		binding(false, NobaConfig.INSTANCE.repo::solvedCaptcha, NobaConfig.INSTANCE.repo::solvedCaptcha.setter)
-		controller(BooleanControllerBuilder::create)
-	}.build()
+	private lateinit var captcha: Option<Boolean>
 
 	fun create() = category(tr("nobaaddons.config.apis", "APIs")) {
 		label {
@@ -51,17 +47,23 @@ object ApiCategory {
 	}
 
 	private fun ConfigCategory.Builder.captcha() {
-		if(NobaConfig.INSTANCE.repo.solvedCaptcha) {
+		captcha = Option.createBuilder<Boolean>().apply {
+			name(Text.literal("internal captcha option"))
+			binding(false, NobaConfig.repo::solvedCaptcha, NobaConfig.repo::solvedCaptcha.setter)
+			controller(BooleanControllerBuilder::create)
+		}.build()
+
+		if(NobaConfig.repo.solvedCaptcha) {
 			return
 		}
 
 		var solved = 0
-		val toSolve = createSimpleMathProblem()
+		val (problem, solution) = createSimpleMathProblem()
 		add(Binding.generic(0, { solved }, { solved = it })) {
-			name = tr("nobaaddons.config.apis.captcha", "Solve: ${toSolve.first} =")
+			name = tr("nobaaddons.config.apis.captcha", "Solve: $problem =")
 			intFieldController()
 			onUpdate { option, event ->
-				captcha.requestSet(option.pendingValue() == toSolve.second)
+				captcha.requestSet(option.pendingValue() == solution)
 				captcha.applyValue()
 			}
 		}

@@ -37,6 +37,7 @@ object ChatNotifications {
 				NotificationMode.REGEX -> {
 					val regex = this.regex.apply(it.message) ?: return@forEach
 					val match = regex.find(message) ?: return@forEach
+
 					display = it.colorFormattedDisplay
 					display = display.replace(GROUP) {
 						val group = it.groups[1]?.value?.toInt() ?: return@replace it.value

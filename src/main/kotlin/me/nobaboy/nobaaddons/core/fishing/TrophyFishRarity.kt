@@ -10,7 +10,8 @@ enum class TrophyFishRarity(val color: NobaColor, val pityAt: Int?) : NameableEn
 	BRONZE(NobaColor.DARK_GRAY, null),
 	SILVER(NobaColor.GRAY, null),
 	GOLD(NobaColor.GOLD, 100),
-	DIAMOND(NobaColor.AQUA, 600);
+	DIAMOND(NobaColor.AQUA, 600),
+	;
 
 	override fun getDisplayName(): Text = when(this) {
 		BRONZE -> tr("nobaaddons.label.trophyFishRarity.bronze", "BRONZE")

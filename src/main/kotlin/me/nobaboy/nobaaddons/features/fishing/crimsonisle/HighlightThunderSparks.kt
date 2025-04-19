@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.features.fishing
+package me.nobaboy.nobaaddons.features.fishing.crimsonisle
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -17,7 +17,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.fluid.LavaFluid
 
 object HighlightThunderSparks {
-	private val config get() = NobaConfig.INSTANCE.fishing.highlightThunderSparks
+	private val config get() = NobaConfig.fishing.highlightThunderSparks
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.CRIMSON_ISLE.inIsland()
 
 	private val THUNDER_SPARK_TEXTURE by "ewogICJ0aW1lc3RhbXAiIDogMTY0MzUwNDM3MjI1NiwKICAicHJvZmlsZUlkIiA6ICI2MzMyMDgwZTY3YTI0Y2MxYjE3ZGJhNzZmM2MwMGYxZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUZWFtSHlkcmEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2IzMzI4ZDNlOWQ3MTA0MjAzMjI1NTViMTcyMzkzMDdmMTIyNzBhZGY4MWJmNjNhZmM1MGZhYTA0YjVjMDZlMSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9".skullFromRepo("thunder_spark")
@@ -45,11 +45,13 @@ object HighlightThunderSparks {
 		thunderSparks.removeIf { !it.isAlive }
 		thunderSparks.forEach {
 			val vec = it.getNobaVec()
+			val distance = vec.distanceToPlayer()
 			val block = vec.roundToBlock().add(y = 1).getBlockStateAt()
-			val throughBlocks = vec.distanceToPlayer() < 6 && block.fluidState != null && block.fluidState.fluid is LavaFluid
+
+			val throughBlocks = distance < 6 && block.fluidState != null && block.fluidState.fluid is LavaFluid
 
 			RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, z = -0.5), config.highlightColor, extraSize = -0.25, throughBlocks = throughBlocks)
-			if(config.showText && vec.distanceToPlayer() < 10) RenderUtils.renderText(vec.raise(1.25), "Thunder Spark", throughBlocks = throughBlocks)
+			if(config.showText && distance < 10) RenderUtils.renderText(context, vec.raise(1.25), "Thunder Spark", throughBlocks = throughBlocks)
 		}
 	}
 }

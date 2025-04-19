@@ -18,7 +18,7 @@ import net.minecraft.text.Text
 
 // TODO: Allow for Four-Eyed Fish coins to be tracked, would require some extensive rework of PetAPI
 object MythologicalTracker {
-	private val config get() = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.tracker && DianaAPI.isActive
 
 	private val data get() = DianaProfileData.PROFILE

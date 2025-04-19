@@ -24,7 +24,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 object BurrowAPI {
-	private val config = NobaConfig.INSTANCE.events.mythological
+	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.findNearbyBurrows && DianaAPI.isActive
 
 	private val CLEAR_BURROWS_MESSAGE by "Poof! You have cleared your griffin burrows!".fromRepo("mythological.clear_burrows")

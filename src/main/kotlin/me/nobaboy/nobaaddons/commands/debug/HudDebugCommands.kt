@@ -4,7 +4,7 @@ import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
-import me.nobaboy.nobaaddons.ui.data.TextElement
+import me.nobaboy.nobaaddons.ui.data.GenericTextElement
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
@@ -19,7 +19,7 @@ object HudDebugCommands {
 		Colors.YELLOW
 	)
 
-	private class DebugHudElement : TextHudElement(TextElement(color = colors.random())) {
+	private class DebugHudElement : TextHudElement(GenericTextElement(color = colors.random())) {
 		override fun renderText(context: DrawContext) {
 			renderLine(context, "Zoop!".toText())
 		}

@@ -13,17 +13,17 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
-import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
 
 object CorpseLocator {
-	private val config get() = NobaConfig.INSTANCE.mining.glaciteMineshaft
+	private val config get() = NobaConfig.mining.glaciteMineshaft
 	private val enabled: Boolean get() = config.corpseLocator && SkyBlockIsland.MINESHAFT.inIsland()
 
 	private val corpses = mutableListOf<Corpse>()
@@ -69,9 +69,14 @@ object CorpseLocator {
 			val location = corpse.entity.getNobaVec().roundToBlock()
 			val (x, y, z) = location.toDoubleArray().map { it.toInt() }
 
-			val text = tr("nobaaddons.mining.corpseLocator.found", "Found ${corpse.type.formattedDisplayName} at $x, $y, $z!")
+			val article = if(corpse.type == CorpseType.UMBER) "an" else "a"
+			val message = buildText {
+				append("Found $article ")
+				append(corpse.type.formattedName)
+				append(" at $x, $y, $z!")
+			}
 
-			ChatUtils.addMessage(text)
+			ChatUtils.addMessage(message)
 			MineshaftWaypoints.addWaypoint(location, corpse.type.displayName, corpse.type.color, MineshaftWaypointType.CORPSE)
 
 			corpse.seen = true

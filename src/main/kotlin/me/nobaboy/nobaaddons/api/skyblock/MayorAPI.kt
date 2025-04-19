@@ -3,14 +3,14 @@ package me.nobaboy.nobaaddons.api.skyblock
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
-import me.nobaboy.nobaaddons.data.json.MayorJson
+import me.nobaboy.nobaaddons.data.json.Election
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.HTTPUtils
-import me.nobaboy.nobaaddons.utils.RegexUtils.mapFullMatch
+import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -19,47 +19,43 @@ import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import me.nobaboy.nobaaddons.utils.tr
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
+// TODO: Use repo for mayor descriptions except for Foxy
 object MayorAPI {
 	private const val ELECTION_API_URL = "https://api.hypixel.net/v2/resources/skyblock/election"
 
-	// SkyBlock elections end on the 27th of Late Spring
 	private const val ELECTION_END_MONTH = 3
 	private const val ELECTION_END_DAY = 27
 
-	private val electionEndMessage by "The election room is now closed. Clerk Seraphine is doing a final count of the votes...".fromRepo("mayor.election_end")
-	private val mayorHeadPattern by Regex("Mayor (?<name>[A-z]+)").fromRepo("mayor.skull_item")
+	private val MAYOR_NAME_REGEX by Regex("Mayor (?<name>[A-z]+)").fromRepo("mayor.name")
+	private val ELECTION_END_MESSAGE by "The election room is now closed. Clerk Seraphine is doing a final count of the votes...".fromRepo("mayor.election_end")
 
-	val foxyExtraEventPattern by Regex("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
+	val FOXY_EVENT_REGEX by Regex("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
 
-	var currentMayor: Mayor = Mayor.UNKNOWN
+	var currentMayor: ActiveMayor = Mayor.UNKNOWN.withNone()
 		private set
-	var currentMinister: Mayor = Mayor.UNKNOWN
+	var currentMinister: ActiveMayor = Mayor.UNKNOWN.withNone()
+
+	var jerryMayor: Pair<ActiveMayor, Timestamp> = Mayor.UNKNOWN.withNone() to Timestamp.distantPast()
 		private set
 
-	var jerryMayor: Pair<Mayor, Timestamp> = Mayor.UNKNOWN to Timestamp.distantPast()
-		private set
+	private var lastMayor: ActiveMayor? = null
+	private var nextMayorTimestamp = Timestamp.distantPast()
 
-	val allActivePerks get() = buildSet<MayorPerk> {
-		addAll(currentMayor.activePerks)
-		addAll(currentMinister.activePerks)
-		if(currentMayor == Mayor.JERRY) {
-			addAll(jerryMayor.first.activePerks)
-		}
-	}
+	private var lastUpdate = Timestamp.distantPast()
+	private val shouldUpdate: Boolean get() = lastUpdate.elapsedSince() > 20.minutes
 
-	private var lastMayor: Mayor? = null
+	fun Mayor.isElected(): Boolean = currentMayor.mayor == this
+	fun MayorPerk.isActive(): Boolean = (currentMayor.perks + currentMinister.perks).contains(this)
 
-	private var lastApiUpdate = Timestamp.distantPast()
-	private val shouldUpdateMayor: Boolean
-		get() = lastApiUpdate.elapsedSince() > 20.minutes
+	private fun SkyBlockTime.getElectionYear(): Int =
+		year - if(month < ELECTION_END_MONTH || (month == ELECTION_END_MONTH && day < ELECTION_END_DAY)) 1 else 0
 
-	var nextMayorTimestamp = Timestamp.distantPast()
-		private set
 
 	fun init() {
 		TickEvents.everySecond { onSecondPassed() }
@@ -70,17 +66,15 @@ object MayorAPI {
 	private fun onSecondPassed() {
 		if(!SkyBlockAPI.inSkyBlock) return
 
-		if(shouldUpdateMayor) {
-			NobaAddons.runAsync { getCurrentMayor() }
-		}
-		getNextMayorTimestamp()
+		if(shouldUpdate) NobaAddons.runAsync { getCurrentMayor() }
+		nextMayorTimestamp = SkyBlockTime(SkyBlockTime.now().getElectionYear() + 1, ELECTION_END_MONTH, ELECTION_END_DAY).asTimestamp()
 
 		if(!Mayor.JERRY.isElected()) return
-		if(jerryMayor.first == Mayor.UNKNOWN || jerryMayor.second.isFuture()) return
+		if(jerryMayor.first.mayor == Mayor.UNKNOWN) return
+		if(jerryMayor.second.isFuture()) return
 
-		jerryMayor = Mayor.UNKNOWN to Timestamp.distantPast()
-
-		ChatUtils.addMessage(tr("nobaaddons.mayorApi.jerryMayorExpired", "The Perkpocalypse mayor has expired! Click here to get the new mayor").runCommand("/calendar"))
+		jerryMayor = Mayor.UNKNOWN.withNone() to Timestamp.distantPast()
+		ChatUtils.addMessage(tr("nobaaddons.mayorApi.jerryMayorExpired", "The Perkpocalypse Mayor has expired! Click here to get the new mayor.").runCommand("/calendar"))
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
@@ -88,62 +82,45 @@ object MayorAPI {
 		if(event.inventory.title != "Calendar and Events") return
 
 		val item = event.inventory.items.values.firstOrNull {
-			mayorHeadPattern.mapFullMatch(it.name.string.cleanFormatting()) {
-				groups["name"]?.value == "Jerry"
-			} == true
+			MAYOR_NAME_REGEX.getGroupFromFullMatch(it.name.string.cleanFormatting(), "name") == "Jerry"
 		} ?: return
 
-		val lore = item.lore.lines.map { it.string.cleanFormatting() }
+		val lore = item.lore.stringLines
 
 		val perk = lore.nextAfter("Perkpocalypse Perks:", 2) ?: return
-		val extraMayor = Mayor.getByPerk(MayorPerk.getByName(perk) ?: return)?.activateAllPerks() ?: return
+		val perkpocalypseMayor = Mayor.getByPerk(MayorPerk.getByName(perk) ?: return)?.withAll() ?: return
 
 		val lastMayorTimestamp = nextMayorTimestamp - SKYBLOCK_YEAR_MILLIS.milliseconds
 
-		// The maximum amount of extra mayors we get while Jerry is elected is 21
 		val expirationTime = (1..21).map { lastMayorTimestamp + (6.hours * it) }
 			.firstOrNull { it.isFuture() }
 			?.coerceAtMost(nextMayorTimestamp) ?: return
 
-		jerryMayor = extraMayor to expirationTime
+		jerryMayor = perkpocalypseMayor to expirationTime
 	}
 
 	private fun onChatMessage(message: String) {
 		if(!SkyBlockAPI.inSkyBlock) return
-		
-		if(electionEndMessage == message) {
+
+		if(message == ELECTION_END_MESSAGE) {
 			lastMayor = currentMayor
-			currentMayor = Mayor.UNKNOWN
-			currentMinister = Mayor.UNKNOWN
+			currentMayor = Mayor.UNKNOWN.withNone()
+			currentMinister = Mayor.UNKNOWN.withNone()
 		}
 	}
-
-	fun Mayor.isElected(): Boolean = currentMayor == this
 
 	private suspend fun getCurrentMayor() {
-		if(!shouldUpdateMayor) return
-		lastApiUpdate = Timestamp.now()
+		lastUpdate = Timestamp.now()
 
-		val mayorJson = HTTPUtils.fetchJson<MayorJson>(ELECTION_API_URL).await()
-		val mayor = mayorJson.mayor
+		val election = HTTPUtils.fetchJson<Election>(ELECTION_API_URL).await()
+		val mayor = election.mayor
+		if(lastMayor?.displayName == mayor.name) return
 
-		val currentMayorName = mayor.name
-		if(lastMayor?.name != currentMayorName) {
-			MayorPerk.disableAll()
-			currentMayor = Mayor.getMayor(currentMayorName, mayor.perks)
-			currentMinister = mayor.minister?.let { Mayor.getMayor(it.name, listOf(it.perk)) } ?: Mayor.UNKNOWN
-		}
+		currentMayor = Mayor.getByName(mayor.name)?.with(mayor.perks) ?: Mayor.UNKNOWN.withNone()
+		currentMinister = mayor.minister?.let { Mayor.getByName(it.name)?.with(listOf(it.perk)) } ?: Mayor.UNKNOWN.withNone()
 	}
 
-	private fun getNextMayorTimestamp() {
-		val now = SkyBlockTime.now()
-		nextMayorTimestamp = SkyBlockTime(now.getElectionYear() + 1, ELECTION_END_MONTH, day = ELECTION_END_DAY).asTimestamp()
-	}
-
-	private fun SkyBlockTime.getElectionYear(): Int {
-		var mayorYear = year
-
-		if(month < ELECTION_END_MONTH || (day < ELECTION_END_DAY && month == ELECTION_END_MONTH)) mayorYear--
-		return mayorYear
+	data class ActiveMayor(val mayor: Mayor, val perks: List<MayorPerk>) {
+		val displayName: String get() = mayor.displayName
 	}
 }
