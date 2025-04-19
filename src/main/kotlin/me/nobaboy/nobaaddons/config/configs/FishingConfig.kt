@@ -25,12 +25,18 @@ class FishingConfig {
 		var nameInsteadOfRarity = false
 		var minimumRarity = Rarity.LEGENDARY
 		var notificationSound = NotificationSound.DING
+
+		var carrotKing = false
+		var nutcracker = false
 	}
 
 	class AnnounceSeaCreatures {
 		var enabled = false
 		var minimumRarity = Rarity.MYTHIC
 		var announceChannel = AnnounceChannel.PARTY
+
+		var carrotKing = false
+		var nutcracker = false
 	}
 
 	class BobberTimer {
