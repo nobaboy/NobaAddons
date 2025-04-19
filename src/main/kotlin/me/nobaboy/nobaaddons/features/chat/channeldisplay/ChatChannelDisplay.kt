@@ -31,7 +31,7 @@ object ChatChannelDisplay {
 	private var channel by PersistentCache::channel
 	private var displayTicks = -1
 
-	private val CHANNEL_SWITCH_REGEX by Regex("^You are now in the (?<channel>ALL|GUILD|PARTY) channel").fromRepo("chat.channel")
+	private val CHANNEL_SWITCH_REGEX by Regex("^You are now in the (?<channel>ALL|GUILD|PARTY|SKYBLOCK CO-OP) channel").fromRepo("chat.channel")
 
 	private val MESSAGE_CHANNEL_REGEX by Regex(
 		"^Opened a chat conversation with ${CommonPatterns.PLAYER_NAME_WITH_RANK_STRING} for the next 5 minutes\\. Use /chat a to leave"
