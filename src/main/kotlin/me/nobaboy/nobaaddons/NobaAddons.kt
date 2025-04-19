@@ -33,6 +33,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsManager
 import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
+import me.nobaboy.nobaaddons.features.crimsonisle.AnnounceVanquisher
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.hoppity.HoppityEggGuess
@@ -205,6 +206,10 @@ object NobaAddons : ClientModInitializer {
 		CorpseLocator.init()
 		MineshaftWaypoints.init()
 		WormAlert.init()
+		// endregion
+
+		// region Crimson Isle
+		AnnounceVanquisher.init()
 		// endregion
 
 		// region Dungeons
