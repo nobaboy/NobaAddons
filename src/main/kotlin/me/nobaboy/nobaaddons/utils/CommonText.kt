@@ -26,7 +26,7 @@ object CommonText {
 		val LABEL_RIFT get() = tr("nobaaddons.config.label.rift", "Rift")
 
 		val CARROT_KING get() = tr("nobaaddons.config.carrotKing", "Carrot King")
-		val NUTCRACKER get() = tr("nobaaddons.config.carrotKing", "Nutcracker")
+		val NUTCRACKER get() = tr("nobaaddons.config.nutcracker", "Nutcracker")
 
 		fun seconds(value: Int) = tr("nobaaddons.config.label.seconds", "$value seconds")
 	}
