@@ -1,0 +1,78 @@
+package me.nobaboy.nobaaddons.features.events.mythological
+
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
+import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.config.UISettings
+import me.nobaboy.nobaaddons.core.events.MythologicalDrops
+import me.nobaboy.nobaaddons.core.events.MythologicalMobs
+import me.nobaboy.nobaaddons.core.profile.DianaProfileData
+import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
+import me.nobaboy.nobaaddons.ui.TextHudElement
+import me.nobaboy.nobaaddons.ui.UIManager
+import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
+import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.gold
+import me.nobaboy.nobaaddons.utils.tr
+import net.minecraft.client.gui.DrawContext
+import net.minecraft.text.Text
+
+// TODO: Allow for Four-Eyed Fish coins to be tracked, would require some extensive rework of PetAPI
+object MythologicalTracker {
+	private val config get() = NobaConfig.events.mythological
+	private val enabled: Boolean get() = config.tracker && DianaAPI.isActive
+
+	private val data get() = DianaProfileData.PROFILE
+
+	fun init() {
+		MythologicalEvents.MOB_DIG.register(this::onMobDig)
+		MythologicalEvents.TREASURE_DIG.register(this::onTreasureDig)
+//		MythologicalEvents.MOB_DROP.register(this::onMobDrop)
+		UIManager.add(MythologicalTrackerHudElement)
+	}
+
+	private fun onMobDig(event: MythologicalEvents.MobDig) {
+		if(!enabled) return
+
+		val mob = event.mob
+		data.mobs[mob] = data.mobs.getOrDefault(mob, 0L) + 1L
+		data.mobsSinceInquisitor = if(mob == MythologicalMobs.MINOS_INQUISITOR) 0L else data.mobsSinceInquisitor + 1L
+	}
+
+	private fun onTreasureDig(event: MythologicalEvents.TreasureDig) {
+		if(!enabled) return
+		data.drops[event.drop] = data.drops.getOrDefault(event.drop, 0L) + event.amount
+	}
+
+	object MythologicalTrackerHudElement : TextHudElement(UISettings.mythologicalTracker) {
+		override val name: Text = tr("nobaaddons.ui.mythologicalTracker", "Mythological Tracker")
+		override val size: Pair<Int, Int> = 125 to 200
+		override val enabled: Boolean get() = MythologicalTracker.enabled
+
+		override fun renderText(context: DrawContext) {
+			renderLines(context, buildList {
+				add(buildText {
+					append(tr("nobaaddons.ui.mythologicalTracker.burrowsDug", "Burrows Dug").gold())
+					append(": ${data.burrowsDug.addSeparators()}")
+				})
+				if(config.showChainsFinished) add(buildText {
+					append(tr("nobaaddons.ui.mythologicalTracker.chainsFinished", "Chains Finished").gold())
+					append(": ${data.chainsFinished.addSeparators()}")
+				})
+				add(Text.empty())
+				MythologicalMobs.entries.forEach {
+					add(buildText {
+						append(it.toText())
+						append(": ${data.mobs.getOrDefault(it, 0L).addSeparators()}")
+					})
+				}
+				add(Text.empty())
+				MythologicalDrops.entries.forEach {
+					add(buildText {
+						append(it.toText())
+						append(": ${data.drops.getOrDefault(it, 0L).addSeparators()}")
+					})
+				}
+			})
+		}
+	}
+}
