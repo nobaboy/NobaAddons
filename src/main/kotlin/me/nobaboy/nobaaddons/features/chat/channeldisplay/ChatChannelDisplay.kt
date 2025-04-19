@@ -91,14 +91,21 @@ object ChatChannelDisplay {
 
 	private fun onRenderHud(ctx: DrawContext, delta: RenderTickCounter) {
 		if(!enabled) return
-		if(!HypixelUtils.onHypixel) return
+//		if(!HypixelUtils.onHypixel) return
 		if(MCUtils.client.currentScreen is ChatScreen) return
 
 		val displayTicks = DISPLAY_FOR_TICKS - ticksSinceChatOpen
 		val alpha: Int = when {
 			displayTicks <= 0 -> return
 			displayTicks > FADE_OUT_AT -> 255
-			else -> RenderUtils.lerpAlpha(delta.getTickDelta(true), displayTicks, FADE_OUT_AT)
+			else -> {
+				val partialTick = delta.getTickDelta(true)
+				// avoid the display flickering at full visibility for a few frames by just hiding it slightly earlier
+				if(ticksSinceChatOpen == 39 && partialTick >= 0.6) {
+					ticksSinceChatOpen++
+				}
+				RenderUtils.lerpAlpha(partialTick, displayTicks, FADE_OUT_AT)
+			}
 		}
 
 		draw(ctx, alpha)
@@ -106,7 +113,7 @@ object ChatChannelDisplay {
 
 	private fun onRenderChatScreen(ctx: DrawContext) {
 		if(!enabled) return
-		if(!HypixelUtils.onHypixel) return
+//		if(!HypixelUtils.onHypixel) return
 
 		draw(ctx)
 	}
