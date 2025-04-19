@@ -78,12 +78,12 @@ object FishingCategory {
 
 			label(CommonText.Config.LABEL_RARE_SEA_CREATURES)
 
-			add({ fishing.announceSeaCreatures::carrotKing }) {
+			add({ fishing.seaCreatureAlert::carrotKing }) {
 				name = CommonText.Config.CARROT_KING
 				require { option(enabled) }
 				booleanController()
 			}
-			add({ fishing.announceSeaCreatures::nutcracker }) {
+			add({ fishing.seaCreatureAlert::nutcracker }) {
 				name = CommonText.Config.NUTCRACKER
 				require { option(enabled) }
 				booleanController()
