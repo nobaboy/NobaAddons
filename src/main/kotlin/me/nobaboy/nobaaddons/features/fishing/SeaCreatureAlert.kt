@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.features.fishing
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.core.fishing.SeaCreature
 import me.nobaboy.nobaaddons.events.impl.skyblock.FishingEvents
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
@@ -13,6 +14,9 @@ object SeaCreatureAlert {
 	private val config get() = NobaConfig.fishing.seaCreatureAlert
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
+	private val SeaCreature.isRare: Boolean
+		get() = rarity >= config.minimumRarity || (id == "CARROT_KING" && config.carrotKing) || (id == "NUTCRACKER" && config.nutcracker)
+
 	fun init() {
 		FishingEvents.SEA_CREATURE_CATCH.register(this::onSeaCreatureCatch)
 	}
@@ -21,7 +25,7 @@ object SeaCreatureAlert {
 		if(!enabled) return
 
 		val seaCreature = event.seaCreature
-		if(seaCreature.rarity < config.minimumRarity) return
+		if(!seaCreature.isRare) return
 
 		val text = if(config.nameInsteadOfRarity) {
 			"${seaCreature.displayName}!"
