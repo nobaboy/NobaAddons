@@ -8,6 +8,7 @@ enum class ChatChannel(val color: NobaColor, val channelName: String? = null) {
 	ALL(NobaColor.GRAY),
 	PARTY(NobaColor.BLUE),
 	GUILD(NobaColor.DARK_GREEN),
+	OFFICER(NobaColor.DARK_AQUA),
 	COOP(NobaColor.AQUA, "SKYBLOCK CO-OP"),
 	DM(NobaColor.GOLD),
 	UNKNOWN(NobaColor.RED),
