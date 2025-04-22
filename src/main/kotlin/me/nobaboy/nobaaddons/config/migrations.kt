@@ -4,14 +4,16 @@
 package me.nobaboy.nobaaddons.config
 
 import dev.celestialfault.histoire.migrations.Migrations
-import kotlinx.serialization.json.JsonPrimitive
-
-private typealias JsonMap = MutableMap<String, Any>
+import dev.celestialfault.histoire.migrations.MutableJsonMap
+import dev.celestialfault.histoire.migrations.getMap
+import dev.celestialfault.histoire.migrations.rename
+import me.nobaboy.nobaaddons.config.util.mapAndMoveTo
+import me.nobaboy.nobaaddons.config.util.moveTo
 
 /*
- * Migrations MUST be added at the end of this block, otherwise they will NOT run. Migrations that have already been
- * applied are skipped, so new changes must be added as separate migrations. Removing pre-existing migrations is
- * NOT supported and will cause player configs to completely break, so avoid doing so.
+ * Migrations MUST be added at the end of this block, otherwise they won't run correctly. Migrations that have
+ * already been applied and saved are not run again, so new changes must be added as separate migrations. Removing
+ * migrations is NOT supported and will cause player configs to break, so avoid doing so.
  */
 internal val migrations = Migrations("configVersion") {
 	add(::`001_removeYaclVersion`)
@@ -20,48 +22,50 @@ internal val migrations = Migrations("configVersion") {
 	add(::`004_moveHideOtherPeopleFishing`)
 	add(::`005_renameEtherwarpHelper`)
 	add(::`006_renameSeaCreatureChatFilter`)
+	add(::`007_renameCopyChat`)
 }
 
-private fun `001_removeYaclVersion`(json: JsonMap) {
+private fun `001_removeYaclVersion`(json: MutableJsonMap) {
 	json.remove("version")
 }
 
-private fun `002_inventoryCategory`(json: JsonMap) {
-	val uiAndVisuals = json["uiAndVisuals"] as? JsonMap ?: return
-	val inventory = json.getOrPut("inventory") { mutableMapOf<String, Any>() } as JsonMap
+private fun `002_inventoryCategory`(json: MutableJsonMap) {
+	val uiAndVisuals = json.getMap("uiAndVisuals")
+	val inventory = json.getMap("inventory")
 
-	uiAndVisuals.remove("slotInfo")?.let { it as? JsonMap }?.let { slotInfo ->
-		slotInfo.remove("enabled")
-		inventory.put("slotInfo", slotInfo)
+	uiAndVisuals.mapAndMoveTo("slotInfo", inventory) {
+		(it as MutableJsonMap).remove("enabled")
+		Unit
 	}
 
-	uiAndVisuals.remove("enchantments")?.let { it as? JsonMap }?.let { enchantments ->
-		enchantments.remove("parseItemEnchants")?.let { it as? JsonPrimitive }?.let { parseItemEnchants ->
-			enchantments.put("modifyTooltips", parseItemEnchants)
-		}
-
-		inventory.put("enchantmentTooltips", enchantments)
+	uiAndVisuals.mapAndMoveTo("enchantments", inventory, newKey = "enchantmentTooltips") {
+		(it as MutableJsonMap).rename("parseItemEnchants", "modifyTooltips")
 	}
 }
 
-private fun `003_renameGlaciteMineshaftShareCorpses`(json: JsonMap) {
-	val glaciteMineshaft = json["mining"]?.let { it as? JsonMap }?.get("glaciteMineshaft") as? JsonMap ?: return
-	glaciteMineshaft.put("autoShareCorpses", glaciteMineshaft.remove("autoShareCorpseCoords") ?: return)
+private fun `003_renameGlaciteMineshaftShareCorpses`(json: MutableJsonMap) {
+	val glaciteMineshaft = json.getMap("mining", "glaciteMineshaft")
+	glaciteMineshaft.rename("autoShareCorpseCoords", "autoShareCorpses")
 }
 
-private fun `004_moveHideOtherPeopleFishing`(json: JsonMap) {
-	val renderingTweaks = json["uiAndVisuals"]?.let { it as? JsonMap }?.get("renderingTweaks") as? JsonMap ?: return
-	val fishing = json.getOrPut("fishing") { mutableMapOf<String, Any>() } as JsonMap
-	fishing.put("hideOtherPeopleFishing", renderingTweaks.remove("hideOtherPeopleFishing") ?: return)
+private fun `004_moveHideOtherPeopleFishing`(json: MutableJsonMap) {
+	val renderingTweaks = json.getMap("uiAndVisuals", "renderingTweaks")
+	val fishing = json.getMap("fishing")
+	renderingTweaks.moveTo("hideOtherPeopleFishing", fishing)
 }
 
-private fun `005_renameEtherwarpHelper`(json: JsonMap) {
-	val uiAndVisuals = json["uiAndVisuals"] as? JsonMap ?: return
-	uiAndVisuals.put("etherwarpOverlay", uiAndVisuals.remove("etherwarpHelper") ?: return)
+private fun `005_renameEtherwarpHelper`(json: MutableJsonMap) {
+	val uiAndVisuals = json.getMap("uiAndVisuals")
+	uiAndVisuals.rename("etherwarpHelper", "etherwarpOverlay")
 }
 
-private fun `006_renameSeaCreatureChatFilter`(json: JsonMap) {
-	val filters = json["chat"]?.let { it as? JsonMap }?.get("filters") as? JsonMap ?: return
-	filters.remove("hideSeaCreatureSpawnMessage")?.let { filters.put("hideSeaCreatureCatchMessage", it) }
-	filters.remove("seaCreatureMaximumRarity")?.let { filters.put("seaCreatureMaxRarity", it) }
+private fun `006_renameSeaCreatureChatFilter`(json: MutableJsonMap) {
+	val filters = json.getMap("chat", "filters")
+	filters.rename("hideSeaCreatureSpawnMessage", "hideSeaCreatureCatchMessage")
+	filters.rename("seaCreatureMaximumRarity", "seaCreatureMaxRarity")
+}
+
+private fun `007_renameCopyChat`(json: MutableJsonMap) {
+	val chat = json.getMap("chat")
+	chat.rename("copy", "copyChat")
 }

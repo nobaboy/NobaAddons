@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
-import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
+import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.isActive
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
@@ -14,7 +14,7 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
 
 object DianaAPI {
-	private const val SPADE = "ANCESTRAL_SPADE"
+	const val SPADE = "ANCESTRAL_SPADE"
 
 	val isActive: Boolean get() = SkyBlockIsland.HUB.inIsland() && isRitualActive() && hasSpadeInHotbar()
 
@@ -36,5 +36,5 @@ object DianaAPI {
 		return heldItem.id == SPADE
 	}
 
-	private fun isRitualActive() = MayorAPI.allActivePerks.contains(MayorPerk.MYTHOLOGICAL_RITUAL)
+	private fun isRitualActive() = MayorPerk.MYTHOLOGICAL_RITUAL.isActive()
 }

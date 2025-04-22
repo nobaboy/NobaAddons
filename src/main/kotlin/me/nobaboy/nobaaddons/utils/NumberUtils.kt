@@ -56,8 +56,9 @@ object NumberUtils {
 	}
 
 	fun Number.addSeparators(): String = NumberFormat.getNumberInstance().format(this)
+	fun Number.toShortString(): String = NumberFormat.getCompactNumberInstance().format(this)
 
-	private fun String.formatDoubleOrNull(): Double? {
+	fun String.parseDoubleOrNull(): Double? {
 		var text = lowercase().replace(",", "")
 
 		val multiplier = when {
@@ -79,16 +80,16 @@ object NumberUtils {
 		return text.toDoubleOrNull()?.let { it * multiplier }
 	}
 
-	fun String.formatDouble(): Double =
-		formatDoubleOrNull() ?: throw NumberFormatException("formatDouble failed for '$this'")
+	fun String.parseDouble(): Double =
+		parseDoubleOrNull() ?: throw NumberFormatException("formatDouble failed for '$this'")
 
-	fun String.formatLong(): Long =
-		formatDoubleOrNull()?.toLong() ?: throw NumberFormatException("formatLong failed for '$this'")
+	fun String.parseLong(): Long =
+		parseDoubleOrNull()?.toLong() ?: throw NumberFormatException("formatLong failed for '$this'")
 
-	fun String.formatInt(): Int =
-		formatDoubleOrNull()?.toInt() ?: throw NumberFormatException("formatInt failed for '$this'")
+	fun String.parseInt(): Int =
+		parseDoubleOrNull()?.toInt() ?: throw NumberFormatException("formatInt failed for '$this'")
 
 	val Int.million get() = this * 1_000_000.0
 	val Double.million get() = (this * 1_000_000.0).toLong()
-	private val Int.billion get() = this * 1_000_000_000.0
+	val Int.billion get() = this * 1_000_000_000.0
 }

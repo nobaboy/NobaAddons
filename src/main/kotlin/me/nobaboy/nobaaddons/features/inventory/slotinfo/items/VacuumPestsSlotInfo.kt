@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.inventory.slotinfo.items
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
 import me.nobaboy.nobaaddons.repo.Repo
-import me.nobaboy.nobaaddons.utils.NumberUtils.formatLong
+import me.nobaboy.nobaaddons.utils.NumberUtils.parseLong
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
@@ -34,7 +34,7 @@ object VacuumPestsSlotInfo : ISlotInfo {
 		// This doesn't use toAbbreviatedString() here since 4 characters would extend past the slot,
 		// so we're compacting down to millions at >=100k
 		VACUUM_PESTS_REGEX.firstFullMatch(lore) {
-			val pests = groups["amount"]!!.value.formatLong()
+			val pests = groups["amount"]!!.value.parseLong()
 			val count = when {
 				pests < 1_000 -> "$pests"
 				pests < 100_000 -> "${pests / 1_000}k"

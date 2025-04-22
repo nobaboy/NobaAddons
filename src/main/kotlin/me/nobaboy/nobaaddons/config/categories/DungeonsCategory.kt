@@ -14,7 +14,7 @@ object DungeonsCategory {
 	private fun ConfigCategory.Builder.highlightStarredMobs() {
 		group(tr("nobaaddons.config.dungeons.highlightStarredMobs", "Highlight Starred Mobs")) {
 			val enabled = add({ dungeons.highlightStarredMobs::enabled }) {
-				this.name = CommonText.Config.ENABLED
+				name = CommonText.Config.ENABLED
 				booleanController()
 			}
 			add({ dungeons.highlightStarredMobs::highlightColor }, BiMapper.NobaAWTColorMapper) {

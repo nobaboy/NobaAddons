@@ -17,6 +17,7 @@ sealed class AbstractNobaConfig protected constructor() : Histoire(
 	NobaAddons.CONFIG_DIR.resolve("config.json").toFile(),
 	migrations = migrations,
 	json = NobaAddons.JSON,
+	createBackup = true,
 ) {
 	@Object val general = GeneralConfig()
 	@Object val uiAndVisuals = UIAndVisualsConfig()
@@ -28,6 +29,7 @@ sealed class AbstractNobaConfig protected constructor() : Histoire(
 	@Object val mining = MiningConfig()
 	// endregion
 	// region Islands
+	@Object val crimsonIsle = CrimsonIsleConfig()
 	@Object val dungeons = DungeonsConfig()
 	@Object val rift = RiftConfig()
 	// endregion
@@ -54,6 +56,7 @@ object NobaConfig : AbstractNobaConfig() {
 		category(SlayersCategory.create())
 		category(FishingCategory.create())
 		category(MiningCategory.create())
+		category(CrimsonIsleCategory.create())
 		category(DungeonsCategory.create())
 		category(RiftCategory.create())
 		category(ChatCategory.create())
