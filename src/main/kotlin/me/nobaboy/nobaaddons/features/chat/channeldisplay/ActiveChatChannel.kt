@@ -13,9 +13,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
 import me.nobaboy.nobaaddons.utils.tr
-import net.minecraft.text.MutableText
 import net.minecraft.text.Text
-import kotlin.time.Duration.Companion.seconds
 
 @Serializable
 data class ActiveChatChannel(val channel: ChatChannel, val dmWith: String? = null, var expires: Timestamp? = null) {
@@ -30,26 +28,27 @@ data class ActiveChatChannel(val channel: ChatChannel, val dmWith: String? = nul
 		else -> null
 	}
 
-	private inline fun buildExtraInfo(crossinline info: MutableText.() -> Unit) = buildText {
+	private inline fun buildExtraInfo(crossinline info: () -> Text) = buildText {
 		append("(")
-		append(buildText(info))
+		append(info())
 		append(")")
 		gray()
 	}
 
 	private fun buildPartyText(): Text = buildExtraInfo {
 		val party = PartyAPI.party
-		append(when {
-			party?.members.isNullOrEmpty() -> tr("nobaaddons.chat.channel.emptyParty", "Empty party!").red()
+		when {
+			party == null -> tr("nobaaddons.chat.channel.emptyParty", "No party!").red()
 			else -> tr("nobaaddons.chat.channel.partyCount", "${party.members.size} in party").aqua()
-		})
+		}
 	}
 
 	private fun buildDmText(): Text = buildExtraInfo {
 		val expires = this@ActiveChatChannel.expires ?: Timestamp.distantPast()
-		append(when {
-			expires.timeRemaining() < 1.seconds -> tr("nobaaddons.chat.channel.dmExpired", "Expired!").red()
-			else -> expires.timeRemaining().toShortString().toText().yellow()
-		})
+		val remaining = expires.timeRemaining()
+		when {
+			remaining.isNegative() -> tr("nobaaddons.chat.channel.dmExpired", "Expired!").red()
+			else -> remaining.toShortString().toText().yellow()
+		}
 	}
 }
