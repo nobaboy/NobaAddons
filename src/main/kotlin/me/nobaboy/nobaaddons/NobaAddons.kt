@@ -35,6 +35,7 @@ import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsManager
 import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
 import me.nobaboy.nobaaddons.features.crimsonisle.AnnounceVanquisher
+import me.nobaboy.nobaaddons.features.crimsonisle.MinibossTimers
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
 import me.nobaboy.nobaaddons.features.dungeons.SimonSaysTimer
 import me.nobaboy.nobaaddons.features.events.hoppity.HoppityEggGuess
@@ -220,6 +221,7 @@ object NobaAddons : ClientModInitializer {
 
 		// region Crimson Isle
 		AnnounceVanquisher.init()
+		MinibossTimers.init()
 		// endregion
 
 		// region Dungeons
