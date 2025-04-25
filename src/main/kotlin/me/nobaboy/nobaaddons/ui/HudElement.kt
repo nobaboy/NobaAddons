@@ -75,6 +75,7 @@ abstract class HudElement {
 	open val maxScale: Float = 3f
 
 	open val allowScaling: Boolean = true
+	open val dynamicScaling: Boolean = false
 
 	/**
 	 * Name used in place of this element in the HUD editor screen.
@@ -88,7 +89,7 @@ abstract class HudElement {
 
 	val scaledSize: Pair<Int, Int>
 		get() {
-			if(!allowScaling) return size
+			if(!allowScaling || dynamicScaling) return size
 			val (width, height) = size
 			return (width * scale).roundToInt() to (height * scale).roundToInt()
 		}

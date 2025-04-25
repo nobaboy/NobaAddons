@@ -18,6 +18,7 @@ import kotlin.time.Duration.Companion.seconds
 class InfoBoxHudElement(val textElement: InfoBoxElement) : TextHudElement(textElement) {
 	override val name: Text = tr("nobaaddons.ui.infoBox", "Info Box")
 	override val size: Pair<Int, Int> get() = getBoundsFrom(text)
+	override val dynamicScaling: Boolean = true
 
 	override val enabled: Boolean
 		get() = SkyBlockAPI.inSkyBlock || NobaConfig.uiAndVisuals.renderInfoBoxesOutsideSkyBlock
