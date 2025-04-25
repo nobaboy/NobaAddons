@@ -44,7 +44,7 @@ object HoppityEggGuess {
 		if(!enabled) return
 		if(event.type != ParticleTypes.HAPPY_VILLAGER) return
 		if(event.speed != 0f || event.count != 1) return
-		if(lastAbilityUse.elapsedSince() > 3.seconds) return
+		if(lastAbilityUse.elapsedSince() > 5.seconds) return
 
 		val location = event.location
 		val lastPoint = particlePath.lastPoint
@@ -56,6 +56,7 @@ object HoppityEggGuess {
 
 	private fun onItemUse(event: InteractEvents.ItemUse) {
 		if(!enabled) return
+		if(lastAbilityUse.elapsedSince() <= 5.seconds) return
 
 		val itemId = event.itemInHand.skyBlockId ?: return
 		if(itemId != HoppityAPI.LOCATOR) return
