@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.chat
 
+import me.nobaboy.nobaaddons.events.CancelableEvent
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents
@@ -23,6 +24,6 @@ object SendMessageEvents {
 	 */
 	@JvmField val SEND_COMMAND = EventDispatcher.cancelable<SendCommand>()
 
-	data class SendMessage(val message: String) : Event()
-	data class SendCommand(val command: String) : Event(isCancelable = true)
+	data class SendMessage(val message: String) : Event
+	data class SendCommand(val command: String) : CancelableEvent()
 }

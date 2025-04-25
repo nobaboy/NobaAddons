@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.chat
 
+import me.nobaboy.nobaaddons.events.CancelableEvent
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -55,11 +56,11 @@ object ChatMessageEvents {
 	 */
 	@JvmField val ADDED = EventDispatcher<Added>()
 
-	data class Chat(val message: Text) : Event() {
+	data class Chat(val message: Text) : Event {
 		val cleaned by lazy { message.string.cleanFormatting() }
 	}
 
-	data class Allow(val message: Text) : Event(true)
-	data class Modify(var message: Text) : Event()
-	data class Added(val message: Message) : Event()
+	data class Allow(val message: Text) : CancelableEvent()
+	data class Modify(var message: Text) : Event
+	data class Added(val message: Message) : Event
 }

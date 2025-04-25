@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.render
 
+import me.nobaboy.nobaaddons.events.CancelableEvent
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -23,7 +24,7 @@ object ParticleEvents {
 		val speed: Float,
 		val offset: NobaVec,
 		val forceSpawn: Boolean,
-	) : Event(isCancelable = true)
+	) : CancelableEvent()
 
 	data class Particle(
 		val type: ParticleType<*>,
@@ -32,5 +33,5 @@ object ParticleEvents {
 		val speed: Float,
 		val offset: NobaVec,
 		val forceSpawn: Boolean,
-	) : Event()
+	) : Event
 }

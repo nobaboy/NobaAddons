@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.events.impl.client
 
+import me.nobaboy.nobaaddons.events.CancelableEvent
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -27,7 +28,7 @@ object SoundEvents {
 		val location: NobaVec,
 		val pitch: Float,
 		val volume: Float,
-	) : Event(isCancelable = true)
+	) : CancelableEvent()
 
 	data class Sound(
 		val id: Identifier,
@@ -35,5 +36,5 @@ object SoundEvents {
 		val location: NobaVec,
 		val pitch: Float,
 		val volume: Float,
-	) : Event()
+	) : Event
 }

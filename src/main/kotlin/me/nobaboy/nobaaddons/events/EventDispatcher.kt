@@ -42,7 +42,7 @@ abstract class AbstractEventDispatcher<T : Event, R : Any?>(
 				if(!gracefulExceptions) throw e
 				ErrorManager.logError("Encountered an exception while processing ${eventName(event)}", e)
 			}
-			if(event.canceled && exitEarlyOnCancel) return
+			if(event is CancelableEvent && event.canceled && exitEarlyOnCancel) return
 		}
 	}
 
@@ -60,9 +60,9 @@ open class EventDispatcher<T : Event>(
 
 	companion object {
 		/**
-		 * Convenience method to generate a [ReturningEventDispatcher] yielding the value of [Event.canceled]
+		 * Convenience method to generate a [ReturningEventDispatcher] yielding the value of [CancelableEvent.canceled]
 		 */
-		fun <T : Event> cancelable() = EventDispatcher<T, Boolean> { it.canceled }
+		fun <T : CancelableEvent> cancelable() = EventDispatcher<T, Boolean> { it.canceled }
 	}
 }
 
