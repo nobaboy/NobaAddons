@@ -1,13 +1,13 @@
 package me.nobaboy.nobaaddons.core
 
-enum class SkyBlockProfile(val displayName: String) {
-	CLASSIC("Classic"),
-	IRONMAN("Ironman"),
-	STRANDED("Stranded"),
-	BINGO("Bingo"),
+enum class SkyBlockProfile {
+	CLASSIC,
+	IRONMAN,
+	STRANDED,
+	BINGO,
 	;
 
 	companion object {
-		fun getByName(name: String): SkyBlockProfile = entries.firstOrNull { it.displayName == name } ?: CLASSIC
+		fun getByName(name: String): SkyBlockProfile = entries.firstOrNull { it.name.equals(name, ignoreCase = true) } ?: CLASSIC
 	}
 }
