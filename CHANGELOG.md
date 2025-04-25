@@ -4,10 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## 1.0.0-Beta.2 - 2025-04-?
 
-**Back up your configs before updating!** This release includes major changes to how the configuration
-is handled internally, and as such things could potentially break.
+**Back up your configs before updating!** This release includes major changes to how the mod's configuration
+files are loaded and saved, and as such things could potentially break (but they hopefully shouldn't).
 
 ### Added
 
@@ -19,6 +19,7 @@ is handled internally, and as such things could potentially break.
   - This is only limited to Legendary and Mythic rarities
 - Hotspot Waypoints - nobaboy
 - Commands to calculate pet/skill level XP requirements and auction taxes - celeste
+- /chat channel display - celeste
 
 ### Changed
 
