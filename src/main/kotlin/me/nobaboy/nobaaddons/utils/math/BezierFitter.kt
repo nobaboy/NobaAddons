@@ -1,9 +1,6 @@
 package me.nobaboy.nobaaddons.utils.math
 
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.NobaVec.Companion.toNobaVec
-import me.nobaboy.nobaaddons.utils.math.PolynomialUtils.derivativeValueAt
-import me.nobaboy.nobaaddons.utils.math.PolynomialUtils.valueAt
 
 open class BezierFitter(private val degree: Int) {
 	private val fitters = Array(3) { PolynomialFitter(degree) }
@@ -38,13 +35,4 @@ open class BezierFitter(private val degree: Int) {
 		points.clear()
 		cachedCurve = null
 	}
-}
-
-class BezierCurve(private val coefficients: List<DoubleArray>) {
-	init {
-		require(coefficients.size == 3) { "Expected 3D curve coefficients (x, y, z)" }
-	}
-
-	fun at(t: Double): NobaVec = coefficients.map { it.valueAt(t) }.toNobaVec()
-	fun derivativeAt(t: Double): NobaVec = coefficients.map { it.derivativeValueAt(t) }.toNobaVec()
 }
