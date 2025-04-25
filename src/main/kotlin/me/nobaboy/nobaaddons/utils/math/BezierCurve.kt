@@ -5,7 +5,8 @@ import me.nobaboy.nobaaddons.utils.NobaVec.Companion.toNobaVec
 import me.nobaboy.nobaaddons.utils.math.PolynomialUtils.derivativeValueAt
 import me.nobaboy.nobaaddons.utils.math.PolynomialUtils.valueAt
 
-class BezierCurve(private val coefficients: List<DoubleArray>) {
+@JvmInline
+value class BezierCurve(private val coefficients: List<DoubleArray>) {
 	init {
 		require(coefficients.size == 3) { "Expected 3D curve coefficients (x, y, z)" }
 	}
