@@ -78,6 +78,11 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 		fun Duration.toShortString(): String = buildList<String> {
 			val duration = this@toShortString
 
+			if(duration.isNegative()) {
+				add("Soon!")
+				return@buildList
+			}
+
 			val days = duration.inWholeDays.days
 			val hours = duration.inWholeHours.hours - days
 			val minutes = duration.inWholeMinutes.minutes - hours - days
@@ -86,7 +91,7 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 			if(days >= 1.days) add(hours.toString(DurationUnit.DAYS, 0))
 			if(hours >= 1.hours) add(hours.toString(DurationUnit.HOURS, 0))
 			if(minutes >= 1.minutes) add(minutes.toString(DurationUnit.MINUTES, 0))
-			if(seconds >= 1.seconds) add(seconds.toString(DurationUnit.SECONDS, 0))
+			if(seconds >= 1.seconds || duration < 1.seconds) add(seconds.toString(DurationUnit.SECONDS, 0))
 		}.joinToString(" ")
 	}
 }
