@@ -13,11 +13,6 @@ object StringUtils {
 		else it.replaceFirstChar(Char::uppercase)
 	}.replaceFirstChar(Char::uppercase) // ensure that the first character is always uppercase, even if the string starts with 'the' or 'of'
 
-	fun String.toId(): String = lowercase()
-		.replace(' ', '_')
-		.filter { it in 'a'..'z' || it == '_'}
-		.trim('_')
-
 	fun String.cleanFormatting(): String = Formatting.strip(this)!!
 
 	fun randomAlphanumeric(length: Int = 8): String {

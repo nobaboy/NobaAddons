@@ -44,7 +44,6 @@ enum class SkyBlockStat(
 	override fun getDisplayName(): Text = Text.literal(prefixedName).formatted(formatting)
 
 	companion object {
-		fun getById(id: String): SkyBlockStat? = entries.firstOrNull { it.id == id }
-		fun getByName(name: String): SkyBlockStat? = entries.firstOrNull { it.statName == name }
+		fun getByName(name: String): SkyBlockStat? = entries.firstOrNull { name.contains(it.statName, ignoreCase = true) }
 	}
 }
