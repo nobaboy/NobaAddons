@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.api
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.InventoryData
+import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
@@ -117,8 +118,8 @@ object InventoryAPI {
 	}
 
 	private fun ready(inventory: InventoryData) {
-		InventoryEvents.OPEN.invoke(InventoryEvents.Open(inventory))
-		InventoryEvents.UPDATE.invoke(InventoryEvents.Update(inventory))
+		InventoryEvents.OPEN.dispatch(InventoryEvents.Open(inventory))
+		InventoryEvents.UPDATE.dispatch(InventoryEvents.Update(inventory))
 	}
 
 	private fun debounceItemLog() {
