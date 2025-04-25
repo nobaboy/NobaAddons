@@ -34,7 +34,14 @@ abstract class TextHudElement(private val element: TextElement) : HudElement() {
 	 * @param y How much to offset the Y value for this line
 	 * @param line Automatically adds `line * fontRenderer.fontHeight` to [y]
 	 */
-	protected fun renderLine(context: DrawContext, text: Text, x: Int = 0, y: Int = 0, line: Int = 0, autoAlign: Boolean = true) {
+	protected fun renderLine(
+		context: DrawContext,
+		text: Text,
+		x: Int = 0,
+		y: Int = 0,
+		line: Int = 0,
+		autoAlign: Boolean = true,
+	) {
 		require(line >= 0) { "line must not be negative" }
 
 		val x = this.x + x + let {

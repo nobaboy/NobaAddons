@@ -73,7 +73,7 @@ open class EventDispatcher<T : Event>(
 class ReturningEventDispatcher<T : Event, R : Any?>(
 	exitEarlyOnCancel: Boolean = true,
 	gracefulExceptions: Boolean = true,
-	private val returns: (T) -> R
+	private val returns: (T) -> R,
 ) : AbstractEventDispatcher<T, R>(exitEarlyOnCancel, gracefulExceptions) {
 	override fun invoke(event: T): R {
 		executeListeners(event)
@@ -85,5 +85,5 @@ class ReturningEventDispatcher<T : Event, R : Any?>(
 fun <T : Event, R : Any?> EventDispatcher(
 	exitEarlyOnCancel: Boolean = true,
 	gracefulExceptions: Boolean = true,
-	returns: (T) -> R
-) = ReturningEventDispatcher(exitEarlyOnCancel, gracefulExceptions, returns)
+	returns: (T) -> R,
+): ReturningEventDispatcher<T, R> = ReturningEventDispatcher(exitEarlyOnCancel, gracefulExceptions, returns)

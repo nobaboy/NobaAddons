@@ -115,5 +115,10 @@ object CorpseLocator {
 		closestCorpse.shared = true
 	}
 
-	data class Corpse(val entity: ArmorStandEntity, val type: CorpseType, var seen: Boolean = false, var shared: Boolean = false)
+	data class Corpse(
+		val entity: ArmorStandEntity,
+		val type: CorpseType,
+		var seen: Boolean = false,
+		var shared: Boolean = false,
+	)
 }

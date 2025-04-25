@@ -86,7 +86,14 @@ object HoppityEggGuess {
 				yOffset = -10f,
 				throughBlocks = true
 			)
-			RenderUtils.renderText(context, it.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				it.center().raise(),
+				"${formattedDistance}m",
+				color = NobaColor.GRAY,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 		}
 	}
 

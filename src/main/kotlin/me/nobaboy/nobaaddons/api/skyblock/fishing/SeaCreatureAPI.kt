@@ -13,7 +13,7 @@ object SeaCreatureAPI {
 	private var doubleHook: Boolean = false
 
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting())}
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
 	private fun onChatMessage(message: String) {

@@ -26,7 +26,7 @@ object SoundEvents {
 		val id: Identifier,
 		val location: NobaVec,
 		val pitch: Float,
-		val volume: Float
+		val volume: Float,
 	) : Event(isCancelable = true)
 
 	data class Sound(
@@ -34,6 +34,6 @@ object SoundEvents {
 		val category: SoundCategory,
 		val location: NobaVec,
 		val pitch: Float,
-		val volume: Float
+		val volume: Float,
 	) : Event()
 }

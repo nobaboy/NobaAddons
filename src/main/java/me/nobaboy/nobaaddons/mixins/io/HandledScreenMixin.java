@@ -13,7 +13,7 @@ abstract class HandledScreenMixin {
 	@Inject(method = "keyPressed", at = @At("HEAD"))
 	public void nobaaddons$copyItemData(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
 		if(DevFeatures.shouldCopy(keyCode)) {
-			DevFeatures.copyCurrentHoveredInventorySlot((HandledScreen<? extends ScreenHandler>)(Object)this);
+			DevFeatures.copyCurrentHoveredInventorySlot((HandledScreen<? extends ScreenHandler>) (Object) this);
 		}
 	}
 }

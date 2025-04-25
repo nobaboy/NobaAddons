@@ -8,5 +8,5 @@ data class MineshaftWaypoint(
 	val location: NobaVec,
 	val text: Text,
 	val color: NobaColor,
-	val type: MineshaftWaypointType
+	val type: MineshaftWaypointType,
 )

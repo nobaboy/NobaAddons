@@ -22,7 +22,7 @@ class ChatNotificationsListWidget(
 	width: Int,
 	height: Int,
 	y: Int,
-	itemHeight: Int
+	itemHeight: Int,
 ) : ElementListWidget<ChatNotificationsListWidget.ChatNotificationEntry>(client, width, height, y, itemHeight) {
 	private val notifications = ChatNotificationsManager.notifications.map { it.copy() }.toMutableList()
 	var hasChanges = false
@@ -155,7 +155,7 @@ class ChatNotificationsListWidget(
 			mouseX: Int,
 			mouseY: Int,
 			hovered: Boolean,
-			tickDelta: Float
+			tickDelta: Float,
 		) {
 			messageField.y = y
 			messageField.render(context, mouseX, mouseY, tickDelta)

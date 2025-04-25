@@ -22,7 +22,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.client.render.RenderTickCounter
-import kotlin.text.get
 import kotlin.time.Duration.Companion.minutes
 
 object ChatChannelDisplay {

@@ -14,7 +14,7 @@ object WormAlert {
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.CRYSTAL_HOLLOWS.inIsland()
 
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting())}
+		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 	}
 
 	private fun onChatMessage(message: String) {

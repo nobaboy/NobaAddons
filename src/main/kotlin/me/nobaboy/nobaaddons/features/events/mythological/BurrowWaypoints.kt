@@ -134,7 +134,15 @@ object BurrowWaypoints {
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
-			RenderUtils.renderText(context, adjustedLocation, inquisitor.spawner, color = NobaColor.GOLD, yOffset = yOffset + 10f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				adjustedLocation,
+				inquisitor.spawner,
+				color = NobaColor.GOLD,
+				yOffset = yOffset + 10f,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 
 			if(config.showInquisitorDespawnTime) {
 				val spawnTime = inquisitor.spawnTime
@@ -157,7 +165,15 @@ object BurrowWaypoints {
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
 		burrows.forEach { location, type ->
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), type.displayName, color = type.color, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				location.center().raise(),
+				type.displayName,
+				color = type.color,
+				yOffset = -5f,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 		}
 	}
 
@@ -177,7 +193,14 @@ object BurrowWaypoints {
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
-			RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				adjustedLocation.center().raise(),
+				"${formattedDistance}m",
+				color = NobaColor.GRAY,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 		}
 	}
 

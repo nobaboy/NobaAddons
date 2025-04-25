@@ -139,6 +139,6 @@ object SlayerAPI {
 		var entity: LivingEntity? = null,
 		var armorStand: ArmorStandEntity? = null,
 		var timerArmorStand: ArmorStandEntity? = null,
-		var spawned: Boolean = false
+		var spawned: Boolean = false,
 	)
 }

@@ -22,8 +22,8 @@ object ParticleEvents {
 		val count: Int,
 		val speed: Float,
 		val offset: NobaVec,
-		val forceSpawn: Boolean
-	): Event(isCancelable = true)
+		val forceSpawn: Boolean,
+	) : Event(isCancelable = true)
 
 	data class Particle(
 		val type: ParticleType<*>,
@@ -31,6 +31,6 @@ object ParticleEvents {
 		val count: Int,
 		val speed: Float,
 		val offset: NobaVec,
-		val forceSpawn: Boolean
+		val forceSpawn: Boolean,
 	) : Event()
 }
