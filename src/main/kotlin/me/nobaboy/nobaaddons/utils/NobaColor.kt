@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.utils
 
 import kotlinx.serialization.Serializable
 import net.minecraft.util.Formatting
+import net.minecraft.util.math.ColorHelper
 import java.awt.Color
 
 @JvmInline
@@ -23,6 +24,8 @@ value class NobaColor(val rgb: Int) {
 		}
 
 	fun toJavaColor(): Color = Color(rgb)
+
+	fun withAlpha(alpha: Int): Int = ColorHelper./*? if <1.21.2 {*//*Argb.*//*?}*/withAlpha(alpha, rgb)
 
 	companion object {
 		private val allColors: List<NobaColor> = buildList {
