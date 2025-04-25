@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.features.inventory.slotinfo
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.MultiEventInvoker
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.items.*
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.uielements.*
@@ -29,11 +30,9 @@ interface ISlotInfo {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
 
-	companion object {
-		const val CHECK = "✔"
-
-		private var init = false
-		private val slotInfos = arrayOf(
+	companion object : MultiEventInvoker<ScreenRenderEvents.DrawItem, ISlotInfo>(
+		dispatcher = ScreenRenderEvents.DRAW_ITEM,
+		toInvoke = arrayOf(
 			// UI Elements
 			BestiarySlotInfo,
 			CollectionTierSlotInfo,
@@ -55,18 +54,10 @@ interface ISlotInfo {
 			PotionLevelSlotInfo,
 			RanchersBootsSpeedSlotInfo,
 			VacuumPestsSlotInfo,
-		)
-
-		fun init() {
-			check(!init) { "Already initialized slot info!" }
-			init = true
-
-			slotInfos.forEach { slotInfo ->
-				ScreenRenderEvents.DRAW_ITEM.register {
-					if(SkyBlockAPI.inSkyBlock && slotInfo.enabled) slotInfo.handle(it)
-				}
-			}
-		}
+		),
+		invoker = { if(enabled) handle(it) },
+	) {
+		const val CHECK = "✔"
 
 		fun renderSlotInfo(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: Text, position: Position) {
 			val width = textRenderer.getWidth(text)

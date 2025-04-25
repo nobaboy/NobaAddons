@@ -169,7 +169,7 @@ object NobaAddons : ClientModInitializer {
 
 		// region Inventory
 		EnchantmentTooltips.init()
-		ISlotInfo.init()
+		ISlotInfo
 		// endregion
 
 		// region Events
@@ -231,7 +231,7 @@ object NobaAddons : ClientModInitializer {
 		// region Chat
 		CopyChatFeature.init()
 		ChatNotifications.init()
-		IChatFilter.init()
+		IChatFilter
 		ChatChannelDisplay.init()
 		/* region Chat Commands */
 		DMCommands.init()
@@ -241,7 +241,7 @@ object NobaAddons : ClientModInitializer {
 		// endregion
 
 		// region QOL
-		ISoundFilter.init()
+		ISoundFilter
 		MouseLock.init()
 		// endregion
 

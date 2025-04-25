@@ -3,6 +3,11 @@ package me.nobaboy.nobaaddons.events
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import java.util.concurrent.CopyOnWriteArrayList
 
+internal fun eventName(event: Any): String {
+	val parent = event::class.qualifiedName ?: "an event"
+	return parent.split(".").asReversed().takeWhile { it.any(Char::isUpperCase) }.reversed().joinToString(".")
+}
+
 /**
  * Abstract event dispatcher implementation, providing a basic implementation of a Fabric-like event system
  * utilizing data classes as events
@@ -24,11 +29,6 @@ abstract class AbstractEventDispatcher<T : Event, R : Any?>(
 	protected val gracefulExceptions: Boolean = true,
 ) {
 	private val listeners = CopyOnWriteArrayList<(T) -> Unit>()
-
-	private fun eventName(event: T): String {
-		val parent = event::class.qualifiedName ?: "an event"
-		return parent.split(".").asReversed().takeWhile { it.any(Char::isUpperCase) }.reversed().joinToString(".")
-	}
 
 	open fun register(listener: (T) -> Unit) {
 		listeners.add(listener)
