@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.api.skyblock.events.hoppity.HoppityAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.events.HoppityData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.impl.interact.ItemUseEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
@@ -35,7 +35,7 @@ object HoppityEggGuess {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
-		InteractEvents.ITEM_USE.register(this::onItemUse)
+		ItemUseEvent.EVENT.register(this::onItemUse)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
@@ -54,7 +54,7 @@ object HoppityEggGuess {
 		guessLocation = guessEggLocation()
 	}
 
-	private fun onItemUse(event: InteractEvents.ItemUse) {
+	private fun onItemUse(event: ItemUseEvent) {
 		if(!enabled) return
 		if(lastAbilityUse.elapsedSince() <= 5.seconds) return
 

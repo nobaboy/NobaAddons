@@ -5,8 +5,11 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.hoppity.HoppityAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.events.EventDispatcher.Companion.registerIf
 import me.nobaboy.nobaaddons.events.impl.chat.SendMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent
+import me.nobaboy.nobaaddons.events.impl.interact.GenericInteractEvent
+import me.nobaboy.nobaaddons.events.impl.interact.ItemUseEvent
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow
@@ -24,11 +27,12 @@ object ChocolateFactoryFeatures {
 		PetAPI.currentPet?.id == "RABBIT" && PetAPI.currentPet?.rarity == Rarity.MYTHIC
 
 	fun init() {
-		InteractEvents.ITEM_USE.register(this::onItemUse)
+		ItemUseEvent.EVENT.register(this::onItemUse)
+		BlockInteractionEvent.EVENT.registerIf<BlockInteractionEvent.Interact>(this::onItemUse)
 		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 	}
 
-	private fun onItemUse(event: InteractEvents.ItemUse) {
+	private fun onItemUse(event: GenericInteractEvent) {
 		if(!enabled) return
 		if(!HoppityAPI.isSpring || !HoppityAPI.inRelevantIsland) return
 

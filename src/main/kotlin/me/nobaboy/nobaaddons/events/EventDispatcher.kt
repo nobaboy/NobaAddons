@@ -19,8 +19,8 @@ open class EventDispatcher<T : Event, R : Any?>(
 	 */
 	protected val exitEarlyOnCancel: Boolean = true,
 	/**
-	 * If `true`, the event dispatcher will send a message in chat when an error is encountered.
-	 * If `false`, the error will be allowed to propagate to the [dispatch] caller (which may crash the game).
+	 * If `true`, the event dispatcher will send a message in chat when an error is encountered and continue invoking listeners.
+	 * If `false`, the error will simply be re-thrown out of [dispatch], which may result in the game crashing if not caught.
 	 *
 	 * This should be left as its default of `true` unless you know that this event cannot gracefully fail in any capacity.
 	 */
@@ -47,10 +47,14 @@ open class EventDispatcher<T : Event, R : Any?>(
 			try {
 				listener.invoke(event)
 			} catch(e: Throwable) {
-				if(!gracefulExceptions) throw e
+				if(!gracefulExceptions) {
+					throw e
+				}
 				ErrorManager.logError("Encountered an exception while processing ${eventName(event)}", e)
 			}
-			if(event is CancelableEvent && event.canceled && exitEarlyOnCancel) break
+			if(event is CancelableEvent && event.canceled && exitEarlyOnCancel) {
+				break
+			}
 		}
 		return returns(event)
 	}
@@ -63,6 +67,16 @@ open class EventDispatcher<T : Event, R : Any?>(
 		 * Create a new [EventDispatcher] that returns the value of [CancelableEvent.canceled]
 		 */
 		fun <T : CancelableEvent> cancelable() = EventDispatcher<T, Boolean>(returns = CancelableEvent::canceled)
+
+		/**
+		 * Register a listener that only invokes [listener] if the invoked event type is of type [T].
+		 *
+		 * This is primarily useful for event dispatchers that run multiple subtypes through the
+		 * same dispatcher, like [BlockInteractionEvent][me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent].
+		 */
+		inline fun <reified T : Event> EventDispatcher<in T, *>.registerIf(crossinline listener: (T) -> Unit) {
+			register { if(it is T) listener(it) }
+		}
 	}
 }
 

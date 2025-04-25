@@ -7,8 +7,9 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
+import me.nobaboy.nobaaddons.events.EventDispatcher.Companion.registerIf
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysTimes
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -44,7 +45,7 @@ object SimonSaysTimer {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		InteractEvents.BLOCK_INTERACT.register { if(it is InteractEvents.UseBlockInteraction) onInteract(it) }
+		BlockInteractionEvent.EVENT.registerIf<BlockInteractionEvent.Interact>(this::onInteract)
 
 		SimonSaysTimes.safeLoad().onSuccess {
 			SimonSaysTimes.times.minOrNull()?.takeIf { !it.isNaN() }?.let { newPersonalBest ->
@@ -115,7 +116,7 @@ object SimonSaysTimer {
 		}
 	}
 
-	private fun onInteract(event: InteractEvents.UseBlockInteraction) {
+	private fun onInteract(event: BlockInteractionEvent.Interact) {
 		if(!enabled || buttonPressed || event.player != MCUtils.player || event.location.roundToBlock() != buttonLocation) return
 
 		startTime = Timestamp.now()

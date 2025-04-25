@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
@@ -40,7 +40,7 @@ object BurrowAPI {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		InteractEvents.BLOCK_INTERACT.register(this::onBlockClick)
+		BlockInteractionEvent.EVENT.register(this::onBlockClick)
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
@@ -81,7 +81,7 @@ object BurrowAPI {
 		}
 	}
 
-	private fun onBlockClick(event: InteractEvents.BlockInteraction) {
+	private fun onBlockClick(event: BlockInteractionEvent) {
 		if(!enabled) return
 		val player = event.player
 		val location = event.location
