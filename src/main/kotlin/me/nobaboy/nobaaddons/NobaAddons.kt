@@ -162,7 +162,7 @@ object NobaAddons : ClientModInitializer {
 		/* region Features */
 		// region Visuals
 		EtherwarpOverlay
-		TemporaryWaypoints.init()
+		TemporaryWaypoints
 		// endregion
 
 		// region Inventory

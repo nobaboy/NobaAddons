@@ -4,6 +4,7 @@ import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
 import net.minecraft.text.Text
 
+// TODO move this into builders
 /**
  * Convenience method creating a [ConfigCategory.Builder], providing it to [builder], and returns the built [ConfigCategory]
  */

@@ -7,10 +7,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents as FabricWo
 
 object WorldRenderEvents {
 	init {
-		FabricWorldRenderEvents.AFTER_TRANSLUCENT.register { AFTER_TRANSLUCENT.invoke(AfterTranslucent(it)) }
+		FabricWorldRenderEvents.AFTER_TRANSLUCENT.register { AFTER_TRANSLUCENT.dispatch(AfterTranslucent(it)) }
 	}
 
 	val AFTER_TRANSLUCENT = EventDispatcher<AfterTranslucent>()
 
-	data class AfterTranslucent(val ctx: WorldRenderContext) : Event()
+	data class AfterTranslucent(val ctx: WorldRenderContext) : Event
 }

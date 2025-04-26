@@ -13,11 +13,11 @@ data class ItemTooltipEvent(
 	val ctx: Item.TooltipContext,
 	val type: TooltipType,
 	val lines: MutableList<Text>,
-) : Event() {
+) : Event {
 	companion object {
 		init {
 			ItemTooltipCallback.EVENT.register { stack, ctx, type, lines ->
-				EVENT.invoke(ItemTooltipEvent(stack, ctx, type, lines))
+				EVENT.dispatch(ItemTooltipEvent(stack, ctx, type, lines))
 			}
 		}
 

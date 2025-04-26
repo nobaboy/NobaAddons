@@ -1,14 +1,14 @@
 package me.nobaboy.nobaaddons.features
 
-import me.nobaboy.nobaaddons.events.AbstractEventDispatcher
 import me.nobaboy.nobaaddons.events.Event
+import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 
-class FeatureDeclaration(val feature: AbstractFeature) {
+class FeatureDeclaration internal constructor(val feature: AbstractFeature) {
 	/**
 	 * Declare a listener for a given event [dispatcher]
 	 */
-	inline fun <T : Event> listen(dispatcher: AbstractEventDispatcher<T, *>, crossinline listener: (T) -> Unit) {
+	inline fun <T : Event> listen(dispatcher: EventDispatcher<T, *>, crossinline listener: (T) -> Unit) {
 		dispatcher.register {
 			if(feature.killSwitch) return@register
 			listener(it)

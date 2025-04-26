@@ -13,8 +13,8 @@ class CategoryBuilder(val yacl: ConfigCategory.Builder = ConfigCategory.createBu
 	}
 
 	/**
-	 * Convenience method creating a [OptionGroup.Builder], providing it to [builder], and then adding it to the
-	 * current [ConfigCategory.Builder]
+	 * Convenience method creating a [GroupBuilder], providing it to [builder], and then adds it to the
+	 * current [CategoryBuilder]
 	 */
 	inline fun group(
 		name: Text,
@@ -29,8 +29,8 @@ class CategoryBuilder(val yacl: ConfigCategory.Builder = ConfigCategory.createBu
 	}.build().also(yacl::group)
 
 	/**
-	 * Convenience method creating a [OptionGroup.Builder] for an [AbstractFeature], providing it to [builder], and then
-	 * adding it to the current [ConfigCategory.Builder]
+	 * Convenience method creating a [GroupBuilder] for an [AbstractFeature], providing it to [builder], and then
+	 * adds it to the current [CategoryBuilder]
 	 */
 	inline fun group(
 		feature: AbstractFeature,

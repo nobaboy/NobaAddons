@@ -6,10 +6,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.RenderTickCounter
 
-data class HudRenderEvent(val ctx: DrawContext, val delta: RenderTickCounter) : Event() {
+data class HudRenderEvent(val ctx: DrawContext, val delta: RenderTickCounter) : Event {
 	companion object {
 		init {
-			HudRenderCallback.EVENT.register { ctx, delta -> EVENT.invoke(HudRenderEvent(ctx, delta)) }
+			HudRenderCallback.EVENT.register { ctx, delta -> EVENT.dispatch(HudRenderEvent(ctx, delta)) }
 		}
 
 		val EVENT = EventDispatcher<HudRenderEvent>()

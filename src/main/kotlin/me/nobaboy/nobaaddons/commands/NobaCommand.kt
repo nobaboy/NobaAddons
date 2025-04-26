@@ -74,7 +74,7 @@ object NobaCommand {
 
 	@Command
 	fun waypoint(x: Double, y: Double, z: Double) {
-		if(!TemporaryWaypoints.enabled) {
+		if(!TemporaryWaypoints.enabled || TemporaryWaypoints.killSwitch) {
 			ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.notEnabled", "Temporary Waypoints are not enabled in the mod config"), color = Formatting.RED)
 			return
 		}

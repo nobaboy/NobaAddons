@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
 import me.nobaboy.nobaaddons.config.util.builders.button
 import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpOverlay
+import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -46,7 +47,7 @@ object UIAndVisualsCategory {
 	}
 
 	private fun CategoryBuilder.temporaryWaypoints() {
-		group(tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints", "Temporary Waypoints")) {
+		group(TemporaryWaypoints) {
 			val enabled = add({ uiAndVisuals.temporaryWaypoints::enabled }) {
 				name = CommonText.Config.ENABLED
 				booleanController()
@@ -190,7 +191,7 @@ object UIAndVisualsCategory {
 		group(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
 			val fix = add({ uiAndVisuals.renderingTweaks::fixEnchantedArmorGlint }) {
 				name = tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints")
-				descriptionText = tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "It's ${societyIsCrumbling(2019)}. Society has progressed little in the past 20 years. The world is falling apart. Hypixel still has yet to figure out how to consistently add an enchantment glint to armor.")
+				descriptionText = tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints.tooltip", "The year is ${societyIsCrumbling(2019)}. Society has progressed little in the past 20 years. The world is falling apart. Hypixel still has yet to figure out how to consistently add an enchantment glint to armor.")
 				booleanController()
 			}
 			val remove = add({ uiAndVisuals.renderingTweaks::removeArmorGlints }) {
