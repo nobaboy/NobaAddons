@@ -1,11 +1,13 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.Binding
-import dev.isxander.yacl3.api.ConfigCategory
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.config.util.builders.label
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TextUtils.underline
@@ -46,7 +48,7 @@ object ApiCategory {
 		repo()
 	}
 
-	private fun ConfigCategory.Builder.captcha() {
+	private fun CategoryBuilder.captcha() {
 		captcha = Option.createBuilder<Boolean>().apply {
 			name(Text.literal("internal captcha option"))
 			binding(false, NobaConfig.repo::solvedCaptcha, NobaConfig.repo::solvedCaptcha.setter)
@@ -69,7 +71,7 @@ object ApiCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.repo() {
+	private fun CategoryBuilder.repo() {
 		group(tr("nobaaddons.config.apis.repo", "Repo")) {
 			add({ repo::username }) {
 				name = tr("nobaaddons.config.apis.repo.username", "Repo Username")

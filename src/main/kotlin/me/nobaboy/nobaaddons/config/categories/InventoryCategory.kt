@@ -1,9 +1,11 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.Binding
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.config.util.builders.label
 import me.nobaboy.nobaaddons.features.inventory.enchants.EnchantmentDisplayMode
 import me.nobaboy.nobaaddons.ui.TextShadow
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -16,7 +18,7 @@ object InventoryCategory {
 		itemPickupLog()
 	}
 
-	private fun ConfigCategory.Builder.slotInfo() {
+	private fun CategoryBuilder.slotInfo() {
 		group(
 			tr("nobaaddons.config.inventory.slotInfo", "Slot Info"),
 			tr("nobaaddons.config.inventory.slotInfo.tooltip", "Displays item details such as names and/or tiers on item slots")
@@ -135,7 +137,7 @@ object InventoryCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.enchantmentTooltips() {
+	private fun CategoryBuilder.enchantmentTooltips() {
 		group(tr("nobaaddons.config.inventory.enchantmentTooltips", "Enchantment Tooltips")) {
 			val enabled = add({ inventory.enchantmentTooltips::modifyTooltips }) {
 				name = tr("nobaaddons.config.inventory.enchantmentTooltips.modifyTooltips", "Modify Enchant Tooltips")
@@ -198,7 +200,7 @@ object InventoryCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.itemPickupLog() {
+	private fun CategoryBuilder.itemPickupLog() {
 		group(tr("nobaaddons.config.inventory.itemPickupLog", "Item Pickup Log")) {
 			val enabled = add({ inventory.itemPickupLog::enabled }) {
 				name = CommonText.Config.ENABLED

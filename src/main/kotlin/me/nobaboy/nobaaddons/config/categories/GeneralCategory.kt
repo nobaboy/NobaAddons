@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
 import me.nobaboy.nobaaddons.utils.tr
 
 object GeneralCategory {

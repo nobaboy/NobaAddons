@@ -3,6 +3,10 @@ package me.nobaboy.nobaaddons.features.visuals
 import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.events.impl.fabric.HudRenderEvent
+import me.nobaboy.nobaaddons.events.impl.fabric.WorldRenderEvents
+import me.nobaboy.nobaaddons.features.AbstractFeature
+import me.nobaboy.nobaaddons.features.FeatureDeclaration
 import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -10,17 +14,14 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.world.World
 
-object EtherwarpOverlay {
+object EtherwarpOverlay : AbstractFeature("etherwarpOverlay", tr("nobaaddons.feature.etherwarpOverlay", "Etherwarp Overlay")) {
 	private val config get() = NobaConfig.uiAndVisuals.etherwarpOverlay
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock && MCUtils.options.sneakKey.isPressed
 
@@ -28,19 +29,19 @@ object EtherwarpOverlay {
 	private val etherwarpItems = setOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")
 	private var targetBlock: ValidationType? = null
 
-	fun init() {
-		HudRenderCallback.EVENT.register { context, _ -> renderFailText(context) }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderOverlay)
+	override fun FeatureDeclaration.declare() {
+		listen(HudRenderEvent.EVENT, ::renderFailText)
+		listen(WorldRenderEvents.AFTER_TRANSLUCENT, ::renderOverlay)
 	}
 
-	private fun renderFailText(context: DrawContext) {
+	private fun renderFailText(event: HudRenderEvent) {
 		targetBlock.takeIf { config.showFailText }?.let {
 			val (x, y) = MCUtils.window.let { it.scaledWidth / 2 to it.scaledHeight / 2 + 10 }
-			RenderUtils.drawCenteredText(context, it.displayName, x, y, color = NobaColor.RED)
+			RenderUtils.drawCenteredText(event.ctx, it.displayName, x, y, color = NobaColor.RED)
 		}
 	}
 
-	private fun renderOverlay(context: WorldRenderContext) {
+	private fun renderOverlay(event: WorldRenderEvents.AfterTranslucent) {
 		if(!enabled) {
 			targetBlock = null
 			return
@@ -60,6 +61,7 @@ object EtherwarpOverlay {
 		val maxDistance = BASE_DISTANCE + (item.tunedTransmission ?: 0)
 		val target = client.crosshairTarget
 
+		val context by event::ctx
 		if(target is BlockHitResult && target.type == HitResult.Type.BLOCK) {
 			handleTarget(context, client, target)
 		} else if(client.interactionManager != null) {

@@ -1,7 +1,8 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
@@ -11,7 +12,7 @@ object DungeonsCategory {
 		simonSaysTimer()
 	}
 
-	private fun ConfigCategory.Builder.highlightStarredMobs() {
+	private fun CategoryBuilder.highlightStarredMobs() {
 		group(tr("nobaaddons.config.dungeons.highlightStarredMobs", "Highlight Starred Mobs")) {
 			val enabled = add({ dungeons.highlightStarredMobs::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -30,7 +31,7 @@ object DungeonsCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.simonSaysTimer() {
+	private fun CategoryBuilder.simonSaysTimer() {
 		group(tr("nobaaddons.config.dungeons.simonSaysTimer", "Simon Says Timer")) {
 			val enabled = add({ dungeons.simonSaysTimer::enabled }) {
 				name = CommonText.Config.ENABLED

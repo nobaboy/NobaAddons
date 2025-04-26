@@ -9,6 +9,7 @@ import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import dev.isxander.yacl3.api.controller.StringControllerBuilder
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import dev.isxander.yacl3.api.controller.ValueFormatter
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder
 import java.awt.Color
 
 fun OptionBuilder<Boolean>.booleanController() {

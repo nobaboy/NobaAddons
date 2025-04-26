@@ -1,12 +1,9 @@
+@file:UseSerializers(VersionKSerializer::class)
+
 package me.nobaboy.nobaaddons.core
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.UseSerializers
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
@@ -22,6 +19,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
 import me.nobaboy.nobaaddons.utils.TextUtils.underline
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.serializers.VersionKSerializer
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.loader.api.Version
 
@@ -78,19 +76,8 @@ object UpdateNotifier {
 
 	@Serializable
 	private data class UpdateInfo(
-		@Serializable(with = VersionSerializer::class) val latest: Version,
+		val latest: Version,
 		val releaseNotes: String,
-		val forMinecraft: List<@Serializable(with = VersionSerializer::class) Version>,
+		val forMinecraft: List<Version>,
 	)
-
-	private class VersionSerializer : KSerializer<Version> {
-		override val descriptor: SerialDescriptor =
-			PrimitiveSerialDescriptor("me.nobaboy.nobaaddons.core.UpdateNotifier\$SemanticVersionSerializer", PrimitiveKind.STRING)
-
-		override fun serialize(encoder: Encoder, value: Version) {
-			encoder.encodeString(value.toString())
-		}
-
-		override fun deserialize(decoder: Decoder): Version = Version.parse(decoder.decodeString())
-	}
 }

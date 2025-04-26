@@ -1,7 +1,9 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.config.util.builders.label
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.tr
 
@@ -11,7 +13,7 @@ object MiningCategory {
 		glaciteMineshaft()
 	}
 
-	private fun ConfigCategory.Builder.wormAlert() {
+	private fun CategoryBuilder.wormAlert() {
 		group(tr("nobaaddons.config.mining.wormAlert", "Worm Alert")) {
 			val enabled = add({ mining.wormAlert::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -25,7 +27,7 @@ object MiningCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.glaciteMineshaft() {
+	private fun CategoryBuilder.glaciteMineshaft() {
 		group(tr("nobaaddons.config.mining.glaciteMineshaft", "Glacite Mineshaft")) {
 			label(tr("nobaaddons.config.mining.glaciteMineshaft.label.corpses", "Corpses"))
 

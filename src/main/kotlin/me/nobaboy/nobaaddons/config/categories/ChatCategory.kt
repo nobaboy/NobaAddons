@@ -1,7 +1,10 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.config.util.builders.label
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.utils.CommonText
@@ -21,7 +24,7 @@ object ChatCategory {
 		chatCommands()
 	}
 
-	private fun ConfigCategory.Builder.copyChat() {
+	private fun CategoryBuilder.copyChat() {
 		group(tr("nobaaddons.config.chat.copyChat", "Copy Chat")) {
 			val enabled = add({ chat.copyChat::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -40,7 +43,7 @@ object ChatCategory {
 		descriptionText = tr("nobaaddons.config.chat.filters.hideAbilityDamageMessage.tooltip", "Hides the ability damage message from ${item ?: ability}")
 	}
 
-	private fun ConfigCategory.Builder.filters() {
+	private fun CategoryBuilder.filters() {
 		group(tr("nobaaddons.config.chat.filters", "Filters")) {
 			// region Crimson Isle
 			label(CommonText.Config.LABEL_CRIMSON_ISLE)
@@ -149,7 +152,7 @@ object ChatCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.chatCommands() {
+	private fun CategoryBuilder.chatCommands() {
 		group(tr("nobaaddons.config.chat.chatCommands", "Chat Commands")) {
 			// region DM
 			label(tr("nobaaddons.config.chat.chatCommands.label.dm", "DM Commands"))

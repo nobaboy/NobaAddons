@@ -7,7 +7,9 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.fabric.ItemTooltipEvent
+import me.nobaboy.nobaaddons.features.AbstractFeature
+import me.nobaboy.nobaaddons.features.FeatureDeclaration
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
@@ -27,15 +29,10 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
-import net.minecraft.item.tooltip.TooltipType
-import net.minecraft.text.Text
 import kotlin.math.floor
 import kotlin.time.Duration.Companion.hours
 
-object RiftTimers {
+object RiftTimers : AbstractFeature("riftTimers", tr("nobaaddons.feature.riftTimers", "Rift Timers")) {
 	private val config = NobaConfig.rift
 	private val data get() = ProfileData.PROFILE.riftTimers
 
@@ -48,11 +45,11 @@ object RiftTimers {
 
 	private var notifiedSplitStealCooldown = false
 
-	fun init() {
-		TickEvents.everySecond { onSecondPassed() }
-		InventoryEvents.OPEN.register(this::onOpenInventory)
-		ChatMessageEvents.CHAT.register(this::onChatMessage)
-		ItemTooltipCallback.EVENT.register(this::addSplitStealItemCooldown)
+	override fun FeatureDeclaration.declare() {
+		tick(20) { onSecondPassed() }
+		listen(InventoryEvents.OPEN, ::onOpenInventory)
+		listen(ChatMessageEvents.CHAT, ::onChatMessage)
+		listen(ItemTooltipEvent.EVENT, ::addSplitStealItemCooldown)
 	}
 
 	private fun onSecondPassed() {
@@ -86,11 +83,12 @@ object RiftTimers {
 		}
 	}
 
-	private fun addSplitStealItemCooldown(item: ItemStack, ctx: Item.TooltipContext, type: TooltipType, lines: MutableList<Text>) {
-		if(item.skyBlockId != "UBIKS_CUBE") return
+	private fun addSplitStealItemCooldown(event: ItemTooltipEvent) {
+		if(event.itemStack.skyBlockId != "UBIKS_CUBE") return
 		if(!config.splitStealItemCooldown) return
 		val cooldown = data.nextSplitSteal?.takeIf { it.isFuture() }?.timeRemaining()?.toShortString()?.toText()?.yellow() ?: return
 
+		val lines by event::lines
 		val index = lines.map { it.string.cleanFormatting() }.indexOfFirstFullMatch(CommonPatterns.ITEM_COOLDOWN_REGEX)
 		if(index == -1) return
 

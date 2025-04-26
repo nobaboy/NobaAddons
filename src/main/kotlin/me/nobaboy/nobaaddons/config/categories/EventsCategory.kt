@@ -1,7 +1,9 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.config.util.builders.label
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.enums.AnnounceChannel
 import me.nobaboy.nobaaddons.utils.tr
@@ -12,7 +14,7 @@ object EventsCategory {
 		mythologicalRitual()
 	}
 
-	private fun ConfigCategory.Builder.hoppity() {
+	private fun CategoryBuilder.hoppity() {
 		group(tr("nobaaddons.config.events.hoppity", "Hoppity's Hunt")) {
 			add({ events.hoppity::eggGuess }) {
 				name = tr("nobaaddons.config.events.hoppity.eggGuess", "Egg Guess")
@@ -27,7 +29,7 @@ object EventsCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.mythologicalRitual() {
+	private fun CategoryBuilder.mythologicalRitual() {
 		group(tr("nobaaddons.config.events.mythological", "Mythological Ritual")) {
 			val burrowGuess = add({ events.mythological::burrowGuess }) {
 				name = tr("nobaaddons.config.events.mythological.burrowGuess", "Burrow Guess")

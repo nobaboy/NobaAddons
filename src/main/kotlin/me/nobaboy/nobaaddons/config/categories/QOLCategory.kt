@@ -1,7 +1,10 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.config.util.builders.label
+import me.nobaboy.nobaaddons.features.qol.MouseLock
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.darkAqua
@@ -13,7 +16,7 @@ object QOLCategory {
 		garden()
 	}
 
-	private fun ConfigCategory.Builder.soundFilters() {
+	private fun CategoryBuilder.soundFilters() {
 		group(tr("nobaaddons.config.qol.soundFilters", "Sound Filters")) {
 			// region Item Abilities
 			label(CommonText.Config.LABEL_ITEM_ABILITIES)
@@ -72,8 +75,8 @@ object QOLCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.garden() {
-		group(tr("nobaaddons.config.qol.garden", "Garden")) {
+	private fun CategoryBuilder.garden() {
+		group(MouseLock) {
 			// region Sensitivity Reducer
 			val lockMouseCommand = buildLiteral("/noba lockmouse") { darkAqua() }
 			val reduce = add({ qol.garden::reduceMouseSensitivity }) {

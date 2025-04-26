@@ -1,7 +1,9 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.button
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -42,7 +44,7 @@ object UIAndVisualsCategory {
 		armorGlint()
 	}
 
-	private fun ConfigCategory.Builder.temporaryWaypoints() {
+	private fun CategoryBuilder.temporaryWaypoints() {
 		group(tr("nobaaddons.config.uiAndVisuals.temporaryWaypoints", "Temporary Waypoints")) {
 			val enabled = add({ uiAndVisuals.temporaryWaypoints::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -62,7 +64,7 @@ object UIAndVisualsCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.etherwarpOverlay() {
+	private fun CategoryBuilder.etherwarpOverlay() {
 		group(tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay", "Etherwarp Overlay")) {
 			val enabled = add({ uiAndVisuals.etherwarpOverlay::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -93,7 +95,7 @@ object UIAndVisualsCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.renderingTweaks() {
+	private fun CategoryBuilder.renderingTweaks() {
 		group(tr("nobaaddons.config.uiAndVisuals.renderingTweaks", "Rendering Tweaks")) {
 			add({ uiAndVisuals.renderingTweaks::hideLightningBolt }) {
 				name = tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideLightningBolt", "Hide Lightning Bolt")
@@ -116,7 +118,7 @@ object UIAndVisualsCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.armSwingAnimation() {
+	private fun CategoryBuilder.armSwingAnimation() {
 		group(tr("nobaaddons.config.uiAndVisuals.swingAnimation", "Arm Swing Animation Tweaks")) {
 			val duration = add({ uiAndVisuals.swingAnimation::swingDuration }) {
 				name = tr("nobaaddons.config.uiAndVisuals.swingAnimation.swingDuration", "Swing Duration")
@@ -142,7 +144,7 @@ object UIAndVisualsCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.firstPersonItem() {
+	private fun CategoryBuilder.firstPersonItem() {
 		group(tr("nobaaddons.config.uiAndVisuals.itemRendering", "First Person Item Rendering")) {
 			val cancelReequip = add({ uiAndVisuals.itemPosition::cancelEquipAnimation }) {
 				name = tr("nobaaddons.config.uiAndVisuals.itemRendering.cancelReequip", "Cancel Re-equip Animation")
@@ -183,7 +185,7 @@ object UIAndVisualsCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.armorGlint() {
+	private fun CategoryBuilder.armorGlint() {
 		group(tr("nobaaddons.config.uiAndVisuals.armorGlints", "Armor Glint Tweaks")) {
 			val fix = add({ uiAndVisuals.renderingTweaks::fixEnchantedArmorGlint }) {
 				name = tr("nobaaddons.config.uiAndVisuals.armorGlints.fixGlints", "Fix Armor Enchant Glints")

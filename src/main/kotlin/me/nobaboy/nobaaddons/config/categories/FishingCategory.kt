@@ -1,9 +1,11 @@
 package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.Binding
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.config.util.builders.label
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.toArray
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
@@ -52,7 +54,7 @@ object FishingCategory {
 		highlightThunderSparks()
 	}
 
-	private fun ConfigCategory.Builder.seaCreatureAlert() {
+	private fun CategoryBuilder.seaCreatureAlert() {
 		group(tr("nobaaddons.config.fishing.seaCreatureAlert", "Sea Creature Alert")) {
 			val enabled = add({ fishing.seaCreatureAlert::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -91,7 +93,7 @@ object FishingCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.announceSeaCreatures() {
+	private fun CategoryBuilder.announceSeaCreatures() {
 		group(tr("nobaaddons.config.fishing.announceSeaCreatures", "Announce Sea Creatures")) {
 			val enabled = add({ fishing.announceSeaCreatures::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -124,7 +126,7 @@ object FishingCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.bobberTimer() {
+	private fun CategoryBuilder.bobberTimer() {
 		group(tr("nobaaddons.config.fishing.bobberTimer", "Bobber Timer")) {
 			val enabled = add({ fishing.bobberTimer::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -139,7 +141,7 @@ object FishingCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.catchTimer() {
+	private fun CategoryBuilder.catchTimer() {
 		group(tr("nobaaddons.config.fishing.catchTimer", "Catch Timer")) {
 			val enabled = add({ fishing::catchTimerHudElement }) {
 				name = CommonText.Config.ENABLED
@@ -154,7 +156,7 @@ object FishingCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.trophyFishing() {
+	private fun CategoryBuilder.trophyFishing() {
 		group(tr("nobaaddons.config.fishing.trophyFishing", "Trophy Fishing")) {
 			val exampleMessage = TrophyFishChat.format(Text.literal("Blobfish").white(), TrophyFishRarity.BRONZE, 1234, 2345)
 
@@ -178,7 +180,7 @@ object FishingCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.highlightThunderSparks() {
+	private fun CategoryBuilder.highlightThunderSparks() {
 		group(tr("nobaaddons.config.fishing.highlightThunderSparks", "Highlight Thunder Sparks")) {
 			val enabled = add({ fishing.highlightThunderSparks::enabled }) {
 				name = CommonText.Config.ENABLED

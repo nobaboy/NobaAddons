@@ -9,6 +9,8 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.features.AbstractFeature
+import me.nobaboy.nobaaddons.features.FeatureDeclaration
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -17,7 +19,7 @@ import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
 
-object MouseLock {
+object MouseLock : AbstractFeature("mouseLock", tr("nobaaddons.feature.mouseLock", "Garden Mouse Locking")) {
 	val config = NobaConfig.qol.garden
 
 	private val FARMING_TOOLS: List<String> = buildList {
@@ -43,11 +45,13 @@ object MouseLock {
 	@get:JvmStatic
 	@get:JvmName("isLocked")
 	var locked: Boolean = false
+		get() = field && !killSwitch
 		private set
 
 	@get:JvmStatic
 	@get:JvmName("isReduced")
 	val reduced: Boolean get() {
+		if(killSwitch) return false
 		if(!SkyBlockIsland.GARDEN.inIsland()) return false
 		if(MCUtils.player?.abilities?.flying == true) return false
 		if(!config.reduceMouseSensitivity) return false
@@ -56,9 +60,9 @@ object MouseLock {
 		return heldItem.id in FARMING_TOOLS
 	}
 
-	fun init() {
-		SkyBlockEvents.ISLAND_CHANGE.register { locked = false }
-		PacketEvents.PRE_RECEIVE.register(this::onEarlyPacketReceive)
+	override fun FeatureDeclaration.declare() {
+		listen(SkyBlockEvents.ISLAND_CHANGE) { locked = false }
+		listen(PacketEvents.PRE_RECEIVE, ::onEarlyPacketReceive)
 	}
 
 	private fun onEarlyPacketReceive(event: PacketEvents.Receive) {

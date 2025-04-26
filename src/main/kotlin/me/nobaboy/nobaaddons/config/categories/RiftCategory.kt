@@ -1,7 +1,8 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
 import me.nobaboy.nobaaddons.utils.tr
 
 object RiftCategory {
@@ -9,7 +10,7 @@ object RiftCategory {
 		riftTimers()
 	}
 
-	private fun ConfigCategory.Builder.riftTimers() {
+	private fun CategoryBuilder.riftTimers() {
 		group(tr("nobaaddons.config.rift.timers", "Rift Timers")) {
 			val infusion = add({ rift::freeInfusionAlert }) {
 				name = tr("nobaaddons.config.rift.timers.freeInfusions", "Free Infusions")

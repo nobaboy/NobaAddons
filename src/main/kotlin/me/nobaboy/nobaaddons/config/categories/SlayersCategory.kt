@@ -1,7 +1,10 @@
 package me.nobaboy.nobaaddons.config.categories
 
-import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.config.util.builders.label
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
@@ -42,7 +45,7 @@ object SlayersCategory {
 		demonlord()
 	}
 
-	private fun ConfigCategory.Builder.killTime() {
+	private fun CategoryBuilder.killTime() {
 		group(tr("nobaaddons.config.slayers.bossKillTime", "Slayer Boss Kill Time")) {
 			val enabled = add({ slayers.bossKillTime::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -57,7 +60,7 @@ object SlayersCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.compactQuestMessages() {
+	private fun CategoryBuilder.compactQuestMessages() {
 		group(tr("nobaaddons.config.slayers.compactMessages", "Compact Quest Messages")) {
 			val enabled = add({ slayers.compactMessages::enabled }) {
 				name = CommonText.Config.ENABLED
@@ -73,7 +76,7 @@ object SlayersCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.spawnAlerts() {
+	private fun CategoryBuilder.spawnAlerts() {
 		group(tr("nobaaddons.config.slayers.spawnAlerts", "Spawn Alerts")) {
 			val bossAlert = add({ slayers.bossAlert::enabled }) {
 				name = tr("nobaaddons.config.slayers.spawnAlerts.slayerBoss", "Slayer Boss Spawn Alert")
@@ -97,7 +100,7 @@ object SlayersCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.highlightMiniBosses() {
+	private fun CategoryBuilder.highlightMiniBosses() {
 		group(tr("nobaaddons.config.slayers.highlightMiniBosses", "Highlight MiniBosses")) {
 			val enabled = add({ slayers.highlightMiniBosses::enabled }) {
 				name = CommonText.Config.ENABLED.wip()
@@ -113,7 +116,7 @@ object SlayersCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.sven() {
+	private fun CategoryBuilder.sven() {
 		group(tr("nobaaddons.config.slayers.sven", "Sven Packmaster")) {
 			add({ slayers.sven::hidePupNametags }) {
 				name = tr("nobaaddons.config.slayers.sven.hidePupNametags", "Hide Pup Nametags")
@@ -122,7 +125,7 @@ object SlayersCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.voidgloom() {
+	private fun CategoryBuilder.voidgloom() {
 		group(tr("nobaaddons.config.slayers.voidgloom", "Voidgloom Seraph")) {
 			val highlightPhases = add({ slayers.voidgloom::highlightPhases }) {
 				name = tr("nobaaddons.config.slayers.voidgloom.highlightPhases", "Highlight Phases").wip()
@@ -193,7 +196,7 @@ object SlayersCategory {
 		}
 	}
 
-	private fun ConfigCategory.Builder.demonlord() {
+	private fun CategoryBuilder.demonlord() {
 		group(tr("nobaaddons.config.slayers.inferno", "Inferno Demonlord")) {
 			add({ slayers.inferno::highlightHellionShield }) {
 				name = tr("nobaaddons.config.slayers.inferno.highlightHellionShield", "Highlight Hellion Shield").wip()

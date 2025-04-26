@@ -6,7 +6,7 @@ import dev.isxander.yacl3.api.YetAnotherConfigLib
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.config.configs.*
-import me.nobaboy.nobaaddons.config.util.OptionBuilder
+import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder
 import me.nobaboy.nobaaddons.utils.CommonText
 import net.minecraft.client.gui.screen.Screen
 

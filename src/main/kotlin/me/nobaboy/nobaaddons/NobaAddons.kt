@@ -161,7 +161,7 @@ object NobaAddons : ClientModInitializer {
 
 		/* region Features */
 		// region Visuals
-		EtherwarpOverlay.init()
+		EtherwarpOverlay
 		TemporaryWaypoints.init()
 		// endregion
 
@@ -240,11 +240,11 @@ object NobaAddons : ClientModInitializer {
 
 		// region QOL
 		ISoundFilter.init()
-		MouseLock.init()
+		MouseLock
 		// endregion
 
 		// region Rift
-		RiftTimers.init()
+		RiftTimers
 		// endregion
 		/* endregion */
 	}
