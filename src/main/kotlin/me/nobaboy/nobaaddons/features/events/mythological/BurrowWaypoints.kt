@@ -54,7 +54,9 @@ object BurrowWaypoints {
 		burrows[location] = event.type
 
 		if(config.dingOnBurrowFind) SoundUtils.plingSound.play()
-		if(!config.removeGuessOnBurrowFind) guessLocation = null
+		if(!config.removeGuessOnBurrowFind && guessLocation?.let { it.distance(location) < 3 } == true) {
+			guessLocation = null
+		}
 	}
 
 	private fun onBurrowDig(event: MythologicalEvents.BurrowDig) {
