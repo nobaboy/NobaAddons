@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 
 class HelpCommand(
 	private val manager: ChatCommandManager,
-	private val categoryEnabled: () -> Boolean
+	private val categoryEnabled: () -> Boolean,
 ) : ChatCommand() {
 	override val enabled: Boolean get() = categoryEnabled()
 

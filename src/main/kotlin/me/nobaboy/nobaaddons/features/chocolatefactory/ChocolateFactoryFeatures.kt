@@ -23,8 +23,8 @@ object ChocolateFactoryFeatures {
 	private val config get() = NobaConfig.events.hoppity
 	private val enabled: Boolean get() = config.requireMythicRabbit && SkyBlockAPI.inSkyBlock
 
-	private val hasMythicRabbitSpawned: Boolean get() =
-		PetAPI.currentPet?.id == "RABBIT" && PetAPI.currentPet?.rarity == Rarity.MYTHIC
+	private val hasMythicRabbitSpawned: Boolean
+		get() = PetAPI.currentPet?.id == "RABBIT" && PetAPI.currentPet?.rarity == Rarity.MYTHIC
 
 	fun init() {
 		ItemUseEvent.EVENT.register(this::onItemUse)

@@ -45,7 +45,12 @@ fun OptionBuilder<Int>.intSliderController(min: Int, max: Int, step: Int = 1, fo
 	}
 }
 
-fun OptionBuilder<Float>.floatSliderController(min: Float, max: Float, step: Float = 1f, format: ValueFormatter<Float>? = null) {
+fun OptionBuilder<Float>.floatSliderController(
+	min: Float,
+	max: Float,
+	step: Float = 1f,
+	format: ValueFormatter<Float>? = null,
+) {
 	controller = {
 		FloatSliderControllerBuilder.create(it).apply {
 			range(min, max)
