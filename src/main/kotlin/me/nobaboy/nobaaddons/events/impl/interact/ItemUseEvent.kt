@@ -1,9 +1,14 @@
 package me.nobaboy.nobaaddons.events.impl.interact
 
+//? if <1.21.2 {
+/*import net.minecraft.util.TypedActionResult
+*///?} else {
+import net.minecraft.util.ActionResult
+//?}
+
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.fabricmc.fabric.api.event.player.UseItemCallback
 import net.minecraft.client.network.ClientPlayerEntity
-import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 
 /**
