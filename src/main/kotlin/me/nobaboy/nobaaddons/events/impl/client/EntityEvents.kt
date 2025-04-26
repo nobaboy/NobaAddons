@@ -8,8 +8,8 @@ import net.minecraft.entity.Entity
 
 object EntityEvents {
 	init {
-		ClientEntityEvents.ENTITY_LOAD.register { entity, _ -> SPAWN.invoke(Spawn(entity)) }
-		ClientEntityEvents.ENTITY_UNLOAD.register { entity, _ -> DESPAWN.invoke(Despawn(entity)) }
+		ClientEntityEvents.ENTITY_LOAD.register { entity, _ -> SPAWN.dispatch(Spawn(entity)) }
+		ClientEntityEvents.ENTITY_UNLOAD.register { entity, _ -> DESPAWN.dispatch(Despawn(entity)) }
 	}
 
 	/**

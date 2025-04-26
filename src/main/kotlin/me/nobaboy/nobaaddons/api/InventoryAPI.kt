@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.api
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.InventoryData
-import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
@@ -81,7 +80,7 @@ object InventoryAPI {
 	private fun onClickSlot(packet: ClickSlotC2SPacket) {
 		if(packet.syncId != currentWindow?.id) return
 
-		InventoryEvents.SLOT_CLICK.invoke(InventoryEvents.SlotClick(packet.stack, packet.button, packet.slot, packet.actionType))
+		InventoryEvents.SLOT_CLICK.dispatch(InventoryEvents.SlotClick(packet.stack, packet.button, packet.slot, packet.actionType))
 	}
 
 	private fun onScreenOpen(packet: OpenScreenS2CPacket) {
@@ -104,7 +103,7 @@ object InventoryAPI {
 
 	private fun onSlotUpdate(packet: ScreenHandlerSlotUpdateS2CPacket) {
 		if(packet.syncId != currentWindow?.id) {
-			InventoryEvents.SLOT_UPDATE.invoke(InventoryEvents.SlotUpdate(packet.stack, packet.slot))
+			InventoryEvents.SLOT_UPDATE.dispatch(InventoryEvents.SlotUpdate(packet.stack, packet.slot))
 			return
 		}
 
@@ -114,7 +113,7 @@ object InventoryAPI {
 		if(slot >= inventory.slotCount) return
 		packet.stack?.let { inventory.items[slot] = it }
 
-		InventoryEvents.UPDATE.invoke(InventoryEvents.Update(inventory))
+		InventoryEvents.UPDATE.dispatch(InventoryEvents.Update(inventory))
 	}
 
 	private fun ready(inventory: InventoryData) {
@@ -129,7 +128,7 @@ object InventoryAPI {
 
 	private fun close(sameName: Boolean = false) {
 		if(MCUtils.client.currentScreen is ChatScreen) return
-		InventoryEvents.CLOSE.invoke(InventoryEvents.Close(sameName))
+		InventoryEvents.CLOSE.dispatch(InventoryEvents.Close(sameName))
 	}
 
 	private fun updateItemLog(previous: Map<Text, Int>, current: Map<Text, Int>) {

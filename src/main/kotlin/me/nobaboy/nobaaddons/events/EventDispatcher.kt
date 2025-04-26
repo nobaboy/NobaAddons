@@ -59,9 +59,6 @@ open class EventDispatcher<T : Event, R : Any?>(
 		return returns(event)
 	}
 
-	@Deprecated("Renamed to dispatch", replaceWith = ReplaceWith("this.dispatch(event)"))
-	fun invoke(event: T): R = dispatch(event)
-
 	companion object {
 		/**
 		 * Create a new [EventDispatcher] that returns the value of [CancelableEvent.canceled]

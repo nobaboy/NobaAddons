@@ -42,7 +42,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		//?}
 		CallbackInfo ci
 	) {
-		if(EntityEvents.ALLOW_RENDER.invoke(new EntityEvents.AllowRender(entity))) ci.cancel();
+		if(EntityEvents.ALLOW_RENDER.dispatch(new EntityEvents.AllowRender(entity))) ci.cancel();
 	}
 
 	@Inject(
@@ -72,7 +72,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		//?}
 		CallbackInfo ci
 	) {
-		EntityEvents.PRE_RENDER.invoke(new EntityEvents.Render(entity, tickDelta));
+		EntityEvents.PRE_RENDER.dispatch(new EntityEvents.Render(entity, tickDelta));
 	}
 
 	@Inject(
@@ -103,6 +103,6 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		//?}
 		CallbackInfo ci
 	) {
-		EntityEvents.POST_RENDER.invoke(new EntityEvents.Render(entity, tickDelta));
+		EntityEvents.POST_RENDER.dispatch(new EntityEvents.Render(entity, tickDelta));
 	}
 }

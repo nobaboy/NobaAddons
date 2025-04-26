@@ -12,6 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class WorldEventsMixin_MinecraftClient {
 	@Inject(method = "setWorld", at = @At("TAIL"))
 	public void nobaaddons$onSetWorld(ClientWorld world, CallbackInfo ci) {
-		if(world != null) WorldEvents.LOAD.invoke(new WorldEvents.Load(world));
+		if(world != null) WorldEvents.LOAD.dispatch(new WorldEvents.Load(world));
 	}
 }

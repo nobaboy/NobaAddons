@@ -101,7 +101,7 @@ object SkyBlockAPI {
 		currentServer = packet.serverType.getOrNull()
 		currentIsland = SkyBlockIsland.getByName(packet.mode.getOrNull() ?: return)
 		if(currentIsland != SkyBlockIsland.UNKNOWN) Scheduler.schedule(2) {
-			SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
+			SkyBlockEvents.ISLAND_CHANGE.dispatch(SkyBlockEvents.IslandChange(currentIsland))
 		}
 	}
 
@@ -127,7 +127,7 @@ object SkyBlockAPI {
 		val profileId = UUID.fromString(PROFILE_ID_REGEX.getGroupFromFullMatch(event.cleaned, "id") ?: return)
 		if(profileId == currentProfile) return
 
-		SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
+		SkyBlockEvents.PROFILE_CHANGE.dispatch(SkyBlockEvents.ProfileChange(profileId))
 		currentProfile = profileId
 	}
 

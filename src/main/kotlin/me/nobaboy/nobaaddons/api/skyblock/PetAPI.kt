@@ -105,9 +105,9 @@ object PetAPI {
 	private fun changePet(pet: PetData?) {
 		if(pet == currentPet) return
 
-		SkyBlockEvents.PET_CHANGE.invoke(SkyBlockEvents.PetChange(currentPet, pet))
-		currentPet = pet
+		SkyBlockEvents.PET_CHANGE.dispatch(SkyBlockEvents.PetChange(currentPet, pet))
 		ProfileData.PROFILE.pet = pet
+		currentPet = pet
 	}
 
 	fun xpFromLevel(level: Int, rarity: Rarity, maxLevel: Int = 100): Double {

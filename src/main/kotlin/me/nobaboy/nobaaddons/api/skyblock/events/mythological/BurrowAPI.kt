@@ -61,16 +61,15 @@ object BurrowAPI {
 
 		if(!burrow.hasEnchant || burrow.type == BurrowType.UNKNOWN || burrow.found) return
 
-		MythologicalEvents.BURROW_FIND.invoke(MythologicalEvents.BurrowFind(burrow.location, burrow.type))
+		MythologicalEvents.BURROW_FIND.dispatch(MythologicalEvents.BurrowFind(burrow.location, burrow.type))
 		burrow.found = true
 	}
 
 	private fun onBlockClick(event: BlockInteractionEvent) {
 		if(!enabled) return
-		val player = event.player
-		val location = event.location
+		if(!DianaAPI.hasSpadeInHand(event.player)) return
 
-		if(!DianaAPI.hasSpadeInHand(player)) return
+		val location = event.location
 		if(location.getBlockAt() != Blocks.GRASS_BLOCK) return
 
 		if(location == fakeBurrow) {
@@ -79,9 +78,9 @@ object BurrowAPI {
 			return
 		}
 
-		if(!burrows.containsKey(location)) return
-
+		if(location !in burrows) return
 		lastDugBurrow = location
+
 		Scheduler.schedule(20) {
 			if(lastBurrowChatMessage.elapsedSince() > 2.seconds) burrows.remove(location)
 		}
@@ -95,8 +94,7 @@ object BurrowAPI {
 		when {
 			burrowDugPattern.matches(message) -> {
 				lastBurrowChatMessage = Timestamp.now()
-
-				if(lastDugBurrow == null || !tryDigBurrow(lastDugBurrow!!)) return
+				if(lastDugBurrow?.let { tryDigBurrow(it) } != true) return
 				fakeBurrow = lastDugBurrow
 			}
 			mobDugPattern.matches(message) -> mobBurrow = lastDugBurrow
@@ -112,7 +110,7 @@ object BurrowAPI {
 		recentlyDugBurrows.add(location)
 		lastDugBurrow = null
 
-		MythologicalEvents.BURROW_DIG.invoke(MythologicalEvents.BurrowDig(location))
+		MythologicalEvents.BURROW_DIG.dispatch(MythologicalEvents.BurrowDig(location))
 		return true
 	}
 

@@ -26,7 +26,7 @@ object SeaCreatureAPI {
 		}
 
 		val seaCreature = SeaCreature.getBySpawnMessage(message) ?: return
-		FishingEvents.SEA_CREATURE_CATCH.invoke(FishingEvents.SeaCreatureCatch(seaCreature, doubleHook))
+		FishingEvents.SEA_CREATURE_CATCH.dispatch(FishingEvents.SeaCreatureCatch(seaCreature, doubleHook))
 		doubleHook = false
 	}
 }

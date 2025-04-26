@@ -38,11 +38,12 @@ object GriffinBurrowGuess {
 		particlePath.addPoint(location)
 		val guessLocation = particlePath.solve() ?: return
 
-		MythologicalEvents.BURROW_GUESS.invoke(MythologicalEvents.BurrowGuess(guessLocation.lower(0.5).roundToBlock()))
+		MythologicalEvents.BURROW_GUESS.dispatch(MythologicalEvents.BurrowGuess(guessLocation.lower(0.5).roundToBlock()))
 	}
 
 	private fun onItemUse(event: ItemUseEvent) {
 		if(!enabled) return
+		if(lastAbilityUse.elapsedSince() <= 3.seconds) return
 
 		val itemId = event.itemInHand.skyBlockId ?: return
 		if(itemId != DianaAPI.SPADE) return

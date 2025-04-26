@@ -14,12 +14,11 @@ import net.minecraft.text.Text
  * - [CHAT]
  * - [ALLOW]
  * - [MODIFY]
- * - [LATE_MODIFY]
  */
 object ChatMessageEvents {
 	init {
-		ClientReceiveMessageEvents.ALLOW_GAME.register { message, overlay -> overlay || !ALLOW.invoke(Allow(message)) }
-		ClientReceiveMessageEvents.MODIFY_GAME.register { message, overlay -> if(overlay) message else MODIFY.invoke(Modify(message)) }
+		ClientReceiveMessageEvents.ALLOW_GAME.register { message, overlay -> overlay || !ALLOW.dispatch(Allow(message)) }
+		ClientReceiveMessageEvents.MODIFY_GAME.register { message, overlay -> if(overlay) message else MODIFY.dispatch(Modify(message)) }
 	}
 
 	/**

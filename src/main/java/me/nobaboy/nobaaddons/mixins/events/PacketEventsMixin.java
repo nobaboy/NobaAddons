@@ -23,7 +23,7 @@ abstract class PacketEventsMixin {
 	private void nobaaddons$onPacketSend(Packet<?> packet, CallbackInfo ci) {
 		if(this.side != NetworkSide.CLIENTBOUND) return;
 
-		PacketEvents.SEND.invoke(new PacketEvents.Send(packet));
+		PacketEvents.SEND.dispatch(new PacketEvents.Send(packet));
 	}
 
 	@Inject(
@@ -34,7 +34,7 @@ abstract class PacketEventsMixin {
 		)
 	)
 	private static void nobaaddons$prePacketReceive(Packet<?> packet, PacketListener listener, CallbackInfo ci) {
-		PacketEvents.PRE_RECEIVE.invoke(new PacketEvents.Receive(packet));
+		PacketEvents.PRE_RECEIVE.dispatch(new PacketEvents.Receive(packet));
 	}
 
 	@Inject(
@@ -45,6 +45,6 @@ abstract class PacketEventsMixin {
 		if(!this.channel.isOpen()) return;
 		if(this.side != NetworkSide.CLIENTBOUND) return;
 
-		PacketEvents.POST_RECEIVE.invoke(new PacketEvents.Receive(packet));
+		PacketEvents.POST_RECEIVE.dispatch(new PacketEvents.Receive(packet));
 	}
 }

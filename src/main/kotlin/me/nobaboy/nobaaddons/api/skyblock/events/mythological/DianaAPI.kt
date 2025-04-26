@@ -26,7 +26,7 @@ object DianaAPI {
 		if(entity !is OtherClientPlayerEntity) return
 		if(entity.name.string != "Minos Inquisitor") return
 
-		MythologicalEvents.INQUISITOR_SPAWN.invoke(MythologicalEvents.InquisitorSpawn(entity))
+		MythologicalEvents.INQUISITOR_SPAWN.dispatch(MythologicalEvents.InquisitorSpawn(entity))
 	}
 
 	private fun hasSpadeInHotbar(): Boolean = InventoryUtils.getItemsInHotbar().any { it.skyBlockId == SPADE }

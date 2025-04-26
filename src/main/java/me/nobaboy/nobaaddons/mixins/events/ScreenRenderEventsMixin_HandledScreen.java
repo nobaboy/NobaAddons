@@ -30,6 +30,6 @@ abstract class ScreenRenderEventsMixin_HandledScreen extends Screen {
 	)
 	public void nobaaddons$onDrawSlot(DrawContext context, Slot slot, CallbackInfo ci) {
 		var event = new ScreenRenderEvents.DrawItem(context, textRenderer, slot.getStack(), slot.x, slot.y);
-		ScreenRenderEvents.DRAW_ITEM.invoke(event);
+		ScreenRenderEvents.DRAW_ITEM.dispatch(event);
 	}
 }
