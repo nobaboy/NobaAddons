@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screen.Screen
 /*
  * If you are adding a new category and config, please add it in alphabetically in its designated group.
  */
-sealed class AbstractNobaConfig protected constructor() : Histoire(
+sealed class AbstractNobaConfig : Histoire(
 	NobaAddons.CONFIG_DIR.resolve("config.json").toFile(),
 	migrations = migrations,
 	json = NobaAddons.JSON,
