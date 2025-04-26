@@ -15,7 +15,6 @@ import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
@@ -67,10 +66,7 @@ object PartyAPI {
 		TickEvents.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
-		ChatMessageEvents.CHAT.register { (message) ->
-			val cleaned = message.string.cleanFormatting()
-			if(invalidatePartyStateMessages.any { it.matches(cleaned) }) refreshPartyList = true
-		}
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		HypixelModAPI.getInstance().listen(this::onPartyData)
 	}
 
@@ -82,8 +78,12 @@ object PartyAPI {
 		}
 	}
 
-	fun getPartyInfo() {
-		HypixelModAPI.getInstance().sendPacket(ServerboundPartyInfoPacket())
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		if(!HypixelUtils.onHypixel) return
+
+		if(invalidatePartyStateMessages.any { it.matches(event.cleaned) }) {
+			refreshPartyList = true
+		}
 	}
 
 	private fun onPartyData(party: ClientboundPartyInfoPacket) {
@@ -98,6 +98,10 @@ object PartyAPI {
 				PartyData.Member(uuid = it.uuid, profile = uuidCache.apply(it.uuid), role = it.role)
 			},
 		)
+	}
+
+	fun getPartyInfo() {
+		HypixelModAPI.getInstance().sendPacket(ServerboundPartyInfoPacket())
 	}
 
 	// This method is only called from debug commands, and as such is fine being untranslated.
