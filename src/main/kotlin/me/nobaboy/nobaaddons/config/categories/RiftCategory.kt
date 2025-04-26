@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.config.categories
 import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
 import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.features.rift.RiftTimers
 import me.nobaboy.nobaaddons.utils.tr
 
 object RiftCategory {
@@ -11,7 +12,7 @@ object RiftCategory {
 	}
 
 	private fun CategoryBuilder.riftTimers() {
-		group(tr("nobaaddons.config.rift.timers", "Rift Timers")) {
+		group(RiftTimers) {
 			val infusion = add({ rift::freeInfusionAlert }) {
 				name = tr("nobaaddons.config.rift.timers.freeInfusions", "Free Infusions")
 				descriptionText = tr("nobaaddons.config.rift.timers.freeInfusions.tooltip", "Sends a message in chat when you regain a free Rift infusion")

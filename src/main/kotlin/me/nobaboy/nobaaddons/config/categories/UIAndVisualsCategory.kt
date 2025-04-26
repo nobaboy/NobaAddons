@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.config.util.builders.CategoryBuilder
 import me.nobaboy.nobaaddons.config.util.builders.button
 import me.nobaboy.nobaaddons.config.util.builders.OptionBuilder.Companion.descriptionText
+import me.nobaboy.nobaaddons.features.visuals.EtherwarpOverlay
 import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -65,7 +66,7 @@ object UIAndVisualsCategory {
 	}
 
 	private fun CategoryBuilder.etherwarpOverlay() {
-		group(tr("nobaaddons.config.uiAndVisuals.etherwarpOverlay", "Etherwarp Overlay")) {
+		group(EtherwarpOverlay) {
 			val enabled = add({ uiAndVisuals.etherwarpOverlay::enabled }) {
 				name = CommonText.Config.ENABLED
 				booleanController()
