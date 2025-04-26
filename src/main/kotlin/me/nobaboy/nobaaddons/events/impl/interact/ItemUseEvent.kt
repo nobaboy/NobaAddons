@@ -6,6 +6,11 @@ import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 
+/**
+ * Event invoked when the client player right clicks with an item while not looking at a block; you may
+ * also want to pair this with a [BlockInteractionEvent.EVENT] listener to handle when the player
+ * is looking at a block.
+ */
 data class ItemUseEvent(
 	override val player: ClientPlayerEntity,
 	override val hand: Hand,
@@ -25,11 +30,9 @@ data class ItemUseEvent(
 		}
 
 		/**
-		 * Event invoked when the client player right clicks with an item while not looking at a block; you may
-		 * also want to pair this with a [BlockInteractionEvent.EVENT] listener to handle when the player
-		 * is looking at a block.
-		 *
 		 * This event is a wrapper around the Fabric API [UseItemCallback] event.
+		 *
+		 * @see ItemUseEvent
 		 */
 		val EVENT = EventDispatcher<ItemUseEvent>()
 	}
