@@ -17,7 +17,6 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.gray
@@ -44,7 +43,7 @@ object SimonSaysTimer {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		BlockInteractionEvent.EVENT.registerIf<BlockInteractionEvent.Interact>(this::onInteract)
 
 		SimonSaysTimes.safeLoad().onSuccess {
@@ -102,10 +101,10 @@ object SimonSaysTimer {
 		ChatUtils.addMessage(tr("nobaadons.command.simonSaysTimer.personalBest", "Your personal best Simon Says time is $personalBest"))
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled || !buttonPressed || deviceCompleted) return
 
-		DEVICE_COMPLETED_REGEX.onFullMatch(message) {
+		DEVICE_COMPLETED_REGEX.onFullMatch(event.cleaned) {
 			val username = groups["username"]!!.value
 			if(username != MCUtils.playerName) return
 

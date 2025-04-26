@@ -21,7 +21,6 @@ import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.SkyBlockSeason
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.hypixel.data.type.GameType
@@ -94,7 +93,7 @@ object SkyBlockAPI {
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 		TickEvents.everySecond { update() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		currentProfile = PersistentCache.lastProfile?.toJavaUuid()
 	}
 
@@ -124,8 +123,8 @@ object SkyBlockAPI {
 		}
 	}
 
-	private fun onChatMessage(message: String) {
-		val profileId = UUID.fromString(PROFILE_ID_REGEX.getGroupFromFullMatch(message, "id") ?: return)
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val profileId = UUID.fromString(PROFILE_ID_REGEX.getGroupFromFullMatch(event.cleaned, "id") ?: return)
 		if(profileId == currentProfile) return
 
 		SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))

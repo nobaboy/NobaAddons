@@ -12,7 +12,6 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.TransferComma
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.WarpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object PartyCommands : ChatCommandManager() {
 	private val config get() = NobaConfig.chat.chatCommands.party
@@ -32,8 +31,6 @@ object PartyCommands : ChatCommandManager() {
 	}
 
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) ->
-			processMessage(message.string.cleanFormatting())
-		}
+		ChatMessageEvents.CHAT.register { processMessage(it.cleaned) }
 	}
 }

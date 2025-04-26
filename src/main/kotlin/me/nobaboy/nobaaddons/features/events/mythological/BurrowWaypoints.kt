@@ -12,7 +12,6 @@ import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -58,7 +57,7 @@ object BurrowWaypoints {
 		MythologicalEvents.BURROW_GUESS.register(this::onBurrowGuess)
 		MythologicalEvents.BURROW_FIND.register(this::onBurrowFind)
 		MythologicalEvents.BURROW_DIG.register(this::onBurrowDig)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
@@ -85,8 +84,10 @@ object BurrowWaypoints {
 		burrows.remove(event.location)
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
+
+		val message = event.cleaned
 
 		when {
 			message.startsWith(" ☠ You were killed by") -> burrows.remove(BurrowAPI.mobBurrow)

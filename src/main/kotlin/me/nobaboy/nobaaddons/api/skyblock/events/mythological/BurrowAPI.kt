@@ -11,7 +11,6 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.minecraft.block.Blocks
@@ -39,8 +38,8 @@ object BurrowAPI {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		BlockInteractionEvent.EVENT.register(this::onBlockClick)
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
@@ -66,21 +65,6 @@ object BurrowAPI {
 		burrow.found = true
 	}
 
-	private fun onChatMessage(message: String) {
-		if(!enabled) return
-
-		when {
-			burrowDugPattern.matches(message) -> {
-				lastBurrowChatMessage = Timestamp.now()
-
-				if(lastDugBurrow == null || !tryDigBurrow(lastDugBurrow!!)) return
-				fakeBurrow = lastDugBurrow
-			}
-			mobDugPattern.matches(message) -> mobBurrow = lastDugBurrow
-			message == "Defeat all the burrow defenders in order to dig it!" -> lastBurrowChatMessage = Timestamp.now()
-		}
-	}
-
 	private fun onBlockClick(event: BlockInteractionEvent) {
 		if(!enabled) return
 		val player = event.player
@@ -100,6 +84,23 @@ object BurrowAPI {
 		lastDugBurrow = location
 		Scheduler.schedule(20) {
 			if(lastBurrowChatMessage.elapsedSince() > 2.seconds) burrows.remove(location)
+		}
+	}
+
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		if(!enabled) return
+
+		val message = event.cleaned
+
+		when {
+			burrowDugPattern.matches(message) -> {
+				lastBurrowChatMessage = Timestamp.now()
+
+				if(lastDugBurrow == null || !tryDigBurrow(lastDugBurrow!!)) return
+				fakeBurrow = lastDugBurrow
+			}
+			mobDugPattern.matches(message) -> mobBurrow = lastDugBurrow
+			message == "Defeat all the burrow defenders in order to dig it!" -> lastBurrowChatMessage = Timestamp.now()
 		}
 	}
 

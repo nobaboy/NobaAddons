@@ -23,14 +23,8 @@ object TrophyFishAPI {
 	private val inventorySlots = 10..31
 
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
-	}
-
-	private fun onChatMessage(message: String) {
-		val (fish, rarity) = parseFromChatMessage(message) ?: return
-		val rarities = trophyFish.getOrPut(fish.id) { EnumMap(TrophyFishRarity::class.java) }
-		rarities[rarity] = (rarities[rarity] ?: 0) + 1
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
@@ -45,6 +39,12 @@ object TrophyFishAPI {
 				.let { EnumMap(it) }
 			trophyFish[trophy.id] = rarities
 		}
+	}
+
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val (fish, rarity) = parseFromChatMessage(event.cleaned) ?: return
+		val rarities = trophyFish.getOrPut(fish.id) { EnumMap(TrophyFishRarity::class.java) }
+		rarities[rarity] = (rarities[rarity] ?: 0) + 1
 	}
 
 	fun parseFromChatMessage(message: String): Pair<TrophyFish, TrophyFishRarity>? {

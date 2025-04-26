@@ -16,7 +16,6 @@ import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
@@ -50,7 +49,7 @@ object InquisitorWaypoints {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.everySecond { onSecondPassed() }
 		MythologicalEvents.INQUISITOR_SPAWN.register(this::onInquisitorSpawn)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
 	private fun onSecondPassed() {
@@ -69,10 +68,12 @@ object InquisitorWaypoints {
 		checkInquisitor()
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
 
-		if(inquisitorDigUpPattern matches message) checkInquisitor()
+		val message = event.cleaned
+
+		if(inquisitorDigUpPattern.matches(message)) checkInquisitor()
 
 		inquisitorSpawnPatterns.firstPartialMatch(message) {
 			val username = groups["username"]!!.value

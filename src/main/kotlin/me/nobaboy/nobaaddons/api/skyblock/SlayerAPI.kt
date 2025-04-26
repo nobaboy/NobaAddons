@@ -14,7 +14,6 @@ import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket
@@ -36,7 +35,7 @@ object SlayerAPI {
 		TickEvents.TICK.register { onTick() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
 	private fun onTick() {
@@ -101,10 +100,11 @@ object SlayerAPI {
 		}
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		val currentQuest = currentQuest ?: return
+		val message = event.cleaned
 
 		CommonPatterns.SLAYER_BOSS_SLAIN_REGEX.onFullMatch(message) {
 			SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest.entity, currentQuest.timerArmorStand))

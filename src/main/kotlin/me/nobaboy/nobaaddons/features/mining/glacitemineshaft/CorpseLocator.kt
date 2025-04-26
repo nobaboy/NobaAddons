@@ -12,7 +12,6 @@ import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
@@ -31,7 +30,7 @@ object CorpseLocator {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { corpses.clear() }
 		TickEvents.everySecond(this::onSecondPassed)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
 	private fun onSecondPassed(event: TickEvents.Tick) {
@@ -43,10 +42,10 @@ object CorpseLocator {
 		}
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
 
-		CommonPatterns.CHAT_COORDINATES_REGEX.onPartialMatch(message) {
+		CommonPatterns.CHAT_COORDINATES_REGEX.onPartialMatch(event.cleaned) {
 			val username = groups["username"]!!.value
 			if(username == MCUtils.playerName) return
 

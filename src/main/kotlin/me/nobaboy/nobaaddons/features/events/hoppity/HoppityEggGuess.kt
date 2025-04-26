@@ -12,7 +12,6 @@ import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.math.ParticlePathFitter
@@ -36,7 +35,7 @@ object HoppityEggGuess {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ItemUseEvent.EVENT.register(this::onItemUse)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
@@ -65,9 +64,9 @@ object HoppityEggGuess {
 		lastAbilityUse = Timestamp.now()
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
-		if(message.startsWith("HOPPITY'S HUNT You found a Chocolate")) guessLocation = null
+		if(event.cleaned.startsWith("HOPPITY'S HUNT You found a Chocolate")) guessLocation = null
 	}
 
 	private fun renderWaypoints(context: WorldRenderContext) {

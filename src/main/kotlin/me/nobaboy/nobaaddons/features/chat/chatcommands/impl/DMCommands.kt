@@ -10,7 +10,6 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHandler
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object DMCommands : ChatCommandManager() {
 	private val config get() = NobaConfig.chat.chatCommands.dm
@@ -27,15 +26,15 @@ object DMCommands : ChatCommandManager() {
 	}
 
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) ->
-			val cleanMessage = message.string.cleanFormatting()
+		ChatMessageEvents.CHAT.register {
+			val message = it.cleaned
 
 			if(WarpPlayerHandler.isWarping) {
-				WarpPlayerHandler.onChatMessage(cleanMessage)
+				WarpPlayerHandler.onChatMessage(message)
 				return@register
 			}
 
-			processMessage(cleanMessage)
+			processMessage(message)
 		}
 	}
 }
