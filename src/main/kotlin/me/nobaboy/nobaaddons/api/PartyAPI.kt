@@ -15,8 +15,8 @@ import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -24,7 +24,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import net.hypixel.modapi.packet.impl.serverbound.ServerboundPartyInfoPacket
-import net.minecraft.text.HoverEvent
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
 import java.util.UUID
@@ -38,7 +37,7 @@ object PartyAPI {
 		}
 	}
 
-	private val invalidatePartyStateMessages: List<Regex> by Repo.list(
+	private val INVALIDATE_PARTY_REGEXES by Repo.list(
 		// Join
 		Regex("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!").fromRepo("party.join"),
 		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\.").fromRepo("party.other_join"),
@@ -67,10 +66,7 @@ object PartyAPI {
 		TickEvents.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
-		ChatMessageEvents.CHAT.register { (message) ->
-			val cleaned = message.string.cleanFormatting()
-			if(invalidatePartyStateMessages.any { it.matches(cleaned) }) refreshPartyList = true
-		}
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		HypixelModAPI.getInstance().listen(this::onPartyData)
 	}
 
@@ -82,8 +78,12 @@ object PartyAPI {
 		}
 	}
 
-	fun getPartyInfo() {
-		HypixelModAPI.getInstance().sendPacket(ServerboundPartyInfoPacket())
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		if(!HypixelUtils.onHypixel) return
+
+		if(INVALIDATE_PARTY_REGEXES.any { it.matches(event.cleaned) }) {
+			refreshPartyList = true
+		}
 	}
 
 	private fun onPartyData(party: ClientboundPartyInfoPacket) {
@@ -98,6 +98,10 @@ object PartyAPI {
 				PartyData.Member(uuid = it.uuid, profile = uuidCache.apply(it.uuid), role = it.role)
 			},
 		)
+	}
+
+	fun getPartyInfo() {
+		HypixelModAPI.getInstance().sendPacket(ServerboundPartyInfoPacket())
 	}
 
 	// This method is only called from debug commands, and as such is fine being untranslated.
@@ -115,8 +119,8 @@ object PartyAPI {
 			val text = buildText {
 				append(" - ".toText().formatted(Formatting.AQUA))
 				append(member.name.toText().styled {
-					val uuid = member.uuid.toText().formatted(Formatting.GRAY)
-					it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, uuid)).withColor(Formatting.GRAY).withBold(member.isMe)
+					val uuid = member.uuid.toString().toText().formatted(Formatting.GRAY)
+					it.hoverText(uuid).withColor(Formatting.GRAY).withBold(member.isMe)
 				})
 				if(member.isLeader) {
 					append(" (Leader)".toText().formatted(Formatting.BLUE))

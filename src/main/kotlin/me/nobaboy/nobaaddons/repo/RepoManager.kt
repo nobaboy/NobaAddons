@@ -65,7 +65,7 @@ object RepoManager {
 			if(sendMessages) {
 				ChatUtils.addMessage(tr("nobaaddons.repo.autoUpdateOff", "Auto updating has been disabled, not updating repository"))
 			}
-			RepoReloadEvent.invoke()
+			RepoReloadEvent.dispatch()
 			return
 		}
 
@@ -73,7 +73,7 @@ object RepoManager {
 			getLatestCommit()
 		} catch(e: Exception) {
 			ErrorManager.logError("Failed to get latest repo commit", e, ignorePreviousErrors = true)
-			if(!REPO_DIRECTORY.exists()) switchToBackupRepo() else RepoReloadEvent.invoke()
+			if(!REPO_DIRECTORY.exists()) switchToBackupRepo() else RepoReloadEvent.dispatch()
 			return
 		}
 
@@ -81,7 +81,7 @@ object RepoManager {
 			if(sendMessages) {
 				ChatUtils.addMessage(tr("nobaaddons.repo.alreadyUpdated", "Repository is already up to date"))
 			}
-			RepoReloadEvent.invoke()
+			RepoReloadEvent.dispatch()
 			return
 		}
 
@@ -113,7 +113,7 @@ object RepoManager {
 		if(sendMessages) {
 			ChatUtils.addMessage(tr("nobaaddons.repo.updated", "Updated repository"))
 		}
-		RepoReloadEvent.invoke()
+		RepoReloadEvent.dispatch()
 	}
 
 	fun performInitialLoad(obj: IRepoObject) {
@@ -145,7 +145,7 @@ object RepoManager {
 			commit = "backup-repo"
 
 			NobaAddons.LOGGER.warn("Successfully switched to backup repo")
-			RepoReloadEvent.invoke()
+			RepoReloadEvent.dispatch()
 		} catch(e: Exception) {
 			ErrorManager.logError("Failed to switch to backup repo", e, ignorePreviousErrors = true)
 		}
@@ -159,7 +159,7 @@ object RepoManager {
 		}
 	}
 
-	private fun RepoReloadEvent.Companion.invoke() {
-		synchronized(LOCK) { EVENT.invoke(RepoReloadEvent()) }
+	private fun RepoReloadEvent.Companion.dispatch() {
+		synchronized(LOCK) { EVENT.dispatch(RepoReloadEvent()) }
 	}
 }

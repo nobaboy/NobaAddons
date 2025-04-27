@@ -18,6 +18,6 @@ object EntityUtils {
 	inline fun <reified T : Entity> getEntitiesNear(location: NobaVec, radius: Double): Sequence<T> =
 		getEntities<T>().filter { it.distanceTo(location) < radius }
 
-	inline fun <reified T: Entity> getNextEntity(entity: Entity, offset: Int): T? =
+	inline fun <reified T : Entity> getNextEntity(entity: Entity, offset: Int): T? =
 		getEntityById(entity.id + offset) as? T
 }

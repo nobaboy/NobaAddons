@@ -14,6 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class ChatMessageEventsMixin_MessageHandler {
 	@Inject(method = "onGameMessage", at = @At("HEAD"))
 	public void nobaaddons$onChatMessage(Text message, boolean overlay, CallbackInfo ci) {
-		if(!overlay) ChatMessageEvents.CHAT.invoke(new ChatMessageEvents.Chat(message));
+		if(!overlay) ChatMessageEvents.CHAT.dispatch(new ChatMessageEvents.Chat(message));
 	}
 }

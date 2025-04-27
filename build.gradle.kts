@@ -67,7 +67,7 @@ dependencies {
 	mappings("net.fabricmc:yarn:${mcVersion}+build.${deps["yarn_build"]}:v2")
 	modImplementation("net.fabricmc:fabric-loader:${deps["fabric_loader"]}")
 
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+${mcVersion}")
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+$mcVersion")
 	modImplementation("net.fabricmc:fabric-language-kotlin:${deps["kotlin"]}")
 
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL

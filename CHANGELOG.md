@@ -4,13 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 1.0.0-Beta.2 - 2025-04-?
+## 1.0.0-Beta.2 - 2025-04-27
 
 **Back up your configs before updating!** This release includes major changes to how the mod's configuration
 files are loaded and saved, and as such things could potentially break (but they hopefully shouldn't).
 
 ### Added
 
+- Support for 1.21.5 - celeste, nobaboy
 - Fishing catch timer HUD element - celeste
 - Option to revert fishing treasure catch messages to the pre-Backwater Bayou format - celeste
 - Option to mute Banshee - nobaboy
@@ -23,9 +24,10 @@ files are loaded and saved, and as such things could potentially break (but they
 
 ### Changed
 
+- Enchantment tooltip parsing is now slightly more strict in where it matches - celeste
+- `/swiki` & `/wikisearch` are now only registered when connected to Hypixel - celeste
 - Rewrote configuration saving and loading internals - celeste
 - Rewrote how the YACL config menu is built - celeste
-- Enchantment tooltip parsing is now more strict in where it matches - celeste
 - Improved Egglocator and Ancestral Spade guesses - nobaboy
 
 ### Fixed
@@ -36,6 +38,7 @@ files are loaded and saved, and as such things could potentially break (but they
 - Enchantment tooltip parsing properly works on enchanted books again - celeste
 - Certain config options re-using the same key - celeste
 - Inconsistency with Mineshaft Entrance/Ladder waypoints - nobaboy
+- Vacuum Pests Slot Info not displaying with pests over 999 - nobaboy
 
 ## 1.0.0-Beta.1 - 2025-03-18
 

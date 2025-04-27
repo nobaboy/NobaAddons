@@ -1,5 +1,9 @@
 package me.nobaboy.nobaaddons.api
 
+//? if >=1.21.5 {
+/*import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
+*///?}
+
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.InventoryData
@@ -12,7 +16,6 @@ import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket
 import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
@@ -62,8 +65,7 @@ object InventoryAPI {
 	}
 
 	private fun onPacketSend(event: PacketEvents.Send) {
-		when(val packet = event.packet) {
-			is ClickSlotC2SPacket -> onClickSlot(packet)
+		when(event.packet) {
 			is CloseHandledScreenC2SPacket -> close()
 		}
 	}
@@ -75,12 +77,6 @@ object InventoryAPI {
 			is ScreenHandlerSlotUpdateS2CPacket -> onSlotUpdate(packet)
 			is CloseScreenS2CPacket -> close()
 		}
-	}
-
-	private fun onClickSlot(packet: ClickSlotC2SPacket) {
-		if(packet.syncId != currentWindow?.id) return
-
-		InventoryEvents.SLOT_CLICK.invoke(InventoryEvents.SlotClick(packet.stack, packet.button, packet.slot, packet.actionType))
 	}
 
 	private fun onScreenOpen(packet: OpenScreenS2CPacket) {
@@ -103,7 +99,7 @@ object InventoryAPI {
 
 	private fun onSlotUpdate(packet: ScreenHandlerSlotUpdateS2CPacket) {
 		if(packet.syncId != currentWindow?.id) {
-			InventoryEvents.SLOT_UPDATE.invoke(InventoryEvents.SlotUpdate(packet.stack, packet.slot))
+			InventoryEvents.SLOT_UPDATE.dispatch(InventoryEvents.SlotUpdate(packet.stack, packet.slot))
 			return
 		}
 
@@ -113,12 +109,12 @@ object InventoryAPI {
 		if(slot >= inventory.slotCount) return
 		packet.stack?.let { inventory.items[slot] = it }
 
-		InventoryEvents.UPDATE.invoke(InventoryEvents.Update(inventory))
+		InventoryEvents.UPDATE.dispatch(InventoryEvents.Update(inventory))
 	}
 
 	private fun ready(inventory: InventoryData) {
-		InventoryEvents.OPEN.invoke(InventoryEvents.Open(inventory))
-		InventoryEvents.UPDATE.invoke(InventoryEvents.Update(inventory))
+		InventoryEvents.OPEN.dispatch(InventoryEvents.Open(inventory))
+		InventoryEvents.UPDATE.dispatch(InventoryEvents.Update(inventory))
 	}
 
 	private fun debounceItemLog() {
@@ -128,7 +124,7 @@ object InventoryAPI {
 
 	private fun close(sameName: Boolean = false) {
 		if(MCUtils.client.currentScreen is ChatScreen) return
-		InventoryEvents.CLOSE.invoke(InventoryEvents.Close(sameName))
+		InventoryEvents.CLOSE.dispatch(InventoryEvents.Close(sameName))
 	}
 
 	private fun updateItemLog(previous: Map<Text, Int>, current: Map<Text, Int>) {
@@ -169,6 +165,10 @@ object InventoryAPI {
 	}
 
 	private fun PlayerInventory.itemNamesToCount(): Map<Text, Int> = buildMap {
+		//? if >=1.21.5 {
+		/*val main = (this@itemNamesToCount as PlayerInventoryAccessor).main
+		*///?}
+
 		for(slot in 0 until main.size) {
 			if(slot == SKYBLOCK_MENU_SLOT) {
 				continue
@@ -180,7 +180,8 @@ object InventoryAPI {
 
 			merge(name, item.count, Int::plus)
 		}
-		offHand.firstOrNull()?.let { merge(name, it.count, Int::plus) }
+		// TODO fix for 1.21.5
+//		offHand.firstOrNull()?.let { merge(name, it.count, Int::plus) }
 	}
 
 	data class Window(val id: Int, val title: String)

@@ -10,14 +10,14 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpPlayerHandler
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 
 object DMCommands : ChatCommandManager() {
 	private val config get() = NobaConfig.chat.chatCommands.dm
 
 	override val source: ChatContext.ChatCommandSource = ChatContext.ChatCommandSource.MESSAGE
 	override val enabled: Boolean get() = config.enabled && onHypixel()
-	override val pattern by Regex("^From (?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?").fromRepo("chat_commands.dm")
+	override val pattern by Regex("^From ${CommonPatterns.PLAYER_NAME_WITH_RANK_STRING}: [!?.](?<command>[A-z0-9_]+) ?(?<argument>[A-z0-9_ ]+)?").fromRepo("chat_commands.dm")
 
 	init {
 		register(HelpCommand(this, config::help))
@@ -27,15 +27,15 @@ object DMCommands : ChatCommandManager() {
 	}
 
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) ->
-			val cleanMessage = message.string.cleanFormatting()
+		ChatMessageEvents.CHAT.register {
+			val message = it.cleaned
 
 			if(WarpPlayerHandler.isWarping) {
-				WarpPlayerHandler.onChatMessage(cleanMessage)
+				WarpPlayerHandler.onChatMessage(message)
 				return@register
 			}
 
-			processMessage(cleanMessage)
+			processMessage(message)
 		}
 	}
 }

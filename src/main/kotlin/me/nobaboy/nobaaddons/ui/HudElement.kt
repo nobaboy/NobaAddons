@@ -19,14 +19,14 @@ abstract class HudElement {
 	protected abstract val elementPosition: ElementPosition
 
 	/**
-	 * Returns an absolute pixel value for the top left corner of this element
+	 * Returns an absolute pixel value for the top left corner of this element.
 	 */
 	var x: Int
 		get() = convertToAbsolutePixel(MCUtils.window.scaledWidth, elementPosition.x)
 		set(value) { elementPosition.x = value.toDouble() / MCUtils.window.scaledWidth }
 
 	/**
-	 * Returns an absolute pixel value for the top left corner of this element
+	 * Returns an absolute pixel value for the top left corner of this element.
 	 */
 	var y: Int
 		get() = convertToAbsolutePixel(MCUtils.window.scaledHeight, elementPosition.y)
@@ -52,7 +52,7 @@ abstract class HudElement {
 	private fun convertToAbsolutePixel(pixels: Int, scale: Double): Int = (pixels * scale).toInt().coerceIn(0, pixels)
 
 	/**
-	 * The current element scale as determined by the user
+	 * The current element scale as determined by the user.
 	 *
 	 * @see RenderUtils.scaled
 	 */
@@ -61,44 +61,51 @@ abstract class HudElement {
 		set(value) { if(allowScaling) elementPosition.scale = value }
 
 	/**
-	 * Minimum scale for this element when using the scroll wheel on it in the HUD editor screen
+	 * Minimum scale for this element when using the scroll wheel on it in the HUD editor screen.
 	 *
-	 * Note that this is capped at `0.5f` in [ElementPosition]
+	 * Note that this is capped at `0.5f` in [ElementPosition].
 	 */
 	open val minScale: Float = 0.5f
 
 	/**
-	 * Maximum scale for this element when using the scroll wheel on it in the HUD editor screen
+	 * Maximum scale for this element when using the scroll wheel on it in the HUD editor screen.
 	 *
-	 * Note that this is capped at `3f` in [ElementPosition]
+	 * Note that this is capped at `3f` in [ElementPosition].
 	 */
 	open val maxScale: Float = 3f
 
 	open val allowScaling: Boolean = true
+	open val dynamicScaling: Boolean = false
 
 	/**
-	 * Name used in place of this element in the HUD editor screen
+	 * Name used in place of this element in the HUD editor screen.
 	 */
 	abstract val name: Text
 
 	/**
-	 * How large this element is on screen in pixels
+	 * How large this element is on screen in pixels.
 	 */
-	// TODO does this need to be manually scaled for different GUI scales for custom values?
 	abstract val size: Pair<Int, Int>
 
+	val scaledSize: Pair<Int, Int>
+		get() {
+			if(!allowScaling || dynamicScaling) return size
+			val (width, height) = size
+			return (width * scale).roundToInt() to (height * scale).roundToInt()
+		}
+
 	/**
-	 * Implement this method with your element's rendering logic
+	 * Implement this method with your element's rendering logic.
 	 */
 	abstract fun render(context: DrawContext)
 
-	private val scaleOffset: Int get() = (1 * scale).roundToInt().coerceAtLeast(1)
+	private val scaleOffset: Int get() = scale.roundToInt().coerceAtLeast(1)
 
 	private val maxScreenBounds: Pair<Int, Int>
 		get() {
 			val (screenWidth, screenHeight) = MCUtils.window.let { it.scaledWidth to it.scaledHeight }
-			val bounds = getBounds()
 			val offset = scaleOffset
+			val bounds = getBounds()
 
 			val xMax = (screenWidth - bounds.width - offset - 1).coerceAtLeast(1)
 			val yMax = (screenHeight - bounds.height - offset - 1).coerceAtLeast(1)
@@ -115,25 +122,69 @@ abstract class HudElement {
 	}
 
 	/**
-	 * Renders the background for this element in the HUD editor screen
+	 * Renders the background for this element with a border indicating if it's hovered or not.
+	 *
+	 * This is primarily used in the HUD editor screen.
 	 */
-	fun renderGUIBackground(context: DrawContext, hovered: Boolean) {
+	fun renderEditorBackground(context: DrawContext, hovered: Boolean, renderExample: Boolean = true) {
 		val color = if(hovered) 0xFF85858A else 0xFF343738
-
-		val offset = (1 * scale).roundToInt().coerceAtLeast(1)
+		val offset = scaleOffset
 		val bounds = getBounds()
 
-		context.fill(bounds.x - offset, bounds.y - offset, bounds.x + bounds.width + offset, bounds.y + bounds.height + offset, 0x80000000.toInt())
-		context.drawBorder(bounds.x - offset - 1, bounds.y - offset - 1, bounds.width + 2 * offset + 2, bounds.height + 2 * offset + 2, color.toInt())
+		context.fill(
+			bounds.x - offset,
+			bounds.y - offset,
+			bounds.x + bounds.width + offset,
+			bounds.y + bounds.height + offset,
+			0x80000000.toInt()
+		)
 
-		val yOffset = if(scale < 1f) 10 else 0
-		RenderUtils.drawCenteredText(context, name, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2 - 4 - yOffset)
+		context.drawBorder(
+			bounds.x - offset - 1,
+			bounds.y - offset - 1,
+			bounds.width + 2 * offset + 2,
+			bounds.height + 2 * offset + 2,
+			color.toInt()
+		)
+
+		if(renderExample) {
+			val yOffset = if(scale < 1f) 10 else 0
+			renderExampleText(context, bounds, yOffset)
+		}
 	}
 
 	/**
-	 * Internal method, returns the element's [ElementBounds] used by the HUD editor screen
+	 * Renders the background for this element.
 	 */
-	fun getBounds(): ElementBounds = ElementBounds(x, y, size)
+	fun renderBackground(context: DrawContext) {
+		val offset = scaleOffset
+		val bounds = getBounds()
+
+		context.fill(
+			bounds.x - offset,
+			bounds.y - offset,
+			bounds.x + bounds.width + offset,
+			bounds.y + bounds.height + offset,
+			0x80000000.toInt()
+		)
+	}
+
+	/**
+	 * Display example text in the UI; the default implementation of this method simply renders [name].
+	 */
+	protected open fun renderExampleText(context: DrawContext, bounds: ElementBounds, yOffset: Int) {
+		RenderUtils.drawCenteredText(
+			context,
+			name,
+			bounds.x + bounds.width / 2,
+			bounds.y + bounds.height / 2 - 4 - yOffset
+		)
+	}
+
+	/**
+	 * Internal method, returns the element's [ElementBounds] used by the HUD editor screen.
+	 */
+	fun getBounds(): ElementBounds = ElementBounds(x, y, scaledSize)
 
 	open fun moveTo(x: Int, y: Int) {
 		val offset = scaleOffset + 1
@@ -150,7 +201,7 @@ abstract class HudElement {
 	}
 
 	open fun reset() {
-		scale = 1f
+		scale = 1f.coerceIn(minScale, maxScale)
 		moveTo(0, 0)
 	}
 }

@@ -52,18 +52,19 @@ object EtherwarpOverlay {
 			return
 		}
 
-		if(!etherwarpItems.contains(item.id) || !item.ethermerge) {
+		if(!etherwarpItems.contains(item.id) || item.ethermerge != true) {
 			targetBlock = null
 			return
 		}
 
-		val maxDistance = BASE_DISTANCE + item.tunedTransmission
+		val maxDistance = BASE_DISTANCE + (item.tunedTransmission ?: 0)
 		val target = client.crosshairTarget
 
 		if(target is BlockHitResult && target.type == HitResult.Type.BLOCK) {
 			handleTarget(context, client, target)
 		} else if(client.interactionManager != null) {
-			val raycast = client.player?.rayCast(maxDistance.toDouble(), context.tickCounter().getTickDelta(true), true) as? BlockHitResult
+			val tickDelta = context.tickCounter()./*? if >=1.21.5 {*//*getTickProgress*//*?} else {*/getTickDelta/*?}*/(true)
+			val raycast = client.player?.rayCast(maxDistance.toDouble(), tickDelta, true) as? BlockHitResult
 			raycast?.let { handleTarget(context, client, it) }
 		}
 	}

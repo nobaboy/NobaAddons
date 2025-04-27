@@ -28,9 +28,10 @@ object RanchersBootsSpeedSlotInfo : ISlotInfo {
 			helmet?.id == "RACING HELMET" ||
 			(SkyBlockIsland.GARDEN.inIsland() && heldItem?.id == "CACTUS_KNIFE")
 
+		val speed = item.ranchersSpeed ?: return
 		val speedLimit = if(isLimit500) 500 else 400
-		val color = if(item.ranchersSpeed > speedLimit) NobaColor.RED else NobaColor.WHITE
+		val color = if(speed > speedLimit) NobaColor.RED else NobaColor.WHITE
 
-		drawCount(event, item.ranchersSpeed.toString(), color)
+		drawCount(event, speed.toString(), color)
 	}
 }

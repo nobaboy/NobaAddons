@@ -6,6 +6,8 @@ import java.util.function.ToIntFunction
 
 object EnumUtils {
 	inline fun <reified T : Enum<T>> ordinalMapper(outOfBounds: ValueLists.OutOfBoundsHandling = ValueLists.OutOfBoundsHandling.WRAP): IntFunction<T> {
-		return ValueLists.createIdToValueFunction(ToIntFunction<T> { it.ordinal }, enumValues<T>(), outOfBounds)
+		return ValueLists./*? if >=1.21.5 {*//*createIndexToValueFunction*//*?} else {*/createIdToValueFunction/*?}*/(
+			ToIntFunction<T> { it.ordinal }, enumValues<T>(), outOfBounds
+		)
 	}
 }
