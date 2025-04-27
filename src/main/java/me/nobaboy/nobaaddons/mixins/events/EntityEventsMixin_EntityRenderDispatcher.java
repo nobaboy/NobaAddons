@@ -58,7 +58,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		//? if >=1.21.5 {
 		/*Entity entity = ((EntityStateCaptureDuck) state).nobaaddons$getEntity();
 		*///?}
-		if(entity != null && EntityEvents.ALLOW_RENDER.invoke(new EntityEvents.AllowRender(entity))) ci.cancel();
+		if(entity != null && EntityEvents.ALLOW_RENDER.dispatch(new EntityEvents.AllowRender(entity))) ci.cancel();
 	}
 
 	@Inject(
@@ -99,7 +99,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		/*float tickDelta = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true);
 		Entity entity = ((EntityStateCaptureDuck) state).nobaaddons$getEntity();
 		*///?}
-		if(entity != null) EntityEvents.PRE_RENDER.invoke(new EntityEvents.Render(entity, tickDelta));
+		if(entity != null) EntityEvents.PRE_RENDER.dispatch(new EntityEvents.Render(entity, tickDelta));
 	}
 
 	@Inject(
@@ -140,6 +140,6 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		/*float tickDelta = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true);
 		Entity entity = ((EntityStateCaptureDuck) state).nobaaddons$getEntity();
 		*///?}
-		if(entity != null) EntityEvents.POST_RENDER.invoke(new EntityEvents.Render(entity, tickDelta));
+		if(entity != null) EntityEvents.POST_RENDER.dispatch(new EntityEvents.Render(entity, tickDelta));
 	}
 }

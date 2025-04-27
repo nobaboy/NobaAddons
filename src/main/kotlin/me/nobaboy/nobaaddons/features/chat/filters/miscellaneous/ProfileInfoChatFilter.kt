@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.commandOrNull
 import net.minecraft.text.Text
 
 object ProfileInfoChatFilter : IChatFilter {
-	private val profileInfoPatterns: List<Regex> by Repo.list(
+	private val PROFILE_INFO_REGEXES by Repo.list(
 		Regex("^You are playing on profile: [A-z-() ]+").fromRepo("filter.profile.playing_on"),
 		Regex("^Profile ID: [A-z0-9-]+").fromRepo("filter.profile.uuid"),
 	)
@@ -30,6 +30,6 @@ object ProfileInfoChatFilter : IChatFilter {
 		return isSuggestProfile(message) || super.shouldFilter(message)
 	}
 
-	override fun shouldFilter(message: String): Boolean = profileInfoPatterns.anyFullMatch(message)
+	override fun shouldFilter(message: String): Boolean = PROFILE_INFO_REGEXES.anyFullMatch(message)
 	override val enabled: Boolean get() = config.hideProfileInfo && SkyBlockAPI.inSkyBlock
 }

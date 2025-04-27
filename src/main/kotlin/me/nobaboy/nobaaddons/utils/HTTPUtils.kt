@@ -20,15 +20,24 @@ object HTTPUtils {
 	}
 
 	inline fun <reified T> fetchJson(
-		url: String, serializer: KSerializer<T> = serializer<T>(), crossinline builder: HttpRequest.Builder.() -> Unit = {}
+		url: String,
+		serializer: KSerializer<T> = serializer<T>(),
+		crossinline builder: HttpRequest.Builder.() -> Unit = {}
 	): Deferred<T> = NobaAddons.coroutineScope.async {
 		val response = client.get(url, builder)
 		NobaAddons.JSON.decodeFromString(serializer, response.body())
 	}
 
-	suspend inline fun HttpClient.get(uri: String, crossinline builder: HttpRequest.Builder.() -> Unit = {}): HttpResponse<String> = get(uri, HttpResponse.BodyHandlers.ofString(), builder)
+	suspend inline fun HttpClient.get(
+		uri: String,
+		crossinline builder: HttpRequest.Builder.() -> Unit = {}
+	): HttpResponse<String> = get(uri, HttpResponse.BodyHandlers.ofString(), builder)
 
-	suspend inline fun <T> HttpClient.get(uri: String, handler: HttpResponse.BodyHandler<T>, crossinline builder: HttpRequest.Builder.() -> Unit = {}): HttpResponse<T> {
+	suspend inline fun <T> HttpClient.get(
+		uri: String,
+		handler: HttpResponse.BodyHandler<T>,
+		crossinline builder: HttpRequest.Builder.() -> Unit = {}
+	): HttpResponse<T> {
 		val request = HttpRequest.newBuilder().GET().uri(URI.create(uri)).apply(builder).build()
 		val response = client.sendAsync(request, handler).await()
 		check(response.statusCode() in (200 until 300)) { "Invalid response code ${response.statusCode()}" }

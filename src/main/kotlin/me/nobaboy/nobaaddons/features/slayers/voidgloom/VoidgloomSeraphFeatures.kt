@@ -191,7 +191,7 @@ object VoidgloomSeraphFeatures {
 
 	data class BrokenHeartRadiation(
 		val entity: LivingEntity,
-		val timestamp: Timestamp = Timestamp.now() + 8.seconds
+		val timestamp: Timestamp = Timestamp.now() + 8.seconds,
 	) {
 		val isValid: Boolean
 			get() = timestamp.timeRemaining() > 0.seconds && (entity.vehicle != null || timestamp.timeRemaining() > 5.seconds)

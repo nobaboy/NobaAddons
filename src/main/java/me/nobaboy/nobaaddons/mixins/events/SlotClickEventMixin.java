@@ -29,6 +29,6 @@ abstract class SlotClickEventMixin {
 		CallbackInfo ci,
 		@Local ScreenHandler screenHandler
 	) {
-		InventoryEvents.SLOT_CLICK.invoke(new InventoryEvents.SlotClick(screenHandler.getCursorStack(), button, slotId, actionType));
+		InventoryEvents.SLOT_CLICK.dispatch(new InventoryEvents.SlotClick(screenHandler.getCursorStack(), button, slotId, actionType));
 	}
 }

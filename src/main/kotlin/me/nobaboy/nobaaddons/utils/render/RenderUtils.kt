@@ -67,7 +67,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		if(applyScaling && scale != 1f) startScale(context, scale)
 		context.drawText(MCUtils.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color.rgb, shadow)
@@ -82,7 +82,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		drawText(context, text.toText(), x, y, scale, color, shadow, applyScaling)
 	}
@@ -95,7 +95,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		outlineColor: NobaColor = NobaColor.BLACK,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		if(applyScaling) startScale(context, scale)
 		val vertexConsumerProvider = context.let {
@@ -122,7 +122,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		outlineColor: NobaColor = NobaColor.BLACK,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		drawOutlinedText(context, text.toText(), x, y, scale, color, outlineColor, applyScaling)
 	}
@@ -135,7 +135,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		val width = (text.getWidth() * scale).toInt()
 		drawText(context, text, x - width / 2, y, scale, color, shadow, applyScaling)
@@ -149,7 +149,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		val width = (text.getWidth() * scale).toInt()
 		drawText(context, text.toText(), x - width / 2, y, scale, color, shadow, applyScaling)
@@ -161,7 +161,7 @@ object RenderUtils {
 		leftX: Double,
 		leftY: Double,
 		rightX: Double,
-		rightY: Double
+		rightY: Double,
 	): Boolean = pointX in leftX..rightX && pointY in leftY..rightY
 
 	fun drawTitle(
@@ -171,7 +171,7 @@ object RenderUtils {
 		offset: Int = 0,
 		duration: Duration = 3.seconds,
 		id: String = StringUtils.randomAlphanumeric(),
-		subtext: Text? = null
+		subtext: Text? = null,
 	) {
 		TitleManager.draw(text, color, scale, offset, duration, id, subtext)
 	}
@@ -183,7 +183,7 @@ object RenderUtils {
 		offset: Int = 0,
 		duration: Duration = 3.seconds,
 		id: String = StringUtils.randomAlphanumeric(),
-		subtext: Text? = null
+		subtext: Text? = null,
 	) {
 		TitleManager.draw(text.toText(), color, scale, offset, duration, id, subtext)
 	}
@@ -199,7 +199,7 @@ object RenderUtils {
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
 		beaconThreshold: Double = 5.0,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		renderBeaconBeam(context, location.raise(), color, beaconThreshold)
 		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
@@ -213,7 +213,7 @@ object RenderUtils {
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		renderOutline(context, location, color, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
@@ -223,7 +223,7 @@ object RenderUtils {
 		context: WorldRenderContext,
 		location: NobaVec,
 		color: NobaColor,
-		hideThreshold: Double = 5.0
+		hideThreshold: Double = 5.0,
 	) {
 		if(!FrustumUtils.isVisible(location, toWorldHeight = true)) return
 
@@ -270,7 +270,7 @@ object RenderUtils {
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		if(!FrustumUtils.isVisible(location)) return
 
@@ -319,7 +319,7 @@ object RenderUtils {
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		if(!FrustumUtils.isVisible(location)) return
 
@@ -369,7 +369,7 @@ object RenderUtils {
 		yOffset: Float = 0f,
 		scaleMultiplier: Float = 1f,
 		hideThreshold: Double = 0.0,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		if(!FrustumUtils.isVisible(location)) return
 
@@ -433,7 +433,7 @@ object RenderUtils {
 		yOffset: Float = 0f,
 		scaleMultiplier: Float = 1f,
 		hideThreshold: Double = 0.0,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		renderText(context, location, text.toText(), color, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
 	}

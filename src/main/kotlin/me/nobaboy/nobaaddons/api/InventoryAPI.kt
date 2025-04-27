@@ -99,7 +99,7 @@ object InventoryAPI {
 
 	private fun onSlotUpdate(packet: ScreenHandlerSlotUpdateS2CPacket) {
 		if(packet.syncId != currentWindow?.id) {
-			InventoryEvents.SLOT_UPDATE.invoke(InventoryEvents.SlotUpdate(packet.stack, packet.slot))
+			InventoryEvents.SLOT_UPDATE.dispatch(InventoryEvents.SlotUpdate(packet.stack, packet.slot))
 			return
 		}
 
@@ -109,12 +109,12 @@ object InventoryAPI {
 		if(slot >= inventory.slotCount) return
 		packet.stack?.let { inventory.items[slot] = it }
 
-		InventoryEvents.UPDATE.invoke(InventoryEvents.Update(inventory))
+		InventoryEvents.UPDATE.dispatch(InventoryEvents.Update(inventory))
 	}
 
 	private fun ready(inventory: InventoryData) {
-		InventoryEvents.OPEN.invoke(InventoryEvents.Open(inventory))
-		InventoryEvents.UPDATE.invoke(InventoryEvents.Update(inventory))
+		InventoryEvents.OPEN.dispatch(InventoryEvents.Open(inventory))
+		InventoryEvents.UPDATE.dispatch(InventoryEvents.Update(inventory))
 	}
 
 	private fun debounceItemLog() {
@@ -124,7 +124,7 @@ object InventoryAPI {
 
 	private fun close(sameName: Boolean = false) {
 		if(MCUtils.client.currentScreen is ChatScreen) return
-		InventoryEvents.CLOSE.invoke(InventoryEvents.Close(sameName))
+		InventoryEvents.CLOSE.dispatch(InventoryEvents.Close(sameName))
 	}
 
 	private fun updateItemLog(previous: Map<Text, Int>, current: Map<Text, Int>) {
@@ -168,6 +168,7 @@ object InventoryAPI {
 		//? if >=1.21.5 {
 		/*val main = (this@itemNamesToCount as PlayerInventoryAccessor).main
 		*///?}
+
 		for(slot in 0 until main.size) {
 			if(slot == SKYBLOCK_MENU_SLOT) {
 				continue

@@ -23,6 +23,7 @@ is handled internally, and as such things could potentially break.
 ### Changed
 
 - Enchantment tooltip parsing is now slightly more strict in where it matches - celeste
+- `/swiki` & `/wikisearch` are now only registered when connected to Hypixel - celeste
 
 ### Fixed
 

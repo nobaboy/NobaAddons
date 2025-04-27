@@ -60,7 +60,7 @@ object MayorAPI {
 	fun init() {
 		TickEvents.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
 	private fun onSecondPassed() {
@@ -99,10 +99,10 @@ object MayorAPI {
 		jerryMayor = perkpocalypseMayor to expirationTime
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!SkyBlockAPI.inSkyBlock) return
 
-		if(message == ELECTION_END_MESSAGE) {
+		if(event.cleaned == ELECTION_END_MESSAGE) {
 			lastMayor = currentMayor
 			currentMayor = Mayor.UNKNOWN.withNone()
 			currentMinister = Mayor.UNKNOWN.withNone()

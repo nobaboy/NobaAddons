@@ -7,15 +7,19 @@ import me.nobaboy.nobaaddons.core.dungeons.DungeonClass
 import me.nobaboy.nobaaddons.core.dungeons.DungeonFloor
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
-import me.nobaboy.nobaaddons.utils.ErrorManager
+import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object DungeonsAPI {
-	var currentClass: DungeonClass = DungeonClass.EMPTY
+	private val BOSS_DIALOGUE_REGEX by Regex("^\\[BOSS] (?<name>[A-z ]+):.*").fromRepo("dungeons.boss_dialogue")
+
+	var currentClass: DungeonClass = DungeonClass.UNKNOWN
 		private set
-	var currentFloor: DungeonFloor = DungeonFloor.NONE
+	var currentFloor: DungeonFloor = DungeonFloor.UNKNOWN
 		private set
 	var currentBoss: DungeonBoss = DungeonBoss.UNKNOWN
 		private set
@@ -23,70 +27,67 @@ object DungeonsAPI {
 	fun isClass(classType: DungeonClass): Boolean = currentClass == classType
 
 	fun inFloor(floor: DungeonFloor): Boolean = currentFloor == floor
-	fun inFloor(floor: Int): Boolean = currentFloor.floor == floor
+	fun inFloor(number: Int): Boolean = currentFloor.number == number
 
 	fun isBoss(boss: DungeonBoss): Boolean = currentBoss == boss
 	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN && currentBoss != DungeonBoss.WATCHER
 
 	fun init() {
-		TickEvents.everySecond { onSecondPassed() }
-		ChatMessageEvents.CHAT.register { (message) -> getBossType(message.string.cleanFormatting()) }
+		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
+		TickEvents.everySecond(this::onSecondPassed)
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
-	private fun onSecondPassed() {
-		if(!SkyBlockIsland.DUNGEONS.inIsland()) {
-			currentClass = DungeonClass.EMPTY
-			currentFloor = DungeonFloor.NONE
-			return
+	private fun onSecondPassed(event: TickEvents.Tick) {
+		if(!SkyBlockIsland.DUNGEONS.inIsland()) return
+
+		updateClass()
+		updateFloor()
+	}
+
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		if(!SkyBlockIsland.DUNGEONS.inIsland()) return
+
+		BOSS_DIALOGUE_REGEX.onFullMatch(event.cleaned) {
+			val name = groups["name"]?.value ?: return
+			currentBoss = DungeonBoss.getByName(name)
 		}
-
-		getClassType()
-		getFloorType()
 	}
 
-	private fun getClassType() {
+	private fun updateClass() {
 		val playerName = MCUtils.playerName ?: return
 		val playerList = MCUtils.networkHandler?.playerList ?: return
 
-		val fullLine = playerList.mapNotNull { it?.displayName?.string?.cleanFormatting() }
-			.firstOrNull { it.contains(playerName) && it.contains("(") && !it.contains("($playerName)") }
-		val dungeonClass = fullLine
-			?.substringAfter("(")
-			?.substringBefore(")")
-			?.split(" ")
-			?.firstOrNull()
-			?.uppercase()
+		val classLine = playerList
+			.asSequence()
+			.mapNotNull { it.displayName?.string?.cleanFormatting() }
+			.firstOrNull {
+				it.contains(playerName) &&
+				it.contains("(") &&
+				!it.contains("($playerName)")
+			} ?: return
 
-		currentClass = dungeonClass?.let { clazz ->
-			runCatching { DungeonClass.valueOf(clazz) }
-				.getOrElse {
-					ErrorManager.logError("Found unknown Dungeon class", it, "Detected class" to clazz, "In line" to fullLine)
-					DungeonClass.EMPTY
-				}
-		} ?: DungeonClass.EMPTY
+		val className = classLine
+			.substringAfter("(")
+			.substringBefore(")")
+			.split(" ")
+			.firstOrNull() ?: return
+
+		currentClass = DungeonClass.getByName(className)
 	}
 
-	private fun getFloorType() {
+	private fun updateFloor() {
 		val scoreboard = ScoreboardUtils.getScoreboardLines()
 
-		val fullLine = scoreboard.firstOrNull { it.contains("The Catacombs (") }
-		val dungeonFloor = fullLine?.substringAfter("(")?.substringBefore(")")
+		val floorLine = scoreboard.firstOrNull { it.contains("The Catacombs (") } ?: return
+		val floorAbbreviation = floorLine.substringAfter("(").substringBefore(")")
 
-		currentFloor = dungeonFloor?.let { floor ->
-			runCatching { DungeonFloor.valueOf(floor) }
-				.getOrElse {
-					ErrorManager.logError("Found unknown Dungeon floor", it, "Detected floor" to floor, "In line" to fullLine)
-					DungeonFloor.NONE
-				}
-		} ?: DungeonFloor.NONE
+		currentFloor = DungeonFloor.getByAbbreviation(floorAbbreviation)
 	}
 
-	private fun getBossType(message: String) {
-		if(!SkyBlockIsland.DUNGEONS.inIsland()) {
-			currentBoss = DungeonBoss.UNKNOWN
-			return
-		}
-
-		if(message.startsWith("[BOSS]")) currentBoss = DungeonBoss.getByMessage(message)
+	private fun reset() {
+		currentClass = DungeonClass.UNKNOWN
+		currentFloor = DungeonFloor.UNKNOWN
+		currentBoss = DungeonBoss.UNKNOWN
 	}
 }

@@ -16,7 +16,6 @@ import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.api.skyblock.fishing.SeaCreatureAPI
 import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
@@ -26,8 +25,8 @@ import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
-import me.nobaboy.nobaaddons.features.chat.channeldisplay.ChatChannelDisplay
 import me.nobaboy.nobaaddons.features.chat.CopyChatFeature
+import me.nobaboy.nobaaddons.features.chat.channeldisplay.ChatChannelDisplay
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.DMCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
@@ -134,7 +133,6 @@ object NobaAddons : ClientModInitializer {
 		/* region APIs */
 		BurrowAPI.init()
 		DebugAPI.init()
-		DianaAPI.init()
 		DungeonsAPI.init()
 		InventoryAPI.init()
 		MayorAPI.init()

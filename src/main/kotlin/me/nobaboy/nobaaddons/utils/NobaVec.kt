@@ -21,13 +21,13 @@ import kotlin.math.sqrt
 data class NobaVec(
 	val x: Double,
 	val y: Double,
-	val z: Double
+	val z: Double,
 ) {
 	constructor() : this(0.0, 0.0, 0.0)
 	constructor(x: Int, y: Int, z: Int) : this(x.toDouble(), y.toDouble(), z.toDouble())
 	constructor(x: Float, y: Float, z: Float) : this(x.toDouble(), y.toDouble(), z.toDouble())
 
-	fun toBlockPos(): BlockPos = BlockPos(x.toInt(), y.toInt() ,z.toInt())
+	fun toBlockPos(): BlockPos = BlockPos(x.toInt(), y.toInt(), z.toInt())
 	fun toVec3d(): Vec3d = Vec3d(x, y, z)
 	fun toBox(): Box {
 		val vec = roundToBlock()
@@ -77,75 +77,75 @@ data class NobaVec(
 
 	fun dot(other: NobaVec): Double = (x * other.x) + (y * other.y) + (z * other.z)
 
-    fun cosAngle(other: NobaVec) = normalize().dot(other.normalize())
-    fun radianAngle(other: NobaVec) = acos(cosAngle(other))
-    fun degreeAngle(other: NobaVec) = Math.toDegrees(radianAngle(other))
+	fun cosAngle(other: NobaVec) = normalize().dot(other.normalize())
+	fun radianAngle(other: NobaVec) = acos(cosAngle(other))
+	fun degreeAngle(other: NobaVec) = Math.toDegrees(radianAngle(other))
 
-    fun normalize() = length().let { NobaVec(x / it, y / it, z / it) }
-    fun inverse() = NobaVec(1.0 / x, 1.0 / y, 1.0 / z)
+	fun normalize() = length().let { NobaVec(x / it, y / it, z / it) }
+	fun inverse() = NobaVec(1.0 / x, 1.0 / y, 1.0 / z)
 
-    fun min() = min(x, min(y, z))
-    fun max() = max(x, max(y, z))
+	fun min() = min(x, min(y, z))
+	fun max() = max(x, max(y, z))
 
-    fun minOfEach(other: NobaVec) = NobaVec(min(x, other.x), min(y, other.y), min(z, other.z))
-    fun maxOfEach(other: NobaVec) = NobaVec(max(x, other.x), max(y, other.y), max(z, other.z))
+	fun minOfEach(other: NobaVec) = NobaVec(min(x, other.x), min(y, other.y), min(z, other.z))
+	fun maxOfEach(other: NobaVec) = NobaVec(max(x, other.x), max(y, other.y), max(z, other.z))
 
-    fun formatWithAccuracy(accuracy: Int, splitChar: String = " "): String {
-        return if(accuracy == 0) {
-            val x = kotlin.math.round(x).toInt()
-            val y = kotlin.math.round(y).toInt()
-            val z = kotlin.math.round(z).toInt()
-            "$x$splitChar$y$splitChar$z"
-        } else {
-            val x = (kotlin.math.round(x * accuracy) / accuracy)
-            val y = (kotlin.math.round(y * accuracy) / accuracy)
-            val z = (kotlin.math.round(z * accuracy) / accuracy)
-            "$x$splitChar$y$splitChar$z"
-        }
-    }
+	fun formatWithAccuracy(accuracy: Int, splitChar: String = " "): String {
+		return if(accuracy == 0) {
+			val x = kotlin.math.round(x).toInt()
+			val y = kotlin.math.round(y).toInt()
+			val z = kotlin.math.round(z).toInt()
+			"$x$splitChar$y$splitChar$z"
+		} else {
+			val x = (kotlin.math.round(x * accuracy) / accuracy)
+			val y = (kotlin.math.round(y * accuracy) / accuracy)
+			val z = (kotlin.math.round(z * accuracy) / accuracy)
+			"$x$splitChar$y$splitChar$z"
+		}
+	}
 
-    fun toCleanString(): String = "$x $y $z"
+	fun toCleanString(): String = "$x $y $z"
 
-    fun lengthSquared(): Double = x * x + y * y + z * z
-    fun length(): Double = sqrt(lengthSquared())
+	fun lengthSquared(): Double = x * x + y * y + z * z
+	fun length(): Double = sqrt(lengthSquared())
 
-    fun isZero(): Boolean = x == 0.0 && y == 0.0 && z == 0.0
+	fun isZero(): Boolean = x == 0.0 && y == 0.0 && z == 0.0
 
-    fun clone(): NobaVec = NobaVec(x, y, z)
+	fun clone(): NobaVec = NobaVec(x, y, z)
 
-    fun toDoubleArray(): Array<Double> = arrayOf(x, y, z)
-    fun toFloatArray(): Array<Float> = arrayOf(x.toFloat(), y.toFloat(), z.toFloat())
+	fun toDoubleArray(): Array<Double> = arrayOf(x, y, z)
+	fun toFloatArray(): Array<Float> = arrayOf(x.toFloat(), y.toFloat(), z.toFloat())
 
-    fun equalsIgnoreY(other: NobaVec) = x == other.x && z == other.z
+	fun equalsIgnoreY(other: NobaVec) = x == other.x && z == other.z
 
-    fun round(decimals: Int) = NobaVec(x.roundTo(decimals), y.roundTo(decimals), z.roundTo(decimals))
+	fun round(decimals: Int) = NobaVec(x.roundTo(decimals), y.roundTo(decimals), z.roundTo(decimals))
 
-    fun roundToBlock(): NobaVec {
-        val x = (x - .499999).roundTo(0)
-        val y = (y - .499999).roundTo(0)
-        val z = (z - .499999).roundTo(0)
-        return NobaVec(x, y, z)
-    }
+	fun roundToBlock(): NobaVec {
+		val x = (x - .499999).roundTo(0)
+		val y = (y - .499999).roundTo(0)
+		val z = (z - .499999).roundTo(0)
+		return NobaVec(x, y, z)
+	}
 
-    fun roundLocation(): NobaVec {
-        val x = if(x < 0) x.toInt() - 1 else x.toInt()
-        val y = y.toInt() - 1
-        val z = if(z < 0) z.toInt() - 1 else z.toInt()
-        return NobaVec(x, y, z)
-    }
+	fun roundLocation(): NobaVec {
+		val x = if(x < 0) x.toInt() - 1 else x.toInt()
+		val y = y.toInt() - 1
+		val z = if(z < 0) z.toInt() - 1 else z.toInt()
+		return NobaVec(x, y, z)
+	}
 
-    fun interpolate(other: NobaVec, factor: Double): NobaVec {
-        require(factor in 0.0..1.0) { "Factor must be between 0 and 1: $factor" }
+	fun interpolate(other: NobaVec, factor: Double): NobaVec {
+		require(factor in 0.0..1.0) { "Factor must be between 0 and 1: $factor" }
 
-        val x = (1 - factor) * this.x + factor * other.x
-        val y = (1 - factor) * this.y + factor * other.y
-        val z = (1 - factor) * this.z + factor * other.z
+		val x = (1 - factor) * this.x + factor * other.x
+		val y = (1 - factor) * this.y + factor * other.y
+		val z = (1 - factor) * this.z + factor * other.z
 
-        return NobaVec(x, y, z)
-    }
+		return NobaVec(x, y, z)
+	}
 
-    fun slope(other: NobaVec, factor: Double) = this + (other - this).scale(factor)
-    fun scale(scalar: Double): NobaVec = NobaVec(scalar * x, scalar * y, scalar * z)
+	fun slope(other: NobaVec, factor: Double) = this + (other - this).scale(factor)
+	fun scale(scalar: Double): NobaVec = NobaVec(scalar * x, scalar * y, scalar * z)
 
 	fun toBox(other: NobaVec) = Box(x, y, z, other.x, other.y, other.z)
 	fun toBoxWithOffset(offsetX: Double, offsetY: Double, offsetZ: Double) =

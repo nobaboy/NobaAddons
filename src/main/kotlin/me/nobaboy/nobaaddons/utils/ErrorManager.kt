@@ -46,14 +46,24 @@ object ErrorManager {
 	 * Log an error message in chat and the game logs, along with extra information added to the stack trace
 	 * copied from the clickable chat message
 	 */
-	fun logError(message: String, error: Throwable, vararg info: Pair<String, Any?>, ignorePreviousErrors: Boolean = false) {
+	fun logError(
+		message: String,
+		error: Throwable,
+		vararg info: Pair<String, Any?>,
+		ignorePreviousErrors: Boolean = false,
+	) {
 		logError(message, error, info.toList(), ignorePreviousErrors)
 	}
 
 	// This does send a (partially) untranslated message, but it makes sense here as this message
 	// may be involved in support requests (and may be more technical than an actual user is intended
 	// to directly understand).
-	private fun logError(message: String, error: Throwable, extraInfo: List<Pair<String, Any?>>, ignorePreviousErrors: Boolean = false) {
+	private fun logError(
+		message: String,
+		error: Throwable,
+		extraInfo: List<Pair<String, Any?>>,
+		ignorePreviousErrors: Boolean = false,
+	) {
 		val stack = error.stackTrace
 		if(!ignorePreviousErrors) {
 			val cause: Pair<String, Int> = stack.firstOrNull()?.let { it.fileName to it.lineNumber } ?: (message to 0)
