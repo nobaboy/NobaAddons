@@ -16,7 +16,6 @@ import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
-import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.api.skyblock.fishing.SeaCreatureAPI
 import me.nobaboy.nobaaddons.api.skyblock.fishing.TrophyFishAPI
 import me.nobaboy.nobaaddons.commands.NobaCommand
@@ -134,7 +133,6 @@ object NobaAddons : ClientModInitializer {
 		/* region APIs */
 		BurrowAPI.init()
 		DebugAPI.init()
-		DianaAPI.init()
 		DungeonsAPI.init()
 		InventoryAPI.init()
 		MayorAPI.init()

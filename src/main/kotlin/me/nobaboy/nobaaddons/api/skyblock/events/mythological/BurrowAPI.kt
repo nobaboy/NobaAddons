@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.core.events.MythologicalMobs
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
@@ -10,6 +11,7 @@ import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.Timestamp
@@ -22,14 +24,15 @@ object BurrowAPI {
 	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.findNearbyBurrows && DianaAPI.isActive
 
-	private val burrowDugPattern by Regex("^(You dug out a Griffin Burrow!|You finished the Griffin burrow chain!) \\(\\d/4\\)").fromRepo("mythological.dig_burrow")
-	private val mobDugPattern by Regex("^[A-z ]+! You dug out (?:a )?[A-z ]+!").fromRepo("mythological.dig_mob")
+	private val DEFEAT_MOBS_MESSAGE by "Defeat all the burrow defenders in order to dig it!".fromRepo("mythological.defeat_mobs")
+
+	private val DIG_BURROW_PATTERN by Regex("^(?:You dug out a Griffin Burrow|You finished the Griffin burrow chain)! \\((?<chain>\\d)/4\\)").fromRepo("mythological.dig_burrow")
+	private val DIG_MOB_PATTERN by Regex("^(?:Oi|Uh oh|Yikes|Woah|Oh|Danger|Good Grief)! You dug out (?:a )?(?<mob>[A-z ]+)!").fromRepo("mythological.dig_mob")
 
 	private val burrows = mutableMapOf<NobaVec, Burrow>()
 	private val recentlyDugBurrows = TimedSet<NobaVec>(1.minutes)
-	private var lastDugBurrow: NobaVec? = null
 
-	// This is here in case the player digs the burrow before the particles spawn
+	private var lastDugBurrow: NobaVec? = null
 	private var fakeBurrow: NobaVec? = null
 	var mobBurrow: NobaVec? = null
 
@@ -45,12 +48,11 @@ object BurrowAPI {
 	private fun onParticle(event: ParticleEvents.Particle) {
 		if(!enabled) return
 
-		val particleType = BurrowParticleType.getParticleType(event) ?: return
-
 		val location = event.location.roundToBlock().lower()
 		if(location in recentlyDugBurrows) return
 
-		val burrow = burrows.getOrPut(location) { Burrow(location) }
+		val particleType = BurrowParticleType.getParticleType(event) ?: return
+		val burrow = burrows.getOrPut(location) { Burrow() }
 
 		when(particleType) {
 			BurrowParticleType.ENCHANT -> burrow.hasEnchant = true
@@ -61,7 +63,7 @@ object BurrowAPI {
 
 		if(!burrow.hasEnchant || burrow.type == BurrowType.UNKNOWN || burrow.found) return
 
-		MythologicalEvents.BURROW_FIND.dispatch(MythologicalEvents.BurrowFind(burrow.location, burrow.type))
+		MythologicalEvents.BURROW_FIND.dispatch(MythologicalEvents.BurrowFind(location, burrow.type))
 		burrow.found = true
 	}
 
@@ -91,14 +93,21 @@ object BurrowAPI {
 
 		val message = event.cleaned
 
-		when {
-			burrowDugPattern.matches(message) -> {
-				lastBurrowChatMessage = Timestamp.now()
-				if(lastDugBurrow?.let { tryDigBurrow(it) } != true) return
-				fakeBurrow = lastDugBurrow
-			}
-			mobDugPattern.matches(message) -> mobBurrow = lastDugBurrow
-			message == "Defeat all the burrow defenders in order to dig it!" -> lastBurrowChatMessage = Timestamp.now()
+		if(message == DEFEAT_MOBS_MESSAGE) lastBurrowChatMessage = Timestamp.now()
+
+		DIG_BURROW_PATTERN.onFullMatch(message) {
+			lastBurrowChatMessage = Timestamp.now()
+			if(lastDugBurrow?.let { tryDigBurrow(it) } != true) return
+			fakeBurrow = lastDugBurrow
+			return
+		}
+
+		DIG_MOB_PATTERN.onFullMatch(message) {
+			lastBurrowChatMessage = Timestamp.now()
+			mobBurrow = lastDugBurrow
+
+			val mob = MythologicalMobs.getByName(groups["mob"]?.value ?: return) ?: return
+			MythologicalEvents.MOB_DIG.dispatch(MythologicalEvents.MobDig(mob))
 		}
 	}
 
@@ -139,8 +148,7 @@ object BurrowAPI {
 		}
 	}
 
-	class Burrow(
-		var location: NobaVec,
+	private data class Burrow(
 		var hasEnchant: Boolean = false,
 		var type: BurrowType = BurrowType.UNKNOWN,
 		var found: Boolean = false,

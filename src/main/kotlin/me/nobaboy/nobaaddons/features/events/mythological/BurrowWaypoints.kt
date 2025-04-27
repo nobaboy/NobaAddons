@@ -32,7 +32,7 @@ object BurrowWaypoints {
 	private var lastWarpSuggestTime = Timestamp.distantPast()
 
 	private val isInquisitorSpawned: Boolean
-		get() = InquisitorWaypoints.waypoints.isNotEmpty()
+		get() = InquisitorWaypoints.inquisitors.isNotEmpty()
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
@@ -96,14 +96,14 @@ object BurrowWaypoints {
 	}
 
 	private fun renderInquisitorWaypoints(context: WorldRenderContext) {
-		if(InquisitorWaypoints.waypoints.isEmpty()) return
+		if(!isInquisitorSpawned) return
 
-		InquisitorWaypoints.waypoints.toList().forEach { inquisitor ->
+		InquisitorWaypoints.inquisitors.toList().forEach { inquisitor ->
 			val location = inquisitor.location
-			val distance = location.distance(LocationUtils.playerLocation)
+			val adjustedLocation = location.center().raise()
 			val yOffset = if(config.showInquisitorDespawnTime) -20f else -10f
 
-			val adjustedLocation = location.center().raise()
+			val distance = location.distance(LocationUtils.playerLocation)
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
 			RenderUtils.renderText(
@@ -126,13 +126,10 @@ object BurrowWaypoints {
 			)
 
 			if(config.showInquisitorDespawnTime) {
-				val spawnTime = inquisitor.spawnTime
-				val formattedTime = (75 - spawnTime.elapsedSince().inWholeSeconds).toInt()
-
 				RenderUtils.renderText(
 					context,
 					adjustedLocation,
-					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${formattedTime}s"),
+					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${inquisitor.remainingTime}s"),
 					color = NobaColor.GRAY,
 					hideThreshold = 5.0,
 					throughBlocks = true,
@@ -204,7 +201,7 @@ object BurrowWaypoints {
 		RenderUtils.drawTitle(tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2f, 30, 1.seconds)
 	}
 
-	private fun getTargetLocation(): NobaVec? = InquisitorWaypoints.waypoints.firstOrNull()?.location ?: guessLocation
+	private fun getTargetLocation(): NobaVec? = InquisitorWaypoints.inquisitors.firstOrNull()?.location ?: guessLocation
 
 	fun useNearestWarp() {
 		if(!enabled) return
