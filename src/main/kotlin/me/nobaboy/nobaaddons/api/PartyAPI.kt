@@ -37,7 +37,7 @@ object PartyAPI {
 		}
 	}
 
-	private val invalidatePartyStateMessages: List<Regex> by Repo.list(
+	private val INVALIDATE_PARTY_REGEXES by Repo.list(
 		// Join
 		Regex("^You have joined (?:\\[[A-Z+]+] )?(?<leader>[A-z0-9_]+)'s party!").fromRepo("party.join"),
 		Regex("^(?:\\[[A-Z+]+] )?(?<name>[A-z0-9_]+) joined the party\\.").fromRepo("party.other_join"),
@@ -81,7 +81,7 @@ object PartyAPI {
 	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!HypixelUtils.onHypixel) return
 
-		if(invalidatePartyStateMessages.any { it.matches(event.cleaned) }) {
+		if(INVALIDATE_PARTY_REGEXES.any { it.matches(event.cleaned) }) {
 			refreshPartyList = true
 		}
 	}
