@@ -33,7 +33,7 @@ object EnchantmentTooltips {
 	private val config get() = NobaConfig.inventory.enchantmentTooltips
 
 	// the extra [\d,]+ is to account for stacking enchants adding their value
-	private val ENCHANT_LINE = Regex("^(?:.+ [IVX]+(?: [\\d,]+)?(?:$|,))+")
+	private val ENCHANT_LINE_REGEX = Regex("^(?:.+ [IVX]+(?: [\\d,]+)?(?:$|,))+")
 
 	fun init() {
 		ItemTooltipCallback.EVENT.register { item, _, _, lines ->
@@ -59,7 +59,7 @@ object EnchantmentTooltips {
 
 				// Attempt to match against the first line to account for items that have no stats, but do have
 				// enchantments (notably enchanted books)
-				if(index == 1 && ENCHANT_LINE.matches(line.string.cleanFormatting())) {
+				if(index == 1 && ENCHANT_LINE_REGEX.matches(line.string.cleanFormatting())) {
 					return@run index
 				}
 
@@ -68,7 +68,7 @@ object EnchantmentTooltips {
 				val next = index + 1
 				val nextLine = lines.getOrNull(next) ?: return
 
-				if(ENCHANT_LINE.matches(nextLine.string.cleanFormatting())) {
+				if(ENCHANT_LINE_REGEX.matches(nextLine.string.cleanFormatting())) {
 					return@run next
 				}
 			}
@@ -83,7 +83,7 @@ object EnchantmentTooltips {
 
 			// Do a quick sniff test to see if this looks like a line with enchants on it, and if not simply add it
 			// to the last enchantment's description
-			if(ENCHANT_LINE.matchEntire(line.string.cleanFormatting()) == null) {
+			if(ENCHANT_LINE_REGEX.matchEntire(line.string.cleanFormatting()) == null) {
 				lastEnchant?.description?.add(line)
 				continue
 			}
