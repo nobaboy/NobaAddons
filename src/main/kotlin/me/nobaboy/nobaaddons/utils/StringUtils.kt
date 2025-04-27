@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import net.minecraft.util.Formatting
 
 object StringUtils {
-	private val TRAILING_ZERO = Regex("\\.0+(.)$")
+	private val TRAILING_ZERO = Regex("\\.0+")
 
 	fun String.startsWith(list: List<String>): Boolean = list.any { this.startsWith(it) }
 
@@ -31,8 +31,8 @@ object StringUtils {
 			this >= 1_000_000_000 -> "${(this / 1_000_000_000.0).roundTo(billionPrecision)}b"
 			this >= 1_000_000 -> "${(this / 1_000_000.0).roundTo(millionPrecision)}m"
 			this >= 1_000 -> "${(this / 1_000.0).roundTo(thousandPrecision)}k"
-			else -> this.toString()
-		}.replace(TRAILING_ZERO, "$1")
+			else -> toString()
+		}.replace(TRAILING_ZERO, "")
 	}
 
 	fun Int.toAbbreviatedString(
