@@ -8,7 +8,13 @@ import net.minecraft.client.render.VertexRendering
 import net.minecraft.client.render.GameRenderer
 *///?}
 
+//? if >=1.21.5 {
+/*import kotlin.math.max
+*///?} else {
 import com.mojang.blaze3d.systems.RenderSystem
+import org.lwjgl.opengl.GL11
+//?}
+
 import me.nobaboy.nobaaddons.mixins.accessors.BeaconBlockEntityRendererInvoker
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -26,7 +32,6 @@ import net.minecraft.text.Text
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.MathHelper
 import org.joml.Matrix4f
-import org.lwjgl.opengl.GL11
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -228,6 +233,11 @@ object RenderUtils {
 		val dist = location.distance(cameraPos, center = true)
 		if(dist <= hideThreshold) return
 
+		//? if >=1.21.5 {
+		/*val horizontalDist = location.distanceIgnoreY(cameraPos, center = true)
+		val scale = max(1f, horizontalDist.toFloat() / 96f)
+		*///?}
+
 		val x = location.x - cameraPos.x
 		val y = location.y - cameraPos.y
 		val z = location.z - cameraPos.z
@@ -238,10 +248,15 @@ object RenderUtils {
 		BeaconBlockEntityRendererInvoker.invokeRenderBeam(
 			matrices,
 			context.consumers(),
+			//? if >=1.21.5 {
+			/*context.tickCounter().getTickProgress(true),
+			scale,
+			*///?} else {
 			context.tickCounter().getTickDelta(true),
+			//?}
 			context.world().time,
 			0,
-			319,
+			2048,
 			color.rgb
 		)
 
@@ -272,7 +287,7 @@ object RenderUtils {
 		val blue = color.blue / 255f
 
 		val distSq = location.distanceSq(cameraPos, center = true)
-		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.2f, 0.7f)
+		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.3f, 0.7f)
 
 		val box = Box(
 			location.x - extraSize, location.y - extraSizeBottomY, location.z - extraSize,
@@ -382,8 +397,10 @@ object RenderUtils {
 		val textRenderer = MCUtils.textRenderer
 		val xOffset = -textRenderer.getWidth(text) / 2f
 
+		//? if <1.21.5 {
 		RenderSystem.enableDepthTest()
 		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
+		//?}
 
 		val layer = if(throughBlocks) TextRenderer.TextLayerType.SEE_THROUGH else TextRenderer.TextLayerType.NORMAL
 
@@ -401,8 +418,10 @@ object RenderUtils {
 		)
 		consumers.draw()
 
+		//? if <1.21.5 {
 		RenderSystem.disableDepthTest()
 		RenderSystem.depthFunc(GL11.GL_LEQUAL)
+		//?}
 	}
 
 	fun renderText(

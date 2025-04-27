@@ -28,7 +28,9 @@ object InventoryEvents {
 	@JvmField val SLOT_UPDATE = EventDispatcher<SlotUpdate>()
 
 	/**
-	 * Event invoked when a slot is clicked in an inventory.
+	 * Event invoked when a slot is clicked while a container is open; this may include slots in the player's inventory.
+	 *
+	 * This may also include clicking out of the GUI, which will typically be a [SlotClick.slot] of `-999`.
 	 */
 	@JvmField val SLOT_CLICK = EventDispatcher<SlotClick>()
 

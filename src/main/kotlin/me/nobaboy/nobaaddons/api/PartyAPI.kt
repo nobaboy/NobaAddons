@@ -16,6 +16,7 @@ import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -23,7 +24,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import net.hypixel.modapi.packet.impl.serverbound.ServerboundPartyInfoPacket
-import net.minecraft.text.HoverEvent
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
 import java.util.UUID
@@ -119,8 +119,8 @@ object PartyAPI {
 			val text = buildText {
 				append(" - ".toText().formatted(Formatting.AQUA))
 				append(member.name.toText().styled {
-					val uuid = member.uuid.toText().formatted(Formatting.GRAY)
-					it.withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, uuid)).withColor(Formatting.GRAY).withBold(member.isMe)
+					val uuid = member.uuid.toString().toText().formatted(Formatting.GRAY)
+					it.hoverText(uuid).withColor(Formatting.GRAY).withBold(member.isMe)
 				})
 				if(member.isLeader) {
 					append(" (Leader)".toText().formatted(Formatting.BLUE))

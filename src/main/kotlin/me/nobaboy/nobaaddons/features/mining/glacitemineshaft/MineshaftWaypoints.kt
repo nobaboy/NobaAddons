@@ -59,7 +59,7 @@ object MineshaftWaypoints {
 			RenderUtils.renderWaypoint(context, it.location, it.color, throughBlocks = true)
 			RenderUtils.renderText(
 				context,
-				it.location.center().raise(),
+				it.location.center(),
 				it.text,
 				yOffset = -5f,
 				hideThreshold = 5.0,

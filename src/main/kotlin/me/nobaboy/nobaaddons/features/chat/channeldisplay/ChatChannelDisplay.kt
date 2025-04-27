@@ -100,7 +100,7 @@ object ChatChannelDisplay {
 			displayTicks <= 0 -> return
 			displayTicks > FADE_OUT_AT -> 255
 			else -> {
-				val partialTick = delta.getTickDelta(true)
+				val partialTick = delta./*? if >=1.21.5 {*//*getTickProgress*//*?} else {*/getTickDelta/*?}*/(true)
 				// avoid the display flickering at full visibility for a few frames by just hiding it slightly earlier.
 				// this is definitely an insane solution and could undoubtedly be done better, but it works,
 				// so fuck it we ball.

@@ -65,13 +65,15 @@ object TemporaryWaypoints {
 		waypoints.removeIf { it.expired || it.location.distance(cameraPos) < 5.0 }
 		waypoints.forEach { waypoint ->
 			val location = waypoint.location
+			val adjustedLocation = location.center()
+
 			val distance = location.distanceToPlayer()
 			val formattedDistance = distance.toInt().addSeparators()
 
 			RenderUtils.renderWaypoint(context, location, color, throughBlocks = true)
 			RenderUtils.renderText(
 				context,
-				location.center().raise(),
+				adjustedLocation,
 				waypoint.text,
 				color = color,
 				yOffset = -10f,
@@ -80,7 +82,7 @@ object TemporaryWaypoints {
 			)
 			RenderUtils.renderText(
 				context,
-				location.center().raise(),
+				adjustedLocation,
 				"${formattedDistance}m",
 				color = NobaColor.GRAY,
 				hideThreshold = 5.0,
