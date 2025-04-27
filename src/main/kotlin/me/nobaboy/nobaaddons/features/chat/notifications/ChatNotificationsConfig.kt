@@ -4,9 +4,8 @@ import dev.celestialfault.histoire.Histoire
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import net.minecraft.util.Formatting
-
-private val COLOR_REGEX = Regex("&([a-z0-9])", RegexOption.IGNORE_CASE)
 
 object ChatNotificationsConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("chat-notifications.json").toFile()) {
 	var notifications: MutableList<Notification> = mutableListOf()
@@ -19,6 +18,6 @@ object ChatNotificationsConfig : Histoire(NobaAddons.CONFIG_DIR.resolve("chat-no
 		var display: String = "",
 		var mode: NotificationMode = NotificationMode.CONTAINS,
 	) {
-		val colorFormattedDisplay: String get() = display.replace(COLOR_REGEX, "${Formatting.FORMATTING_CODE_PREFIX}$1")
+		val colorFormattedDisplay: String get() = display.replace(CommonPatterns.COLOR_REGEX, "${Formatting.FORMATTING_CODE_PREFIX}$1")
 	}
 }
