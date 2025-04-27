@@ -166,7 +166,7 @@ publishMods {
 		// NOTE: this requires that .github/extract_changelog.py is run first
 		rootProject.file("CHANGELOG.mini").readText()
 	}.getOrDefault("See the full changelog at https://github.com/nobaboy/NobaAddons/blob/master/CHANGELOG.md")
-	type = ALPHA
+	type = BETA
 	modLoaders.add("fabric")
 
 	dryRun = !providers.environmentVariable("MODRINTH_TOKEN").isPresent
