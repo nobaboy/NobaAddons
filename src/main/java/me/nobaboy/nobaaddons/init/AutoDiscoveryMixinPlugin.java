@@ -66,8 +66,8 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 		if(string.endsWith(".class")) {
 			try {
 				return URI.create(string.replace("\\", "/")
-								.replace(getClass().getCanonicalName().replace(".", "/") + ".class", ""))
-						.toURL();
+						.replace(getClass().getCanonicalName().replace(".", "/") + ".class", ""))
+					.toURL();
 			} catch(MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
@@ -77,8 +77,8 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 
 	public void tryAddMixinClass(String className) {
 		String norm = (className.endsWith(".class") ? className.substring(0, className.length() - ".class".length()) : className)
-				.replace("\\", "/")
-				.replace("/", ".");
+			.replace("\\", "/")
+			.replace("/", ".");
 		if(norm.startsWith(mixinBasePackage) && !norm.endsWith(".")) {
 			mixins.add(norm.substring(mixinBasePackage.length()));
 		}
@@ -88,8 +88,8 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 		System.out.println("Trying to find mixins from directory");
 		try(Stream<Path> classes = Files.walk(file.resolve(mixinBaseDir))) {
 			classes.filter(Files::isRegularFile)
-					.map(it -> file.relativize(it).toString())
-					.forEach(this::tryAddMixinClass);
+				.map(it -> file.relativize(it).toString())
+				.forEach(this::tryAddMixinClass);
 		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}

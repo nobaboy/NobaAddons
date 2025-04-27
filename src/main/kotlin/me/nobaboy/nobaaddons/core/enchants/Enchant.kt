@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.repo.Repo
 data class Enchant(
 	val standard: List<StandardEnchant>,
 	val stacking: List<StackingEnchant>,
-	val ultimate: List<UltimateEnchant>
+	val ultimate: List<UltimateEnchant>,
 ) {
 	val all: List<EnchantBase> by lazy { standard + stacking + ultimate }
 

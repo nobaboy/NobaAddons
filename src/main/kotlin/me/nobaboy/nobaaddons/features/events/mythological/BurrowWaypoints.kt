@@ -6,13 +6,12 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
-import me.nobaboy.nobaaddons.utils.BlockUtils.inLoadedChunk
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.TextUtils.aqua
+import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -20,29 +19,11 @@ import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
-import net.minecraft.block.Blocks
 import kotlin.time.Duration.Companion.seconds
 
 object BurrowWaypoints {
 	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = DianaAPI.isActive
-
-	private val validBlocks = listOf(
-		Blocks.AIR,
-		Blocks.OAK_LEAVES,
-		Blocks.SPRUCE_LEAVES,
-		Blocks.SPRUCE_FENCE,
-		Blocks.SHORT_GRASS,
-		Blocks.TALL_GRASS,
-		Blocks.FERN,
-		Blocks.POPPY,
-		Blocks.DANDELION,
-		Blocks.OXEYE_DAISY,
-		Blocks.BLUE_ORCHID,
-		Blocks.AZURE_BLUET,
-		Blocks.ROSE_BUSH,
-		Blocks.LILAC
-	)
 
 	private val burrows = mutableMapOf<NobaVec, BurrowType>()
 	private var guessLocation: NobaVec? = null
@@ -51,14 +32,14 @@ object BurrowWaypoints {
 	private var lastWarpSuggestTime = Timestamp.distantPast()
 
 	private val isInquisitorSpawned: Boolean
-		get() = InquisitorWaypoints.waypoints.isNotEmpty()
+		get() = InquisitorWaypoints.inquisitors.isNotEmpty()
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		MythologicalEvents.BURROW_GUESS.register(this::onBurrowGuess)
 		MythologicalEvents.BURROW_FIND.register(this::onBurrowFind)
 		MythologicalEvents.BURROW_DIG.register(this::onBurrowDig)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
@@ -73,20 +54,20 @@ object BurrowWaypoints {
 		burrows[location] = event.type
 
 		if(config.dingOnBurrowFind) SoundUtils.plingSound.play()
-		if(!config.removeGuessOnBurrowFind) return
-
-		guessLocation?.let { guess ->
-			val adjustedGuess = findValidLocation(guess)
-			if(adjustedGuess.distance(location) < 10) guessLocation = null
+		if(!config.removeGuessOnBurrowFind && guessLocation?.let { it.distance(location) < 3 } == true) {
+			guessLocation = null
 		}
 	}
 
 	private fun onBurrowDig(event: MythologicalEvents.BurrowDig) {
 		burrows.remove(event.location)
+		if(config.removeGuessOnBurrowFind) guessLocation = null
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
+
+		val message = event.cleaned
 
 		when {
 			message.startsWith(" ☠ You were killed by") -> burrows.remove(BurrowAPI.mobBurrow)
@@ -115,14 +96,14 @@ object BurrowWaypoints {
 	}
 
 	private fun renderInquisitorWaypoints(context: WorldRenderContext) {
-		if(InquisitorWaypoints.waypoints.isEmpty()) return
+		if(!isInquisitorSpawned) return
 
-		InquisitorWaypoints.waypoints.toList().forEach { inquisitor ->
+		InquisitorWaypoints.inquisitors.toList().forEach { inquisitor ->
 			val location = inquisitor.location
-			val distance = location.distance(LocationUtils.playerLocation)
+			val adjustedLocation = location.center().raise()
 			val yOffset = if(config.showInquisitorDespawnTime) -20f else -10f
 
-			val adjustedLocation = location.center().raise()
+			val distance = location.distance(LocationUtils.playerLocation)
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
 			RenderUtils.renderText(
@@ -134,16 +115,21 @@ object BurrowWaypoints {
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
-			RenderUtils.renderText(context, adjustedLocation, inquisitor.spawner, color = NobaColor.GOLD, yOffset = yOffset + 10f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				adjustedLocation,
+				inquisitor.spawner,
+				color = NobaColor.GOLD,
+				yOffset = yOffset + 10f,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 
 			if(config.showInquisitorDespawnTime) {
-				val spawnTime = inquisitor.spawnTime
-				val formattedTime = (75 - spawnTime.elapsedSince().inWholeSeconds).toInt()
-
 				RenderUtils.renderText(
 					context,
 					adjustedLocation,
-					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${formattedTime}s"),
+					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${inquisitor.remainingTime}s"),
 					color = NobaColor.GRAY,
 					hideThreshold = 5.0,
 					throughBlocks = true,
@@ -155,29 +141,52 @@ object BurrowWaypoints {
 	}
 
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
-		burrows.forEach { location, type ->
+		burrows.forEach { (location, type) ->
+			val text = if(location == guessLocation) {
+				type.displayName.copy().append(" (Guess)".toText().aqua())
+			} else {
+				type.displayName
+			}
+
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), type.displayName, color = type.color, yOffset = -5f, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				location.center().raise(),
+				text,
+				color = type.color,
+				yOffset = -5f,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 		}
 	}
 
 	private fun renderGuessLocation(context: WorldRenderContext) {
+		if(guessLocation in burrows) return
+
 		guessLocation?.let {
-			val adjustedLocation = findValidLocation(it)
+			val adjustedLocation = it.center().raise()
 			val distance = adjustedLocation.distance(LocationUtils.playerLocation)
 			val formattedDistance = distance.toInt().addSeparators()
 
-			RenderUtils.renderWaypoint(context, adjustedLocation, NobaColor.AQUA, throughBlocks = distance > 10)
+			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = distance > 10)
 			RenderUtils.renderText(
 				context,
-				adjustedLocation.center().raise(),
+				adjustedLocation,
 				tr("nobaaddons.events.mythological.burrowGuessWaypoint", "Burrow Guess"),
 				color = NobaColor.AQUA,
 				yOffset = -10f,
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
-			RenderUtils.renderText(context, adjustedLocation.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				adjustedLocation,
+				"${formattedDistance}m",
+				color = NobaColor.GRAY,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 		}
 	}
 
@@ -187,40 +196,12 @@ object BurrowWaypoints {
 
 		val targetLocation = getTargetLocation() ?: return
 		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
-
 		lastWarpSuggestTime = Timestamp.now()
+
 		RenderUtils.drawTitle(tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2f, 30, 1.seconds)
 	}
 
-	private fun getTargetLocation(): NobaVec? {
-		InquisitorWaypoints.waypoints.firstOrNull()?.let { return it.location }
-		return guessLocation?.let { findValidLocation(it) }
-	}
-
-	private fun findValidLocation(location: NobaVec): NobaVec {
-		if(!location.inLoadedChunk()) return location.copy(y = LocationUtils.playerLocation.y)
-
-		return findGroundLevel(location) ?: findFirstSolidBelowAir(location)
-	}
-
-	private fun findGroundLevel(location: NobaVec): NobaVec? {
-		for(y in 140 downTo 65) {
-			if(location.isGroundAt(y)) return location.copy(y = y.toDouble())
-		}
-		return null
-	}
-
-	private fun findFirstSolidBelowAir(location: NobaVec): NobaVec {
-		for(y in 65..140) {
-			if(location.copy(y = y.toDouble()).getBlockAt() == Blocks.AIR) {
-				return location.copy(y = (y - 1).toDouble())
-			}
-		}
-		return location.copy(y = LocationUtils.playerLocation.y)
-	}
-
-	private fun NobaVec.isGroundAt(y: Int) = copy(y = y.toDouble()).getBlockAt() == Blocks.GRASS_BLOCK &&
-		copy(y = y + 1.0).getBlockAt() in validBlocks
+	private fun getTargetLocation(): NobaVec? = InquisitorWaypoints.inquisitors.firstOrNull()?.location ?: guessLocation
 
 	fun useNearestWarp() {
 		if(!enabled) return
@@ -235,7 +216,7 @@ object BurrowWaypoints {
 	}
 
 	fun reset() {
-		guessLocation = null
 		burrows.clear()
+		guessLocation = null
 	}
 }

@@ -10,7 +10,7 @@ enum class SkyBlockStat(
 	private val statName: String,
 	val icon: Char,
 	val color: NobaColor,
-	vararg val aliases: String
+	vararg val aliases: String,
 ) : NameableEnum {
 	HEALTH("health", "Health", '❤', NobaColor.RED, "HP"),
 	DEFENSE("defense", "Defense", '❈', NobaColor.GREEN),
@@ -44,7 +44,6 @@ enum class SkyBlockStat(
 	override fun getDisplayName(): Text = Text.literal(prefixedName).formatted(formatting)
 
 	companion object {
-		fun getById(id: String): SkyBlockStat? = entries.firstOrNull { it.id == id }
-		fun getByName(name: String): SkyBlockStat? = entries.firstOrNull { it.statName == name }
+		fun getByName(name: String): SkyBlockStat? = entries.firstOrNull { name.contains(it.statName, ignoreCase = true) }
 	}
 }

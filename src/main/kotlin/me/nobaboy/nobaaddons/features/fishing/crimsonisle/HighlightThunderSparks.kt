@@ -50,8 +50,19 @@ object HighlightThunderSparks {
 
 			val throughBlocks = distance < 6 && block.fluidState != null && block.fluidState.fluid is LavaFluid
 
-			RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, z = -0.5), config.highlightColor, extraSize = -0.25, throughBlocks = throughBlocks)
-			if(config.showText && distance < 10) RenderUtils.renderText(context, vec.raise(1.25), "Thunder Spark", throughBlocks = throughBlocks)
+			RenderUtils.renderOutlinedFilledBox(
+				context,
+				vec.add(x = -0.5, z = -0.5),
+				config.highlightColor,
+				extraSize = -0.25,
+				throughBlocks = throughBlocks
+			)
+			if(config.showText && distance < 10) RenderUtils.renderText(
+				context,
+				vec.raise(1.25),
+				"Thunder Spark",
+				throughBlocks = throughBlocks
+			)
 		}
 	}
 }

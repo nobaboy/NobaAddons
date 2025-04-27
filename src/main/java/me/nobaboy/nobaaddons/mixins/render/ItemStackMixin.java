@@ -24,7 +24,7 @@ import java.util.function.Consumer;
 abstract class ItemStackMixin {
 	@ModifyReturnValue(method = "hasGlint", at = @At("RETURN"))
 	public boolean nobaaddons$modifyGlint(boolean original) {
-		var item = (ItemStack)(Object)this;
+		var item = (ItemStack) (Object) this;
 		boolean isArmor = /*? if >=1.21.2 {*/item.get(DataComponentTypes.EQUIPPABLE) != null/*?} else {*//*item.getItem() instanceof ArmorItem*//*?}*/;
 		if(!isArmor) {
 			return original;

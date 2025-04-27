@@ -14,7 +14,7 @@ import java.util.Objects;
 abstract class LivingEntityMixin {
 	@ModifyReturnValue(method = "getHandSwingDuration", at = @At("RETURN"))
 	public int nobaaddons$modifySwingDuration(int original) {
-		var entity = (LivingEntity)(Object)this;
+		var entity = (LivingEntity) (Object) this;
 		var client = MinecraftClient.getInstance();
 		var config = NobaConfig.INSTANCE.getUiAndVisuals().getSwingAnimation();
 

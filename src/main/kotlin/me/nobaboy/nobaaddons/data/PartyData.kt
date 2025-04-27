@@ -15,7 +15,11 @@ data class PartyData(val leaderUUID: UUID, val members: List<Member>) {
 		members.first { it.isLeader }
 	}
 
-	data class Member(val uuid: UUID, val profile: Deferred<ProfileResult?>, val role: ClientboundPartyInfoPacket.PartyRole) {
+	data class Member(
+		val uuid: UUID,
+		val profile: Deferred<ProfileResult?>,
+		val role: ClientboundPartyInfoPacket.PartyRole,
+	) {
 		// we're using .asCompletableFuture() here as .getCompleted() is still experimental
 		private val profileFuture by lazy { profile.asCompletableFuture() }
 

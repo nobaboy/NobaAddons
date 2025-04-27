@@ -40,12 +40,12 @@ abstract class SoundEventsMixin {
 		var allowEvent = new SoundEvents.AllowSound(id, location, pitch, volume);
 		var soundEvent = new SoundEvents.Sound(id, category, location, pitch, volume);
 
-		if(SoundEvents.ALLOW_SOUND.invoke(allowEvent)) {
-			SoundEvents.SOUND_CANCELED.invoke(soundEvent);
+		if(SoundEvents.ALLOW_SOUND.dispatch(allowEvent)) {
+			SoundEvents.SOUND_CANCELED.dispatch(soundEvent);
 			return false;
 		}
 
-		SoundEvents.SOUND.invoke(soundEvent);
+		SoundEvents.SOUND.dispatch(soundEvent);
 		return true;
 	}
 }

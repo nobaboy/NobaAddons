@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import net.minecraft.util.Formatting
 
 object StringUtils {
-	private val TRAILING_ZERO = Regex("\\.0+(.)$")
+	private val TRAILING_ZERO = Regex("\\.0+")
 
 	fun String.startsWith(list: List<String>): Boolean = list.any { this.startsWith(it) }
 
@@ -12,11 +12,6 @@ object StringUtils {
 		if(it == "of" || it == "the") it
 		else it.replaceFirstChar(Char::uppercase)
 	}.replaceFirstChar(Char::uppercase) // ensure that the first character is always uppercase, even if the string starts with 'the' or 'of'
-
-	fun String.toId(): String = lowercase()
-		.replace(' ', '_')
-		.filter { it in 'a'..'z' || it == '_'}
-		.trim('_')
 
 	fun String.cleanFormatting(): String = Formatting.strip(this)!!
 
@@ -27,15 +22,23 @@ object StringUtils {
 			.joinToString("")
 	}
 
-	fun Double.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String {
+	fun Double.toAbbreviatedString(
+		thousandPrecision: Int = 1,
+		millionPrecision: Int = 2,
+		billionPrecision: Int = 1,
+	): String {
 		return when {
 			this >= 1_000_000_000 -> "${(this / 1_000_000_000.0).roundTo(billionPrecision)}b"
 			this >= 1_000_000 -> "${(this / 1_000_000.0).roundTo(millionPrecision)}m"
 			this >= 1_000 -> "${(this / 1_000.0).roundTo(thousandPrecision)}k"
-			else -> this.toString()
-		}.replace(TRAILING_ZERO, "$1")
+			else -> toString()
+		}.replace(TRAILING_ZERO, "")
 	}
 
-	fun Int.toAbbreviatedString(thousandPrecision: Int = 1, millionPrecision: Int = 2, billionPrecision: Int = 1): String =
+	fun Int.toAbbreviatedString(
+		thousandPrecision: Int = 1,
+		millionPrecision: Int = 2,
+		billionPrecision: Int = 1,
+	): String =
 		toDouble().toAbbreviatedString(thousandPrecision, millionPrecision, billionPrecision)
 }

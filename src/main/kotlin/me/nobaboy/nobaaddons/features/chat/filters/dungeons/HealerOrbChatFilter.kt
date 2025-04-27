@@ -54,7 +54,7 @@ object HealerOrbChatFilter : IChatFilter {
 		health: String,
 		buff: String,
 		stat: SkyBlockStat,
-		duration: String
+		duration: String,
 	) = buildText {
 		formatted(Formatting.GRAY)
 		append(Text.literal("HEALER ORB!").formatted(Formatting.YELLOW, Formatting.BOLD))

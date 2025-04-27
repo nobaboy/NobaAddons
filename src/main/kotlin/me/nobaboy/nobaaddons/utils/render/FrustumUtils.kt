@@ -12,6 +12,7 @@ object FrustumUtils {
 	fun isVisible(box: Box): Boolean {
 		return getFrustum().isVisible(box)
 	}
+
 	fun isVisible(minX: Double, minY: Double, minZ: Double, maxX: Double, maxY: Double, maxZ: Double): Boolean {
 		val box = Box(minX, minY, minZ, maxX, maxY, maxZ)
 		return isVisible(box)

@@ -5,14 +5,13 @@ import me.nobaboy.nobaaddons.api.skyblock.events.hoppity.HoppityAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.events.HoppityData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.impl.interact.ItemUseEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.math.ParticlePathFitter
@@ -35,8 +34,8 @@ object HoppityEggGuess {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
-		InteractEvents.ITEM_USE.register(this::onItemUse)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ItemUseEvent.EVENT.register(this::onItemUse)
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
@@ -44,7 +43,7 @@ object HoppityEggGuess {
 		if(!enabled) return
 		if(event.type != ParticleTypes.HAPPY_VILLAGER) return
 		if(event.speed != 0f || event.count != 1) return
-		if(lastAbilityUse.elapsedSince() > 3.seconds) return
+		if(lastAbilityUse.elapsedSince() > 5.seconds) return
 
 		val location = event.location
 		val lastPoint = particlePath.lastPoint
@@ -54,8 +53,9 @@ object HoppityEggGuess {
 		guessLocation = guessEggLocation()
 	}
 
-	private fun onItemUse(event: InteractEvents.ItemUse) {
+	private fun onItemUse(event: ItemUseEvent) {
 		if(!enabled) return
+		if(lastAbilityUse.elapsedSince() <= 5.seconds) return
 
 		val itemId = event.itemInHand.skyBlockId ?: return
 		if(itemId != HoppityAPI.LOCATOR) return
@@ -64,9 +64,9 @@ object HoppityEggGuess {
 		lastAbilityUse = Timestamp.now()
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
-		if(message.startsWith("HOPPITY'S HUNT You found a Chocolate")) guessLocation = null
+		if(event.cleaned.startsWith("HOPPITY'S HUNT You found a Chocolate")) guessLocation = null
 	}
 
 	private fun renderWaypoints(context: WorldRenderContext) {
@@ -85,7 +85,14 @@ object HoppityEggGuess {
 				yOffset = -10f,
 				throughBlocks = true
 			)
-			RenderUtils.renderText(context, it.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				it.center().raise(),
+				"${formattedDistance}m",
+				color = NobaColor.GRAY,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 		}
 	}
 

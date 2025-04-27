@@ -24,7 +24,7 @@ class KeyBindsListWidget(
 	width: Int,
 	height: Int,
 	y: Int,
-	itemHeight: Int
+	itemHeight: Int,
 ) : ElementListWidget<KeyBindsListWidget.KeyBindEntry>(client, width, height, y, itemHeight) {
 	private val keyBinds = KeyBindsManager.commandKeyBinds.map { it.copy() }.toMutableList()
 	var hasChanges = false
@@ -158,7 +158,7 @@ class KeyBindsListWidget(
 			mouseX: Int,
 			mouseY: Int,
 			hovered: Boolean,
-			tickDelta: Float
+			tickDelta: Float,
 		) {
 			textField.y = y
 			textField.render(context, mouseX, mouseY, tickDelta)

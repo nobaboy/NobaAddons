@@ -20,6 +20,6 @@ abstract class WorldEventsMixin_ClientWorld implements BlockView {
 		)
 	)
 	private void nobaaddons$onBlockUpdate(BlockPos pos, BlockState state, int flags, CallbackInfo ci) {
-		WorldEvents.BLOCK_UPDATE.invoke(new WorldEvents.BlockUpdate(pos, state, getBlockState(pos)));
+		WorldEvents.BLOCK_UPDATE.dispatch(new WorldEvents.BlockUpdate(pos, state, getBlockState(pos)));
 	}
 }

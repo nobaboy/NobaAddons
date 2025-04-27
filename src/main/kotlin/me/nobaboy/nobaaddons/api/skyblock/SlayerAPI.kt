@@ -14,7 +14,6 @@ import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket
@@ -36,7 +35,7 @@ object SlayerAPI {
 		TickEvents.TICK.register { onTick() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
 	private fun onTick() {
@@ -52,7 +51,7 @@ object SlayerAPI {
 
 		val previousState = currentQuest?.spawned
 		currentQuest?.spawned = scoreboard.any { it == "Slay the boss!" }
-		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.invoke(SlayerEvents.BossSpawn())
+		if(previousState == false && currentQuest?.spawned == true) SlayerEvents.BOSS_SPAWN.dispatch(SlayerEvents.BossSpawn())
 	}
 
 	private fun onPacketReceive(event: PacketEvents.Receive) {
@@ -96,24 +95,25 @@ object SlayerAPI {
 		val armorStandName = armorStand.name.string
 
 		if(currentQuest.boss.miniBossNames?.any { armorStandName.contains(it) } == true) {
-			SlayerEvents.MINI_BOSS_SPAWN.invoke(SlayerEvents.MiniBossSpawn(entity))
+			SlayerEvents.MINI_BOSS_SPAWN.dispatch(SlayerEvents.MiniBossSpawn(entity))
 			miniBosses.add(entity)
 		}
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		val currentQuest = currentQuest ?: return
+		val message = event.cleaned
 
 		CommonPatterns.SLAYER_BOSS_SLAIN_REGEX.onFullMatch(message) {
-			SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest.entity, currentQuest.timerArmorStand))
+			SlayerEvents.BOSS_KILL.dispatch(SlayerEvents.BossKill(currentQuest.entity, currentQuest.timerArmorStand))
 			this@SlayerAPI.currentQuest = null
 			return
 		}
 
 		CommonPatterns.SLAYER_QUEST_COMPLETE_REGEX.onFullMatch(message) {
-			SlayerEvents.BOSS_KILL.invoke(SlayerEvents.BossKill(currentQuest.entity, currentQuest.timerArmorStand))
+			SlayerEvents.BOSS_KILL.dispatch(SlayerEvents.BossKill(currentQuest.entity, currentQuest.timerArmorStand))
 			this@SlayerAPI.currentQuest?.apply {
 				this.entity = null
 				this.armorStand = null
@@ -123,7 +123,7 @@ object SlayerAPI {
 		}
 
 		if(QUEST_FAILED_REGEX.matches(message) || message == QUEST_CANCEL_MESSAGE) {
-			SlayerEvents.QUEST_CLEAR.invoke(SlayerEvents.QuestClear())
+			SlayerEvents.QUEST_CLEAR.dispatch(SlayerEvents.QuestClear())
 			this@SlayerAPI.currentQuest = null
 			return
 		}
@@ -139,6 +139,6 @@ object SlayerAPI {
 		var entity: LivingEntity? = null,
 		var armorStand: ArmorStandEntity? = null,
 		var timerArmorStand: ArmorStandEntity? = null,
-		var spawned: Boolean = false
+		var spawned: Boolean = false,
 	)
 }

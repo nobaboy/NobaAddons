@@ -44,6 +44,6 @@ object ScreenRenderEvents {
 		val textRenderer: TextRenderer,
 		val itemStack: ItemStack,
 		val x: Int,
-		val y: Int
-	) : Event()
+		val y: Int,
+	) : Event
 }

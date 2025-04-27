@@ -31,6 +31,6 @@ abstract class ScreenRenderEventsMixin_InGameHud {
 	)
 	public void nobaaddons$onRenderHotbarItem(DrawContext context, int x, int y, RenderTickCounter tickCounter, PlayerEntity player, ItemStack itemStack, int seed, CallbackInfo ci) {
 		var event = new ScreenRenderEvents.DrawItem(context, client.textRenderer, itemStack, x, y);
-		ScreenRenderEvents.DRAW_ITEM.invoke(event);
+		ScreenRenderEvents.DRAW_ITEM.dispatch(event);
 	}
 }
