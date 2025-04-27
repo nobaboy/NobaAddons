@@ -6,6 +6,7 @@ import dev.celestialfault.commander.ICommand
 import me.nobaboy.nobaaddons.commands.adapters.*
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Skill
+import me.nobaboy.nobaaddons.ui.ElementAlignment
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.argument.NbtPathArgumentType
@@ -18,6 +19,7 @@ object CommandUtil {
 	private val commands: MutableList<ICommand<FabricClientCommandSource>> = mutableListOf()
 
 	val commander = Commander<FabricClientCommandSource>().apply {
+		addHandler(ElementAlignment::class, ElementAlignmentHandler)
 		addHandler(Formatting::class, FormattingHandler())
 		addHandler(NbtPathArgumentType.NbtPath::class, NbtPathHandler)
 		addHandler(Rarity::class, RarityHandler)

@@ -30,7 +30,9 @@ import net.minecraft.client.render.LightmapTextureManager
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.text.Text
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.MathHelper
 import org.joml.Matrix4f
+import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -434,5 +436,13 @@ object RenderUtils {
 		throughBlocks: Boolean = false
 	) {
 		renderText(context, location, text.toText(), color, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
+	}
+
+	/**
+	 * Returns a lerped alpha for [displayTicks], gradually becoming more transparent the closer it is to 0 from [threshold]
+	 */
+	fun lerpAlpha(partialTick: Float, displayTicks: Int, threshold: Int): Int {
+		val lerped = MathHelper.lerp(partialTick, displayTicks.toFloat(), displayTicks - 1f)
+		return ((lerped / threshold.toDouble()) * 255.0).roundToInt().coerceIn(0, 255)
 	}
 }
