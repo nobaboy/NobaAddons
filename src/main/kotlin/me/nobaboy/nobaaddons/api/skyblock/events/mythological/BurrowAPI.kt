@@ -26,7 +26,7 @@ object BurrowAPI {
 
 	private val DEFEAT_MOBS_MESSAGE by "Defeat all the burrow defenders in order to dig it!".fromRepo("mythological.defeat_mobs")
 
-	private val DIG_BURROW_PATTERN by Regex("^(?:You dug out a Griffin Burrow|You finished the Griffin burrow chain)! \\((?<chain>\\d)/4\\)").fromRepo("mythological.dig_burrow")
+	private val DIG_BURROW_PATTERN by Regex("^(?:You dug out a Griffin Burrow|You finished the Griffin burrow chain)! \\(\\d/4\\)").fromRepo("mythological.dig_burrow")
 	private val DIG_MOB_PATTERN by Regex("^(?:Oi|Uh oh|Yikes|Woah|Oh|Danger|Good Grief)! You dug out (?:a )?(?<mob>[A-z ]+)!").fromRepo("mythological.dig_mob")
 
 	private val burrows = mutableMapOf<NobaVec, Burrow>()

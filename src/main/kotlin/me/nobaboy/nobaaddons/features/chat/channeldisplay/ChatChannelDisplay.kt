@@ -25,21 +25,23 @@ import net.minecraft.client.render.RenderTickCounter
 import kotlin.time.Duration.Companion.minutes
 
 object ChatChannelDisplay {
+	private val config get() = NobaConfig.chat
+	private val enabled: Boolean get() = config.displayCurrentChannel && HypixelUtils.onHypixel
+
 	private const val DISPLAY_FOR_TICKS = 40
 	private const val FADE_OUT_AT = 10
 
-	private val enabled by NobaConfig.chat::displayCurrentChannel
 	private var channel by PersistentCache::channel
 	private var ticksSinceChatOpen = DISPLAY_FOR_TICKS
 
 	private val CHANNEL_SWITCH_REGEX by Regex("^You are now in the (?<channel>ALL|GUILD|OFFICER|PARTY|SKYBLOCK CO-OP) channel").fromRepo("chat.channel")
 
-	private val MESSAGE_CHANNEL_REGEX by Regex(
+	private val CONVERSATION_OPENED_REGEX by Regex(
 		"^Opened a chat conversation with ${CommonPatterns.PLAYER_NAME_WITH_RANK_STRING} for the next 5 minutes\\. Use /chat a to leave"
-	).fromRepo("chat.message_channel")
+	).fromRepo("chat.conversation_opened")
 
-	private val MESSAGE_EXPIRED by "The conversation you were in expired and you have been moved back to the ALL channel.".fromRepo("chat.message_expired")
-	private val NOT_IN_PARTY by "You are not in a party and were moved to the ALL channel.".fromRepo("chat.not_in_party")
+	private val CONVERSATION_EXPIRED_MESSAGE by "The conversation you were in expired and you have been moved back to the ALL channel.".fromRepo("chat.conversation_expired")
+	private val NOT_IN_PARTY_MESSAGE by "You are not in a party and were moved to the ALL channel.".fromRepo("chat.not_in_party")
 
 	fun init() {
 		TickEvents.TICK.register(this::onTick)
@@ -78,12 +80,12 @@ object ChatChannelDisplay {
 			return
 		}
 
-		MESSAGE_CHANNEL_REGEX.onFullMatch(event.cleaned) {
+		CONVERSATION_OPENED_REGEX.onFullMatch(event.cleaned) {
 			channel = ActiveChatChannel(ChatChannel.DM, groups["username"]!!.value, Timestamp.now() + 5.minutes)
 			return
 		}
 
-		if(event.cleaned == MESSAGE_EXPIRED || event.cleaned == NOT_IN_PARTY) {
+		if(event.cleaned == CONVERSATION_EXPIRED_MESSAGE || event.cleaned == NOT_IN_PARTY_MESSAGE) {
 			channel = ActiveChatChannel(ChatChannel.ALL)
 		}
 	}
@@ -102,9 +104,7 @@ object ChatChannelDisplay {
 				// avoid the display flickering at full visibility for a few frames by just hiding it slightly earlier.
 				// this is definitely an insane solution and could undoubtedly be done better, but it works,
 				// so fuck it we ball.
-				if(ticksSinceChatOpen == 39 && partialTick >= 0.6) {
-					ticksSinceChatOpen++
-				}
+				if(ticksSinceChatOpen == 39 && partialTick >= 0.6) ticksSinceChatOpen++
 				RenderUtils.lerpAlpha(partialTick, displayTicks, FADE_OUT_AT)
 			}
 		}

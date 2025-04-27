@@ -11,6 +11,7 @@ import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -32,7 +33,7 @@ object InquisitorWaypoints {
 	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.alertInquisitor && DianaAPI.isActive
 
-	private val INQUISITOR_DEAD_REGEX by Regex("(?:Party > )?(?:\\[[A-Z+]+] )?(?<username>[A-z0-9_]+): Inquisitor dead!").fromRepo("mythological.inquisitor_dead")
+	private val INQUISITOR_DEAD_REGEX by Regex("(?:Party > )?${CommonPatterns.PLAYER_NAME_WITH_RANK_STRING}: Inquisitor dead!").fromRepo("mythological.inquisitor_dead")
 	private val INQUISITOR_SPAWN_REGEXES by Repo.list(
 		Regex("(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+).*").fromRepo("mythological.inquisitor_spawn.coords"),
 		Regex("(?<username>[A-z0-9_]+): A MINOS INQUISITOR has spawned near \\[.*] at Coords (?<x>[0-9.-]+) (?<y>[0-9.-]+) (?<z>[0-9.-]+)").fromRepo("mythological.inquisitor_spawn.inquisitorchecker"),

@@ -15,7 +15,7 @@ import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object DungeonsAPI {
-	private val BOSS_DIALOGUE_REGEX by Regex("\\[BOSS] (?<name>[A-z ]+):.*").fromRepo("dungeons.boss_dialogue")
+	private val BOSS_DIALOGUE_REGEX by Regex("^\\[BOSS] (?<name>[A-z ]+):.*").fromRepo("dungeons.boss_dialogue")
 
 	var currentClass: DungeonClass = DungeonClass.UNKNOWN
 		private set
