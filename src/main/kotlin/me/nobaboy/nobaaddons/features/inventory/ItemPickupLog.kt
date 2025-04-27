@@ -26,7 +26,6 @@ object ItemPickupLog {
 		override val size: Pair<Int, Int> = 125 to 175
 		override val enabled: Boolean get() = config.enabled
 		override val color: Int = 0xFFFFFF
-		// FIXME this causes the visual scaling in the hud editor to break?
 		override val maxScale: Float = 1f
 
 		override fun renderText(context: DrawContext) {
