@@ -101,6 +101,7 @@ Info Boxes display any provided text on-screen, and also replace the following p
 - Revert treasure catch message format
 - Hide other player's fishing rods
 - Sea creature catch notifications
+- Send a chat message when you catch a Legendary or Mythic Sea Creature
 - Bobber timer for Slugfish
 - Trophy fishing chat message counter
 - Highlight thunder sparks
@@ -117,6 +118,13 @@ Info Boxes display any provided text on-screen, and also replace the following p
 </details>
 
 <details>
+<summary>Crimson Isle</summary>
+
+- Send a chat message on Vanquisher spawn
+
+</details>
+
+<details>
 <summary>Dungeons</summary>
 
 - Simon Says device timer
@@ -128,7 +136,6 @@ Info Boxes display any provided text on-screen, and also replace the following p
 <summary>Chat</summary>
 
 - Copy chat
-- Send a chat message on mythic sea creature & Vanquisher spawn
 - Various chat filters
 - Chat commands
 
