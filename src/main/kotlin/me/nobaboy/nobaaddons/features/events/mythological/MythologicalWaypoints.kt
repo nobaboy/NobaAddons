@@ -75,7 +75,7 @@ object MythologicalWaypoints {
 	}
 
 	private fun onBurrowFind(event: MythologicalEvents.BurrowFind) {
-		burrows[event.location] = event.type
+		event.location.takeIf { it !in burrows }?.let { burrows[it] = event.type }
 
 		if(config.dingOnBurrowFind) SoundUtils.plingSound.play()
 		if(config.removeGuessOnBurrowFind) guessLocation = null
