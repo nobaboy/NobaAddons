@@ -8,7 +8,13 @@ import net.minecraft.client.render.VertexRendering
 import net.minecraft.client.render.GameRenderer
 *///?}
 
+//? if >=1.21.5 {
+/*import kotlin.math.max
+*///?} else {
 import com.mojang.blaze3d.systems.RenderSystem
+import org.lwjgl.opengl.GL11
+//?}
+
 import me.nobaboy.nobaaddons.mixins.accessors.BeaconBlockEntityRendererInvoker
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
@@ -24,8 +30,9 @@ import net.minecraft.client.render.LightmapTextureManager
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.text.Text
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.MathHelper
 import org.joml.Matrix4f
-import org.lwjgl.opengl.GL11
+import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -60,7 +67,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		if(applyScaling && scale != 1f) startScale(context, scale)
 		context.drawText(MCUtils.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color.rgb, shadow)
@@ -75,7 +82,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		drawText(context, text.toText(), x, y, scale, color, shadow, applyScaling)
 	}
@@ -88,7 +95,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		outlineColor: NobaColor = NobaColor.BLACK,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		if(applyScaling) startScale(context, scale)
 		val vertexConsumerProvider = context.let {
@@ -115,7 +122,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		outlineColor: NobaColor = NobaColor.BLACK,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		drawOutlinedText(context, text.toText(), x, y, scale, color, outlineColor, applyScaling)
 	}
@@ -128,7 +135,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		val width = (text.getWidth() * scale).toInt()
 		drawText(context, text, x - width / 2, y, scale, color, shadow, applyScaling)
@@ -142,7 +149,7 @@ object RenderUtils {
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true
+		applyScaling: Boolean = true,
 	) {
 		val width = (text.getWidth() * scale).toInt()
 		drawText(context, text.toText(), x - width / 2, y, scale, color, shadow, applyScaling)
@@ -154,7 +161,7 @@ object RenderUtils {
 		leftX: Double,
 		leftY: Double,
 		rightX: Double,
-		rightY: Double
+		rightY: Double,
 	): Boolean = pointX in leftX..rightX && pointY in leftY..rightY
 
 	fun drawTitle(
@@ -164,7 +171,7 @@ object RenderUtils {
 		offset: Int = 0,
 		duration: Duration = 3.seconds,
 		id: String = StringUtils.randomAlphanumeric(),
-		subtext: Text? = null
+		subtext: Text? = null,
 	) {
 		TitleManager.draw(text, color, scale, offset, duration, id, subtext)
 	}
@@ -176,7 +183,7 @@ object RenderUtils {
 		offset: Int = 0,
 		duration: Duration = 3.seconds,
 		id: String = StringUtils.randomAlphanumeric(),
-		subtext: Text? = null
+		subtext: Text? = null,
 	) {
 		TitleManager.draw(text.toText(), color, scale, offset, duration, id, subtext)
 	}
@@ -192,7 +199,7 @@ object RenderUtils {
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
 		beaconThreshold: Double = 5.0,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		renderBeaconBeam(context, location.raise(), color, beaconThreshold)
 		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
@@ -206,7 +213,7 @@ object RenderUtils {
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		renderOutline(context, location, color, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
@@ -216,7 +223,7 @@ object RenderUtils {
 		context: WorldRenderContext,
 		location: NobaVec,
 		color: NobaColor,
-		hideThreshold: Double = 5.0
+		hideThreshold: Double = 5.0,
 	) {
 		if(!FrustumUtils.isVisible(location, toWorldHeight = true)) return
 
@@ -225,6 +232,11 @@ object RenderUtils {
 
 		val dist = location.distance(cameraPos, center = true)
 		if(dist <= hideThreshold) return
+
+		//? if >=1.21.5 {
+		/*val horizontalDist = location.distanceIgnoreY(cameraPos, center = true)
+		val scale = max(1f, horizontalDist.toFloat() / 96f)
+		*///?}
 
 		val x = location.x - cameraPos.x
 		val y = location.y - cameraPos.y
@@ -236,10 +248,15 @@ object RenderUtils {
 		BeaconBlockEntityRendererInvoker.invokeRenderBeam(
 			matrices,
 			context.consumers(),
+			//? if >=1.21.5 {
+			/*context.tickCounter().getTickProgress(true),
+			scale,
+			*///?} else {
 			context.tickCounter().getTickDelta(true),
+			//?}
 			context.world().time,
 			0,
-			319,
+			2048,
 			color.rgb
 		)
 
@@ -253,7 +270,7 @@ object RenderUtils {
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		if(!FrustumUtils.isVisible(location)) return
 
@@ -270,7 +287,7 @@ object RenderUtils {
 		val blue = color.blue / 255f
 
 		val distSq = location.distanceSq(cameraPos, center = true)
-		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.2f, 0.7f)
+		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.3f, 0.7f)
 
 		val box = Box(
 			location.x - extraSize, location.y - extraSizeBottomY, location.z - extraSize,
@@ -302,7 +319,7 @@ object RenderUtils {
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		if(!FrustumUtils.isVisible(location)) return
 
@@ -352,7 +369,7 @@ object RenderUtils {
 		yOffset: Float = 0f,
 		scaleMultiplier: Float = 1f,
 		hideThreshold: Double = 0.0,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		if(!FrustumUtils.isVisible(location)) return
 
@@ -380,8 +397,10 @@ object RenderUtils {
 		val textRenderer = MCUtils.textRenderer
 		val xOffset = -textRenderer.getWidth(text) / 2f
 
+		//? if <1.21.5 {
 		RenderSystem.enableDepthTest()
 		RenderSystem.depthFunc(if(throughBlocks) GL11.GL_ALWAYS else GL11.GL_LEQUAL)
+		//?}
 
 		val layer = if(throughBlocks) TextRenderer.TextLayerType.SEE_THROUGH else TextRenderer.TextLayerType.NORMAL
 
@@ -399,8 +418,10 @@ object RenderUtils {
 		)
 		consumers.draw()
 
+		//? if <1.21.5 {
 		RenderSystem.disableDepthTest()
 		RenderSystem.depthFunc(GL11.GL_LEQUAL)
+		//?}
 	}
 
 	fun renderText(
@@ -412,8 +433,16 @@ object RenderUtils {
 		yOffset: Float = 0f,
 		scaleMultiplier: Float = 1f,
 		hideThreshold: Double = 0.0,
-		throughBlocks: Boolean = false
+		throughBlocks: Boolean = false,
 	) {
 		renderText(context, location, text.toText(), color, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
+	}
+
+	/**
+	 * Returns a lerped alpha for [displayTicks], gradually becoming more transparent the closer it is to 0 from [threshold]
+	 */
+	fun lerpAlpha(partialTick: Float, displayTicks: Int, threshold: Int): Int {
+		val lerped = MathHelper.lerp(partialTick, displayTicks.toFloat(), displayTicks - 1f)
+		return ((lerped / threshold.toDouble()) * 255.0).roundToInt().coerceIn(0, 255)
 	}
 }

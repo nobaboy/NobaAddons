@@ -16,8 +16,8 @@ object MythologicalEvents {
 
 	val TREASURE_DIG = EventDispatcher<TreasureDig>()
 
-	data class BurrowFind(val location: NobaVec, val type: BurrowType) : Event()
-	data class BurrowDig(val location: NobaVec) : Event()
-	data class MobDig(val mob: MythologicalMobs) : Event()
-	data class TreasureDig(val drop: MythologicalDrops, val amount: Int = 1) : Event()
+	data class BurrowFind(val location: NobaVec, val type: BurrowType) : Event
+	data class BurrowDig(val location: NobaVec) : Event
+	data class MobDig(val mob: MythologicalMobs) : Event
+	data class TreasureDig(val drop: MythologicalDrops, val amount: Int = 1) : Event
 }

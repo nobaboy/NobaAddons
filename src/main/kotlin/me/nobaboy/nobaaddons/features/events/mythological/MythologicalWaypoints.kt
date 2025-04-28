@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.events.MythologicalMobs
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
-import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.impl.interact.ItemUseEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
@@ -68,7 +68,7 @@ object MythologicalWaypoints {
 		MythologicalEvents.BURROW_DIG.register(this::onBurrowDig)
 		MythologicalEvents.MOB_DIG.register(this::onMobDig)
 		ParticleEvents.PARTICLE.register(this::onParticle)
-		InteractEvents.ITEM_USE.register(this::onItemUse)
+		ItemUseEvent.EVENT.register(this::onItemUse)
 		EntityEvents.SPAWN.register(this::onEntitySpawn)
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
@@ -105,7 +105,7 @@ object MythologicalWaypoints {
 		guessLocation = particlePath.solve()?.lower(0.5)?.roundToBlock() ?: return
 	}
 
-	private fun onItemUse(event: InteractEvents.ItemUse) {
+	private fun onItemUse(event: ItemUseEvent) {
 		if(!config.burrowGuess || !DianaAPI.isActive) return
 
 		val itemId = event.itemInHand.skyBlockId ?: return

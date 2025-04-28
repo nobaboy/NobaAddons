@@ -62,7 +62,7 @@ abstract class ChatMessageEventsMixin_ChatHud {
 	public void nobaaddons$clearLocal(Text text, MessageSignatureData signatureData, MessageIndicator indicator, CallbackInfo ci) {
 		var message = MESSAGE.get();
 		if(message != null) {
-			ChatMessageEvents.ADDED.invoke(new ChatMessageEvents.Added(message));
+			ChatMessageEvents.ADDED.dispatch(new ChatMessageEvents.Added(message));
 		}
 		MESSAGE.remove();
 	}

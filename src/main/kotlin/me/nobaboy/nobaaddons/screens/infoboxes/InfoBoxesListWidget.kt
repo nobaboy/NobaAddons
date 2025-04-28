@@ -19,7 +19,7 @@ class InfoBoxesListWidget(
 	width: Int,
 	height: Int,
 	y: Int,
-	itemHeight: Int
+	itemHeight: Int,
 ) : ElementListWidget<InfoBoxesListWidget.InfoBoxConfigEntry>(client, width, height, y, itemHeight) {
 	private val infoBoxes = InfoBoxesManager.infoBoxes.map { it.copy() }.toMutableList()
 	val size: Int get() = infoBoxes.size
@@ -128,7 +128,7 @@ class InfoBoxesListWidget(
 			mouseX: Int,
 			mouseY: Int,
 			hovered: Boolean,
-			tickDelta: Float
+			tickDelta: Float,
 		) {
 			textField.y = y
 			textField.render(context, mouseX, mouseY, tickDelta)

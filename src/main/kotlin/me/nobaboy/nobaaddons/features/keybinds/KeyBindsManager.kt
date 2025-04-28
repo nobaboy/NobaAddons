@@ -19,7 +19,7 @@ object KeyBindsManager {
 	private val cooldownManager = CooldownManager(100.milliseconds)
 
 	val commandKeyBinds by KeyBindsConfig::keyBinds
-	private val gameKeyBinds = listOf<NobaKeyBind>(
+	private val gameKeyBinds = listOf(
 		NobaKeyBind(tr("nobaaddons.keyBind.mythologicalRitual.nearestWarp", "Mythological Nearest Warp")) { MythologicalWaypoints.useNearestWarp() }
 	)
 

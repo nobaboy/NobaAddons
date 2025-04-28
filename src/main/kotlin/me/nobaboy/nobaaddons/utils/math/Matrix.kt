@@ -25,7 +25,7 @@ class Matrix(val data: Array<DoubleArray>) {
 			val maxRow = (column until height).maxByOrNull { abs(a[it][column]) }
 				?: error("Matrix is singular and cannot be inverted")
 
-			require(a[maxRow][column] != 0.0) { "Matrix is singular and cannot be inverted"}
+			require(a[maxRow][column] != 0.0) { "Matrix is singular and cannot be inverted" }
 
 			if(maxRow != column) {
 				a.swapRows(column, maxRow)

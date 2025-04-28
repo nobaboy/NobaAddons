@@ -67,7 +67,7 @@ dependencies {
 	mappings("net.fabricmc:yarn:${mcVersion}+build.${deps["yarn_build"]}:v2")
 	modImplementation("net.fabricmc:fabric-loader:${deps["fabric_loader"]}")
 
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+${mcVersion}")
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${deps["fabric_api"]}+$mcVersion")
 	modImplementation("net.fabricmc:fabric-language-kotlin:${deps["kotlin"]}")
 
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
@@ -166,7 +166,7 @@ publishMods {
 		// NOTE: this requires that .github/extract_changelog.py is run first
 		rootProject.file("CHANGELOG.mini").readText()
 	}.getOrDefault("See the full changelog at https://github.com/nobaboy/NobaAddons/blob/master/CHANGELOG.md")
-	type = ALPHA
+	type = BETA
 	modLoaders.add("fabric")
 
 	dryRun = !providers.environmentVariable("MODRINTH_TOKEN").isPresent

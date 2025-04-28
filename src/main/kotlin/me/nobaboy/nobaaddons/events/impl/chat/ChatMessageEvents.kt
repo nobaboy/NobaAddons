@@ -1,7 +1,9 @@
 package me.nobaboy.nobaaddons.events.impl.chat
 
+import me.nobaboy.nobaaddons.events.CancelableEvent
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
+import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.chat.Message
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
@@ -12,12 +14,11 @@ import net.minecraft.text.Text
  * - [CHAT]
  * - [ALLOW]
  * - [MODIFY]
- * - [LATE_MODIFY]
  */
 object ChatMessageEvents {
 	init {
-		ClientReceiveMessageEvents.ALLOW_GAME.register { message, overlay -> overlay || !ALLOW.invoke(Allow(message)) }
-		ClientReceiveMessageEvents.MODIFY_GAME.register { message, overlay -> if(overlay) message else MODIFY.invoke(Modify(message)) }
+		ClientReceiveMessageEvents.ALLOW_GAME.register { message, overlay -> overlay || !ALLOW.dispatch(Allow(message)) }
+		ClientReceiveMessageEvents.MODIFY_GAME.register { message, overlay -> if(overlay) message else MODIFY.dispatch(Modify(message)) }
 	}
 
 	/**
@@ -54,8 +55,11 @@ object ChatMessageEvents {
 	 */
 	@JvmField val ADDED = EventDispatcher<Added>()
 
-	data class Chat(val message: Text) : Event()
-	data class Allow(val message: Text) : Event(true)
-	data class Modify(var message: Text) : Event()
-	data class Added(val message: Message) : Event()
+	data class Chat(val message: Text) : Event {
+		val cleaned by lazy { message.string.cleanFormatting() }
+	}
+
+	data class Allow(val message: Text) : CancelableEvent()
+	data class Modify(var message: Text) : Event
+	data class Added(val message: Message) : Event
 }

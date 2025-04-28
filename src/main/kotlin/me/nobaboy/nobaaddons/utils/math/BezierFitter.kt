@@ -1,15 +1,13 @@
 package me.nobaboy.nobaaddons.utils.math
 
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.NobaVec.Companion.toNobaVec
-import me.nobaboy.nobaaddons.utils.math.PolynomialUtils.derivativeValueAt
-import me.nobaboy.nobaaddons.utils.math.PolynomialUtils.valueAt
+import me.nobaboy.nobaaddons.utils.properties.Holding
 
 open class BezierFitter(private val degree: Int) {
 	private val fitters = Array(3) { PolynomialFitter(degree) }
 	private val points = mutableListOf<NobaVec>()
 
-	private var cachedCurve: BezierCurve? = null
+	private val cachedCurve = Holding<BezierCurve>()
 
 	val lastPoint: NobaVec? get() = points.lastOrNull()
 	val isEmpty: Boolean get() = points.isEmpty()
@@ -25,26 +23,17 @@ open class BezierFitter(private val degree: Int) {
 		fitters.forEachIndexed { i, fitter -> fitter.addPoint(index, values[i]) }
 
 		points.add(point)
-		cachedCurve = null
+		cachedCurve.clear()
 	}
 
 	fun fit(): BezierCurve? {
 		if(points.size <= degree) return null
-		return cachedCurve ?: BezierCurve(fitters.map { it.fit() }).also { cachedCurve = it }
+		return cachedCurve.getOrSet { BezierCurve(fitters.map { it.fit() }) }
 	}
 
 	fun reset() {
 		fitters.forEach { it.reset() }
 		points.clear()
-		cachedCurve = null
+		cachedCurve.clear()
 	}
-}
-
-class BezierCurve(private val coefficients: List<DoubleArray>) {
-	init {
-		require(coefficients.size == 3) { "Expected 3D curve coefficients (x, y, z)" }
-	}
-
-	fun at(t: Double): NobaVec = coefficients.map { it.valueAt(t) }.toNobaVec()
-	fun derivativeAt(t: Double): NobaVec = coefficients.map { it.derivativeValueAt(t) }.toNobaVec()
 }

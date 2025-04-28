@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.core.events.MythologicalDrops
 import me.nobaboy.nobaaddons.core.events.MythologicalMobs
 import me.nobaboy.nobaaddons.core.profile.DianaProfileData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
@@ -15,7 +15,6 @@ import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.minecraft.block.Blocks
@@ -48,8 +47,8 @@ object BurrowAPI {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
-		InteractEvents.BLOCK_INTERACT.register(this::onBlockInteract)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		BlockInteractionEvent.EVENT.register(this::onBlockClick)
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
@@ -70,11 +69,11 @@ object BurrowAPI {
 
 		if(!burrow.hasEnchant || burrow.type == BurrowType.UNKNOWN || burrow.found) return
 
-		MythologicalEvents.BURROW_FIND.invoke(MythologicalEvents.BurrowFind(location, burrow.type))
+		MythologicalEvents.BURROW_FIND.dispatch(MythologicalEvents.BurrowFind(location, burrow.type))
 		burrow.found = true
 	}
 
-	private fun onBlockInteract(event: InteractEvents.BlockInteraction) {
+	private fun onBlockClick(event: BlockInteractionEvent) {
 		if(!enabled) return
 		if(!DianaAPI.hasSpadeInHand(event.player)) return
 
@@ -95,8 +94,10 @@ object BurrowAPI {
 		}
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
+
+		val message = event.cleaned
 
 		when {
 			message.startsWith(" ☠ You were killed by") -> burrows.remove(mobBurrow)
@@ -111,6 +112,7 @@ object BurrowAPI {
 			lastBurrowChatMessage = Timestamp.now()
 			if(lastDugBurrow?.let { tryDigBurrow(it) } != true) return
 			fakeBurrow = lastDugBurrow
+			return
 		}
 
 		DIG_MOB_PATTERN.onFullMatch(message) {
@@ -118,7 +120,7 @@ object BurrowAPI {
 			mobBurrow = lastDugBurrow
 
 			val mob = MythologicalMobs.getByName(groups["mob"]?.value ?: return) ?: return
-			MythologicalEvents.MOB_DIG.invoke(MythologicalEvents.MobDig(mob))
+			MythologicalEvents.MOB_DIG.dispatch(MythologicalEvents.MobDig(mob))
 		}
 
 		DIG_TREASURE_PATTERN.onFullMatch(message) {
@@ -126,12 +128,12 @@ object BurrowAPI {
 			lastBurrowChatMessage = Timestamp.now()
 
 			treasure.replace(",", "").toIntOrNull()?.let { coins ->
-				MythologicalEvents.TREASURE_DIG.invoke(MythologicalEvents.TreasureDig(MythologicalDrops.COINS, coins))
+				MythologicalEvents.TREASURE_DIG.dispatch(MythologicalEvents.TreasureDig(MythologicalDrops.COINS, coins))
 				return
 			}
 
 			val drop = MythologicalDrops.getByName(treasure) ?: return
-			MythologicalEvents.TREASURE_DIG.invoke(MythologicalEvents.TreasureDig(drop))
+			MythologicalEvents.TREASURE_DIG.dispatch(MythologicalEvents.TreasureDig(drop))
 		}
 	}
 
@@ -143,7 +145,7 @@ object BurrowAPI {
 		recentlyDugBurrows.add(location)
 		lastDugBurrow = null
 
-		MythologicalEvents.BURROW_DIG.invoke(MythologicalEvents.BurrowDig(location))
+		MythologicalEvents.BURROW_DIG.dispatch(MythologicalEvents.BurrowDig(location))
 		return true
 	}
 
@@ -172,6 +174,6 @@ object BurrowAPI {
 	private data class Burrow(
 		var hasEnchant: Boolean = false,
 		var type: BurrowType = BurrowType.UNKNOWN,
-		var found: Boolean = false
+		var found: Boolean = false,
 	)
 }

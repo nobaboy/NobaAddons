@@ -178,5 +178,9 @@ object ChatUtils {
 	}
 
 	@JvmRecord
-	private data class ClickAction(val callback: () -> Unit, val createdAt: Timestamp = Timestamp.now(), val ttl: Duration = 1.minutes)
+	private data class ClickAction(
+		val callback: () -> Unit,
+		val createdAt: Timestamp = Timestamp.now(),
+		val ttl: Duration = 1.minutes,
+	)
 }
