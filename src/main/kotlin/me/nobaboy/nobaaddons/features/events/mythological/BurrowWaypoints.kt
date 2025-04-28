@@ -129,7 +129,7 @@ object BurrowWaypoints {
 				RenderUtils.renderText(
 					context,
 					adjustedLocation,
-					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${inquisitor.remainingTime}s"),
+					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${inquisitor.remainingTime}"),
 					color = NobaColor.GRAY,
 					hideThreshold = 5.0,
 					throughBlocks = true,
