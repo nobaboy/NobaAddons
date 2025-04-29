@@ -10,6 +10,7 @@ import java.nio.file.Path
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.io.path.isDirectory
 import kotlin.io.path.nameWithoutExtension
 
 @PublishedApi
@@ -20,6 +21,12 @@ internal val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.R
  */
 inline fun <R> safeLoad(path: Path, loader: () -> R): Result<R> = runCatching(loader).onFailure {
 	ErrorManager.logError("Failed to load a config file", it)
+
+	// histoire should make the parent directory for us, but just in case it fails to
+	// for whatever reason (GH-134)
+	if(!path.parent.isDirectory()) {
+		return@onFailure
+	}
 
 	val date = DATE_FORMATTER.format(ZonedDateTime.now())
 	val name = "${path.nameWithoutExtension}-${date}"
