@@ -56,9 +56,7 @@ object HoppityEggGuess {
 	private fun onItemUse(event: ItemUseEvent) {
 		if(!enabled) return
 		if(lastAbilityUse.elapsedSince() <= 5.seconds) return
-
-		val itemId = event.itemInHand.skyBlockId ?: return
-		if(itemId != HoppityAPI.LOCATOR) return
+		if(event.itemInHand.skyBlockId != HoppityAPI.LOCATOR) return
 
 		particlePath.reset()
 		lastAbilityUse = Timestamp.now()

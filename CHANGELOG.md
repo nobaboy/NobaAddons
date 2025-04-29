@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 - The game should no longer crash on startup if the mod's config doesn't exist - celeste
+- Burrow guess not working if you use item ability while looking at a block - nobaboy
 
 ## 1.0.0-Beta.2 - 2025-04-27
 

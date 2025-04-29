@@ -54,7 +54,7 @@ object BurrowWaypoints {
 		burrows[location] = event.type
 
 		if(config.dingOnBurrowFind) SoundUtils.plingSound.play()
-		if(!config.removeGuessOnBurrowFind && guessLocation?.let { it.distance(location) < 3 } == true) {
+		if(config.removeGuessOnBurrowFind && guessLocation?.let { it.distance(location) < 3 } == true) {
 			guessLocation = null
 		}
 	}
@@ -100,10 +100,10 @@ object BurrowWaypoints {
 
 		InquisitorWaypoints.inquisitors.toList().forEach { inquisitor ->
 			val location = inquisitor.location
-			val adjustedLocation = location.center()
+			val adjustedLocation = location.center().raise()
 			val yOffset = if(config.showInquisitorDespawnTime) -20f else -10f
 
-			val distance = location.distance(LocationUtils.playerLocation)
+			val distance = location.distance(LocationUtils.playerLocation, center = true)
 
 			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
 			RenderUtils.renderText(
@@ -129,7 +129,7 @@ object BurrowWaypoints {
 				RenderUtils.renderText(
 					context,
 					adjustedLocation,
-					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${inquisitor.remainingTime}s"),
+					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${inquisitor.remainingTime}"),
 					color = NobaColor.GRAY,
 					hideThreshold = 5.0,
 					throughBlocks = true,
@@ -151,7 +151,7 @@ object BurrowWaypoints {
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
 			RenderUtils.renderText(
 				context,
-				location.center(),
+				location.center().raise(),
 				text,
 				color = type.color,
 				yOffset = -5f,
@@ -165,8 +165,8 @@ object BurrowWaypoints {
 		if(guessLocation in burrows) return
 
 		guessLocation?.let {
-			val adjustedLocation = it.center()
-			val distance = adjustedLocation.distance(LocationUtils.playerLocation)
+			val adjustedLocation = it.center().raise()
+			val distance = it.distance(LocationUtils.playerLocation, center = true)
 			val formattedDistance = distance.toInt().addSeparators()
 
 			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = distance > 10)
