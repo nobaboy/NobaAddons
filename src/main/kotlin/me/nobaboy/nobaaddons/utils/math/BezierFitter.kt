@@ -3,6 +3,11 @@ package me.nobaboy.nobaaddons.utils.math
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.properties.Holding
 
+/**
+ * This is taken from SkyHanni, which is licensed under the LGPL-2.1.
+ *
+ * [Original source](https://github.com/hannibal002/SkyHanni/blob/beta/src/main/java/at/hannibal2/skyhanni/utils/PolynomialFitter.kt#L32-L71)
+ */
 open class BezierFitter(private val degree: Int) {
 	private val fitters = Array(3) { PolynomialFitter(degree) }
 	private val points = mutableListOf<NobaVec>()
