@@ -13,6 +13,11 @@ import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+/*
+ * This is taken and adapted from Firmament, which is licensed under the GPL-3.0.
+ *
+ * [Original source](https://github.com/nea89o/Firmament/blob/master/src/main/java/moe/nea/firmament/mixins/render/entitytints/UseOverlayableEquipmentRenderer.java)
+ */
 @Mixin(EquipmentRenderer.class)
 abstract class EquipmentRendererMixin {
 	@WrapOperation(
