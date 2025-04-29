@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+
+### Fixed
+
+- The game should no longer crash on startup if the mod's config doesn't exist - celeste
+
 ## 1.0.0-Beta.2 - 2025-04-27
 
 **Back up your configs before updating!** This release includes major changes to how the mod's configuration
