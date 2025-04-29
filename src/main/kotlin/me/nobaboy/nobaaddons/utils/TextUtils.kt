@@ -57,13 +57,13 @@ object TextUtils {
 	fun MutableText.strikethrough(strikethrough: Boolean = true): MutableText = this.styled { it.withStrikethrough(strikethrough) }
 	fun MutableText.obfuscated(obfuscated: Boolean = true): MutableText = this.styled { it.withObfuscated(obfuscated) }
 
-	fun Style.hoverText(text: Text): Style = apply {
+	fun Style.hoverText(text: Text): Style = withHoverEvent(
 		//? if >=1.21.5 {
-		/*withHoverEvent(HoverEvent.ShowText(text))
+		/*HoverEvent.ShowText(text)
 		*///?} else {
 		HoverEvent(HoverEvent.Action.SHOW_TEXT, text)
 		//?}
-	}
+	)
 
 	fun MutableText.runCommand(command: String = this.string): MutableText {
 		require(command.startsWith("/")) { "The provided command string must start with a /" }
