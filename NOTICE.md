@@ -1,6 +1,7 @@
 ## Third-Party Code Attributions
 
-This project includes code adapted from the following third-party projects:
+This project includes code adapted from the following third-party projects.
+The listed files under each project retain the original license of the source project.
 
 ### Firmament
 - **Source**: [GitHub Repository](https://github.com/nea89o/Firmament)
