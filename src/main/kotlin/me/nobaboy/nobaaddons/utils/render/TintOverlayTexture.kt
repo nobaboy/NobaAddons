@@ -12,7 +12,7 @@ import net.minecraft.util.math.ColorHelper
 
 private const val SIZE = 16
 
-/*
+/**
  * This is taken and adapted from Firmament, which is licensed under the GPL-3.0.
  *
  * [Original source](https://github.com/nea89o/Firmament/blob/master/src/main/kotlin/util/render/TintedOverlayTexture.kt)

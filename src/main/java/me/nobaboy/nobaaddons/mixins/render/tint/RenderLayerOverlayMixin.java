@@ -7,10 +7,10 @@ import net.minecraft.client.render.RenderLayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-/*
+/**
  * This is taken and adapted from Firmament, which is licensed under the GPL-3.0.
- *
- * [Original source](https://github.com/nea89o/Firmament/blob/master/src/main/java/moe/nea/firmament/mixins/render/entitytints/ReplaceOverlayTexture.java)
+ * <br>
+ * <a href="https://github.com/nea89o/Firmament/blob/master/src/main/java/moe/nea/firmament/mixins/render/entitytints/ReplaceOverlayTexture.java">Original source</a>
  */
 @Mixin(RenderLayer.Overlay.class)
 abstract class RenderLayerOverlayMixin {
