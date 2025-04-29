@@ -10,9 +10,11 @@ import java.nio.file.Path
 import java.util.zip.ZipInputStream
 
 /**
- * Modified from SkyHanni's RepoUtils, which is licensed under the LGPL-2.1
+ * This is taken and modified from SkyHanni, which is licensed under the LGPL-2.1
  *
- * [Original source](https://github.com/hannibal002/SkyHanni/blob/e1e0deb10821f1f007f39798b3bb9956dea176a5/src/main/java/at/hannibal2/skyhanni/data/repo/RepoUtils.kt)
+ * [Original source](https://github.com/hannibal002/SkyHanni/blob/beta/src/main/java/at/hannibal2/skyhanni/data/repo/RepoUtils.kt)
+ *
+ * Modifications include removing 2 unused functions
  */
 object RepoUtils {
 	fun recursiveDelete(path: Path) = recursiveDelete(path.toFile())

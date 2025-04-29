@@ -4,8 +4,11 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.events.MythologicalMobs
+import me.nobaboy.nobaaddons.events.EventDispatcher.Companion.registerIf
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
+import me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent
+import me.nobaboy.nobaaddons.events.impl.interact.GenericInteractEvent
 import me.nobaboy.nobaaddons.events.impl.interact.ItemUseEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
@@ -20,7 +23,6 @@ import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
@@ -69,8 +71,9 @@ object MythologicalWaypoints {
 		MythologicalEvents.MOB_DIG.register(this::onMobDig)
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ItemUseEvent.EVENT.register(this::onItemUse)
+		BlockInteractionEvent.EVENT.registerIf<BlockInteractionEvent.Interact>(this::onItemUse)
 		EntityEvents.SPAWN.register(this::onEntitySpawn)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
@@ -105,11 +108,10 @@ object MythologicalWaypoints {
 		guessLocation = particlePath.solve()?.lower(0.5)?.roundToBlock() ?: return
 	}
 
-	private fun onItemUse(event: ItemUseEvent) {
+	private fun onItemUse(event: GenericInteractEvent) {
 		if(!config.burrowGuess || !DianaAPI.isActive) return
-
-		val itemId = event.itemInHand.skyBlockId ?: return
-		if(itemId != DianaAPI.SPADE) return
+		if(lastAbilityUse.elapsedSince() <= 3.seconds) return
+		if(event.itemInHand.skyBlockId != DianaAPI.SPADE) return
 
 		particlePath.reset()
 		lastAbilityUse = Timestamp.now()
@@ -126,8 +128,10 @@ object MythologicalWaypoints {
 		checkInquisitor()
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!DianaAPI.isActive) return
+
+		val message = event.cleaned
 
 		INQUISITOR_SPAWN_REGEXES.firstPartialMatch(message) {
 			val username = groups["username"]?.value ?: return
@@ -195,7 +199,7 @@ object MythologicalWaypoints {
 
 	private fun renderInquisitorWaypoints(context: WorldRenderContext) {
 		if(nearbyInquisitors.isEmpty()) {
-			val removedInquisitors = inquisitors.filter { it.location.distanceToPlayer() < 5 }
+			val removedInquisitors = inquisitors.filter { it.location.center().distanceToPlayer() < 5 }
 			inquisitors.removeAll(removedInquisitors)
 
 			removedInquisitors.forEach {
@@ -232,7 +236,7 @@ object MythologicalWaypoints {
 				RenderUtils.renderText(
 					context,
 					adjustedLocation,
-					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${it.remainingTime}s"),
+					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${it.remainingTime}"),
 					color = NobaColor.GRAY,
 					hideThreshold = 5.0,
 					throughBlocks = true
@@ -245,7 +249,7 @@ object MythologicalWaypoints {
 		guessLocation?.let {
 			val adjustedLocation = it.center().raise()
 
-			val distance = it.distanceToPlayer()
+			val distance = it.center().distanceToPlayer()
 			val formattedDistance = distance.toInt().addSeparators()
 
 			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = distance > 10)
