@@ -129,7 +129,11 @@ object RepoManager {
 		}
 	}
 
-	// Code taken from NotEnoughUpdates
+	/**
+	 * This is taken from NotEnoughUpdates, which is licensed under the LGPL-3.0.
+	 *
+	 * [Original source](https://github.com/NotEnoughUpdates/NotEnoughUpdates/blob/master/src/main/java/io/github/moulberry/notenoughupdates/NEUManager.java#L282-L308)
+	 */
 	private fun switchToBackupRepo() {
 		NobaAddons.LOGGER.warn("Attempting to switch to backup repo")
 
