@@ -3,9 +3,11 @@ package me.nobaboy.nobaaddons.utils.math
 import kotlin.math.abs
 
 /**
- * This is taken from SkyHanni, which is licensed under the LGPL-2.1.
+ * This is taken and modified from SkyHanni, which is licensed under the LGPL-2.1.
  *
  * [Original source](https://github.com/hannibal002/SkyHanni/blob/beta/src/main/java/at/hannibal2/skyhanni/utils/Matrix.kt)
+ *
+ * Modifications include variable renames and cleanup
  */
 class Matrix(val data: Array<DoubleArray>) {
 	val width: Int get() = data[0].size
