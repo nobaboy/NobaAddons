@@ -114,13 +114,14 @@ object PartyAPI {
 		)
 	}
 
-	fun getPartyInfo() {
+	private fun getPartyInfo() {
+		NobaAddons.LOGGER.info("Requesting party list from Mod API")
 		HypixelModAPI.getInstance().sendPacket(ServerboundPartyInfoPacket())
 	}
 
 	// This method is only called from debug commands, and as such is fine being untranslated.
 	@OptIn(UntranslatedMessage::class)
-	fun listMembers() {
+	internal fun listMembers() {
 		val party = this.party
 		if(party == null || party.members.isEmpty()) {
 			ChatUtils.addMessage("Party seems to be empty...")
