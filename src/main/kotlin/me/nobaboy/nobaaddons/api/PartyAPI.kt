@@ -8,6 +8,7 @@ import kotlinx.coroutines.sync.withPermit
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.chat.SendMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -63,11 +64,24 @@ object PartyAPI {
 		private set
 
 	fun init() {
+		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 		TickEvents.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		HypixelModAPI.getInstance().listen(this::onPartyData)
+	}
+
+	fun refreshPartyList() {
+		refreshPartyList = true
+	}
+
+	private fun onSendCommand(event: SendMessageEvents.SendCommand) {
+		val split = event.command.split(" ")
+		when {
+			split[0] == "pl" -> refreshPartyList = true
+			(split[0] == "party" || split[0] == "p") && split.getOrNull(1) == "list" -> refreshPartyList = true
+		}
 	}
 
 	private fun onTick(cooldownManager: CooldownManager) {
