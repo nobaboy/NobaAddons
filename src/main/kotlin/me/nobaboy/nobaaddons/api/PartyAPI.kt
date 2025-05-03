@@ -77,10 +77,13 @@ object PartyAPI {
 	}
 
 	private fun onSendCommand(event: SendMessageEvents.SendCommand) {
-		val split = event.command.split(" ")
-		when {
-			split[0] == "pl" -> refreshPartyList = true
-			(split[0] == "party" || split[0] == "p") && split.getOrNull(1) == "list" -> refreshPartyList = true
+		val split = event.command.split(" ").filter { it.isNotBlank() }
+		if(split[0].equals("pl", ignoreCase = true)) {
+			refreshPartyList = true
+		} else if(split[0].equals("p", ignoreCase = true) || split[0].equals("party", ignoreCase = true)) {
+			if(split.getOrNull(1).equals("list", ignoreCase = true)) {
+				refreshPartyList = true
+			}
 		}
 	}
 
