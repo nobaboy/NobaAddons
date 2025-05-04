@@ -23,6 +23,7 @@ import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
+import me.nobaboy.nobaaddons.utils.TextUtils.aqua
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
@@ -192,7 +193,6 @@ object MythologicalWaypoints {
 		lastInquisitor?.takeIf { it.isAlive }?.let {
 			val (x, y, z) = it.getNobaVec().roundToBlock().toDoubleArray()
 			val message = "x: $x, y: $y, z: $z | Minos Inquisitor at [ ${SkyBlockAPI.prefixedZone} ]"
-
 			config.announceChannel.send(message)
 		}
 	}
@@ -246,9 +246,10 @@ object MythologicalWaypoints {
 	}
 
 	private fun renderGuessWaypoint(context: WorldRenderContext) {
+		if(guessLocation in burrows) return
+
 		guessLocation?.let {
 			val adjustedLocation = it.center().raise()
-
 			val distance = it.center().distanceToPlayer()
 			val formattedDistance = distance.toInt().addSeparators()
 
@@ -275,11 +276,17 @@ object MythologicalWaypoints {
 
 	private fun renderBurrowWaypoints(context: WorldRenderContext) {
 		burrows.forEach { (location, type) ->
+			val text = if(location == guessLocation) {
+				type.displayName.copy().append(" (Guess)".toText().aqua())
+			} else {
+				type.displayName
+			}
+
 			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
 			RenderUtils.renderText(
 				context,
 				location.center().raise(),
-				type.displayName,
+				text,
 				color = type.color,
 				yOffset = -5f,
 				hideThreshold = 5.0,
@@ -311,6 +318,7 @@ object MythologicalWaypoints {
 	}
 
 	fun reset() {
+		burrows.clear()
 		particlePath.reset()
 		guessLocation = null
 		inquisitors.clear()
