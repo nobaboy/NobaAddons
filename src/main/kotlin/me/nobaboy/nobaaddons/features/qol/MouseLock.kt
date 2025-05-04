@@ -71,7 +71,7 @@ object MouseLock {
 		//? if >=1.21.2 {
 		val packetLocation = packet.change.position.toNobaVec().roundTo(2)
 		//?} else {
-		/*val packetLocation = NobaVec(packet.x, packet.y, packet.z).round(2)
+		/*val packetLocation = NobaVec(packet.x, packet.y, packet.z).roundTo(2)
 		*///?}
 
 		if(packetLocation.distance(playerLocation) >= 5) lockMouse()
