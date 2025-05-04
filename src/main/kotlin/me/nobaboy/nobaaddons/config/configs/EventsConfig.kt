@@ -26,6 +26,8 @@ class EventsConfig {
 		var showInquisitorDespawnTime = false
 		var inquisitorFocusMode = false
 
+		var tracker = false
+		var showChainsFinished = false
 		var announceRareDrops = false
 
 		var ignoreCrypt = false
