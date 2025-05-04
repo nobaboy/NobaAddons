@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.utils
 
 import java.text.NumberFormat
 import kotlin.math.pow
+import kotlin.math.roundToInt
 
 object NumberUtils {
 	private val romanRegex = Regex("[IVXLCDM]+")
@@ -39,7 +40,7 @@ object NumberUtils {
 	 */
 	fun Double.roundTo(precision: Int): Double {
 		val scale = 10.0.pow(precision)
-		return kotlin.math.round(this * scale) / scale
+		return (this * scale).roundToInt() / scale
 	}
 
 	fun Float.roundTo(precision: Int): Float = toDouble().roundTo(precision).toFloat()

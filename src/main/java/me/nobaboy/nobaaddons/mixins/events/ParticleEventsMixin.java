@@ -14,7 +14,7 @@ abstract class ParticleEventsMixin {
 	@Inject(method = "onParticle", at = @At("RETURN"), cancellable = true)
 	private void nobaaddons$onParticle(ParticleS2CPacket packet, CallbackInfo ci) {
 		var location = new NobaVec(packet.getX(), packet.getY(), packet.getZ());
-		var offset = new NobaVec(packet.getOffsetX(), packet.getOffsetY(), packet.getOffsetZ()).round(2);
+		var offset = new NobaVec(packet.getOffsetX(), packet.getOffsetY(), packet.getOffsetZ()).roundTo(2);
 
 		var forceSpawn = /*? if >=1.21.4 {*/packet.shouldForceSpawn()/*?} else {*//*packet.isLongDistance()*//*?}*/;
 		var allow = new ParticleEvents.AllowParticle(packet.getParameters().getType(), location, packet.getCount(), packet.getSpeed(), offset, forceSpawn);

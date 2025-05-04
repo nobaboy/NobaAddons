@@ -73,9 +73,18 @@ object DebugCommands {
 		}
 	}
 
-	@Command
-	fun party(ctx: Context) {
-		PartyAPI.listMembers()
+	@Group
+	object Party {
+		@RootCommand
+		fun list() {
+			PartyAPI.listMembers()
+		}
+
+		@Command
+		fun refresh() {
+			PartyAPI.refreshPartyList()
+			ChatUtils.addMessage("Marked party data as needing update")
+		}
 	}
 
 	@Command

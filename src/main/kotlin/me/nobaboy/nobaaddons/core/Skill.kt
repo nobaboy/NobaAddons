@@ -25,10 +25,4 @@ enum class Skill(val isCosmetic: Boolean = false, val includeInSkillAverage: Boo
 	companion object {
 		val CODEC: Codec<Skill> = StringIdentifiable.createCodec { entries.toTypedArray() }
 	}
-
-	object SkillArgumentType : EnumArgumentType<Skill>(CODEC, { entries.toTypedArray() }) {
-		fun getItemRarity(context: CommandContext<out CommandSource>, id: String): Skill {
-			return context.getArgument(id, Skill::class.java)
-		}
-	}
 }
