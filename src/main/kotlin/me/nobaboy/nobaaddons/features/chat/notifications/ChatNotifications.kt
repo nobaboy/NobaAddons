@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.features.chat.notifications
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import net.minecraft.util.Util
@@ -23,10 +22,12 @@ object ChatNotifications {
 	}
 
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val message = event.cleaned
+
 		ChatNotificationsConfig.notifications.filter { it.enabled }.forEach {
 			if(it.message.isBlank() || it.display.isBlank()) return@forEach
 			var display: String? = null

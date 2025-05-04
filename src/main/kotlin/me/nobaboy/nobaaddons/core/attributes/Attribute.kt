@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.repo.Repo
 data class Attribute(
 	val id: String,
 	val name: String,
-	val abbreviation: String
+	val abbreviation: String,
 ) {
 	companion object {
 		val ATTRIBUTES by Repo.createList("item_modifiers/attributes.json", serializer())

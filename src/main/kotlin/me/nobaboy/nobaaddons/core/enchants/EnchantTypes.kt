@@ -35,7 +35,7 @@ data class StackingEnchant(
 	override val items: List<SkyBlockItemType>? = null,
 	override val exclusiveToItems: List<String>? = null,
 	override val conflicts: List<String>? = null,
-	override val abbreviation: String? = null
+	override val abbreviation: String? = null,
 ) : EnchantBase {
 	override val good: Int = -1
 	override val max: Int = tiers.size + 1
@@ -49,7 +49,7 @@ data class UltimateEnchant(
 	override val items: List<SkyBlockItemType>? = null,
 	override val exclusiveToItems: List<String>? = null,
 	override val conflicts: List<String>? = null,
-	override val abbreviation: String? = null
+	override val abbreviation: String? = null,
 ) : EnchantBase {
 	override val good: Int = -1
 }

@@ -66,6 +66,7 @@ object VoidgloomSeraphFeatures {
 
 		SlayerAPI.currentQuest?.takeIf { it.spawned && it.entity != null }?.let {
 			val color = getHighlightColor(it.entity, it.armorStand)
+			// TODO change this to NobaColor
 			it.entity?.highlight(color)
 		}
 	}
@@ -143,19 +144,19 @@ object VoidgloomSeraphFeatures {
 		if(config.highlightYangGlyphs) yangGlyphs.forEach { (location, timestamp) ->
 			if(location.distanceToPlayer() > 24) return@forEach
 
-			val adjustedLocation = location.center().raise()
-
+			val textLocation = location.center()
 			val seconds = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
+
 			RenderUtils.renderOutlinedFilledBox(context, location, config.yangGlyphHighlightColor, throughBlocks = true)
 			RenderUtils.renderText(
 				context,
-				adjustedLocation,
+				textLocation,
 				tr("nobaaddons.slayers.yangGlyph.name", "Yang Glyph"),
 				color = config.yangGlyphHighlightColor,
 				yOffset = -10f,
 				throughBlocks = true
 			)
-			RenderUtils.renderText(context, adjustedLocation, seconds, NobaColor.WHITE, throughBlocks = true)
+			RenderUtils.renderText(context, textLocation, seconds, NobaColor.WHITE, throughBlocks = true)
 		}
 
 		if(config.highlightNukekubiFixations) {
@@ -174,6 +175,7 @@ object VoidgloomSeraphFeatures {
 		val isHoldingBeacon = (entity as? EndermanEntity)?.carriedBlock?.block == Blocks.BEACON
 
 		return when {
+			// TODO migrate these to NobaColor when histoire refactor is merged
 			armorStandName.contains("Hits") && !inBeaconPhase -> config.hitsPhaseColor
 			isHoldingBeacon || inBeaconPhase -> config.beaconPhaseColor
 			else -> config.damagePhaseColor
@@ -189,7 +191,7 @@ object VoidgloomSeraphFeatures {
 
 	data class BrokenHeartRadiation(
 		val entity: LivingEntity,
-		val timestamp: Timestamp = Timestamp.now() + 8.seconds
+		val timestamp: Timestamp = Timestamp.now() + 8.seconds,
 	) {
 		val isValid: Boolean
 			get() = timestamp.timeRemaining() > 0.seconds && (entity.vehicle != null || timestamp.timeRemaining() > 5.seconds)

@@ -25,7 +25,7 @@ interface ISlotInfo {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
 
-	fun drawCount(event: ScreenRenderEvents.DrawItem, text: String, color:NobaColor = NobaColor.WHITE) {
+	fun drawCount(event: ScreenRenderEvents.DrawItem, text: String, color: NobaColor = NobaColor.WHITE) {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
 
@@ -68,7 +68,14 @@ interface ISlotInfo {
 			}
 		}
 
-		fun renderSlotInfo(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: Text, position: Position) {
+		fun renderSlotInfo(
+			context: DrawContext,
+			textRenderer: TextRenderer,
+			x: Int,
+			y: Int,
+			text: Text,
+			position: Position,
+		) {
 			val width = textRenderer.getWidth(text)
 			val scale = if(width > 16) 0.8333333f else 1f
 
@@ -85,14 +92,28 @@ interface ISlotInfo {
 			context.matrices.pop()
 		}
 
-		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: Text, color: NobaColor = NobaColor.WHITE) {
+		fun drawStackOverlay(
+			context: DrawContext,
+			textRenderer: TextRenderer,
+			x: Int,
+			y: Int,
+			text: Text,
+			color: NobaColor = NobaColor.WHITE,
+		) {
 			context.matrices.push()
 			context.matrices.translate(0f, 0f, 200f)
 			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color.rgb, true)
 			context.matrices.pop()
 		}
 
-		fun drawStackOverlay(context: DrawContext, textRenderer: TextRenderer, x: Int, y: Int, text: String, color: NobaColor = NobaColor.WHITE) {
+		fun drawStackOverlay(
+			context: DrawContext,
+			textRenderer: TextRenderer,
+			x: Int,
+			y: Int,
+			text: String,
+			color: NobaColor = NobaColor.WHITE,
+		) {
 			context.matrices.push()
 			context.matrices.translate(0f, 0f, 200f)
 			context.drawText(textRenderer, text, x + 19 - 2 - textRenderer.getWidth(text), y + 6 + 3, color.rgb, true)

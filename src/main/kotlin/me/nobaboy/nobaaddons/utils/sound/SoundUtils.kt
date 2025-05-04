@@ -31,7 +31,12 @@ object SoundUtils {
 		delay = 4
 	)
 
-	fun playSound(soundEvent: SoundEvent, volume: Float = 1f, pitch: Float = 1f, category: SoundCategory = SoundCategory.MASTER) {
+	fun playSound(
+		soundEvent: SoundEvent,
+		volume: Float = 1f,
+		pitch: Float = 1f,
+		category: SoundCategory = SoundCategory.MASTER,
+	) {
 		val player = MCUtils.player ?: return
 		MCUtils.world?.playSound(player, player.x, player.y, player.z, soundEvent, category, volume, pitch)
 	}
@@ -39,7 +44,7 @@ object SoundUtils {
 	class SoundSequence(
 		val soundEvent: SoundEvent,
 		val steps: List<SoundStep>,
-		val delay: Int
+		val delay: Int,
 	) : PlayableSound {
 		override fun play(category: SoundCategory) {
 			steps.forEachIndexed { index, step ->
@@ -53,8 +58,8 @@ object SoundUtils {
 				soundEvent: SoundEvent,
 				semitones: List<Int>,
 				volume: Float,
-				delay: Int
-			) : SoundSequence {
+				delay: Int,
+			): SoundSequence {
 				val steps = semitones.map { SoundStep(it, volume) }
 				return SoundSequence(soundEvent, steps, delay)
 			}
@@ -64,7 +69,7 @@ object SoundUtils {
 	class SimpleSound(
 		val soundEvent: SoundEvent,
 		val pitch: Float = 1f,
-		val volume: Float = 1f
+		val volume: Float = 1f,
 	) : PlayableSound {
 		override fun play(category: SoundCategory) {
 			playSound(soundEvent, volume, pitch, category)

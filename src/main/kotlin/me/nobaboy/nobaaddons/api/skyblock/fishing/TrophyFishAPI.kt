@@ -17,20 +17,14 @@ object TrophyFishAPI {
 	val trophyFish get() = ProfileData.PROFILE.trophyFish
 
 	// .* is required to catch any extra text added afterward from compact chat mods like Compacting
-	private val TROPHY_FISH_CATCH_REGEX by Regex("^TROPHY FISH! You caught an? (?<fish>[A-z 0-9-]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)\\..*").fromRepo("fishing.trophy_fish_catch")
+	private val TROPHY_FISH_CATCH_REGEX by Regex("^♔ TROPHY FISH! You caught an? (?<fish>[A-z 0-9-]+) (?<rarity>BRONZE|SILVER|GOLD|DIAMOND)!.*").fromRepo("fishing.trophy_fish_catch")
 	private val TROPHY_FISH_RARITY_REGEX by Regex("(?<rarity>Bronze|Silver|Gold|Diamond) [✔✖](?: \\((?<amount>[\\d,]+)\\))?").fromRepo("fishing.trophy_fish_rarity")
 
 	private val inventorySlots = 10..31
 
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
-	}
-
-	private fun onChatMessage(message: String) {
-		val (fish, rarity) = parseFromChatMessage(message) ?: return
-		val rarities = trophyFish.getOrPut(fish.id) { EnumMap(TrophyFishRarity::class.java) }
-		rarities[rarity] = (rarities[rarity] ?: 0) + 1
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
@@ -45,6 +39,12 @@ object TrophyFishAPI {
 				.let { EnumMap(it) }
 			trophyFish[trophy.id] = rarities
 		}
+	}
+
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val (fish, rarity) = parseFromChatMessage(event.cleaned) ?: return
+		val rarities = trophyFish.getOrPut(fish.id) { EnumMap(TrophyFishRarity::class.java) }
+		rarities[rarity] = (rarities[rarity] ?: 0) + 1
 	}
 
 	fun parseFromChatMessage(message: String): Pair<TrophyFish, TrophyFishRarity>? {

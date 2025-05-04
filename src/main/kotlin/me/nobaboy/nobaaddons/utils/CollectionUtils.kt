@@ -3,6 +3,7 @@ package me.nobaboy.nobaaddons.utils
 object CollectionUtils {
 	fun List<String>.anyEquals(other: String, ignoreCase: Boolean = false): Boolean =
 		any { it.equals(other, ignoreCase = ignoreCase) }
+
 	fun List<String>.anyContains(other: String, ignoreCase: Boolean = false): Boolean =
 		any { it.contains(other, ignoreCase = ignoreCase) }
 

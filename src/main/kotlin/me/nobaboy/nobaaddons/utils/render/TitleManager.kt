@@ -38,7 +38,7 @@ object TitleManager {
 		offset: Int,
 		duration: Duration,
 		id: String,
-		subtext: Text?
+		subtext: Text?,
 	) {
 		val title = Title(text, color, scale, offset, duration, Timestamp.now(), subtext)
 		titles[id] = title
@@ -51,7 +51,7 @@ object TitleManager {
 		val offset: Int,
 		val duration: Duration,
 		val timestamp: Timestamp,
-		val subtext: Text?
+		val subtext: Text?,
 	) {
 		val expired: Boolean get() = timestamp.elapsedSince() >= duration
 	}

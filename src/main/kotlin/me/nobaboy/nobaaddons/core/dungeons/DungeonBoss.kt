@@ -17,6 +17,6 @@ enum class DungeonBoss(val displayName: String?) {
 	;
 
 	companion object {
-		fun getByMessage(text: String): DungeonBoss = entries.firstOrNull { it.displayName != null && text.contains(it.displayName) } ?: UNKNOWN
+		fun getByName(name: String): DungeonBoss = entries.firstOrNull { it.displayName?.equals(name, ignoreCase = true) == true } ?: UNKNOWN
 	}
 }

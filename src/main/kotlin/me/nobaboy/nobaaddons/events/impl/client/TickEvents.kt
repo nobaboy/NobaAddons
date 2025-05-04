@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.seconds
 
 object TickEvents {
 	init {
-		ClientTickEvents.END_CLIENT_TICK.register { TICK.invoke(Tick(it)) }
+		ClientTickEvents.END_CLIENT_TICK.register { TICK.dispatch(Tick(it)) }
 	}
 
 	/**
@@ -65,5 +65,5 @@ object TickEvents {
 		}
 	}
 
-	data class Tick(val client: MinecraftClient) : Event()
+	data class Tick(val client: MinecraftClient) : Event
 }

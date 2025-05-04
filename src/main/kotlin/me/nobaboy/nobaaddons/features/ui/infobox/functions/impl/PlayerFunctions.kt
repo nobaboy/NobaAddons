@@ -40,9 +40,9 @@ object PlayerFunctions {
 		override fun execute(): Double? {
 			val player = MCUtils.client.player ?: return null
 
-			val dX = player.x - player.prevX
-			val dY = player.y - player.prevY
-			val dZ = player.z - player.prevZ
+			val dX = player.x - player./*? if >=1.21.5 {*//*lastX*//*?} else {*/prevX/*?}*/
+			val dY = player.y - player./*? if >=1.21.5 {*//*lastY*//*?} else {*/prevY/*?}*/
+			val dZ = player.z - player./*? if >=1.21.5 {*//*lastZ*//*?} else {*/prevZ/*?}*/
 			val bps = sqrt((dX * dX) + (dY * dY) + (dZ * dZ)) * 20
 
 			return bps.roundTo(1)

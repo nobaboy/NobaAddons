@@ -8,8 +8,8 @@ import net.minecraft.text.Text
 enum class CorpseType(
 	val color: NobaColor,
 	private val helmetId: String,
-	private val keyId: String? = null
-): NameableEnum {
+	private val keyId: String? = null,
+) : NameableEnum {
 	LAPIS(NobaColor.BLUE, "LAPIS_ARMOR_HELMET"),
 	UMBER(NobaColor.GOLD, "ARMOR_OF_YOG_HELMET", "UMBER_KEY"),
 	TUNGSTEN(NobaColor.GRAY, "MINERAL_HELMET", "UMBER_KEY"),

@@ -13,6 +13,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.gray
+import me.nobaboy.nobaaddons.utils.TextUtils.literal
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
@@ -20,6 +21,7 @@ import net.minecraft.text.Text
 
 object TrophyFishChat {
 	private val config get() = NobaConfig.fishing.trophyFishing
+	private val includeIcon get() = !NobaConfig.fishing.catchMessages.revertTreasureMessages
 
 	private val lastMessage: MutableMap<Pair<TrophyFish, TrophyFishRarity>, Message> = mutableMapOf()
 
@@ -28,6 +30,9 @@ object TrophyFishChat {
 	}
 
 	fun format(name: Text, rarity: TrophyFishRarity, count: Int, total: Int) = buildText {
+		if(includeIcon) {
+			literal("♔ ") { gold() }
+		}
 		append(tr("nobaaddons.fishing.trophyFishing.prefix", "TROPHY FISH!").gold().bold())
 		append(" ")
 		val count = "${count.addSeparators()}${count.ordinalSuffix()}"

@@ -21,7 +21,6 @@ import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.SkyBlockSeason
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.hypixel.data.type.GameType
@@ -41,7 +40,7 @@ object SkyBlockAPI {
 	private val SKYBLOCK_LEVEL_REGEX by Regex("^Your SkyBlock Level: \\[(?<level>\\d+)]").fromRepo("skyblock.level")
 	private val SKYBLOCK_XP_REGEX by Regex("^\\s+(?<xp>\\d+)/100 XP").fromRepo("skyblock.xp")
 
-	private val ZONE_REGEX by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: ൠ x\\d)?\$").fromRepo("skyblock.zone")
+	private val ZONE_REGEX by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: .*)?\$").fromRepo("skyblock.zone")
 	private val CURRENCY_REGEX by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
 
 	var currentServer: ServerType? = null
@@ -94,7 +93,7 @@ object SkyBlockAPI {
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 		TickEvents.everySecond { update() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		currentProfile = PersistentCache.lastProfile?.toJavaUuid()
 	}
 
@@ -102,7 +101,7 @@ object SkyBlockAPI {
 		currentServer = packet.serverType.getOrNull()
 		currentIsland = SkyBlockIsland.getByName(packet.mode.getOrNull() ?: return)
 		if(currentIsland != SkyBlockIsland.UNKNOWN) Scheduler.schedule(2) {
-			SkyBlockEvents.ISLAND_CHANGE.invoke(SkyBlockEvents.IslandChange(currentIsland))
+			SkyBlockEvents.ISLAND_CHANGE.dispatch(SkyBlockEvents.IslandChange(currentIsland))
 		}
 	}
 
@@ -124,11 +123,11 @@ object SkyBlockAPI {
 		}
 	}
 
-	private fun onChatMessage(message: String) {
-		val profileId = UUID.fromString(PROFILE_ID_REGEX.getGroupFromFullMatch(message, "id") ?: return)
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		val profileId = UUID.fromString(PROFILE_ID_REGEX.getGroupFromFullMatch(event.cleaned, "id") ?: return)
 		if(profileId == currentProfile) return
 
-		SkyBlockEvents.PROFILE_CHANGE.invoke(SkyBlockEvents.ProfileChange(profileId))
+		SkyBlockEvents.PROFILE_CHANGE.dispatch(SkyBlockEvents.ProfileChange(profileId))
 		currentProfile = profileId
 	}
 

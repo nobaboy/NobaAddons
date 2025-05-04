@@ -10,5 +10,5 @@ data class PetNbt(
 	val tier: String,
 	val heldItem: String? = null,
 	val candyUsed: Int,
-	val skin: String? = null
+	val skin: String? = null,
 )

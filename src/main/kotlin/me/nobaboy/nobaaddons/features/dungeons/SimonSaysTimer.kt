@@ -7,8 +7,9 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
+import me.nobaboy.nobaaddons.events.EventDispatcher.Companion.registerIf
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysTimes
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -16,7 +17,6 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.gray
@@ -43,8 +43,8 @@ object SimonSaysTimer {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
-		InteractEvents.BLOCK_INTERACT.register { if(it is InteractEvents.UseBlockInteraction) onInteract(it) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
+		BlockInteractionEvent.EVENT.registerIf<BlockInteractionEvent.Interact>(this::onInteract)
 
 		SimonSaysTimes.safeLoad().onSuccess {
 			SimonSaysTimes.times.minOrNull()?.takeIf { !it.isNaN() }?.let { newPersonalBest ->
@@ -101,10 +101,10 @@ object SimonSaysTimer {
 		ChatUtils.addMessage(tr("nobaadons.command.simonSaysTimer.personalBest", "Your personal best Simon Says time is $personalBest"))
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled || !buttonPressed || deviceCompleted) return
 
-		DEVICE_COMPLETED_REGEX.onFullMatch(message) {
+		DEVICE_COMPLETED_REGEX.onFullMatch(event.cleaned) {
 			val username = groups["username"]!!.value
 			if(username != MCUtils.playerName) return
 
@@ -115,7 +115,7 @@ object SimonSaysTimer {
 		}
 	}
 
-	private fun onInteract(event: InteractEvents.UseBlockInteraction) {
+	private fun onInteract(event: BlockInteractionEvent.Interact) {
 		if(!enabled || buttonPressed || event.player != MCUtils.player || event.location.roundToBlock() != buttonLocation) return
 
 		startTime = Timestamp.now()

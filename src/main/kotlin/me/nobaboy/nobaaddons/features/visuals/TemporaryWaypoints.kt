@@ -12,7 +12,6 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -31,16 +30,16 @@ object TemporaryWaypoints {
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { waypoints.clear() }
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
 		if(!SkyBlockAPI.inSkyBlock) return
 		if(DianaAPI.isActive) return
 
-		CommonPatterns.CHAT_COORDINATES_REGEX.onPartialMatch(message) {
+		CommonPatterns.CHAT_COORDINATES_REGEX.onPartialMatch(event.cleaned) {
 			val username = groups["username"]!!.value
 			if(username == MCUtils.playerName) return
 
@@ -66,12 +65,29 @@ object TemporaryWaypoints {
 		waypoints.removeIf { it.expired || it.location.distance(cameraPos) < 5.0 }
 		waypoints.forEach { waypoint ->
 			val location = waypoint.location
+			val adjustedLocation = location.center()
+
 			val distance = location.distanceToPlayer()
 			val formattedDistance = distance.toInt().addSeparators()
 
 			RenderUtils.renderWaypoint(context, location, color, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), waypoint.text, color = color, yOffset = -10f, hideThreshold = 5.0, throughBlocks = true)
-			RenderUtils.renderText(context, location.center().raise(), "${formattedDistance}m", color = NobaColor.GRAY, hideThreshold = 5.0, throughBlocks = true)
+			RenderUtils.renderText(
+				context,
+				adjustedLocation,
+				waypoint.text,
+				color = color,
+				yOffset = -10f,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
+			RenderUtils.renderText(
+				context,
+				adjustedLocation,
+				"${formattedDistance}m",
+				color = NobaColor.GRAY,
+				hideThreshold = 5.0,
+				throughBlocks = true
+			)
 		}
 	}
 

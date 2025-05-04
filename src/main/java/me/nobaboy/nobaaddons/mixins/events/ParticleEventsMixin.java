@@ -18,12 +18,11 @@ abstract class ParticleEventsMixin {
 
 		var forceSpawn = /*? if >=1.21.4 {*/packet.shouldForceSpawn()/*?} else {*//*packet.isLongDistance()*//*?}*/;
 		var allow = new ParticleEvents.AllowParticle(packet.getParameters().getType(), location, packet.getCount(), packet.getSpeed(), offset, forceSpawn);
-		ParticleEvents.ALLOW_PARTICLE.invoke(allow);
-		if(allow.isCanceled()) {
+		if(ParticleEvents.ALLOW_PARTICLE.dispatch(allow)) {
 			ci.cancel();
 			return;
 		}
 
-		ParticleEvents.PARTICLE.invoke(new ParticleEvents.Particle(packet.getParameters().getType(), location, packet.getCount(), packet.getSpeed(), offset, forceSpawn));
+		ParticleEvents.PARTICLE.dispatch(new ParticleEvents.Particle(packet.getParameters().getType(), location, packet.getCount(), packet.getSpeed(), offset, forceSpawn));
 	}
 }

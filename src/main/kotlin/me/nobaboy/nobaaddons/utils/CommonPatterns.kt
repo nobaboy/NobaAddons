@@ -12,6 +12,8 @@ object CommonPatterns {
 
 	val UUID_REGEX = Regex(UUID_PATTERN_STRING, RegexOption.IGNORE_CASE)
 
+	val COLOR_REGEX = Regex("&([0-9a-fk-orz])", RegexOption.IGNORE_CASE)
+
 	val CHAT_COORDINATES_REGEX by Regex("(?<username>[A-z0-9_]+): [Xx]: (?<x>[0-9.-]+),? [Yy]: (?<y>[0-9.-]+),? [Zz]: (?<z>[0-9.-]+)(?<info>.*)").fromRepo("chat_coordinates")
 
 	val ITEM_COOLDOWN_REGEX by Regex("^Cooldown: (?<cooldown>(?:\\d+[hms] ?)+)").fromRepo("skyblock.item_cooldown")

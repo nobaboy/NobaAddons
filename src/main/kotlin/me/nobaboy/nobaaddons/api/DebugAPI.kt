@@ -49,7 +49,13 @@ object DebugAPI {
 		override fun get(): Boolean = isAwtAvailable
 	}
 
-	data class Sound(val id: Identifier, val category: SoundCategory, val pitch: Float, val volume: Float, val canceled: Boolean) {
+	data class Sound(
+		val id: Identifier,
+		val category: SoundCategory,
+		val pitch: Float,
+		val volume: Float,
+		val canceled: Boolean,
+	) {
 		override fun toString(): String =
 			"${if(canceled) "(X) " else ""}${if(id.namespace == "minecraft") id.path else id} ($category) : $pitch / $volume"
 	}

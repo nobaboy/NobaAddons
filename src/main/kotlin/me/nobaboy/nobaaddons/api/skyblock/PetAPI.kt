@@ -42,11 +42,13 @@ object PetAPI {
 	fun init() {
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		InventoryEvents.SLOT_CLICK.register(this::onInventorySlotClick)
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		SkyBlockEvents.PROFILE_DATA_LOADED.register { (_, data) -> currentPet = data.pet }
 	}
 
 	private fun onInventoryOpen(event: InventoryEvents.Open) {
+		if(!SkyBlockAPI.inSkyBlock) return
+
 		inPetsMenu = PETS_MENU_REGEX.matches(event.inventory.title)
 		if(!inPetsMenu) return
 
@@ -66,7 +68,11 @@ object PetAPI {
 		getPetData(event.itemStack)?.let { changePet(it) }
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
+		if(!SkyBlockAPI.inSkyBlock) return
+
+		val message = event.message.string
+
 		PET_DESPAWN_REGEX.onFullMatch(message.cleanFormatting()) {
 			changePet(null)
 		}
@@ -77,11 +83,21 @@ object PetAPI {
 			val level = groups["level"]?.value?.toInt() ?: return
 			val rarity = Rarity.getByColorCode(groups["rarity"]?.value?.first() ?: return)
 			if(rarity == Rarity.UNKNOWN) {
-				ErrorManager.logError("Failed to get pet rarity from Autopet chat message", Error(), "Full message" to message)
+				ErrorManager.logError(
+					"Failed to get pet rarity from Autopet chat message",
+					Error(),
+					"Full message" to message
+				)
 			}
 			val xpRarity = if(id == "BINGO") Rarity.COMMON else rarity
 
-			val pet = PetData(name, id, xpFromLevel(level, xpRarity, if(id == "GOLDEN_DRAGON") 200 else 100), rarity, active = true)
+			val pet = PetData(
+				name,
+				id,
+				xpFromLevel(level, xpRarity, if(id == "GOLDEN_DRAGON") 200 else 100),
+				rarity,
+				active = true
+			)
 			changePet(pet)
 		}
 	}
@@ -89,9 +105,9 @@ object PetAPI {
 	private fun changePet(pet: PetData?) {
 		if(pet == currentPet) return
 
-		SkyBlockEvents.PET_CHANGE.invoke(SkyBlockEvents.PetChange(currentPet, pet))
-		currentPet = pet
+		SkyBlockEvents.PET_CHANGE.dispatch(SkyBlockEvents.PetChange(currentPet, pet))
 		ProfileData.PROFILE.pet = pet
+		currentPet = pet
 	}
 
 	fun xpFromLevel(level: Int, rarity: Rarity, maxLevel: Int = 100): Double {

@@ -38,7 +38,7 @@ abstract class NametagRenderEventsMixin_EntityRenderer {
 	@ModifyReturnValue(method = "hasLabel", at = @At("RETURN"))
 	public boolean nobaaddons$modifyNametagVisibility(boolean original, @Local(argsOnly = true) Entity entity) {
 		var event = new EntityNametagRenderEvents.Visibility(entity, original);
-		EntityNametagRenderEvents.VISIBILITY.invoke(event);
+		EntityNametagRenderEvents.VISIBILITY.dispatch(event);
 		return event.getShouldRender();
 	}
 
@@ -84,7 +84,7 @@ abstract class NametagRenderEventsMixin_EntityRenderer {
 		//?}
 
 		var event = new EntityNametagRenderEvents.Nametag(entity);
-		EntityNametagRenderEvents.EVENT.invoke(event);
+		EntityNametagRenderEvents.EVENT.dispatch(event);
 		matrices.push();
 		for(int i = 0; i < event.getTags().size(); i++) {
 			var ntext = event.getTags().get(i);

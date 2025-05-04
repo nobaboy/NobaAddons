@@ -2,6 +2,13 @@ package me.nobaboy.nobaaddons.utils.math
 
 import kotlin.math.abs
 
+/**
+ * This is taken and modified from SkyHanni, which is licensed under the LGPL-2.1.
+ *
+ * [Original source](https://github.com/hannibal002/SkyHanni/blob/beta/src/main/java/at/hannibal2/skyhanni/utils/Matrix.kt)
+ *
+ * Modifications include variable renames and cleanup
+ */
 class Matrix(val data: Array<DoubleArray>) {
 	val width: Int get() = data[0].size
 	val height: Int get() = data.size
@@ -25,7 +32,7 @@ class Matrix(val data: Array<DoubleArray>) {
 			val maxRow = (column until height).maxByOrNull { abs(a[it][column]) }
 				?: error("Matrix is singular and cannot be inverted")
 
-			require(a[maxRow][column] != 0.0) { "Matrix is singular and cannot be inverted"}
+			require(a[maxRow][column] != 0.0) { "Matrix is singular and cannot be inverted" }
 
 			if(maxRow != column) {
 				a.swapRows(column, maxRow)
@@ -34,19 +41,15 @@ class Matrix(val data: Array<DoubleArray>) {
 
 			val pivot = a[column][column]
 
-			for(i in 0 until width) {
-				a[column][i] /= pivot
-				b[column][i] /= pivot
-			}
+			for(i in column until width) a[column][i] /= pivot
+			for(i in 0 until width) b[column][i] /= pivot
 
 			for(row in 0 until height) {
 				if(row == column) continue
 
 				val factor = a[row][column]
-				for(i in 0 until width) {
-					a[row][i] -= factor * a[column][i]
-					b[row][i] -= factor * b[column][i]
-				}
+				for(i in column until width) a[row][i] -= factor * a[column][i]
+				for(i in 0 until width) b[row][i] -= factor * b[column][i]
 			}
 		}
 

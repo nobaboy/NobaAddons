@@ -46,7 +46,7 @@ enum class SlayerBoss(
 	);
 
 	companion object {
-		fun getByName(name: String) = entries.firstOrNull { name.contains(it.displayName) }
-		fun getByZone(zone: String) = entries.firstOrNull { zone in it.zones }
+		fun getByName(name: String): SlayerBoss? = entries.firstOrNull { name.contains(it.displayName, ignoreCase = true) }
+		fun getByZone(zone: String): SlayerBoss? = entries.firstOrNull { zone in it.zones }
 	}
 }

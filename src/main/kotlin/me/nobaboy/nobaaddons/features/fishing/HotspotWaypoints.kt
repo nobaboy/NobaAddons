@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.StringUtils.toId
 import me.nobaboy.nobaaddons.utils.TextUtils.blue
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
@@ -51,9 +50,8 @@ object HotspotWaypoints {
 		if(armorStand.name.string != "HOTSPOT") return
 
 		val statArmorStand = EntityUtils.getNextEntity<ArmorStandEntity>(armorStand, 1) ?: return
-		val statId = statArmorStand.name.string.cleanFormatting().toId()
+		val stat = SkyBlockStat.getByName(statArmorStand.name.string.cleanFormatting()) ?: return
 
-		val stat = SkyBlockStat.getById(statId) ?: return
 		val timestamp = Timestamp.now() + 4.5.minutes - (armorStand.age / 20).seconds
 		val hotspot = Hotspot(armorStand, stat, timestamp)
 

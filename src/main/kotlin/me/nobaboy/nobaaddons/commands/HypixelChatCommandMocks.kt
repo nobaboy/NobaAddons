@@ -12,11 +12,12 @@ import net.fabricmc.loader.api.FabricLoader
 
 @OptIn(UntranslatedMessage::class)
 internal object HypixelChatCommandMocks {
+	private val commander by CommandUtil::commander
+
 	internal fun init() {
 		if(!FabricLoader.getInstance().isDevelopmentEnvironment) return
 		ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ ->
 			if(!MCUtils.client.isInSingleplayer) return@register
-			val commander = CommandUtil.commander
 			commander.register(NobaClientCommand(::guildChat, this), dispatcher)
 			commander.register(NobaClientCommand(::partyChat, this), dispatcher)
 			commander.register(NobaClientCommand(::message, this), dispatcher)

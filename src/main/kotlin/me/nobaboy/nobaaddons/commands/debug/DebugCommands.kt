@@ -185,7 +185,7 @@ object DebugCommands {
 	fun profile(ctx: Context) {
 		ctx.dumpInfo(
 			"Current Profile" to ProfileData.PROFILE.profile,
-			"Profile Type" to SkyBlockAPI.profileType.displayName
+			"Profile Type" to SkyBlockAPI.profileType
 		)
 	}
 

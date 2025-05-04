@@ -2,7 +2,10 @@ package me.nobaboy.nobaaddons.features.events.mythological
 
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.impl.client.InteractEvents
+import me.nobaboy.nobaaddons.events.EventDispatcher.Companion.registerIf
+import me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent
+import me.nobaboy.nobaaddons.events.impl.interact.GenericInteractEvent
+import me.nobaboy.nobaaddons.events.impl.interact.ItemUseEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
@@ -22,7 +25,8 @@ object GriffinBurrowGuess {
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
-		InteractEvents.ITEM_USE.register(this::onItemUse)
+		ItemUseEvent.EVENT.register(this::onItemUse)
+		BlockInteractionEvent.EVENT.registerIf<BlockInteractionEvent.Interact>(this::onItemUse)
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
@@ -38,14 +42,13 @@ object GriffinBurrowGuess {
 		particlePath.addPoint(location)
 		val guessLocation = particlePath.solve() ?: return
 
-		MythologicalEvents.BURROW_GUESS.invoke(MythologicalEvents.BurrowGuess(guessLocation.lower(0.5).roundToBlock()))
+		MythologicalEvents.BURROW_GUESS.dispatch(MythologicalEvents.BurrowGuess(guessLocation.lower(0.5).roundToBlock()))
 	}
 
-	private fun onItemUse(event: InteractEvents.ItemUse) {
+	private fun onItemUse(event: GenericInteractEvent) {
 		if(!enabled) return
-
-		val itemId = event.itemInHand.skyBlockId ?: return
-		if(itemId != DianaAPI.SPADE) return
+		if(lastAbilityUse.elapsedSince() <= 3.seconds) return
+		if(event.itemInHand.skyBlockId != DianaAPI.SPADE) return
 
 		particlePath.reset()
 		lastAbilityUse = Timestamp.now()

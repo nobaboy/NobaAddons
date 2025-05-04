@@ -6,11 +6,13 @@ import dev.celestialfault.commander.annotations.Greedy
 import me.nobaboy.nobaaddons.commands.impl.CommandUtil
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.Util
@@ -18,9 +20,14 @@ import net.minecraft.util.Util
 // TODO change this to replace the response of /wiki if invalid
 object SWikiCommand {
 	private val config get() = NobaConfig.general
+	private val commander by CommandUtil::commander
 
 	fun init() {
-		CommandUtil.register(NobaClientCommand(this::swiki, this))
+		ClientCommandRegistrationCallback.EVENT.register { dispatch, access ->
+			if(HypixelUtils.onHypixel) {
+				commander.register(NobaClientCommand(::swiki, this), dispatch)
+			}
+		}
 	}
 
 	@Command(aliases = ["wikisearch"])

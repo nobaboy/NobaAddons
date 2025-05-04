@@ -15,7 +15,7 @@ class ProfileData private constructor(profile: UUID?) : AbstractPerProfileConfig
 		override fun create(id: UUID?): ProfileData = ProfileData(id)
 
 		override fun postLoad(id: UUID, data: ProfileData) {
-			SkyBlockEvents.PROFILE_DATA_LOADED.invoke(SkyBlockEvents.ProfileDataLoad(id, data))
+			SkyBlockEvents.PROFILE_DATA_LOADED.dispatch(SkyBlockEvents.ProfileDataLoad(id, data))
 		}
 
 		fun saveAll() {

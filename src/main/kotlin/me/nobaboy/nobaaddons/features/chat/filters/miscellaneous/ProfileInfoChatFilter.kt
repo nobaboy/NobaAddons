@@ -6,10 +6,11 @@ import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.anyFullMatch
+import me.nobaboy.nobaaddons.utils.TextUtils.commandOrNull
 import net.minecraft.text.Text
 
 object ProfileInfoChatFilter : IChatFilter {
-	private val profileInfoPatterns: List<Regex> by Repo.list(
+	private val PROFILE_INFO_REGEXES by Repo.list(
 		Regex("^You are playing on profile: [A-z-() ]+").fromRepo("filter.profile.playing_on"),
 		Regex("^Profile ID: [A-z0-9-]+").fromRepo("filter.profile.uuid"),
 	)
@@ -19,7 +20,8 @@ object ProfileInfoChatFilter : IChatFilter {
 	private fun isSuggestProfile(message: Text): Boolean {
 		if(UUID_SUGGEST_REGEX.matches(message.string)) {
 			val clickAction = message.style.clickEvent ?: return false
-			return CommonPatterns.UUID_REGEX.matches(clickAction.value)
+			val value = clickAction.commandOrNull() ?: return false
+			return CommonPatterns.UUID_REGEX.matches(value)
 		}
 		return false
 	}
@@ -28,6 +30,6 @@ object ProfileInfoChatFilter : IChatFilter {
 		return isSuggestProfile(message) || super.shouldFilter(message)
 	}
 
-	override fun shouldFilter(message: String): Boolean = profileInfoPatterns.anyFullMatch(message)
+	override fun shouldFilter(message: String): Boolean = PROFILE_INFO_REGEXES.anyFullMatch(message)
 	override val enabled: Boolean get() = config.hideProfileInfo && SkyBlockAPI.inSkyBlock
 }

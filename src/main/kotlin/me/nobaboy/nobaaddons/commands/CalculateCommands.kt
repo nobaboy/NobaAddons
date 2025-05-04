@@ -39,7 +39,7 @@ object CalculateCommands {
 		).yellow())
 	}
 
-	private fun requiredXp(xp: Number) = tr("nobaaddons.command.calculate.requiredXp", "Required XP: ${xp.addSeparators().toText().aqua()}")
+	private fun requiredXp(xp: Number): Text = tr("nobaaddons.command.calculate.requiredXp", "Required XP: ${xp.addSeparators().toText().aqua()}")
 
 	@Command
 	fun pet(
@@ -53,7 +53,11 @@ object CalculateCommands {
 	}
 
 	@Command
-	fun skill(startingLevel: @AllowedRange.Int(0, 60) Int, targetLevel: @AllowedRange.Int(1, 60) Int, skill: Skill? = null) {
+	fun skill(
+		startingLevel: @AllowedRange.Int(0, 60) Int,
+		targetLevel: @AllowedRange.Int(1, 60) Int,
+		skill: Skill? = null,
+	) {
 		val constants = SkillData.INSTANCE
 		if(constants == null) {
 			ChatUtils.addMessage(MISSING_REPO_DATA)
@@ -68,7 +72,10 @@ object CalculateCommands {
 
 	// the Int.MAX_VALUE is required to avoid a reflection error(???)
 	@Command
-	fun cata(startingLevel: @AllowedRange.Int(0, Int.MAX_VALUE) Int, targetLevel: @AllowedRange.Int(1, Int.MAX_VALUE) Int) {
+	fun cata(
+		startingLevel: @AllowedRange.Int(0, Int.MAX_VALUE) Int,
+		targetLevel: @AllowedRange.Int(1, Int.MAX_VALUE) Int,
+	) {
 		val constants = SkillData.INSTANCE
 		if(constants == null) {
 			ChatUtils.addMessage(MISSING_REPO_DATA)

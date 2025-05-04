@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.features.chat
 
 import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.mixins.accessors.ChatHudAccessor
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -11,6 +12,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.hud.ChatHudLine
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
+import org.lwjgl.glfw.GLFW
 import java.lang.ref.WeakReference
 import java.util.WeakHashMap
 
@@ -31,7 +33,7 @@ object CopyChatFeature {
 	private fun isEnabled(button: Int): Boolean {
 		if(!config.enabled) return false
 		return when(config.mode) {
-			CopyWith.RIGHT_CLICK -> button == 1
+			CopyWith.RIGHT_CLICK -> button == GLFW.GLFW_MOUSE_BUTTON_RIGHT
 			CopyWith.CTRL_CLICK -> Screen.hasControlDown()
 		}
 	}
@@ -50,7 +52,7 @@ object CopyChatFeature {
 		} ?: return false
 
 		MCUtils.copyToClipboard(cleaned)
-		if(Screen.hasAltDown()) {
+		if(PersistentCache.devMode && Screen.hasAltDown()) {
 			ChatUtils.addMessage(tr("nobaaddons.chat.copiedMessageRaw", "Copied message text component to clipboard"))
 		} else {
 			ChatUtils.addMessage(tr("nobaaddons.chat.copiedMessage", "Copied chat message to clipboard"))

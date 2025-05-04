@@ -29,9 +29,7 @@ object TrophyFishSlotInfo : ISlotInfo {
 		val highestRarity = TrophyFishRarity.entries.lastOrNull { rarities[it]?.let { it > 0 } == true } ?: TrophyFishRarity.BRONZE
 		val text = Text.literal(total.toAbbreviatedString())
 		val nextCatchIsPity = TrophyFishRarity.entries.any { it.pityAt?.let { total >= it - 1 } == true && (rarities[it] ?: 0) == 0 }
-		if(nextCatchIsPity) {
-			text.formatted(Formatting.BOLD)
-		}
+		if(nextCatchIsPity) text.formatted(Formatting.BOLD)
 
 		drawCount(event, text, highestRarity.color)
 	}

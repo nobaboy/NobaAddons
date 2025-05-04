@@ -31,7 +31,7 @@ object BurrowWarpLocations {
 		private val extraBlocks: Int = 0,
 		val ignored: () -> Boolean = { false },
 		var unlocked: Boolean = true,
-		warpName: String? = null
+		warpName: String? = null,
 	) {
 		HUB(NobaVec(-2.5, 70.0, -69.5)),
 		CASTLE(NobaVec(-250, 130, 45), 10),

@@ -1,12 +1,13 @@
 package me.nobaboy.nobaaddons.events.impl.chat
 
+import me.nobaboy.nobaaddons.events.CancelableEvent
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents
 
 object SendMessageEvents {
 	init {
-		ClientSendMessageEvents.CHAT.register { SEND_CHAT_MESSAGE.invoke(SendMessage(it)) }
+		ClientSendMessageEvents.CHAT.register { SEND_CHAT_MESSAGE.dispatch(SendMessage(it)) }
 	}
 
 	// TODO could this be changed to be a wrapper around the fabric send message events?
@@ -23,6 +24,6 @@ object SendMessageEvents {
 	 */
 	@JvmField val SEND_COMMAND = EventDispatcher.cancelable<SendCommand>()
 
-	data class SendMessage(val message: String) : Event()
-	data class SendCommand(val command: String) : Event(isCancelable = true)
+	data class SendMessage(val message: String) : Event
+	data class SendCommand(val command: String) : CancelableEvent()
 }

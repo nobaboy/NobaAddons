@@ -6,7 +6,6 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 
 object AnnounceVanquisher {
 	private val config get() = NobaConfig.crimsonIsle.announceVanquisher
@@ -15,13 +14,13 @@ object AnnounceVanquisher {
 	private val VANQUISHER_SPAWN_MESSAGE by "A Vanquisher is spawning nearby!".fromRepo("crimson_isle.vanquisher_spawn")
 
 	fun init() {
-		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
-	private fun onChatMessage(message: String) {
+	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
 
-		if(message == VANQUISHER_SPAWN_MESSAGE) {
+		if(event.cleaned == VANQUISHER_SPAWN_MESSAGE) {
 			val location = LocationUtils.playerCoords()
 			val randomString = StringUtils.randomAlphanumeric()
 
