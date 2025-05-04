@@ -66,7 +66,7 @@ object MinibossTimers {
 
 	private object MinibossTimersHudElement : TextHudElement(UISettings.minibossTimers) {
 		override val name: Text = tr("nobaadons.ui.minibossTimers", "Miniboss Timers")
-		override val size: Pair<Int, Int> = 140 to 50
+		override val size: Pair<Int, Int> = 150 to 50
 		override val enabled: Boolean get() = MinibossTimers.enabled
 
 		override fun renderText(context: DrawContext) {
