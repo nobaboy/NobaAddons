@@ -67,9 +67,9 @@ object MouseLock {
 
 		val packet = event.packet as? PlayerPositionLookS2CPacket ?: return
 
-		val playerLocation = LocationUtils.playerLocation.round(2)
+		val playerLocation = LocationUtils.playerLocation.roundTo(2)
 		//? if >=1.21.2 {
-		val packetLocation = packet.change.position.toNobaVec().round(2)
+		val packetLocation = packet.change.position.toNobaVec().roundTo(2)
 		//?} else {
 		/*val packetLocation = NobaVec(packet.x, packet.y, packet.z).round(2)
 		*///?}
