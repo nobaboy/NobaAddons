@@ -8,6 +8,7 @@ import kotlinx.coroutines.sync.withPermit
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.events.impl.chat.SendMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -63,11 +64,27 @@ object PartyAPI {
 		private set
 
 	fun init() {
+		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 		TickEvents.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		HypixelModAPI.getInstance().listen(this::onPartyData)
+	}
+
+	fun refreshPartyList() {
+		refreshPartyList = true
+	}
+
+	private fun onSendCommand(event: SendMessageEvents.SendCommand) {
+		val split = event.command.split(" ").filter { it.isNotBlank() }
+		if(split[0].equals("pl", ignoreCase = true)) {
+			refreshPartyList = true
+		} else if(split[0].equals("p", ignoreCase = true) || split[0].equals("party", ignoreCase = true)) {
+			if(split.getOrNull(1).equals("list", ignoreCase = true)) {
+				refreshPartyList = true
+			}
+		}
 	}
 
 	private fun onTick(cooldownManager: CooldownManager) {
@@ -100,13 +117,14 @@ object PartyAPI {
 		)
 	}
 
-	fun getPartyInfo() {
+	private fun getPartyInfo() {
+		NobaAddons.LOGGER.info("Requesting party list from Mod API")
 		HypixelModAPI.getInstance().sendPacket(ServerboundPartyInfoPacket())
 	}
 
 	// This method is only called from debug commands, and as such is fine being untranslated.
 	@OptIn(UntranslatedMessage::class)
-	fun listMembers() {
+	internal fun listMembers() {
 		val party = this.party
 		if(party == null || party.members.isEmpty()) {
 			ChatUtils.addMessage("Party seems to be empty...")

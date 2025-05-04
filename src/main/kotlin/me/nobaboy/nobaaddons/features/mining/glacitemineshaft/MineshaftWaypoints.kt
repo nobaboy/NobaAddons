@@ -32,7 +32,7 @@ object MineshaftWaypoints {
 
 		if(config.entranceWaypoint) addWaypoint(blockBelow, tr("nobaaddons.mineshaftWaypoints.entrance", "Entrance"), NobaColor.BLUE, MineshaftWaypointType.ENTRANCE)
 		if(config.ladderWaypoint) {
-			val facing = MCUtils.player?.rotationVector?.toNobaVec()?.round(0) ?: return
+			val facing = MCUtils.player?.rotationVector?.toNobaVec()?.roundTo(0) ?: return
 			val location = blockBelow
 				// Move 7 blocks in front of the player to be in the ladder shaft
 				.add(x = facing.x * 7, z = facing.z * 7)
