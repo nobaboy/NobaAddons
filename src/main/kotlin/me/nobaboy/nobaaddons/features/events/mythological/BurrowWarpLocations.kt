@@ -8,10 +8,10 @@ import me.nobaboy.nobaaddons.utils.tr
 
 object BurrowWarpLocations {
 	private val config get() = NobaConfig.events.mythological
-	private val unlockedWarps = mutableSetOf<WarpPoint>()
+	private val lockedWarps = mutableSetOf<WarpPoint>()
 
 	fun getNearestWarp(location: NobaVec): WarpPoint? {
-		val warpPoint = WarpPoint.entries.filter { it in unlockedWarps && !it.ignored() }
+		val warpPoint = WarpPoint.entries.filter { it !in lockedWarps && !it.ignored() }
 			.minByOrNull { it.distance(location) } ?: return null
 
 		val playerToLocation = location.distanceToPlayer()
@@ -22,12 +22,12 @@ object BurrowWarpLocations {
 	}
 
 	fun lock(warpPoint: WarpPoint) {
-		unlockedWarps.remove(warpPoint)
+		lockedWarps.add(warpPoint)
 	}
 
 	fun unlockAll() {
 		ChatUtils.addMessage(tr("nobaaddons.command.mythological.unlockedAllWaypoints", "Unlocked all burrow warp locations."))
-		unlockedWarps.addAll(WarpPoint.entries)
+		lockedWarps.clear()
 	}
 
 	enum class WarpPoint(
