@@ -11,7 +11,6 @@ import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
-import me.nobaboy.nobaaddons.utils.TimeUtils.current
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.indexOfFirstFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
@@ -25,6 +24,7 @@ import me.nobaboy.nobaaddons.utils.TimeUtils.asInstantOrNull
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.isFuture
 import me.nobaboy.nobaaddons.utils.TimeUtils.isPast
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
 import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -71,7 +71,7 @@ object RiftTimers {
 			"Dimensional Infusion", "Fast Travel" -> updateFreeInfusions(event)
 			"Split or Steal" -> {
 				if(!SkyBlockIsland.RIFT.inIsland()) return
-				data.nextSplitSteal = Instant.current() + 2.hours
+				data.nextSplitSteal = Instant.now + 2.hours
 				notifiedSplitStealCooldown = false
 			}
 		}
@@ -82,7 +82,7 @@ object RiftTimers {
 		if(string == "INFUSED! Used one of your free Rift charges!") {
 			data.freeInfusions -= 1
 			if(data.nextFreeInfusion == null) {
-				data.nextFreeInfusion = Instant.current() + 4.hours
+				data.nextFreeInfusion = Instant.now + 4.hours
 			}
 		} else if(string.startsWith("SPLIT! You need to wait")) {
 			val match = SPLIT_STEAL_COOLDOWN_REGEX.matchEntire(string) ?: return

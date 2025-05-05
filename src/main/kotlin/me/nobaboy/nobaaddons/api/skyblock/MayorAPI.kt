@@ -16,7 +16,6 @@ import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
-import me.nobaboy.nobaaddons.utils.TimeUtils.current
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.isFuture
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -112,7 +111,7 @@ object MayorAPI {
 	}
 
 	private suspend fun getCurrentMayor() {
-		lastUpdate = Instant.current()
+		lastUpdate = Instant.now
 
 		val election = HTTPUtils.fetchJson<Election>(ELECTION_API_URL).await()
 		val mayor = election.mayor

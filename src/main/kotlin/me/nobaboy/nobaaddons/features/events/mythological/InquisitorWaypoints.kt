@@ -21,9 +21,9 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.TimeUtils.current
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.isPast
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
 import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
@@ -106,7 +106,7 @@ object InquisitorWaypoints {
 	}
 
 	private fun checkInquisitor() {
-		inquisitorSpawnTimes.add(Instant.current())
+		inquisitorSpawnTimes.add(Instant.now)
 
 		val lastTwo = inquisitorSpawnTimes.takeLast(2)
 		if(lastTwo.size != 2) return
@@ -141,7 +141,7 @@ object InquisitorWaypoints {
 	data class Inquisitor(
 		val spawner: String,
 		val location: NobaVec,
-		val timestamp: Instant = Instant.current() + 75.seconds
+		val timestamp: Instant = Instant.now + 75.seconds
 	) {
 		val remainingTime: String get() = timestamp.timeRemaining().toShortString()
 	}

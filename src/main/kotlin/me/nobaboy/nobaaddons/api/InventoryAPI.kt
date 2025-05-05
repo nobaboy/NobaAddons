@@ -14,7 +14,6 @@ import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.TimeUtils.current
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.entity.player.PlayerInventory
@@ -121,7 +120,7 @@ object InventoryAPI {
 
 	private fun debounceItemLog() {
 		previousItemCounts = null
-		inventorySuppressTime = Instant.current()
+		inventorySuppressTime = Instant.now
 	}
 
 	private fun close(sameName: Boolean = false) {
@@ -145,7 +144,7 @@ object InventoryAPI {
 			if(diff.change == 0) continue
 			val logDiff = itemLog.getOrPut(name) { ItemDiff(name) }
 			logDiff.change += diff.change
-			logDiff.timestamp = Instant.current()
+			logDiff.timestamp = Instant.now
 		}
 	}
 
@@ -191,6 +190,6 @@ object InventoryAPI {
 	data class ItemDiff(
 		val name: Text,
 		var change: Int = 0,
-		var timestamp: Instant = Instant.current(),
+		var timestamp: Instant = Instant.now,
 	)
 }

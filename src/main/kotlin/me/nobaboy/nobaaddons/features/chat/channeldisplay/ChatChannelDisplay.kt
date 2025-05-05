@@ -16,7 +16,6 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.green
-import me.nobaboy.nobaaddons.utils.TimeUtils.current
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
@@ -68,7 +67,7 @@ object ChatChannelDisplay {
 
 		val channel = this.channel // avoid a possible race condition between checking if this is null and setting it
 		if(channel.expires != null) {
-			channel.expires = Instant.current() + 5.minutes
+			channel.expires = Instant.now + 5.minutes
 		}
 	}
 
@@ -82,7 +81,7 @@ object ChatChannelDisplay {
 		}
 
 		CONVERSATION_OPENED_REGEX.onFullMatch(event.cleaned) {
-			channel = ActiveChatChannel(ChatChannel.DM, groups["username"]!!.value, Instant.current() + 5.minutes)
+			channel = ActiveChatChannel(ChatChannel.DM, groups["username"]!!.value, Instant.now + 5.minutes)
 			return
 		}
 

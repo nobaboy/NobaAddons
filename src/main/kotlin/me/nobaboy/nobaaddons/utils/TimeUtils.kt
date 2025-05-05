@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.utils
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
-import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
 import kotlin.text.replace
 import kotlin.text.toLong
 import kotlin.time.Duration
@@ -22,7 +21,7 @@ private val durations: Map<String, (Long) -> Duration> = mapOf(
 
 object TimeUtils {
 	// grumble grumble Instant.Companion.now() being error-level deprecated grumble grumble
-	fun Instant.Companion.current() = Clock.System.now()
+	val Instant.Companion.now get() = Clock.System.now()
 
 	fun String.asInstantOrNull(): Instant? {
 		var time: Duration = 0.seconds
@@ -31,10 +30,10 @@ object TimeUtils {
 			time += durations[groups[2]!!.value]!!(groups[1]!!.value.replace(",", "").toLong())
 		}
 
-		return if(time > 0.seconds) Instant.current() + time else null
+		return if(time > 0.seconds) Instant.now + time else null
 	}
 
-	fun Instant.elapsedSince() = Instant.current() - this
+	fun Instant.elapsedSince() = Instant.now - this
 	fun Instant.timeRemaining() = -elapsedSince()
 
 	fun Instant.isPast(): Boolean = timeRemaining().isNegative()

@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.utils.hypixel
 
 import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.utils.NumberUtils.ordinalSuffix
-import me.nobaboy.nobaaddons.utils.TimeUtils.current
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 
 /**
  * This is taken and adapted from SkyHanni, which is licensed under the LGPL-2.1.
@@ -43,7 +43,7 @@ data class SkyBlockTime(
 		fun fromYear(year: Int): SkyBlockTime =
 			fromInstant(Instant.fromEpochMilliseconds(SKYBLOCK_EPOCH_START_MILLIS + (SKYBLOCK_YEAR_MILLIS * year)))
 
-		fun now(): SkyBlockTime = fromInstant(Instant.current())
+		fun now(): SkyBlockTime = fromInstant(Instant.now)
 
 		private fun calculateSkyBlockTime(milliseconds: Long): SkyBlockTime {
 			var remainingMillis = milliseconds
