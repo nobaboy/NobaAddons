@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.mc
 
 //? if >=1.21.5 {
 /*import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor

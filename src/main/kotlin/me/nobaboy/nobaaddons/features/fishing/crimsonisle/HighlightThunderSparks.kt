@@ -6,8 +6,8 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.skullFromRepo
-import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
-import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
+import me.nobaboy.nobaaddons.utils.mc.BlockUtils.getBlockStateAt
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
 import me.nobaboy.nobaaddons.utils.render.RenderUtils

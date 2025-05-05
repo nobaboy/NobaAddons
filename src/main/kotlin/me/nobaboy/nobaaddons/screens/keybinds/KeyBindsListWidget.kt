@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.screens.keybinds
 import me.nobaboy.nobaaddons.features.keybinds.KeyBindsManager
 import me.nobaboy.nobaaddons.features.keybinds.impl.KeyBind
 import me.nobaboy.nobaaddons.utils.CommonText
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext

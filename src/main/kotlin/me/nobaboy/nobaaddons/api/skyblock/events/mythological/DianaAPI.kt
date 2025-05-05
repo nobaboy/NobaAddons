@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.isActive
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
-import me.nobaboy.nobaaddons.utils.InventoryUtils
+import me.nobaboy.nobaaddons.utils.mc.InventoryUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import net.minecraft.entity.player.PlayerEntity
 

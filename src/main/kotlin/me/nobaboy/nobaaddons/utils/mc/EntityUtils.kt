@@ -1,6 +1,7 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.mc
 
-import me.nobaboy.nobaaddons.utils.LocationUtils.distanceTo
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceTo
+import me.nobaboy.nobaaddons.utils.NobaVec
 import net.minecraft.entity.Entity
 
 object EntityUtils {

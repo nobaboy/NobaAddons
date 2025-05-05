@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.events.impl.client.SoundEvents
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
+import me.nobaboy.nobaaddons.utils.hypixel.ModAPIUtils.listen
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import net.minecraft.sound.SoundCategory

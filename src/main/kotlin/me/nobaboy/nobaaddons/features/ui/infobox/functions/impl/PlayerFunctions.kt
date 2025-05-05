@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.ui.infobox.functions.impl
 
 import me.nobaboy.nobaaddons.features.ui.infobox.functions.InfoBoxFunction
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import kotlin.math.roundToInt
 import kotlin.math.sqrt

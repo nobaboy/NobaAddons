@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.collections
 
 import com.google.common.cache.RemovalCause
 import kotlin.time.Duration

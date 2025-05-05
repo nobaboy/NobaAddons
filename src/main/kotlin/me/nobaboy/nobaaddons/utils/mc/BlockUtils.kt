@@ -1,5 +1,6 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.mc
 
+import me.nobaboy.nobaaddons.utils.NobaVec
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 

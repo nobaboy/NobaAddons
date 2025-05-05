@@ -3,9 +3,9 @@ package me.nobaboy.nobaaddons.screens.notifications
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsConfig
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsManager
 import me.nobaboy.nobaaddons.utils.CommonText
-import me.nobaboy.nobaaddons.utils.TextUtils.green
-import me.nobaboy.nobaaddons.utils.TextUtils.red
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.green
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.red
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext

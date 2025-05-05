@@ -74,11 +74,11 @@ import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.TextUtils.blue
-import me.nobaboy.nobaaddons.utils.TextUtils.bold
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
-import me.nobaboy.nobaaddons.utils.TextUtils.literal
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.blue
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.bold
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkGray
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.literal
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.fabricmc.loader.api.Version

@@ -1,6 +1,7 @@
-package me.nobaboy.nobaaddons.utils.chat
+package me.nobaboy.nobaaddons.utils.hypixel
 
 import me.nobaboy.nobaaddons.api.PartyAPI
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 
 object HypixelCommands {
 	// Messaging Commands

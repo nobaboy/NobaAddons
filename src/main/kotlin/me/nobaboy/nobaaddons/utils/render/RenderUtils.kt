@@ -16,11 +16,11 @@ import org.lwjgl.opengl.GL11
 //?}
 
 import me.nobaboy.nobaaddons.mixins.accessors.BeaconBlockEntityRendererInvoker
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.StringUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.expand
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext

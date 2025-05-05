@@ -1,5 +1,6 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.mc
 
+import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.screen.ConfirmScreen
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.screen.ScreenTexts
@@ -25,7 +26,10 @@ object ScreenUtils {
 				}
 			},
 			tr("nobaaddons.screen.confirmClose", "Cancel Changes"),
-			tr("nobaaddons.screen.confirmClose.message", "You have unsaved changes; exiting now will discard them, would you like to continue?"),
+			tr(
+				"nobaaddons.screen.confirmClose.message",
+				"You have unsaved changes; exiting now will discard them, would you like to continue?"
+			),
 			ScreenTexts.YES,
 			ScreenTexts.NO
 		))
