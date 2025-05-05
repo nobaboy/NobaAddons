@@ -21,7 +21,7 @@ object DMCommands : ChatCommandManager() {
 
 	init {
 		register(HelpCommand(this, config::help))
-		register(WarpOutCommand("msg", config::warpOut))
+		register(WarpOutCommand(config::warpOut))
 		register(WarpMeCommand())
 		register(PartyMeCommand())
 	}

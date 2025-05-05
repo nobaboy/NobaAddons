@@ -17,7 +17,6 @@ class WarpCommand : AbstractPartyChatCommand(3.seconds) {
 
 		fun cancel() {
 			job?.cancel()
-			job = null
 		}
 	}
 

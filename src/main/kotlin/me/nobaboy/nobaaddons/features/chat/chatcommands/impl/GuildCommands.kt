@@ -19,6 +19,6 @@ object GuildCommands : ChatCommandManager() {
 
 	init {
 		register(HelpCommand(this, config::help))
-		register(WarpOutCommand("gc", config::warpOut))
+		register(WarpOutCommand(config::warpOut))
 	}
 }
