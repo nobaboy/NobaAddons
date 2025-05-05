@@ -1,11 +1,13 @@
 package me.nobaboy.nobaaddons.features.slayers
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.client.SoundEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
@@ -19,7 +21,7 @@ object MiniBossFeatures {
 
 	private val EXPLODE = Identifier.ofVanilla("entity.generic.explode")
 
-	private var lastAlert = Timestamp.distantPast()
+	private var lastAlert = Instant.now
 
 	fun init() {
 		SoundEvents.SOUND.register(this::onSound)
@@ -33,7 +35,7 @@ object MiniBossFeatures {
 
 		RenderUtils.drawTitle(tr("nobaaddons.slayers.miniBossAlert.spawned", "MiniBoss Spawned!"), config.miniBossAlert.alertColor, duration = 1.5.seconds, id = "slayer_alert")
 		SoundUtils.dingLowSound.play()
-		lastAlert = Timestamp.now()
+		lastAlert = Instant.now
 	}
 
 	private fun onMiniBossSpawn(event: SlayerEvents.MiniBossSpawn) {

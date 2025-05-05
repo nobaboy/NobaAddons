@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.events.hoppity
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.hoppity.HoppityAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -12,7 +13,8 @@ import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.math.ParticlePathFitter
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -29,7 +31,7 @@ object HoppityEggGuess {
 	private val particlePath = ParticlePathFitter(3)
 	private var guessLocation: NobaVec? = null
 
-	private var lastAbilityUse = Timestamp.distantPast()
+	private var lastAbilityUse = Instant.DISTANT_PAST
 
 	fun init() {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
@@ -59,7 +61,7 @@ object HoppityEggGuess {
 		if(event.itemInHand.skyBlockId != HoppityAPI.LOCATOR) return
 
 		particlePath.reset()
-		lastAbilityUse = Timestamp.now()
+		lastAbilityUse = Instant.now
 	}
 
 	private fun onChatMessage(event: ChatMessageEvents.Chat) {

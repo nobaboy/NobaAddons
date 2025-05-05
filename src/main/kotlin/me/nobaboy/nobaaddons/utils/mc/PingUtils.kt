@@ -2,7 +2,6 @@ package me.nobaboy.nobaaddons.utils.mc
 
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.network.packet.c2s.query.QueryPingC2SPacket
@@ -31,7 +30,7 @@ object PingUtils {
 
 	private fun onPacketReceive(event: PacketEvents.Receive) {
 		val packet = event.packet as? PingResultS2CPacket ?: return
-		ping = (Timestamp(Util.getMeasuringTimeMs()) - Timestamp(packet.startTime)).inWholeMilliseconds.toInt()
+		ping = (Util.getMeasuringTimeMs() - packet.startTime).toInt()
 
 		if(sendPingMessage) {
 			sendPingMessage = false

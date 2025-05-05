@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.screens.infoboxes.InfoBoxesScreen
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.properties.CacheFor
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext

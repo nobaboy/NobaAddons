@@ -12,7 +12,7 @@ import me.nobaboy.nobaaddons.utils.mc.EntityUtils
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec

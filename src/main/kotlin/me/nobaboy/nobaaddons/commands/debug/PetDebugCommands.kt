@@ -11,9 +11,9 @@ import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.rarityFormatted
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.TextUtils.bold
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.bold
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import net.minecraft.text.Text
 
 @Suppress("unused")

@@ -14,8 +14,9 @@ import me.nobaboy.nobaaddons.utils.hypixel.HypixelUtils
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.green
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.green
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback

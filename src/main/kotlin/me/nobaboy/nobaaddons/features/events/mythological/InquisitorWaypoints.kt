@@ -19,8 +19,8 @@ import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
-import me.nobaboy.nobaaddons.utils.TextUtils.gold
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.gold
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.isPast
 import me.nobaboy.nobaaddons.utils.TimeUtils.now

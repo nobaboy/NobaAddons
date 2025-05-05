@@ -1,7 +1,8 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.collections.TimedSet
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem

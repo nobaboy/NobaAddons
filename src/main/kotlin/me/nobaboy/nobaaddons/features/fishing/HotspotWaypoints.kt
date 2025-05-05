@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.fishing
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockStat
@@ -9,12 +10,13 @@ import me.nobaboy.nobaaddons.utils.mc.EntityUtils
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.blue
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.TextUtils.yellow
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.blue
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
 import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils.clickAction
@@ -52,7 +54,7 @@ object HotspotWaypoints {
 		val statArmorStand = EntityUtils.getNextEntity<ArmorStandEntity>(armorStand, 1) ?: return
 		val stat = SkyBlockStat.getByName(statArmorStand.name.string.cleanFormatting()) ?: return
 
-		val timestamp = Timestamp.now() + 4.5.minutes - (armorStand.age / 20).seconds
+		val timestamp = Instant.now + 4.5.minutes - (armorStand.age / 20).seconds
 		val hotspot = Hotspot(armorStand, stat, timestamp)
 
 		val message = compileMessage(hotspot)
@@ -96,7 +98,7 @@ object HotspotWaypoints {
 		)
 	}
 
-	private data class Hotspot(val armorStand: ArmorStandEntity, val stat: SkyBlockStat, val timestamp: Timestamp) {
+	private data class Hotspot(val armorStand: ArmorStandEntity, val stat: SkyBlockStat, val timestamp: Instant) {
 		val location = armorStand.pos.toNobaVec().lower(2).roundToBlock()
 
 		val remainingTime: String get() = timestamp.timeRemaining().toShortString()

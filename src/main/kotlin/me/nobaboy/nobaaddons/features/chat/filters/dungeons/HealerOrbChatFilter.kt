@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.NumberUtils.parseDouble
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting

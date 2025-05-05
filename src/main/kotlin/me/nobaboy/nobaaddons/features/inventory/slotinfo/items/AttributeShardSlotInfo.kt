@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.inventory.slotinfo.items
 
 import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.ISlotInfo
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 
 object AttributeShardSlotInfo : ISlotInfo {

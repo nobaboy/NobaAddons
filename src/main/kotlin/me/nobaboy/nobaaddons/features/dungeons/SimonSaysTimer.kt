@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.dungeons
 
+import kotlinx.datetime.Instant
 import kotlinx.io.IOException
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
@@ -17,12 +18,12 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
-import me.nobaboy.nobaaddons.utils.TextUtils.bold
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.TextUtils.gray
-import me.nobaboy.nobaaddons.utils.TextUtils.lightPurple
-import me.nobaboy.nobaaddons.utils.TextUtils.plus
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.bold
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.gray
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.lightPurple
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.plus
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
@@ -35,8 +36,8 @@ object SimonSaysTimer {
 	private val DEVICE_COMPLETED_REGEX by Regex("^(?<username>[A-z0-9_]+) completed a device! \\([1-7]/7\\)").fromRepo("dungeons.device_completed")
 	private val buttonLocation = NobaVec(110, 121, 91)
 
-	private var startTime = Timestamp.distantPast()
-	private var completionTime = Timestamp.distantPast()
+	private var startTime = Instant.DISTANT_PAST
+	private var completionTime = Instant.DISTANT_PAST
 
 	private var buttonPressed: Boolean = false
 	private var deviceCompleted: Boolean = false
@@ -108,7 +109,7 @@ object SimonSaysTimer {
 			val username = groups["username"]!!.value
 			if(username != MCUtils.playerName) return
 
-			completionTime = Timestamp.now()
+			completionTime = Instant.now
 			deviceCompleted = true
 
 			processCompletionTime()
@@ -118,7 +119,7 @@ object SimonSaysTimer {
 	private fun onInteract(event: BlockInteractionEvent.Interact) {
 		if(!enabled || buttonPressed || event.player != MCUtils.player || event.location.roundToBlock() != buttonLocation) return
 
-		startTime = Timestamp.now()
+		startTime = Instant.now
 		buttonPressed = true
 	}
 

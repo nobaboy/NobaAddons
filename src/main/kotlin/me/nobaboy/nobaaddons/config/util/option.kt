@@ -11,7 +11,7 @@ import dev.isxander.yacl3.api.controller.ControllerBuilder
 import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.config.AbstractNobaConfig
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import kotlin.reflect.KMutableProperty

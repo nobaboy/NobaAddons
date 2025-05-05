@@ -21,7 +21,7 @@ private val durations: Map<String, (Long) -> Duration> = mapOf(
 
 object TimeUtils {
 	// grumble grumble Instant.Companion.now() being error-level deprecated grumble grumble
-	val Instant.Companion.now get() = Clock.System.now()
+	inline val Instant.Companion.now get() = Clock.System.now()
 
 	fun String.asInstantOrNull(): Instant? {
 		var time: Duration = 0.seconds

@@ -13,8 +13,9 @@ import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket

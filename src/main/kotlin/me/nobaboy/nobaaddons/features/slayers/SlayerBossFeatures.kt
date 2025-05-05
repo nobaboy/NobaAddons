@@ -1,10 +1,12 @@
 package me.nobaboy.nobaaddons.features.slayers
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
@@ -17,7 +19,7 @@ object SlayerBossFeatures {
 	private val config get() = NobaConfig.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest != null && SkyBlockAPI.inSkyBlock
 
-	private var bossSpawnTime = Timestamp.distantPast()
+	private var bossSpawnTime = Instant.DISTANT_PAST
 
 	fun init() {
 		SlayerEvents.BOSS_SPAWN.register(this::onBossSpawn)
@@ -27,7 +29,7 @@ object SlayerBossFeatures {
 	private fun onBossSpawn(ignored: SlayerEvents.BossSpawn) {
 		if(!enabled) return
 
-		if(config.bossKillTime.enabled) bossSpawnTime = Timestamp.now()
+		if(config.bossKillTime.enabled) bossSpawnTime = Instant.now
 		if(config.bossAlert.enabled) {
 			RenderUtils.drawTitle(tr("nobaaddons.slayers.bossAlert.spawned", "Boss Spawned!"), config.bossAlert.alertColor, duration = 1.5.seconds, id = "slayer_alert")
 			SoundUtils.dingLowSound.play()
