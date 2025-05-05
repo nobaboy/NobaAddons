@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.screens.notifications
 
-import me.nobaboy.nobaaddons.utils.ScreenUtils
+import me.nobaboy.nobaaddons.utils.mc.ScreenUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext

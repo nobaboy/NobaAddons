@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.features.ui.infobox.functions.impl
 
 import me.nobaboy.nobaaddons.features.ui.infobox.functions.InfoBoxFunction
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.MCUtils.day
-import me.nobaboy.nobaaddons.utils.PingUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils.day
+import me.nobaboy.nobaaddons.utils.mc.PingUtils
 
 object MinecraftFunctions {
 	object FpsFunction : InfoBoxFunction<Int> {

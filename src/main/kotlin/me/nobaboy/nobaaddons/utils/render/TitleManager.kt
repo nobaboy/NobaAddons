@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.utils.render
 
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback

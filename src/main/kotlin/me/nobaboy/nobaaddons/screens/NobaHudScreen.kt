@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.screens
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.ui.HudElement
 import me.nobaboy.nobaaddons.ui.UIManager
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext

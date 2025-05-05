@@ -1,5 +1,6 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.hypixel
 
+import me.nobaboy.nobaaddons.utils.ErrorManager
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.handler.ClientboundPacketHandler
 import net.hypixel.modapi.packet.ClientboundHypixelPacket

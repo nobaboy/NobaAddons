@@ -1,4 +1,6 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.hypixel
+
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 
 object HypixelUtils {
 	val onHypixel: Boolean

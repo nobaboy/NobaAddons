@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.data
 import com.mojang.authlib.yggdrasil.ProfileResult
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.future.asCompletableFuture
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import java.util.UUID
 

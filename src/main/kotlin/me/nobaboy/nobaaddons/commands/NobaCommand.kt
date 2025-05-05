@@ -19,12 +19,12 @@ import me.nobaboy.nobaaddons.screens.NobaHudScreen
 import me.nobaboy.nobaaddons.screens.NobaMainScreen
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
 import me.nobaboy.nobaaddons.screens.notifications.ChatNotificationsScreen
-import me.nobaboy.nobaaddons.utils.LocationUtils
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.MCUtils.day
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils.day
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.PingUtils
-import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
+import me.nobaboy.nobaaddons.utils.mc.PingUtils
+import me.nobaboy.nobaaddons.utils.mc.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.util.Formatting

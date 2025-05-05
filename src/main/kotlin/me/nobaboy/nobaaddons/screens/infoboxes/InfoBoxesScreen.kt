@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.screens.infoboxes
 
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
-import me.nobaboy.nobaaddons.utils.ScreenUtils
+import me.nobaboy.nobaaddons.utils.mc.ScreenUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext

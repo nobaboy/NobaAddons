@@ -2,14 +2,13 @@ package me.nobaboy.nobaaddons.utils
 
 import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime
 import java.time.Instant
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.DurationUnit
 
 private val timeRegex = Regex("([\\d,]+)([hms])")
 private val durations: Map<String, (Long) -> Duration> = mapOf(

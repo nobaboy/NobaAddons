@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm
 
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 
 class PartyMeCommand : ChatCommand() {

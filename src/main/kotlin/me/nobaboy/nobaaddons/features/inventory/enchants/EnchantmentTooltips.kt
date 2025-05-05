@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.core.enchants.EnchantBase
 import me.nobaboy.nobaaddons.core.enchants.StackingEnchant
 import me.nobaboy.nobaaddons.core.enchants.UltimateEnchant
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.romanToArabic
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.toAbbreviatedString

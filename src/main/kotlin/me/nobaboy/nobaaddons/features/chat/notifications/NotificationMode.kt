@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.notifications
 
 import dev.isxander.yacl3.api.NameableEnum
-import me.nobaboy.nobaaddons.utils.EnumUtils
+import me.nobaboy.nobaaddons.utils.collections.EnumUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 

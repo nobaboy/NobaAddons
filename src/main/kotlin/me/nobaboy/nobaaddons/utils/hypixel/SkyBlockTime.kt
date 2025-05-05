@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.hypixel
 
 import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.utils.NumberUtils.ordinalSuffix

@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared
 
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.utils.CollectionUtils.anyContains
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.anyContains
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands

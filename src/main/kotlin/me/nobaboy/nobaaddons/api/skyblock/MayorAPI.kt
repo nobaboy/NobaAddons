@@ -9,11 +9,11 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
+import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
-import me.nobaboy.nobaaddons.utils.SkyBlockTime
-import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.TimeUtils.current

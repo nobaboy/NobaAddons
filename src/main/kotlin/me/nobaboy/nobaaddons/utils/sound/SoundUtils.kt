@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.utils.sound
 
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent

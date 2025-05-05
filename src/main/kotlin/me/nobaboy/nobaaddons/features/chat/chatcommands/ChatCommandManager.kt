@@ -5,8 +5,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.HypixelUtils
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import java.util.Collections

@@ -9,11 +9,11 @@ import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
+import me.nobaboy.nobaaddons.utils.mc.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.TimedSet
+import me.nobaboy.nobaaddons.utils.collections.TimedSet
 import me.nobaboy.nobaaddons.utils.Timestamp
 import net.minecraft.block.Blocks
 import net.minecraft.particle.ParticleTypes
