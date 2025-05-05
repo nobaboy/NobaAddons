@@ -26,7 +26,7 @@ class WarpCommand : AbstractPartyChatCommand(3.seconds) {
 	override val usage: String = "warp [optional: delay]"
 
 	override suspend fun run(ctx: ChatContext) {
-		warpParty(ctx.args.getOrNull(1))
+		warpParty(ctx.args.getOrNull(0))
 		startCooldown()
 	}
 
