@@ -56,7 +56,11 @@ abstract class ChatCommandManager {
 		if(!enabled) return
 
 		val ctx = getContext(message) ?: return
-		val cmd = commands.asSequence().filter { it.enabled }.firstOrNull { it.nameMatches(ctx.command) } ?: return
+		val cmd = commands
+			.asSequence()
+			.filter { it.enabled }
+			.firstOrNull { it.nameMatches(ctx.command) }
+			?: return
 
 		lock.withLock(null) { executeCommand(ctx, cmd) }
 	}
