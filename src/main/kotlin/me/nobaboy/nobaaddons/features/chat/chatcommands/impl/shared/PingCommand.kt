@@ -11,6 +11,6 @@ class PingCommand(private val categoryEnabled: () -> Boolean) : ChatCommand() {
 	override val name: String = "ping"
 
 	override suspend fun run(ctx: ChatContext) {
-		PingUtils.requestPing { ctx.reply("Ping: $it") }
+		PingUtils.requestPing { ctx.reply("Ping: ${it}ms") }
 	}
 }
