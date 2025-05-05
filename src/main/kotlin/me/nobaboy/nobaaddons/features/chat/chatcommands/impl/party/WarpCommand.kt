@@ -47,10 +47,6 @@ class WarpCommand : AbstractPartyChatCommand(3.seconds) {
 		}
 
 		val delay = seconds.toInt()
-		startTimedWarp(delay)
-	}
-
-	private fun startTimedWarp(delay: Int) {
 		HypixelCommands.partyChat("Warping in $delay (To cancel type '!cancel')")
 		job = NobaAddons.runAsync { timedWarp(delay.seconds) }
 	}
