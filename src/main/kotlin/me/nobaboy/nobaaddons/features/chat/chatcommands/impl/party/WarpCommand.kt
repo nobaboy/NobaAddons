@@ -4,6 +4,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
+import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import org.apache.commons.lang3.StringUtils
@@ -52,11 +53,11 @@ class WarpCommand : AbstractPartyChatCommand(3.seconds) {
 	}
 
 	private suspend fun timedWarp(delay: Duration) {
-		var timeLeft = delay
+		var timeLeft = delay - 1.seconds
 
-		while(timeLeft.isPositive()) {
+		while(timeLeft > 0.seconds) {
+			HypixelCommands.partyChat(timeLeft.inWholeSeconds.toString())
 			timeLeft -= 1.seconds
-			HypixelCommands.partyChat(delay.toString())
 			delay(1.seconds)
 		}
 
