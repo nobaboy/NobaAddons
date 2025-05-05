@@ -39,3 +39,7 @@ inline fun MutableJsonMap.mapAndMoveTo(key: String, target: MutableJsonMap, newK
 inline fun MutableJsonMap.mapAndRename(old: String, new: String, mapping: (Any) -> Any) {
 	mapAndMoveTo(old, this, new, mapping)
 }
+
+inline fun MutableJsonMap.modify(key: String, mapping: (Any) -> Any) {
+	mapAndMoveTo(key, this, key, mapping)
+}

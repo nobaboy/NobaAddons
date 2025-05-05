@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -20,8 +21,11 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.Timestamp
-import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
+import me.nobaboy.nobaaddons.utils.TimeUtils.current
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.isPast
+import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
+import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
@@ -41,7 +45,7 @@ object InquisitorWaypoints {
 
 	val inquisitors = mutableListOf<Inquisitor>()
 
-	private val inquisitorSpawnTimes = mutableListOf<Timestamp>()
+	private val inquisitorSpawnTimes = mutableListOf<Instant>()
 	private val nearbyInquisitors = mutableListOf<OtherClientPlayerEntity>()
 	private var lastInquisitor: OtherClientPlayerEntity? = null
 
@@ -102,7 +106,7 @@ object InquisitorWaypoints {
 	}
 
 	private fun checkInquisitor() {
-		inquisitorSpawnTimes.add(Timestamp.now())
+		inquisitorSpawnTimes.add(Instant.current())
 
 		val lastTwo = inquisitorSpawnTimes.takeLast(2)
 		if(lastTwo.size != 2) return
@@ -137,7 +141,7 @@ object InquisitorWaypoints {
 	data class Inquisitor(
 		val spawner: String,
 		val location: NobaVec,
-		val timestamp: Timestamp = Timestamp.now() + 75.seconds
+		val timestamp: Instant = Instant.current() + 75.seconds
 	) {
 		val remainingTime: String get() = timestamp.timeRemaining().toShortString()
 	}

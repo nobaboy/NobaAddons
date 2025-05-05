@@ -15,7 +15,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.Timestamp
-import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
+import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils.clickAction
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands

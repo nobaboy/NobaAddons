@@ -24,6 +24,7 @@ private val durations: Map<String, (Long) -> Duration> = mapOf(
  * [Original source](https://github.com/hannibal002/SkyHanni/blob/beta/src/main/java/at/hannibal2/skyhanni/utils/SimpleTimeMark.kt)
  */
 // TODO use kotlinx.datetime.Instant instead?
+@Deprecated("Use ktx Instant instead")
 @JvmInline
 @Serializable
 value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
@@ -44,8 +45,6 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 	fun timeRemaining() = -elapsedSince()
 
 	fun isPast(): Boolean = timeRemaining().isNegative()
-	fun isFuture(): Boolean = timeRemaining().isPositive()
-	fun isDistantPast(): Boolean = millis == 0L
 
 	fun toMillis(): Long = millis
 	override fun toString(): String = Instant.ofEpochMilli(toMillis()).toString()
@@ -53,13 +52,29 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 	override fun compareTo(other: Timestamp): Int = millis.compareTo(other.millis)
 
 	companion object {
+		@Deprecated(
+			"Use ktx Instant instead",
+			replaceWith = ReplaceWith(
+				expression = "Instant.current()",
+				imports = [
+					"kotlinx.datetime.Instant",
+					"me.nobaboy.nobaaddons.utils.TimeUtils.current"
+				]
+			)
+		)
 		fun now() = Timestamp(System.currentTimeMillis())
+
+		@Deprecated(
+			"Use ktx Instant instead",
+			replaceWith = ReplaceWith(
+				expression = "Instant.DISTANT_PAST",
+				imports = ["kotlinx.datetime.Instant"]
+			)
+		)
 		fun distantPast() = Timestamp(0)
-		fun distantFuture() = Timestamp(Long.MAX_VALUE)
 
 		fun Duration.fromNow() = now() + this
 
-		fun Long.asTimestamp() = Timestamp(this)
 		fun SkyBlockTime.asTimestamp() = Timestamp(toMillis())
 		fun Instant.asTimestamp() = Timestamp(this.toEpochMilli())
 
@@ -72,26 +87,5 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 
 			return if(time > 0.seconds) now() + time else null
 		}
-
-		// TODO this should be in a separate class (like a TimeUtils or similar), but I didn't want to make
-		//      an entire extra class just for this one method
-		fun Duration.toShortString(): String = buildList<String> {
-			val duration = this@toShortString
-
-			if(duration.isNegative()) {
-				add("Soon!")
-				return@buildList
-			}
-
-			val days = duration.inWholeDays.days
-			val hours = duration.inWholeHours.hours - days
-			val minutes = duration.inWholeMinutes.minutes - hours - days
-			val seconds = duration.inWholeSeconds.seconds - minutes - hours - days
-
-			if(days >= 1.days) add(hours.toString(DurationUnit.DAYS, 0))
-			if(hours >= 1.hours) add(hours.toString(DurationUnit.HOURS, 0))
-			if(minutes >= 1.minutes) add(minutes.toString(DurationUnit.MINUTES, 0))
-			if(seconds >= 1.seconds || duration < 1.seconds) add(seconds.toString(DurationUnit.SECONDS, 0))
-		}.joinToString(" ")
 	}
 }

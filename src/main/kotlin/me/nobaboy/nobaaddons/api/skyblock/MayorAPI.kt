@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
@@ -15,8 +16,9 @@ import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
-import me.nobaboy.nobaaddons.utils.Timestamp
-import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.current
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.isFuture
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
@@ -41,13 +43,13 @@ object MayorAPI {
 		private set
 	var currentMinister: ActiveMayor = Mayor.UNKNOWN.withNone()
 
-	var jerryMayor: Pair<ActiveMayor, Timestamp> = Mayor.UNKNOWN.withNone() to Timestamp.distantPast()
+	var jerryMayor: Pair<ActiveMayor, Instant> = Mayor.UNKNOWN.withNone() to Instant.DISTANT_PAST
 		private set
 
 	private var lastMayor: ActiveMayor? = null
-	private var nextMayorTimestamp = Timestamp.distantPast()
+	private var nextMayorTimestamp = Instant.DISTANT_PAST
 
-	private var lastUpdate = Timestamp.distantPast()
+	private var lastUpdate = Instant.DISTANT_PAST
 	private val shouldUpdate: Boolean get() = lastUpdate.elapsedSince() > 20.minutes
 
 	fun Mayor.isElected(): Boolean = currentMayor.mayor == this
@@ -67,13 +69,13 @@ object MayorAPI {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		if(shouldUpdate) NobaAddons.runAsync { getCurrentMayor() }
-		nextMayorTimestamp = SkyBlockTime(SkyBlockTime.now().getElectionYear() + 1, ELECTION_END_MONTH, ELECTION_END_DAY).asTimestamp()
+		nextMayorTimestamp = SkyBlockTime(SkyBlockTime.now().getElectionYear() + 1, ELECTION_END_MONTH, ELECTION_END_DAY).toInstant()
 
 		if(!Mayor.JERRY.isElected()) return
 		if(jerryMayor.first.mayor == Mayor.UNKNOWN) return
 		if(jerryMayor.second.isFuture()) return
 
-		jerryMayor = Mayor.UNKNOWN.withNone() to Timestamp.distantPast()
+		jerryMayor = Mayor.UNKNOWN.withNone() to Instant.DISTANT_PAST
 		ChatUtils.addMessage(tr("nobaaddons.mayorApi.jerryMayorExpired", "The Perkpocalypse Mayor has expired! Click here to get the new mayor.").runCommand("/calendar"))
 	}
 
@@ -110,7 +112,7 @@ object MayorAPI {
 	}
 
 	private suspend fun getCurrentMayor() {
-		lastUpdate = Timestamp.now()
+		lastUpdate = Instant.current()
 
 		val election = HTTPUtils.fetchJson<Election>(ELECTION_API_URL).await()
 		val mayor = election.mayor
