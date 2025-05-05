@@ -9,6 +9,6 @@ class CancelCommand : AbstractPartyChatCommand() {
 	override val hideFromHelp: Boolean = true
 
 	override suspend fun run(ctx: ChatContext) {
-		WarpCommand.cancel = true
+		WarpCommand.cancel()
 	}
 }
