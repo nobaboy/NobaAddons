@@ -16,6 +16,7 @@ class WarpCommand : AbstractPartyChatCommand(3.seconds) {
 
 		fun cancel() {
 			job?.cancel()
+			job = null
 		}
 	}
 
@@ -31,7 +32,12 @@ class WarpCommand : AbstractPartyChatCommand(3.seconds) {
 
 	private fun warpParty(seconds: String?) {
 		if(seconds == null) {
+			cancel()
 			HypixelCommands.partyWarp()
+			return
+		}
+
+		if(job?.isCompleted == false) {
 			return
 		}
 
