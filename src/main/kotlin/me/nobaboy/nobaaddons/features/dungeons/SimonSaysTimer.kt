@@ -24,8 +24,8 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.lightPurple
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.plus
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
 
 object SimonSaysTimer {

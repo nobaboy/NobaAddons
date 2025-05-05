@@ -10,7 +10,7 @@ import me.nobaboy.nobaaddons.utils.hypixel.HypixelUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.openUrl
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.minecraft.text.Text

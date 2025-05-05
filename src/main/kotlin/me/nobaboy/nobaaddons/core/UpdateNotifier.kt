@@ -21,7 +21,7 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.openUrl
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.underline
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.loader.api.Version
 

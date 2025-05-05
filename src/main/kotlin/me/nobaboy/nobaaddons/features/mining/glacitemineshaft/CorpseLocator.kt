@@ -13,8 +13,8 @@ import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import net.minecraft.entity.EquipmentSlot

@@ -2,8 +2,8 @@ package me.nobaboy.nobaaddons.features.general
 
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.tr
 

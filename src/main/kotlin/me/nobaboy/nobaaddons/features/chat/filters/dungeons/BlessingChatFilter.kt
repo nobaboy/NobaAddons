@@ -14,7 +14,7 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.startsWith
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting

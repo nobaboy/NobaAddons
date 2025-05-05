@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.utils.chat
+package me.nobaboy.nobaaddons.utils.mc.chat
 
 import me.nobaboy.nobaaddons.mixins.accessors.ChatHudAccessor
 import me.nobaboy.nobaaddons.utils.mc.MCUtils

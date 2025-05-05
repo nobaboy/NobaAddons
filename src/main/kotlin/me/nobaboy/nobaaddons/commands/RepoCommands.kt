@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.openUrl
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.underline
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.util.Formatting
 

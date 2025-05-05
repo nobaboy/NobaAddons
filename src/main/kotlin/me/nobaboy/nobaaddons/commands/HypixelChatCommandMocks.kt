@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.commands.impl.CommandUtil
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommand
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.loader.api.FabricLoader
 

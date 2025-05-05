@@ -18,9 +18,9 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
 import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils.clickAction
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils.clickAction
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext

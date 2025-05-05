@@ -25,7 +25,7 @@ import me.nobaboy.nobaaddons.utils.mc.MCUtils.day
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.mc.PingUtils
 import me.nobaboy.nobaaddons.utils.mc.ScreenUtils.queueOpen
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.util.Formatting
 

@@ -28,8 +28,8 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.underline
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.Message
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.Message
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils

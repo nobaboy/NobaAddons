@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import kotlin.time.Duration.Companion.seconds
 
 class AllInviteCommand : ChatCommand(0.3.seconds) {

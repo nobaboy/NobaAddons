@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.utils.chat
+package me.nobaboy.nobaaddons.utils.mc.chat
 
 import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.NobaAddons

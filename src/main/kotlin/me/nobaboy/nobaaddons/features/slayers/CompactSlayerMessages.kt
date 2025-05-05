@@ -20,8 +20,8 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.lightPurple
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.Message
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
 
 @Suppress("RegExpSimplifiable") // [ ] is used to make it clear the spaces are not a mistake

@@ -4,8 +4,8 @@ import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.anyContains
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 
 object WarpPlayerHandler {
 	var isWarping: Boolean = false

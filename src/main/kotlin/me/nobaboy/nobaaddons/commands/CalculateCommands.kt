@@ -18,7 +18,7 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.green
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.red
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 import kotlin.math.roundToLong

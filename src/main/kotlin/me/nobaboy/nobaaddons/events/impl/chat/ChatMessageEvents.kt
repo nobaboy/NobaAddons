@@ -4,7 +4,7 @@ import me.nobaboy.nobaaddons.events.CancelableEvent
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.chat.Message
+import me.nobaboy.nobaaddons.utils.mc.chat.Message
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
 

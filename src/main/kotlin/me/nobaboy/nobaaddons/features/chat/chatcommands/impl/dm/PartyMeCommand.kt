@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 
 class PartyMeCommand : ChatCommand() {
 	override val enabled: Boolean get() = config.dm.partyMe

@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.commands
 import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 
 @Suppress("unused")
 @Group("internal")

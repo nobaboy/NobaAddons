@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.config.categories
 import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.CommonText
-import me.nobaboy.nobaaddons.utils.enums.AnnounceChannel
+import me.nobaboy.nobaaddons.utils.hypixel.AnnounceChannel
 import me.nobaboy.nobaaddons.utils.tr
 
 object EventsCategory {

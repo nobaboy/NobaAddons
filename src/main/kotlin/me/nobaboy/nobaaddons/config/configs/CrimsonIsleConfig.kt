@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.celestialfault.histoire.Object
-import me.nobaboy.nobaaddons.utils.enums.AnnounceChannel
+import me.nobaboy.nobaaddons.utils.hypixel.AnnounceChannel
 
 class CrimsonIsleConfig {
 	@Object val announceVanquisher = AnnounceVanquisher()

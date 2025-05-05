@@ -14,8 +14,8 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.literal
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.Message
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
