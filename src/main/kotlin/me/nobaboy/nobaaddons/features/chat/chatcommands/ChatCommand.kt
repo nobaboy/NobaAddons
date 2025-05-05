@@ -15,7 +15,7 @@ abstract class ChatCommand(defaultCooldown: Duration = 1.seconds) : CooldownMana
 
 	open val hideFromHelp: Boolean = false
 
-	abstract fun run(ctx: ChatContext)
+	abstract suspend fun run(ctx: ChatContext)
 
 	open fun nameMatches(name: String): Boolean =
 		this.name.equals(name, ignoreCase = true) || (aliases.isNotEmpty() && aliases.any { it.equals(name, ignoreCase = true) })

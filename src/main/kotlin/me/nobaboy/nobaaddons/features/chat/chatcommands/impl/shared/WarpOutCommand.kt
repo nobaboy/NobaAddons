@@ -9,14 +9,13 @@ class WarpOutCommand(private var command: String, private val categoryEnabled: (
 	override val enabled: Boolean get() = categoryEnabled()
 
 	override val name: String = "warpout"
-
 	override val usage: String = "warpout [username]"
 
-	override fun run(ctx: ChatContext) {
+	override suspend fun run(ctx: ChatContext) {
 		if(command == "msg") command = "msg ${ctx.user}"
 
 		if(WarpPlayerHandler.isWarping) {
-			ChatUtils.queueCommand("$command Warp-out is on cooldown, try again later!")
+			ChatUtils.queueCommand("$command I'm already warping someone else, try again in a minute!")
 			return
 		}
 

@@ -11,12 +11,12 @@ class WarpMeCommand : ChatCommand(3.seconds) {
 
 	override val name: String = "warpme"
 
-	override fun run(ctx: ChatContext) {
+	override suspend fun run(ctx: ChatContext) {
 		val playerName = MCUtils.playerName ?: return
 		if(ctx.user == playerName) return
 
 		if(WarpPlayerHandler.isWarping) {
-			ctx.reply("Warp-in is on cooldown, try again later!")
+			ctx.reply("I'm already warping someone else, try again in a minute!")
 			return
 		}
 

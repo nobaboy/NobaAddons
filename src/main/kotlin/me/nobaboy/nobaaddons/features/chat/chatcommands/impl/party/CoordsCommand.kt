@@ -10,7 +10,7 @@ class CoordsCommand : ChatCommand(0.3.seconds) {
 
 	override val name: String = "coords"
 
-	override fun run(ctx: ChatContext) {
+	override suspend fun run(ctx: ChatContext) {
 		ctx.reply(LocationUtils.playerCoords())
 		startCooldown()
 	}

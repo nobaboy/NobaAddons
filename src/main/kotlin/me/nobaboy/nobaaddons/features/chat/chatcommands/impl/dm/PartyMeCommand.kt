@@ -12,7 +12,7 @@ class PartyMeCommand : ChatCommand() {
 
 	override val aliases = listOf("pme")
 
-	override fun run(ctx: ChatContext) {
+	override suspend fun run(ctx: ChatContext) {
 		val playerName = MCUtils.playerName ?: return
 		if(ctx.user == playerName) return
 

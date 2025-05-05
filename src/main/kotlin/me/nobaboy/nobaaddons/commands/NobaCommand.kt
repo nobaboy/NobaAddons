@@ -64,7 +64,9 @@ object NobaCommand {
 
 	@Command
 	fun ping() {
-		PingUtils.sendPingPacket(sendMessage = true)
+		PingUtils.requestPing {
+			ChatUtils.addMessage(tr("nobaaddons.command.ping", "Ping: ${PingUtils.ping}ms"))
+		}
 	}
 
 	@Command

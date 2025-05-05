@@ -4,10 +4,12 @@ import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import kotlin.time.Duration.Companion.seconds
 
-class AllInviteCommand : ChatCommand(0.3.seconds) {
+class AllInviteCommand : AbstractPartyChatCommand(0.3.seconds) {
 	override val enabled: Boolean get() = config.party.allInvite
+	override val requireClientPlayerIs = ClientboundPartyInfoPacket.PartyRole.LEADER
 
 	override val name: String = "allinvite"
 
@@ -15,8 +17,7 @@ class AllInviteCommand : ChatCommand(0.3.seconds) {
 
 	override val usage: String = "(allinvite|allinv)"
 
-	override fun run(ctx: ChatContext) {
-		if(PartyAPI.party?.isLeader != true) return
+	override suspend fun run(ctx: ChatContext) {
 		HypixelCommands.partyAllInvite()
 		startCooldown()
 	}

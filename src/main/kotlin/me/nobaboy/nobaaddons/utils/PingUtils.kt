@@ -1,13 +1,13 @@
 package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.network.packet.c2s.query.QueryPingC2SPacket
 import net.minecraft.network.packet.s2c.query.PingResultS2CPacket
 import net.minecraft.util.Util
 
 object PingUtils {
-	private var sendPingMessage = false
+	private val callbackLock = Any()
+	private val pingCallbacks: MutableList<(Int) -> Unit> = mutableListOf()
 
 	var ping: Int = 0
 		private set
@@ -17,9 +17,7 @@ object PingUtils {
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 	}
 
-	fun sendPingPacket(sendMessage: Boolean = false) {
-		if(sendMessage) sendPingMessage = true
-
+	fun sendPingPacket() {
 		val client = MCUtils.client
 		if(client.debugHud.shouldShowPacketSizeAndPingCharts()) return
 
@@ -28,11 +26,24 @@ object PingUtils {
 
 	private fun onPacketReceive(event: PacketEvents.Receive) {
 		val packet = event.packet as? PingResultS2CPacket ?: return
-		ping = (Timestamp(Util.getMeasuringTimeMs()) - Timestamp(packet.startTime)).inWholeMilliseconds.toInt()
 
-		if(sendPingMessage) {
-			sendPingMessage = false
-			ChatUtils.addMessage(tr("nobaaddons.command.ping", "Ping: ${ping}ms"))
+		val ping = (Timestamp(Util.getMeasuringTimeMs()) - Timestamp(packet.startTime)).inWholeMilliseconds.toInt()
+		this.ping = ping
+
+		val callbacks = synchronized(callbackLock) {
+			val callbacks = pingCallbacks.toList()
+			pingCallbacks.clear()
+			callbacks
 		}
+		for(callback in callbacks) {
+			ErrorManager.catching("Ping callback method failed") { callback(ping) }
+		}
+	}
+
+	fun requestPing(callback: (Int) -> Unit) {
+		synchronized(callbackLock) {
+			pingCallbacks.add(callback)
+		}
+		sendPingPacket()
 	}
 }

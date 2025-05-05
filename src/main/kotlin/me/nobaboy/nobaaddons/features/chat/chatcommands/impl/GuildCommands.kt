@@ -21,17 +21,4 @@ object GuildCommands : ChatCommandManager() {
 		register(HelpCommand(this, config::help))
 		register(WarpOutCommand("gc", config::warpOut))
 	}
-
-	fun init() {
-		ChatMessageEvents.CHAT.register {
-			val message = it.cleaned
-
-			if(WarpPlayerHandler.isWarping) {
-				WarpPlayerHandler.onChatMessage(message)
-				return@register
-			}
-
-			processMessage(message)
-		}
-	}
 }

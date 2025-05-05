@@ -25,17 +25,4 @@ object DMCommands : ChatCommandManager() {
 		register(WarpMeCommand())
 		register(PartyMeCommand())
 	}
-
-	fun init() {
-		ChatMessageEvents.CHAT.register {
-			val message = it.cleaned
-
-			if(WarpPlayerHandler.isWarping) {
-				WarpPlayerHandler.onChatMessage(message)
-				return@register
-			}
-
-			processMessage(message)
-		}
-	}
 }

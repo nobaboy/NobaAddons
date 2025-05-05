@@ -4,6 +4,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -25,6 +26,14 @@ abstract class ChatCommandManager {
 	protected abstract val source: ChatContext.ChatCommandSource
 	protected abstract val enabled: Boolean
 	protected abstract val pattern: Regex
+
+	open fun init() {
+		ChatMessageEvents.CHAT.register(this::onChatMessage)
+	}
+
+	protected open fun onChatMessage(event: ChatMessageEvents.Chat) {
+		processMessage(event.cleaned)
+	}
 
 	protected fun register(command: ChatCommand) {
 		commands.add(command)
@@ -49,19 +58,20 @@ abstract class ChatCommandManager {
 		val ctx = getContext(message) ?: return
 		val cmd = commands.asSequence().filter { it.enabled }.firstOrNull { it.nameMatches(ctx.command) } ?: return
 
-		lock.withLock(null) {
-			if(cmd.isOnCooldown()) return
-			if(ctx.user == MCUtils.playerName) {
-				// wait a short bit to avoid sending commands too fast
-				delay(0.2.seconds)
-			}
+		lock.withLock(null) { executeCommand(ctx, cmd) }
+	}
 
-			try {
-				// TODO should commands also be `suspend fun`?
-				cmd.run(ctx)
-			} catch(ex: Throwable) {
-				ErrorManager.logError("Chat command '${ctx.command}' threw an error", ex, "Command" to ctx.fullMessage)
-			}
+	protected open suspend fun executeCommand(ctx: ChatContext, cmd: ChatCommand) {
+		if(cmd.isOnCooldown()) return
+		if(ctx.user == MCUtils.playerName) {
+			// wait a short bit to avoid sending commands too fast
+			delay(0.2.seconds)
+		}
+
+		try {
+			cmd.run(ctx)
+		} catch(ex: Throwable) {
+			ErrorManager.logError("Chat command '${ctx.command}' threw an error", ex, "Command" to ctx.fullMessage)
 		}
 	}
 }

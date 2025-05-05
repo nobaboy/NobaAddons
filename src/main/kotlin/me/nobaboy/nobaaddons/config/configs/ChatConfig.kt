@@ -55,6 +55,7 @@ class ChatConfig {
 		class PartyCommands {
 			var enabled = false
 			var help = false
+			var ping = false
 			var allInvite = false
 			var transfer = false
 			var warp = false
