@@ -4,7 +4,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import org.apache.commons.lang3.StringUtils
@@ -12,16 +11,9 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 class WarpCommand : AbstractPartyChatCommand(3.seconds) {
-	companion object {
-		private var job: Job? = null
-
-		fun cancel() {
-			job?.cancel()
-		}
-	}
-
-	override val requireClientPlayerIs = ClientboundPartyInfoPacket.PartyRole.LEADER
 	override val enabled: Boolean get() = config.party.warp
+	override val requireClientPlayerIs = ClientboundPartyInfoPacket.PartyRole.LEADER
+
 	override val name: String = "warp"
 	override val usage: String = "warp [optional: delay]"
 
@@ -61,5 +53,13 @@ class WarpCommand : AbstractPartyChatCommand(3.seconds) {
 		}
 
 		HypixelCommands.partyWarp()
+	}
+
+	companion object {
+		private var job: Job? = null
+
+		fun cancel() {
+			job?.cancel()
+		}
 	}
 }

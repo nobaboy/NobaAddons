@@ -9,7 +9,6 @@ class PartyMeCommand : ChatCommand() {
 	override val enabled: Boolean get() = config.dm.partyMe
 
 	override val name: String = "partyme"
-
 	override val aliases = listOf("pme")
 
 	override suspend fun run(ctx: ChatContext) {

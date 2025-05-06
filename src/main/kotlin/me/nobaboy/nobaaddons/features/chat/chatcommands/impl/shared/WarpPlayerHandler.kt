@@ -20,8 +20,8 @@ object WarpPlayerHandler {
 	private var task: Job? = null
 
 	private val inviteFailMessages = listOf(
-		// TODO cannot invite that player
 		"Couldn't find a player with that name!",
+		"You cannot invite that player.",
 		"You cannot invite that player since they're not online.",
 	)
 
@@ -86,7 +86,7 @@ object WarpPlayerHandler {
 	private fun leaveParty(party: PartyData, isWarpingOut: Boolean, timeout: Duration) {
 		val warpType = if(isWarpingOut) "warp out" else "warp in"
 		val message =
-			if(party.isLeader) "Someone requested a $warpType, will re-invite everyone after ${timeout.inWholeSeconds} seconds."
+			if(party.isLeader) "Someone requested a $warpType, will re-invite everyone within ${timeout.inWholeSeconds} seconds."
 			else "Someone requested a $warpType, re-invite me and I'll join once done."
 
 		HypixelCommands.partyChat(message)
@@ -113,6 +113,7 @@ object WarpPlayerHandler {
 
 	private fun onChatMessage(message: String) {
 		if(targetPlayer == null) return
+
 		when {
 			inviteFailMessages.anyContains(message, ignoreCase = true) -> state = State.CANT_INVITE
 			message.equals("$targetPlayer is already in the party.", ignoreCase = true) -> cancel()

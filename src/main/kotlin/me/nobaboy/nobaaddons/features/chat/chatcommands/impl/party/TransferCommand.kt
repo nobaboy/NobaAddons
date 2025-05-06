@@ -10,9 +10,7 @@ class TransferCommand : AbstractPartyChatCommand() {
 	override val requireClientPlayerIs = ClientboundPartyInfoPacket.PartyRole.LEADER
 
 	override val name: String = "transfer"
-
 	override val aliases = listOf("ptme", "pt")
-
 	override val usage: String = "(transfer|pt) [optional: username], ptme"
 
 	override suspend fun run(ctx: ChatContext) {

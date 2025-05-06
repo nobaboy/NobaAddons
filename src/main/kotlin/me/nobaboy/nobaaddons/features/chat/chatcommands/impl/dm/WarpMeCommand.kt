@@ -8,7 +8,6 @@ import kotlin.time.Duration.Companion.seconds
 
 class WarpMeCommand : ChatCommand(3.seconds) {
 	override val enabled: Boolean get() = config.dm.warpMe
-
 	override val name: String = "warpme"
 
 	override suspend fun run(ctx: ChatContext) {
