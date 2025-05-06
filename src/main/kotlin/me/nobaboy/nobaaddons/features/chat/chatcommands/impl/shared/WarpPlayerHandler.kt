@@ -6,6 +6,8 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
+import me.nobaboy.nobaaddons.repo.Repo
+import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CollectionUtils.anyContains
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
@@ -13,17 +15,18 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 object WarpPlayerHandler {
+	private val INVITATION_FAIL_MESSAGES by Repo.list(
+		"Couldn't find a player with that name!".fromRepo("party.invite_other.not_found"),
+		"You cannot invite that player since they're not online.".fromRepo("party.invite_other.offline"),
+		"You cannot invite that player since they have blocked you.".fromRepo("party.invite_other.blocked"),
+		"You cannot invite that player.".fromRepo("party.invite_other.generic_unallowed"),
+	)
+
 	val isWarping: Boolean get() = targetPlayer != null
 
 	private var targetPlayer: String? = null
 	private var state = State.INACTIVE
 	private var task: Job? = null
-
-	private val inviteFailMessages = listOf(
-		"Couldn't find a player with that name!",
-		"You cannot invite that player since they're not online.",
-		"You cannot invite that player.",
-	)
 
 	init {
 		ChatMessageEvents.CHAT.register { onChatMessage(it.cleaned) }
@@ -43,12 +46,10 @@ object WarpPlayerHandler {
 
 	private suspend fun warpInternal(playerName: String, isWarpingOut: Boolean, command: String) {
 		val party = PartyAPI.party // get a copy of the party before we leave
-		var elapsed = 0.seconds
 		val timeout = if(isWarpingOut) 20.seconds else 15.seconds
+		var elapsed = 0.seconds
 
-		if(party != null) {
-			leaveParty(party, isWarpingOut, timeout)
-		}
+		if(party != null) leaveParty(party, isWarpingOut, timeout)
 
 		HypixelCommands.partyInvite(playerName)
 		state = State.INVITED
@@ -115,7 +116,7 @@ object WarpPlayerHandler {
 		if(targetPlayer == null) return
 
 		when {
-			inviteFailMessages.anyContains(message, ignoreCase = true) -> state = State.CANT_INVITE
+			INVITATION_FAIL_MESSAGES.anyContains(message, ignoreCase = true) -> state = State.CANT_INVITE
 			message.equals("$targetPlayer is already in the party.", ignoreCase = true) -> cancel()
 			message.contains("$targetPlayer joined the party.", ignoreCase = true) -> state = State.JOINED
 		}

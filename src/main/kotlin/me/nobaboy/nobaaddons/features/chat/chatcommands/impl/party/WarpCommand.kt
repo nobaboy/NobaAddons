@@ -29,9 +29,7 @@ class WarpCommand : AbstractPartyChatCommand(3.seconds) {
 			return
 		}
 
-		if(job?.isCompleted == false) {
-			return
-		}
+		if(job?.isCompleted == false) return
 
 		if(!StringUtils.isNumeric(seconds) || seconds.toInt() > 15 || seconds.toInt() < 3) {
 			HypixelCommands.partyChat("Delay can only range from 3 to 15 seconds")
