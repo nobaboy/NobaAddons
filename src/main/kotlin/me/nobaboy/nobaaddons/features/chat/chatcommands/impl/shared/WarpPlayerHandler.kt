@@ -21,8 +21,8 @@ object WarpPlayerHandler {
 
 	private val inviteFailMessages = listOf(
 		"Couldn't find a player with that name!",
-		"You cannot invite that player.",
 		"You cannot invite that player since they're not online.",
+		"You cannot invite that player.",
 	)
 
 	init {
