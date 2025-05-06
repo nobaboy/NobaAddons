@@ -68,9 +68,10 @@ object WarpPlayerHandler {
 		}
 
 		if(elapsed >= timeout) {
-			val timeoutMessage =
-				if(isWarpingOut) "Warp out failed, $playerName did not join the party."
-				else "Warp in timed out since you did not join the party."
+			val timeoutMessage = when {
+				isWarpingOut -> "Warp out failed, $playerName did not join the party."
+				else -> "Warp in timed out since you did not join the party."
+			}
 			ChatUtils.queueCommand("$command $timeoutMessage")
 		} else if(isWarpingOut) {
 			when(state) {
@@ -86,9 +87,10 @@ object WarpPlayerHandler {
 
 	private fun leaveParty(party: PartyData, isWarpingOut: Boolean, timeout: Duration) {
 		val warpType = if(isWarpingOut) "warp out" else "warp in"
-		val message =
-			if(party.isLeader) "Someone requested a $warpType, will re-invite everyone within ${timeout.inWholeSeconds} seconds."
-			else "Someone requested a $warpType, re-invite me and I'll join once done."
+		val message = when {
+			party.isLeader -> "Someone requested a $warpType, will re-invite everyone within ${timeout.inWholeSeconds} seconds."
+			else -> "Someone requested a $warpType, re-invite me and I'll join once done."
+		}
 
 		HypixelCommands.partyChat(message)
 		if(party.isLeader) HypixelCommands.partyDisband() else HypixelCommands.partyLeave()

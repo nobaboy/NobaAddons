@@ -80,9 +80,10 @@ object MouseLock {
 	fun lockMouse() {
 		locked = !locked
 
-		val text =
-			if(locked) tr("nobaaddons.command.mouseLock.locked", "Mouse locked")
-			else tr("nobaaddons.command.mouseLock.unlocked", "Mouse unlocked")
+		val text = when {
+			locked -> tr("nobaaddons.command.mouseLock.locked", "Mouse locked")
+			else -> tr("nobaaddons.command.mouseLock.unlocked", "Mouse unlocked")
+		}
 
 		ChatUtils.addMessage(text)
 	}
