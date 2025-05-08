@@ -7,6 +7,8 @@ object CollectionUtils {
 	fun List<String>.anyContains(other: String, ignoreCase: Boolean = false): Boolean =
 		any { it.contains(other, ignoreCase = ignoreCase) }
 
+	fun <T> List<T>.getOrLast(index: Int): T = getOrElse(index) { last() }
+
 	fun <T> List<T>.nextAfter(after: T, skip: Int = 1): T? {
 		val index = indexOf(after)
 		if(index == -1) return null
