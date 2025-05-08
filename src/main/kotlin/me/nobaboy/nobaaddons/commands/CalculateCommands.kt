@@ -57,9 +57,8 @@ object CalculateCommands {
 			repeat(13) { add(40) } // +40 coins for 13h, until 48h total for 1200
 			// the fee then starts at 50 coins and increments by an extra 50 every 12h, up to a max of +200 flat
 			// for every hour afterward
-			repeat(49) {
-				val multipleOf = 1 + floor(it.toDouble() / 12)
-				add((50 * multipleOf).toInt().coerceAtMost(200))
+			repeat(37) {
+				add((50 * (1 + floor(it.toDouble() / 12))).toInt())
 			}
 		}
 	}
