@@ -1,7 +1,23 @@
 package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
+import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import net.minecraft.util.Formatting
+import kotlin.text.replace
+import kotlin.text.toLong
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
+
+private val timeRegex = Regex("([\\d,]+)([dhms])")
+private val durations: Map<String, (Long) -> Duration> = mapOf(
+	"d" to { it.days },
+	"h" to { it.hours },
+	"m" to { it.minutes },
+	"s" to { it.seconds },
+)
 
 object StringUtils {
 	private val TRAILING_ZERO = Regex("\\.0+")
@@ -41,4 +57,15 @@ object StringUtils {
 		billionPrecision: Int = 1,
 	): String =
 		toDouble().toAbbreviatedString(thousandPrecision, millionPrecision, billionPrecision)
+
+	// TODO this would make more sense to be in a TimeUtils class
+	fun String.asDuration(): Duration? {
+		var time: Duration = 0.seconds
+
+		timeRegex.forEachMatch(this) {
+			time += durations[groups[2]!!.value]!!(groups[1]!!.value.replace(",", "").toLong())
+		}
+
+		return time.takeIf { it > 0.seconds }
+	}
 }
