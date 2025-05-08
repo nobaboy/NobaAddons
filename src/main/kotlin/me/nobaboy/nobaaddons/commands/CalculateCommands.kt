@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Skill
 import me.nobaboy.nobaaddons.core.SkillData
 import me.nobaboy.nobaaddons.utils.CollectionUtils.getOrLast
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.NumberUtils.million
 import me.nobaboy.nobaaddons.utils.NumberUtils.parseDoubleOrNull
@@ -19,11 +20,11 @@ import me.nobaboy.nobaaddons.utils.TextUtils.gold
 import me.nobaboy.nobaaddons.utils.TextUtils.green
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.TextUtils.withColor
 import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
-import net.minecraft.util.Colors
 import org.apache.commons.lang3.StringUtils
 import kotlin.math.floor
 import kotlin.math.roundToLong
@@ -151,7 +152,7 @@ object CalculateCommands {
 			append(tr("nobaaddons.command.calculate.tax.taxes", "Claim taxes: ${tax.addSeparators().toText().gold()}"))
 			append("\n • ")
 			append(tr("nobaaddons.command.calculate.tax.finalProfit", "Final profit: ${finalProfit.addSeparators().toText().green()}"))
-			withColor(Colors.CYAN)
+			withColor(NobaColor.CYAN)
 		})
 	}
 }
