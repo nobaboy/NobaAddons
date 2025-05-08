@@ -27,7 +27,8 @@ object PingUtils {
 	private fun onPacketReceive(event: PacketEvents.Receive) {
 		val packet = event.packet as? PingResultS2CPacket ?: return
 
-		ping = (Util.getMeasuringTimeMs() - packet.startTime).toInt()
+		val ping = (Util.getMeasuringTimeMs() - packet.startTime).toInt()
+		this.ping = ping
 
 		val callbacks = synchronized(callbackLock) {
 			val callbacks = pingCallbacks.toList()
