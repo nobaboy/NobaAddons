@@ -27,15 +27,15 @@ object PingUtils {
 	private fun onPacketReceive(event: PacketEvents.Receive) {
 		val packet = event.packet as? PingResultS2CPacket ?: return
 
-		val ping = (Timestamp(Util.getMeasuringTimeMs()) - Timestamp(packet.startTime)).inWholeMilliseconds.toInt()
-		this.ping = ping
+		ping = (Util.getMeasuringTimeMs() - packet.startTime).toInt()
 
 		val callbacks = synchronized(callbackLock) {
 			val callbacks = pingCallbacks.toList()
 			pingCallbacks.clear()
 			callbacks
 		}
-		for(callback in callbacks) {
+
+		callbacks.forEach { callback ->
 			ErrorManager.catching("Ping callback method failed") { callback(ping) }
 		}
 	}
