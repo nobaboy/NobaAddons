@@ -51,7 +51,9 @@ object WarpPlayerHandler {
 
 		if(party != null) leaveParty(party, isWarpingOut, timeout)
 
-		HypixelCommands.partyInvite(playerName)
+		// wait until the invite is sent to actually start the timer, as its possible there may be several commands in
+		// the queue from the prior party leave
+		ChatUtils.queueCommandAndWait("party invite $playerName")
 		state = State.INVITED
 		while(elapsed < timeout) {
 			when(state) {
