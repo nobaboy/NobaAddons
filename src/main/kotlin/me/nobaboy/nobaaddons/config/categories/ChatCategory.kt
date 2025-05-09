@@ -205,6 +205,12 @@ object ChatCategory {
 				require { option(partyEnabled) }
 				booleanController()
 			}
+			add({ chat.chatCommands.party::ping }) {
+				name = tr("nobaaddons.config.chat.chatCommands.party.ping", "!ping Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.ping.tooltip", "Responds with your current ping")
+				require { option(partyEnabled) }
+				booleanController()
+			}
 			add({ chat.chatCommands.party::allInvite }) {
 				name = tr("nobaaddons.config.chat.chatCommands.party.allInvite", "!allinvite Command")
 				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.allInvite.tooltip", "Runs '/p settings allinvite' when used if you're the party leader")

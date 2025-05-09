@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.utils.chat
 
+import kotlinx.coroutines.CompletableDeferred
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
@@ -19,12 +20,13 @@ import net.minecraft.util.math.MathHelper
 import java.util.LinkedList
 import java.util.Queue
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 object ChatUtils {
-	private val commandQueue: Queue<String> = LinkedList()
+	private val commandQueue: Queue<Pair<String, CompletableDeferred<Unit>?>> = LinkedList()
 	private val clickActions: MutableMap<String, ClickAction> = ConcurrentHashMap()
 
 	private val SHOULD_CAPTURE: ThreadLocal<Boolean> = ThreadLocal.withInitial { false }
@@ -44,10 +46,14 @@ object ChatUtils {
 
 	private fun processCommandQueue(cooldownManager: CooldownManager) {
 		if(MCUtils.player == null) {
+			commandQueue.forEach { it.second?.completeExceptionally(CancellationException()) }
 			commandQueue.clear()
 			return
 		}
-		(MCUtils.networkHandler ?: return).sendCommand(commandQueue.poll() ?: return)
+
+		val (command, deferred) = commandQueue.poll() ?: return
+		deferred?.complete(Unit)
+		(MCUtils.networkHandler ?: return).sendCommand(command)
 		cooldownManager.startCooldown(1.seconds)
 	}
 
@@ -61,7 +67,16 @@ object ChatUtils {
 	 * Add a command to the queue to send to the server
 	 */
 	fun queueCommand(message: String) {
-		commandQueue.add(message)
+		commandQueue.add(message to null)
+	}
+
+	/**
+	 * Adds a command to the queue to send to the server, and then suspends until its sent
+	 */
+	suspend fun queueCommandAndWait(message: String) {
+		val deferred = CompletableDeferred<Unit>()
+		commandQueue.add(message to deferred)
+		deferred.join()
 	}
 
 	/**
