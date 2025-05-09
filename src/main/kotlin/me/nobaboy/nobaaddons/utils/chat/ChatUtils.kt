@@ -20,6 +20,7 @@ import net.minecraft.util.math.MathHelper
 import java.util.LinkedList
 import java.util.Queue
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -45,6 +46,7 @@ object ChatUtils {
 
 	private fun processCommandQueue(cooldownManager: CooldownManager) {
 		if(MCUtils.player == null) {
+			commandQueue.forEach { it.second?.completeExceptionally(CancellationException()) }
 			commandQueue.clear()
 			return
 		}
