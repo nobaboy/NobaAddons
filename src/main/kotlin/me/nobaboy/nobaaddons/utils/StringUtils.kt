@@ -11,6 +11,7 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
+private val TRAILING_ZERO = Regex("\\.0+")
 private val timeRegex = Regex("([\\d,]+)([dhms])")
 private val durations: Map<String, (Long) -> Duration> = mapOf(
 	"d" to { it.days },
@@ -20,8 +21,6 @@ private val durations: Map<String, (Long) -> Duration> = mapOf(
 )
 
 object StringUtils {
-	private val TRAILING_ZERO = Regex("\\.0+")
-
 	fun String.startsWith(list: List<String>): Boolean = list.any { this.startsWith(it) }
 
 	fun String.title(): String = lowercase().split(" ").joinToString(" ") {
@@ -38,6 +37,7 @@ object StringUtils {
 			.joinToString("")
 	}
 
+	@Suppress("KotlinConstantConditions")
 	fun Double.toAbbreviatedString(
 		thousandPrecision: Int = 1,
 		millionPrecision: Int = 2,
@@ -68,4 +68,7 @@ object StringUtils {
 
 		return time.takeIf { it > 0.seconds }
 	}
+
+	fun String.isCommaNumeric(): Boolean = all { it.isDigit() || it == ',' }
+	fun String.isNumeric(): Boolean = all(Char::isDigit)
 }

@@ -3,17 +3,20 @@ package me.nobaboy.nobaaddons.commands
 import dev.celestialfault.commander.annotations.AllowedRange
 import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Group
+import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.isActive
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.commands.adapters.RarityHandler
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Skill
 import me.nobaboy.nobaaddons.core.SkillData
+import me.nobaboy.nobaaddons.core.mayor.MayorPerk
 import me.nobaboy.nobaaddons.utils.CollectionUtils.getOrLast
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.NumberUtils.million
 import me.nobaboy.nobaaddons.utils.NumberUtils.parseDoubleOrNull
 import me.nobaboy.nobaaddons.utils.StringUtils.asDuration
+import me.nobaboy.nobaaddons.utils.StringUtils.isNumeric
 import me.nobaboy.nobaaddons.utils.TextUtils.aqua
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.gold
@@ -25,7 +28,6 @@ import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
-import org.apache.commons.lang3.StringUtils
 import kotlin.math.floor
 import kotlin.math.roundToLong
 
@@ -128,7 +130,7 @@ object CalculateCommands {
 		}.roundToLong()
 
 		val listTime: Int? = listTime?.let {
-			if(StringUtils.isNumeric(it)) return@let it.toInt()
+			if(it.isNumeric()) return@let it.toInt()
 			it.asDuration()?.inWholeHours?.toInt()
 		}?.coerceAtMost(14 * 24)
 		val listTimeFee: Int? = listTime?.let {
@@ -137,7 +139,11 @@ object CalculateCommands {
 			fee
 		}
 
-		val tax: Long = if(listPrice <= 1.million) 0 else (listPrice * 0.01).roundToLong()
+		val tax: Long = let {
+			if(listPrice <= 1.million) return@let 0
+			// yes, derpy does in fact only affect the auction claim taxes, not the list fee
+			(listPrice * 0.01).roundToLong() * (if(MayorPerk.QUAD_TAXES.isActive()) 4 else 1)
+		}
 		val finalProfit: Long = listPrice - fee - tax - (listTimeFee ?: 0)
 
 		ChatUtils.addMessage(buildText {
@@ -150,6 +156,10 @@ object CalculateCommands {
 				append("\n • ")
 			}
 			append(tr("nobaaddons.command.calculate.tax.taxes", "Claim taxes: ${tax.addSeparators().toText().gold()}"))
+			if(MayorPerk.QUAD_TAXES.isActive()) {
+				append(" ")
+				append(tr("nobaaddons.command.calculate.tax.taxes.derpy", "(quadrupled by Derpy!)").red())
+			}
 			append("\n • ")
 			append(tr("nobaaddons.command.calculate.tax.finalProfit", "Final profit: ${finalProfit.addSeparators().toText().green()}"))
 			withColor(NobaColor.CYAN)

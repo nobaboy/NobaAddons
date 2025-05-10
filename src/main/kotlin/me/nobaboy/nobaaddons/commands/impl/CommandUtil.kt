@@ -46,11 +46,11 @@ object CommandUtil {
 		commands.add(command)
 	}
 
-	private inline fun <reified T : Any, S : CommandSource> Commander<S>.addHandler(handler: ArgumentHandler<T, S>) {
+	inline fun <reified T : Any, S : CommandSource> Commander<S>.addHandler(handler: ArgumentHandler<T, S>) {
 		addHandler(T::class, handler)
 	}
 
-	private inline fun <reified T : Any, S : CommandSource> Commander<S>.addHandler(handler: ArgumentType<T>) {
+	inline fun <reified T : Any, S : CommandSource> Commander<S>.addHandler(handler: ArgumentType<T>) {
 		addHandler(object : ArgumentHandler<T, S> {
 			override fun argument(parameter: KParameter): ArgumentType<T> = handler
 			override fun parse(ctx: CommandContext<S>, name: String): T = ctx.getArgument(name)
