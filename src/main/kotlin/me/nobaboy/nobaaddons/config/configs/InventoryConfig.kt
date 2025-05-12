@@ -53,7 +53,7 @@ class InventoryConfig {
 
 	class ItemPickupLog {
 		var enabled = false
-		var compactLines = false
+		var compactLines = true
 		var timeoutSeconds = 5
 	}
 }

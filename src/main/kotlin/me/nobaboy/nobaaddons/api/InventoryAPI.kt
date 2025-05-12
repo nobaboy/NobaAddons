@@ -75,5 +75,5 @@ object InventoryAPI {
 		InventoryEvents.CLOSE.dispatch(InventoryEvents.Close(sameName))
 	}
 
-	data class Screen(val id: Int, val title: String)
+	private data class Screen(val id: Int, val title: String)
 }

@@ -155,10 +155,6 @@ object NobaAddons : ClientModInitializer {
 		SWikiCommand.init()
 		/* endregion */
 
-		/* region User Interface */
-		ItemPickupLog.init()
-		/* endregion */
-
 		/* region Features */
 		// region Visuals
 		EtherwarpOverlay.init()
@@ -168,6 +164,7 @@ object NobaAddons : ClientModInitializer {
 		// region Inventory
 		EnchantmentTooltips.init()
 		ISlotInfo.init()
+		ItemPickupLog.init()
 		// endregion
 
 		// region Events
