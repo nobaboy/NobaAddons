@@ -148,7 +148,6 @@ object ItemPickupLog {
 					}
 				}
 
-				// Add only removed items that weren't also added
 				for((name, removeEntry) in removedItems) {
 					if(name !in addedItems) {
 						add(buildText {
