@@ -204,6 +204,11 @@ object InventoryCategory {
 				name = CommonText.Config.ENABLED
 				booleanController()
 			}
+			add({ inventory.itemPickupLog::compactLines }) {
+				name = tr("nobaaddons.config.inventory.itemPickupLog.compactLines", "Compact Lines")
+				require { option(enabled) }
+				booleanController()
+			}
 			add({ inventory.itemPickupLog::timeoutSeconds }) {
 				name = tr("nobaaddons.config.inventory.itemPickupLog.timeout", "Expire After")
 				require { option(enabled) }
