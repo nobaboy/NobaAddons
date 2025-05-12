@@ -29,9 +29,6 @@ object PartyCommands : ChatCommandManager() {
 		register(CancelCommand())
 		register(CoordsCommand())
 		register(JoinInstanceCommands())
-	}
-
-	fun init() {
 		ChatMessageEvents.CHAT.register { processMessage(it.cleaned) }
 	}
 }

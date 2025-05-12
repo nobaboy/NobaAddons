@@ -22,7 +22,7 @@ object SWikiCommand {
 	private val config get() = NobaConfig.general
 	private val commander by CommandUtil::commander
 
-	fun init() {
+	init {
 		ClientCommandRegistrationCallback.EVENT.register { dispatch, access ->
 			if(HypixelUtils.onHypixel) {
 				commander.register(NobaClientCommand(::swiki, this), dispatch)

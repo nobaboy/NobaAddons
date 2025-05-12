@@ -52,7 +52,7 @@ object RepoManager {
 	val commitApiUrl: String get() = "https://api.github.com/repos/$username/$repository/commits/$branch"
 	fun commitUrl(commit: String): String = "$githubUrl/commit/$commit"
 
-	fun init() {
+	init {
 		NobaAddons.runAsync { update() }
 		ClientLifecycleEvents.CLIENT_STOPPING.register { cleanupTemporaryDirectory() }
 	}

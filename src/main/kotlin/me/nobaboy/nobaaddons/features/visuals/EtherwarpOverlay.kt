@@ -28,7 +28,7 @@ object EtherwarpOverlay {
 	private val etherwarpItems = setOf("ASPECT_OF_THE_END", "ASPECT_OF_THE_VOID")
 	private var targetBlock: ValidationType? = null
 
-	fun init() {
+	init {
 		HudRenderCallback.EVENT.register { context, _ -> renderFailText(context) }
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderOverlay)
 	}

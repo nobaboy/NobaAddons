@@ -21,7 +21,7 @@ object CopyChatFeature {
 
 	private val messages = WeakHashMap<ChatHudLine.Visible, WeakReference<ChatHudLine>>(200)
 
-	fun init() {
+	init {
 		ChatMessageEvents.ADDED.register(this::onChatAdded)
 	}
 

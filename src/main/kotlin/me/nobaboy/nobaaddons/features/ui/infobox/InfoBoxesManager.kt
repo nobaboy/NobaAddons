@@ -8,10 +8,6 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 object InfoBoxesManager {
 	val infoBoxes by InfoBoxesConfig::infoBoxes
 
-	fun init() {
-		InfoBoxesConfig.safeLoad()
-	}
-
 	fun save() {
 		try {
 			InfoBoxesConfig.save()

@@ -45,7 +45,7 @@ object CompactSlayerMessages {
 	private var level: Pair<Int, Int?>? = null
 	private var rngMeter: Pair<Int, String>? = null
 
-	fun init() {
+	init {
 		ChatMessageEvents.ALLOW.register(this::onChatMessage)
 	}
 

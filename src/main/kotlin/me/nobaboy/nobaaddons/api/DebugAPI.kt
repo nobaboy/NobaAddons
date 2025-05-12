@@ -23,7 +23,7 @@ object DebugAPI {
 	lateinit var lastLocationPacket: ClientboundLocationPacket
 		private set
 
-	fun init() {
+	init {
 		SoundEvents.SOUND.register { addSound(it) }
 		SoundEvents.SOUND_CANCELED.register { addSound(it, canceled = true) }
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket> { lastLocationPacket = it }

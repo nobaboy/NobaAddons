@@ -43,7 +43,7 @@ object ChatChannelDisplay {
 	private val CONVERSATION_EXPIRED_MESSAGE by "The conversation you were in expired and you have been moved back to the ALL channel.".fromRepo("chat.conversation_expired")
 	private val NOT_IN_PARTY_MESSAGE by "You are not in a party and were moved to the ALL channel.".fromRepo("chat.not_in_party")
 
-	fun init() {
+	init {
 		TickEvents.TICK.register(this::onTick)
 		ScreenRenderEvents.afterRender<ChatScreen> { _, ctx, _, _, _ -> onRenderChatScreen(ctx) }
 		HudRenderCallback.EVENT.register { ctx, delta ->
