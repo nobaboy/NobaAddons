@@ -1,5 +1,9 @@
 package me.nobaboy.nobaaddons.features.inventory
 
+//? if >=1.21.5 {
+/*import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
+*///?}
+
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.UISettings
@@ -68,7 +72,7 @@ object ItemPickupLog {
 			val delta = (current[name] ?: 0) - (previous[name] ?: 0)
 			if(delta == 0) continue
 
-			val map = if (delta > 0) addedItems else removedItems
+			val map = if(delta > 0) addedItems else removedItems
 			val previousChange = map[name]?.change ?: 0
 			map[name] = ItemEntry(previousChange + abs(delta))
 		}
@@ -76,7 +80,7 @@ object ItemPickupLog {
 
 	private fun PlayerInventory.nameToCount(): Map<Text, Int> = buildMap {
 		//? if >=1.21.5 {
-		/*val main = (this@itemNamesToCount as PlayerInventoryAccessor).main
+		/*val main = (this@nameToCount as PlayerInventoryAccessor).main
 		*///?}
 
 		main.forEachIndexed { slot, stack ->
@@ -117,9 +121,9 @@ object ItemPickupLog {
 
 		return buildList {
 			if(config.compactLines) {
-				val allNames = (addedItems.keys + removedItems.keys).toSet()
+				val names = (addedItems.keys + removedItems.keys).toSet()
 
-				for (name in allNames) {
+				for(name in names) {
 					val added = addedItems[name]?.change ?: 0
 					val removed = removedItems[name]?.change ?: 0
 
