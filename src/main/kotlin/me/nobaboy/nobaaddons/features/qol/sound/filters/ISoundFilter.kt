@@ -16,7 +16,6 @@ interface ISoundFilter {
 	fun onSound(sound: SoundEvents.AllowSound)
 
 	companion object {
-		private var init = false
 		private val filters = arrayOf(
 			// Items Abilities
 			WitherSkullAbilitiesSoundFilter,
@@ -31,10 +30,7 @@ interface ISoundFilter {
 			PunchSoundFilter,
 		)
 
-		fun init() {
-			check(!init) { "Already initialized sound filters!" }
-			init = true
-
+		init {
 			filters.forEach { filter ->
 				SoundEvents.ALLOW_SOUND.register {
 					if(filter.enabled) filter.onSound(it)

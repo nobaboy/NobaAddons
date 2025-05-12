@@ -24,9 +24,6 @@ object DMCommands : ChatCommandManager() {
 		register(WarpOutCommand("msg", config::warpOut))
 		register(WarpMeCommand())
 		register(PartyMeCommand())
-	}
-
-	fun init() {
 		ChatMessageEvents.CHAT.register {
 			val message = it.cleaned
 

@@ -25,7 +25,7 @@ object AnnounceRareDrops {
 		"MINOS_RELIC"
 	)
 
-	fun init() {
+	init {
 		InventoryEvents.SLOT_UPDATE.register(this::onSlotUpdate)
 	}
 

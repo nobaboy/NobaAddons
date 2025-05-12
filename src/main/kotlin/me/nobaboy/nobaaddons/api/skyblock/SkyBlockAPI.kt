@@ -87,13 +87,13 @@ object SkyBlockAPI {
 	fun SkyBlockSeason.isSeason(): Boolean = inSkyBlock && currentSeason == this
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
-	@OptIn(ExperimentalUuidApi::class)
-	fun init() {
+	init {
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
 		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 		TickEvents.everySecond { update() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
+		@OptIn(ExperimentalUuidApi::class)
 		currentProfile = PersistentCache.lastProfile?.toJavaUuid()
 	}
 

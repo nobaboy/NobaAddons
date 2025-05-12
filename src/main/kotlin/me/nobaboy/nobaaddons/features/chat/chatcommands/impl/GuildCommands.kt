@@ -20,9 +20,6 @@ object GuildCommands : ChatCommandManager() {
 	init {
 		register(HelpCommand(this, config::help))
 		register(WarpOutCommand("gc", config::warpOut))
-	}
-
-	fun init() {
 		ChatMessageEvents.CHAT.register {
 			val message = it.cleaned
 

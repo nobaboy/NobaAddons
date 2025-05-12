@@ -63,7 +63,7 @@ object PartyAPI {
 	var party: PartyData? = null
 		private set
 
-	fun init() {
+	init {
 		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 		TickEvents.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }

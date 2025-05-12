@@ -15,7 +15,7 @@ object InventoryAPI {
 	private var currentScreen: Screen? = null
 	private var currentInventory: InventoryData? = null
 
-	fun init() {
+	init {
 		PacketEvents.SEND.register(this::onPacketSend)
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 	}

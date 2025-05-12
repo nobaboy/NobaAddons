@@ -27,7 +27,7 @@ object CorpseLocator {
 
 	private val corpses = mutableListOf<Corpse>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { corpses.clear() }
 		TickEvents.everySecond(this::onSecondPassed)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)

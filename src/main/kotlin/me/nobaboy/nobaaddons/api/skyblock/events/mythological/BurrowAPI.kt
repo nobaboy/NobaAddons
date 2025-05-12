@@ -38,7 +38,7 @@ object BurrowAPI {
 
 	private var lastBurrowChatMessage = Timestamp.distantPast()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		BlockInteractionEvent.EVENT.register(this::onBlockClick)

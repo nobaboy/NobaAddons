@@ -30,7 +30,7 @@ object SlayerAPI {
 
 	private val miniBosses = mutableListOf<LivingEntity>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.TICK.register { onTick() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)

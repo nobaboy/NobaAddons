@@ -35,7 +35,7 @@ object ItemPickupLog {
 	private val addedItems = mutableMapOf<Text, ItemEntry>()
 	private val removedItems = mutableMapOf<Text, ItemEntry>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.TICK.register(this::onTick)
 		UIManager.add(PickupLogHudElement)

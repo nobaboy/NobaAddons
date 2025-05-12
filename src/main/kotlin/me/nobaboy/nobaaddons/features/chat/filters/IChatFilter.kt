@@ -22,7 +22,6 @@ interface IChatFilter {
 	fun shouldFilter(message: String): Boolean
 
 	companion object {
-		private var init = false
 		private val filters = arrayOf(
 			// Item Abilities
 			AbilityChatFilter,
@@ -37,10 +36,7 @@ interface IChatFilter {
 			TipMessagesChatFilter,
 		)
 
-		fun init() {
-			check(!init) { "Already initialized chat filters!" }
-			init = true
-
+		init {
 			ChatMessageEvents.ALLOW.register { event ->
 				for(filter in filters.asSequence()) {
 					if(!filter.enabled) continue
