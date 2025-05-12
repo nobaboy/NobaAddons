@@ -28,6 +28,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import kotlin.math.floor
 import kotlin.math.roundToLong
 
@@ -129,11 +130,22 @@ object CalculateCommands {
 			else -> listPrice * 0.025
 		}.roundToLong()
 
-		val listTime: Int? = listTime?.let {
+		val parsedListTime: Int? = listTime?.let {
 			if(it.isNumeric()) return@let it.toInt()
 			it.asDuration()?.inWholeHours?.toInt()
 		}?.coerceAtMost(14 * 24)
-		val listTimeFee: Int? = listTime?.let {
+		if(parsedListTime == null && listTime != null) {
+			ChatUtils.addMessage(
+				tr("nobaaddons.comamnd.calculate.tax.invalidListTime", "Invalid list time; expected either an integer number of hours (e.g. '24'), or a string like '2d'"),
+				color = Formatting.RED,
+			)
+			return
+		}
+
+		val listTimeFee: Int? = parsedListTime?.let {
+			if(it < 1) { // list times <1h are always exactly 50 coins
+				return@let 50
+			}
 			var fee = 0
 			repeat(it) { fee += listTimeFee.getOrLast(it) }
 			fee
@@ -152,7 +164,7 @@ object CalculateCommands {
 			append(tr("nobaaddons.command.calculate.tax.fee", "List fee: ${fee.addSeparators().toText().gold()}"))
 			append("\n • ")
 			if(listTimeFee != null) {
-				append(tr("nobaaddons.command.calculate.tax.timeFee", "Time fee for $listTime hours: ${listTimeFee.addSeparators().toText().gold()}"))
+				append(tr("nobaaddons.command.calculate.tax.timeFee", "Time fee for $parsedListTime hours: ${listTimeFee.addSeparators().toText().gold()}"))
 				append("\n • ")
 			}
 			append(tr("nobaaddons.command.calculate.tax.taxes", "Claim taxes: ${tax.addSeparators().toText().gold()}"))
