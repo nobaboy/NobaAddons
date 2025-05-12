@@ -32,8 +32,8 @@ object AnnounceRareDrops {
 	private fun onSlotUpdate(event: InventoryEvents.SlotUpdate) {
 		if(!enabled) return
 
-		val itemStack = event.stack
-		val item = itemStack.asSkyBlockItem ?: return
+		val stack = event.stack
+		val item = stack.asSkyBlockItem ?: return
 
 		if(item.id !in rareDrops) return
 		item.timestamp?.let { if(it.elapsedSince() > 3.seconds) return } ?: return
@@ -45,7 +45,7 @@ object AnnounceRareDrops {
 		val text = buildText {
 			append(tr("nobaaddons.chat.rareDrop", "RARE DROP!").formatted(Formatting.GOLD, Formatting.BOLD))
 			append(" ")
-			append(itemStack.name)
+			append(stack.name)
 		}
 
 		ChatUtils.addMessage(text, prefix = false)

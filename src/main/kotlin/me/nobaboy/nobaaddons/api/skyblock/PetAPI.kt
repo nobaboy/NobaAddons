@@ -54,9 +54,7 @@ object PetAPI {
 
 		event.inventory.items.values.forEach { itemStack ->
 			val pet = getPetData(itemStack) ?: return@forEach
-			if(!pet.active) return@forEach
-
-			changePet(pet)
+			if(pet.active) changePet(pet)
 		}
 	}
 
