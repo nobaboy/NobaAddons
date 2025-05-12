@@ -35,10 +35,11 @@ object ItemPickupLog {
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
 	private val items = Object2ObjectArrayMap<Text, Int>()
-	private var suppressTime = Timestamp.distantPast()
 
 	private val addedItems = Object2ObjectArrayMap<Text, ItemEntry>()
 	private val removedItems = Object2ObjectArrayMap<Text, ItemEntry>()
+
+	private var suppressTime = Timestamp.distantPast()
 
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
