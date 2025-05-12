@@ -19,7 +19,7 @@ object MineshaftWaypoints {
 
 	val waypoints = mutableListOf<MineshaftWaypoint>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register(this::onIslandChange)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}

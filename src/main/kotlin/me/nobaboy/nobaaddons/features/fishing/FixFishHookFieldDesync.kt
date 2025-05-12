@@ -10,7 +10,7 @@ import net.minecraft.entity.projectile.FishingBobberEntity
 object FixFishHookFieldDesync {
 	val enabled get() = NobaConfig.fishing.fixFishHookFieldDesync
 
-	fun init() {
+	init {
 		ClientTickEvents.START_CLIENT_TICK.register {
 			ErrorManager.catching("Fix fishing bobber desync errored", this::onTick)
 		}

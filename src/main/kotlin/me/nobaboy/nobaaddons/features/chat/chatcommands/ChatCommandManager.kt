@@ -27,7 +27,7 @@ abstract class ChatCommandManager {
 	protected abstract val enabled: Boolean
 	protected abstract val pattern: Regex
 
-	open fun init() {
+	init {
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 

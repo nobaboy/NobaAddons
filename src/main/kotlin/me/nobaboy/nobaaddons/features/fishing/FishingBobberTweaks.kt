@@ -22,7 +22,7 @@ object FishingBobberTweaks {
 	private val GREEN = NobaColor.GREEN.rgb
 	private val GOLD = NobaColor.GOLD.rgb
 
-	fun init() {
+	init {
 		EntityEvents.SPAWN.register(this::onEntitySpawn)
 		EntityEvents.ALLOW_RENDER.register(this::onEntityRender)
 		EntityNametagRenderEvents.VISIBILITY.register(this::allowNameTag)

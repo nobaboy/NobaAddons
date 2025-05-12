@@ -26,7 +26,7 @@ object ChocolateFactoryFeatures {
 	private val hasMythicRabbitSpawned: Boolean
 		get() = PetAPI.currentPet?.id == "RABBIT" && PetAPI.currentPet?.rarity == Rarity.MYTHIC
 
-	fun init() {
+	init {
 		ItemUseEvent.EVENT.register(this::onItemUse)
 		BlockInteractionEvent.EVENT.registerIf<BlockInteractionEvent.Interact>(this::onItemUse)
 		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)

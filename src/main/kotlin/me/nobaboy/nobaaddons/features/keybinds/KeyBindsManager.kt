@@ -23,7 +23,7 @@ object KeyBindsManager {
 		NobaKeyBind(tr("nobaaddons.keyBind.mythologicalRitual.nearestWarp", "Mythological Nearest Warp")) { BurrowWaypoints.useNearestWarp() }
 	)
 
-	fun init() {
+	init {
 		KeyBindsConfig.safeLoad()
 		gameKeyBinds.forEach(KeyBindingHelper::registerKeyBinding)
 	}

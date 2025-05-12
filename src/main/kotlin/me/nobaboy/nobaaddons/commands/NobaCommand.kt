@@ -32,7 +32,7 @@ import net.minecraft.util.Formatting
 @Suppress("unused")
 @Group("nobaaddons", "noba")
 object NobaCommand {
-	fun init() {
+	init {
 		CommandUtil.registerRoot(this)
 		HypixelChatCommandMocks.init()
 	}

@@ -22,7 +22,7 @@ object CopyChatFeature {
 	private val messages = WeakHashMap<ChatHudLine.Visible, WeakReference<ChatHudLine>>(200)
 	private val copyRaw by DebugFlag.COPY_RAW_CHAT_COMPONENT
 
-	fun init() {
+	init {
 		ChatMessageEvents.ADDED.register(this::onChatAdded)
 	}
 

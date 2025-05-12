@@ -12,7 +12,7 @@ object UIManager : ForwardingSet<HudElement>() {
 	private val elements = mutableSetOf<HudElement>()
 	var renderElementBounds: Boolean = false
 
-	fun init() {
+	init {
 		HudRenderCallback.EVENT.register { context, _ -> render(context) }
 	}
 
