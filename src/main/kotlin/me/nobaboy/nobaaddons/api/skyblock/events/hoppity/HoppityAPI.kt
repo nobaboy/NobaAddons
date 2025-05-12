@@ -17,7 +17,7 @@ object HoppityAPI {
 	val inRelevantIsland: Boolean get() = unsupportedIslands.none { it.inIsland() }
 
 	val hasLocatorInHand: Boolean get() = MCUtils.player?.mainHandStack?.skyBlockId == LOCATOR
-	val hasLocatorInHotbar: Boolean get() = InventoryUtils.getItemsInHotbar().any { it.skyBlockId == LOCATOR }
+	val hasLocatorInHotbar: Boolean get() = InventoryUtils.getHotbarItems().any { it.skyBlockId == LOCATOR }
 
 	private val unsupportedIslands = listOf(
 		SkyBlockIsland.PRIVATE_ISLAND,

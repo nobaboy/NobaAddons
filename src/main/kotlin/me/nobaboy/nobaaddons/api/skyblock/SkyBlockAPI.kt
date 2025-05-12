@@ -99,9 +99,11 @@ object SkyBlockAPI {
 
 	private fun onLocationPacket(packet: ClientboundLocationPacket) {
 		currentServer = packet.serverType.getOrNull()
-		currentIsland = SkyBlockIsland.getByName(packet.mode.getOrNull() ?: return)
-		if(currentIsland != SkyBlockIsland.UNKNOWN) Scheduler.schedule(2) {
-			SkyBlockEvents.ISLAND_CHANGE.dispatch(SkyBlockEvents.IslandChange(currentIsland))
+		val newIsland = packet.mode.map(SkyBlockIsland::getByName).orElse(SkyBlockIsland.UNKNOWN)
+
+		if(newIsland != currentIsland) Scheduler.schedule(2) {
+			SkyBlockEvents.ISLAND_CHANGE.dispatch(SkyBlockEvents.IslandChange(newIsland))
+			currentIsland = newIsland
 		}
 	}
 

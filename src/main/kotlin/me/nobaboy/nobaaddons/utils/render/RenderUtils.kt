@@ -15,7 +15,7 @@ import com.mojang.blaze3d.systems.RenderSystem
 import org.lwjgl.opengl.GL11
 //?}
 
-import me.nobaboy.nobaaddons.mixins.accessors.BeaconBlockEntityRendererInvoker
+import me.nobaboy.nobaaddons.mixins.accessors.BeaconBlockEntityRendererAccessor
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
@@ -245,7 +245,7 @@ object RenderUtils {
 		matrices.push()
 		matrices.translate(x, y, z)
 
-		BeaconBlockEntityRendererInvoker.invokeRenderBeam(
+		BeaconBlockEntityRendererAccessor.invokeRenderBeam(
 			matrices,
 			context.consumers(),
 			//? if >=1.21.5 {

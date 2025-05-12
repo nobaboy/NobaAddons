@@ -65,7 +65,7 @@ object PetAPI {
 		if(event.button != GLFW.GLFW_MOUSE_BUTTON_1) return
 		if(event.actionType != SlotActionType.PICKUP) return
 
-		getPetData(event.itemStack)?.let { changePet(it) }
+		getPetData(event.stack)?.let { changePet(it) }
 	}
 
 	private fun onChatMessage(event: ChatMessageEvents.Chat) {
