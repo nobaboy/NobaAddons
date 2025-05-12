@@ -114,56 +114,48 @@ object ItemPickupLog {
 		return this
 	}
 
-	// TODO wtf is this, split into 2 functions and call whichever based on config.compactLines
-	private fun buildDisplayLines(): List<Text> {
-		addedItems.values.removeIf { it.expired }
-		removedItems.values.removeIf { it.expired }
+	private fun compileCompactLines(): List<Text> = buildList {
+		val names = addedItems.keys + removedItems.keys
 
-		return buildList {
-			if(config.compactLines) {
-				val names = (addedItems.keys + removedItems.keys).toSet()
+		names.forEach { name ->
+			val added = addedItems[name]?.change ?: 0
+			val removed = removedItems[name]?.change ?: 0
 
-				for(name in names) {
-					val added = addedItems[name]?.change ?: 0
-					val removed = removedItems[name]?.change ?: 0
+			val delta = added - removed
+			if(delta == 0) return@forEach
 
-					val delta = added - removed
-					if(delta == 0) continue
-
-					add(buildText {
-						literal(if(delta > 0) "+${delta.addSeparators()}x " else "-${(-delta).addSeparators()}x ") {
-							if(delta > 0) green() else red()
-						}
-						append(name)
-					})
+			add(buildText {
+				val symbol = if(delta > 0) "+" else ""
+				literal("$symbol${delta.addSeparators()}x ") {
+					if(delta > 0) green() else red()
 				}
-			} else {
-				for((name, addEntry) in addedItems) {
-					add(buildText {
-						literal("+${addEntry.change.addSeparators()}x ") { green() }
-						append(name)
-					})
-
-					removedItems[name]?.let { removeEntry ->
-						add(buildText {
-							literal("-${removeEntry.change.addSeparators()}x ") { red() }
-							append(name)
-						})
-					}
-				}
-
-				for((name, removeEntry) in removedItems) {
-					if(name !in addedItems) {
-						add(buildText {
-							literal("-${removeEntry.change.addSeparators()}x ") { red() }
-							append(name)
-						})
-					}
-				}
-			}
+				append(name)
+			})
 		}
 	}
 
+	private fun compileSplitLines(): List<Text> = buildList {
+		addedItems.forEach { (name, entry) ->
+			add(buildText {
+				literal("+${entry.change.addSeparators()}x ") { green() }
+				append(name)
+			})
+
+			removedItems[name]?.let { entry ->
+				add(buildText {
+					literal("-${entry.change.addSeparators()}x ") { red() }
+					append(name)
+				})
+			}
+		}
+
+		removedItems.filterKeys { it !in addedItems }.forEach { (name, entry) ->
+			add(buildText {
+				literal("-${entry.change.addSeparators()}x ") { red() }
+				append(name)
+			})
+		}
+	}
 
 	private fun reset() {
 		items.clear()
@@ -180,7 +172,12 @@ object ItemPickupLog {
 		override val maxScale: Float = 1f
 
 		override fun renderText(context: DrawContext) {
-			renderLines(context, buildDisplayLines())
+			// TODO could this be in the onTick or is there a slight chance I get a CME
+			addedItems.values.removeIf { it.expired }
+			removedItems.values.removeIf { it.expired }
+
+			val lines = if(config.compactLines) compileCompactLines() else compileSplitLines()
+			renderLines(context, lines)
 		}
 	}
 
