@@ -56,7 +56,7 @@ object MouseLock {
 		return heldItem.id in FARMING_TOOLS
 	}
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { locked = false }
 		PacketEvents.PRE_RECEIVE.register(this::onEarlyPacketReceive)
 	}

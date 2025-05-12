@@ -28,7 +28,7 @@ object TemporaryWaypoints {
 
 	private val waypoints = mutableListOf<Waypoint>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { waypoints.clear() }
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)

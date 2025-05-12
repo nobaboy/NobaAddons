@@ -38,7 +38,7 @@ object InventoryAPI {
 
 	private fun shouldSuppressItemLogUpdate(): Boolean = inventorySuppressTime.elapsedSeconds() < 2
 
-	fun init() {
+	init {
 		TickEvents.every(5, this::onQuarterSecond)
 		PacketEvents.SEND.register(this::onPacketSend)
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)

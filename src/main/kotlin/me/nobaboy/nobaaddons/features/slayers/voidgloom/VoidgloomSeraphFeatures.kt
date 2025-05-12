@@ -51,7 +51,7 @@ object VoidgloomSeraphFeatures {
 
 	private val nukekubiFixations = mutableSetOf<ArmorStandEntity>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		SlayerEvents.QUEST_CLEAR.register { reset() }
 		TickEvents.TICK.register { onTick() }

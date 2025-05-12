@@ -45,7 +45,7 @@ object InquisitorWaypoints {
 	private val nearbyInquisitors = mutableListOf<OtherClientPlayerEntity>()
 	private var lastInquisitor: OtherClientPlayerEntity? = null
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.everySecond { onSecondPassed() }
 		MythologicalEvents.MOB_DIG.register(this::onMobDig)

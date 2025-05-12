@@ -21,7 +21,7 @@ object ChatNotifications {
 		}
 	}
 
-	fun init() {
+	init {
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
