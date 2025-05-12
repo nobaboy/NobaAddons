@@ -64,27 +64,16 @@ object PartyAPI {
 		private set
 
 	init {
-		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 		TickEvents.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
+		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 		HypixelModAPI.getInstance().listen(this::onPartyData)
 	}
 
 	fun refreshPartyList() {
 		refreshPartyList = true
-	}
-
-	private fun onSendCommand(event: SendMessageEvents.SendCommand) {
-		val split = event.command.split(" ").filter { it.isNotBlank() }
-		if(split[0].equals("pl", ignoreCase = true)) {
-			refreshPartyList = true
-		} else if(split[0].equals("p", ignoreCase = true) || split[0].equals("party", ignoreCase = true)) {
-			if(split.getOrNull(1).equals("list", ignoreCase = true)) {
-				refreshPartyList = true
-			}
-		}
 	}
 
 	private fun onTick(cooldownManager: CooldownManager) {
@@ -100,6 +89,16 @@ object PartyAPI {
 
 		if(INVALIDATE_PARTY_REGEXES.any { it.matches(event.cleaned) }) {
 			refreshPartyList = true
+		}
+	}
+
+	private fun onSendCommand(event: SendMessageEvents.SendCommand) {
+		val args = event.command.split(" ").filter { it.isNotBlank() }
+		if(args.isEmpty()) return
+
+		when(args.getOrNull(0)?.lowercase()) {
+			"pl" -> refreshPartyList = true
+			"p", "party" -> if(args.getOrNull(1).equals("list", ignoreCase = true)) refreshPartyList = true
 		}
 	}
 
