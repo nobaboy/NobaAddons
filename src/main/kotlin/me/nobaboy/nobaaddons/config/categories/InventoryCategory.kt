@@ -206,6 +206,7 @@ object InventoryCategory {
 			}
 			add({ inventory.itemPickupLog::compactLines }) {
 				name = tr("nobaaddons.config.inventory.itemPickupLog.compactLines", "Compact Lines")
+				descriptionText = tr("nobaaddons.config.inventory.itemPickupLog.compactLines.tooltip", "Shows a single line with the total difference, instead of displaying the added/removed item counts separately")
 				require { option(enabled) }
 				booleanController()
 			}
