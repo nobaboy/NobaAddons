@@ -4,6 +4,7 @@ package me.nobaboy.nobaaddons.features.inventory
 /*import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
 *///?}
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.UISettings
@@ -33,11 +34,11 @@ object ItemPickupLog {
 	private val config get() = NobaConfig.inventory.itemPickupLog
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
-	private val items = mutableMapOf<Text, Int>()
+	private val items = Object2ObjectArrayMap<Text, Int>()
 	private var suppressTime = Timestamp.distantPast()
 
-	private val addedItems = mutableMapOf<Text, ItemEntry>()
-	private val removedItems = mutableMapOf<Text, ItemEntry>()
+	private val addedItems = Object2ObjectArrayMap<Text, ItemEntry>()
+	private val removedItems = Object2ObjectArrayMap<Text, ItemEntry>()
 
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
@@ -47,8 +48,11 @@ object ItemPickupLog {
 
 	private fun onTick(event: TickEvents.Tick) {
 		if(!enabled) return
-		if(event.client.currentScreen != null) return
 
+		addedItems.values.removeIf { it.expired }
+		removedItems.values.removeIf { it.expired }
+
+		if(event.client.currentScreen != null) return
 		val player = event.client.player ?: return
 
 		val newItems = player.inventory.nameToCount()
@@ -114,14 +118,14 @@ object ItemPickupLog {
 		return this
 	}
 
-	private fun compileCompactLines(): List<Text> = buildList {
-		val names = addedItems.keys + removedItems.keys
+	private fun compileCompactLines(
+		added: Map<Text, ItemEntry>,
+		removed: Map<Text, ItemEntry>,
+	): List<Text> = buildList {
+		val names = added.keys + removed.keys
 
 		names.forEach { name ->
-			val added = addedItems[name]?.change ?: 0
-			val removed = removedItems[name]?.change ?: 0
-
-			val delta = added - removed
+			val delta = (added[name]?.change ?: 0) - (removed[name]?.change ?: 0)
 			if(delta == 0) return@forEach
 
 			add(buildText {
@@ -134,14 +138,17 @@ object ItemPickupLog {
 		}
 	}
 
-	private fun compileSplitLines(): List<Text> = buildList {
-		addedItems.forEach { (name, entry) ->
+	private fun compileSplitLines(
+		added: Map<Text, ItemEntry>,
+		removed: Map<Text, ItemEntry>,
+	): List<Text> = buildList {
+		added.forEach { (name, entry) ->
 			add(buildText {
 				literal("+${entry.change.addSeparators()}x ") { green() }
 				append(name)
 			})
 
-			removedItems[name]?.let { entry ->
+			removed[name]?.let { entry ->
 				add(buildText {
 					literal("-${entry.change.addSeparators()}x ") { red() }
 					append(name)
@@ -149,7 +156,7 @@ object ItemPickupLog {
 			}
 		}
 
-		removedItems.filterKeys { it !in addedItems }.forEach { (name, entry) ->
+		removed.filterKeys { it !in added }.forEach { (name, entry) ->
 			add(buildText {
 				literal("-${entry.change.addSeparators()}x ") { red() }
 				append(name)
@@ -172,11 +179,15 @@ object ItemPickupLog {
 		override val maxScale: Float = 1f
 
 		override fun renderText(context: DrawContext) {
-			// TODO could this be in the onTick or is there a slight chance I get a CME
-			addedItems.values.removeIf { it.expired }
-			removedItems.values.removeIf { it.expired }
+			val added = addedItems.clone()
+			val removed = removedItems.clone()
 
-			val lines = if(config.compactLines) compileCompactLines() else compileSplitLines()
+			val lines = if(config.compactLines) {
+				compileCompactLines(added, removed)
+			} else {
+				compileSplitLines(added, removed)
+			}
+
 			renderLines(context, lines)
 		}
 	}
