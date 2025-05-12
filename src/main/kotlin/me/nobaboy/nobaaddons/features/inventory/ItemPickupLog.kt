@@ -24,7 +24,6 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
 
 object ItemPickupLog {
@@ -35,9 +34,7 @@ object ItemPickupLog {
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock
 
 	private val items = Object2ObjectArrayMap<Text, Int>()
-
-	private val addedItems = Object2ObjectArrayMap<Text, ItemEntry>()
-	private val removedItems = Object2ObjectArrayMap<Text, ItemEntry>()
+	private val itemLog = Object2ObjectArrayMap<Text, ItemEntry>()
 
 	private var suppressTime = Timestamp.distantPast()
 
@@ -50,8 +47,7 @@ object ItemPickupLog {
 	private fun onTick(event: TickEvents.Tick) {
 		if(!enabled) return
 
-		addedItems.values.removeIf { it.expired }
-		removedItems.values.removeIf { it.expired }
+		itemLog.values.removeIf { it.expired }
 
 		if(event.client.currentScreen != null) return
 		val player = event.client.player ?: return
@@ -77,9 +73,9 @@ object ItemPickupLog {
 			val delta = (current[name] ?: 0) - (previous[name] ?: 0)
 			if(delta == 0) continue
 
-			val map = if(delta > 0) addedItems else removedItems
-			val previousChange = map[name]?.change ?: 0
-			map[name] = ItemEntry(previousChange + abs(delta))
+			val entry = itemLog.getOrPut(name) { ItemEntry() }
+			if(delta > 0) entry.added += delta else entry.removed += -delta
+			entry.timestamp = Timestamp.now()
 		}
 	}
 
@@ -126,7 +122,7 @@ object ItemPickupLog {
 		val names = added.keys + removed.keys
 
 		names.forEach { name ->
-			val delta = (added[name]?.change ?: 0) - (removed[name]?.change ?: 0)
+			val delta = (added[name]?.added ?: 0) - (removed[name]?.removed ?: 0)
 			if(delta == 0) return@forEach
 
 			add(buildText {
@@ -145,13 +141,13 @@ object ItemPickupLog {
 	): List<Text> = buildList {
 		added.forEach { (name, entry) ->
 			add(buildText {
-				literal("+${entry.change.addSeparators()}x ") { green() }
+				literal("+${entry.added.addSeparators()}x ") { green() }
 				append(name)
 			})
 
 			removed[name]?.let { entry ->
 				add(buildText {
-					literal("-${entry.change.addSeparators()}x ") { red() }
+					literal("-${entry.removed.addSeparators()}x ") { red() }
 					append(name)
 				})
 			}
@@ -159,7 +155,7 @@ object ItemPickupLog {
 
 		removed.filterKeys { it !in added }.forEach { (name, entry) ->
 			add(buildText {
-				literal("-${entry.change.addSeparators()}x ") { red() }
+				literal("-${entry.removed.addSeparators()}x ") { red() }
 				append(name)
 			})
 		}
@@ -167,8 +163,7 @@ object ItemPickupLog {
 
 	private fun reset() {
 		items.clear()
-		addedItems.clear()
-		removedItems.clear()
+		itemLog.clear()
 		suppressTime = Timestamp.now()
 	}
 
@@ -180,8 +175,10 @@ object ItemPickupLog {
 		override val maxScale: Float = 1f
 
 		override fun renderText(context: DrawContext) {
-			val added = addedItems.clone()
-			val removed = removedItems.clone()
+			val itemLog = itemLog.clone()
+
+			val added = itemLog.filterValues { it.added > 0 }
+			val removed = itemLog.filterValues { it.removed > 0 }
 
 			val lines = if(config.compactLines) {
 				compileCompactLines(added, removed)
@@ -194,7 +191,8 @@ object ItemPickupLog {
 	}
 
 	private data class ItemEntry(
-		var change: Int = 0,
+		var added: Int = 0,
+		var removed: Int = 0,
 		var timestamp: Timestamp = Timestamp.now(),
 	) {
 		val expired: Boolean
