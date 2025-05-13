@@ -237,7 +237,7 @@ object ChatCategory {
 			}
 			add({ chat.chatCommands.party::tps }) {
 				name = tr("nobaaddons.config.chat.chatCommands.party.tps", "!tps Command")
-				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.tps.tooltip", "Responds with your average tps")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.tps.tooltip", "Responds with your current tps")
 				require { option(partyEnabled) }
 				booleanController()
 			}
