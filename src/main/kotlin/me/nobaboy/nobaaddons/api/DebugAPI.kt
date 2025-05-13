@@ -1,9 +1,6 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.events.impl.client.SoundEvents
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
-import net.hypixel.modapi.HypixelModAPI
-import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import net.minecraft.sound.SoundCategory
 import net.minecraft.util.Identifier
 import java.awt.event.WindowAdapter
@@ -20,13 +17,9 @@ object DebugAPI {
 	private val recentSounds = mutableListOf<Sound>()
 	private var debugWindow: SoundHistory? = null
 
-	lateinit var lastLocationPacket: ClientboundLocationPacket
-		private set
-
 	init {
 		SoundEvents.SOUND.register { addSound(it) }
 		SoundEvents.SOUND_CANCELED.register { addSound(it, canceled = true) }
-		HypixelModAPI.getInstance().listen<ClientboundLocationPacket> { lastLocationPacket = it }
 	}
 
 	private fun addSound(event: SoundEvents.Sound, canceled: Boolean = false) {
