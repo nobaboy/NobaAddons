@@ -47,9 +47,9 @@ class ChatConfig {
 		class DMCommands {
 			var enabled = false
 			var help = false
-			var warpMe = false
-			var partyMe = false
 			var warpOut = false
+			var partyMe = false
+			var warpMe = false
 		}
 
 		class PartyCommands {
@@ -59,6 +59,8 @@ class ChatConfig {
 			var transfer = false
 			var warp = false
 			var coords = false
+			var ping = false
+			var tps = false
 			var joinInstanced = false
 		}
 

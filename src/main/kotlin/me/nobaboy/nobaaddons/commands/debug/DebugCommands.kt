@@ -14,6 +14,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.adapters.FormattingHandler
 import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
+import me.nobaboy.nobaaddons.core.DebugFlag
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
@@ -200,6 +201,12 @@ object DebugCommands {
 	@Command
 	fun fake(text: Text) {
 		MCUtils.player!!.sendMessage(text, false)
+	}
+
+	@Command
+	fun flag(flag: DebugFlag) {
+		flag.enabled = !flag.enabled
+		ChatUtils.addMessage("$flag is now ${if(flag.enabled) "enabled" else "disabled"}")
 	}
 
 	@Command
