@@ -19,19 +19,8 @@ import java.util.function.Function;
 
 @Mixin(InGameHud.class)
 abstract class InGameHudMixin {
-	//? if >=1.21.2 {
 	@WrapWithCondition(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"))
 	public boolean nobaaddons$hideAirBubbles(DrawContext instance, Function<Identifier, RenderLayer> renderLayers, Identifier sprite, int x, int y, int width, int height) {
-	//?} else {
-	/*@WrapWithCondition(
-		method = "renderStatusBars",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"),
-		slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSubmergedIn(Lnet/minecraft/registry/tag/TagKey;)Z")),
-		require = 2,
-		allow = 2
-	)
-	public boolean nobaaddons$hideAirBubbles(DrawContext instance, Identifier texture, int x, int y, int width, int height) {
-	*///?}
 		if(SkyBlockAPI.inSkyBlock()) {
 			return !NobaConfig.INSTANCE.getUiAndVisuals().getRenderingTweaks().getHideAirBubbles();
 		}

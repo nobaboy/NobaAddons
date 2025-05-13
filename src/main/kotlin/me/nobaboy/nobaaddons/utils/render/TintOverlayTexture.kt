@@ -37,11 +37,7 @@ class TintOverlayTexture : OverlayTexture() {
 					val alpha = ((1.0f - y.toFloat() / 15.0f * 0.75f) * 255.0f).toInt()
 					ColorHelper/*? if <1.21.2 {*//*.Argb*//*?}*/.withAlpha(alpha, color.rgb)
 				}
-				//? if >=1.21.2 {
 				image.setColorArgb(x, y, color)
-				//?} else {
-				/*image.setColor(x, y, color)
-				*///?}
 			}
 		}
 

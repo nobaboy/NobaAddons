@@ -86,11 +86,7 @@ object CorpseLocator {
 		if(!enabled) return
 		if(entity.isInvisible) return
 		if(!entity.shouldShowArms()) return
-		//? if >=1.21.2 {
 		if(entity.shouldShowBasePlate()) return
-		//?} else {
-		/*if(!entity.shouldHideBasePlate()) return
-		*///?}
 
 		val item = entity.getEquippedStack(EquipmentSlot.HEAD).asSkyBlockItem ?: return
 		val corpseType = CorpseType.getByHelmetOrNull(item.id) ?: return

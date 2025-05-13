@@ -1,12 +1,7 @@
 package me.nobaboy.nobaaddons.utils.render
 
-//? if >=1.21.2 {
 import me.nobaboy.nobaaddons.mixins.accessors.DrawContextAccessor
 import net.minecraft.client.render.VertexRendering
-//?} else {
-/*import net.minecraft.client.render.WorldRenderer
-import net.minecraft.client.render.GameRenderer
-*///?}
 
 //? if >=1.21.5 {
 /*import kotlin.math.max
@@ -99,7 +94,7 @@ object RenderUtils {
 	) {
 		if(applyScaling) startScale(context, scale)
 		val vertexConsumerProvider = context.let {
-			(it /*? if >=1.21.2 {*/ as DrawContextAccessor/*?}*/).vertexConsumers
+			(it as DrawContextAccessor).vertexConsumers
 		}
 		MCUtils.textRenderer.drawWithOutline(
 			text.asOrderedText(),
@@ -297,11 +292,7 @@ object RenderUtils {
 		matrices.push()
 		matrices.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z)
 
-		//? if >=1.21.2 {
 		VertexRendering.drawFilledBox(
-		//?} else {
-		/*WorldRenderer.renderFilledBox(
-		*///?}
 			matrices, buffer,
 			box.minX, box.minY, box.minZ,
 			box.maxX, box.maxY, box.maxZ,
@@ -346,11 +337,7 @@ object RenderUtils {
 		matrices.push()
 		matrices.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z)
 
-		//? if >=1.21.2 {
 		VertexRendering.drawBox(
-		//?} else {
-		/*WorldRenderer.drawBox(
-		*///?}
 			matrices, buffer,
 			box.minX, box.minY, box.minZ,
 			box.maxX, box.maxY, box.maxZ,
@@ -365,7 +352,7 @@ object RenderUtils {
 		location: NobaVec,
 		text: Text,
 		color: NobaColor = NobaColor.WHITE,
-		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
+		shadow: Boolean = true,
 		yOffset: Float = 0f,
 		scaleMultiplier: Float = 1f,
 		hideThreshold: Double = 0.0,
@@ -429,7 +416,7 @@ object RenderUtils {
 		location: NobaVec,
 		text: String,
 		color: NobaColor = NobaColor.WHITE,
-		shadow: Boolean = /*? if >=1.21.2 {*/true/*?} else {*//*false*//*?}*/,
+		shadow: Boolean = true,
 		yOffset: Float = 0f,
 		scaleMultiplier: Float = 1f,
 		hideThreshold: Double = 0.0,

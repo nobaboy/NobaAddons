@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.mixins.render;
 
-//? if >=1.21.2 {
-import me.nobaboy.nobaaddons.ducks.EntityStateCaptureDuck;
+import me.nobaboy.nobaaddons.ducks.EntityRenderStateDuck;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.entity.Entity;
@@ -14,8 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class EntityRendererMixin {
 	@Inject(method = "updateRenderState", at = @At("TAIL"))
 	public void nobaaddons$captureEntity(Entity entity, EntityRenderState state, float tickDelta, CallbackInfo ci) {
-		var duck = (EntityStateCaptureDuck) state;
+		var duck = (EntityRenderStateDuck) state;
 		duck.nobaaddons$setEntity(entity);
 	}
 }
-//?}
