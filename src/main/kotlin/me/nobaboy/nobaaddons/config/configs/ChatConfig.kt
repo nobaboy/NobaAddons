@@ -48,8 +48,8 @@ class ChatConfig {
 			var enabled = false
 			var help = false
 			var warpOut = false
-			var warpMe = false
 			var partyMe = false
+			var warpMe = false
 		}
 
 		class PartyCommands {
