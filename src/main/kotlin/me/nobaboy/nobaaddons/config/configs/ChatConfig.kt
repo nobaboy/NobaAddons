@@ -47,19 +47,20 @@ class ChatConfig {
 		class DMCommands {
 			var enabled = false
 			var help = false
+			var warpOut = false
 			var warpMe = false
 			var partyMe = false
-			var warpOut = false
 		}
 
 		class PartyCommands {
 			var enabled = false
 			var help = false
-			var ping = false
 			var allInvite = false
 			var transfer = false
 			var warp = false
 			var coords = false
+			var ping = false
+			var tps = false
 			var joinInstanced = false
 		}
 

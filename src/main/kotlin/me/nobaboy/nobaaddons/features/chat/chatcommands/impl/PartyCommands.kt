@@ -20,13 +20,14 @@ object PartyCommands : ChatCommandManager() {
 
 	init {
 		register(HelpCommand(this, config::help))
-		register(PingCommand())
-		register(TransferCommand())
 		register(AllInviteCommand())
-		register(WarpCommand())
-		register(CancelCommand())
 		register(CoordsCommand())
 		register(JoinInstanceCommands())
+		register(PingCommand())
+		register(TpsCommand())
+		register(TransferCommand())
+		register(WarpCommand())
+		register(CancelCommand())
 	}
 
 	private fun validatePermission(ctx: ChatContext, cmd: ChatCommand): Boolean {

@@ -19,7 +19,7 @@ object DMCommands : ChatCommandManager() {
 	init {
 		register(HelpCommand(this, config::help))
 		register(WarpOutCommand(config::warpOut))
-		register(WarpMeCommand())
 		register(PartyMeCommand())
+		register(WarpMeCommand())
 	}
 }

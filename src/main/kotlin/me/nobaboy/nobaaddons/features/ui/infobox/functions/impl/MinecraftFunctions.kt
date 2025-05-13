@@ -11,6 +11,11 @@ object MinecraftFunctions {
 		override fun execute(): Int = PingUtils.ping
 	}
 
+	object TpsFunction : InfoBoxFunction<Double> {
+		override val name: String = "tps"
+		override fun execute(): Double = PingUtils.averageTps
+	}
+
 	object FpsFunction : InfoBoxFunction<Int> {
 		override val name: String = "fps"
 		override fun execute(): Int = MCUtils.client.currentFps
