@@ -1,9 +1,5 @@
 package me.nobaboy.nobaaddons.features.qol
 
-//? if <1.21.2 {
-/*import me.nobaboy.nobaaddons.utils.NobaVec
-*///?}
-
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland

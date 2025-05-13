@@ -1,9 +1,5 @@
 package me.nobaboy.nobaaddons.mixins.render;
 
-//? if <1.21.2 {
-/*import net.minecraft.item.ArmorItem;
-*///?}
-
 //? if <1.21.5 {
 import org.spongepowered.asm.mixin.injection.Slice;
 //?} else {
