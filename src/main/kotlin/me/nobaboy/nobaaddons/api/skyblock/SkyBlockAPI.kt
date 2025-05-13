@@ -90,7 +90,9 @@ object SkyBlockAPI {
 
 	private fun onServerChange(event: HypixelEvents.ServerChange) {
 		val newIsland = event.packet.mode.map(SkyBlockIsland::getByName).orElse(SkyBlockIsland.UNKNOWN)
-		if(newIsland != currentIsland) Scheduler.schedule(2) {
+		if(newIsland == currentIsland) return
+
+		Scheduler.schedule(2) {
 			SkyBlockEvents.ISLAND_CHANGE.dispatch(SkyBlockEvents.IslandChange(currentIsland, newIsland))
 			currentIsland = newIsland
 		}
