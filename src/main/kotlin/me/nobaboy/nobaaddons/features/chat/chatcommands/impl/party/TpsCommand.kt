@@ -9,7 +9,7 @@ class TpsCommand : ChatCommand() {
 	override val name: String = "tps"
 
 	override suspend fun run(ctx: ChatContext) {
-		ctx.reply("TPS: ${PingUtils.averageTps}")
+		ctx.reply("TPS: ${PingUtils.currentTps}")
 		startCooldown()
 	}
 }
