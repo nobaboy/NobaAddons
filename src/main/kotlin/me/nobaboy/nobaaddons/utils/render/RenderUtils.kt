@@ -93,9 +93,7 @@ object RenderUtils {
 		applyScaling: Boolean = true,
 	) {
 		if(applyScaling) startScale(context, scale)
-		val vertexConsumerProvider = context.let {
-			(it as DrawContextAccessor).vertexConsumers
-		}
+		val vertexConsumerProvider = (context as DrawContextAccessor).vertexConsumers
 		MCUtils.textRenderer.drawWithOutline(
 			text.asOrderedText(),
 			x / scale,
