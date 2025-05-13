@@ -11,28 +11,26 @@ import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacke
 import kotlin.jvm.optionals.getOrNull
 
 object HypixelAPI {
-	private lateinit var location: ClientboundLocationPacket
-
-	val locationOrNull: ClientboundLocationPacket?
-		get() = if(::location.isInitialized) location else null
-
 	val onHypixel: Boolean
 		get() = MCUtils.networkHandler?.brand?.startsWith("Hypixel BungeeCord") == true
 
+	var location: ClientboundLocationPacket? = null
+		private set
+
 	val serverName: String?
-		get() = locationOrNull?.serverName
+		get() = location?.serverName
 
 	val serverType: ServerType?
-		get() = locationOrNull?.serverType?.getOrNull()
+		get() = location?.serverType?.getOrNull()
 
 	val lobbyName: String?
-		get() = locationOrNull?.lobbyName?.getOrNull()
+		get() = location?.lobbyName?.getOrNull()
 
 	val mode: String?
-		get() = locationOrNull?.mode?.getOrNull()
+		get() = location?.mode?.getOrNull()
 
 	val map: String?
-		get() = locationOrNull?.map?.getOrNull()
+		get() = location?.map?.getOrNull()
 
 	init {
 		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
