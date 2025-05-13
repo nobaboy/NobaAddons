@@ -5,7 +5,7 @@ import net.minecraft.client.render.entity.state.EntityRenderState
 import net.minecraft.entity.Entity
 import net.minecraft.util.math.MathHelper
 
-class RenderStateDataKey<T>(private val initialValue: () -> T) {
+class EntityDataKey<T>(private val initialValue: () -> T) {
 	private val id = MathHelper.randomUuid().hashCode()
 
 	override fun equals(other: Any?): Boolean = this === other
@@ -18,11 +18,11 @@ class RenderStateDataKey<T>(private val initialValue: () -> T) {
 	}
 
 	@Suppress("UNCHECKED_CAST")
-	fun getData(holder: StateDataHolder): RenderStateDataKey<T>.Value =
-		holder.`nobaaddons$getData`().getOrPut(this, ::Value) as RenderStateDataKey<T>.Value
+	fun getData(holder: StateDataHolder): EntityDataKey<T>.Value =
+		holder.`nobaaddons$getData`().getOrPut(this, ::Value) as EntityDataKey<T>.Value
 
-	fun getData(state: EntityRenderState): RenderStateDataKey<T>.Value = getData(state as StateDataHolder)
-	fun getData(entity: Entity): RenderStateDataKey<T>.Value = getData(entity as StateDataHolder)
+	fun getData(state: EntityRenderState): EntityDataKey<T>.Value = getData(state as StateDataHolder)
+	fun getData(entity: Entity): EntityDataKey<T>.Value = getData(entity as StateDataHolder)
 
 	fun get(state: EntityRenderState): T = getData(state).value
 	fun get(entity: Entity): T = getData(entity).value
@@ -43,10 +43,10 @@ class RenderStateDataKey<T>(private val initialValue: () -> T) {
 	}
 
 	companion object {
-		@JvmField val ENTITY: RenderStateDataKey<Entity?> = RenderStateDataKey<Entity?> { null }
+		@JvmField val ENTITY: EntityDataKey<Entity?> = EntityDataKey<Entity?> { null }
 
-		operator fun StateDataHolder.contains(key: RenderStateDataKey<*>): Boolean = `nobaaddons$getData`().contains(key)
-		operator fun Entity.contains(key: RenderStateDataKey<*>): Boolean = (this as StateDataHolder).contains(key)
-		operator fun EntityRenderState.contains(key: RenderStateDataKey<*>): Boolean = (this as StateDataHolder).contains(key)
+		operator fun StateDataHolder.contains(key: EntityDataKey<*>): Boolean = `nobaaddons$getData`().contains(key)
+		operator fun Entity.contains(key: EntityDataKey<*>): Boolean = (this as StateDataHolder).contains(key)
+		operator fun EntityRenderState.contains(key: EntityDataKey<*>): Boolean = (this as StateDataHolder).contains(key)
 	}
 }

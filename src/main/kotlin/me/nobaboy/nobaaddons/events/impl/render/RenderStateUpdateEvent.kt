@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.events.impl.render
 
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
-import me.nobaboy.nobaaddons.utils.render.state.RenderStateDataKey
+import me.nobaboy.nobaaddons.utils.render.state.EntityDataKey
 import net.minecraft.client.render.entity.state.EntityRenderState
 import net.minecraft.entity.Entity
 
@@ -12,14 +12,14 @@ import net.minecraft.entity.Entity
  * This event is invoked after all applicable vanilla code has modified the render state.
  */
 data class RenderStateUpdateEvent(val entity: Entity, val state: EntityRenderState) : Event {
-	fun <T> getEntity(key: RenderStateDataKey<T>): T = key.get(entity)
-	fun <T> getState(key: RenderStateDataKey<T>): T = key.get(state)
+	fun <T> getEntity(key: EntityDataKey<T>): T = key.get(entity)
+	fun <T> getState(key: EntityDataKey<T>): T = key.get(state)
 
-	fun <T> copyToRender(key: RenderStateDataKey<T>) {
+	fun <T> copyToRender(key: EntityDataKey<T>) {
 		key.copyToRender(entity, state)
 	}
 
-	fun <T> set(key: RenderStateDataKey<T>, value: T) {
+	fun <T> set(key: EntityDataKey<T>, value: T) {
 		key.put(state, value)
 	}
 
