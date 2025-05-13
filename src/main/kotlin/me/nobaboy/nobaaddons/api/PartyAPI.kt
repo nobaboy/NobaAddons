@@ -6,6 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.api.HypixelAPI.listen
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.chat.SendMessageEvents
@@ -13,9 +14,7 @@ import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CooldownManager
-import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
@@ -77,7 +76,7 @@ object PartyAPI {
 	}
 
 	private fun onTick(cooldownManager: CooldownManager) {
-		if(refreshPartyList && HypixelUtils.onHypixel) {
+		if(refreshPartyList && HypixelAPI.onHypixel) {
 			getPartyInfo()
 			refreshPartyList = false
 			cooldownManager.startCooldown(1.5.seconds)
@@ -85,7 +84,7 @@ object PartyAPI {
 	}
 
 	private fun onChatMessage(event: ChatMessageEvents.Chat) {
-		if(!HypixelUtils.onHypixel) return
+		if(!HypixelAPI.onHypixel) return
 
 		if(INVALIDATE_PARTY_REGEXES.any { it.matches(event.cleaned) }) {
 			refreshPartyList = true

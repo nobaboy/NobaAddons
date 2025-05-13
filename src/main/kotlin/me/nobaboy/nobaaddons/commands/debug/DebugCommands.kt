@@ -7,6 +7,7 @@ import dev.celestialfault.commander.annotations.Group
 import dev.celestialfault.commander.annotations.RootCommand
 import kotlinx.coroutines.delay
 import me.nobaboy.nobaaddons.api.DebugAPI
+import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
@@ -39,7 +40,6 @@ import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.text.Texts
 import net.minecraft.util.Formatting
-import kotlin.jvm.optionals.getOrNull
 
 @OptIn(UntranslatedMessage::class)
 @Suppress("unused")
@@ -137,13 +137,12 @@ object DebugCommands {
 
 	@Command
 	fun location(ctx: Context) {
-		val location = DebugAPI.lastLocationPacket
 		ctx.dumpInfo(
-			"Server" to location.serverName,
-			"Type" to location.serverType.getOrNull(),
-			"Lobby" to location.lobbyName.getOrNull(),
-			"Mode" to location.mode.getOrNull(),
-			"Map" to location.map.getOrNull(),
+			"Server" to HypixelAPI.serverName,
+			"Type" to HypixelAPI.serverType,
+			"Lobby" to HypixelAPI.lobbyName,
+			"Mode" to HypixelAPI.mode,
+			"Map" to HypixelAPI.map,
 			"Detected Island" to SkyBlockAPI.currentIsland,
 			"Zone" to SkyBlockAPI.currentZone,
 		)
