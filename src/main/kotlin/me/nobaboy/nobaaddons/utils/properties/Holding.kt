@@ -28,6 +28,17 @@ data class Holding<T : Any>(@Volatile private var value: T? = null) {
 	}
 
 	/**
+	 * Clears the currently held value, and then runs the provided [cleanup] callable
+	 *
+	 * If there is no value stored, this method effectively acts as a noop.
+	 */
+	fun clearWithCleanup(cleanup: (T) -> Unit) = synchronized(lock) {
+		val removed = value ?: return
+		value = null
+		cleanup(removed)
+	}
+
+	/**
 	 * Get the currently held value, or create one with the provided [factory] if no value is currently stored.
 	 */
 	fun getOrSet(factory: () -> T): T = synchronized(lock) {

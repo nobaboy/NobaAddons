@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.events.CancelableEvent
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
+import net.minecraft.client.render.entity.state.EntityRenderState
 import net.minecraft.entity.Entity
 
 object EntityEvents {
@@ -48,7 +49,7 @@ object EntityEvents {
 
 	data class Spawn(val entity: Entity) : Event
 	data class Despawn(val entity: Entity) : Event
-	data class Render(val entity: Entity, val delta: Float) : Event
+	data class Render(val entity: Entity, val state: EntityRenderState, val delta: Float) : Event
 	data class AllowRender(val entity: Entity) : CancelableEvent()
 	data class VehicleChange(val entity: Entity, val vehicle: Entity) : Event
 }

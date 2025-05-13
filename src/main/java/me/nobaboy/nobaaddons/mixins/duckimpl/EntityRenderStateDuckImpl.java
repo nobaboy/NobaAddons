@@ -13,22 +13,17 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 @Mixin(EntityRenderState.class)
-abstract class EntityRenderStateDuckImpl implements EntityRenderStateDuck {
+class EntityRenderStateDuckImpl implements EntityRenderStateDuck {
 	@Unique
-	private final Map<RenderStateDataKey<?>, RenderStateDataKey<?>.Value> nobaaddons$renderData = new Object2ObjectArrayMap<>();
+	private final Map<RenderStateDataKey<?>, RenderStateDataKey<?>.Value> nobaaddons$data = new Object2ObjectArrayMap<>();
 
 	@Override
 	public Map<RenderStateDataKey<?>, RenderStateDataKey<?>.Value> nobaaddons$getData() {
-		return nobaaddons$renderData;
+		return nobaaddons$data;
 	}
 
 	@Override
 	public @Nullable Entity nobaaddons$getEntity() {
 		return RenderStateDataKey.ENTITY.get((EntityRenderState)(Object)this);
-	}
-
-	@Override
-	public void nobaaddons$setEntity(@Nullable Entity entity) {
-		RenderStateDataKey.ENTITY.put((EntityRenderState)(Object)this, entity);
 	}
 }
