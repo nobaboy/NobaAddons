@@ -1,9 +1,10 @@
-package me.nobaboy.nobaaddons.utils.render.state
+package me.nobaboy.nobaaddons.utils.render
 
 import me.nobaboy.nobaaddons.ducks.StateDataHolder
 import net.minecraft.client.render.entity.state.EntityRenderState
 import net.minecraft.entity.Entity
 import net.minecraft.util.math.MathHelper
+import kotlin.collections.contains
 
 class EntityDataKey<T>(private val initialValue: () -> T) {
 	private val id = MathHelper.randomUuid().hashCode()

@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.mixins.render;
 
 import me.nobaboy.nobaaddons.events.impl.render.RenderStateUpdateEvent;
-import me.nobaboy.nobaaddons.utils.render.state.EntityDataKey;
+import me.nobaboy.nobaaddons.utils.render.EntityDataKey;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.entity.Entity;

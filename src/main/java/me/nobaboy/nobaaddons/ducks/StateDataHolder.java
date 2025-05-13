@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.ducks;
 
-import me.nobaboy.nobaaddons.utils.render.state.EntityDataKey;
+import me.nobaboy.nobaaddons.utils.render.EntityDataKey;
 
 import java.util.Map;
 

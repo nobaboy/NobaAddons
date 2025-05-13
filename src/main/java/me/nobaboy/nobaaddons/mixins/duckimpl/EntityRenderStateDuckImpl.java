@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.mixins.duckimpl;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import me.nobaboy.nobaaddons.ducks.EntityRenderStateDuck;
-import me.nobaboy.nobaaddons.utils.render.state.EntityDataKey;
+import me.nobaboy.nobaaddons.utils.render.EntityDataKey;
 import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.entity.Entity;
 import org.jetbrains.annotations.Nullable;

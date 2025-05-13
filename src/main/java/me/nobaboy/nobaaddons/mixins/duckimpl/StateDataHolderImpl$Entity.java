@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.mixins.duckimpl;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import me.nobaboy.nobaaddons.ducks.StateDataHolder;
-import me.nobaboy.nobaaddons.utils.render.state.EntityDataKey;
+import me.nobaboy.nobaaddons.utils.render.EntityDataKey;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

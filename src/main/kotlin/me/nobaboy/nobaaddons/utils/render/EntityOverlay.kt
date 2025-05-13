@@ -5,7 +5,7 @@ import me.nobaboy.nobaaddons.events.impl.render.RenderStateUpdateEvent
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.properties.Holding
-import me.nobaboy.nobaaddons.utils.render.state.EntityDataKey
+import me.nobaboy.nobaaddons.utils.render.EntityDataKey
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.entity.Entity

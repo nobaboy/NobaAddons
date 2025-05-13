@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.events.impl.render
 
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
-import me.nobaboy.nobaaddons.utils.render.state.EntityDataKey
+import me.nobaboy.nobaaddons.utils.render.EntityDataKey
 import net.minecraft.client.render.entity.state.EntityRenderState
 import net.minecraft.entity.Entity
 
