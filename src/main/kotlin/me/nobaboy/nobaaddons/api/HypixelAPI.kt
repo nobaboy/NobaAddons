@@ -15,7 +15,7 @@ object HypixelAPI {
 	private lateinit var location: ClientboundLocationPacket
 
 	val locationOrNull: ClientboundLocationPacket?
-		get() = if (::location.isInitialized) location else null
+		get() = if(::location.isInitialized) location else null
 
 	val onHypixel: Boolean
 		get() = MCUtils.networkHandler?.brand?.startsWith("Hypixel BungeeCord") == true
