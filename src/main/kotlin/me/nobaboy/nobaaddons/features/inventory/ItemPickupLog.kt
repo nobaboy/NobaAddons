@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.features.inventory
 
 //? if >=1.21.5 {
 /*import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
+import net.minecraft.entity.EquipmentSlot
 *///?}
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap
@@ -83,6 +84,7 @@ object ItemPickupLog {
 	private fun PlayerInventory.nameToCount(): Map<Text, Int> = buildMap {
 		//? if >=1.21.5 {
 		/*val main = (this@nameToCount as PlayerInventoryAccessor).main
+		val equipment = (this@nameToCount as PlayerInventoryAccessor).equipment
 		*///?}
 
 		main.forEachIndexed { slot, stack ->
@@ -92,8 +94,13 @@ object ItemPickupLog {
 			merge(name, stack.count, Int::plus)
 		}
 
-		// TODO fix for 1.21.5 and remove merchant count from name just in case
-//		offHand.firstOrNull()?.let { merge(name, it.count, Int::plus) }
+		//? if >=1.21.5 {
+		/*equipment.get(EquipmentSlot.OFFHAND)
+		*///?} else {
+		offHand.firstOrNull()
+		//?}
+			?.takeIf { !it.isEmpty }
+			?.let { merge(it.name, it.count, Int::plus) }
 	}
 
 	private fun Text.removeMerchantCount(): Text {
