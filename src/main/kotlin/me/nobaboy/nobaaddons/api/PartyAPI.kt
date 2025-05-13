@@ -94,7 +94,6 @@ object PartyAPI {
 
 	private fun onSendCommand(event: SendMessageEvents.SendCommand) {
 		val args = event.command.split(" ").filter { it.isNotBlank() }
-		if(args.isEmpty()) return
 
 		when(args.getOrNull(0)?.lowercase()) {
 			"pl" -> refreshPartyList = true
