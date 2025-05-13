@@ -20,7 +20,11 @@ object PingUtils {
 
 	val averageTps: Double
 		get() {
-			val average = tickRates.average().roundTo(1)
+			val average = tickRates.toSet()
+				.takeIf { it.isNotEmpty() }
+				?.average()
+				?.roundTo(1) ?: currentTps
+
 			return if(average >= 19.7) 20.0 else average
 		}
 
