@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.events.impl.HypixelEvents
-import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import net.hypixel.data.type.ServerType
 import net.hypixel.modapi.HypixelModAPI
@@ -54,25 +53,5 @@ object HypixelAPI {
 
 	inline fun <reified T : ClientboundHypixelPacket> HypixelModAPI.listen(handler: ClientboundPacketHandler<T>) {
 		this.createHandler(T::class.java, handler)
-	}
-
-	class PacketListener<T : ClientboundHypixelPacket>(val packet: Class<ClientboundHypixelPacket>) {
-		private var registered = false
-		val waiting = mutableListOf<(T) -> Unit>()
-
-		@Suppress("UNCHECKED_CAST")
-		@Synchronized
-		fun register() {
-			if(registered) return
-			HypixelModAPI.getInstance().createHandler(packet) { received ->
-				waiting.removeIf {
-					runCatching { it(received as T) }.onFailure {
-						ErrorManager.logError("Mod API packet listener threw an unhandled error", it)
-					}
-					true
-				}
-			}
-			registered = true
-		}
 	}
 }
