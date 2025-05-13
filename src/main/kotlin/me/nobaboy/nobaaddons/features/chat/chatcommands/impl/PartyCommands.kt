@@ -10,7 +10,6 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 
-// TODO add a !tps command to go with this; will require building out functionality to estimate server tps
 object PartyCommands : ChatCommandManager() {
 	private val config get() = NobaConfig.chat.chatCommands.party
 	override val enabled: Boolean get() = config.enabled && onHypixel()

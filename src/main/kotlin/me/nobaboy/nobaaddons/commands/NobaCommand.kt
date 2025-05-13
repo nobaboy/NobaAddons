@@ -70,6 +70,11 @@ object NobaCommand {
 	}
 
 	@Command
+	fun tps() {
+		ChatUtils.addMessage(tr("nobaaddons.command.tps", "TPS: ${PingUtils.currentTps}"))
+	}
+
+	@Command
 	fun sendCoords() {
 		ChatUtils.sendChatAsPlayer(LocationUtils.playerCoords())
 	}
