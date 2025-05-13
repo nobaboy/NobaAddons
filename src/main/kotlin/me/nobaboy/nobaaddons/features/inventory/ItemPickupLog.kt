@@ -60,7 +60,8 @@ object ItemPickupLog {
 			items[name] = items.getOrDefault(name, 0) + count
 		}
 
-		// this check is here solely to update items because it's empty to start with
+		// ignore item changes for ~2s when switching servers, as your inventory is
+		// initially empty when loading in
 		if(suppressTime.elapsedSince() < 2.seconds) return
 		detectItemChanges(items, oldItems)
 	}
@@ -95,7 +96,6 @@ object ItemPickupLog {
 //		offHand.firstOrNull()?.let { merge(name, it.count, Int::plus) }
 	}
 
-	// TODO maybe clean this up, can't get rid of it cuz we need to remove the count either way
 	private fun Text.removeMerchantCount(): Text {
 		if(siblings.size <= 1) return this
 		val last = siblings.last()
@@ -139,11 +139,15 @@ object ItemPickupLog {
 		added: Map<Text, ItemEntry>,
 		removed: Map<Text, ItemEntry>,
 	): List<Text> = buildList {
-		added.forEach { (name, entry) ->
-			add(buildText {
-				literal("+${entry.added.addSeparators()}x ") { green() }
-				append(name)
-			})
+		val names = added.keys + removed.keys
+
+		names.forEach { name ->
+			added[name]?.let { entry ->
+				add(buildText {
+					literal("+${entry.added.addSeparators()}x ") { green() }
+					append(name)
+				})
+			}
 
 			removed[name]?.let { entry ->
 				add(buildText {
@@ -151,13 +155,6 @@ object ItemPickupLog {
 					append(name)
 				})
 			}
-		}
-
-		removed.filterKeys { it !in added }.forEach { (name, entry) ->
-			add(buildText {
-				literal("-${entry.removed.addSeparators()}x ") { red() }
-				append(name)
-			})
 		}
 	}
 
