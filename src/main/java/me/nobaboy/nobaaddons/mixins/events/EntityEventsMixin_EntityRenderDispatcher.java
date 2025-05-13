@@ -44,7 +44,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		CallbackInfo ci
 	) {
 		//? if >=1.21.5 {
-		/*Entity entity = ((EntityStateCaptureDuck) state).nobaaddons$getEntity();
+		/*Entity entity = ((EntityRenderStateDuck) state).nobaaddons$getEntity();
 		*///?}
 		if(entity != null && EntityEvents.ALLOW_RENDER.dispatch(new EntityEvents.AllowRender(entity))) ci.cancel();
 	}
@@ -78,7 +78,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 	) {
 		//? if >=1.21.5 {
 		/*float tickDelta = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true);
-		Entity entity = ((EntityStateCaptureDuck) state).nobaaddons$getEntity();
+		Entity entity = ((EntityRenderStateDuck) state).nobaaddons$getEntity();
 		*///?}
 		if(entity != null) EntityEvents.PRE_RENDER.dispatch(new EntityEvents.Render(entity, tickDelta));
 	}
@@ -112,7 +112,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 	) {
 		//? if >=1.21.5 {
 		/*float tickDelta = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true);
-		Entity entity = ((EntityStateCaptureDuck) state).nobaaddons$getEntity();
+		Entity entity = ((EntityRenderStateDuck) state).nobaaddons$getEntity();
 		*///?}
 		if(entity != null) EntityEvents.POST_RENDER.dispatch(new EntityEvents.Render(entity, tickDelta));
 	}
