@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.utils.chat
 
+import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import net.fabricmc.loader.api.FabricLoader
 
@@ -10,7 +10,7 @@ object HypixelCommands {
 		if(FabricLoader.getInstance().isDevelopmentEnvironment && MCUtils.client.isInSingleplayer) {
 			return true
 		}
-		return HypixelUtils.onHypixel && PartyAPI.party != null
+		return HypixelAPI.onHypixel && PartyAPI.party != null
 	}
 
 	// Messaging Commands
