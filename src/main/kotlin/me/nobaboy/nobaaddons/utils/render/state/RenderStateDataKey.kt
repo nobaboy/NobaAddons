@@ -3,9 +3,19 @@ package me.nobaboy.nobaaddons.utils.render.state
 import me.nobaboy.nobaaddons.ducks.EntityRenderStateDuck
 import net.minecraft.client.render.entity.state.EntityRenderState
 import net.minecraft.entity.Entity
+import net.minecraft.util.math.MathHelper
 
 class RenderStateDataKey<T>(private val initialValue: () -> T) {
-	inner class Value(var value: T = initialValue())
+	private val id = MathHelper.randomUuid().hashCode()
+
+	override fun equals(other: Any?): Boolean = this === other
+	override fun hashCode(): Int = id
+
+	inner class Value(var value: T = initialValue()) {
+		fun clear() {
+			value = initialValue()
+		}
+	}
 
 	@Suppress("UNCHECKED_CAST")
 	fun getData(state: EntityRenderState): RenderStateDataKey<T>.Value =
