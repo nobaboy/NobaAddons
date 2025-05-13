@@ -36,6 +36,9 @@ object PartyCommands : ChatCommandManager() {
 		val executor = party.members.firstOrNull { it.name == ctx.user }
 		val clientPlayer = party.members.firstOrNull { it.isMe }
 
+		// hypixel why the fuck is this party role enum class ordered inversely to how you'd expect it to be when
+		// doing comparisons on it
+		// why do i have to check if the role is *greater* than another to know if someone is *below* that role
 		return when {
 			executor != null && executor.role > cmd.requireExecutorIs -> false
 			clientPlayer != null && clientPlayer.role > cmd.requireClientPlayerIs -> false
