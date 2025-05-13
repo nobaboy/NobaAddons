@@ -3,10 +3,10 @@ package me.nobaboy.nobaaddons.commands
 import com.mojang.authlib.HttpAuthenticationService
 import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Greedy
+import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.commands.impl.CommandUtil
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommand
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.title
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
@@ -24,7 +24,7 @@ object SWikiCommand {
 
 	init {
 		ClientCommandRegistrationCallback.EVENT.register { dispatch, access ->
-			if(HypixelUtils.onHypixel) {
+			if(HypixelAPI.onHypixel) {
 				commander.register(NobaClientCommand(::swiki, this), dispatch)
 			}
 		}

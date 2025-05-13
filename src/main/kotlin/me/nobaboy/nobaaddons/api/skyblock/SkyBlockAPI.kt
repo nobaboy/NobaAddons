@@ -1,17 +1,16 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
+import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.core.SkyBlockProfile
+import me.nobaboy.nobaaddons.events.impl.HypixelEvents
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
-import me.nobaboy.nobaaddons.utils.HypixelUtils
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.subscribeToEvent
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachFullMatch
@@ -24,11 +23,7 @@ import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.hypixel.data.type.GameType
-import net.hypixel.data.type.ServerType
-import net.hypixel.modapi.HypixelModAPI
-import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import java.util.UUID
-import kotlin.jvm.optionals.getOrNull
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.toJavaUuid
 import kotlin.uuid.toKotlinUuid
@@ -43,13 +38,10 @@ object SkyBlockAPI {
 	private val ZONE_REGEX by Regex("^[⏣ф] (?<zone>[A-z-'\" ]+)(?: .*)?\$").fromRepo("skyblock.zone")
 	private val CURRENCY_REGEX by Regex("^(?<currency>[A-z]+): (?<amount>[\\d,]+).*").fromRepo("skyblock.currency")
 
-	var currentServer: ServerType? = null
-		private set
-
 	@get:JvmStatic
 	@get:JvmName("inSkyBlock")
 	val inSkyBlock: Boolean
-		get() = HypixelUtils.onHypixel && currentServer == GameType.SKYBLOCK
+		get() = HypixelAPI.onHypixel && HypixelAPI.serverType == GameType.SKYBLOCK
 
 	@OptIn(ExperimentalUuidApi::class)
 	var currentProfile: UUID? = null
@@ -88,21 +80,20 @@ object SkyBlockAPI {
 	fun inZone(zone: String): Boolean = inSkyBlock && currentZone == zone
 
 	init {
-		HypixelModAPI.getInstance().subscribeToEvent<ClientboundLocationPacket>()
-		HypixelModAPI.getInstance().listen<ClientboundLocationPacket>(SkyBlockAPI::onLocationPacket)
 		TickEvents.everySecond { update() }
+		HypixelEvents.SERVER_CHANGE.register(this::onServerChange)
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		@OptIn(ExperimentalUuidApi::class)
 		currentProfile = PersistentCache.lastProfile?.toJavaUuid()
 	}
 
-	private fun onLocationPacket(packet: ClientboundLocationPacket) {
-		currentServer = packet.serverType.getOrNull()
-		val newIsland = packet.mode.map(SkyBlockIsland::getByName).orElse(SkyBlockIsland.UNKNOWN)
+	private fun onServerChange(event: HypixelEvents.ServerChange) {
+		val newIsland = event.packet.mode.map(SkyBlockIsland::getByName).orElse(SkyBlockIsland.UNKNOWN)
+		if(newIsland == currentIsland) return
 
-		if(newIsland != currentIsland) Scheduler.schedule(2) {
-			SkyBlockEvents.ISLAND_CHANGE.dispatch(SkyBlockEvents.IslandChange(newIsland))
+		Scheduler.schedule(2) {
+			SkyBlockEvents.ISLAND_CHANGE.dispatch(SkyBlockEvents.IslandChange(currentIsland, newIsland))
 			currentIsland = newIsland
 		}
 	}

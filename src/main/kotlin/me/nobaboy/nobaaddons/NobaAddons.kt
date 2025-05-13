@@ -8,6 +8,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import me.nobaboy.nobaaddons.api.DebugAPI
+import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
@@ -136,15 +137,18 @@ object NobaAddons : ClientModInitializer {
 	}
 
 	private fun initApis() {
-		BurrowAPI
 		DebugAPI
-		DungeonsAPI
 		InventoryAPI
-		MayorAPI
+
+		HypixelAPI
 		PartyAPI
+		SkyBlockAPI
+
+		BurrowAPI
+		DungeonsAPI
+		MayorAPI
 		PetAPI
 		SeaCreatureAPI
-		SkyBlockAPI
 		SlayerAPI
 		TrophyFishAPI
 	}
