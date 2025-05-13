@@ -6,6 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import me.nobaboy.nobaaddons.NobaAddons
+import me.nobaboy.nobaaddons.api.HypixelAPI.listen
 import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.chat.SendMessageEvents
@@ -13,9 +14,7 @@ import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CooldownManager
-import me.nobaboy.nobaaddons.utils.HypixelUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.ModAPIUtils.listen
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
@@ -64,11 +63,11 @@ object PartyAPI {
 		private set
 
 	init {
-		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 		TickEvents.cooldown { _, cooldown -> onTick(cooldown) }
 		ClientPlayConnectionEvents.JOIN.register { _, _, _ -> refreshPartyList = true }
 		ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> party = null }
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
+		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 		HypixelModAPI.getInstance().listen(this::onPartyData)
 	}
 
@@ -76,19 +75,8 @@ object PartyAPI {
 		refreshPartyList = true
 	}
 
-	private fun onSendCommand(event: SendMessageEvents.SendCommand) {
-		val split = event.command.split(" ").filter { it.isNotBlank() }
-		if(split[0].equals("pl", ignoreCase = true)) {
-			refreshPartyList = true
-		} else if(split[0].equals("p", ignoreCase = true) || split[0].equals("party", ignoreCase = true)) {
-			if(split.getOrNull(1).equals("list", ignoreCase = true)) {
-				refreshPartyList = true
-			}
-		}
-	}
-
 	private fun onTick(cooldownManager: CooldownManager) {
-		if(refreshPartyList && HypixelUtils.onHypixel) {
+		if(refreshPartyList && HypixelAPI.onHypixel) {
 			getPartyInfo()
 			refreshPartyList = false
 			cooldownManager.startCooldown(1.5.seconds)
@@ -96,10 +84,19 @@ object PartyAPI {
 	}
 
 	private fun onChatMessage(event: ChatMessageEvents.Chat) {
-		if(!HypixelUtils.onHypixel) return
+		if(!HypixelAPI.onHypixel) return
 
 		if(INVALIDATE_PARTY_REGEXES.any { it.matches(event.cleaned) }) {
 			refreshPartyList = true
+		}
+	}
+
+	private fun onSendCommand(event: SendMessageEvents.SendCommand) {
+		val args = event.command.split(" ").filter { it.isNotBlank() }
+
+		when(args.getOrNull(0)?.lowercase()) {
+			"pl" -> refreshPartyList = true
+			"p", "party" -> if(args.getOrNull(1).equals("list", ignoreCase = true)) refreshPartyList = true
 		}
 	}
 
