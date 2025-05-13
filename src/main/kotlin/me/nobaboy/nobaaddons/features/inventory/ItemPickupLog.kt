@@ -67,7 +67,7 @@ object ItemPickupLog {
 		detectItemChanges(items, oldItems)
 	}
 
-	// TODO either remove current and just use items straight out or suppress this
+	@Suppress("SameParameterValue") // this is intentional because I feel like it's easier to read
 	private fun detectItemChanges(current: Map<Text, Int>, previous: Map<Text, Int>) {
 		val names = current.keys + previous.keys
 
