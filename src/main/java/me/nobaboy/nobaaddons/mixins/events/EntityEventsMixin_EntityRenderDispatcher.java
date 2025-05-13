@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
 //? if >=1.21.5 {
-/*import me.nobaboy.nobaaddons.ducks.EntityStateCaptureDuck;
+/*import me.nobaboy.nobaaddons.ducks.EntityRenderStateDuck;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.state.EntityRenderState;
 *///?}
