@@ -22,7 +22,7 @@ object TrophyFishAPI {
 
 	private val inventorySlots = 10..31
 
-	fun init() {
+	init {
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}

@@ -1,11 +1,8 @@
 package me.nobaboy.nobaaddons.config.configs
 
 import dev.celestialfault.histoire.Object
-import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.features.slayers.BossTimeSource
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.serializers.ColorKSerializer
-import java.awt.Color
 
 class SlayersConfig {
 	@Object val bossAlert = BossAlert()
@@ -51,12 +48,9 @@ class SlayersConfig {
 	class Voidgloom {
 		var highlightPhases = false
 
-		@Serializable(ColorKSerializer::class)
-		var beaconPhaseColor = Color(255, 45, 156, 175)
-		@Serializable(ColorKSerializer::class)
-		var hitsPhaseColor = Color(255, 156, 70, 175)
-		@Serializable(ColorKSerializer::class)
-		var damagePhaseColor = Color(103, 136, 255, 175)
+		var beaconPhaseColor = NobaColor(0xff2d9c)
+		var hitsPhaseColor = NobaColor(0xff9c46)
+		var damagePhaseColor = NobaColor(0x6788ff)
 
 		var yangGlyphAlert = false
 		var yangGlyphAlertColor = NobaColor.RED

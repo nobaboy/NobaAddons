@@ -171,9 +171,9 @@ object ChatCategory {
 				require { option(dmEnabled) }
 				booleanController()
 			}
-			add({ chat.chatCommands.dm::warpMe }) {
-				name = tr("nobaaddons.config.chat.chatCommands.dm.warpMe", "!warpme Command")
-				descriptionText = tr("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip", "Warps the messaging player to your lobby")
+			add({ chat.chatCommands.dm::warpOut }) {
+				name = warpOutTitle
+				descriptionText = warpOutDescription
 				require { option(dmEnabled) }
 				booleanController()
 			}
@@ -183,9 +183,9 @@ object ChatCategory {
 				require { option(dmEnabled) }
 				booleanController()
 			}
-			add({ chat.chatCommands.dm::warpOut }) {
-				name = warpOutTitle
-				descriptionText = warpOutDescription
+			add({ chat.chatCommands.dm::warpMe }) {
+				name = tr("nobaaddons.config.chat.chatCommands.dm.warpMe", "!warpme Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.dm.warpMe.tooltip", "Warps the messaging player to your lobby")
 				require { option(dmEnabled) }
 				booleanController()
 			}
@@ -226,6 +226,18 @@ object ChatCategory {
 			add({ chat.chatCommands.party::coords }) {
 				name = tr("nobaaddons.config.chat.chatCommands.party.coords", "!coords Command")
 				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.coords.tooltip", "Responds with your current in-game coordinates")
+				require { option(partyEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.party::ping }) {
+				name = tr("nobaaddons.config.chat.chatCommands.party.ping", "!ping Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.ping.tooltip", "Responds with your current ping")
+				require { option(partyEnabled) }
+				booleanController()
+			}
+			add({ chat.chatCommands.party::tps }) {
+				name = tr("nobaaddons.config.chat.chatCommands.party.tps", "!tps Command")
+				descriptionText = tr("nobaaddons.config.chat.chatCommands.party.tps.tooltip", "Responds with the server's current estimated TPS")
 				require { option(partyEnabled) }
 				booleanController()
 			}

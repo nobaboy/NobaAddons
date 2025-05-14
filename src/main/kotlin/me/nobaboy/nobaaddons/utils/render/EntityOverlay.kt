@@ -4,11 +4,9 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.RemovalNotification
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.entity.Entity
-import java.awt.Color
 
 object EntityOverlay {
 	@get:JvmStatic
@@ -24,12 +22,6 @@ object EntityOverlay {
 		EntityEvents.PRE_RENDER.register { overlay = entities.getIfPresent(it.entity) }
 		EntityEvents.POST_RENDER.register { overlay = null }
 		EntityEvents.DESPAWN.register { entities.invalidate(it.entity) }
-	}
-
-	// TODO remove this
-	@Deprecated("Use of AWT Color is deprecated, and is converted to NobaColor internally")
-	fun Entity.highlight(color: Color) {
-		set(this, color.toNobaColor())
 	}
 
 	fun Entity.highlight(color: NobaColor) {

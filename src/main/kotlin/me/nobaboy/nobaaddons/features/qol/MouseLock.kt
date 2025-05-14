@@ -56,7 +56,7 @@ object MouseLock {
 		return heldItem.id in FARMING_TOOLS
 	}
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { locked = false }
 		PacketEvents.PRE_RECEIVE.register(this::onEarlyPacketReceive)
 	}
@@ -80,8 +80,10 @@ object MouseLock {
 	fun lockMouse() {
 		locked = !locked
 
-		val text = if(locked) tr("nobaaddons.command.mouseLock.locked", "Mouse locked")
-		else tr("nobaaddons.command.mouseLock.unlocked", "Mouse unlocked")
+		val text = when {
+			locked -> tr("nobaaddons.command.mouseLock.locked", "Mouse locked")
+			else -> tr("nobaaddons.command.mouseLock.unlocked", "Mouse unlocked")
+		}
 
 		ChatUtils.addMessage(text)
 	}

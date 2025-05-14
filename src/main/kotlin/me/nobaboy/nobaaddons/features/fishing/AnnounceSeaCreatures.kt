@@ -14,7 +14,7 @@ object AnnounceSeaCreatures {
 	private val SeaCreature.isRare: Boolean
 		get() = rarity >= config.minimumRarity || (id == "CARROT_KING" && config.carrotKing) || (id == "NUTCRACKER" && config.nutcracker)
 
-	fun init() {
+	init {
 		FishingEvents.SEA_CREATURE_CATCH.register(this::onSeaCreatureCatch)
 	}
 

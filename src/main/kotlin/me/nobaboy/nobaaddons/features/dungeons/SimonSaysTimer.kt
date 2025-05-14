@@ -41,7 +41,7 @@ object SimonSaysTimer {
 	private var buttonPressed: Boolean = false
 	private var deviceCompleted: Boolean = false
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		BlockInteractionEvent.EVENT.registerIf<BlockInteractionEvent.Interact>(this::onInteract)

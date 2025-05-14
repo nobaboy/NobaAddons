@@ -32,7 +32,7 @@ object DungeonsAPI {
 	fun isBoss(boss: DungeonBoss): Boolean = currentBoss == boss
 	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN && currentBoss != DungeonBoss.WATCHER
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.everySecond(this::onSecondPassed)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)

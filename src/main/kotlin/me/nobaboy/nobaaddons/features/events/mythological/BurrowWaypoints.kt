@@ -34,7 +34,7 @@ object BurrowWaypoints {
 	private val isInquisitorSpawned: Boolean
 		get() = InquisitorWaypoints.inquisitors.isNotEmpty()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		MythologicalEvents.BURROW_GUESS.register(this::onBurrowGuess)
 		MythologicalEvents.BURROW_FIND.register(this::onBurrowFind)

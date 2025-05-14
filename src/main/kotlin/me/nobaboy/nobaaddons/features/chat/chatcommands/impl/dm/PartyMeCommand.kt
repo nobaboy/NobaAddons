@@ -9,10 +9,9 @@ class PartyMeCommand : ChatCommand() {
 	override val enabled: Boolean get() = config.dm.partyMe
 
 	override val name: String = "partyme"
-
 	override val aliases = listOf("pme")
 
-	override fun run(ctx: ChatContext) {
+	override suspend fun run(ctx: ChatContext) {
 		val playerName = MCUtils.playerName ?: return
 		if(ctx.user == playerName) return
 

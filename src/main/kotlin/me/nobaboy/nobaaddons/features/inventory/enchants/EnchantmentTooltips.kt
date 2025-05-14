@@ -35,7 +35,7 @@ object EnchantmentTooltips {
 	// the extra [\d,]+ is to account for stacking enchants adding their value
 	private val ENCHANT_LINE_REGEX = Regex("^(?:.+ [IVX]+(?: [\\d,]+)?(?:$|,))+")
 
-	fun init() {
+	init {
 		ItemTooltipCallback.EVENT.register { item, _, _, lines ->
 			try {
 				parseEnchants(item, lines)

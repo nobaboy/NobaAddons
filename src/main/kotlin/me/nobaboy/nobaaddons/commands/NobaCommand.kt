@@ -32,7 +32,7 @@ import net.minecraft.util.Formatting
 @Suppress("unused")
 @Group("nobaaddons", "noba")
 object NobaCommand {
-	fun init() {
+	init {
 		CommandUtil.registerRoot(this)
 		HypixelChatCommandMocks.init()
 	}
@@ -64,7 +64,14 @@ object NobaCommand {
 
 	@Command
 	fun ping() {
-		PingUtils.sendPingPacket(sendMessage = true)
+		PingUtils.requestPing {
+			ChatUtils.addMessage(tr("nobaaddons.command.ping", "Ping: ${it}ms"))
+		}
+	}
+
+	@Command
+	fun tps() {
+		ChatUtils.addMessage(tr("nobaaddons.command.tps", "TPS: ${PingUtils.currentTps}"))
 	}
 
 	@Command

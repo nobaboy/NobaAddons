@@ -11,7 +11,7 @@ object SeaCreatureAPI {
 
 	private var doubleHook: Boolean = false
 
-	fun init() {
+	init {
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 

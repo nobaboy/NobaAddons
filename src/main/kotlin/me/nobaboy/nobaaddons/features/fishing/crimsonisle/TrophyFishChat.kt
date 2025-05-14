@@ -25,7 +25,7 @@ object TrophyFishChat {
 
 	private val lastMessage: MutableMap<Pair<TrophyFish, TrophyFishRarity>, Message> = mutableMapOf()
 
-	fun init() {
+	init {
 		ChatMessageEvents.ALLOW.register(this::modifyChatMessage)
 	}
 

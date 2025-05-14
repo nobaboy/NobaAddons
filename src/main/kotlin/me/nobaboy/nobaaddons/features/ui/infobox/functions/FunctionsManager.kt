@@ -14,6 +14,7 @@ object FunctionsManager {
 	init {
 		listOf(
 			MinecraftFunctions.PingFunction,
+			MinecraftFunctions.TpsFunction,
 			MinecraftFunctions.FpsFunction,
 			MinecraftFunctions.DayFunction,
 
@@ -46,7 +47,7 @@ object FunctionsManager {
 			val function = functions[functionName] ?: return@forEachMatch
 
 			var replacement = function.execute() ?: return@forEachMatch
-			if(replacement is Number) replacement = replacement.addSeparators() // Extract into number formatting function
+			if(replacement is Number) replacement = replacement.addSeparators() // TODO extract into number formatting function
 
 			result = result.replace("{$functionName}", replacement.toString())
 		}

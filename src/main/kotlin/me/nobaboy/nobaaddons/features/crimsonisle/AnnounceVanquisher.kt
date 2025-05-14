@@ -13,7 +13,7 @@ object AnnounceVanquisher {
 
 	private val VANQUISHER_SPAWN_MESSAGE by "A Vanquisher is spawning nearby!".fromRepo("crimson_isle.vanquisher_spawn")
 
-	fun init() {
+	init {
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 

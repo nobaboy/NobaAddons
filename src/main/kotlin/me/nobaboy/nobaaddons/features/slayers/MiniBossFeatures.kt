@@ -21,7 +21,7 @@ object MiniBossFeatures {
 
 	private var lastAlert = Timestamp.distantPast()
 
-	fun init() {
+	init {
 		SoundEvents.SOUND.register(this::onSound)
 		SlayerEvents.MINI_BOSS_SPAWN.register(this::onMiniBossSpawn)
 	}

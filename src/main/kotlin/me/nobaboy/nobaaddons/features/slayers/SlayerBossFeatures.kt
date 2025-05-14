@@ -19,7 +19,7 @@ object SlayerBossFeatures {
 
 	private var bossSpawnTime = Timestamp.distantPast()
 
-	fun init() {
+	init {
 		SlayerEvents.BOSS_SPAWN.register(this::onBossSpawn)
 		SlayerEvents.BOSS_KILL.register(this::onBossKill)
 	}

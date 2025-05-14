@@ -12,14 +12,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 abstract class SendMessageEventsMixin {
 	@Inject(method = "sendChatCommand", at = @At("HEAD"), cancellable = true)
 	public void nobaaddons$onChatCommand(String command, CallbackInfo ci) {
-		if(SendMessageEvents.SEND_COMMAND.dispatch(new SendMessageEvents.SendCommand(command))) {
+		if(!command.isEmpty() && SendMessageEvents.SEND_COMMAND.dispatch(new SendMessageEvents.SendCommand(command))) {
 			ci.cancel();
 		}
 	}
 
 	@Inject(method = "sendCommand", at = @At("HEAD"), cancellable = true)
 	public void nobaaddons$onCommand(String command, CallbackInfoReturnable<Boolean> cir) {
-		if(SendMessageEvents.SEND_COMMAND.dispatch(new SendMessageEvents.SendCommand(command))) {
+		if(!command.isEmpty() && SendMessageEvents.SEND_COMMAND.dispatch(new SendMessageEvents.SendCommand(command))) {
 			cir.setReturnValue(false);
 		}
 	}

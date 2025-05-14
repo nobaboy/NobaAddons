@@ -22,7 +22,7 @@ object GriffinBurrowGuess {
 	private val particlePath = ParticlePathFitter(3)
 	private var lastAbilityUse = Timestamp.distantPast()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ItemUseEvent.EVENT.register(this::onItemUse)

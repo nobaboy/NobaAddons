@@ -9,7 +9,7 @@ object HidePupNametags {
 	private val config get() = NobaConfig.slayers.sven
 	private val enabled: Boolean get() = config.hidePupNametags && SkyBlockAPI.inSkyBlock
 
-	fun init() {
+	init {
 		EntityNametagRenderEvents.VISIBILITY.register(this::onNametagRender)
 	}
 

@@ -21,7 +21,7 @@ object HighlightHellionShield {
 
 	private val armorStands = mutableSetOf<LivingEntity>()
 
-	fun init() {
+	init {
 		TickEvents.TICK.register { onTick() }
 		EntityEvents.SPAWN.register(this::onEntitySpawn)
 	}

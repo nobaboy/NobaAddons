@@ -31,7 +31,7 @@ object HoppityEggGuess {
 
 	private var lastAbilityUse = Timestamp.distantPast()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ItemUseEvent.EVENT.register(this::onItemUse)

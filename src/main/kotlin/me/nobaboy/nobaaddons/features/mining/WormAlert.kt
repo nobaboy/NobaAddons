@@ -12,7 +12,7 @@ object WormAlert {
 	private val config get() = NobaConfig.mining.wormAlert
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.CRYSTAL_HOLLOWS.inIsland()
 
-	fun init() {
+	init {
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 

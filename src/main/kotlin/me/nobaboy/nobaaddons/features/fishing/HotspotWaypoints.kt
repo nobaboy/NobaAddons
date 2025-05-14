@@ -34,7 +34,7 @@ object HotspotWaypoints {
 
 	private val hotspots = mutableListOf<Hotspot>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { hotspots.clear() }
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)

@@ -1,8 +1,18 @@
 package me.nobaboy.nobaaddons.utils.chat
 
+import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
+import me.nobaboy.nobaaddons.utils.MCUtils
+import net.fabricmc.loader.api.FabricLoader
 
 object HypixelCommands {
+	private val inParty: Boolean get() {
+		if(FabricLoader.getInstance().isDevelopmentEnvironment && MCUtils.client.isInSingleplayer) {
+			return true
+		}
+		return HypixelAPI.onHypixel && PartyAPI.party != null
+	}
+
 	// Messaging Commands
 	fun allChat(message: String) {
 		send("ac $message")
@@ -17,7 +27,7 @@ object HypixelCommands {
 	}
 
 	fun partyChat(message: String, partyCheck: Boolean = true) {
-		if(partyCheck && PartyAPI.party == null) return
+		if(partyCheck && !inParty) return
 		send("pc $message")
 	}
 

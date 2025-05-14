@@ -7,7 +7,9 @@ import dev.celestialfault.histoire.migrations.Migrations
 import dev.celestialfault.histoire.migrations.MutableJsonMap
 import dev.celestialfault.histoire.migrations.getMap
 import dev.celestialfault.histoire.migrations.rename
+import kotlinx.serialization.json.JsonPrimitive
 import me.nobaboy.nobaaddons.config.util.mapAndMoveTo
+import me.nobaboy.nobaaddons.config.util.modify
 import me.nobaboy.nobaaddons.config.util.moveTo
 
 /*
@@ -23,6 +25,7 @@ internal val migrations = Migrations("configVersion") {
 	add(::`005_renameEtherwarpHelper`)
 	add(::`006_renameSeaCreatureChatFilter`)
 	add(::`007_renameCopyChat`)
+	add(::`008_replaceAwtColorWithNobaColor`)
 }
 
 private fun `001_removeYaclVersion`(json: MutableJsonMap) {
@@ -68,4 +71,21 @@ private fun `006_renameSeaCreatureChatFilter`(json: MutableJsonMap) {
 private fun `007_renameCopyChat`(json: MutableJsonMap) {
 	val chat = json.getMap("chat")
 	chat.rename("copy", "copyChat")
+}
+
+private fun `008_replaceAwtColorWithNobaColor`(json: MutableJsonMap) {
+	val voidgloom = json.getMap("slayers", "voidgloom")
+
+	listOf(
+		"beaconPhaseColor",
+		"hitsPhaseColor",
+		"damagePhaseColor",
+	).forEach { key ->
+		voidgloom.modify(key) { value ->
+			if(value !is JsonPrimitive) return@modify value
+
+			val (r, g, b, _) = value.content.split(":").map { it.toInt() }
+			JsonPrimitive((r shl 16) or (g shl 8) or b)
+		}
+	}
 }

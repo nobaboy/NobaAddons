@@ -57,7 +57,7 @@ object MayorAPI {
 		year - if(month < ELECTION_END_MONTH || (month == ELECTION_END_MONTH && day < ELECTION_END_DAY)) 1 else 0
 
 
-	fun init() {
+	init {
 		TickEvents.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)

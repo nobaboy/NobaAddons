@@ -32,7 +32,6 @@ interface ISlotInfo {
 	companion object {
 		const val CHECK = "✔"
 
-		private var init = false
 		private val slotInfos = arrayOf(
 			// UI Elements
 			BestiarySlotInfo,
@@ -57,10 +56,7 @@ interface ISlotInfo {
 			VacuumPestsSlotInfo,
 		)
 
-		fun init() {
-			check(!init) { "Already initialized slot info!" }
-			init = true
-
+		init {
 			slotInfos.forEach { slotInfo ->
 				ScreenRenderEvents.DRAW_ITEM.register {
 					if(SkyBlockAPI.inSkyBlock && slotInfo.enabled) slotInfo.handle(it)

@@ -23,7 +23,7 @@ object CatchTimer {
 
 	private val TIMER_REGEX by Regex("^(?:\\d+\\.\\d+|!{3})$").fromRepo("fishing.catch_timer")
 
-	fun init() {
+	init {
 		EntityNametagRenderEvents.VISIBILITY.register(this::hideTimer)
 		UIManager.add(CatchTimerHudElement)
 	}

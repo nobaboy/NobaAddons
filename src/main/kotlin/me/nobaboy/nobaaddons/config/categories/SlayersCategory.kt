@@ -130,23 +130,23 @@ object SlayersCategory {
 				incompatibleWithIris()
 				booleanController()
 			}
-			add({ slayers.voidgloom::beaconPhaseColor }) {
+			add({ slayers.voidgloom::beaconPhaseColor }, BiMapper.NobaAWTColorMapper) {
 				name = tr("nobaaddons.config.slayers.voidgloom.beaconPhaseColor", "Beacon Phase Color").wip()
 				require { option(highlightPhases) }
 				incompatibleWithIris()
-				colorController(allowAlpha = true)
+				colorController()
 			}
-			add({ slayers.voidgloom::hitsPhaseColor }) {
+			add({ slayers.voidgloom::hitsPhaseColor }, BiMapper.NobaAWTColorMapper) {
 				name = tr("nobaaddons.config.slayers.voidgloom.hitsPhaseColor", "Hits Phase Color").wip()
 				require { option(highlightPhases) }
 				incompatibleWithIris()
-				colorController(allowAlpha = true)
+				colorController()
 			}
-			add({ slayers.voidgloom::damagePhaseColor }) {
+			add({ slayers.voidgloom::damagePhaseColor }, BiMapper.NobaAWTColorMapper) {
 				name = tr("nobaaddons.config.slayers.voidgloom.damagePhaseColor", "Damage Phase Color").wip()
 				require { option(highlightPhases) }
 				incompatibleWithIris()
-				colorController(allowAlpha = true)
+				colorController()
 			}
 
 			label(tr("nobaaddons.config.slayers.voidgloom.label.yangGlyphs", "Yang Glyphs"))

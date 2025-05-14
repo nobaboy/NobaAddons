@@ -34,7 +34,7 @@ object UpdateNotifier {
 	private val CURRENT = NobaAddons.VERSION_INFO
 	private val UPDATE_INFO by Repo.create("update.json", UpdateInfo.serializer())
 
-	fun init() {
+	init {
 		TickEvents.TICK.register {
 			if(MCUtils.world != null && !inWorld) {
 				onJoin()
