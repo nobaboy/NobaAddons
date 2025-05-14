@@ -26,7 +26,9 @@ import net.minecraft.text.Text
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-// TODO: use translations instead
+// TODO use translations instead
+// TODO fix areas, add timer in world space (and a config toggle for it)
+// TODO fix the timer not showing correctly, instead of it being `Unknown!` after the count down, it should be `Soon!`
 object MinibossTimers {
 	private val config get() = NobaConfig.crimsonIsle.minibossTimers
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.CRIMSON_ISLE.inIsland()
@@ -36,9 +38,10 @@ object MinibossTimers {
 
 	private val minibosses = mutableMapOf<Miniboss, MinibossState>()
 
-	fun init() {
+	init {
         SkyBlockEvents.ISLAND_CHANGE.register { minibosses.clear() }
 		ChatMessageEvents.CHAT.register { (message) -> onChatMessage(message.string.cleanFormatting()) }
+//		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::onWorldRender)
 		UIManager.add(MinibossTimersHudElement)
 	}
 
@@ -64,6 +67,25 @@ object MinibossTimers {
 		}
 	}
 
+//	private fun onWorldRender(context: WorldRenderContext) {
+//		if(!enabled) return
+//
+//		val playerLocation = LocationUtils.playerLocation
+//
+//		minibosses.forEach { (miniboss, state) ->
+//			if(playerLocation !in miniboss.area || state.alive) return@forEach
+//
+//			val (start, end) = miniboss.area
+//			val location = NobaVec(
+//				(start.x + end.x) / 2,
+//				min(start.y, end.y) + 2,
+//				(start.z + end.z) / 2
+//			).center()
+//
+//			RenderUtils.renderText(context, location, state.status, yOffset = -5f, throughBlocks = true)
+//		}
+//	}
+
 	private object MinibossTimersHudElement : TextHudElement(UISettings.minibossTimers) {
 		override val name: Text = tr("nobaadons.ui.minibossTimers", "Miniboss Timers")
 		override val size: Pair<Int, Int> = 150 to 50
@@ -87,7 +109,7 @@ object MinibossTimers {
 	) {
 		ASHFANG("Ashfang", NobaColor.DARK_GRAY, NobaVec(-462, 155, -1035) to NobaVec(-507, 131, -955)),
 		BARBARIAN_DUKE_X("Barbarian Duke X", NobaColor.DARK_GRAY, NobaVec(-550, 101, -890) to NobaVec(-522, 131, -918)),
-		BLADESOUL("Bladesoul", NobaColor.DARK_GRAY, NobaVec(-330, 80, -486) to NobaVec(-257, 107, -545)),
+		BLADESOUL("Bladesoul", NobaColor.DARK_GRAY, NobaVec(-322, 80, -491) to NobaVec(-268, 107, -545)),
 		MAGE_OUTLAW("Mage Outlaw", NobaColor.DARK_PURPLE, NobaVec(-200, 98, -843) to NobaVec(-162, 116, -878)),
 		MAGMA_BOSS("Magma Boss", NobaColor.DARK_RED, NobaVec(-318, 59, -751) to NobaVec(-442, 90, -851)),
 		;

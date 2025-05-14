@@ -138,6 +138,11 @@ data class NobaVec(
 			return NobaVec(this[0], this[1], this[2])
 		}
 
+//		operator fun Pair<NobaVec, NobaVec>.contains(location: NobaVec): Boolean {
+//			val (min, max) = first.minOfEach(second) to first.maxOfEach(second)
+//			return location.x in min.x..max.x && location.y in min.y..max.y && location.z in min.z..max.z
+//		}
+
 		val expandVector = NobaVec(0.0020000000949949026, 0.0020000000949949026, 0.0020000000949949026)
 	}
 }
