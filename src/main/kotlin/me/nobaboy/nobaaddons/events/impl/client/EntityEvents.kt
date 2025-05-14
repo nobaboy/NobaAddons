@@ -50,7 +50,7 @@ object EntityEvents {
 
 	data class Spawn(val entity: Entity) : Event
 	data class Despawn(val entity: Entity) : Event
-	data class Render(val entity: Entity, val state: EntityRenderState, val delta: Float) : Event
+	data class Render(val state: EntityRenderState, val delta: Float) : Event
 	data class AllowRender(val state: EntityRenderState) : CancelableEvent()
 	data class VehicleChange(val entity: Entity, val vehicle: Entity) : Event
 }

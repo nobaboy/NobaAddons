@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockStat
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
+import me.nobaboy.nobaaddons.events.impl.entity.EntityTickEvent
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -36,11 +37,11 @@ object HotspotWaypoints {
 
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { hotspots.clear() }
-		EntityEvents.POST_RENDER.register(this::onEntityRender)
+		EntityTickEvent.EVENT.register(this::onEntityTick)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
 
-	private fun onEntityRender(event: EntityEvents.Render) {
+	private fun onEntityTick(event: EntityTickEvent) {
 		if(!enabled) return
 
 		val armorStand = event.entity as? ArmorStandEntity ?: return

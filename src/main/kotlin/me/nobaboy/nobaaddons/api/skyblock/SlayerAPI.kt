@@ -2,9 +2,9 @@ package me.nobaboy.nobaaddons.api.skyblock
 
 import me.nobaboy.nobaaddons.core.slayer.SlayerBoss
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
-import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.entity.EntityTickEvent
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
@@ -34,7 +34,7 @@ object SlayerAPI {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.TICK.register { onTick() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
-		EntityEvents.POST_RENDER.register(this::onEntityRender)
+		EntityTickEvent.EVENT.register(this::onEntityTick)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 	}
 
@@ -81,7 +81,7 @@ object SlayerAPI {
 		}
 	}
 
-	private fun onEntityRender(event: EntityEvents.Render) {
+	private fun onEntityTick(event: EntityTickEvent) {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		val currentQuest = currentQuest ?: return

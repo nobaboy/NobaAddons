@@ -26,7 +26,7 @@ object EntityOverlay {
 				it.state.hurt = false
 			}
 		}
-		EntityEvents.PRE_RENDER.register { overlay = OVERLAY_TEXTURE.get(it.entity).get() }
+		EntityEvents.PRE_RENDER.register { overlay = OVERLAY_TEXTURE.get(it.state).get() }
 		EntityEvents.POST_RENDER.register { overlay = null }
 	}
 

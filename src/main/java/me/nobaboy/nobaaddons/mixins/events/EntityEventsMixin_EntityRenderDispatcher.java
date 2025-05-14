@@ -51,7 +51,9 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		@Local EntityRenderState state
 		//?}
 	) {
-		if(EntityEvents.ALLOW_RENDER.dispatch(new EntityEvents.AllowRender(state))) ci.cancel();
+		if(EntityEvents.ALLOW_RENDER.dispatch(new EntityEvents.AllowRender(state))) {
+			ci.cancel();
+		}
 	}
 
 	@Inject(
@@ -79,18 +81,17 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		MatrixStack matrices, VertexConsumerProvider vertexConsumers,
 		int light,
 		EntityRenderer<?, ?> renderer,
-		CallbackInfo ci/*? if <1.21.5 {*/,
+		CallbackInfo ci /*? if <1.21.5 {*/,
 		@Local EntityRenderState state,
 		@Share(value = "renderState", namespace = "nobaaddons") LocalRef<EntityRenderState> stateRef
 		//?}
 	) {
 		//? if >=1.21.5 {
 		/*float tickDelta = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true);
-		Entity entity = ((EntityRenderStateDuck) state).nobaaddons$getEntity();
 		*///?} else {
 		stateRef.set(state);
 		//?}
-		if(entity != null) EntityEvents.PRE_RENDER.dispatch(new EntityEvents.Render(entity, state, tickDelta));
+		EntityEvents.PRE_RENDER.dispatch(new EntityEvents.Render(state, tickDelta));
 	}
 
 	@Inject(
@@ -118,7 +119,7 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		MatrixStack matrices,VertexConsumerProvider vertexConsumers,
 		int light,
 		EntityRenderer<?, ?> renderer,
-		CallbackInfo ci/*? if <1.21.5 {*/,
+		CallbackInfo ci /*? if <1.21.5 {*/,
 		// either this mcdev plugin is bullshitting me, or @Local genuinely cannot find the render state
 		// that's within the same try block as this pop call. i don't know, and it's not that much effort
 		// to just work around the issue one way or another.
@@ -127,8 +128,9 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 	) {
 		//? if >=1.21.5 {
 		/*float tickDelta = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true);
-		Entity entity = ((EntityRenderStateDuck) state).nobaaddons$getEntity();
-		*///?}
-		if(entity != null) EntityEvents.POST_RENDER.dispatch(new EntityEvents.Render(entity, stateRef.get(), tickDelta));
+		*///?} else {
+		var state = stateRef.get();
+		//?}
+		EntityEvents.POST_RENDER.dispatch(new EntityEvents.Render(state, tickDelta));
 	}
 }
