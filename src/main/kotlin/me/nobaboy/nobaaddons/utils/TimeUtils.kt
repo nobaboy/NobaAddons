@@ -39,7 +39,7 @@ object TimeUtils {
 	fun Instant.isPast(): Boolean = timeRemaining().isNegative()
 	fun Instant.isFuture(): Boolean = timeRemaining().isPositive()
 
-	fun Duration.toShortString(): String = buildList<String> {
+	fun Duration.toShortString(): String = buildList {
 		val duration = this@toShortString
 
 		if(duration.isNegative()) {
