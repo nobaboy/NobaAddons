@@ -82,10 +82,10 @@ private fun `008_replaceAwtColorWithNobaColor`(json: MutableJsonMap) {
 		"damagePhaseColor",
 	).forEach { key ->
 		voidgloom.modify(key) { value ->
-			if(value is JsonPrimitive) {
-				val (r, g, b, _) = value.content.split(":").map { it.toInt() }
-				JsonPrimitive((r shl 16) or (g shl 8) or b)
-			} else value
+			if(value !is JsonPrimitive) return@modify value
+
+			val (r, g, b, _) = value.content.split(":").map { it.toInt() }
+			JsonPrimitive((r shl 16) or (g shl 8) or b)
 		}
 	}
 }
