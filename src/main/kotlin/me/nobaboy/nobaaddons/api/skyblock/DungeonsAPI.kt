@@ -9,10 +9,10 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
-import me.nobaboy.nobaaddons.utils.mc.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.ScoreboardUtils
 
 object DungeonsAPI {
 	private val BOSS_DIALOGUE_REGEX by Regex("^\\[BOSS] (?<name>[A-z ]+):.*").fromRepo("dungeons.boss_dialogue")
@@ -32,7 +32,7 @@ object DungeonsAPI {
 	fun isBoss(boss: DungeonBoss): Boolean = currentBoss == boss
 	fun inBoss(): Boolean = currentBoss != DungeonBoss.UNKNOWN && currentBoss != DungeonBoss.WATCHER
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.everySecond(this::onSecondPassed)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)

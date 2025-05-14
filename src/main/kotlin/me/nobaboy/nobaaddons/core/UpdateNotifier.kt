@@ -11,8 +11,8 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.Scheduler
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.appendLine
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.aqua
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
@@ -34,7 +34,7 @@ object UpdateNotifier {
 	private val CURRENT = NobaAddons.VERSION_INFO
 	private val UPDATE_INFO by Repo.create("update.json", UpdateInfo.serializer())
 
-	fun init() {
+	init {
 		TickEvents.TICK.register {
 			if(MCUtils.world != null && !inWorld) {
 				onJoin()

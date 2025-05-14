@@ -14,12 +14,6 @@ import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.indexOfFirstFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkGray
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.gray
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.TimeUtils.asInstantOrNull
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.isFuture
@@ -27,10 +21,16 @@ import me.nobaboy.nobaaddons.utils.TimeUtils.isPast
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
 import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
-import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkGray
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.gray
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
 import net.minecraft.item.Item
@@ -53,7 +53,7 @@ object RiftTimers {
 
 	private var notifiedSplitStealCooldown = false
 
-	fun init() {
+	init {
 		TickEvents.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onOpenInventory)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)

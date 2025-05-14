@@ -9,10 +9,10 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.mc.LocationUtils
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
@@ -56,7 +56,7 @@ object MouseLock {
 		return heldItem.id in FARMING_TOOLS
 	}
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { locked = false }
 		PacketEvents.PRE_RECEIVE.register(this::onEarlyPacketReceive)
 	}
@@ -80,8 +80,10 @@ object MouseLock {
 	fun lockMouse() {
 		locked = !locked
 
-		val text = if(locked) tr("nobaaddons.command.mouseLock.locked", "Mouse locked")
-		else tr("nobaaddons.command.mouseLock.unlocked", "Mouse unlocked")
+		val text = when {
+			locked -> tr("nobaaddons.command.mouseLock.locked", "Mouse locked")
+			else -> tr("nobaaddons.command.mouseLock.unlocked", "Mouse unlocked")
+		}
 
 		ChatUtils.addMessage(text)
 	}

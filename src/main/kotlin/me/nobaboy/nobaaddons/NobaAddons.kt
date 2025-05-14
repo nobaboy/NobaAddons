@@ -8,6 +8,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import me.nobaboy.nobaaddons.api.DebugAPI
+import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.api.InventoryAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
@@ -32,7 +33,7 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.GuildCommands
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.PartyCommands
 import me.nobaboy.nobaaddons.features.chat.filters.IChatFilter
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotifications
-import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsManager
+import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsConfig
 import me.nobaboy.nobaaddons.features.chocolatefactory.ChocolateFactoryFeatures
 import me.nobaboy.nobaaddons.features.crimsonisle.AnnounceVanquisher
 import me.nobaboy.nobaaddons.features.dungeons.HighlightStarredMobs
@@ -67,7 +68,7 @@ import me.nobaboy.nobaaddons.features.slayers.SlayerBossFeatures
 import me.nobaboy.nobaaddons.features.slayers.inferno.HighlightHellionShield
 import me.nobaboy.nobaaddons.features.slayers.sven.HidePupNametags
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomSeraphFeatures
-import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
+import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesConfig
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpOverlay
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
 import me.nobaboy.nobaaddons.repo.RepoManager
@@ -115,137 +116,143 @@ object NobaAddons : ClientModInitializer {
 
 	fun runAsync(runnable: suspend CoroutineScope.() -> Unit) = coroutineScope.launch(block = runnable)
 
-	// Note: utility object classes should avoid calling a dedicated `init` method here where possible, and instead
-	// rely on 'init {}' to run setup when first used, unless absolutely necessary for functionality (such as
-	// if the object class is never referenced anywhere else, or if it relies on chat data for a feature that isn't
-	// immediately ran).
 	override fun onInitializeClient() {
-		/* region Core */
+		loadConfigs()
+		initCore()
+		initApis()
+		initFeatures()
+	}
+
+	private fun loadConfigs() {
 		NobaConfig.safeLoad()
 		PersistentCache.safeLoad()
-		RepoManager.init()
 		UISettings.safeLoad()
-		UIManager.init()
+		ChatNotificationsConfig.safeLoad()
+		InfoBoxesConfig.safeLoad()
+	}
 
-		UpdateNotifier.init()
-		/* endregion */
+	private fun initCore() {
+		RepoManager
+		UIManager
+	}
 
-		/* region APIs */
-		BurrowAPI.init()
-		DebugAPI.init()
-		DungeonsAPI.init()
-		InventoryAPI.init()
-		MayorAPI.init()
-		PartyAPI.init()
-		PetAPI.init()
-		SeaCreatureAPI.init()
-		SkyBlockAPI.init()
-		SlayerAPI.init()
-		TrophyFishAPI.init()
-		/* endregion */
+	private fun initApis() {
+		DebugAPI
+		InventoryAPI
 
-		/* region Screens */
-		ChatNotificationsManager.init()
-		InfoBoxesManager.init()
-		KeyBindsManager.init()
-		/* endregion */
+		HypixelAPI
+		PartyAPI
+		SkyBlockAPI
 
-		/* region Commands */
-		NobaCommand.init()
-		SWikiCommand.init()
-		/* endregion */
+		BurrowAPI
+		DungeonsAPI
+		MayorAPI
+		PetAPI
+		SeaCreatureAPI
+		SlayerAPI
+		TrophyFishAPI
+	}
 
-		/* region User Interface */
-		ItemPickupLog.init()
-		/* endregion */
+	private fun initFeatures() {
+		// region Core
+		UpdateNotifier
+		// endregion
 
-		/* region Features */
+		// region Commands
+		NobaCommand
+		SWikiCommand
+		// endregion
+
 		// region Visuals
-		EtherwarpOverlay.init()
-		TemporaryWaypoints.init()
+		EtherwarpOverlay
+		TemporaryWaypoints
+		// endregion
+
+		// region User Interface
+		ItemPickupLog
 		// endregion
 
 		// region Inventory
-		EnchantmentTooltips.init()
-		ISlotInfo.init()
+		EnchantmentTooltips
+		ISlotInfo
 		// endregion
 
 		// region Events
 		/* region Hoppity */
-		HoppityEggGuess.init()
-		ChocolateFactoryFeatures.init()
+		HoppityEggGuess
+		ChocolateFactoryFeatures
 		/* endregion */
 
 		/* region Mythological */
-		AnnounceRareDrops.init()
-		GriffinBurrowGuess.init()
-		BurrowWaypoints.init()
-		InquisitorWaypoints.init()
-		/* endregion*/
+		AnnounceRareDrops
+		GriffinBurrowGuess
+		BurrowWaypoints
+		InquisitorWaypoints
+		/* endregion */
 		// endregion
 
 		// region Slayers
-		MiniBossFeatures.init()
-		SlayerBossFeatures.init()
-		CompactSlayerMessages.init()
+		MiniBossFeatures
+		SlayerBossFeatures
+		CompactSlayerMessages
 		/* region Sven Packmaster */
-		HidePupNametags.init()
+		HidePupNametags
 		/* endregion */
 		/* region Voidgloom Seraph */
-		VoidgloomSeraphFeatures.init()
+		VoidgloomSeraphFeatures
 		/* endregion */
 		/* region Inferno Demonlord */
-		HighlightHellionShield.init()
+		HighlightHellionShield
 		/* endregion */
 		// endregion
 
 		// region Fishing
-		FixFishHookFieldDesync.init()
-		AnnounceSeaCreatures.init()
-		CatchTimer.init()
-		FishingBobberTweaks.init()
-		HighlightThunderSparks.init()
-		HotspotWaypoints.init()
-		RevertTreasureMessages.init()
-		SeaCreatureAlert.init()
-		TrophyFishChat.init()
+		FixFishHookFieldDesync
+		AnnounceSeaCreatures
+		CatchTimer
+		FishingBobberTweaks
+		HighlightThunderSparks
+		HotspotWaypoints
+		RevertTreasureMessages
+		SeaCreatureAlert
+		TrophyFishChat
 		// endregion
 
 		// region Mining
-		CorpseLocator.init()
-		MineshaftWaypoints.init()
-		WormAlert.init()
+		CorpseLocator
+		MineshaftWaypoints
+		WormAlert
 		// endregion
 
 		// region Crimson Isle
-		AnnounceVanquisher.init()
+		AnnounceVanquisher
 		// endregion
 
 		// region Dungeons
-		HighlightStarredMobs.init()
-		SimonSaysTimer.init()
+		HighlightStarredMobs
+		SimonSaysTimer
 		// endregion
 
 		// region Chat
-		CopyChatFeature.init()
-		ChatNotifications.init()
-		IChatFilter.init()
-		ChatChannelDisplay.init()
+		CopyChatFeature
+		ChatNotifications
+		IChatFilter
+		ChatChannelDisplay
+		KeyBindsManager
 		/* region Chat Commands */
-		DMCommands.init()
-		PartyCommands.init()
-		GuildCommands.init()
+		DMCommands
+		PartyCommands
+		GuildCommands
 		/* endregion */
 		// endregion
 
 		// region QOL
-		ISoundFilter.init()
-		MouseLock.init()
+		ISoundFilter
+		MouseLock
 		// endregion
 
 		// region Rift
-		RiftTimers.init()
+		RiftTimers
 		// endregion
-		/* endregion */
 	}
 }

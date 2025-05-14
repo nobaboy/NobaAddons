@@ -1,16 +1,11 @@
 package me.nobaboy.nobaaddons.features.ui.infobox
 
 import kotlinx.io.IOException
-import me.nobaboy.nobaaddons.config.util.safeLoad
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
 
 object InfoBoxesManager {
 	val infoBoxes by InfoBoxesConfig::infoBoxes
-
-	fun init() {
-		InfoBoxesConfig.safeLoad()
-	}
 
 	fun save() {
 		try {

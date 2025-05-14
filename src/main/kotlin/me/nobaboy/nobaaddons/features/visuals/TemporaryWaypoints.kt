@@ -7,14 +7,14 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.CommonPatterns
-import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
@@ -30,7 +30,7 @@ object TemporaryWaypoints {
 
 	private val waypoints = mutableListOf<Waypoint>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { waypoints.clear() }
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)

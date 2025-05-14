@@ -6,10 +6,10 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo.skullFromRepo
-import me.nobaboy.nobaaddons.utils.mc.BlockUtils.getBlockStateAt
-import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
+import me.nobaboy.nobaaddons.utils.mc.BlockUtils.getBlockStateAt
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
@@ -23,7 +23,7 @@ object HighlightThunderSparks {
 	private val THUNDER_SPARK_TEXTURE by "ewogICJ0aW1lc3RhbXAiIDogMTY0MzUwNDM3MjI1NiwKICAicHJvZmlsZUlkIiA6ICI2MzMyMDgwZTY3YTI0Y2MxYjE3ZGJhNzZmM2MwMGYxZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUZWFtSHlkcmEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2IzMzI4ZDNlOWQ3MTA0MjAzMjI1NTViMTcyMzkzMDdmMTIyNzBhZGY4MWJmNjNhZmM1MGZhYTA0YjVjMDZlMSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9".skullFromRepo("thunder_spark")
 	private val thunderSparks = mutableListOf<ArmorStandEntity>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { thunderSparks.clear() }
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)

@@ -21,7 +21,7 @@ object SlayerBossFeatures {
 
 	private var bossSpawnTime = Instant.DISTANT_PAST
 
-	fun init() {
+	init {
 		SlayerEvents.BOSS_SPAWN.register(this::onBossSpawn)
 		SlayerEvents.BOSS_KILL.register(this::onBossKill)
 	}

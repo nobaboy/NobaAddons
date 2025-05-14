@@ -4,8 +4,8 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.fishing.SeaCreature
 import me.nobaboy.nobaaddons.events.impl.skyblock.FishingEvents
-import me.nobaboy.nobaaddons.utils.mc.LocationUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils
 
 object AnnounceSeaCreatures {
 	private val config get() = NobaConfig.fishing.announceSeaCreatures
@@ -14,7 +14,7 @@ object AnnounceSeaCreatures {
 	private val SeaCreature.isRare: Boolean
 		get() = rarity >= config.minimumRarity || (id == "CARROT_KING" && config.carrotKing) || (id == "NUTCRACKER" && config.nutcracker)
 
-	fun init() {
+	init {
 		FishingEvents.SEA_CREATURE_CATCH.register(this::onSeaCreatureCatch)
 	}
 

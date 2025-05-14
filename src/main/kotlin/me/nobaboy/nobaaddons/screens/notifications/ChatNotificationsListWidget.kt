@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.screens.notifications
 
 import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsConfig
-import me.nobaboy.nobaaddons.features.chat.notifications.ChatNotificationsManager
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.green
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.red
@@ -24,7 +23,7 @@ class ChatNotificationsListWidget(
 	y: Int,
 	itemHeight: Int,
 ) : ElementListWidget<ChatNotificationsListWidget.ChatNotificationEntry>(client, width, height, y, itemHeight) {
-	private val notifications = ChatNotificationsManager.notifications.map { it.copy() }.toMutableList()
+	private val notifications = ChatNotificationsConfig.notifications.map { it.copy() }.toMutableList()
 	var hasChanges = false
 
 	init {
@@ -50,9 +49,9 @@ class ChatNotificationsListWidget(
 	fun saveChanges() {
 		notifications.removeIf { it.message.isBlank() }
 
-		ChatNotificationsManager.notifications.clear()
-		ChatNotificationsManager.notifications.addAll(notifications)
-		ChatNotificationsManager.save()
+		ChatNotificationsConfig.notifications.clear()
+		ChatNotificationsConfig.notifications.addAll(notifications)
+		ChatNotificationsConfig.save()
 
 		hasChanges = false
 	}

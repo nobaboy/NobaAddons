@@ -19,10 +19,10 @@ import me.nobaboy.nobaaddons.screens.NobaHudScreen
 import me.nobaboy.nobaaddons.screens.NobaMainScreen
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
 import me.nobaboy.nobaaddons.screens.notifications.ChatNotificationsScreen
+import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.mc.LocationUtils
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.MCUtils.day
-import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.mc.PingUtils
 import me.nobaboy.nobaaddons.utils.mc.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
@@ -32,7 +32,7 @@ import net.minecraft.util.Formatting
 @Suppress("unused")
 @Group("nobaaddons", "noba")
 object NobaCommand {
-	fun init() {
+	init {
 		CommandUtil.registerRoot(this)
 		HypixelChatCommandMocks.init()
 	}
@@ -64,7 +64,14 @@ object NobaCommand {
 
 	@Command
 	fun ping() {
-		PingUtils.sendPingPacket(sendMessage = true)
+		PingUtils.requestPing {
+			ChatUtils.addMessage(tr("nobaaddons.command.ping", "Ping: ${it}ms"))
+		}
+	}
+
+	@Command
+	fun tps() {
+		ChatUtils.addMessage(tr("nobaaddons.command.tps", "TPS: ${PingUtils.currentTps}"))
 	}
 
 	@Command

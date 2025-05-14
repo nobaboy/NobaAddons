@@ -40,6 +40,11 @@ inline fun MutableJsonMap.mapAndRename(old: String, new: String, mapping: (Any) 
 	mapAndMoveTo(old, this, new, mapping)
 }
 
+/**
+ * Modify the value for [key] in-place using the provided [mapping] function
+ *
+ * This is a convenience alias for `mapAndMoveTo(key, this, key) { ... }`
+ */
 inline fun MutableJsonMap.modify(key: String, mapping: (Any) -> Any) {
 	mapAndMoveTo(key, this, key, mapping)
 }

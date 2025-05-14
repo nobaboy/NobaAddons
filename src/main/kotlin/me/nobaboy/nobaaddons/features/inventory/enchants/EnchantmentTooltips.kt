@@ -6,10 +6,13 @@ import me.nobaboy.nobaaddons.core.enchants.EnchantBase
 import me.nobaboy.nobaaddons.core.enchants.StackingEnchant
 import me.nobaboy.nobaaddons.core.enchants.UltimateEnchant
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.romanToArabic
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.StringUtils.toAbbreviatedString
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.blue
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
@@ -17,9 +20,6 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkGray
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkRed
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.lightPurple
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
 import net.minecraft.client.util.InputUtil
 import net.minecraft.item.ItemStack
@@ -35,7 +35,7 @@ object EnchantmentTooltips {
 	// the extra [\d,]+ is to account for stacking enchants adding their value
 	private val ENCHANT_LINE_REGEX = Regex("^(?:.+ [IVX]+(?: [\\d,]+)?(?:$|,))+")
 
-	fun init() {
+	init {
 		ItemTooltipCallback.EVENT.register { item, _, _, lines ->
 			try {
 				parseEnchants(item, lines)

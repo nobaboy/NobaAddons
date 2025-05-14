@@ -5,8 +5,9 @@ import com.mojang.brigadier.context.CommandContext
 import dev.celestialfault.commander.ArgumentHandler
 import dev.celestialfault.commander.Commander
 import dev.celestialfault.commander.ICommand
-import me.nobaboy.nobaaddons.commands.adapters.*
-import me.nobaboy.nobaaddons.core.Rarity
+import me.nobaboy.nobaaddons.commands.adapters.FormattingHandler
+import me.nobaboy.nobaaddons.commands.adapters.RarityHandler
+import me.nobaboy.nobaaddons.core.DebugFlag
 import me.nobaboy.nobaaddons.core.Skill
 import me.nobaboy.nobaaddons.ui.ElementAlignment
 import me.nobaboy.nobaaddons.utils.JavaUtils
@@ -15,8 +16,6 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandSource
 import net.minecraft.command.argument.NbtPathArgumentType
 import net.minecraft.command.argument.TextArgumentType
-import net.minecraft.text.Text
-import net.minecraft.util.Formatting
 import kotlin.reflect.KParameter
 
 typealias Context = CommandContext<FabricClientCommandSource>
@@ -30,6 +29,7 @@ object CommandUtil {
 		addHandler(RarityHandler)
 		addHandler(JavaUtils.enumArgument(ElementAlignment::class.java))
 		addHandler(JavaUtils.enumArgument(Skill::class.java))
+		addHandler(JavaUtils.enumArgument(DebugFlag::class.java))
 	}
 
 	init {

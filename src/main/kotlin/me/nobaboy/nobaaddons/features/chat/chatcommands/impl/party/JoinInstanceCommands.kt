@@ -1,13 +1,12 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
-import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import kotlin.time.Duration.Companion.seconds
 
-class JoinInstanceCommands : ChatCommand(2.seconds) {
+class JoinInstanceCommands : AbstractPartyChatCommand(2.seconds) {
 	private val floors = mapOf(
 		1 to "one",
 		2 to "two",
@@ -27,6 +26,7 @@ class JoinInstanceCommands : ChatCommand(2.seconds) {
 	)
 
 	override val enabled: Boolean = config.party.joinInstanced
+	override val requireClientPlayerIs = ClientboundPartyInfoPacket.PartyRole.LEADER
 
 	override val name: String = "f1"
 	override val aliases: List<String> = listOf(
@@ -36,9 +36,7 @@ class JoinInstanceCommands : ChatCommand(2.seconds) {
 	)
 	override val usage: String = "f(1-7), m(1-7), t(1-5)"
 
-	override fun run(ctx: ChatContext) {
-		if(PartyAPI.party?.isLeader != true) return
-
+	override suspend fun run(ctx: ChatContext) {
 		val type = ctx.command.first().lowercase()
 		val tier = ctx.command.last().toString().toInt()
 

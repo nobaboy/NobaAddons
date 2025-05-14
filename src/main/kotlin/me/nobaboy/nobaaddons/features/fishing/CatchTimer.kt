@@ -8,8 +8,8 @@ import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.ui.ElementAlignment
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.entity.decoration.ArmorStandEntity
@@ -23,7 +23,7 @@ object CatchTimer {
 
 	private val TIMER_REGEX by Regex("^(?:\\d+\\.\\d+|!{3})$").fromRepo("fishing.catch_timer")
 
-	fun init() {
+	init {
 		EntityNametagRenderEvents.VISIBILITY.register(this::hideTimer)
 		UIManager.add(CatchTimerHudElement)
 	}

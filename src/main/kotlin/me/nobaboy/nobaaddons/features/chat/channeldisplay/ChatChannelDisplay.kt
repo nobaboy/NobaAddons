@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.channeldisplay
 
 import kotlinx.datetime.Instant
+import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
@@ -10,13 +11,12 @@ import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.hypixel.HypixelUtils
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.green
-import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
@@ -27,7 +27,7 @@ import kotlin.time.Duration.Companion.minutes
 
 object ChatChannelDisplay {
 	private val config get() = NobaConfig.chat
-	private val enabled: Boolean get() = config.displayCurrentChannel && HypixelUtils.onHypixel
+	private val enabled: Boolean get() = config.displayCurrentChannel && HypixelAPI.onHypixel
 
 	private const val DISPLAY_FOR_TICKS = 40
 	private const val FADE_OUT_AT = 10
@@ -44,7 +44,7 @@ object ChatChannelDisplay {
 	private val CONVERSATION_EXPIRED_MESSAGE by "The conversation you were in expired and you have been moved back to the ALL channel.".fromRepo("chat.conversation_expired")
 	private val NOT_IN_PARTY_MESSAGE by "You are not in a party and were moved to the ALL channel.".fromRepo("chat.not_in_party")
 
-	fun init() {
+	init {
 		TickEvents.TICK.register(this::onTick)
 		ScreenRenderEvents.afterRender<ChatScreen> { _, ctx, _, _, _ -> onRenderChatScreen(ctx) }
 		HudRenderCallback.EVENT.register { ctx, delta ->
@@ -64,7 +64,7 @@ object ChatChannelDisplay {
 
 	private fun onSendChatMessage() {
 		if(!enabled) return
-		if(!HypixelUtils.onHypixel) return
+		if(!HypixelAPI.onHypixel) return
 
 		val channel = this.channel // avoid a possible race condition between checking if this is null and setting it
 		if(channel.expires != null) {
@@ -74,7 +74,7 @@ object ChatChannelDisplay {
 
 	private fun onChatMessage(event: ChatMessageEvents.Chat) {
 		if(!enabled) return
-		if(!HypixelUtils.onHypixel) return
+		if(!HypixelAPI.onHypixel) return
 
 		CHANNEL_SWITCH_REGEX.onFullMatch(event.cleaned) {
 			channel = ActiveChatChannel(ChatChannel.fromString(groups["channel"]!!.value))
@@ -93,7 +93,7 @@ object ChatChannelDisplay {
 
 	private fun onRenderHud(ctx: DrawContext, delta: RenderTickCounter) {
 		if(!enabled) return
-		if(!HypixelUtils.onHypixel) return
+		if(!HypixelAPI.onHypixel) return
 		if(MCUtils.client.currentScreen is ChatScreen) return
 
 		val displayTicks = DISPLAY_FOR_TICKS - ticksSinceChatOpen
@@ -115,7 +115,7 @@ object ChatChannelDisplay {
 
 	private fun onRenderChatScreen(ctx: DrawContext) {
 		if(!enabled) return
-		if(!HypixelUtils.onHypixel) return
+		if(!HypixelAPI.onHypixel) return
 
 		draw(ctx)
 	}

@@ -2,11 +2,11 @@ package me.nobaboy.nobaaddons.features.chat
 
 import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.core.PersistentCache
+import me.nobaboy.nobaaddons.core.DebugFlag
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.mixins.accessors.ChatHudAccessor
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.hud.ChatHudLine
@@ -20,8 +20,9 @@ object CopyChatFeature {
 	private val config get() = NobaConfig.chat.copyChat
 
 	private val messages = WeakHashMap<ChatHudLine.Visible, WeakReference<ChatHudLine>>(200)
+	private val copyRaw by DebugFlag.COPY_RAW_CHAT_COMPONENT
 
-	fun init() {
+	init {
 		ChatMessageEvents.ADDED.register(this::onChatAdded)
 	}
 
@@ -48,11 +49,11 @@ object CopyChatFeature {
 
 		val visibleLine = hud.visibleMessages[index]
 		val cleaned = messages[visibleLine]?.get()?.content?.let {
-			if(Screen.hasAltDown()) it.toString() else it.string.cleanFormatting()
+			if(copyRaw) it.toString() else it.string.cleanFormatting()
 		} ?: return false
 
 		MCUtils.copyToClipboard(cleaned)
-		if(PersistentCache.devMode && Screen.hasAltDown()) {
+		if(copyRaw) {
 			ChatUtils.addMessage(tr("nobaaddons.chat.copiedMessageRaw", "Copied message text component to clipboard"))
 		} else {
 			ChatUtils.addMessage(tr("nobaaddons.chat.copiedMessage", "Copied chat message to clipboard"))

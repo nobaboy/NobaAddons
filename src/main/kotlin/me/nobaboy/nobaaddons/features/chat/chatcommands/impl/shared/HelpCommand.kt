@@ -13,7 +13,7 @@ class HelpCommand(
 	override val name: String = "help"
 	override val hideFromHelp: Boolean = true
 
-	override fun run(ctx: ChatContext) {
+	override suspend fun run(ctx: ChatContext) {
 		val commands = manager.commands()
 			.asSequence()
 			.filter { it.enabled }

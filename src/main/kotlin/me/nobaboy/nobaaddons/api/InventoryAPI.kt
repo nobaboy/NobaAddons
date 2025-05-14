@@ -12,10 +12,10 @@ import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket
@@ -40,7 +40,7 @@ object InventoryAPI {
 
 	private fun shouldSuppressItemLogUpdate(): Boolean = inventorySuppressTime.elapsedSince().inWholeSeconds < 2
 
-	fun init() {
+	init {
 		TickEvents.every(5, this::onQuarterSecond)
 		PacketEvents.SEND.register(this::onPacketSend)
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)

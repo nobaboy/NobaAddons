@@ -15,17 +15,17 @@ import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.dungeons.data.SimonSaysTimes
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.lightPurple
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.plus
-import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
 
 object SimonSaysTimer {
@@ -42,7 +42,7 @@ object SimonSaysTimer {
 	private var buttonPressed: Boolean = false
 	private var deviceCompleted: Boolean = false
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		BlockInteractionEvent.EVENT.registerIf<BlockInteractionEvent.Interact>(this::onInteract)

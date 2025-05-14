@@ -39,7 +39,7 @@ object PetAPI {
 		get() = if(SkyBlockAPI.inSkyBlock) field else null
 		private set
 
-	fun init() {
+	init {
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		InventoryEvents.SLOT_CLICK.register(this::onInventorySlotClick)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)

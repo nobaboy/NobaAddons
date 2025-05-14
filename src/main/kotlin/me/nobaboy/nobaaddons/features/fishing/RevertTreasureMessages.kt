@@ -20,7 +20,7 @@ object RevertTreasureMessages {
 		"GREAT" to Formatting.DARK_PURPLE,
 	)
 
-	fun init() {
+	init {
 		ChatMessageEvents.MODIFY.register(this::modifyMessage)
 	}
 

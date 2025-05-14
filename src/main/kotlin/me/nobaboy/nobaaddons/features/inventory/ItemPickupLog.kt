@@ -17,7 +17,7 @@ import kotlin.math.abs
 object ItemPickupLog {
 	private val config get() = NobaConfig.inventory.itemPickupLog
 
-	fun init() {
+	init {
 		UIManager.add(PickupLogHudElement)
 	}
 

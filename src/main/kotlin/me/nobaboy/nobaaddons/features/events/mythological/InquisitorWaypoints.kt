@@ -13,21 +13,21 @@ import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
-import me.nobaboy.nobaaddons.utils.mc.EntityUtils
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstPartialMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.gold
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.isPast
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
 import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
-import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.getNobaVec
+import me.nobaboy.nobaaddons.utils.mc.EntityUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.gold
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.network.OtherClientPlayerEntity
@@ -49,7 +49,7 @@ object InquisitorWaypoints {
 	private val nearbyInquisitors = mutableListOf<OtherClientPlayerEntity>()
 	private var lastInquisitor: OtherClientPlayerEntity? = null
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.everySecond { onSecondPassed() }
 		MythologicalEvents.MOB_DIG.register(this::onMobDig)

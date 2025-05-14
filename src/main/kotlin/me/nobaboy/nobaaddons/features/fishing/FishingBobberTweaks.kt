@@ -9,10 +9,10 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.ducks.FishingBobberTimerDuck
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import net.minecraft.entity.projectile.FishingBobberEntity
 import net.minecraft.text.Text
 import kotlin.time.DurationUnit
@@ -23,7 +23,7 @@ object FishingBobberTweaks {
 	private val GREEN = NobaColor.GREEN.rgb
 	private val GOLD = NobaColor.GOLD.rgb
 
-	fun init() {
+	init {
 		EntityEvents.SPAWN.register(this::onEntitySpawn)
 		EntityEvents.ALLOW_RENDER.register(this::onEntityRender)
 		EntityNametagRenderEvents.VISIBILITY.register(this::allowNameTag)

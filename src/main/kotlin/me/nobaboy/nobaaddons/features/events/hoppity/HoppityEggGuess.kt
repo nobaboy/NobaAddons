@@ -9,7 +9,6 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.interact.ItemUseEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
@@ -17,6 +16,7 @@ import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.math.ParticlePathFitter
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
@@ -33,7 +33,7 @@ object HoppityEggGuess {
 
 	private var lastAbilityUse = Instant.DISTANT_PAST
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ItemUseEvent.EVENT.register(this::onItemUse)

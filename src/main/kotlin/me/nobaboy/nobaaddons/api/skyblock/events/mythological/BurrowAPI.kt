@@ -10,13 +10,13 @@ import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.mc.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.collections.TimedSet
+import me.nobaboy.nobaaddons.utils.mc.BlockUtils.getBlockAt
 import net.minecraft.block.Blocks
 import net.minecraft.particle.ParticleTypes
 import kotlin.time.Duration.Companion.minutes
@@ -40,7 +40,7 @@ object BurrowAPI {
 
 	private var lastBurrowChatMessage = Instant.DISTANT_PAST
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		BlockInteractionEvent.EVENT.register(this::onBlockClick)

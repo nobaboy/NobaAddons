@@ -6,21 +6,21 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockStat
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.utils.mc.EntityUtils
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
+import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
+import me.nobaboy.nobaaddons.utils.mc.EntityUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.blue
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
-import me.nobaboy.nobaaddons.utils.TimeUtils.now
-import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
-import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils.clickAction
-import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
@@ -36,7 +36,7 @@ object HotspotWaypoints {
 
 	private val hotspots = mutableListOf<Hotspot>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { hotspots.clear() }
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)

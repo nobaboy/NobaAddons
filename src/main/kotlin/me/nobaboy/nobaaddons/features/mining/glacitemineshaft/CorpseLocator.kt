@@ -8,15 +8,15 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.CommonPatterns
-import me.nobaboy.nobaaddons.utils.mc.EntityUtils
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
+import me.nobaboy.nobaaddons.utils.getNobaVec
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
+import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
+import me.nobaboy.nobaaddons.utils.mc.EntityUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
-import me.nobaboy.nobaaddons.utils.getNobaVec
-import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -27,7 +27,7 @@ object CorpseLocator {
 
 	private val corpses = mutableListOf<Corpse>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { corpses.clear() }
 		TickEvents.everySecond(this::onSecondPassed)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)

@@ -7,27 +7,29 @@ import dev.celestialfault.commander.annotations.Group
 import dev.celestialfault.commander.annotations.RootCommand
 import kotlinx.coroutines.delay
 import me.nobaboy.nobaaddons.api.DebugAPI
+import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.commands.adapters.FormattingHandler
 import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.commands.impl.NobaClientCommandGroup
+import me.nobaboy.nobaaddons.core.DebugFlag
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.core.UpdateNotifier
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.profile.ProfileData
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.StringUtils
+import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.underline
-import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.mc.chat.Message
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay
@@ -39,7 +41,6 @@ import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.text.Texts
 import net.minecraft.util.Formatting
-import kotlin.jvm.optionals.getOrNull
 
 @OptIn(UntranslatedMessage::class)
 @Suppress("unused")
@@ -137,13 +138,12 @@ object DebugCommands {
 
 	@Command
 	fun location(ctx: Context) {
-		val location = DebugAPI.lastLocationPacket
 		ctx.dumpInfo(
-			"Server" to location.serverName,
-			"Type" to location.serverType.getOrNull(),
-			"Lobby" to location.lobbyName.getOrNull(),
-			"Mode" to location.mode.getOrNull(),
-			"Map" to location.map.getOrNull(),
+			"Server" to HypixelAPI.serverName,
+			"Type" to HypixelAPI.serverType,
+			"Lobby" to HypixelAPI.lobbyName,
+			"Mode" to HypixelAPI.mode,
+			"Map" to HypixelAPI.map,
 			"Detected Island" to SkyBlockAPI.currentIsland,
 			"Zone" to SkyBlockAPI.currentZone,
 		)
@@ -201,6 +201,12 @@ object DebugCommands {
 	@Command
 	fun fake(text: Text) {
 		MCUtils.player!!.sendMessage(text, false)
+	}
+
+	@Command
+	fun flag(flag: DebugFlag) {
+		flag.enabled = !flag.enabled
+		ChatUtils.addMessage("$flag is now ${if(flag.enabled) "enabled" else "disabled"}")
 	}
 
 	@Command

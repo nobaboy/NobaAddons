@@ -7,14 +7,14 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.utils.mc.LocationUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.aqua
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.aqua
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
@@ -36,7 +36,7 @@ object BurrowWaypoints {
 	private val isInquisitorSpawned: Boolean
 		get() = InquisitorWaypoints.inquisitors.isNotEmpty()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		MythologicalEvents.BURROW_GUESS.register(this::onBurrowGuess)
 		MythologicalEvents.BURROW_FIND.register(this::onBurrowFind)

@@ -12,8 +12,6 @@ import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.repo.Repo.skullFromRepo
-import me.nobaboy.nobaaddons.utils.mc.EntityUtils
-import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.Scheduler
@@ -21,6 +19,8 @@ import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
+import me.nobaboy.nobaaddons.utils.mc.EntityUtils
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
@@ -34,7 +34,6 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.EndermanEntity
 import net.minecraft.item.Items
-import java.awt.Color
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
@@ -53,7 +52,7 @@ object VoidgloomSeraphFeatures {
 
 	private val nukekubiFixations = mutableSetOf<ArmorStandEntity>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		SlayerEvents.QUEST_CLEAR.register { reset() }
 		TickEvents.TICK.register { onTick() }
@@ -68,7 +67,6 @@ object VoidgloomSeraphFeatures {
 
 		SlayerAPI.currentQuest?.takeIf { it.spawned && it.entity != null }?.let {
 			val color = getHighlightColor(it.entity, it.armorStand)
-			// TODO change this to NobaColor
 			it.entity?.highlight(color)
 		}
 	}
@@ -172,12 +170,11 @@ object VoidgloomSeraphFeatures {
 		}
 	}
 
-	private fun getHighlightColor(entity: LivingEntity?, armorStand: ArmorStandEntity?): Color {
+	private fun getHighlightColor(entity: LivingEntity?, armorStand: ArmorStandEntity?): NobaColor {
 		val armorStandName = armorStand?.name?.string.orEmpty()
 		val isHoldingBeacon = (entity as? EndermanEntity)?.carriedBlock?.block == Blocks.BEACON
 
 		return when {
-			// TODO migrate these to NobaColor when histoire refactor is merged
 			armorStandName.contains("Hits") && !inBeaconPhase -> config.hitsPhaseColor
 			isHoldingBeacon || inBeaconPhase -> config.beaconPhaseColor
 			else -> config.damagePhaseColor

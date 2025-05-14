@@ -3,10 +3,10 @@ package me.nobaboy.nobaaddons.features.mining.glacitemineshaft
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.utils.mc.LocationUtils
-import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
@@ -19,7 +19,7 @@ object MineshaftWaypoints {
 
 	val waypoints = mutableListOf<MineshaftWaypoint>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register(this::onIslandChange)
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
 	}
@@ -27,7 +27,7 @@ object MineshaftWaypoints {
 	private fun onIslandChange(event: SkyBlockEvents.IslandChange) {
 		waypoints.clear()
 
-		if(event.island != SkyBlockIsland.MINESHAFT) return
+		if(event.new != SkyBlockIsland.MINESHAFT) return
 		val blockBelow = LocationUtils.blockBelowPlayer().roundToBlock()
 
 		if(config.entranceWaypoint) addWaypoint(blockBelow, tr("nobaaddons.mineshaftWaypoints.entrance", "Entrance"), NobaColor.BLUE, MineshaftWaypointType.ENTRANCE)

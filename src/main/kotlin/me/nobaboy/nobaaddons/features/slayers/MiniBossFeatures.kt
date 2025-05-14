@@ -23,7 +23,7 @@ object MiniBossFeatures {
 
 	private var lastAlert = Instant.now
 
-	fun init() {
+	init {
 		SoundEvents.SOUND.register(this::onSound)
 		SlayerEvents.MINI_BOSS_SPAWN.register(this::onMiniBossSpawn)
 	}

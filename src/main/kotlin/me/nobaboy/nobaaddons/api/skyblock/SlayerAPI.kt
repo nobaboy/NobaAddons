@@ -8,11 +8,11 @@ import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.CommonPatterns
+import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.mc.EntityUtils
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
-import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.mc.ScoreboardUtils
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
@@ -30,7 +30,7 @@ object SlayerAPI {
 
 	private val miniBosses = mutableListOf<LivingEntity>()
 
-	fun init() {
+	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
 		TickEvents.TICK.register { onTick() }
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)

@@ -9,19 +9,19 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
-import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime
-import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.mc.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.isFuture
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
-import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.nextAfter
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.runCommand
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
@@ -59,7 +59,7 @@ object MayorAPI {
 		year - if(month < ELECTION_END_MONTH || (month == ELECTION_END_MONTH && day < ELECTION_END_DAY)) 1 else 0
 
 
-	fun init() {
+	init {
 		TickEvents.everySecond { onSecondPassed() }
 		InventoryEvents.OPEN.register(this::onInventoryOpen)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
