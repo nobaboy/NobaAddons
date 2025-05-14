@@ -8,7 +8,8 @@ import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 import net.minecraft.nbt.NbtList
 
-class NbtCompoundWrapper(private val nbt: NbtCompound) {
+@JvmInline
+value class NbtCompoundWrapper(private val nbt: NbtCompound) {
 	val entries: Map<String, NbtElement> get() {
 		//? if >=1.21.5 {
 		/*return nbt.entrySet().associate { it.key to it.value }

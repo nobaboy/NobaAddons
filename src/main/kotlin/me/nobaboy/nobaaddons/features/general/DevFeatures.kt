@@ -1,7 +1,5 @@
 package me.nobaboy.nobaaddons.features.general
 
-import com.google.gson.GsonBuilder
-import com.mojang.serialization.JsonOps
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.mixins.accessors.HandledScreenAccessor
 import me.nobaboy.nobaaddons.utils.MCUtils
@@ -9,12 +7,12 @@ import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NbtOps
+import net.minecraft.nbt.visitor.StringNbtWriter
 import net.minecraft.screen.ScreenHandler
 import org.lwjgl.glfw.GLFW
 
 object DevFeatures {
-	private val gson = GsonBuilder().setPrettyPrinting().serializeNulls().create()
-
 	@JvmStatic
 	@OptIn(UntranslatedMessage::class)
 	fun copyCurrentHoveredInventorySlot(screen: HandledScreen<out ScreenHandler>) {
@@ -25,20 +23,10 @@ object DevFeatures {
 		ChatUtils.addMessage("Copied item data to clipboard")
 	}
 
-	private fun buildTextToCopy(item: ItemStack): String = buildString {
-		append("---- DATA COMPONENTS ----\n\n")
-		// ItemStack#hasChangedComponent(ComponentType<*>) doesn't exist on 1.21.1
-		item.components.filter { item.defaultComponents[it.type] !== it.value }.forEach {
-			appendLine("${it.type}:")
-			appendLine(it.value.toString().prependIndent("  "))
-			appendLine()
-		}
-		append("---- SERIALIZED ITEM ----\n\n")
-		// it *is* possible to dump this as nbt, but json is slightly better to read than even prettified nbt.
-		// (ItemStack#toNbt(RegistryWrapper.WrapperLookup) also doesn't exist on 1.21.1)
-		val encoded = ItemStack.CODEC.encodeStart(MCUtils.player!!.registryManager.getOps(JsonOps.INSTANCE), item).orThrow
-		append(gson.toJson(encoded))
-	}.trim()
+	private fun buildTextToCopy(item: ItemStack): String {
+		val encoded = ItemStack.CODEC.encodeStart(MCUtils.player!!.registryManager.getOps(NbtOps.INSTANCE), item).orThrow
+		return StringNbtWriter().apply(encoded)
+	}
 
 	@JvmStatic
 	fun shouldCopy(keyCode: Int): Boolean {
