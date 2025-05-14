@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
 
 @Mixin({EntityRenderer.class, ArmorStandEntityRenderer.class, LivingEntityRenderer.class, MobEntityRenderer.class})
-abstract class NametagRenderEventsMixin_Visibility<T extends Entity> {
+abstract class NametagVisibilityEventMixin<T extends Entity> {
 	@ModifyReturnValue(method = "hasLabel(Lnet/minecraft/entity/Entity;D)Z", at = @At("RETURN"))
 	public boolean nobaaddons$modifyNametagVisibility(boolean original, @Local(argsOnly = true) @Coerce T entity) {
 		var event = new EntityNametagRenderEvents.Visibility(entity, original);
