@@ -26,6 +26,7 @@ object EntityOverlay {
 		}
 		EntityEvents.PRE_RENDER.register { overlay = OVERLAY_TEXTURE.get(it.state).get() }
 		EntityEvents.POST_RENDER.register { overlay = null }
+		EntityEvents.DESPAWN.register { remove(it.entity) }
 	}
 
 	fun Entity.highlight(color: NobaColor) {
@@ -43,11 +44,8 @@ object EntityOverlay {
 	@JvmStatic
 	fun getRgb(state: EntityRenderState): Int? = get(state)?.rgb
 
-	@JvmStatic
-	fun contains(entity: Entity): Boolean = OVERLAY_TEXTURE.get(entity).get() != null
-
-	@JvmStatic
-	fun contains(entity: EntityRenderState): Boolean = OVERLAY_TEXTURE.get(entity).get() != null
+	@JvmStatic fun contains(entity: Entity): Boolean = get(entity) != null
+	@JvmStatic fun contains(entity: EntityRenderState): Boolean = get(entity) != null
 
 	fun set(entity: Entity, color: NobaColor) {
 		if(FabricLoader.getInstance().isModLoaded("iris")) return // TODO figure out how to make this play nicely with iris
@@ -55,6 +53,6 @@ object EntityOverlay {
 	}
 
 	fun remove(entity: Entity) {
-		OVERLAY_TEXTURE.get(entity).clearWithCleanup(OverlayTexture::close)
+		OVERLAY_TEXTURE.getOrNull(entity)?.clearWithCleanup(OverlayTexture::close)
 	}
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 @Mixin({Entity.class, EntityRenderState.class})
 class StateDataHolderImpl implements StateDataHolder {
 	@Unique
-	private final Map<EntityDataKey<?>, EntityDataKey<?>.Value> nobaaddons$stateData = new Object2ObjectArrayMap<>();
+	private final Map<EntityDataKey<?>, EntityDataKey<?>.Value> nobaaddons$stateData = new Object2ObjectArrayMap<>(32);
 
 	@Override
 	public Map<EntityDataKey<?>, EntityDataKey<?>.Value> nobaaddons$getData() {
