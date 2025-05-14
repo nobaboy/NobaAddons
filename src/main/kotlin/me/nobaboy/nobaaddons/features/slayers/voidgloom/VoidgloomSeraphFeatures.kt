@@ -32,7 +32,6 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.EndermanEntity
 import net.minecraft.item.Items
-import java.awt.Color
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
@@ -66,7 +65,6 @@ object VoidgloomSeraphFeatures {
 
 		SlayerAPI.currentQuest?.takeIf { it.spawned && it.entity != null }?.let {
 			val color = getHighlightColor(it.entity, it.armorStand)
-			// TODO change this to NobaColor
 			it.entity?.highlight(color)
 		}
 	}
@@ -170,12 +168,11 @@ object VoidgloomSeraphFeatures {
 		}
 	}
 
-	private fun getHighlightColor(entity: LivingEntity?, armorStand: ArmorStandEntity?): Color {
+	private fun getHighlightColor(entity: LivingEntity?, armorStand: ArmorStandEntity?): NobaColor {
 		val armorStandName = armorStand?.name?.string.orEmpty()
 		val isHoldingBeacon = (entity as? EndermanEntity)?.carriedBlock?.block == Blocks.BEACON
 
 		return when {
-			// TODO migrate these to NobaColor when histoire refactor is merged
 			armorStandName.contains("Hits") && !inBeaconPhase -> config.hitsPhaseColor
 			isHoldingBeacon || inBeaconPhase -> config.beaconPhaseColor
 			else -> config.damagePhaseColor
