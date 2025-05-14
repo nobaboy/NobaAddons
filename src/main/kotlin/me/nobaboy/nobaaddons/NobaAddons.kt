@@ -70,6 +70,7 @@ import me.nobaboy.nobaaddons.features.slayers.sven.HidePupNametags
 import me.nobaboy.nobaaddons.features.slayers.voidgloom.VoidgloomSeraphFeatures
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesConfig
 import me.nobaboy.nobaaddons.features.visuals.EtherwarpOverlay
+import me.nobaboy.nobaaddons.features.visuals.ShowOwnNametagFeature
 import me.nobaboy.nobaaddons.features.visuals.TemporaryWaypoints
 import me.nobaboy.nobaaddons.repo.RepoManager
 import me.nobaboy.nobaaddons.ui.UIManager
@@ -253,6 +254,10 @@ object NobaAddons : ClientModInitializer {
 
 		// region Rift
 		RiftTimers
+		// endregion
+
+		// region Dev & Debug
+		ShowOwnNametagFeature
 		// endregion
 	}
 }

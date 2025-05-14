@@ -5,6 +5,7 @@ import kotlin.reflect.KProperty
 
 enum class DebugFlag : StringIdentifiable {
 	COPY_RAW_CHAT_COMPONENT,
+	SHOW_OWN_NAMETAG,
 	;
 
 	var enabled = false

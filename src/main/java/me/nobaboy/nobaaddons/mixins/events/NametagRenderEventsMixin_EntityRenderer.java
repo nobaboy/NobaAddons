@@ -1,39 +1,20 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
-import me.nobaboy.nobaaddons.events.impl.render.RenderStateUpdateEvent;
-import me.nobaboy.nobaaddons.utils.render.EntityDataKey;
+import me.nobaboy.nobaaddons.utils.MixinKeys;
 import net.minecraft.client.render.entity.state.EntityRenderState;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EntityRenderer.class)
 abstract class NametagRenderEventsMixin_EntityRenderer {
-	@Unique
-	private static final EntityDataKey<@Nullable Text> ORIGINAL_DISPLAY_NAME = new EntityDataKey<>(() -> null);
-	@Unique
-	private static final EntityDataKey<Boolean> RENDER_ORIGINAL_ENTITY_NAME = new EntityDataKey<>(() -> true);
-
-	static {
-		// some especially cursed shit going on here
-		RenderStateUpdateEvent.EVENT.register(event -> {
-			event.copyToRender(ORIGINAL_DISPLAY_NAME);
-			event.copyToRender(RENDER_ORIGINAL_ENTITY_NAME);
-		});
-	}
-
 	@Shadow
 	protected abstract void renderLabelIfPresent(
 		EntityRenderState state,
@@ -42,17 +23,6 @@ abstract class NametagRenderEventsMixin_EntityRenderer {
 		VertexConsumerProvider vertexConsumers,
 		int light
 	);
-
-	@ModifyReturnValue(method = "hasLabel", at = @At("RETURN"))
-	public boolean nobaaddons$modifyNametagVisibility(boolean original, @Local(argsOnly = true) Entity entity) {
-		var event = new EntityNametagRenderEvents.Visibility(entity, original, original);
-		EntityNametagRenderEvents.VISIBILITY.dispatch(event);
-		RENDER_ORIGINAL_ENTITY_NAME.put(entity, event.getRenderOriginalNametag());
-		if(event.getRenderOriginalNametag()) {
-			ORIGINAL_DISPLAY_NAME.put(entity, entity.getDisplayName());
-		}
-		return event.getShouldRender();
-	}
 
 	@WrapOperation(
 		method = "render",
@@ -70,11 +40,7 @@ abstract class NametagRenderEventsMixin_EntityRenderer {
 		int light,
 		Operation<Void> original
 	) {
-		boolean renderOriginal = RENDER_ORIGINAL_ENTITY_NAME.get(state);
-		if(text == null && renderOriginal) {
-			text = ORIGINAL_DISPLAY_NAME.get(state);
-		}
-
+		boolean renderOriginal = MixinKeys.RENDER_ORIGINAL_ENTITY_NAME.get(state);
 		var event = new EntityNametagRenderEvents.Nametag(state);
 		EntityNametagRenderEvents.EVENT.dispatch(event);
 		matrices.push();

@@ -19,7 +19,7 @@ import net.minecraft.text.Text
 import kotlin.time.DurationUnit
 
 object FishingBobberTweaks {
-	private val SPAWNED_AT = EntityDataKey<Timestamp?> { null }
+	private val SPAWNED_AT = EntityDataKey.nullable<Timestamp?>()
 	private val OUR_BOBBER = EntityDataKey<Boolean> { false }
 
 	private val config get() = NobaConfig.fishing

@@ -34,7 +34,7 @@ class EntityDataKey<T>(private val initialValue: () -> T) {
 	}
 
 	/**
-	 * Get the [Value] stored in the provided [StateDataHolder]
+	 * Get the [Value] instance stored in the provided [StateDataHolder]
 	 */
 	@Suppress("UNCHECKED_CAST")
 	fun getData(holder: StateDataHolder): EntityDataKey<T>.Value =
@@ -85,5 +85,11 @@ class EntityDataKey<T>(private val initialValue: () -> T) {
 		operator fun StateDataHolder.contains(key: EntityDataKey<*>): Boolean = `nobaaddons$getData`().contains(key)
 		operator fun Entity.contains(key: EntityDataKey<*>): Boolean = (this as StateDataHolder).contains(key)
 		operator fun EntityRenderState.contains(key: EntityDataKey<*>): Boolean = (this as StateDataHolder).contains(key)
+
+		/**
+		 * Convenience constructor creating a [EntityDataKey] that returns `null` as its initial value
+		 */
+		@JvmStatic
+		fun <T> nullable() = EntityDataKey<T?> { null }
 	}
 }

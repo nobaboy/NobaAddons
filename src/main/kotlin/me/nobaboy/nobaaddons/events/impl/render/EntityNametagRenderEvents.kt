@@ -23,11 +23,13 @@ object EntityNametagRenderEvents {
 
 	// this uses a boolean var instead of being cancelable to allow for forcing name tags to render,
 	// even if vanilla normally wouldn't render them
-	data class Visibility(
-		val entity: Entity,
-		var shouldRender: Boolean,
-		var renderOriginalNametag: Boolean,
-	) : Event
+	data class Visibility(val entity: Entity, var shouldRender: Boolean) : Event {
+		var renderOriginalNametag: Boolean = shouldRender
+			set(value) {
+				if(value) shouldRender = true
+				field = value
+			}
+	}
 
 	data class Nametag @JvmOverloads constructor(
 		val state: EntityRenderState,
