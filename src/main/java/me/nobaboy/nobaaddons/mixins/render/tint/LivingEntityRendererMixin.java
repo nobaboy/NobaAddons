@@ -1,9 +1,7 @@
 package me.nobaboy.nobaaddons.mixins.render.tint;
 
-import me.nobaboy.nobaaddons.ducks.EntityRenderStateDuck;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
@@ -20,26 +18,9 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
  */
 @Mixin(LivingEntityRenderer.class)
 abstract class LivingEntityRendererMixin {
-	@ModifyExpressionValue(
-		method = "getOverlay",
-		at = @At(
-			value = "FIELD",
-			target = "Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;hurt:Z"
-		)
-	)
-	private static boolean nobaaddons$suppressVanillaDamageOverlay(boolean original, @Local(argsOnly = true) LivingEntityRenderState state) {
-		var entity = ((EntityRenderStateDuck) state).nobaaddons$getEntity();
-		return (entity == null || !EntityOverlay.contains(entity)) && original;
-	}
-
 	@ModifyReturnValue(method = "getMixColor", at = @At("RETURN"))
 	private int nobaaddons$changeColor(int original, @Local(argsOnly = true) LivingEntityRenderState state) {
-		var entity = ((EntityRenderStateDuck) state).nobaaddons$getEntity();
-		var overlay = Nullables.map(entity, EntityOverlay::getRgb);
-		if(overlay != null) {
-			return ColorHelper.fullAlpha(overlay);
-		}
-		return original;
+		return Nullables.mapOrElse(EntityOverlay.getRgb(state), ColorHelper::fullAlpha, original);
 	}
 
 	@ModifyArg(
@@ -47,7 +28,6 @@ abstract class LivingEntityRendererMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/OverlayTexture;getU(F)I")
 	)
 	private static float nobaaddons$forceOverlay(float whiteOverlayProgress, @Local(argsOnly = true) LivingEntityRenderState state) {
-		var entity = ((EntityRenderStateDuck) state).nobaaddons$getEntity();
-		return entity != null && EntityOverlay.contains(entity) ? 1f : whiteOverlayProgress;
+		return EntityOverlay.contains(state) ? 1f : whiteOverlayProgress;
 	}
 }

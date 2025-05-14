@@ -1,9 +1,7 @@
 package me.nobaboy.nobaaddons.mixins.events;
 
 //? if >=1.21.5 {
-/*import me.nobaboy.nobaaddons.ducks.EntityRenderStateDuck;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.entity.state.EntityRenderState;
+/*import net.minecraft.client.MinecraftClient;
 *///?}
 
 import com.llamalad7.mixinextras.sugar.Local;
@@ -26,10 +24,14 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 	@Inject(
 		//? if >=1.21.5 {
 		/*method = "render(Lnet/minecraft/client/render/entity/state/EntityRenderState;DDDLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/render/entity/EntityRenderer;)V",
+		at = @At("HEAD"),
 		*///?} else {
 		method = "render(Lnet/minecraft/entity/Entity;DDDFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/render/entity/EntityRenderer;)V",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/render/entity/EntityRenderer;getPositionOffset(Lnet/minecraft/client/render/entity/state/EntityRenderState;)Lnet/minecraft/util/math/Vec3d;"
+		),
 		//?}
-		at = @At("HEAD"),
 		cancellable = true
 	)
 	public void nobaaddons$cancelEntityRender(
@@ -42,15 +44,14 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		//? if <1.21.5 {
 		float tickDelta,
 		//?}
-		MatrixStack matrices,VertexConsumerProvider vertexConsumers,
+		MatrixStack matrices, VertexConsumerProvider vertexConsumers,
 		int light,
 		EntityRenderer<?, ?> renderer,
-		CallbackInfo ci
+		CallbackInfo ci /*? if <1.21.5 {*/,
+		@Local EntityRenderState state
+		//?}
 	) {
-		//? if >=1.21.5 {
-		/*Entity entity = ((EntityRenderStateDuck) state).nobaaddons$getEntity();
-		*///?}
-		if(entity != null && EntityEvents.ALLOW_RENDER.dispatch(new EntityEvents.AllowRender(entity))) ci.cancel();
+		if(EntityEvents.ALLOW_RENDER.dispatch(new EntityEvents.AllowRender(state))) ci.cancel();
 	}
 
 	@Inject(
@@ -78,9 +79,8 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		MatrixStack matrices, VertexConsumerProvider vertexConsumers,
 		int light,
 		EntityRenderer<?, ?> renderer,
-		CallbackInfo ci
-		//? if <1.21.5 {
-		, @Local EntityRenderState state,
+		CallbackInfo ci/*? if <1.21.5 {*/,
+		@Local EntityRenderState state,
 		@Share(value = "renderState", namespace = "nobaaddons") LocalRef<EntityRenderState> stateRef
 		//?}
 	) {
@@ -118,12 +118,11 @@ abstract class EntityEventsMixin_EntityRenderDispatcher {
 		MatrixStack matrices,VertexConsumerProvider vertexConsumers,
 		int light,
 		EntityRenderer<?, ?> renderer,
-		CallbackInfo ci
-		//? if <1.21.5 {
+		CallbackInfo ci/*? if <1.21.5 {*/,
 		// either this mcdev plugin is bullshitting me, or @Local genuinely cannot find the render state
 		// that's within the same try block as this pop call. i don't know, and it's not that much effort
 		// to just work around the issue one way or another.
-		, @Share(value = "renderState", namespace = "nobaaddons") LocalRef<EntityRenderState> stateRef
+		@Share(value = "renderState", namespace = "nobaaddons") LocalRef<EntityRenderState> stateRef
 		//?}
 	) {
 		//? if >=1.21.5 {

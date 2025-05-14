@@ -42,6 +42,7 @@ data class Holding<T : Any>(@Volatile private var value: T? = null) {
 	 * Get the currently held value, or create one with the provided [factory] if no value is currently stored.
 	 */
 	fun getOrSet(factory: () -> T): T = synchronized(lock) {
+		// we can't use set() here as it's synchronized as well, which would cause a deadlock
 		value ?: factory().also { value = it }
 	}
 }

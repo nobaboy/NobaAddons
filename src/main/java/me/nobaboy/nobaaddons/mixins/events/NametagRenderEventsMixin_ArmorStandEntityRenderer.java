@@ -15,6 +15,6 @@ abstract class NametagRenderEventsMixin_ArmorStandEntityRenderer {
 		at = @At("RETURN")
 	)
 	public boolean nobaaddons$modifyNametagVisibility(boolean original, @Local(argsOnly = true) ArmorStandEntity entity) {
-		return EntityNametagRenderEvents.VISIBILITY.dispatch(new EntityNametagRenderEvents.Visibility(entity, original));
+		return EntityNametagRenderEvents.VISIBILITY.dispatch(new EntityNametagRenderEvents.Visibility(entity, original, original));
 	}
 }

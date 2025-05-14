@@ -1,29 +1,23 @@
 package me.nobaboy.nobaaddons.mixins.duckimpl;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
-import me.nobaboy.nobaaddons.ducks.EntityRenderStateDuck;
+import me.nobaboy.nobaaddons.ducks.StateDataHolder;
 import me.nobaboy.nobaaddons.utils.render.EntityDataKey;
 import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.entity.Entity;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Map;
 
 @SuppressWarnings("unused")
-@Mixin(EntityRenderState.class)
-class EntityRenderStateDuckImpl implements EntityRenderStateDuck {
+@Mixin({Entity.class, EntityRenderState.class})
+class StateDataHolderImpl implements StateDataHolder {
 	@Unique
-	private final Map<EntityDataKey<?>, EntityDataKey<?>.Value> nobaaddons$data = new Object2ObjectArrayMap<>();
+	private final Map<EntityDataKey<?>, EntityDataKey<?>.Value> nobaaddons$stateData = new Object2ObjectArrayMap<>();
 
 	@Override
 	public Map<EntityDataKey<?>, EntityDataKey<?>.Value> nobaaddons$getData() {
-		return nobaaddons$data;
-	}
-
-	@Override
-	public @Nullable Entity nobaaddons$getEntity() {
-		return EntityDataKey.ENTITY.get((EntityRenderState)(Object)this);
+		return nobaaddons$stateData;
 	}
 }

@@ -44,8 +44,6 @@ class EntityDataKey<T>(private val initialValue: () -> T) {
 	}
 
 	companion object {
-		@JvmField val ENTITY: EntityDataKey<Entity?> = EntityDataKey<Entity?> { null }
-
 		operator fun StateDataHolder.contains(key: EntityDataKey<*>): Boolean = `nobaaddons$getData`().contains(key)
 		operator fun Entity.contains(key: EntityDataKey<*>): Boolean = (this as StateDataHolder).contains(key)
 		operator fun EntityRenderState.contains(key: EntityDataKey<*>): Boolean = (this as StateDataHolder).contains(key)

@@ -5,21 +5,27 @@ import me.nobaboy.nobaaddons.events.impl.render.RenderStateUpdateEvent
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaColor.Companion.toNobaColor
 import me.nobaboy.nobaaddons.utils.properties.Holding
-import me.nobaboy.nobaaddons.utils.render.EntityDataKey
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.render.OverlayTexture
+import net.minecraft.client.render.entity.state.EntityRenderState
+import net.minecraft.client.render.entity.state.LivingEntityRenderState
 import net.minecraft.entity.Entity
 import java.awt.Color
 
 object EntityOverlay {
-	val OVERLAY_TEXTURE = EntityDataKey<Holding<TintOverlayTexture>>(::Holding)
+	@JvmField val OVERLAY_TEXTURE = EntityDataKey<Holding<TintOverlayTexture>>(::Holding)
 
 	@get:JvmStatic
 	var overlay: OverlayTexture? = null
 		private set
 
 	init {
-		RenderStateUpdateEvent.EVENT.register { it.copyToRender(OVERLAY_TEXTURE) }
+		RenderStateUpdateEvent.EVENT.register {
+			it.copyToRender(OVERLAY_TEXTURE)
+			if(it.state is LivingEntityRenderState && contains(it.state)) {
+				it.state.hurt = false
+			}
+		}
 		EntityEvents.PRE_RENDER.register { overlay = OVERLAY_TEXTURE.get(it.entity).get() }
 		EntityEvents.POST_RENDER.register { overlay = null }
 	}
@@ -37,13 +43,19 @@ object EntityOverlay {
 	@JvmStatic
 	fun get(entity: Entity): NobaColor? = OVERLAY_TEXTURE.get(entity).get()?.lastColor
 
+	@JvmStatic
+	fun get(state: EntityRenderState): NobaColor? = OVERLAY_TEXTURE.get(state).get()?.lastColor
+
 	// java, for whatever reason, inexplicably refuses to acknowledge .get() as a valid method?
 	// so the simple fix is to just do this, i guess.
 	@JvmStatic
-	fun getRgb(entity: Entity): Int? = get(entity)?.rgb
+	fun getRgb(state: EntityRenderState): Int? = get(state)?.rgb
 
 	@JvmStatic
 	fun contains(entity: Entity): Boolean = OVERLAY_TEXTURE.get(entity).get() != null
+
+	@JvmStatic
+	fun contains(entity: EntityRenderState): Boolean = OVERLAY_TEXTURE.get(entity).get() != null
 
 	fun set(entity: Entity, color: NobaColor) {
 		if(FabricLoader.getInstance().isModLoaded("iris")) return // TODO figure out how to make this play nicely with iris
