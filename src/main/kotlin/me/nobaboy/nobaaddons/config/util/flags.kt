@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.ButtonWidget
 import net.minecraft.screen.ScreenTexts
 
+// hijacking the ConfirmScreen implementation ~~for fame and profit~~ so that i dont need to write this screen myself
 private class WorldSwitchRequired(private val parent: Screen?) : ConfirmScreen(
 	{},
 	tr("nobaaddons.screen.relogRequired", "Config option requires relog!").red().bold(),
