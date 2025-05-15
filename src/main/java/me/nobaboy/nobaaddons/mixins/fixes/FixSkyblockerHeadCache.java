@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 @IfModLoaded(value = "skyblocker", maxVersion = "1.23.0-beta.2")
 @Mixin(targets = "de.hysky.skyblocker.skyblock.item.PlayerHeadHashCache")
 abstract class FixSkyblockerHeadCache {
-	@Dynamic
+	@SuppressWarnings("UnresolvedMixinReference") // i'm not adding a compile time dependency on skyblocker for this
 	@WrapOperation(
 		method = "loadSkins",
 		at = @At(
