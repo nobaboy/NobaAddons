@@ -49,6 +49,9 @@ value class NobaColor(val rgb: Int) {
 		val YELLOW = NobaColor(Formatting.YELLOW)
 		val WHITE = NobaColor(Formatting.WHITE)
 
+		// non-standard colors
+		val CYAN = NobaColor(0x57FFE1)
+
 		fun Formatting.toNobaColor(): NobaColor = NobaColor(this)
 		fun Color.toNobaColor(): NobaColor = NobaColor(rgb)
 	}

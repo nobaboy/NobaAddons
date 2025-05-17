@@ -1,6 +1,10 @@
 package me.nobaboy.nobaaddons.config.categories
 
+import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
+import me.nobaboy.nobaaddons.config.util.worldSwitchRequired
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.aqua
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
 
 object GeneralCategory {
@@ -27,6 +31,26 @@ object GeneralCategory {
 			name = tr("nobaaddons.config.general.compactModMessagePrefix", "Compact Mod Message Prefix")
 			descriptionText = tr("nobaaddons.config.general.compactModMessagePrefix.tooltip", "Chat messages added by the mod will use a shorter prefix when enabled")
 			booleanController()
+		}
+
+		commands()
+	}
+
+	private fun ConfigCategory.Builder.commands() {
+		group(tr("nobaaddons.config.general.commands", "Commands")) {
+			add({ general.shortCommands::registerCalculateCommands }) {
+				name = tr("nobaaddons.config.general.commands.registerCalculateCommands", "Calculate Commands")
+				val nobaCalc = "/nobaaddons calculate".toText().aqua()
+				descriptionText = tr("nobaaddons.config.general.commands.registerCalculateCommands.tooltip", "Registers shorter aliases for the $nobaCalc commands like /calcpet, /calcskill, etc.")
+				booleanController()
+				worldSwitchRequired()
+			}
+			add({ general.shortCommands::registerInstanceCommands }) {
+				name = tr("nobaaddons.config.general.commands.registerInstanceCommands", "Instance Commands")
+				descriptionText = tr("nobaaddons.config.general.commands.registerInstanceCommands.tooltip", "Registers commands to join instanced islands like Catacombs (e.g. /f7), Master Mode Catacombs (e.g. /m6), and Kuudra (e.g. /t5)")
+				booleanController()
+				worldSwitchRequired()
+			}
 		}
 	}
 }

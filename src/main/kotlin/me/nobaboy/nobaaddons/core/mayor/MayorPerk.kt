@@ -3,8 +3,9 @@ package me.nobaboy.nobaaddons.core.mayor
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.FOXY_EVENT_REGEX
 import me.nobaboy.nobaaddons.data.json.Perk
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
+import net.minecraft.util.StringIdentifiable
 
-enum class MayorPerk(val perkName: String) {
+enum class MayorPerk(val perkName: String) : StringIdentifiable {
 	// Aatrox
 	SLAYER_XP_BUFF("Slayer XP Buff"),
 	PATHFINDER("Pathfinder"),
@@ -71,6 +72,7 @@ enum class MayorPerk(val perkName: String) {
 	var description: String = "Failed to load perk description from the API"
 
 	override fun toString(): String = "$perkName\n$description"
+	override fun asString(): String = name
 
 	companion object {
 		fun getByName(name: String): MayorPerk? = entries.firstOrNull { it.perkName == name }

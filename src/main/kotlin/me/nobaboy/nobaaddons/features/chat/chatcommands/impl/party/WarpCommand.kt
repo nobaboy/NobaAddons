@@ -4,9 +4,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
+import me.nobaboy.nobaaddons.utils.StringUtils.isNumeric
 import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
-import org.apache.commons.lang3.StringUtils
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -31,7 +31,7 @@ class WarpCommand : AbstractPartyChatCommand(3.seconds) {
 
 		if(job?.isCompleted == false) return
 
-		if(!StringUtils.isNumeric(seconds) || seconds.toInt() > 15 || seconds.toInt() < 3) {
+		if(!seconds.isNumeric() || seconds.toInt() > 15 || seconds.toInt() < 3) {
 			HypixelCommands.partyChat("Delay can only range from 3 to 15 seconds")
 			return
 		}
