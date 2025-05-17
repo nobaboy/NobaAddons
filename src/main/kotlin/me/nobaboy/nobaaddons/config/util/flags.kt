@@ -14,7 +14,7 @@ import net.minecraft.screen.ScreenTexts
 private class WorldSwitchRequired(private val parent: Screen?) : ConfirmScreen(
 	{},
 	tr("nobaaddons.screen.relogRequired", "Config option requires relog!").red().bold(),
-	tr("nobaaddons.screen.relogRequired.text", "One or more options that you reconnect or switch islands to apply the changes"),
+	tr("nobaaddons.screen.relogRequired.text", "One or more options require that you reconnect or switch islands to apply the changes"),
 	ScreenTexts.EMPTY,
 	ScreenTexts.EMPTY,
 ) {
