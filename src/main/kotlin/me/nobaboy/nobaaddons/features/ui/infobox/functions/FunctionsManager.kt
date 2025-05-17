@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.features.ui.infobox.functions.impl.SkyBlockFunction
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 
-// TODO: could do with logical functions? well formatting is priority right now
+// TODO could do with logical functions? well formatting is priority right now
 object FunctionsManager {
 	private val functionPattern = Regex("\\{(?<function>[A-z]+)}")
 	private val functions = mutableMapOf<String, InfoBoxFunction<*>>()

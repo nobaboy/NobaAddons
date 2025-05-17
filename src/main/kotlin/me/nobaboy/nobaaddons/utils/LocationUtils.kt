@@ -38,7 +38,7 @@ object LocationUtils {
 		return getNobaVec().add(y = eyePos)
 	}
 
-	// TODO: Figure out a way to treat non-full blocks as full blocks
+	// TODO Figure out a way to treat non-full blocks as full blocks
 	fun PlayerEntity.rayCast(maxDistance: Double, tickDelta: Float, includeFluids: Boolean): HitResult? {
 		val player = MCUtils.player ?: return null
 

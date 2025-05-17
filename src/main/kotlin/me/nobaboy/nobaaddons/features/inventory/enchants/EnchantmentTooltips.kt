@@ -28,7 +28,7 @@ import net.minecraft.text.Text
 import net.minecraft.text.Texts
 import org.lwjgl.glfw.GLFW
 
-// TODO: Could do with caching the lore
+// TODO Could do with caching the lore
 object EnchantmentTooltips {
 	private val config get() = NobaConfig.inventory.enchantmentTooltips
 
