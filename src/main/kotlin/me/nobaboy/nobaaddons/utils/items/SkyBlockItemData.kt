@@ -62,7 +62,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 		}.toMap()
 	}
 
-	// TODO: Fix this as Hypixel changed how gemstones are stored in the nbt
+	// TODO Fix this as Hypixel changed how gemstones are stored in the nbt
 	val gemstones: List<Gemstone> by CacheOf(this::nbt) {
 		emptyList()
 		/*buildList {

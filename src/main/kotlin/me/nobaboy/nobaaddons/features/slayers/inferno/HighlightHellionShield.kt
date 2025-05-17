@@ -13,7 +13,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.WitherSkeletonEntity
 import net.minecraft.entity.mob.ZombifiedPiglinEntity
 
-// TODO: Allow entity highlight to work on armor layer
+// TODO Allow entity highlight to work on armor layer
 object HighlightHellionShield {
 	private val config get() = NobaConfig.slayers.inferno
 	private val enabled: Boolean

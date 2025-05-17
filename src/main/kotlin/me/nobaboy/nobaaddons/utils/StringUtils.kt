@@ -3,8 +3,6 @@ package me.nobaboy.nobaaddons.utils
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import net.minecraft.util.Formatting
-import kotlin.text.replace
-import kotlin.text.toLong
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours

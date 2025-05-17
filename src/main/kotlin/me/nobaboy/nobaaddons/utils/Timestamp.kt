@@ -1,7 +1,6 @@
 package me.nobaboy.nobaaddons.utils
 
 import kotlinx.serialization.Serializable
-import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.asDuration
 import java.time.Instant
 import kotlin.time.Duration
