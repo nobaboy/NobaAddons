@@ -23,6 +23,7 @@ object TimeUtils {
 	// grumble grumble Instant.Companion.now() being error-level deprecated grumble grumble
 	inline val Instant.Companion.now get() = Clock.System.now()
 
+	// TODO this is a duplicate StringUtils#asDuration, so move that one here and use it for this
 	fun String.asInstantOrNull(): Instant? {
 		var time: Duration = 0.seconds
 
