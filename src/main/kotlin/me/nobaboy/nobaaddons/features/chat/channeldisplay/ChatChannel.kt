@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.chat.channeldisplay
 
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.TextUtils.withColor
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.withColor
 
 enum class ChatChannel(val color: NobaColor, val channelName: String? = null) {
 	ALL(NobaColor.GRAY),

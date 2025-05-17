@@ -8,9 +8,9 @@ import me.nobaboy.nobaaddons.data.PartyData
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.CollectionUtils.anyContains
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.anyContains
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -30,6 +30,16 @@ object WarpPlayerHandler {
 
 	init {
 		ChatMessageEvents.CHAT.register { onChatMessage(it.cleaned) }
+	}
+
+	private fun onChatMessage(message: String) {
+		if(targetPlayer == null) return
+
+		when {
+			INVITATION_FAIL_MESSAGES.anyContains(message, ignoreCase = true) -> state = State.CANT_INVITE
+			message.equals("$targetPlayer is already in the party.", ignoreCase = true) -> cancel()
+			message.contains("$targetPlayer joined the party.", ignoreCase = true) -> state = State.JOINED
+		}
 	}
 
 	fun warpPlayer(playerName: String, isWarpingOut: Boolean, command: String) {
@@ -114,16 +124,6 @@ object WarpPlayerHandler {
 	private fun reset() {
 		state = State.INACTIVE
 		targetPlayer = null
-	}
-
-	private fun onChatMessage(message: String) {
-		if(targetPlayer == null) return
-
-		when {
-			INVITATION_FAIL_MESSAGES.anyContains(message, ignoreCase = true) -> state = State.CANT_INVITE
-			message.equals("$targetPlayer is already in the party.", ignoreCase = true) -> cancel()
-			message.contains("$targetPlayer joined the party.", ignoreCase = true) -> state = State.JOINED
-		}
 	}
 
 	private enum class State {

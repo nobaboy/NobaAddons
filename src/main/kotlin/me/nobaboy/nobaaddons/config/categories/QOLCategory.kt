@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.config.categories
 import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.CommonText
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.TextUtils.darkAqua
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkAqua
 import me.nobaboy.nobaaddons.utils.tr
 
 object QOLCategory {

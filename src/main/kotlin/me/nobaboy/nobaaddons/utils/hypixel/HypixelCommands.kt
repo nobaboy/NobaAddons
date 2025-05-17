@@ -1,8 +1,9 @@
-package me.nobaboy.nobaaddons.utils.chat
+package me.nobaboy.nobaaddons.utils.hypixel
 
 import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.api.PartyAPI
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import net.fabricmc.loader.api.FabricLoader
 
 object HypixelCommands {

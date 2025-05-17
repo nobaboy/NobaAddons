@@ -2,8 +2,9 @@ package me.nobaboy.nobaaddons.config.categories
 
 import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
-import me.nobaboy.nobaaddons.utils.TextUtils.aqua
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.config.util.worldSwitchRequired
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.aqua
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.tr
 
 object GeneralCategory {

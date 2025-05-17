@@ -5,7 +5,7 @@ import kotlinx.coroutines.delay
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.utils.StringUtils.isNumeric
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds

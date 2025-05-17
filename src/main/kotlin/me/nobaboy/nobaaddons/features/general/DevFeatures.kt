@@ -4,9 +4,9 @@ import com.google.gson.GsonBuilder
 import com.mojang.serialization.JsonOps
 import me.nobaboy.nobaaddons.core.PersistentCache
 import me.nobaboy.nobaaddons.mixins.accessors.HandledScreenAccessor
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler

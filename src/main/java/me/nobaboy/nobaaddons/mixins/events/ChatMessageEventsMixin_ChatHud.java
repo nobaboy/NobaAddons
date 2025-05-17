@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.mixins.events;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents;
-import me.nobaboy.nobaaddons.utils.chat.Message;
+import me.nobaboy.nobaaddons.utils.mc.chat.Message;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.hud.MessageIndicator;

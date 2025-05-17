@@ -5,7 +5,8 @@ import com.mojang.brigadier.context.CommandContext
 import dev.celestialfault.commander.ArgumentHandler
 import dev.celestialfault.commander.Commander
 import dev.celestialfault.commander.ICommand
-import me.nobaboy.nobaaddons.commands.adapters.*
+import me.nobaboy.nobaaddons.commands.adapters.FormattingHandler
+import me.nobaboy.nobaaddons.commands.adapters.RarityHandler
 import me.nobaboy.nobaaddons.core.DebugFlag
 import me.nobaboy.nobaaddons.core.Skill
 import me.nobaboy.nobaaddons.ui.ElementAlignment

@@ -10,8 +10,8 @@ import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.features.fishing.crimsonisle.TrophyFishChat
 import me.nobaboy.nobaaddons.ui.TextShadow
 import me.nobaboy.nobaaddons.utils.CommonText
-import me.nobaboy.nobaaddons.utils.TextUtils.white
-import me.nobaboy.nobaaddons.utils.enums.AnnounceChannel
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.white
+import me.nobaboy.nobaaddons.utils.hypixel.AnnounceChannel
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 

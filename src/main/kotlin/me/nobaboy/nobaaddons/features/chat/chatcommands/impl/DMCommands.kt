@@ -3,7 +3,8 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.*
+import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.PartyMeCommand
+import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.dm.WarpMeCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo

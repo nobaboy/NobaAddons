@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.anyFullMatch
-import me.nobaboy.nobaaddons.utils.TextUtils.commandOrNull
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.commandOrNull
 import net.minecraft.text.Text
 
 object ProfileInfoChatFilter : IChatFilter {

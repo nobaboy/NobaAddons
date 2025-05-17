@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.screens.keybinds
 
 import me.nobaboy.nobaaddons.features.keybinds.impl.KeyBind
-import me.nobaboy.nobaaddons.utils.ScreenUtils
+import me.nobaboy.nobaaddons.utils.mc.ScreenUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext

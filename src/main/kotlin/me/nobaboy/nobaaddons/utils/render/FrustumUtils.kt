@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.utils.render
 
 import me.nobaboy.nobaaddons.mixins.accessors.WorldRendererAccessor
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaVec
 import net.minecraft.client.render.Frustum
 import net.minecraft.util.math.Box

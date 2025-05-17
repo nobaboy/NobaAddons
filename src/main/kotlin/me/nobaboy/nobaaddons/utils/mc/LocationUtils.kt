@@ -1,5 +1,7 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.mc
 
+import me.nobaboy.nobaaddons.utils.NobaVec
+import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.FrustumUtils
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity

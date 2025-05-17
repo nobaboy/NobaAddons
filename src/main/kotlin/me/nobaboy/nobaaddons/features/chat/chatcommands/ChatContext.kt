@@ -1,6 +1,6 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands
 
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 
 class ChatContext(
 	val source: ChatCommandSource,

@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.Rarity.Companion.rarityFormatted
 import me.nobaboy.nobaaddons.repo.Repo
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.TextUtils.obfuscated
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.obfuscated
 import net.minecraft.text.Text
 
 @Serializable

@@ -1,17 +1,21 @@
-package me.nobaboy.nobaaddons.utils.chat
+package me.nobaboy.nobaaddons.utils.mc.chat
 
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.runCommand
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils.addMessage
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils.addMessageWithClickAction
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
@@ -195,7 +199,7 @@ object ChatUtils {
 	@JvmRecord
 	private data class ClickAction(
 		val callback: () -> Unit,
-		val createdAt: Timestamp = Timestamp.now(),
+		val createdAt: Instant = Instant.now,
 		val ttl: Duration = 1.minutes,
 	)
 }

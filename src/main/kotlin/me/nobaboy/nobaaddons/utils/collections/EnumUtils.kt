@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.collections
 
 import net.minecraft.util.function.ValueLists
 import java.util.function.IntFunction

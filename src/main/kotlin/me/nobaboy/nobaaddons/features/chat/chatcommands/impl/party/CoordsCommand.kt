@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.utils.LocationUtils
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils
 import kotlin.time.Duration.Companion.seconds
 
 class CoordsCommand : ChatCommand(0.3.seconds) {

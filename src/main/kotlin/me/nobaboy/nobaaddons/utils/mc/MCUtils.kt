@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.mc
 
 import me.nobaboy.nobaaddons.NobaAddons
 import net.fabricmc.loader.api.FabricLoader
