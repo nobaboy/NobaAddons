@@ -8,6 +8,7 @@ import dev.celestialfault.histoire.migrations.MutableJsonMap
 import dev.celestialfault.histoire.migrations.getMap
 import dev.celestialfault.histoire.migrations.rename
 import kotlinx.serialization.json.JsonPrimitive
+import me.nobaboy.nobaaddons.config.util.DiscardValue
 import me.nobaboy.nobaaddons.config.util.mapAndMoveTo
 import me.nobaboy.nobaaddons.config.util.modify
 import me.nobaboy.nobaaddons.config.util.moveTo
@@ -82,9 +83,12 @@ private fun `008_replaceAwtColorWithNobaColor`(json: MutableJsonMap) {
 		"damagePhaseColor",
 	).forEach { key ->
 		voidgloom.modify(key) { value ->
-			if(value !is JsonPrimitive) return@modify value
+			if(value !is JsonPrimitive) return@modify DiscardValue
 
-			val (r, g, b, _) = value.content.split(":").map { it.toInt() }
+			val content = value.content
+			if(content.count { it == ':' } != 3) return@modify DiscardValue
+
+			val (r, g, b, _) = content.split(":").map { it.toInt() }
 			JsonPrimitive((r shl 16) or (g shl 8) or b)
 		}
 	}

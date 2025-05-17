@@ -8,7 +8,8 @@ import net.minecraft.text.Text
 enum class NotificationMode : NameableEnum {
 	CONTAINS,
 	STARTS_WITH,
-	REGEX;
+	REGEX,
+	;
 
 	val next: NotificationMode by lazy { BY_ID.apply(ordinal + 1) }
 

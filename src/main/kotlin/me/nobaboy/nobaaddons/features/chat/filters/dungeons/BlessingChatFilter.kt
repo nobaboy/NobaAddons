@@ -121,7 +121,8 @@ object BlessingChatFilter : IChatFilter {
 		WISDOM(NobaColor.BLUE, 2),
 		STONE(NobaColor.DARK_GRAY, 2),
 		LIFE(NobaColor.LIGHT_PURPLE, 2),
-		TIME(NobaColor.DARK_GREEN, 4);
+		TIME(NobaColor.DARK_GREEN, 4),
+		;
 
 		val formattedName: Text by lazy { displayName.copy().append(" BUFF!").formatted(color.formatting, Formatting.BOLD) }
 

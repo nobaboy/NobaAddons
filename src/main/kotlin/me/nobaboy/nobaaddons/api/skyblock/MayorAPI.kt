@@ -27,7 +27,7 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
-// TODO: Use repo for mayor descriptions except for Foxy
+// TODO Use repo for mayor descriptions except for Foxy
 object MayorAPI {
 	private const val ELECTION_API_URL = "https://api.hypixel.net/v2/resources/skyblock/election"
 

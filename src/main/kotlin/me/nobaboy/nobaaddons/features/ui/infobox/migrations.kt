@@ -10,7 +10,6 @@ import dev.celestialfault.histoire.migrations.rename
 import kotlinx.serialization.json.JsonPrimitive
 import me.nobaboy.nobaaddons.config.util.mapAndRename
 import me.nobaboy.nobaaddons.config.util.moveTo
-import kotlin.collections.set
 
 internal val migrations = Migrations("configVersion") {
 	add(::`001_uiElementRefactor`)

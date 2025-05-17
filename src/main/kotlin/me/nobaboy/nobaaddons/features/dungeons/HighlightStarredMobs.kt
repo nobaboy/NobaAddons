@@ -14,7 +14,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.entity.decoration.ArmorStandEntity
 
-// TODO: Rework and implement Entity outlines
+// TODO Rework and implement Entity outlines
 object HighlightStarredMobs {
 	private val config get() = NobaConfig.dungeons.highlightStarredMobs
 	private val enabled: Boolean get() = config.enabled && !DungeonsAPI.inBoss()

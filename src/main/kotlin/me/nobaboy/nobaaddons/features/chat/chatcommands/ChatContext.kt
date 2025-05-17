@@ -22,6 +22,7 @@ class ChatContext(
 	enum class ChatCommandSource {
 		PARTY,
 		GUILD,
-		MESSAGE;
+		MESSAGE,
+		;
 	}
 }

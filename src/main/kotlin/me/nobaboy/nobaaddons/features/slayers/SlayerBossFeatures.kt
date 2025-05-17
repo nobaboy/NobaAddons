@@ -14,7 +14,7 @@ import me.nobaboy.nobaaddons.utils.tr
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
-// TODO: Add boss soon warning
+// TODO Add boss soon warning
 object SlayerBossFeatures {
 	private val config get() = NobaConfig.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest != null && SkyBlockAPI.inSkyBlock

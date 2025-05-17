@@ -14,7 +14,7 @@ enum class AnnounceChannel : NameableEnum {
 		when(this) {
 			ALL -> HypixelCommands.allChat(message)
 			PARTY -> HypixelCommands.partyChat(message)
-			// TODO: some how figure out if the user is in a guild
+			// TODO some how figure out if the user is in a guild
 			GUILD -> HypixelCommands.guildChat(message)
 		}
 	}
