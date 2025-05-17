@@ -7,7 +7,8 @@ import net.minecraft.text.Text
 enum class ChatFilterOption : NameableEnum {
 	SHOWN,
 	COMPACT,
-	HIDDEN;
+	HIDDEN,
+	;
 
 	val enabled: Boolean get() = this != SHOWN
 

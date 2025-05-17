@@ -21,7 +21,8 @@ enum class Mayor(displayName: String? = null, vararg val perks: MayorPerk) : Str
 	DERPY("Derpy", MayorPerk.QUAD_TAXES, MayorPerk.TURBO_MINIONS, MayorPerk.DOUBLE_MOBS_HP, MayorPerk.MOAR_SKILLZ),
 	SCORPIUS("Scorpius", MayorPerk.BRIBE, MayorPerk.DARKER_AUCTIONS),
 
-	UNKNOWN;
+	UNKNOWN,
+	;
 
 	val displayName = displayName ?: name
 

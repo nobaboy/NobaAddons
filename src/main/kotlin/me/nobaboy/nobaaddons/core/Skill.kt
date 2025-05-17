@@ -1,9 +1,6 @@
 package me.nobaboy.nobaaddons.core
 
-import com.mojang.brigadier.context.CommandContext
 import com.mojang.serialization.Codec
-import net.minecraft.command.CommandSource
-import net.minecraft.command.argument.EnumArgumentType
 import net.minecraft.util.StringIdentifiable
 
 enum class Skill(val isCosmetic: Boolean = false, val includeInSkillAverage: Boolean = !isCosmetic) : StringIdentifiable {
