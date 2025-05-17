@@ -67,7 +67,8 @@ enum class MayorPerk(val perkName: String) : StringIdentifiable {
 
 	// Scorpius
 	BRIBE("Bribe"),
-	DARKER_AUCTIONS("Darker Auctions");
+	DARKER_AUCTIONS("Darker Auctions"),
+	;
 
 	var description: String = "Failed to load perk description from the API"
 
