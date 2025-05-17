@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Unique;
 @SuppressWarnings("unused")
 @Mixin(EntityRenderState.class)
 abstract class EntityStateCaptureDuckImpl implements EntityStateCaptureDuck {
+	// TODO drop 1.21.1 and move away from this entity capture logic
 	private @Unique @Nullable Entity nobaaddons$entity;
 
 	@Override

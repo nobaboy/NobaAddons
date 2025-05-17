@@ -37,6 +37,7 @@ object UIAndVisualsCategory {
 		temporaryWaypoints()
 		etherwarpOverlay()
 		renderingTweaks()
+		hideArmor()
 		armSwingAnimation()
 		firstPersonItem()
 		armorGlint()
@@ -112,6 +113,21 @@ object UIAndVisualsCategory {
 			add({ uiAndVisuals.renderingTweaks::hideAirBubbles }) {
 				name = tr("nobaaddons.config.uiAndVisuals.renderingTweaks.hideAirBubbles", "Hide Air Bubbles")
 				booleanController()
+			}
+		}
+	}
+
+	private fun ConfigCategory.Builder.hideArmor() {
+		group(tr("nobaaddons.config.uiAndVisuals.hideArmor", "Hide Armor")) {
+			val enabled = add({ uiAndVisuals.hideArmor::enabled }) {
+				name = CommonText.Config.ENABLED
+				booleanController()
+				require { minecraft(min = "1.21.2") }
+			}
+			add({ uiAndVisuals.hideArmor::onlyClientPlayer }) {
+				name = tr("nobaaddons.config.uiAndVisuals.hideArmor.onlyClientPlayer", "Only Hide Own Armor")
+				booleanController()
+				require { option(enabled) and minecraft(min = "1.21.2") }
 			}
 		}
 	}

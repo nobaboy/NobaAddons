@@ -166,6 +166,11 @@ object NobaAddons : ClientModInitializer {
 		// region Visuals
 		EtherwarpOverlay
 		TemporaryWaypoints
+		//? if >=1.21.2 {
+		// this is intentionally not imported to avoid needing an extra stonecutter statement around the import
+		// TODO clean this up once we drop 1.21.1
+		me.nobaboy.nobaaddons.features.visuals.HideArmorFeature
+		//?}
 		// endregion
 
 		// region User Interface

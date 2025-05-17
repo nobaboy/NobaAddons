@@ -9,6 +9,7 @@ class UIAndVisualsConfig {
 	@Object val temporaryWaypoints = TemporaryWaypoints()
 	@Object val etherwarpOverlay = EtherwarpOverlay()
 	@Object val renderingTweaks = RenderingTweaks()
+	@Object val hideArmor = HideArmor()
 	@Object val swingAnimation = SwingAnimation()
 	@Object val itemPosition = FirstPersonItemPosition()
 
@@ -33,6 +34,11 @@ class UIAndVisualsConfig {
 		var removeArmorGlints = false
 		var hideAbsorptionHearts = false
 		var hideAirBubbles = false
+	}
+
+	class HideArmor {
+		var enabled = false
+		var onlyClientPlayer = true
 	}
 
 	class SwingAnimation {

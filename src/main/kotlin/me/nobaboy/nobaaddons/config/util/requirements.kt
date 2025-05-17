@@ -3,6 +3,8 @@ package me.nobaboy.nobaaddons.config.util
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionEventListener
 import net.fabricmc.loader.api.FabricLoader
+import net.fabricmc.loader.api.Version
+import kotlin.jvm.optionals.getOrNull
 
 fun interface OptionRequirement {
 	val depends: Set<Option<*>> get() = emptySet()
@@ -42,6 +44,20 @@ object OptionRequirementFactory {
 	}
 
 	fun mod(modId: String): OptionRequirement = OptionRequirement { FabricLoader.getInstance().isModLoaded(modId) }
+
+	fun mod(modId: String, range: ClosedRange<Version>): OptionRequirement {
+		return OptionRequirement {
+			val container = FabricLoader.getInstance().getModContainer(modId).getOrNull() ?: return@OptionRequirement false
+			container.metadata.version in range
+		}
+	}
+
+	fun minecraft(range: ClosedRange<Version>): OptionRequirement = mod("minecraft", range)
+
+	fun minecraft(min: String? = null, max: String? = null): OptionRequirement {
+		require(min != null || max != null) { "At least one of either min or max must be provided" }
+		return mod("minecraft", (min ?: "1.0.0").let(Version::parse)..(max ?: "2.0.0").let(Version::parse))
+	}
 }
 
 fun <T> Option<T>.require(condition: OptionRequirement): Option<T> = apply {
