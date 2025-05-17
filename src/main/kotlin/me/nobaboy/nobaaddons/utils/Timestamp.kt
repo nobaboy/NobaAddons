@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.utils
 
 import kotlinx.serialization.Serializable
 import me.nobaboy.nobaaddons.utils.RegexUtils.forEachMatch
+import me.nobaboy.nobaaddons.utils.StringUtils.asDuration
 import java.time.Instant
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
@@ -10,13 +11,6 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
-
-private val timeRegex = Regex("([\\d,]+)([hms])")
-private val durations: Map<String, (Long) -> Duration> = mapOf(
-	"h" to { it.hours },
-	"m" to { it.minutes },
-	"s" to { it.seconds },
-)
 
 /**
  * This is taken and adapted from SkyHanni, which is licensed under the LGPL-2.1.
@@ -63,15 +57,7 @@ value class Timestamp(private val millis: Long) : Comparable<Timestamp> {
 		fun SkyBlockTime.asTimestamp() = Timestamp(toMillis())
 		fun Instant.asTimestamp() = Timestamp(this.toEpochMilli())
 
-		fun String.asTimestamp(): Timestamp? {
-			var time: Duration = 0.seconds
-
-			timeRegex.forEachMatch(this) {
-				time += durations[groups[2]!!.value]!!(groups[1]!!.value.replace(",", "").toLong())
-			}
-
-			return if(time > 0.seconds) now() + time else null
-		}
+		fun String.asTimestamp(): Timestamp? = asDuration()?.let { now() + it }
 
 		// TODO this should be in a separate class (like a TimeUtils or similar), but I didn't want to make
 		//      an entire extra class just for this one method
