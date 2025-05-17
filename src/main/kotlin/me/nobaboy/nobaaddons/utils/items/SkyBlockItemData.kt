@@ -16,6 +16,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.nbt
 import me.nobaboy.nobaaddons.utils.properties.CacheOf
 import net.minecraft.component.type.LoreComponent
+import net.minecraft.component.type.NbtComponent
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtInt
@@ -23,10 +24,15 @@ import java.lang.ref.WeakReference
 
 private val ITEM_TAG_REGEX by Regex("^(?:a )?(?<rarity>(?:UN)?COMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|ULTIMATE|(?:VERY )?SPECIAL) ?(?<type>[A-Z ]+)?(?: a)?$").fromRepo("skyblock.item_tag")
 
-class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
-	private val realNbt: NbtCompound get() = item.get()!!.nbt.nbt
+class SkyBlockItemData(
+	private val nbtSupplier: () -> NbtComponent?,
+	private val loreSupplier: () -> LoreComponent?,
+	private val hashSupplier: () -> Int,
+) {
+	private val realNbt: NbtCompound get() = (nbtSupplier() ?: NbtComponent.DEFAULT).nbt
+	private val lore: LoreComponent get() = loreSupplier() ?: LoreComponent.DEFAULT
+
 	private val nbt: NbtCompoundWrapper by CacheOf(this::realNbt) { NbtCompoundWrapper(realNbt) }
-	private val lore: LoreComponent get() = item.get()!!.lore
 
 	val attributes: Map<Attribute, Int> by CacheOf(this::realNbt) {
 		val compound = nbt.getCompound("attributes") ?: return@CacheOf emptyMap()
@@ -139,7 +145,7 @@ class SkyBlockItemData(private val item: WeakReference<ItemStack>) {
 	val ranchersSpeed: Int? by CacheOf(this::realNbt) { nbt.getInt("ranchers_speed") }
 
 	override operator fun equals(other: Any?): Boolean = other is SkyBlockItemData && id == other.id && uuid == other.uuid
-	override fun hashCode(): Int = item.get().hashCode()
+	override fun hashCode(): Int = hashSupplier()
 
 	data class Gemstone(val type: String, val tier: String)
 	data class Potion(val name: String, val level: Int, val ticks: Int)

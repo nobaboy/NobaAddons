@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.events.impl.render
 
 import me.nobaboy.nobaaddons.events.Event
 import me.nobaboy.nobaaddons.events.EventDispatcher
+import net.minecraft.client.render.entity.state.EntityRenderState
 import net.minecraft.entity.Entity
 import net.minecraft.text.Text
 
@@ -22,17 +23,19 @@ object EntityNametagRenderEvents {
 
 	// this uses a boolean var instead of being cancelable to allow for forcing name tags to render,
 	// even if vanilla normally wouldn't render them
-	data class Visibility(val entity: Entity, var shouldRender: Boolean) : Event
+	data class Visibility(val entity: Entity, var shouldRender: Boolean) : Event {
+		var renderOriginalNametag: Boolean = shouldRender
+			set(value) {
+				if(value) shouldRender = true
+				field = value
+			}
+	}
 
 	data class Nametag @JvmOverloads constructor(
-		val entity: Entity,
+		val state: EntityRenderState,
 		/**
 		 * A list of [Text] to add under the entity's nametag
 		 */
 		val tags: MutableList<Text> = mutableListOf(),
-		/**
-		 * If `false`, the entity's regular nametag will not be rendered.
-		 */
-		var renderEntityName: Boolean = true,
 	) : Event
 }

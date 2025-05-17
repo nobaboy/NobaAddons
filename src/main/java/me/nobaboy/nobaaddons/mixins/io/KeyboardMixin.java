@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class KeyboardMixin {
 	@Shadow @Final private MinecraftClient client;
 
+	// TODO this should be made into an event
 	@Inject(method = "onKey", at = @At("TAIL"))
 	public void nobaaddons$onKeyPress(long window, int keyCode, int scancode, int action, int modifiers, CallbackInfo ci) {
 		if(window != client.getWindow().getHandle()) return;

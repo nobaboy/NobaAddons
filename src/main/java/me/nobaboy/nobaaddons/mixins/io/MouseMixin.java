@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class MouseMixin {
 	@Shadow @Final private MinecraftClient client;
 
+	// TODO this should be made into an event
 	@Inject(method = "onMouseButton", at = @At("TAIL"))
 	public void nobaaddons$onMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci) {
 		if(window != client.getWindow().getHandle()) return;

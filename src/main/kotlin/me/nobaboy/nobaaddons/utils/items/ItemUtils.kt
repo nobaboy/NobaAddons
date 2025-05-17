@@ -1,23 +1,13 @@
 package me.nobaboy.nobaaddons.utils.items
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
-import com.google.common.cache.LoadingCache
 import me.nobaboy.nobaaddons.config.NobaConfig
+import me.nobaboy.nobaaddons.ducks.ItemSkyblockDataCache
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.LoreComponent
 import net.minecraft.component.type.NbtComponent
 import net.minecraft.item.ItemStack
-import java.lang.ref.WeakReference
 
 object ItemUtils {
-	// TODO change this to store this on the ItemStack itself?
-	private val ITEM_CACHE: LoadingCache<ItemStack, SkyBlockItemData> = CacheBuilder.newBuilder()
-		.weakKeys()
-		.build(object : CacheLoader<ItemStack, SkyBlockItemData>() {
-			override fun load(key: ItemStack) = SkyBlockItemData(WeakReference(key))
-		})
-
 	val ItemStack.nbt: NbtComponent get() = this.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT)
 	val ItemStack.lore: LoreComponent get() = this.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT)
 
@@ -27,9 +17,10 @@ object ItemUtils {
 	val ItemStack.isSkyBlockItem: Boolean
 		get() = !isEmpty && getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).contains("id")
 
+	@Suppress("CAST_NEVER_SUCCEEDS") // this cast *can* succeed, believe it or not
 	val ItemStack.asSkyBlockItem: SkyBlockItemData? get() {
 		if(!isSkyBlockItem) return null
-		return ITEM_CACHE.getUnchecked(this)
+		return (this as ItemSkyblockDataCache).`nobaaddons$getSkyblockData`()
 	}
 
 	val ItemStack.skyBlockId: String? get() = asSkyBlockItem?.id

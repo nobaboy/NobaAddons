@@ -1,9 +1,5 @@
 package me.nobaboy.nobaaddons.mixins.render;
 
-//? if <1.21.2 {
-/*import net.minecraft.item.ArmorItem;
-*///?}
-
 //? if <1.21.5 {
 import org.spongepowered.asm.mixin.injection.Slice;
 //?} else {
@@ -30,7 +26,7 @@ abstract class ItemStackMixin {
 	@ModifyReturnValue(method = "hasGlint", at = @At("RETURN"))
 	public boolean nobaaddons$modifyGlint(boolean original) {
 		var item = (ItemStack) (Object) this;
-		boolean isArmor = /*? if >=1.21.2 {*/item.get(DataComponentTypes.EQUIPPABLE) != null/*?} else {*//*item.getItem() instanceof ArmorItem*//*?}*/;
+		boolean isArmor = item.get(DataComponentTypes.EQUIPPABLE) != null;
 		if(!isArmor) return original;
 
 		return ItemUtils.shouldArmorHaveEnchantGlint(item, original);
