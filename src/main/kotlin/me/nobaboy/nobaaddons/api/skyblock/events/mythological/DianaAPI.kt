@@ -14,6 +14,6 @@ object DianaAPI {
 	val isActive: Boolean get() = SkyBlockIsland.HUB.inIsland() && isRitualActive && hasSpadeInHotbar
 	private val isRitualActive: Boolean get() = MayorPerk.MYTHOLOGICAL_RITUAL.isActive()
 
-	private val hasSpadeInHotbar: Boolean get() = InventoryUtils.getItemsInHotbar().any { it.skyBlockId == SPADE }
+	private val hasSpadeInHotbar: Boolean get() = InventoryUtils.getHotbarItems().any { it.skyBlockId == SPADE }
 	fun hasSpadeInHand(player: PlayerEntity): Boolean = player.mainHandStack.skyBlockId == SPADE
 }

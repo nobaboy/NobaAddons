@@ -54,9 +54,7 @@ object PetAPI {
 
 		event.inventory.items.values.forEach { itemStack ->
 			val pet = getPetData(itemStack) ?: return@forEach
-			if(!pet.active) return@forEach
-
-			changePet(pet)
+			if(pet.active) changePet(pet)
 		}
 	}
 
@@ -65,7 +63,7 @@ object PetAPI {
 		if(event.button != GLFW.GLFW_MOUSE_BUTTON_1) return
 		if(event.actionType != SlotActionType.PICKUP) return
 
-		getPetData(event.itemStack)?.let { changePet(it) }
+		getPetData(event.stack)?.let { changePet(it) }
 	}
 
 	private fun onChatMessage(event: ChatMessageEvents.Chat) {

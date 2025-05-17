@@ -168,13 +168,10 @@ object NobaAddons : ClientModInitializer {
 		TemporaryWaypoints
 		// endregion
 
-		// region User Interface
-		ItemPickupLog
-		// endregion
-
 		// region Inventory
 		EnchantmentTooltips
 		ISlotInfo
+		ItemPickupLog
 		// endregion
 
 		// region Events
