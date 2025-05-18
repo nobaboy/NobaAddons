@@ -21,6 +21,7 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils.clickAction
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.entity.decoration.ArmorStandEntity
@@ -28,6 +29,7 @@ import net.minecraft.text.Text
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object HotspotWaypoints {
 	private val config get() = NobaConfig.fishing
 	private val enabled: Boolean get() = config.hotspotWaypoints && SkyBlockAPI.inSkyBlock

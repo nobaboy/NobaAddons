@@ -2,6 +2,7 @@ package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.events.impl.HypixelEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import net.hypixel.data.type.ServerType
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.handler.ClientboundPacketHandler
@@ -10,6 +11,7 @@ import net.hypixel.modapi.packet.EventPacket
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
 import kotlin.jvm.optionals.getOrNull
 
+@ApiModule
 object HypixelAPI {
 	val onHypixel: Boolean
 		get() = MCUtils.networkHandler?.brand?.startsWith("Hypixel BungeeCord") == true

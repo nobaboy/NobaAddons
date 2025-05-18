@@ -27,6 +27,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -35,6 +36,7 @@ import net.minecraft.text.Text
 import kotlin.math.floor
 import kotlin.time.Duration.Companion.hours
 
+@Module
 object RiftTimers {
 	private val config = NobaConfig.rift
 	private val data get() = ProfileData.PROFILE.riftTimers

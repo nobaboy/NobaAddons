@@ -2,12 +2,14 @@ package me.nobaboy.nobaaddons.ui
 
 import com.google.common.collect.ForwardingSet
 import me.nobaboy.nobaaddons.utils.ErrorManager
+import me.nobaboy.nobaaddons.utils.annotations.CoreModule
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawContext
 
 /**
  * UI manager, handles rendering all added [HudElement]s
  */
+@CoreModule
 object UIManager : ForwardingSet<HudElement>() {
 	private val elements = mutableSetOf<HudElement>()
 	var renderElementBounds: Boolean = false

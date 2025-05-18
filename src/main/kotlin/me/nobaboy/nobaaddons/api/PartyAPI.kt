@@ -18,6 +18,7 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
@@ -29,6 +30,7 @@ import net.minecraft.util.Util
 import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
+@ApiModule
 object PartyAPI {
 	private val semaphore = Semaphore(3)
 	private val uuidCache = Util.memoize<UUID, Deferred<ProfileResult?>> {

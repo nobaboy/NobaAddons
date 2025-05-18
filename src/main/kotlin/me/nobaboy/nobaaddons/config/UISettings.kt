@@ -6,7 +6,9 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.config.util.saveOnExit
 import me.nobaboy.nobaaddons.ui.data.ElementPosition
 import me.nobaboy.nobaaddons.ui.data.GenericTextElement
+import me.nobaboy.nobaaddons.utils.annotations.ConfigModule
 
+@ConfigModule
 object UISettings : Histoire(NobaAddons.CONFIG_DIR.resolve("ui.json").toFile()) {
 	init {
 		saveOnExit()

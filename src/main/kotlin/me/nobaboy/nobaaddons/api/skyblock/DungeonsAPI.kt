@@ -13,7 +13,9 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 
+@ApiModule
 object DungeonsAPI {
 	private val BOSS_DIALOGUE_REGEX by Regex("^\\[BOSS] (?<name>[A-z ]+):.*").fromRepo("dungeons.boss_dialogue")
 
