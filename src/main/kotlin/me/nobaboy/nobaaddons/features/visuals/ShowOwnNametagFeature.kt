@@ -2,8 +2,10 @@ package me.nobaboy.nobaaddons.features.visuals
 
 import me.nobaboy.nobaaddons.core.DebugFlag
 import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents
+import me.owdding.ktmodules.Module
 import net.minecraft.client.network.ClientPlayerEntity
 
+@Module
 object ShowOwnNametagFeature {
 	init {
 		EntityNametagRenderEvents.VISIBILITY.register {
