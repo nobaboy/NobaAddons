@@ -10,6 +10,8 @@ A Fabric mod for Hypixel SkyBlock on modern version of Minecraft.
 
 </div>
 
+See [FEATURES.md](./FEATURES.md) for a full list of the mod's features.
+
 ## License
 
 This project is primarily licensed under the [Zlib license](./LICENSE).
