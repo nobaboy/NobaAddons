@@ -11,6 +11,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessagesChat
 import me.nobaboy.nobaaddons.features.chat.filters.mobs.SeaCreatureCatchMessageChatFilter
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.owdding.ktmodules.Module
 import net.minecraft.text.Text
 
 interface IChatFilter {
@@ -21,6 +22,7 @@ interface IChatFilter {
 	fun shouldFilter(message: Text): Boolean = shouldFilter(message.string.cleanFormatting())
 	fun shouldFilter(message: String): Boolean
 
+	@Module
 	companion object {
 		private val filters = arrayOf(
 			// Item Abilities

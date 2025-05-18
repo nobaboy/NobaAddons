@@ -15,6 +15,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.isFuture
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
@@ -28,6 +29,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
 // TODO Use repo for mayor descriptions except for Foxy
+@ApiModule
 object MayorAPI {
 	private const val ELECTION_API_URL = "https://api.hypixel.net/v2/resources/skyblock/election"
 

@@ -14,6 +14,7 @@ import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CooldownManager
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
@@ -29,6 +30,7 @@ import net.minecraft.util.Util
 import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
+@ApiModule
 object PartyAPI {
 	private val semaphore = Semaphore(3)
 	private val uuidCache = Util.memoize<UUID, Deferred<ProfileResult?>> {

@@ -23,8 +23,10 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.openUrl
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.underline
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.fabricmc.loader.api.Version
 
+@Module
 object UpdateNotifier {
 	private val config get() = NobaConfig.general
 

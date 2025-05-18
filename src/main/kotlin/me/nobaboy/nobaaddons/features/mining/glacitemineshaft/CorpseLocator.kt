@@ -17,10 +17,12 @@ import me.nobaboy.nobaaddons.utils.mc.EntityUtils
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
+import me.owdding.ktmodules.Module
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.player.PlayerEntity
 
+@Module
 object CorpseLocator {
 	private val config get() = NobaConfig.mining.glaciteMineshaft
 	private val enabled: Boolean get() = config.corpseLocator && SkyBlockIsland.MINESHAFT.inIsland()

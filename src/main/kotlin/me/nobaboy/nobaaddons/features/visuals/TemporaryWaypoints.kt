@@ -19,11 +19,13 @@ import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object TemporaryWaypoints {
 	private val config get() = NobaConfig.uiAndVisuals.temporaryWaypoints
 	val enabled: Boolean get() = config.enabled

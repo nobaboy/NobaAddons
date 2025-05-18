@@ -14,9 +14,11 @@ import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
 import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.math.ParticlePathFitter
+import me.owdding.ktmodules.Module
 import net.minecraft.particle.ParticleTypes
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object GriffinBurrowGuess {
 	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.burrowGuess && DianaAPI.isActive

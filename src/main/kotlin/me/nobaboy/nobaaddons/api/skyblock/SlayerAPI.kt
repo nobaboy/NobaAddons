@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.mc.EntityUtils
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
@@ -21,6 +22,7 @@ import net.minecraft.text.Text
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@ApiModule
 object SlayerAPI {
 	private val QUEST_FAILED_REGEX by Regex("^[ ]+SLAYER QUEST FAILED!").fromRepo("slayer.quest_failed")
 	private val QUEST_CANCEL_MESSAGE by "Your Slayer Quest has been cancelled!".fromRepo("slayer.quest_cancel")

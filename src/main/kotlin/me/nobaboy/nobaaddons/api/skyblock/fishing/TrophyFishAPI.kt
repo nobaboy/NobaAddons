@@ -7,12 +7,14 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import java.util.EnumMap
 
+@ApiModule
 object TrophyFishAPI {
 	val trophyFish get() = ProfileData.PROFILE.trophyFish
 

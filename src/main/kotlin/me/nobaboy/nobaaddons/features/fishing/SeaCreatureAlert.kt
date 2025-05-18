@@ -9,7 +9,9 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.bold
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 
+@Module
 object SeaCreatureAlert {
 	private val config get() = NobaConfig.fishing.seaCreatureAlert
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock

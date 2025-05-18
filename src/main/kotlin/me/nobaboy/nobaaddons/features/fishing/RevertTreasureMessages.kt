@@ -6,9 +6,11 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.owdding.ktmodules.Module
 import net.minecraft.text.MutableText
 import net.minecraft.util.Formatting
 
+@Module
 object RevertTreasureMessages {
 	private val config get() = NobaConfig.fishing.catchMessages
 	private val enabled: Boolean get() = config.revertTreasureMessages && !SkyBlockAPI.inSkyBlock

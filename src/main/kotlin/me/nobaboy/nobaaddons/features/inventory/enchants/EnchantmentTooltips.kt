@@ -20,6 +20,7 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkGray
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkRed
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.lightPurple
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
 import net.minecraft.client.util.InputUtil
 import net.minecraft.item.ItemStack
@@ -29,6 +30,7 @@ import net.minecraft.text.Texts
 import org.lwjgl.glfw.GLFW
 
 // TODO Could do with caching the lore
+@Module
 object EnchantmentTooltips {
 	private val config get() = NobaConfig.inventory.enchantmentTooltips
 

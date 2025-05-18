@@ -11,10 +11,12 @@ import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.text.Text
 
+@Module
 object CatchTimer {
 	private val config get() = NobaConfig.fishing
 	private val enabled: Boolean get() = config.catchTimerHudElement && SkyBlockAPI.inSkyBlock

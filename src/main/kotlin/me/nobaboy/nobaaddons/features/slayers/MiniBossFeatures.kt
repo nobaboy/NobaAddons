@@ -12,9 +12,11 @@ import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.util.Identifier
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object MiniBossFeatures {
 	private val config get() = NobaConfig.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest?.spawned == false && SkyBlockAPI.inSkyBlock

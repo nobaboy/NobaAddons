@@ -11,11 +11,13 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
 import me.nobaboy.nobaaddons.utils.mc.BlockUtils.getBlockStateAt
 import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.fluid.LavaFluid
 
+@Module
 object HighlightThunderSparks {
 	private val config get() = NobaConfig.fishing.highlightThunderSparks
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.CRIMSON_ISLE.inIsland()

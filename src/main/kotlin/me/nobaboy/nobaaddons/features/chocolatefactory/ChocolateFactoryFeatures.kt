@@ -17,8 +17,10 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.util.Formatting
 
+@Module
 object ChocolateFactoryFeatures {
 	private val config get() = NobaConfig.events.hoppity
 	private val enabled: Boolean get() = config.requireMythicRabbit && SkyBlockAPI.inSkyBlock

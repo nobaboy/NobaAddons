@@ -5,7 +5,9 @@ import me.nobaboy.nobaaddons.core.fishing.SeaCreature
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.FishingEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 
+@ApiModule
 object SeaCreatureAPI {
 	private val DOUBLE_HOOK_REGEX by Regex("^It's a Double Hook!(?: Woot woot!)?").fromRepo("fishing.double_hook")
 

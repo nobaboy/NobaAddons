@@ -9,10 +9,12 @@ import me.nobaboy.nobaaddons.features.keybinds.impl.NobaKeyBind
 import me.nobaboy.nobaaddons.utils.CooldownManager
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import org.lwjgl.glfw.GLFW
 import kotlin.time.Duration.Companion.milliseconds
 
+@Module
 object KeyBindsManager {
 	private val config = NobaConfig.general
 

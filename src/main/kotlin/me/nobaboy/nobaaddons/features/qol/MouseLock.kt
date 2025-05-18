@@ -15,8 +15,10 @@ import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
 
+@Module
 object MouseLock {
 	val config = NobaConfig.qol.garden
 

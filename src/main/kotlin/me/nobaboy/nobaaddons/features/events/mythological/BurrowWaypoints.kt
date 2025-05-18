@@ -19,10 +19,12 @@ import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object BurrowWaypoints {
 	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = DianaAPI.isActive

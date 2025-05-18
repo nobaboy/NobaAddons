@@ -5,19 +5,13 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommandManager
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.AbstractPartyChatCommand
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.AllInviteCommand
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.CancelCommand
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.CoordsCommand
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.JoinInstanceCommands
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.PingCommand
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.TpsCommand
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.TransferCommand
-import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.WarpCommand
+import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party.*
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
+import me.owdding.ktmodules.Module
 
+@Module
 object PartyCommands : ChatCommandManager() {
 	private val config get() = NobaConfig.chat.chatCommands.party
 	override val enabled: Boolean get() = config.enabled && onHypixel()

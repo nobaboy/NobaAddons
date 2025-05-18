@@ -6,7 +6,9 @@ import me.nobaboy.nobaaddons.core.fishing.SeaCreature
 import me.nobaboy.nobaaddons.events.impl.skyblock.FishingEvents
 import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.mc.LocationUtils
+import me.owdding.ktmodules.Module
 
+@Module
 object AnnounceSeaCreatures {
 	private val config get() = NobaConfig.fishing.announceSeaCreatures
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock

@@ -10,10 +10,12 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.green
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.literal
 import me.nobaboy.nobaaddons.utils.mc.TextUtils.red
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import kotlin.math.abs
 
+@Module
 object ItemPickupLog {
 	private val config get() = NobaConfig.inventory.itemPickupLog
 

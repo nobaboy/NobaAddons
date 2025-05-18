@@ -23,8 +23,10 @@ import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.mc.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 
 @Suppress("RegExpSimplifiable") // [ ] is used to make it clear the spaces are not a mistake
+@Module
 object CompactSlayerMessages {
 	private val config get() = NobaConfig.slayers.compactMessages
 

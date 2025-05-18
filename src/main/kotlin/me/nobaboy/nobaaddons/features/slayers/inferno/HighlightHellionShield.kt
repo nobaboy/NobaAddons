@@ -8,12 +8,14 @@ import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.mc.EntityUtils
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
+import me.owdding.ktmodules.Module
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.WitherSkeletonEntity
 import net.minecraft.entity.mob.ZombifiedPiglinEntity
 
 // TODO Allow entity highlight to work on armor layer
+@Module
 object HighlightHellionShield {
 	private val config get() = NobaConfig.slayers.inferno
 	private val enabled: Boolean

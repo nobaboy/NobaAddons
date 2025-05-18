@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.features.qol.sound.filters.misc.PunchSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.mobs.BansheeSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.mobs.ReindrakeSoundFilter
 import me.nobaboy.nobaaddons.features.qol.sound.filters.rift.KillerSpringSoundFilter
+import me.owdding.ktmodules.Module
 
 interface ISoundFilter {
 	val config get() = NobaConfig.qol.soundFilters
@@ -15,6 +16,7 @@ interface ISoundFilter {
 	val enabled: Boolean
 	fun onSound(sound: SoundEvents.AllowSound)
 
+	@Module
 	companion object {
 		private val filters = arrayOf(
 			// Items Abilities
