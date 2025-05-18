@@ -52,7 +52,7 @@ repositories {
 	strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "me.djtheredstoner") // DevAuth
 	strictMaven("https://repo.nea.moe/releases", "moe.nea.mcautotranslations") // mc-auto-translations (which doesn't document anywhere that you need this!!!!)
 	strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
-	maven("https://maven.teamresourceful.com/repository/maven-public/") // kt modules
+	strictMaven("https://maven.teamresourceful.com/repository/maven-public/", "me.owdding.ktmodules") // kt modules
 }
 
 dependencies {
