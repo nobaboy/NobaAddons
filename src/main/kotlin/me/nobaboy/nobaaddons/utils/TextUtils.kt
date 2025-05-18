@@ -5,6 +5,7 @@ package me.nobaboy.nobaaddons.utils
 *///?}
 
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
+import me.nobaboy.nobaaddons.utils.chat.TextEventUtils
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
 import net.minecraft.text.MutableText
@@ -57,50 +58,18 @@ object TextUtils {
 	fun MutableText.strikethrough(strikethrough: Boolean = true): MutableText = this.styled { it.withStrikethrough(strikethrough) }
 	fun MutableText.obfuscated(obfuscated: Boolean = true): MutableText = this.styled { it.withObfuscated(obfuscated) }
 
-	fun Style.hoverText(text: Text): Style = withHoverEvent(
-		//? if >=1.21.5 {
-		/*HoverEvent.ShowText(text)
-		*///?} else {
-		HoverEvent(HoverEvent.Action.SHOW_TEXT, text)
-		//?}
-	)
+	fun Style.hoverText(text: Text): Style = withHoverEvent(TextEventUtils.createHoverText(text))
 
 	fun MutableText.runCommand(command: String = this.string): MutableText {
 		require(command.startsWith("/")) { "The provided command string must start with a /" }
 		return styled {
-			it.withClickEvent(
-				//? if >=1.21.5 {
-				/*ClickEvent.RunCommand(command)
-				*///?} else {
-				ClickEvent(ClickEvent.Action.RUN_COMMAND, command)
-				//?}
-			)
+			it.withClickEvent(TextEventUtils.createCommand(command))
 		}
 	}
 
 	fun MutableText.openUrl(url: String): MutableText = styled {
-		it.withClickEvent(
-			//? if >=1.21.5 {
-			/*ClickEvent.OpenUrl(URI.create(url))
-			*///?} else {
-			ClickEvent(ClickEvent.Action.OPEN_URL, url)
-			//?}
-		)
+		it.withClickEvent(TextEventUtils.createOpenUrl(url))
 	}
-
-	fun ClickEvent.commandOrNull(): String? {
-		//? if >=1.21.5 {
-		/*return when(this) {
-			is ClickEvent.RunCommand -> command
-			is ClickEvent.SuggestCommand -> command
-			else -> null
-		}
-		*///?} else {
-		return value
-		//?}
-	}
-
-	fun ClickEvent.command(): String = commandOrNull() ?: error("Cannot find command on click event")
 
 	fun MutableText.hoverText(text: String): MutableText = hoverText(text.toText())
 	fun MutableText.hoverText(text: Text): MutableText = styled { it.hoverText(text) }

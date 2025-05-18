@@ -48,6 +48,16 @@ object ChatMessageEvents {
 	val MODIFY = EventDispatcher<Modify, Text> { it.message }
 
 	/**
+	 * Allows for modifying received chat messages late in the message receive process
+	 *
+	 * You should prefer using either [MODIFY] or [ADDED] over this event, unless there are no other options for a
+	 * given feature.
+	 *
+	 * This event reflects all previous modifications made by ourselves and other mods, and is not suitable for parsing.
+	 */
+	@JvmField val LATE_MODIFY = EventDispatcher<Modify, Text> { it.message }
+
+	/**
 	 * Event invoked after a chat message has been added to the chat HUD.
 	 *
 	 * This event provides access to the underlying [net.minecraft.client.gui.hud.ChatHudLine], and the visible

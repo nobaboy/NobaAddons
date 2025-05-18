@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // priority = 900 is to ensure that this event invoker is applied before fabric api's chat events,
 // so we can reliably get the unmodified (and un-canceled) message
 @Mixin(value = MessageHandler.class, priority = 900)
-abstract class ChatMessageEventsMixin_MessageHandler {
+abstract class ChatMessageEventMixin {
 	@Inject(method = "onGameMessage", at = @At("HEAD"))
 	public void nobaaddons$onChatMessage(Text message, boolean overlay, CallbackInfo ci) {
 		if(!overlay) ChatMessageEvents.CHAT.dispatch(new ChatMessageEvents.Chat(message));

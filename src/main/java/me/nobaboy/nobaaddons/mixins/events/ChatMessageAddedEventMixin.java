@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 
 @Mixin(value = ChatHud.class, priority = 10000)
-abstract class ChatMessageEventsMixin_ChatHud {
+abstract class ChatMessageAddedEventMixin {
 	private final @Unique ThreadLocal<@Nullable Message> MESSAGE = new ThreadLocal<>();
 
 	@WrapOperation(
