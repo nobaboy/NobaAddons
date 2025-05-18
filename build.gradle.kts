@@ -66,9 +66,6 @@ dependencies {
 		include(dependencyNotation, configuration)
 	}
 
-	compileOnly("me.owdding.ktmodules:KtModules:${deps["kt_modules"]}")
-	ksp("me.owdding.ktmodules:KtModules:${deps["kt_modules"]}")
-
 	minecraft("com.mojang:minecraft:${mcVersion}")
 	mappings("net.fabricmc:yarn:${mcVersion}+build.${deps["yarn_build"]}:v2")
 	modImplementation("net.fabricmc:fabric-loader:${deps["fabric_loader"]}")
@@ -78,6 +75,9 @@ dependencies {
 
 	modImplementation("dev.isxander:yet-another-config-lib:${deps["yacl"]}-fabric") // YACL
 	modImplementation("com.terraformersmc:modmenu:${deps["modmenu"]}") // ModMenu
+
+	compileOnly("me.owdding.ktmodules:KtModules:${deps["kt_modules"]}")
+	ksp("me.owdding.ktmodules:KtModules:${deps["kt_modules"]}")
 
 	includeImplementation("dev.celestialfault:commander:${deps["commander"]}", mod = true) { isTransitive = false }
 	includeImplementation("dev.celestialfault:histoire:${deps["histoire"]}") { isTransitive = false }
