@@ -9,9 +9,11 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.util.Formatting
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object AnnounceRareDrops {
 	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.announceRareDrops && DianaAPI.isActive

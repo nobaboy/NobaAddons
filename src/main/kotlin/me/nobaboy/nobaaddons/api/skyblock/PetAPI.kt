@@ -15,11 +15,13 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
 
+@ApiModule
 object PetAPI {
 	val constants by Repo.create("pets/constants.json", PetConstants.serializer())
 

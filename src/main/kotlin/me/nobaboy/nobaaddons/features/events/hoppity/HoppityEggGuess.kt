@@ -17,11 +17,13 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.math.ParticlePathFitter
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.particle.ParticleTypes
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object HoppityEggGuess {
 	private val config get() = NobaConfig.events.hoppity
 	private val enabled: Boolean get() = config.eggGuess && HoppityAPI.isActive

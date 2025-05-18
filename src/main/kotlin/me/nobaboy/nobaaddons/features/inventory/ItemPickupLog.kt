@@ -21,12 +21,14 @@ import me.nobaboy.nobaaddons.utils.TextUtils.literal
 import me.nobaboy.nobaaddons.utils.TextUtils.red
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object ItemPickupLog {
 	private val MERCHANT_COUNT = Regex("x\\d+")
 	private const val SKYBLOCK_MENU_SLOT = 8

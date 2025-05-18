@@ -7,6 +7,7 @@ import me.nobaboy.nobaaddons.features.inventory.slotinfo.items.*
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.uielements.*
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.owdding.ktmodules.Module
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
@@ -29,6 +30,7 @@ interface ISlotInfo {
 		drawStackOverlay(event.context, event.textRenderer, event.x, event.y, text, color)
 	}
 
+	@Module
 	companion object {
 		const val CHECK = "✔"
 

@@ -27,10 +27,12 @@ import me.nobaboy.nobaaddons.utils.PingUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.util.Formatting
 
 @Suppress("unused")
 @Group("nobaaddons", "noba")
+@Module
 object NobaCommand {
 	init {
 		CommandUtil.registerRoot(this)
@@ -90,7 +92,7 @@ object NobaCommand {
 		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will not disappear until you walk near it."))
 	}
 
-	@Command
+	@Command(aliases = ["mouselock"])
 	fun lockMouse() {
 		MouseLock.lockMouse()
 	}

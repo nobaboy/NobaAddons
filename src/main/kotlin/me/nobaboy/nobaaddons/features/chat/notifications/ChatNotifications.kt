@@ -5,10 +5,12 @@ import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
+import me.owdding.ktmodules.Module
 import net.minecraft.util.Util
 import java.util.regex.PatternSyntaxException
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object ChatNotifications {
 	private val GROUP = Regex("(?<!\\\\)\\\$(\\d+)")
 

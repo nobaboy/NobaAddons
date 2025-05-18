@@ -12,10 +12,12 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
+import me.owdding.ktmodules.Module
 import net.minecraft.entity.projectile.FishingBobberEntity
 import net.minecraft.text.Text
 import kotlin.time.DurationUnit
 
+@Module
 object FishingBobberTweaks {
 	private val config get() = NobaConfig.fishing
 

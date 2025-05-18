@@ -4,6 +4,7 @@ import me.nobaboy.nobaaddons.data.InventoryData
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket
 import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket
@@ -11,6 +12,7 @@ import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket
 
+@ApiModule
 object InventoryAPI {
 	private var currentScreen: Screen? = null
 	private var currentInventory: InventoryData? = null
