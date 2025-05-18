@@ -33,15 +33,16 @@ version = "${mod.version}+$mcVersion"
 group = mod.group
 base { archivesName.set(mod.id) }
 
+@Suppress("UnstableApiUsage")
 repositories {
-	fun strictMaven(url: String, vararg groups: String) = exclusiveContent {
+	fun strictMaven(url: String, vararg groups: String, allowSubGroups: Boolean = false) = exclusiveContent {
 		forRepository { maven(url) }
-		filter { groups.forEach(::includeGroup) }
+		filter { groups.forEach(if (allowSubGroups) ::includeGroupAndSubgroups else ::includeGroup) }
 	}
 
-	fun strictMaven(urls: List<String>, vararg groups: String) = exclusiveContent {
+	fun strictMaven(urls: List<String>, vararg groups: String, allowSubGroups: Boolean = false) = exclusiveContent {
 		forRepositories(*urls.map { maven(it) }.toTypedArray())
-		filter { groups.forEach(::includeGroup) }
+		filter { groups.forEach(if (allowSubGroups) ::includeGroupAndSubgroups else ::includeGroup) }
 	}
 
 	mavenCentral()
@@ -52,7 +53,7 @@ repositories {
 	strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "me.djtheredstoner") // DevAuth
 	strictMaven("https://repo.nea.moe/releases", "moe.nea.mcautotranslations") // mc-auto-translations (which doesn't document anywhere that you need this!!!!)
 	strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
-	strictMaven("https://maven.teamresourceful.com/repository/maven-public/", "me.owdding.ktmodules") // kt modules
+	strictMaven("https://maven.teamresourceful.com/repository/maven-public/", "me.owdding", allowSubGroups = true) // kt modules
 }
 
 dependencies {

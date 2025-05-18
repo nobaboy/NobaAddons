@@ -58,9 +58,9 @@ object NobaAddons : ClientModInitializer {
 
 	override fun onInitializeClient() {
 		NobaAddonsConfigs.collected.forEach { it.safeLoad() }
-		NobaAddonsCoreModules.init { it }
-		NobaAddonsApis.init { it }
-		NobaAddonsModules.init { it }
+		NobaAddonsCoreModules
+		NobaAddonsApis
+		NobaAddonsModules
 	}
 
 }
