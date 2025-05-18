@@ -26,9 +26,11 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.client.network.OtherClientPlayerEntity
 import kotlin.time.Duration.Companion.seconds
 
+@Module
 object InquisitorWaypoints {
 	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.alertInquisitor && DianaAPI.isActive

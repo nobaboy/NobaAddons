@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.config.categories.*
 import me.nobaboy.nobaaddons.config.configs.*
 import me.nobaboy.nobaaddons.config.util.OptionBuilder
 import me.nobaboy.nobaaddons.utils.CommonText
+import me.nobaboy.nobaaddons.utils.annotations.ConfigModule
 import net.minecraft.client.gui.screen.Screen
 
 /*
@@ -44,6 +45,7 @@ sealed class AbstractNobaConfig : Histoire(
 	private var configVersion: Int = migrations.currentVersion
 }
 
+@ConfigModule
 object NobaConfig : AbstractNobaConfig() {
 	fun getConfigScreen(parent: Screen?): Screen = YetAnotherConfigLib.createBuilder().apply {
 		title(CommonText.NOBAADDONS)

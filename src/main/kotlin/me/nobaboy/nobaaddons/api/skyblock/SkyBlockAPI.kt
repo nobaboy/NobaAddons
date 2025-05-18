@@ -20,6 +20,7 @@ import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
 import me.nobaboy.nobaaddons.utils.SkyBlockSeason
 import me.nobaboy.nobaaddons.utils.SkyBlockTime
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
 import net.hypixel.data.type.GameType
@@ -28,6 +29,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.toJavaUuid
 import kotlin.uuid.toKotlinUuid
 
+@ApiModule
 object SkyBlockAPI {
 	private val PROFILE_ID_REGEX by Regex("^Profile ID: (?<id>${CommonPatterns.UUID_PATTERN_STRING})").fromRepo("skyblock.profile_id")
 	private val PROFILE_TYPE_REGEX by Regex("^. (?<type>Ironman|Stranded|Bingo)").fromRepo("skyblock.profile_type")

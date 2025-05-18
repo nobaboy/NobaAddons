@@ -3,8 +3,10 @@ package me.nobaboy.nobaaddons.features.slayers.sven
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents
+import me.owdding.ktmodules.Module
 import net.minecraft.entity.decoration.ArmorStandEntity
 
+@Module
 object HidePupNametags {
 	private val config get() = NobaConfig.slayers.sven
 	private val enabled: Boolean get() = config.hidePupNametags && SkyBlockAPI.inSkyBlock

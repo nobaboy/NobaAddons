@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.client.gui.hud.ChatHudLine
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
@@ -16,6 +17,7 @@ import org.lwjgl.glfw.GLFW
 import java.lang.ref.WeakReference
 import java.util.WeakHashMap
 
+@Module
 object CopyChatFeature {
 	private val config get() = NobaConfig.chat.copyChat
 

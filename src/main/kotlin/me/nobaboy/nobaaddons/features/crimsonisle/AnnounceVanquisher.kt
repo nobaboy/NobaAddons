@@ -6,7 +6,9 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
+import me.owdding.ktmodules.Module
 
+@Module
 object AnnounceVanquisher {
 	private val config get() = NobaConfig.crimsonIsle.announceVanquisher
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock

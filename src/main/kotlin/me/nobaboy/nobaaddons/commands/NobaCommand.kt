@@ -27,10 +27,12 @@ import me.nobaboy.nobaaddons.utils.PingUtils
 import me.nobaboy.nobaaddons.utils.ScreenUtils.queueOpen
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.util.Formatting
 
 @Suppress("unused")
 @Group("nobaaddons", "noba")
+@Module
 object NobaCommand {
 	init {
 		CommandUtil.registerRoot(this)

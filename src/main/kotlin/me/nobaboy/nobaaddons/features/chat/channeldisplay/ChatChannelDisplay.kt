@@ -18,12 +18,14 @@ import me.nobaboy.nobaaddons.utils.TextUtils.green
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.client.render.RenderTickCounter
 import kotlin.time.Duration.Companion.minutes
 
+@Module
 object ChatChannelDisplay {
 	private val config get() = NobaConfig.chat
 	private val enabled: Boolean get() = config.displayCurrentChannel && HypixelAPI.onHypixel

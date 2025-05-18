@@ -10,11 +10,13 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.HighlightMode
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.entity.decoration.ArmorStandEntity
 
 // TODO Rework and implement Entity outlines
+@Module
 object HighlightStarredMobs {
 	private val config get() = NobaConfig.dungeons.highlightStarredMobs
 	private val enabled: Boolean get() = config.enabled && !DungeonsAPI.inBoss()

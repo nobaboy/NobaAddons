@@ -15,11 +15,13 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import net.minecraft.block.Blocks
 import net.minecraft.particle.ParticleTypes
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
+@ApiModule
 object BurrowAPI {
 	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.findNearbyBurrows && DianaAPI.isActive
