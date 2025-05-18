@@ -10,6 +10,7 @@ import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
@@ -20,6 +21,7 @@ import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.world.World
 
+@Module
 object EtherwarpOverlay {
 	private val config get() = NobaConfig.uiAndVisuals.etherwarpOverlay
 	private val enabled: Boolean get() = config.enabled && SkyBlockAPI.inSkyBlock && MCUtils.options.sneakKey.isPressed

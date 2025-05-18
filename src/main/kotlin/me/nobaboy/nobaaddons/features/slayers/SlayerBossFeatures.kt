@@ -9,10 +9,12 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
-// TODO: Add boss soon warning
+// TODO Add boss soon warning
+@Module
 object SlayerBossFeatures {
 	private val config get() = NobaConfig.slayers
 	private val enabled: Boolean get() = SlayerAPI.currentQuest != null && SkyBlockAPI.inSkyBlock

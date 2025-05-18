@@ -4,10 +4,11 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 plugins {
 	id("fabric-loom")
-	kotlin("jvm") version("2.1.0")
-	kotlin("plugin.serialization") version "2.1.0"
+	kotlin("jvm") version("2.1.20")
+	kotlin("plugin.serialization") version "2.1.20"
 	id("me.modmuss50.mod-publish-plugin")
-	id("moe.nea.mc-auto-translations") version "0.1.0"
+	id("moe.nea.mc-auto-translations") version "0.3.0"
+	id("com.google.devtools.ksp") version "2.1.20-2.0.0"
 }
 
 class ModData {
@@ -32,15 +33,16 @@ version = "${mod.version}+$mcVersion"
 group = mod.group
 base { archivesName.set(mod.id) }
 
+@Suppress("UnstableApiUsage")
 repositories {
-	fun strictMaven(url: String, vararg groups: String) = exclusiveContent {
+	fun strictMaven(url: String, vararg groups: String, allowSubGroups: Boolean = false) = exclusiveContent {
 		forRepository { maven(url) }
-		filter { groups.forEach(::includeGroup) }
+		filter { groups.forEach(if (allowSubGroups) ::includeGroupAndSubgroups else ::includeGroup) }
 	}
 
-	fun strictMaven(urls: List<String>, vararg groups: String) = exclusiveContent {
+	fun strictMaven(urls: List<String>, vararg groups: String, allowSubGroups: Boolean = false) = exclusiveContent {
 		forRepositories(*urls.map { maven(it) }.toTypedArray())
-		filter { groups.forEach(::includeGroup) }
+		filter { groups.forEach(if (allowSubGroups) ::includeGroupAndSubgroups else ::includeGroup) }
 	}
 
 	mavenCentral()
@@ -51,6 +53,7 @@ repositories {
 	strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "me.djtheredstoner") // DevAuth
 	strictMaven("https://repo.nea.moe/releases", "moe.nea.mcautotranslations") // mc-auto-translations (which doesn't document anywhere that you need this!!!!)
 	strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
+	strictMaven("https://maven.teamresourceful.com/repository/maven-public/", "me.owdding", allowSubGroups = true) // kt modules
 }
 
 dependencies {
@@ -62,6 +65,9 @@ dependencies {
 		if(mod) modImplementation(dependencyNotation, configuration) else implementation(dependencyNotation, configuration)
 		include(dependencyNotation, configuration)
 	}
+
+	compileOnly("me.owdding.ktmodules:KtModules:${deps["kt_modules"]}")
+	ksp("me.owdding.ktmodules:KtModules:${deps["kt_modules"]}")
 
 	minecraft("com.mojang:minecraft:${mcVersion}")
 	mappings("net.fabricmc:yarn:${mcVersion}+build.${deps["yarn_build"]}:v2")
@@ -181,4 +187,9 @@ publishMods {
 		requires("hypixel-mod-api")
 		optional("modmenu")
 	}
+}
+
+ksp {
+	arg("meowdding.modules.project_name", "NobaAddons")
+	arg("meowdding.modules.package", "me.nobaboy.nobaaddons.generated")
 }

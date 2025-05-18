@@ -3,7 +3,6 @@ package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import kotlin.time.Duration.Companion.seconds
 
 class WarpOutCommand(private val categoryEnabled: () -> Boolean) : ChatCommand(3.seconds) {

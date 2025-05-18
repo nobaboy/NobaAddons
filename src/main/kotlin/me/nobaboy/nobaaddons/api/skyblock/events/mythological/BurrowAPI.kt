@@ -15,11 +15,13 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.Scheduler
 import me.nobaboy.nobaaddons.utils.TimedSet
 import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import net.minecraft.block.Blocks
 import net.minecraft.particle.ParticleTypes
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
+@ApiModule
 object BurrowAPI {
 	private val config get() = NobaConfig.events.mythological
 	private val enabled: Boolean get() = config.findNearbyBurrows && DianaAPI.isActive
@@ -135,7 +137,8 @@ object BurrowAPI {
 		ENCHANT({ type == ParticleTypes.ENCHANT && count == 5 && speed == 0.05f && offset.x == 0.5 && offset.y == 0.4 && offset.z == 0.5 }),
 		START({ type == ParticleTypes.ENCHANTED_HIT && count == 4 && speed == 0.01f && offset.x == 0.5 && offset.y == 0.1 && offset.z == 0.5 }),
 		MOB({ type == ParticleTypes.CRIT && count == 3 && speed == 0.01f && offset.x == 0.5 && offset.y == 0.1 && offset.z == 0.5 }),
-		TREASURE({ type == ParticleTypes.DRIPPING_LAVA && count == 2 && speed == 0.01f && offset.x == 0.35 && offset.y == 0.1 && offset.z == 0.35 });
+		TREASURE({ type == ParticleTypes.DRIPPING_LAVA && count == 2 && speed == 0.01f && offset.x == 0.35 && offset.y == 0.1 && offset.z == 0.35 }),
+		;
 
 		companion object {
 			fun getParticleType(event: ParticleEvents.Particle): BurrowParticleType? {

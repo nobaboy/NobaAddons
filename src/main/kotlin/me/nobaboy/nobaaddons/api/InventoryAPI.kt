@@ -14,6 +14,7 @@ import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket
@@ -25,6 +26,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import java.util.concurrent.ConcurrentHashMap
 
+@ApiModule
 object InventoryAPI {
 	private val MERCHANT_COUNT = Regex("x\\d+")
 	private const val SKYBLOCK_MENU_SLOT = 8

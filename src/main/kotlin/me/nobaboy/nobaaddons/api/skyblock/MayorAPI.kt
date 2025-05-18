@@ -17,6 +17,7 @@ import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
 import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
@@ -25,7 +26,8 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
-// TODO: Use repo for mayor descriptions except for Foxy
+// TODO Use repo for mayor descriptions except for Foxy
+@ApiModule
 object MayorAPI {
 	private const val ELECTION_API_URL = "https://api.hypixel.net/v2/resources/skyblock/election"
 
@@ -37,25 +39,31 @@ object MayorAPI {
 
 	val FOXY_EVENT_REGEX by Regex("Schedules an extra §.(?<event>[A-z ]+) §.event during the year\\.").fromRepo("mayor.foxy_event")
 
+	var suppressAutoUpdate: Boolean = false
+		set(value) {
+			field = value
+			lastUpdate = Timestamp.distantPast()
+		}
+
 	var currentMayor: ActiveMayor = Mayor.UNKNOWN.withNone()
-		private set
+		internal set
 	var currentMinister: ActiveMayor = Mayor.UNKNOWN.withNone()
+		internal set
 
 	var jerryMayor: Pair<ActiveMayor, Timestamp> = Mayor.UNKNOWN.withNone() to Timestamp.distantPast()
-		private set
+		internal set
 
 	private var lastMayor: ActiveMayor? = null
 	private var nextMayorTimestamp = Timestamp.distantPast()
 
 	private var lastUpdate = Timestamp.distantPast()
-	private val shouldUpdate: Boolean get() = lastUpdate.elapsedSince() > 20.minutes
+	private val shouldUpdate: Boolean get() = !suppressAutoUpdate && lastUpdate.elapsedSince() > 20.minutes
 
 	fun Mayor.isElected(): Boolean = currentMayor.mayor == this
-	fun MayorPerk.isActive(): Boolean = (currentMayor.perks + currentMinister.perks).contains(this)
+	fun MayorPerk.isActive(): Boolean = this in (currentMayor.perks + currentMinister.perks + jerryMayor.first.perks)
 
 	private fun SkyBlockTime.getElectionYear(): Int =
 		year - if(month < ELECTION_END_MONTH || (month == ELECTION_END_MONTH && day < ELECTION_END_DAY)) 1 else 0
-
 
 	init {
 		TickEvents.everySecond { onSecondPassed() }
@@ -120,6 +128,7 @@ object MayorAPI {
 		currentMinister = mayor.minister?.let { Mayor.getByName(it.name)?.with(listOf(it.perk)) } ?: Mayor.UNKNOWN.withNone()
 	}
 
+	@JvmRecord
 	data class ActiveMayor(val mayor: Mayor, val perks: List<MayorPerk>) {
 		val displayName: String get() = mayor.displayName
 	}

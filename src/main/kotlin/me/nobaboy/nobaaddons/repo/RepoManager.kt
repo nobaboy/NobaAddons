@@ -9,6 +9,7 @@ import me.nobaboy.nobaaddons.repo.objects.IRepoObject
 import me.nobaboy.nobaaddons.utils.ErrorManager
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.HTTPUtils.get
+import me.nobaboy.nobaaddons.utils.annotations.CoreModule
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
@@ -26,6 +27,7 @@ import kotlin.random.Random
 /**
  * The repository manager which controls downloading the mod's data repository.
  */
+@CoreModule
 object RepoManager {
 	private val LOCK = Any()
 	private val config get() = NobaConfig.repo

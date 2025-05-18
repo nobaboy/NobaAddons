@@ -14,6 +14,7 @@ import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.ScoreboardUtils
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket
@@ -21,6 +22,7 @@ import net.minecraft.text.Text
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@ApiModule
 object SlayerAPI {
 	private val QUEST_FAILED_REGEX by Regex("^[ ]+SLAYER QUEST FAILED!").fromRepo("slayer.quest_failed")
 	private val QUEST_CANCEL_MESSAGE by "Your Slayer Quest has been cancelled!".fromRepo("slayer.quest_cancel")

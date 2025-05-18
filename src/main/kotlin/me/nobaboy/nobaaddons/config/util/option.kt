@@ -7,6 +7,7 @@ import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionAddable
 import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.OptionEventListener
+import dev.isxander.yacl3.api.OptionFlag
 import dev.isxander.yacl3.api.controller.ControllerBuilder
 import dev.isxander.yacl3.gui.YACLScreen
 import me.nobaboy.nobaaddons.config.AbstractNobaConfig
@@ -26,6 +27,7 @@ class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
 	var description: OptionDescription? = null
 
 	lateinit var controller: (Option<T>) -> ControllerBuilder<T>
+	val flags = mutableListOf<OptionFlag>()
 
 	var requirement: OptionRequirement? = null
 
@@ -45,6 +47,7 @@ class OptionBuilder<T> internal constructor(val binding: Binding<T>) {
 			description?.let(::description)
 			binding(binding)
 			controller(controller)
+			flags(flags)
 		}.build()
 
 		requirement?.let(option::require)

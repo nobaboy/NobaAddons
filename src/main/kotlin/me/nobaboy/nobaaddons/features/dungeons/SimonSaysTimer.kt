@@ -26,7 +26,9 @@ import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 
+@Module
 object SimonSaysTimer {
 	private val config get() = NobaConfig.dungeons.simonSaysTimer
 	private val enabled: Boolean get() = config.enabled && SkyBlockIsland.DUNGEONS.inIsland() && DungeonsAPI.inFloor(7)

@@ -1,6 +1,7 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.events.impl.client.SoundEvents
+import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import net.minecraft.sound.SoundCategory
 import net.minecraft.util.Identifier
 import java.awt.event.WindowAdapter
@@ -12,6 +13,7 @@ import javax.swing.JTextArea
 /**
  * Debug utilities API
  */
+@ApiModule
 object DebugAPI {
 	private const val HISTORY_LIMIT = 50
 	private val recentSounds = mutableListOf<Sound>()

@@ -14,10 +14,12 @@ import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.render.EntityDataKey
 import net.minecraft.client.render.entity.state.FishingBobberEntityState
+import me.owdding.ktmodules.Module
 import net.minecraft.entity.projectile.FishingBobberEntity
 import net.minecraft.text.Text
 import kotlin.time.DurationUnit
 
+@Module
 object FishingBobberTweaks {
 	private val SPAWNED_AT = EntityDataKey.nullable<Timestamp?>()
 	private val OUR_BOBBER = EntityDataKey<Boolean> { false }

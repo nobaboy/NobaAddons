@@ -3,8 +3,9 @@ package me.nobaboy.nobaaddons.core.mayor
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI.ActiveMayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk.Companion.toPerk
 import me.nobaboy.nobaaddons.data.json.Perk
+import net.minecraft.util.StringIdentifiable
 
-enum class Mayor(displayName: String? = null, vararg val perks: MayorPerk) {
+enum class Mayor(displayName: String? = null, vararg val perks: MayorPerk) : StringIdentifiable {
 	// Normal Mayors
 	AATROX("Aatrox", MayorPerk.SLAYER_XP_BUFF, MayorPerk.PATHFINDER, MayorPerk.SLASHED_PRICING),
 	COLE("Cole", MayorPerk.MINING_FIESTA, MayorPerk.MINING_XP_BUFF, MayorPerk.MOLTEN_FORGE, MayorPerk.PROSPECTION),
@@ -20,13 +21,16 @@ enum class Mayor(displayName: String? = null, vararg val perks: MayorPerk) {
 	DERPY("Derpy", MayorPerk.QUAD_TAXES, MayorPerk.TURBO_MINIONS, MayorPerk.DOUBLE_MOBS_HP, MayorPerk.MOAR_SKILLZ),
 	SCORPIUS("Scorpius", MayorPerk.BRIBE, MayorPerk.DARKER_AUCTIONS),
 
-	UNKNOWN;
+	UNKNOWN,
+	;
 
 	val displayName = displayName ?: name
 
 	fun with(perks: List<Perk>) = ActiveMayor(this, perks.mapNotNull { it.toPerk() })
 	fun withAll() = ActiveMayor(this, perks.toList())
 	fun withNone() = ActiveMayor(this, emptyList())
+
+	override fun asString(): String = name
 
 	companion object {
 		fun getByName(name: String): Mayor? = entries.firstOrNull { it.displayName.equals(name, ignoreCase = true) }

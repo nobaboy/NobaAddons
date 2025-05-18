@@ -24,6 +24,7 @@ import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.block.Blocks
@@ -35,6 +36,7 @@ import net.minecraft.item.Items
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
+@Module
 object VoidgloomSeraphFeatures {
 	private val config get() = NobaConfig.slayers.voidgloom
 	private val enabled: Boolean

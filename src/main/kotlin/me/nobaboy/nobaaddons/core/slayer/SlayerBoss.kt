@@ -43,7 +43,8 @@ enum class SlayerBoss(
 		EntityType.PLAYER,
 		null,
 		listOf("Stillgore Château", "Oubliette")
-	);
+	),
+	;
 
 	companion object {
 		fun getByName(name: String): SlayerBoss? = entries.firstOrNull { name.contains(it.displayName, ignoreCase = true) }

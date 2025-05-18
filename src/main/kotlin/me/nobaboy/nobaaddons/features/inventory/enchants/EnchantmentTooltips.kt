@@ -20,6 +20,7 @@ import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.isSkyBlockItem
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
+import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
 import net.minecraft.client.util.InputUtil
 import net.minecraft.item.ItemStack
@@ -28,7 +29,8 @@ import net.minecraft.text.Text
 import net.minecraft.text.Texts
 import org.lwjgl.glfw.GLFW
 
-// TODO: Could do with caching the lore
+// TODO Could do with caching the lore
+@Module
 object EnchantmentTooltips {
 	private val config get() = NobaConfig.inventory.enchantmentTooltips
 

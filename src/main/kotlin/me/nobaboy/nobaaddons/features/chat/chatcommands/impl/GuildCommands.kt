@@ -7,7 +7,9 @@ import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.HelpCommand
 import me.nobaboy.nobaaddons.features.chat.chatcommands.impl.shared.WarpOutCommand
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CommonPatterns
+import me.owdding.ktmodules.Module
 
+@Module
 object GuildCommands : ChatCommandManager() {
 	private val config get() = NobaConfig.chat.chatCommands.guild
 	override val enabled: Boolean get() = config.enabled && onHypixel()

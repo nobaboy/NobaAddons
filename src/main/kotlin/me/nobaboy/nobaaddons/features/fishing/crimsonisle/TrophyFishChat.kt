@@ -17,8 +17,10 @@ import me.nobaboy.nobaaddons.utils.TextUtils.literal
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.Message
 import me.nobaboy.nobaaddons.utils.tr
+import me.owdding.ktmodules.Module
 import net.minecraft.text.Text
 
+@Module
 object TrophyFishChat {
 	private val config get() = NobaConfig.fishing.trophyFishing
 	private val includeIcon get() = !NobaConfig.fishing.catchMessages.revertTreasureMessages
