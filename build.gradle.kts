@@ -4,10 +4,10 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 plugins {
 	id("fabric-loom")
-	kotlin("jvm") version("2.1.0")
-	kotlin("plugin.serialization") version "2.1.0"
+	kotlin("jvm") version("2.1.20")
+	kotlin("plugin.serialization") version "2.1.20"
 	id("me.modmuss50.mod-publish-plugin")
-	id("moe.nea.mc-auto-translations") version "0.1.0"
+	id("moe.nea.mc-auto-translations") version "0.3.0"
 	id("com.google.devtools.ksp") version "2.1.20-2.0.0"
 }
 
