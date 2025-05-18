@@ -92,7 +92,7 @@ object NobaCommand {
 		ChatUtils.addMessage(tr("nobaaddons.temporaryWaypoint.createdFromCommand", "Added a waypoint at $x, $y, $z. This waypoint will not disappear until you walk near it."))
 	}
 
-	@Command
+	@Command(aliases = ["mouselock"])
 	fun lockMouse() {
 		MouseLock.lockMouse()
 	}
