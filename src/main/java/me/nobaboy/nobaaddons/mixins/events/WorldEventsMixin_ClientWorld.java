@@ -19,7 +19,12 @@ abstract class WorldEventsMixin_ClientWorld implements BlockView {
 			target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;II)Z"
 		)
 	)
-	private void nobaaddons$onBlockUpdate(BlockPos pos, BlockState state, int flags, CallbackInfo ci) {
+	public void nobaaddons$onBlockUpdate(BlockPos pos, BlockState state, int flags, CallbackInfo ci) {
 		WorldEvents.BLOCK_UPDATE.dispatch(new WorldEvents.BlockUpdate(pos, state, getBlockState(pos)));
+	}
+
+	@Inject(method = "setTime", at = @At("HEAD"))
+	public void nobaaddons$onSetTime(long time, long timeOfDay, boolean shouldTickTimeOfDay, CallbackInfo ci) {
+		WorldEvents.TIME_UPDATE.dispatch(new WorldEvents.TimeUpdate(time));
 	}
 }

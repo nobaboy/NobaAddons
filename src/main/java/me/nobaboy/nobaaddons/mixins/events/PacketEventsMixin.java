@@ -22,7 +22,6 @@ abstract class PacketEventsMixin {
 	@Inject(method = "send(Lnet/minecraft/network/packet/Packet;)V", at = @At("RETURN"))
 	private void nobaaddons$onPacketSend(Packet<?> packet, CallbackInfo ci) {
 		if(this.side != NetworkSide.CLIENTBOUND) return;
-
 		PacketEvents.SEND.dispatch(new PacketEvents.Send(packet));
 	}
 
@@ -41,10 +40,9 @@ abstract class PacketEventsMixin {
 		method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V",
 		at = @At("RETURN")
 	)
-	private void nobaaddons$postPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
+	public void nobaaddons$postPacketReceive(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
 		if(!this.channel.isOpen()) return;
 		if(this.side != NetworkSide.CLIENTBOUND) return;
-
 		PacketEvents.POST_RECEIVE.dispatch(new PacketEvents.Receive(packet));
 	}
 }

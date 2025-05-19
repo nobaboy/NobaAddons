@@ -9,8 +9,11 @@ import net.minecraft.util.math.BlockPos
 object WorldEvents {
 	@JvmField val LOAD = EventDispatcher<Load>()
 
+	@JvmField val TIME_UPDATE = EventDispatcher<TimeUpdate>()
+
 	@JvmField val BLOCK_UPDATE = EventDispatcher<BlockUpdate>()
 
 	data class Load(val world: ClientWorld) : Event
+	data class TimeUpdate(val worldTime: Long) : Event
 	data class BlockUpdate(val blockPos: BlockPos, val newState: BlockState, val oldState: BlockState) : Event
 }

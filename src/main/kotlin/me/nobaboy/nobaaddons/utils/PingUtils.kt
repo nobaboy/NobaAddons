@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
+import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import net.minecraft.network.packet.c2s.query.QueryPingC2SPacket
-import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket
 import net.minecraft.network.packet.s2c.query.PingResultS2CPacket
 import net.minecraft.util.Util
 import kotlin.time.Duration.Companion.seconds
@@ -19,19 +19,18 @@ object PingUtils {
 		private set
 
 	val averageTps: Double
-		get() {
-			val average = tickRates.toSet()
-				.takeIf { it.isNotEmpty() }
-				?.average()
-				?.roundTo(1) ?: currentTps
-
-			return if(average >= 19.7) 20.0 else average
-		}
+		get() = tickRates.toList()
+			.takeIf { it.isNotEmpty() }
+			?.average()
+			?.roundTo(1)
+			?.let { if(it >= 19.7) 20.0 else it }
+			?: currentTps
 
 	private val tickRates = TimedSet<Double>(5.seconds)
 	private var previousTime = 0L
 
 	init {
+		WorldEvents.TIME_UPDATE.register(this::onWorldTimeUpdate)
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
 		Scheduler.schedule(10 * 20, repeat = true) { sendPingPacket() }
 	}
@@ -39,7 +38,6 @@ object PingUtils {
 	private fun onPacketReceive(event: PacketEvents.Receive) {
 		when(val packet = event.packet) {
 			is PingResultS2CPacket -> onPingResult(packet)
-			is WorldTimeUpdateS2CPacket -> onWorldTimeUpdate()
 		}
 	}
 
@@ -61,13 +59,14 @@ object PingUtils {
 		}
 	}
 
-	private fun onWorldTimeUpdate() {
+	private fun onWorldTimeUpdate(event: WorldEvents.TimeUpdate) {
 		val currentTime = Util.getMeasuringTimeMs()
 
 		if(previousTime != 0L) {
-			val rawTps = (20_000.0 / (currentTime - previousTime))
-			currentTps = rawTps.coerceIn(0.0, 20.0).roundTo(1)
-			tickRates.add(currentTps)
+			val elapsed = (currentTime - previousTime).coerceAtLeast(1) // avoid division by 0
+			val tps = (20.0 * 1000 / elapsed).coerceIn(0.0, 20.0).roundTo(1)
+			currentTps = tps
+			tickRates.add(tps)
 		}
 
 		previousTime = currentTime
