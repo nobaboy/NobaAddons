@@ -34,6 +34,7 @@ Info Boxes display any provided text on-screen, and also replace the following p
 - Client information:
   - `{fps}`
   - `{ping}`
+  - `{tps}`
 - Server information:
   - `{day}`
 - Player position:
@@ -78,8 +79,8 @@ Info Boxes display any provided text on-screen, and also replace the following p
 <details>
 <summary>Slayers</summary>
 
-- Boss and MiniBoss alerts
-- Highlight MiniBosses
+- Boss and Miniboss alerts
+- Highlight Minibosses
 - Announce slayer boss kill time
 - Compact slayer quest completion messages
 - Wolf slayer:
@@ -146,7 +147,7 @@ Info Boxes display any provided text on-screen, and also replace the following p
 
 - Various sound filters
 - Garden:
-  - Mouse lock (`/noba lockmouse`)
+  - Mouse lock (`/noba lockmouse` or `/noba mouselock`)
   - Reduce mouse sensitivity while holding a farming tool
 
 </details>
