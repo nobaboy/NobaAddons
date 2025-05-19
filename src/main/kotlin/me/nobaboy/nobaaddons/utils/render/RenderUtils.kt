@@ -59,6 +59,23 @@ object RenderUtils {
 	}
 	fun endScale(context: DrawContext) = context.matrices.pop()
 
+	/**
+	 * Returns a lerped alpha for [displayTicks], gradually becoming more transparent the closer it is to 0 from [threshold]
+	 */
+	fun lerpAlpha(partialTick: Float, displayTicks: Int, threshold: Int): Int {
+		val lerped = MathHelper.lerp(partialTick, displayTicks.toFloat(), displayTicks - 1f)
+		return ((lerped / threshold.toDouble()) * 255.0).roundToInt().coerceIn(0, 255)
+	}
+
+	fun isPointInArea(
+		pointX: Double,
+		pointY: Double,
+		leftX: Double,
+		leftY: Double,
+		rightX: Double,
+		rightY: Double,
+	): Boolean = pointX in leftX..rightX && pointY in leftY..rightY
+
 	fun Text.getWidth(): Int = MCUtils.textRenderer.getWidth(this)
 	fun String.getWidth(): Int = MCUtils.textRenderer.getWidth(this)
 
@@ -157,15 +174,6 @@ object RenderUtils {
 		val width = (text.getWidth() * scale).toInt()
 		drawText(context, text.toText(), x - width / 2, y, scale, color, shadow, applyScaling)
 	}
-
-	fun isPointInArea(
-		pointX: Double,
-		pointY: Double,
-		leftX: Double,
-		leftY: Double,
-		rightX: Double,
-		rightY: Double,
-	): Boolean = pointX in leftX..rightX && pointY in leftY..rightY
 
 	fun drawTitle(
 		text: Text,
@@ -388,6 +396,8 @@ object RenderUtils {
 	}
 
 	// TODO should this be an extension of WorldRenderContext?
+	// TODO blocks inside the Box will not be visible if it's rendered through blocks (or will blend in), so change
+	//      this to instead render the sides of the Box
 	private fun renderFilled(
 		context: WorldRenderContext,
 		box: Box,
@@ -494,13 +504,5 @@ object RenderUtils {
 		throughBlocks: Boolean = false,
 	) {
 		renderText(location, text.toText(), color, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
-	}
-
-	/**
-	 * Returns a lerped alpha for [displayTicks], gradually becoming more transparent the closer it is to 0 from [threshold]
-	 */
-	fun lerpAlpha(partialTick: Float, displayTicks: Int, threshold: Int): Int {
-		val lerped = MathHelper.lerp(partialTick, displayTicks.toFloat(), displayTicks - 1f)
-		return ((lerped / threshold.toDouble()) * 255.0).roundToInt().coerceIn(0, 255)
 	}
 }
