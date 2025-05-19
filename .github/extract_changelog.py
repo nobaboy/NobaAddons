@@ -1,6 +1,7 @@
 from pathlib import Path
 import re
 from collections import defaultdict
+import os
 
 
 # https://stackoverflow.com/a/31852401
@@ -18,8 +19,14 @@ def load_properties(filepath, sep='=', comment_char='#'):
 	return props
 
 
+def current_mod_version() -> str:
+	if override := os.environ.get("VERSION"):
+		return override
+	return load_properties(REPO_DIR / "gradle.properties")["mod.version"]
+
+
 REPO_DIR = Path(__file__).parent.parent
-RELEASE_HEADER = re.compile(r"## (?P<VERSION>[\d.\w-]+) - [\d]{4}-[\d]{1,2}-[\d]{1,2}")
+RELEASE_HEADER = re.compile(r"## (?P<VERSION>[\d.\w-]+|Unreleased)(?: - [\d]{4}-[\d]{1,2}-[\d]{1,2})?")
 releases = defaultdict(lambda: "")
 
 with open(REPO_DIR / "CHANGELOG.md") as f:
@@ -31,10 +38,13 @@ with open(REPO_DIR / "CHANGELOG.md") as f:
 		if current is not None:
 			releases[current] += line
 
+
 HEADER = re.compile(r"^#(#+)", flags=re.MULTILINE)
-properties = load_properties(REPO_DIR / "gradle.properties")
+ISSUE_LINK = re.compile(r"GH-(\d+)")
 
 with open("CHANGELOG.mini", mode="w") as f:
-	notes = releases[properties["mod.version"]].strip()
+	current = current_mod_version()
+	notes = releases[current].strip()
 	notes = HEADER.sub(r"\1", notes)
+	notes = ISSUE_LINK.sub(r"[#\1](https://github.com/nobaboy/NobaAddons/issues/\1)", notes)
 	f.write(notes)

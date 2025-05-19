@@ -50,3 +50,4 @@ replay_*.log
 # release process
 
 CHANGELOG.mini
+.venv/

@@ -30,7 +30,7 @@ def parse_version(version: str) -> int:
 
 
 versions = "\n".join(
-	f"- [{x}](<https://modrinth.com/mod/nobaaddons/version/{VERSION}+{x}>)"
+	f"- [{x}](https://modrinth.com/mod/nobaaddons/version/{VERSION}+{x})"
 	for x in reversed(sorted(mc_versions, key=parse_version))
 )
 
@@ -90,7 +90,8 @@ for page in pagify(message):
 		f"{WEBHOOK}?wait=true",
 		json={
 			"content": page,
-			"allowed_mentions": {"parse": []}
+			"allowed_mentions": {"parse": []},
+			"flags": 4,
 		},
 		headers={"Content-Type": "application/json"},
 	)

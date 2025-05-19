@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+
+### Added
+
+- `/noba ping`, `/noba tps`, and their associated party chat commands (GH-143) - nobaboy
+- Optional top-level aliases for certain commands (GH-153) - celeste
+- Commands to join instanced islands like `/m7` (GH-153) - celeste
+
+### Changed
+
+- `/noba calculate tax` can now also account for auction list time fees (GH-145) - celeste
+- `/noba lockmouse` now also accepts `mouselock` as an alias (GH-156) - j10a1n15
+- Add an internal utility to store arbitrary data on an entity (GH-151) - celeste
+- Reworked how the mod initializes its features (GH-147, GH-157) - celeste, meowora
+
+### Fixed
+
+- Fixed an error when sending an empty command (GH-148) - nobaboy
+
+### Removed
+
+- Removed the alpha slider from slayer boss highlight color settings (GH-152) - nobaboy
+  - Note that the alpha slider value has already been ignored since Beta 2; this simply brings the config UI
+    back in line with how this actually works.
+- Support for 1.21.1 has been dropped (GH-151) - celeste
+  - This is necessary due to the previously mentioned internal entity data changes
+
 ## 1.0.0-Beta.2.1 - 2025-05-04
 
 ### Changed
