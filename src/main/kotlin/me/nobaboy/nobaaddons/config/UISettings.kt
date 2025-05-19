@@ -14,6 +14,7 @@ object UISettings : Histoire(NobaAddons.CONFIG_DIR.resolve("ui.json").toFile()) 
 		saveOnExit()
 	}
 
-	@Object val itemPickupLog = GenericTextElement()
 	@Object val catchTimer = GenericTextElement(position = ElementPosition(x = 0.48, y = 0.55, scale = 2f))
+	@Object val itemPickupLog = GenericTextElement()
+	@Object val minibossTimers = GenericTextElement()
 }
