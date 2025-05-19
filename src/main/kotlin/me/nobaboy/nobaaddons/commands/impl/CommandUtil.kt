@@ -5,30 +5,31 @@ import com.mojang.brigadier.context.CommandContext
 import dev.celestialfault.commander.ArgumentHandler
 import dev.celestialfault.commander.Commander
 import dev.celestialfault.commander.ICommand
+import dev.celestialfault.commander.annotations.ExperimentalCommanderApi
+import dev.celestialfault.commander.types.brigadier.EnumArgumentTypeImpl
 import me.nobaboy.nobaaddons.commands.adapters.*
 import me.nobaboy.nobaaddons.core.DebugFlag
 import me.nobaboy.nobaaddons.core.Skill
 import me.nobaboy.nobaaddons.ui.ElementAlignment
-import me.nobaboy.nobaaddons.utils.JavaUtils
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandSource
 import net.minecraft.command.argument.NbtPathArgumentType
 import net.minecraft.command.argument.TextArgumentType
-import kotlin.reflect.KParameter
 
 typealias Context = CommandContext<FabricClientCommandSource>
 
 object CommandUtil {
 	private val commands: MutableList<ICommand<FabricClientCommandSource>> = mutableListOf()
 
+	@OptIn(ExperimentalCommanderApi::class)
 	val commander = Commander<FabricClientCommandSource>().apply {
 		addHandler(FormattingHandler)
 		addHandler(NbtPathArgumentType.nbtPath())
 		addHandler(RarityHandler)
-		addHandler(JavaUtils.enumArgument(ElementAlignment::class.java))
-		addHandler(JavaUtils.enumArgument(Skill::class.java))
-		addHandler(JavaUtils.enumArgument(DebugFlag::class.java))
+		addHandler(EnumArgumentTypeImpl(ElementAlignment::class.java))
+		addHandler(EnumArgumentTypeImpl(Skill::class.java))
+		addHandler(EnumArgumentTypeImpl(DebugFlag::class.java))
 	}
 
 	init {
@@ -46,15 +47,8 @@ object CommandUtil {
 		commands.add(command)
 	}
 
-	inline fun <reified T : Any, S : CommandSource> Commander<S>.addHandler(handler: ArgumentHandler<T, S>) {
-		addHandler(T::class, handler)
-	}
-
-	inline fun <reified T : Any, S : CommandSource> Commander<S>.addHandler(handler: ArgumentType<T>) {
-		addHandler(object : ArgumentHandler<T, S> {
-			override fun argument(parameter: KParameter): ArgumentType<T> = handler
-			override fun parse(ctx: CommandContext<S>, name: String): T = ctx.getArgument(name)
-		})
+	inline fun <reified T : Any, S : CommandSource> Commander<S>.addHandler(type: ArgumentType<T>) {
+		addHandler(ArgumentHandler.of(type))
 	}
 
 	inline fun <reified T> CommandContext<*>.getArgument(name: String): T = getArgument(name, T::class.java)
