@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.features.chat.filters.ability.AbilityChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.BlessingChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.HealerOrbChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.dungeons.PickupObtainChatFilter
+import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.AutoPetChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.ProfileInfoChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.miscellaneous.TipMessagesChatFilter
 import me.nobaboy.nobaaddons.features.chat.filters.mobs.SeaCreatureCatchMessageChatFilter
@@ -34,6 +35,7 @@ interface IChatFilter {
 			HealerOrbChatFilter,
 			PickupObtainChatFilter,
 			// Miscellaneous
+			AutoPetChatFilter,
 			ProfileInfoChatFilter,
 			TipMessagesChatFilter,
 		)

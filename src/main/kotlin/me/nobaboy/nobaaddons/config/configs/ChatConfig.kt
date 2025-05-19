@@ -37,6 +37,7 @@ class ChatConfig {
 
 		var hideProfileInfo = false
 		var hideTipMessages = false
+		var hideAutopetMessages = false
 	}
 
 	class ChatCommands {

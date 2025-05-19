@@ -29,7 +29,7 @@ object PetAPI {
 	private val PET_NAME_REGEX by Regex("^(?<favorite>⭐ )?\\[Lvl (?<level>\\d+)] (?:\\[\\d+✦] )?(?<name>[A-z- ]+)(?: ✦|\$)").fromRepo("pets.name")
 
 	// TODO cache autopet rule pets to allow for getting complete data
-	private val AUTOPET_REGEX by Regex(
+	val AUTOPET_REGEX by Regex(
 		"^§cAutopet §eequipped your §7\\[Lvl (?<level>\\d+)] (?:§.\\[.*] )?§(?<rarity>.)(?<name>[A-z ]+)(?:§. ✦)?§e! §a§lVIEW RULE"
 	).fromRepo("pets.autopet")
 
