@@ -30,9 +30,10 @@ object PingUtils {
 	private var previousTime = 0L
 
 	init {
+		WorldEvents.LOAD.register { reset() }
 		WorldEvents.TIME_UPDATE.register(this::onWorldTimeUpdate)
 		PacketEvents.POST_RECEIVE.register(this::onPacketReceive)
-		Scheduler.schedule(10 * 20, repeat = true) { sendPingPacket() }
+		Scheduler.schedule(5 * 20, repeat = true) { sendPingPacket() }
 	}
 
 	private fun onPacketReceive(event: PacketEvents.Receive) {
@@ -77,5 +78,12 @@ object PingUtils {
 			pingCallbacks.add(callback)
 		}
 		sendPingPacket()
+	}
+
+	private fun reset() {
+		ping = 0
+		currentTps = 20.0
+		tickRates.clear()
+		previousTime = 0L
 	}
 }
