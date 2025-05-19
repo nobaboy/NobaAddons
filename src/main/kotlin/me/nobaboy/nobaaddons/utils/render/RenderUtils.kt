@@ -19,6 +19,7 @@ import me.nobaboy.nobaaddons.mixins.accessors.BeaconBlockEntityRendererInvoker
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
+import me.nobaboy.nobaaddons.utils.NobaVec.Companion.toBox
 import me.nobaboy.nobaaddons.utils.StringUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.expand
@@ -27,6 +28,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.LightmapTextureManager
+import net.minecraft.client.render.RenderLayer
+import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.text.Text
 import net.minecraft.util.math.Box
@@ -188,11 +191,17 @@ object RenderUtils {
 		TitleManager.draw(text.toText(), color, scale, offset, duration, id, subtext)
 	}
 
-	fun Box.expandBlock(n: Int = 1) = expand(NobaVec.expandVector * n)
-	fun Box.shrinkBlock(n: Int = 1) = expand(NobaVec.expandVector * -n)
+	// WORLD SPACE RENDERING
 
-	fun renderWaypoint(
-		context: WorldRenderContext,
+	private fun WorldRenderContext.getBuffer(layer: RenderLayer): VertexConsumer? {
+		val consumers = consumers() as? VertexConsumerProvider.Immediate ?: return null
+		return consumers.getBuffer(layer)
+	}
+
+	private fun Box.expand(n: Int = 1): Box = expand(NobaVec.expandVector * n)
+	private fun Box.shrink(n: Int = 1): Box = expand(NobaVec.expandVector * -n)
+
+	fun WorldRenderContext.renderWaypoint(
 		location: NobaVec,
 		color: NobaColor,
 		extraSize: Double = 0.0,
@@ -201,12 +210,11 @@ object RenderUtils {
 		beaconThreshold: Double = 5.0,
 		throughBlocks: Boolean = false,
 	) {
-		renderBeaconBeam(context, location.raise(), color, beaconThreshold)
-		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderBeacon(location, color, beaconThreshold)
+		renderFilled(location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
-	fun renderOutlinedFilledBox(
-		context: WorldRenderContext,
+	fun WorldRenderContext.renderFullBox(
 		location: NobaVec,
 		color: NobaColor,
 		lineWidth: Float = 3f,
@@ -215,27 +223,37 @@ object RenderUtils {
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false,
 	) {
-		renderOutline(context, location, color, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-		renderFilledBox(context, location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderOutline(location, color, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderFilled(location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
-	fun renderBeaconBeam(
-		context: WorldRenderContext,
+	fun WorldRenderContext.renderFullBox(
+		bounds: Pair<NobaVec, NobaVec>,
+		color: NobaColor,
+		alpha: Float = 0.5f,
+		lineWidth: Float = 3f,
+		throughBlocks: Boolean = false,
+	) {
+		renderOutline(bounds, color, alpha, lineWidth, throughBlocks)
+		renderFilled(bounds, color, alpha, throughBlocks)
+	}
+
+	fun WorldRenderContext.renderBeacon(
 		location: NobaVec,
 		color: NobaColor,
 		hideThreshold: Double = 5.0,
 	) {
 		if(!FrustumUtils.isVisible(location, toWorldHeight = true)) return
 
-		val matrices = context.matrixStack() ?: return
-		val cameraPos = context.camera().pos.toNobaVec()
+		val matrices = matrixStack() ?: return
+		val cameraPos = camera().pos.toNobaVec()
 
 		val dist = location.distance(cameraPos, center = true)
 		if(dist <= hideThreshold) return
 
 		//? if >=1.21.5 {
 		/*val horizontalDist = location.distanceIgnoreY(cameraPos, center = true)
-		val scale = max(1f, horizontalDist.toFloat() / 96f)
+		val scale = max(1.0, horizontalDist / 96).toFloat()
 		*///?}
 
 		val x = location.x - cameraPos.x
@@ -247,14 +265,14 @@ object RenderUtils {
 
 		BeaconBlockEntityRendererInvoker.invokeRenderBeam(
 			matrices,
-			context.consumers(),
+			consumers(),
 			//? if >=1.21.5 {
-			/*context.tickCounter().getTickProgress(true),
+			/*tickCounter().getTickProgress(true),
 			scale,
 			*///?} else {
-			context.tickCounter().getTickDelta(true),
+			tickCounter().getTickDelta(true),
 			//?}
-			context.world().time,
+			world().time,
 			0,
 			2048,
 			color.rgb
@@ -263,56 +281,8 @@ object RenderUtils {
 		matrices.pop()
 	}
 
-	fun renderFilledBox(
-		context: WorldRenderContext,
-		location: NobaVec,
-		color: NobaColor,
-		extraSize: Double = 0.0,
-		extraSizeTopY: Double = extraSize,
-		extraSizeBottomY: Double = extraSize,
-		throughBlocks: Boolean = false,
-	) {
-		if(!FrustumUtils.isVisible(location)) return
-
-		val matrices = context.matrixStack() ?: return
-		val consumers = context.consumers() as? VertexConsumerProvider.Immediate ?: return
-
-		val layer = if(throughBlocks) NobaRenderLayers.FILLED_THROUGH_BLOCKS else NobaRenderLayers.FILLED
-		val buffer = consumers.getBuffer(layer)
-
-		val cameraPos = context.camera().pos.toNobaVec()
-
-		val red = color.red / 255f
-		val green = color.green / 255f
-		val blue = color.blue / 255f
-
-		val distSq = location.distanceSq(cameraPos, center = true)
-		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.3f, 0.7f)
-
-		val box = Box(
-			location.x - extraSize, location.y - extraSizeBottomY, location.z - extraSize,
-			location.x + 1 + extraSize, location.y + 1 + extraSizeTopY, location.z + 1 + extraSize
-		).expandBlock()
-
-		matrices.push()
-		matrices.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z)
-
-		//? if >=1.21.2 {
-		VertexRendering.drawFilledBox(
-		//?} else {
-		/*WorldRenderer.renderFilledBox(
-		*///?}
-			matrices, buffer,
-			box.minX, box.minY, box.minZ,
-			box.maxX, box.maxY, box.maxZ,
-			red, green, blue, alpha
-		)
-
-		matrices.pop()
-	}
-
-	fun renderOutline(
-		context: WorldRenderContext,
+	// TODO allow for persistent alpha
+	fun WorldRenderContext.renderOutline(
 		location: NobaVec,
 		color: NobaColor,
 		lineWidth: Float = 3f,
@@ -323,25 +293,47 @@ object RenderUtils {
 	) {
 		if(!FrustumUtils.isVisible(location)) return
 
-		val matrices = context.matrixStack() ?: return
-		val consumers = context.consumers() as? VertexConsumerProvider.Immediate ?: return
-
-		val layer = if(throughBlocks) NobaRenderLayers.getLinesThroughWalls(lineWidth) else NobaRenderLayers.getLines(lineWidth)
-		val buffer = consumers.getBuffer(layer)
-
-		val cameraPos = context.camera().pos.toNobaVec()
-
-		val red = color.red / 255f
-		val green = color.green / 255f
-		val blue = color.blue / 255f
-
-		val distSq = location.distanceSq(cameraPos, center = true)
-		val alpha = (0.1f + 0.005f * distSq.toFloat()).coerceIn(0.7f, 1f)
-
 		val box = Box(
 			location.x - extraSize, location.y - extraSizeBottomY, location.z - extraSize,
-			location.x + 1 + extraSize, location.y + 1 + extraSizeTopY, location.z + 1 + extraSize
-		).expandBlock()
+			location.x + extraSize + 1, location.y + extraSizeTopY + 1, location.z + extraSize + 1
+		)
+
+		val cameraPos = camera().pos.toNobaVec()
+		val distSq = location.distanceSq(cameraPos, center = true)
+		val alpha = (0.1f + 0.005f * distSq).coerceIn(0.7, 1.0).toFloat()
+
+		renderOutline(this, box, color, alpha, lineWidth, throughBlocks)
+	}
+
+	fun WorldRenderContext.renderOutline(
+		bounds: Pair<NobaVec, NobaVec>,
+		color: NobaColor,
+		alpha: Float = 1f,
+		lineWidth: Float = 3f,
+		throughBlocks: Boolean = false,
+	) {
+		if(!FrustumUtils.isVisible(bounds)) return
+
+		val box = bounds.toBox().expand()
+		renderOutline(this, box, color, alpha, lineWidth, throughBlocks)
+	}
+
+	// TODO should this be an extension of WorldRenderContext?
+	private fun renderOutline(
+		context: WorldRenderContext,
+		box: Box,
+		color: NobaColor,
+		alpha: Float,
+		lineWidth: Float,
+		throughBlocks: Boolean,
+	) {
+		val matrices = context.matrixStack() ?: return
+
+		val layer = if(throughBlocks) NobaRenderLayers.getLinesThroughWalls(lineWidth) else NobaRenderLayers.getLines(lineWidth)
+		val buffer = context.getBuffer(layer) ?: return
+
+		val cameraPos = context.camera().pos.toNobaVec()
+		val (red, green, blue) = color.normalized
 
 		matrices.push()
 		matrices.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z)
@@ -360,8 +352,75 @@ object RenderUtils {
 		matrices.pop()
 	}
 
-	fun renderText(
+	// TODO allow for persistent alpha
+	fun WorldRenderContext.renderFilled(
+		location: NobaVec,
+		color: NobaColor,
+		extraSize: Double = 0.0,
+		extraSizeTopY: Double = extraSize,
+		extraSizeBottomY: Double = extraSize,
+		throughBlocks: Boolean = false,
+	) {
+		if(!FrustumUtils.isVisible(location)) return
+
+		val box = Box(
+			location.x - extraSize, location.y - extraSizeBottomY, location.z - extraSize,
+			location.x + extraSize + 1, location.y + extraSizeTopY + 1, location.z + extraSize + 1
+		)
+
+		val cameraPos = camera().pos.toNobaVec()
+		val distSq = location.distanceSq(cameraPos, center = true)
+		val alpha = (0.1f + 0.005f * distSq).coerceIn(0.3, 0.7).toFloat()
+
+		renderFilled(this, box, color, alpha, throughBlocks)
+	}
+
+	fun WorldRenderContext.renderFilled(
+		bounds: Pair<NobaVec, NobaVec>,
+		color: NobaColor,
+		alpha: Float = 1f,
+		throughBlocks: Boolean = false,
+	) {
+		if(!FrustumUtils.isVisible(bounds)) return
+
+		val box = bounds.toBox().expand()
+		renderFilled(this, box, color, alpha, throughBlocks)
+	}
+
+	// TODO should this be an extension of WorldRenderContext?
+	private fun renderFilled(
 		context: WorldRenderContext,
+		box: Box,
+		color: NobaColor,
+		alpha: Float,
+		throughBlocks: Boolean,
+	) {
+		val matrices = context.matrixStack() ?: return
+
+		val layer = if(throughBlocks) NobaRenderLayers.FILLED_THROUGH_BLOCKS else NobaRenderLayers.FILLED
+		val buffer = context.getBuffer(layer)
+
+		val cameraPos = context.camera().pos.toNobaVec()
+		val (red, green, blue) = color.normalized
+
+		matrices.push()
+		matrices.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z)
+
+		//? if >=1.21.2 {
+		VertexRendering.drawFilledBox(
+		//?} else {
+		/*WorldRenderer.renderFilledBox(
+		*///?}
+			matrices, buffer,
+			box.minX, box.minY, box.minZ,
+			box.maxX, box.maxY, box.maxZ,
+			red, green, blue, alpha
+		)
+
+		matrices.pop()
+	}
+
+	fun WorldRenderContext.renderText(
 		location: NobaVec,
 		text: Text,
 		color: NobaColor = NobaColor.WHITE,
@@ -374,9 +433,9 @@ object RenderUtils {
 		if(!FrustumUtils.isVisible(location)) return
 
 		val positionMatrix = Matrix4f()
-		val consumers = context.consumers() as? VertexConsumerProvider.Immediate ?: return
+		val consumers = consumers() as? VertexConsumerProvider.Immediate ?: return
 
-		val camera = context.camera()
+		val camera = camera()
 		val cameraPos = camera.pos.toNobaVec()
 
 		val dist = location.distance(cameraPos)
@@ -424,8 +483,7 @@ object RenderUtils {
 		//?}
 	}
 
-	fun renderText(
-		context: WorldRenderContext,
+	fun WorldRenderContext.renderText(
 		location: NobaVec,
 		text: String,
 		color: NobaColor = NobaColor.WHITE,
@@ -435,7 +493,7 @@ object RenderUtils {
 		hideThreshold: Double = 0.0,
 		throughBlocks: Boolean = false,
 	) {
-		renderText(context, location, text.toText(), color, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
+		renderText(location, text.toText(), color, shadow, yOffset, scaleMultiplier, hideThreshold, throughBlocks)
 	}
 
 	/**

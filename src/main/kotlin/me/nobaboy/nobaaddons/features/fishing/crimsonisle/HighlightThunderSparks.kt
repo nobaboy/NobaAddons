@@ -10,7 +10,9 @@ import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockStateAt
 import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderFullBox
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderText
+import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
@@ -28,7 +30,7 @@ object HighlightThunderSparks {
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { thunderSparks.clear() }
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::onWorldRender)
 	}
 
 	private fun onEntityRender(event: EntityEvents.Render) {
@@ -41,30 +43,32 @@ object HighlightThunderSparks {
 		thunderSparks.add(entity)
 	}
 
-	private fun renderHighlights(context: WorldRenderContext) {
+	private fun onWorldRender(context: WorldRenderContext) {
 		if(!enabled) return
 
 		thunderSparks.removeIf { !it.isAlive }
+
 		thunderSparks.forEach {
-			val vec = it.getNobaVec()
-			val distance = vec.distanceToPlayer()
-			val block = vec.roundToBlock().add(y = 1).getBlockStateAt()
+			val location = it.getNobaVec()
+			val distance = location.distanceToPlayer()
+			val block = location.roundToBlock().raise().getBlockStateAt()
 
-			val throughBlocks = distance < 6 && block.fluidState != null && block.fluidState.fluid is LavaFluid
+			val throughBlocks = distance < 6 && block.fluidState?.fluid is LavaFluid
 
-			RenderUtils.renderOutlinedFilledBox(
-				context,
-				vec.add(x = -0.5, z = -0.5),
+			context.renderFullBox(
+				location.add(x = -0.5, z = -0.5),
 				config.highlightColor,
 				extraSize = -0.25,
 				throughBlocks = throughBlocks
 			)
-			if(config.showText && distance < 10) RenderUtils.renderText(
-				context,
-				vec.raise(1.25),
-				"Thunder Spark",
-				throughBlocks = throughBlocks
-			)
+
+			if(config.showText && distance < 10) {
+				context.renderText(
+					location.raise(1.25),
+					tr("nobaaddons.fishing.thunderSpark", "Thunder Spark"),
+					throughBlocks = throughBlocks
+				)
+			}
 		}
 	}
 }

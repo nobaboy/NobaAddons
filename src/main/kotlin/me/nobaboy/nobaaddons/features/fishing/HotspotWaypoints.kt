@@ -19,7 +19,8 @@ import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils.clickAction
 import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderBeacon
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderText
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
@@ -39,7 +40,7 @@ object HotspotWaypoints {
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { hotspots.clear() }
 		EntityEvents.POST_RENDER.register(this::onEntityRender)
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::onWorldRender)
 	}
 
 	private fun onEntityRender(event: EntityEvents.Render) {
@@ -63,15 +64,15 @@ object HotspotWaypoints {
 		hotspots.add(hotspot)
 	}
 
-	private fun renderWaypoints(context: WorldRenderContext) {
+	private fun onWorldRender(context: WorldRenderContext) {
 		if(!enabled) return
 
 		hotspots.removeIf { !it.armorStand.isAlive }
 		hotspots.forEach {
 			val time = it.remainingTime.ifEmpty { "Soon" }
 
-			RenderUtils.renderBeaconBeam(context, it.location, it.stat.color)
-			RenderUtils.renderText(context, it.location.center().raise(1.5), time, throughBlocks = true)
+			context.renderBeacon(it.location, it.stat.color)
+			context.renderText(it.location.center().raise(1.5), time, throughBlocks = true)
 		}
 	}
 

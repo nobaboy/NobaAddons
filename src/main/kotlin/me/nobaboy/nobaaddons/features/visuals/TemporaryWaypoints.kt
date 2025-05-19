@@ -14,7 +14,8 @@ import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderText
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderWaypoint
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module
@@ -72,9 +73,8 @@ object TemporaryWaypoints {
 			val distance = location.distanceToPlayer()
 			val formattedDistance = distance.toInt().addSeparators()
 
-			RenderUtils.renderWaypoint(context, location, color, throughBlocks = true)
-			RenderUtils.renderText(
-				context,
+			context.renderWaypoint(location, color, throughBlocks = true)
+			context.renderText(
 				adjustedLocation,
 				waypoint.text,
 				color = color,
@@ -82,8 +82,7 @@ object TemporaryWaypoints {
 				hideThreshold = 5.0,
 				throughBlocks = true
 			)
-			RenderUtils.renderText(
-				context,
+			context.renderText(
 				adjustedLocation,
 				"${formattedDistance}m",
 				color = NobaColor.GRAY,

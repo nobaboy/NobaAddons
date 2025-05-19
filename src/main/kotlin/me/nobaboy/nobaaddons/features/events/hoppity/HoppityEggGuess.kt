@@ -15,7 +15,8 @@ import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.math.ParticlePathFitter
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderText
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderWaypoint
 import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
@@ -38,7 +39,7 @@ object HoppityEggGuess {
 		ParticleEvents.PARTICLE.register(this::onParticle)
 		ItemUseEvent.EVENT.register(this::onItemUse)
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::onWorldRender)
 	}
 
 	private fun onParticle(event: ParticleEvents.Particle) {
@@ -69,24 +70,22 @@ object HoppityEggGuess {
 		if(event.cleaned.startsWith("HOPPITY'S HUNT You found a Chocolate")) guessLocation = null
 	}
 
-	private fun renderWaypoints(context: WorldRenderContext) {
+	private fun onWorldRender(context: WorldRenderContext) {
 		if(!enabled) return
 
 		guessLocation?.let {
 			val distance = it.distanceToPlayer()
 			val formattedDistance = distance.toInt().addSeparators()
 
-			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = true)
-			RenderUtils.renderText(
-				context,
+			context.renderWaypoint(it, NobaColor.AQUA, throughBlocks = true)
+			context.renderText(
 				it.center().raise(),
 				tr("nobaaddons.events.hoppity.eggGuessWaypoint", "Egg Guess"),
 				color = NobaColor.AQUA,
 				yOffset = -10f,
 				throughBlocks = true
 			)
-			RenderUtils.renderText(
-				context,
+			context.renderText(
 				it.center().raise(),
 				"${formattedDistance}m",
 				color = NobaColor.GRAY,

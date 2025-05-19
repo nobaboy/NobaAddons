@@ -84,9 +84,6 @@ data class NobaVec(
 
 	fun inverse() = NobaVec(1.0 / x, 1.0 / y, 1.0 / z)
 
-	fun min() = min(x, min(y, z))
-	fun max() = max(x, max(y, z))
-
 	fun minOfEach(other: NobaVec) = NobaVec(min(x, other.x), min(y, other.y), min(z, other.z))
 	fun maxOfEach(other: NobaVec) = NobaVec(max(x, other.x), max(y, other.y), max(z, other.z))
 
@@ -136,6 +133,13 @@ data class NobaVec(
 		fun List<Double>.toNobaVec(): NobaVec {
 			require(size == 3) { "Expected list of 3 elements to convert to NobaVec" }
 			return NobaVec(this[0], this[1], this[2])
+		}
+
+		fun Pair<NobaVec, NobaVec>.toBox(): Box {
+			val (start, end) = this
+			val min = start.minOfEach(end)
+			val max = start.maxOfEach(end)
+			return Box(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1)
 		}
 
 		val expandVector = NobaVec(0.0020000000949949026, 0.0020000000949949026, 0.0020000000949949026)

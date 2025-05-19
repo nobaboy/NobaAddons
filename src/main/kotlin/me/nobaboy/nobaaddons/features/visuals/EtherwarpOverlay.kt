@@ -8,6 +8,7 @@ import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderFullBox
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module
@@ -78,7 +79,7 @@ object EtherwarpOverlay {
 		if(targetBlock == ValidationType.TOO_FAR && !config.allowOverlayOnAir) return
 
 		val color = targetBlock?.let { config.failHighlightColor } ?: config.highlightColor
-		RenderUtils.renderOutlinedFilledBox(context, target.blockPos.toNobaVec(), color, throughBlocks = true)
+		context.renderFullBox(target.blockPos.toNobaVec(), color, throughBlocks = true)
 	}
 
 	private fun validateTargetBlock(world: World, target: BlockHitResult): ValidationType? {

@@ -21,6 +21,9 @@ import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderFullBox
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderOutline
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderText
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
@@ -136,7 +139,7 @@ object VoidgloomSeraphFeatures {
 		if(!currentQuest.spawned || currentQuest.entity == null) return
 
 		if(config.brokenHeartRadiationTimer) brokenHeartRadiation?.takeIf { it.isValid }?.let {
-			RenderUtils.renderText(context, it.entity.getNobaVec().raise(1.5), it.remainingTime, color = NobaColor.GOLD, throughBlocks = true)
+			context.renderText(it.entity.getNobaVec().raise(1.5), it.remainingTime, color = NobaColor.GOLD, throughBlocks = true)
 		} ?: run {
 			brokenHeartRadiation = null
 		}
@@ -147,16 +150,15 @@ object VoidgloomSeraphFeatures {
 			val textLocation = location.center()
 			val seconds = timestamp.timeRemaining().toString(DurationUnit.SECONDS, 1)
 
-			RenderUtils.renderOutlinedFilledBox(context, location, config.yangGlyphHighlightColor, throughBlocks = true)
-			RenderUtils.renderText(
-				context,
+			context.renderFullBox(location, config.yangGlyphHighlightColor, throughBlocks = true)
+			context.renderText(
 				textLocation,
 				tr("nobaaddons.slayers.yangGlyph.name", "Yang Glyph"),
 				color = config.yangGlyphHighlightColor,
 				yOffset = -10f,
 				throughBlocks = true
 			)
-			RenderUtils.renderText(context, textLocation, seconds, NobaColor.WHITE, throughBlocks = true)
+			context.renderText(textLocation, seconds, NobaColor.WHITE, throughBlocks = true)
 		}
 
 		if(config.highlightNukekubiFixations) {
@@ -164,8 +166,7 @@ object VoidgloomSeraphFeatures {
 			nukekubiFixations.forEach { armorStand ->
 				val location = armorStand.pos.toNobaVec()
 				if(location.distanceToPlayer() > 24) return@forEach
-
-				RenderUtils.renderOutline(context, location.add(x = -0.5, y = 0.65, z = -0.5), config.nukekubiFixationHighlightColor, throughBlocks = true)
+				context.renderOutline(location.add(x = -0.5, y = 0.65, z = -0.5), config.nukekubiFixationHighlightColor, throughBlocks = true)
 			}
 		}
 	}
