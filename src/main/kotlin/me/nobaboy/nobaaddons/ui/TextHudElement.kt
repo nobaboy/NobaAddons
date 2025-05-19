@@ -5,7 +5,10 @@ import me.nobaboy.nobaaddons.ui.data.TextElement
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawOutlinedText
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawText
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.getWidth
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.scaled
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import kotlin.math.roundToInt
@@ -61,10 +64,10 @@ abstract class TextHudElement(private val element: TextElement) : HudElement() {
 		val y = (this.y + y + line * (MCUtils.textRenderer.fontHeight + 1) * scale).toInt()
 
 		when(textShadow) {
-			TextShadow.OUTLINE -> RenderUtils.drawOutlinedText(context, text, x, y, scale, NobaColor(color), NobaColor(outlineColor), applyScaling = false)
+			TextShadow.OUTLINE -> context.drawOutlinedText(text, x, y, scale, NobaColor(color), NobaColor(outlineColor), applyScaling = false)
 			TextShadow.NONE, TextShadow.SHADOW -> {
 				val shadow = textShadow == TextShadow.SHADOW
-				RenderUtils.drawText(context, text, x, y, scale, NobaColor(color), shadow, applyScaling = false)
+				context.drawText(text, x, y, scale, NobaColor(color), shadow, applyScaling = false)
 			}
 		}
 	}
@@ -77,7 +80,7 @@ abstract class TextHudElement(private val element: TextElement) : HudElement() {
 	protected abstract fun renderText(context: DrawContext)
 
 	override fun render(context: DrawContext) {
-		RenderUtils.scaled(context, scale) {
+		context.scaled(scale) {
 			renderText(context)
 		}
 	}

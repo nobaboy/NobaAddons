@@ -196,7 +196,13 @@ object BurrowWaypoints {
 		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
 		lastWarpSuggestTime = Timestamp.now()
 
-		RenderUtils.drawTitle(tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2f, 30, 1.seconds)
+		RenderUtils.drawTitle(
+			tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"),
+			color = NobaColor.GRAY,
+			scale = 2f,
+			offset = 30,
+			duration = 1.seconds
+		)
 	}
 
 	private fun getTargetLocation(): NobaVec? = InquisitorWaypoints.inquisitors.firstOrNull()?.location ?: guessLocation

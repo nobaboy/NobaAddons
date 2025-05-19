@@ -44,20 +44,24 @@ object RenderUtils {
 	 * Runs [withScale] with the provided [scale]; this is shorthand for wrapping `withScale` in a try-finally
 	 * using [startScale] and [endScale].
 	 */
-	inline fun scaled(context: DrawContext, scale: Float, withScale: () -> Unit) {
-		startScale(context, scale)
+	inline fun DrawContext.scaled(scale: Float, withScale: () -> Unit) {
+		startScale(scale)
+
 		try {
 			withScale()
 		} finally {
-			endScale(context)
+			endScale()
 		}
 	}
 
-	fun startScale(context: DrawContext, scale: Float) {
-		context.matrices.push()
-		context.matrices.scale(scale, scale, 1f)
+	fun DrawContext.startScale(scale: Float) {
+		matrices.push()
+		matrices.scale(scale, scale, 1f)
 	}
-	fun endScale(context: DrawContext) = context.matrices.pop()
+
+	fun DrawContext.endScale() {
+		matrices.pop()
+	}
 
 	/**
 	 * Returns a lerped alpha for [displayTicks], gradually becoming more transparent the closer it is to 0 from [threshold]
@@ -79,8 +83,7 @@ object RenderUtils {
 	fun Text.getWidth(): Int = MCUtils.textRenderer.getWidth(this)
 	fun String.getWidth(): Int = MCUtils.textRenderer.getWidth(this)
 
-	fun drawText(
-		context: DrawContext,
+	fun DrawContext.drawText(
 		text: Text,
 		x: Int,
 		y: Int,
@@ -89,13 +92,12 @@ object RenderUtils {
 		shadow: Boolean = true,
 		applyScaling: Boolean = true,
 	) {
-		if(applyScaling && scale != 1f) startScale(context, scale)
-		context.drawText(MCUtils.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color.rgb, shadow)
-		if(applyScaling && scale != 1f) endScale(context)
+		if(applyScaling && scale != 1f) startScale(scale)
+		drawText(MCUtils.textRenderer, text, (x / scale).toInt(), (y / scale).toInt(), color.rgb, shadow)
+		if(applyScaling && scale != 1f) endScale()
 	}
 
-	fun drawText(
-		context: DrawContext,
+	fun DrawContext.drawText(
 		text: String,
 		x: Int,
 		y: Int,
@@ -104,11 +106,10 @@ object RenderUtils {
 		shadow: Boolean = true,
 		applyScaling: Boolean = true,
 	) {
-		drawText(context, text.toText(), x, y, scale, color, shadow, applyScaling)
+		drawText(text.toText(), x, y, scale, color, shadow, applyScaling)
 	}
 
-	fun drawOutlinedText(
-		context: DrawContext,
+	fun DrawContext.drawOutlinedText(
 		text: Text,
 		x: Int,
 		y: Int,
@@ -117,25 +118,25 @@ object RenderUtils {
 		outlineColor: NobaColor = NobaColor.BLACK,
 		applyScaling: Boolean = true,
 	) {
-		if(applyScaling) startScale(context, scale)
-		val vertexConsumerProvider = context.let {
-			(it /*? if >=1.21.2 {*/ as DrawContextAccessor/*?}*/).vertexConsumers
-		}
+		if(applyScaling && scale != 1f) startScale(scale)
+
+		val consumers = let { it /*? if >=1.21.2 {*/ as DrawContextAccessor /*?}*/ }.vertexConsumers
+
 		MCUtils.textRenderer.drawWithOutline(
 			text.asOrderedText(),
 			x / scale,
 			y / scale,
 			color.rgb,
 			outlineColor.rgb,
-			context.matrices.peek().positionMatrix,
-			vertexConsumerProvider,
+			matrices.peek().positionMatrix,
+			consumers,
 			15728880
 		)
-		if(applyScaling) endScale(context)
+
+		if(applyScaling && scale != 1f) endScale()
 	}
 
-	fun drawOutlinedText(
-		context: DrawContext,
+	fun DrawContext.drawOutlinedText(
 		text: String,
 		x: Int,
 		y: Int,
@@ -144,59 +145,57 @@ object RenderUtils {
 		outlineColor: NobaColor = NobaColor.BLACK,
 		applyScaling: Boolean = true,
 	) {
-		drawOutlinedText(context, text.toText(), x, y, scale, color, outlineColor, applyScaling)
+		drawOutlinedText(text.toText(), x, y, scale, color, outlineColor, applyScaling)
 	}
 
-	fun drawCenteredText(
-		context: DrawContext,
+	fun DrawContext.drawCenteredText(
 		text: Text,
 		x: Int,
 		y: Int,
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true,
+		applyScaling: Boolean = true
 	) {
 		val width = (text.getWidth() * scale).toInt()
-		drawText(context, text, x - width / 2, y, scale, color, shadow, applyScaling)
+		drawText(text, x - width / 2, y, scale, color, shadow, applyScaling)
 	}
 
-	fun drawCenteredText(
-		context: DrawContext,
+	fun DrawContext.drawCenteredText(
 		text: String,
 		x: Int,
 		y: Int,
 		scale: Float = 1f,
 		color: NobaColor = NobaColor.WHITE,
 		shadow: Boolean = true,
-		applyScaling: Boolean = true,
+		applyScaling: Boolean = true
 	) {
 		val width = (text.getWidth() * scale).toInt()
-		drawText(context, text.toText(), x - width / 2, y, scale, color, shadow, applyScaling)
+		drawText(text.toText(), x - width / 2, y, scale, color, shadow, applyScaling)
 	}
 
 	fun drawTitle(
 		text: Text,
+		subtext: Text? = null,
 		color: NobaColor = NobaColor.WHITE,
 		scale: Float = 4f,
 		offset: Int = 0,
 		duration: Duration = 3.seconds,
 		id: String = StringUtils.randomAlphanumeric(),
-		subtext: Text? = null,
 	) {
-		TitleManager.draw(text, color, scale, offset, duration, id, subtext)
+		TitleManager.draw(text, subtext, color, scale, offset, duration, id)
 	}
 
 	fun drawTitle(
 		text: String,
+		subtext: Text? = null,
 		color: NobaColor = NobaColor.WHITE,
 		scale: Float = 4f,
 		offset: Int = 0,
 		duration: Duration = 3.seconds,
 		id: String = StringUtils.randomAlphanumeric(),
-		subtext: Text? = null,
 	) {
-		TitleManager.draw(text.toText(), color, scale, offset, duration, id, subtext)
+		TitleManager.draw(text.toText(), subtext, color, scale, offset, duration, id)
 	}
 
 	// WORLD SPACE RENDERING
@@ -310,7 +309,7 @@ object RenderUtils {
 		val distSq = location.distanceSq(cameraPos, center = true)
 		val alpha = (0.1f + 0.005f * distSq).coerceIn(0.7, 1.0).toFloat()
 
-		renderOutline(this, box, color, alpha, lineWidth, throughBlocks)
+		renderOutline(box, color, alpha, lineWidth, throughBlocks)
 	}
 
 	fun WorldRenderContext.renderOutline(
@@ -323,24 +322,23 @@ object RenderUtils {
 		if(!FrustumUtils.isVisible(bounds)) return
 
 		val box = bounds.toBox().expand()
-		renderOutline(this, box, color, alpha, lineWidth, throughBlocks)
+		renderOutline(box, color, alpha, lineWidth, throughBlocks)
 	}
 
 	// TODO should this be an extension of WorldRenderContext?
-	private fun renderOutline(
-		context: WorldRenderContext,
+	private fun WorldRenderContext.renderOutline(
 		box: Box,
 		color: NobaColor,
 		alpha: Float,
 		lineWidth: Float,
 		throughBlocks: Boolean,
 	) {
-		val matrices = context.matrixStack() ?: return
+		val matrices = matrixStack() ?: return
 
 		val layer = if(throughBlocks) NobaRenderLayers.getLinesThroughWalls(lineWidth) else NobaRenderLayers.getLines(lineWidth)
-		val buffer = context.getBuffer(layer) ?: return
+		val buffer = getBuffer(layer) ?: return
 
-		val cameraPos = context.camera().pos.toNobaVec()
+		val cameraPos = camera().pos.toNobaVec()
 		val (red, green, blue) = color.normalized
 
 		matrices.push()
@@ -380,7 +378,7 @@ object RenderUtils {
 		val distSq = location.distanceSq(cameraPos, center = true)
 		val alpha = (0.1f + 0.005f * distSq).coerceIn(0.3, 0.7).toFloat()
 
-		renderFilled(this, box, color, alpha, throughBlocks)
+		renderFilled(box, color, alpha, throughBlocks)
 	}
 
 	fun WorldRenderContext.renderFilled(
@@ -392,25 +390,24 @@ object RenderUtils {
 		if(!FrustumUtils.isVisible(bounds)) return
 
 		val box = bounds.toBox().expand()
-		renderFilled(this, box, color, alpha, throughBlocks)
+		renderFilled(box, color, alpha, throughBlocks)
 	}
 
 	// TODO should this be an extension of WorldRenderContext?
 	// TODO blocks inside the Box will not be visible if it's rendered through blocks (or will blend in), so change
 	//      this to instead render the sides of the Box
-	private fun renderFilled(
-		context: WorldRenderContext,
+	private fun WorldRenderContext.renderFilled(
 		box: Box,
 		color: NobaColor,
 		alpha: Float,
 		throughBlocks: Boolean,
 	) {
-		val matrices = context.matrixStack() ?: return
+		val matrices = matrixStack() ?: return
 
 		val layer = if(throughBlocks) NobaRenderLayers.FILLED_THROUGH_BLOCKS else NobaRenderLayers.FILLED
-		val buffer = context.getBuffer(layer)
+		val buffer = getBuffer(layer)
 
-		val cameraPos = context.camera().pos.toNobaVec()
+		val cameraPos = camera().pos.toNobaVec()
 		val (red, green, blue) = color.normalized
 
 		matrices.push()

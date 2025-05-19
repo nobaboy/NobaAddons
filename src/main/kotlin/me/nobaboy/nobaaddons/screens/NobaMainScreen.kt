@@ -8,7 +8,7 @@ import me.nobaboy.nobaaddons.screens.notifications.ChatNotificationsScreen
 import me.nobaboy.nobaaddons.utils.CommonText
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCenteredText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ConfirmLinkScreen
@@ -74,8 +74,8 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 
 		val centerX = MCUtils.window.scaledWidth / 2
 
-		RenderUtils.drawCenteredText(context, TITLE_TEXT, centerX, height / 6 - 10, 4f, NobaColor.BLUE, true)
-		RenderUtils.drawCenteredText(context, VERSION_TEXT, centerX, height / 6 + 25, 1.5f, NobaColor.WHITE, true)
+		context.drawCenteredText(TITLE_TEXT, centerX, height / 6 - 10, scale = 4f, color = NobaColor.BLUE)
+		context.drawCenteredText(VERSION_TEXT, centerX, height / 6 + 25, scale = 1.5f)
 	}
 
 	override fun close() {

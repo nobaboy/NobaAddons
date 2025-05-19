@@ -33,7 +33,7 @@ object MiniBossFeatures {
 		if(lastAlert.elapsedSince() < 1.seconds) return
 		if(event.id != EXPLODE || event.volume != 0.6f || event.pitch != 9 / 7f) return
 
-		RenderUtils.drawTitle(tr("nobaaddons.slayers.miniBossAlert.spawned", "MiniBoss Spawned!"), config.miniBossAlert.alertColor, duration = 1.5.seconds, id = "slayer_alert")
+		RenderUtils.drawTitle(tr("nobaaddons.slayers.miniBossAlert.spawned", "MiniBoss Spawned!"), color = config.miniBossAlert.alertColor, duration = 1.5.seconds, id = "slayer_alert")
 		SoundUtils.dingLowSound.play()
 		lastAlert = Timestamp.now()
 	}

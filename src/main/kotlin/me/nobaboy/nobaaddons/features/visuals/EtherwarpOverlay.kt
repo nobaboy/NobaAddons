@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.utils.LocationUtils.rayCast
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.asSkyBlockItem
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCenteredText
 import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderFullBox
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
@@ -39,7 +39,7 @@ object EtherwarpOverlay {
 	private fun renderFailText(context: DrawContext) {
 		targetBlock.takeIf { config.showFailText }?.let {
 			val (x, y) = MCUtils.window.let { it.scaledWidth / 2 to it.scaledHeight / 2 + 10 }
-			RenderUtils.drawCenteredText(context, it.displayName, x, y, color = NobaColor.RED)
+			context.drawCenteredText(it.displayName, x, y, color = NobaColor.RED)
 		}
 	}
 

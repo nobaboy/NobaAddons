@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.events.impl.render.ScreenRenderEvents
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.items.*
 import me.nobaboy.nobaaddons.features.inventory.slotinfo.uielements.*
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawText
 import me.owdding.ktmodules.Module
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
@@ -86,7 +86,7 @@ interface ISlotInfo {
 				Position.BOTTOM_RIGHT -> context.matrices.translate(16f - width + 1f, textRenderer.fontHeight.toFloat(), 200f)
 			}
 
-			RenderUtils.drawText(context, text, x, y, scale)
+			context.drawText(text, x, y, scale)
 			context.matrices.pop()
 		}
 

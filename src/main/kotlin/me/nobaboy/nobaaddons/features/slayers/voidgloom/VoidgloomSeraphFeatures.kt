@@ -124,7 +124,7 @@ object VoidgloomSeraphFeatures {
 				yangGlyphs[location] = Timestamp.now() + 5.seconds
 
 				if(config.yangGlyphAlert) {
-					RenderUtils.drawTitle(tr("nobaaddons.slayers.yangGlyph.placed", "Yang Glyph!"), config.yangGlyphAlertColor, duration = 1.5.seconds)
+					RenderUtils.drawTitle(tr("nobaaddons.slayers.yangGlyph.placed", "Yang Glyph!"), color = config.yangGlyphAlertColor, duration = 1.5.seconds)
 					SoundUtils.plingSound.play()
 				}
 			}

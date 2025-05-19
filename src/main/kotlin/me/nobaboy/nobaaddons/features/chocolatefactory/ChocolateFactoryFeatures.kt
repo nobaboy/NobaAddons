@@ -41,7 +41,7 @@ object ChocolateFactoryFeatures {
 		if(event.itemInHand.skyBlockId != HoppityAPI.LOCATOR) return
 		if(hasMythicRabbitSpawned) return
 
-		RenderUtils.drawTitle(tr("nobaaddons.chocolateFactory.spawnMythicRabbit", "Spawn Mythic Rabbit!"), NobaColor.RED)
+		RenderUtils.drawTitle(tr("nobaaddons.chocolateFactory.spawnMythicRabbit", "Spawn Mythic Rabbit!"), color = NobaColor.RED)
 	}
 
 	private fun onSendCommand(event: SendMessageEvents.SendCommand) {

@@ -51,7 +51,7 @@ object ChatNotifications {
 
 			if(display == null) display = it.colorFormattedDisplay
 			SoundUtils.dingHighSound.play()
-			RenderUtils.drawTitle(display, NobaColor.WHITE, 2.75f, duration = 2.seconds, id = "chat_notification")
+			RenderUtils.drawTitle(display, color = NobaColor.WHITE, scale = 2.75f, duration = 2.seconds, id = "chat_notification")
 			return
 		}
 	}

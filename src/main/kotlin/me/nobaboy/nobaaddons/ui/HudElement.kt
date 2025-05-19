@@ -6,6 +6,7 @@ import me.nobaboy.nobaaddons.ui.data.ElementPosition
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCenteredText
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import kotlin.math.roundToInt
@@ -173,12 +174,7 @@ abstract class HudElement {
 	 * Display example text in the UI; the default implementation of this method simply renders [name].
 	 */
 	protected open fun renderExampleText(context: DrawContext, bounds: ElementBounds, yOffset: Int) {
-		RenderUtils.drawCenteredText(
-			context,
-			name,
-			bounds.x + bounds.width / 2,
-			bounds.y + bounds.height / 2 - 4 - yOffset
-		)
+		context.drawCenteredText(name, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2 - 4 - yOffset)
 	}
 
 	/**
