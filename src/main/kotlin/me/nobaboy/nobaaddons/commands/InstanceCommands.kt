@@ -1,15 +1,20 @@
 package me.nobaboy.nobaaddons.commands
 
 import com.mojang.brigadier.CommandDispatcher
+import dev.celestialfault.commander.CommanderCommand
+import dev.celestialfault.commander.annotations.Command
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
+import me.nobaboy.nobaaddons.commands.impl.CommandUtil
 import me.nobaboy.nobaaddons.commands.impl.Context
+import me.nobaboy.nobaaddons.commands.impl.NobaShortClientCommand
 import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 
 object InstanceCommands {
+	private val commander by CommandUtil::commander
+
 	private val floors = Int2ObjectArrayMap<String>(7).apply {
 		put(1, "one")
 		put(2, "two")
@@ -39,11 +44,8 @@ object InstanceCommands {
 	}
 
 	internal fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
-		// we unfortunately have to build these commands ourselves, as there's no way to use commander and still
-		// be able to get the command name from the provided context; at least, not without doing some ugly
-		// hacky workarounds (which would still be more work than just building the commands ourselves)
-		INSTANCE_COMMANDS.forEach { command, instance ->
-			dispatcher.register(ClientCommandManager.literal(command).executes(joinInstanceCommand(command, instance)))
+		INSTANCE_COMMANDS.keys.forEach {
+			commander.register(NobaShortClientCommand(it, ::joinInstanceCommand, this), dispatcher)
 		}
 	}
 
@@ -56,8 +58,8 @@ object InstanceCommands {
 		ChatUtils.queueCommand("joininstance $instance")
 	}
 
-	private fun joinInstanceCommand(name: String, instance: String): (Context) -> Int = {
-		joinInstance(name, instance)
-		0
+	@Command
+	fun joinInstanceCommand(ctx: Context) {
+		joinInstance((ctx.command as CommanderCommand<*>).command.name)
 	}
 }

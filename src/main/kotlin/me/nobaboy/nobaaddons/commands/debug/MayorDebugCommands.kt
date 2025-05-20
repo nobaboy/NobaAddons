@@ -1,8 +1,10 @@
 package me.nobaboy.nobaaddons.commands.debug
 
 import dev.celestialfault.commander.annotations.Command
+import dev.celestialfault.commander.annotations.ExperimentalCommanderApi
 import dev.celestialfault.commander.annotations.Group
 import dev.celestialfault.commander.annotations.RootCommand
+import dev.celestialfault.commander.types.brigadier.EnumArgumentTypeImpl
 import me.nobaboy.nobaaddons.api.skyblock.MayorAPI
 import me.nobaboy.nobaaddons.commands.debug.DebugCommands.dumpInfo
 import me.nobaboy.nobaaddons.commands.impl.CommandUtil
@@ -10,7 +12,6 @@ import me.nobaboy.nobaaddons.commands.impl.CommandUtil.addHandler
 import me.nobaboy.nobaaddons.commands.impl.Context
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
-import me.nobaboy.nobaaddons.utils.JavaUtils
 import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
 import me.nobaboy.nobaaddons.utils.TextUtils.gray
 import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
@@ -22,13 +23,13 @@ import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import net.minecraft.text.Text
 import net.minecraft.text.Texts
 
-@OptIn(UntranslatedMessage::class)
+@OptIn(UntranslatedMessage::class, ExperimentalCommanderApi::class)
 @Suppress("unused")
 @Group("mayor")
 object MayorDebugCommands {
 	init {
-		CommandUtil.commander.addHandler(JavaUtils.enumArgument(Mayor::class.java))
-		CommandUtil.commander.addHandler(JavaUtils.enumArgument(MayorPerk::class.java))
+		CommandUtil.commander.addHandler(EnumArgumentTypeImpl(Mayor::class.java))
+		CommandUtil.commander.addHandler(EnumArgumentTypeImpl(MayorPerk::class.java))
 	}
 
 	@RootCommand
