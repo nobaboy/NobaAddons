@@ -45,13 +45,7 @@ abstract class SoundEventsMixin {
 		var key = sound.getKeyOrValue();
 		var id = key.left()
 			.map(RegistryKey::getValue)
-			.orElseGet(() -> key.right()
-				//? if >=1.21.2 {
-				.map(SoundEvent::id)
-				//?} else {
-				/*.map(SoundEvent::getId)
-				*///?}
-				.orElseThrow());
+			.orElseGet(() -> key.right().map(SoundEvent::id).orElseThrow());
 
 		var location = new NobaVec(x, y, z);
 

@@ -1,7 +1,5 @@
 package me.nobaboy.nobaaddons.mixins.render.tint;
 
-// TODO fix this for 1.21.1 (or just drop 1.21.1)
-//? if >=1.21.2 {
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -46,4 +44,3 @@ abstract class EquipmentRendererMixin {
 		return EntityOverlay.getOverlay() != null ? OverlayTexture.packUv(15, 10) : original;
 	}
 }
-//?}

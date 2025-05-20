@@ -32,11 +32,7 @@ object NobaRenderLayers {
 			.build(false)
 		*///?} else {
 		MultiPhaseParameters.builder()
-			//? if >=1.21.2 {
 			.program(RenderPhase.POSITION_COLOR_PROGRAM)
-			//?} else {
-			/*.program(RenderPhase.COLOR_PROGRAM)
-			*///?}
 			.transparency(RenderLayer.TRANSLUCENT_TRANSPARENCY)
 			.depthTest(RenderLayer.LEQUAL_DEPTH_TEST)
 			.cull(RenderLayer.DISABLE_CULLING)
@@ -61,11 +57,7 @@ object NobaRenderLayers {
 			.build(false)
 		*///?} else {
 		MultiPhaseParameters.builder()
-			//? if >=1.21.2 {
 			.program(RenderPhase.POSITION_COLOR_PROGRAM)
-			//?} else {
-			/*.program(RenderPhase.COLOR_PROGRAM)
-			*///?}
 			.transparency(RenderLayer.TRANSLUCENT_TRANSPARENCY)
 			.depthTest(RenderLayer.ALWAYS_DEPTH_TEST)
 			.cull(RenderLayer.DISABLE_CULLING)

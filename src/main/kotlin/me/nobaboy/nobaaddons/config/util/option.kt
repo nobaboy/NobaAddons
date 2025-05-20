@@ -69,10 +69,8 @@ internal fun <T> (AbstractNobaConfig.() -> KMutableProperty<T>).binding(): Bindi
 	setter = { config, value -> this(config).setter.call(value) }
 )
 
-internal fun <A, B> (AbstractNobaConfig.() -> KMutableProperty<A>).binding(biMapper: BiMapper<A, B>): Binding<B> = binding(
-	getter = { biMapper.to(this(it).getter.call()) },
-	setter = { config, value -> this(config).setter.call(biMapper.from(value)) },
-)
+internal fun <A, B> (AbstractNobaConfig.() -> KMutableProperty<A>).binding(biMapper: BiMapper<A, B>): Binding<B> =
+	binding().xmap(biMapper::to, biMapper::from)
 
 /**
  * Convenience parameter wrapping the provided [Text] in an [OptionDescription]

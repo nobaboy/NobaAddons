@@ -13,7 +13,7 @@ import net.minecraft.screen.ScreenHandler
 import org.lwjgl.glfw.GLFW
 
 object DevFeatures {
-	private val gson = GsonBuilder().setPrettyPrinting().serializeNulls().create()
+	private val gson = GsonBuilder().setPrettyPrinting().create()
 
 	@JvmStatic
 	@OptIn(UntranslatedMessage::class)
@@ -21,24 +21,11 @@ object DevFeatures {
 		val slot = (screen as HandledScreenAccessor).focusedSlot ?: return
 		if(slot.stack.isEmpty) return
 
-		MCUtils.copyToClipboard(buildTextToCopy(slot.stack))
+		// it's easier to just dump the item to json than to try to use any of minecraft's nbt pretty printing
+		val encoded = ItemStack.CODEC.encodeStart(MCUtils.player!!.registryManager.getOps(JsonOps.INSTANCE), slot.stack).orThrow
+		MCUtils.copyToClipboard(gson.toJson(encoded))
 		ChatUtils.addMessage("Copied item data to clipboard")
 	}
-
-	private fun buildTextToCopy(item: ItemStack): String = buildString {
-		append("---- DATA COMPONENTS ----\n\n")
-		// ItemStack#hasChangedComponent(ComponentType<*>) doesn't exist on 1.21.1
-		item.components.filter { item.defaultComponents[it.type] !== it.value }.forEach {
-			appendLine("${it.type}:")
-			appendLine(it.value.toString().prependIndent("  "))
-			appendLine()
-		}
-		append("---- SERIALIZED ITEM ----\n\n")
-		// it *is* possible to dump this as nbt, but json is slightly better to read than even prettified nbt.
-		// (ItemStack#toNbt(RegistryWrapper.WrapperLookup) also doesn't exist on 1.21.1)
-		val encoded = ItemStack.CODEC.encodeStart(MCUtils.player!!.registryManager.getOps(JsonOps.INSTANCE), item).orThrow
-		append(gson.toJson(encoded))
-	}.trim()
 
 	@JvmStatic
 	fun shouldCopy(keyCode: Int): Boolean {

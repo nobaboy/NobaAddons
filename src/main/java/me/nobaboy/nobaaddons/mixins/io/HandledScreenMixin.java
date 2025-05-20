@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HandledScreen.class)
 abstract class HandledScreenMixin {
+	// TODO this should be made into an event
 	@Inject(method = "keyPressed", at = @At("HEAD"))
 	public void nobaaddons$copyItemData(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
 		if(DevFeatures.shouldCopy(keyCode)) {

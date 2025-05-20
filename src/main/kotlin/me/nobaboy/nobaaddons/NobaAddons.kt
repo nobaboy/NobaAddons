@@ -62,5 +62,4 @@ object NobaAddons : ClientModInitializer {
 		NobaAddonsApis
 		NobaAddonsModules
 	}
-
 }

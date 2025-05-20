@@ -22,11 +22,7 @@ abstract class ScreenRenderEventsMixin_InGameHud {
 		method = "renderHotbarItem",
 		at = @At(
 			value = "INVOKE",
-			//? if >=1.21.2 {
 			target = "Lnet/minecraft/client/gui/DrawContext;drawStackOverlay(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;II)V"
-			//?} else {
-			/*target = "Lnet/minecraft/client/gui/DrawContext;drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;II)V"
-			*///?}
 		)
 	)
 	public void nobaaddons$onRenderHotbarItem(DrawContext context, int x, int y, RenderTickCounter tickCounter, PlayerEntity player, ItemStack itemStack, int seed, CallbackInfo ci) {

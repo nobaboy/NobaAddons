@@ -59,13 +59,8 @@ class NobaMainScreen(private val parent: Screen? = null) : Screen(CommonText.NOB
 		layout.forEachChild { addDrawableChild(it) }
 	}
 
-	//? if >=1.21.2 {
 	override fun refreshWidgetPositions() {
 		super.refreshWidgetPositions()
-	//?} else {
-	/*override fun initTabNavigation() {
-		super.initTabNavigation()
-	*///?}
 		layout.refreshPositions()
 	}
 
