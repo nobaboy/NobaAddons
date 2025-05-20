@@ -145,6 +145,10 @@ object ChatCategory {
 				descriptionText = tr("nobaaddons.config.chat.filters.hideProfileInfo.tooltip", "Hides messages showing the active profile and profile ID")
 				booleanController()
 			}
+			add({ chat.filters::hideAutopetMessages }) {
+				name = tr("nobaaddons.config.chat.filters.hideAutopetMessages", "Hide Autopet Messages")
+				booleanController()
+			}
 			// endregion
 		}
 	}
