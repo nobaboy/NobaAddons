@@ -4,7 +4,7 @@
 
 GitHub is a software forge that is now actively hostile to open-source maintainers, by introducing new artificial
 "intelligence" features[^1], the primary purpose of which is to waste maintainer time by creating issues and pull requests
-that nobody bothered to write, systematically disregarding copyright when it's convenient for them,[^2] and the original
+that nobody bothered to write, systematically disregarding copyright when it's convenient for them[^2], and the original
 license that the code was written under.
 
 This is deeply unacceptable, and I am no longer willing to host my projects on a software forge that is
