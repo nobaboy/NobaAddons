@@ -1,5 +1,7 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
+import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
+import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.utils.TextUtils.buildText
 import me.nobaboy.nobaaddons.utils.TimedSet
@@ -13,6 +15,9 @@ import kotlin.time.Duration.Companion.seconds
 
 @Module
 object AnnounceRareDrops {
+	private val config get() = NobaConfig.events.mythological
+	private val enabled: Boolean get() = config.announceRareDrops && DianaAPI.isActive
+
 	private val uuidCache = TimedSet<String>(10.seconds)
 
 	private val rareDrops = listOf(
@@ -27,8 +32,10 @@ object AnnounceRareDrops {
 	}
 
 	private fun onSlotUpdate(event: InventoryEvents.SlotUpdate) {
-		val itemStack = event.itemStack
-		val item = itemStack.asSkyBlockItem ?: return
+		if(!enabled) return
+
+		val stack = event.stack
+		val item = stack.asSkyBlockItem ?: return
 
 		if(item.id !in rareDrops) return
 		item.timestamp?.let { if(it.elapsedSince() > 3.seconds) return } ?: return
@@ -40,7 +47,7 @@ object AnnounceRareDrops {
 		val text = buildText {
 			append(tr("nobaaddons.chat.rareDrop", "RARE DROP!").formatted(Formatting.GOLD, Formatting.BOLD))
 			append(" ")
-			append(itemStack.name)
+			append(stack.name)
 		}
 
 		ChatUtils.addMessage(text, prefix = false)
