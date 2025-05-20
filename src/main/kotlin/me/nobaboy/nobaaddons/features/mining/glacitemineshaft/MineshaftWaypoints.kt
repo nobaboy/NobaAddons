@@ -7,7 +7,8 @@ import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderText
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderWaypoint
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module
@@ -23,7 +24,7 @@ object MineshaftWaypoints {
 
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register(this::onIslandChange)
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderWaypoints)
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::onWorldRender)
 	}
 
 	private fun onIslandChange(event: SkyBlockEvents.IslandChange) {
@@ -47,7 +48,7 @@ object MineshaftWaypoints {
 		}
 	}
 
-	private fun renderWaypoints(context: WorldRenderContext) {
+	private fun onWorldRender(context: WorldRenderContext) {
 		if(waypoints.isEmpty()) return
 
 		waypoints.forEach {
@@ -58,9 +59,8 @@ object MineshaftWaypoints {
 			}
 
 			if(!shouldRender) return
-			RenderUtils.renderWaypoint(context, it.location, it.color, throughBlocks = true)
-			RenderUtils.renderText(
-				context,
+			context.renderWaypoint(it.location, it.color, throughBlocks = true)
+			context.renderText(
 				it.location.center(),
 				it.text,
 				yOffset = -5f,

@@ -2,66 +2,62 @@ package me.nobaboy.nobaaddons.features.dungeons
 
 import me.nobaboy.nobaaddons.api.skyblock.DungeonsAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.events.impl.client.TickEvents
+import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.render.HighlightMode
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderFilled
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderFullBox
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderOutline
 import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.ArmorStandEntity
 
-// TODO Rework and implement Entity outlines
 @Module
 object HighlightStarredMobs {
 	private val config get() = NobaConfig.dungeons.highlightStarredMobs
 	private val enabled: Boolean get() = config.enabled && !DungeonsAPI.inBoss()
 
-	private val starredMobs = mutableListOf<ArmorStandEntity>()
+	private val starredMobs = mutableListOf<LivingEntity>()
 
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { starredMobs.clear() }
-		TickEvents.TICK.register { getStarredMobs() }
-		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderHighlights)
+		EntityEvents.POST_RENDER.register(this::onEntityRender)
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(this::onWorldRender)
 	}
 
-	private fun getStarredMobs() {
+	private fun onEntityRender(event: EntityEvents.Render) {
 		if(!enabled) return
 
-		EntityUtils.getEntities<ArmorStandEntity>().filter {
-			it !in starredMobs &&
-			it.hasCustomName() &&
-			it.shouldRenderName() &&
-			it.customName!!.string.cleanFormatting().startsWith("✯ ") &&
-			it.customName!!.string.cleanFormatting().endsWith("❤")
-		}.forEach { starredMobs.add(it) }
+		val entity = event.entity as? LivingEntity ?: return
+		if(entity in starredMobs) return
+
+		val armorStand = EntityUtils.getNextEntity(entity, 1) as? ArmorStandEntity ?: return
+		if(MCUtils.player?.canSee(armorStand) != true) return
+		if(!armorStand.shouldRenderName() || !armorStand.hasCustomName()) return
+
+		val armorStandName = armorStand.name.string
+		if(!armorStandName.startsWith("✯") || !armorStandName.endsWith("❤")) return
+
+		starredMobs.add(entity)
 	}
 
-	private fun renderHighlights(context: WorldRenderContext) {
+	private fun onWorldRender(context: WorldRenderContext) {
 		if(!enabled) return
 
-		val player = MCUtils.player ?: return
+		starredMobs.removeIf { !it.isAlive }
 
 		val color = config.highlightColor
 		val mode = config.highlightMode
 
-		starredMobs.removeIf { !it.isAlive }
-		for(starredMob in starredMobs) {
-			if(!player.canSee(starredMob)) continue
-
-			val name = starredMob.customName!!.string.cleanFormatting()
-			val extraHeight = if("Fels" in name) 2.0 else if("Spider" in name) -0.25 else 1.0
-
-			val vec = starredMob.getNobaVec()
-
+		starredMobs.forEach { mob ->
 			when(mode) {
-				HighlightMode.OUTLINE -> RenderUtils.renderOutline(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = extraHeight)
-				HighlightMode.FILLED -> RenderUtils.renderFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = extraHeight)
-				HighlightMode.FILLED_OUTLINE -> RenderUtils.renderOutlinedFilledBox(context, vec.add(x = -0.5, y = -1.0, z = -0.5), color, extraSizeBottomY = extraHeight)
+				HighlightMode.OUTLINE -> context.renderOutline(mob.boundingBox, color)
+				HighlightMode.FILLED -> context.renderFilled(mob.boundingBox, color)
+				HighlightMode.FILLED_OUTLINE -> context.renderFullBox(mob.boundingBox, color)
 			}
 		}
 	}

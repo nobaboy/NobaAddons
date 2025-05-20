@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.screens.notifications
 
 import me.nobaboy.nobaaddons.utils.ScreenUtils
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCenteredText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
@@ -10,6 +10,7 @@ import net.minecraft.client.gui.widget.GridWidget
 import net.minecraft.client.gui.widget.SimplePositioningWidget
 import net.minecraft.screen.ScreenTexts
 
+// TODO abstract this
 class ChatNotificationsScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.chatNotifications", "Chat Notifications")) {
 	private lateinit var notificationsList: ChatNotificationsListWidget
 	private var initialized = false
@@ -49,7 +50,7 @@ class ChatNotificationsScreen(private val parent: Screen?) : Screen(tr("nobaaddo
 
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
 		super.render(context, mouseX, mouseY, delta)
-		RenderUtils.drawCenteredText(context, this.title, this.width / 2, 12)
+		context.drawCenteredText(title, width / 2, 12)
 	}
 
 	override fun close() {

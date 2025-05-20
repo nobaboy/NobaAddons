@@ -5,6 +5,7 @@ import me.nobaboy.nobaaddons.ui.HudElement
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCenteredText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
@@ -60,7 +61,7 @@ class NobaHudScreen(private val parent: Screen?) : Screen(tr("nobaaddons.screen.
 
 	private fun renderIdleText(context: DrawContext, scaledWidth: Int, scaledHeight: Int) {
 		usageTexts.forEachIndexed { i, text ->
-			RenderUtils.drawCenteredText(context, text, scaledWidth / 2, scaledHeight / 2 - 20 + i * 10)
+			context.drawCenteredText(text, scaledWidth / 2, scaledHeight / 2 - 20 + i * 10)
 		}
 	}
 

@@ -22,7 +22,7 @@ object WormAlert {
 		if(!enabled) return
 
 		if(event.cleaned == "You hear the sound of something approaching...") {
-			RenderUtils.drawTitle(tr("nobaaddons.mining.wormAlert.spawned", "Worm Spawned!"), config.alertColor)
+			RenderUtils.drawTitle(tr("nobaaddons.mining.wormAlert.spawned", "Worm Spawned!"), color = config.alertColor)
 			config.notificationSound.play()
 		}
 	}

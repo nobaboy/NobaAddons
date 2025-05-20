@@ -14,6 +14,9 @@ value class NobaColor(val rgb: Int) {
 	val green: Int get() = (rgb shr 8) and 0xFF
 	val blue: Int get() = rgb and 0xFF
 
+	val normalized: Triple<Float, Float, Float>
+		get() = Triple(red / 255f, green / 255f, blue / 255f)
+
 	val formatting: Formatting? get() = Formatting.entries.firstOrNull { it.colorValue == rgb }
 	val colorCode: Char? get() = formatting?.code
 

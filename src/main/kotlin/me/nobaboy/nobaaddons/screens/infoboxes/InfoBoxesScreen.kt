@@ -2,7 +2,7 @@ package me.nobaboy.nobaaddons.screens.infoboxes
 
 import me.nobaboy.nobaaddons.features.ui.infobox.InfoBoxesManager
 import me.nobaboy.nobaaddons.utils.ScreenUtils
-import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.drawCenteredText
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
@@ -50,7 +50,7 @@ class InfoBoxesScreen(private val parent: Screen?) : Screen(tr("nobaaddons.scree
 
 	override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
 		super.render(context, mouseX, mouseY, delta)
-		RenderUtils.drawCenteredText(context, this.title.copy().append(" (${infoBoxesList.size}/20)"), this.width / 2, 12)
+		context.drawCenteredText(title.copy().append(" (${infoBoxesList.size}/20)"), width / 2, 12)
 	}
 
 	private fun actuallyClose() {

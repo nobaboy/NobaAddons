@@ -15,6 +15,8 @@ import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.Timestamp
 import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderText
+import me.nobaboy.nobaaddons.utils.render.RenderUtils.renderWaypoint
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module
@@ -107,9 +109,8 @@ object BurrowWaypoints {
 
 			val distance = location.distance(LocationUtils.playerLocation, center = true)
 
-			RenderUtils.renderWaypoint(context, location, NobaColor.DARK_RED, throughBlocks = true)
-			RenderUtils.renderText(
-				context,
+			context.renderWaypoint(location, NobaColor.DARK_RED, throughBlocks = true)
+			context.renderText(
 				adjustedLocation,
 				tr("nobaaddons.events.mythological.inquisitor", "Inquisitor"),
 				color = NobaColor.DARK_RED,
@@ -117,8 +118,7 @@ object BurrowWaypoints {
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
-			RenderUtils.renderText(
-				context,
+			context.renderText(
 				adjustedLocation,
 				inquisitor.spawner,
 				color = NobaColor.GOLD,
@@ -128,8 +128,7 @@ object BurrowWaypoints {
 			)
 
 			if(config.showInquisitorDespawnTime) {
-				RenderUtils.renderText(
-					context,
+				context.renderText(
 					adjustedLocation,
 					tr("nobaaddons.events.mythological.inquisitorDespawnsIn", "Despawns in ${inquisitor.remainingTime}"),
 					color = NobaColor.GRAY,
@@ -150,9 +149,8 @@ object BurrowWaypoints {
 				type.displayName
 			}
 
-			RenderUtils.renderWaypoint(context, location, type.color, throughBlocks = true)
-			RenderUtils.renderText(
-				context,
+			context.renderWaypoint(location, type.color, throughBlocks = true)
+			context.renderText(
 				location.center().raise(),
 				text,
 				color = type.color,
@@ -171,9 +169,8 @@ object BurrowWaypoints {
 			val distance = it.distance(LocationUtils.playerLocation, center = true)
 			val formattedDistance = distance.toInt().addSeparators()
 
-			RenderUtils.renderWaypoint(context, it, NobaColor.AQUA, throughBlocks = distance > 10)
-			RenderUtils.renderText(
-				context,
+			context.renderWaypoint(it, NobaColor.AQUA, throughBlocks = distance > 10)
+			context.renderText(
 				adjustedLocation,
 				tr("nobaaddons.events.mythological.burrowGuessWaypoint", "Burrow Guess"),
 				color = NobaColor.AQUA,
@@ -181,8 +178,7 @@ object BurrowWaypoints {
 				hideThreshold = 5.0,
 				throughBlocks = true,
 			)
-			RenderUtils.renderText(
-				context,
+			context.renderText(
 				adjustedLocation,
 				"${formattedDistance}m",
 				color = NobaColor.GRAY,
@@ -200,7 +196,13 @@ object BurrowWaypoints {
 		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
 		lastWarpSuggestTime = Timestamp.now()
 
-		RenderUtils.drawTitle(tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2f, 30, 1.seconds)
+		RenderUtils.drawTitle(
+			tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"),
+			color = NobaColor.GRAY,
+			scale = 2f,
+			offset = 30,
+			duration = 1.seconds
+		)
 	}
 
 	private fun getTargetLocation(): NobaVec? = InquisitorWaypoints.inquisitors.firstOrNull()?.location ?: guessLocation

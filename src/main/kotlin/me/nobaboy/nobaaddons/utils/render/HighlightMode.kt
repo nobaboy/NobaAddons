@@ -4,6 +4,7 @@ import dev.isxander.yacl3.api.NameableEnum
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 
+// TODO change to BOX, FULL_BOX, OUTLINE, and OVERLAY
 enum class HighlightMode : NameableEnum {
 	OUTLINE,
 	FILLED,

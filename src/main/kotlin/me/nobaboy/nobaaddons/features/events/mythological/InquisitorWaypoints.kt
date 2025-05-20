@@ -94,7 +94,7 @@ object InquisitorWaypoints {
 			val location = NobaVec(x, y, z)
 
 			inquisitors.add(Inquisitor(username, location))
-			RenderUtils.drawTitle("INQUISITOR!", NobaColor.DARK_RED, subtext = username.toText().gold())
+			RenderUtils.drawTitle("INQUISITOR!", subtext = username.toText().gold(), color = NobaColor.DARK_RED)
 			config.notificationSound.play()
 		}
 
