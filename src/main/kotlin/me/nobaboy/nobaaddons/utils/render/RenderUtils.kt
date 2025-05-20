@@ -120,7 +120,7 @@ object RenderUtils {
 	) {
 		if(applyScaling && scale != 1f) startScale(scale)
 
-		val consumers = let { it /*? if >=1.21.2 {*/ as DrawContextAccessor /*?}*/ }.vertexConsumers
+		val consumers = let { it /*? if >=1.21.2 {*/as DrawContextAccessor/*?}*/ }.vertexConsumers
 
 		MCUtils.textRenderer.drawWithOutline(
 			text.asOrderedText(),
@@ -211,6 +211,7 @@ object RenderUtils {
 	fun WorldRenderContext.renderWaypoint(
 		location: NobaVec,
 		color: NobaColor,
+		alpha: Float? = null,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
@@ -218,20 +219,32 @@ object RenderUtils {
 		throughBlocks: Boolean = false,
 	) {
 		renderBeacon(location, color, beaconThreshold)
-		renderFilled(location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderFilled(location, color, alpha, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
 	}
 
 	fun WorldRenderContext.renderFullBox(
 		location: NobaVec,
 		color: NobaColor,
+		alpha: Float? = null,
 		lineWidth: Float = 3f,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
 		throughBlocks: Boolean = false,
 	) {
-		renderOutline(location, color, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
-		renderFilled(location, color, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderOutline(location, color, alpha, lineWidth, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+		renderFilled(location, color, alpha, extraSize, extraSizeTopY, extraSizeBottomY, throughBlocks)
+	}
+
+	fun WorldRenderContext.renderFullBox(
+		box: Box,
+		color: NobaColor,
+		alpha: Float = 0.5f,
+		lineWidth: Float = 3f,
+		throughBlocks: Boolean = false,
+	) {
+		renderOutline(box, color, alpha, lineWidth, throughBlocks)
+		renderFilled(box, color, alpha, throughBlocks)
 	}
 
 	fun WorldRenderContext.renderFullBox(
@@ -288,10 +301,10 @@ object RenderUtils {
 		matrices.pop()
 	}
 
-	// TODO allow for persistent alpha
 	fun WorldRenderContext.renderOutline(
 		location: NobaVec,
 		color: NobaColor,
+		alpha: Float? = null,
 		lineWidth: Float = 3f,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
@@ -307,7 +320,7 @@ object RenderUtils {
 
 		val cameraPos = camera().pos.toNobaVec()
 		val distSq = location.distanceSq(cameraPos, center = true)
-		val alpha = (0.1f + 0.005f * distSq).coerceIn(0.7, 1.0).toFloat()
+		val alpha = alpha ?: (0.1f + 0.005f * distSq).coerceIn(0.7, 1.0).toFloat()
 
 		renderOutline(box, color, alpha, lineWidth, throughBlocks)
 	}
@@ -325,13 +338,12 @@ object RenderUtils {
 		renderOutline(box, color, alpha, lineWidth, throughBlocks)
 	}
 
-	// TODO should this be an extension of WorldRenderContext?
-	private fun WorldRenderContext.renderOutline(
+	fun WorldRenderContext.renderOutline(
 		box: Box,
 		color: NobaColor,
-		alpha: Float,
-		lineWidth: Float,
-		throughBlocks: Boolean,
+		alpha: Float = 1f,
+		lineWidth: Float = 3f,
+		throughBlocks: Boolean = false,
 	) {
 		val matrices = matrixStack() ?: return
 
@@ -358,10 +370,10 @@ object RenderUtils {
 		matrices.pop()
 	}
 
-	// TODO allow for persistent alpha
 	fun WorldRenderContext.renderFilled(
 		location: NobaVec,
 		color: NobaColor,
+		alpha: Float? = null,
 		extraSize: Double = 0.0,
 		extraSizeTopY: Double = extraSize,
 		extraSizeBottomY: Double = extraSize,
@@ -376,7 +388,7 @@ object RenderUtils {
 
 		val cameraPos = camera().pos.toNobaVec()
 		val distSq = location.distanceSq(cameraPos, center = true)
-		val alpha = (0.1f + 0.005f * distSq).coerceIn(0.3, 0.7).toFloat()
+		val alpha = alpha ?: (0.1f + 0.005f * distSq).coerceIn(0.3, 0.7).toFloat()
 
 		renderFilled(box, color, alpha, throughBlocks)
 	}
@@ -393,14 +405,11 @@ object RenderUtils {
 		renderFilled(box, color, alpha, throughBlocks)
 	}
 
-	// TODO should this be an extension of WorldRenderContext?
-	// TODO blocks inside the Box will not be visible if it's rendered through blocks (or will blend in), so change
-	//      this to instead render the sides of the Box
-	private fun WorldRenderContext.renderFilled(
+	fun WorldRenderContext.renderFilled(
 		box: Box,
 		color: NobaColor,
-		alpha: Float,
-		throughBlocks: Boolean,
+		alpha: Float = 1f,
+		throughBlocks: Boolean = false,
 	) {
 		val matrices = matrixStack() ?: return
 
