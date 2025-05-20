@@ -1,4 +1,4 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.collections
 
 object CollectionUtils {
 	fun List<String>.anyEquals(other: String, ignoreCase: Boolean = false): Boolean =

@@ -6,10 +6,10 @@ import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.util.*
-import me.nobaboy.nobaaddons.utils.TextUtils.red
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.TextUtils.underline
-import me.nobaboy.nobaaddons.utils.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.red
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.underline
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.Text

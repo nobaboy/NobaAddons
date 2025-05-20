@@ -1,7 +1,6 @@
-package me.nobaboy.nobaaddons.utils.enums
+package me.nobaboy.nobaaddons.utils.hypixel
 
 import dev.isxander.yacl3.api.NameableEnum
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.text.Text
 

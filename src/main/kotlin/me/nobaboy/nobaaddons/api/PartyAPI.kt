@@ -14,13 +14,13 @@ import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
 import me.nobaboy.nobaaddons.utils.CooldownManager
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
 import me.nobaboy.nobaaddons.utils.annotations.ApiModule
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
@@ -71,10 +71,6 @@ object PartyAPI {
 		ChatMessageEvents.CHAT.register(this::onChatMessage)
 		SendMessageEvents.SEND_COMMAND.register(this::onSendCommand)
 		HypixelModAPI.getInstance().listen(this::onPartyData)
-	}
-
-	fun refreshPartyList() {
-		refreshPartyList = true
 	}
 
 	private fun onTick(cooldownManager: CooldownManager) {
@@ -147,5 +143,9 @@ object PartyAPI {
 			}
 			ChatUtils.addMessage(text, prefix = false)
 		}
+	}
+
+	fun refreshPartyList() {
+		refreshPartyList = true
 	}
 }

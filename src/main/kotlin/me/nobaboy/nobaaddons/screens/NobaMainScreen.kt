@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.screens.keybinds.KeyBindsScreen
 import me.nobaboy.nobaaddons.screens.notifications.ChatNotificationsScreen
 import me.nobaboy.nobaaddons.utils.CommonText
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr

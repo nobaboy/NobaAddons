@@ -4,6 +4,7 @@ package me.nobaboy.nobaaddons.api
 /*import me.nobaboy.nobaaddons.mixins.accessors.PlayerInventoryAccessor
 *///?}
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.data.InventoryData
@@ -11,10 +12,11 @@ import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.PacketEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.annotations.ApiModule
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket
@@ -34,11 +36,11 @@ object InventoryAPI {
 	private var currentInventory: InventoryData? = null
 	private var currentWindow: Window? = null
 
-	private var inventorySuppressTime = Timestamp.distantPast()
+	private var inventorySuppressTime = Instant.DISTANT_PAST
 	private var previousItemCounts: Map<Text, Int>? = null
 	val itemLog = ConcurrentHashMap<Text, ItemDiff>()
 
-	private fun shouldSuppressItemLogUpdate(): Boolean = inventorySuppressTime.elapsedSeconds() < 2
+	private fun shouldSuppressItemLogUpdate(): Boolean = inventorySuppressTime.elapsedSince().inWholeSeconds < 2
 
 	init {
 		TickEvents.every(5, this::onQuarterSecond)
@@ -62,7 +64,7 @@ object InventoryAPI {
 		}
 
 		itemLog.entries.removeIf { (_, diff) ->
-			diff.timestamp.elapsedSeconds() > NobaConfig.inventory.itemPickupLog.timeoutSeconds
+			diff.timestamp.elapsedSince().inWholeSeconds > NobaConfig.inventory.itemPickupLog.timeoutSeconds
 		}
 	}
 
@@ -121,7 +123,7 @@ object InventoryAPI {
 
 	private fun debounceItemLog() {
 		previousItemCounts = null
-		inventorySuppressTime = Timestamp.now()
+		inventorySuppressTime = Instant.now
 	}
 
 	private fun close(sameName: Boolean = false) {
@@ -145,7 +147,7 @@ object InventoryAPI {
 			if(diff.change == 0) continue
 			val logDiff = itemLog.getOrPut(name) { ItemDiff(name) }
 			logDiff.change += diff.change
-			logDiff.timestamp = Timestamp.now()
+			logDiff.timestamp = Instant.now
 		}
 	}
 
@@ -191,6 +193,6 @@ object InventoryAPI {
 	data class ItemDiff(
 		val name: Text,
 		var change: Int = 0,
-		var timestamp: Timestamp = Timestamp.now(),
+		var timestamp: Instant = Instant.now,
 	)
 }

@@ -1,6 +1,6 @@
 ## Third-Party Code Attributions
 
-This project includes code adapted from the following third-party projects.
+This project includes code adapted from the following third-party projects.  
 The listed files under each project retain the original license of the source project.
 
 ### Firmament
@@ -24,8 +24,7 @@ The listed files under each project retain the original license of the source pr
 - **License**: [GNU Lesser General Public License v2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt)
 - **Files**:
   - `src/main/java/me/nobaboy/nobaaddons/init/AutoDiscoveryMixinPlugin.java`
-  - `src/main/kotlin/me/nobaboy/nobaaddons/utils/SkyBlockTime.kt`
-  - `src/main/kotlin/me/nobaboy/nobaaddons/utils/Timestamp.kt`
+  - `src/main/kotlin/me/nobaboy/nobaaddons/utils/hypixel/SkyBlockTime.kt`
   - `src/main/kotlin/me/nobaboy/nobaaddons/utils/math/BezierCurve.kt`
   - `src/main/kotlin/me/nobaboy/nobaaddons/utils/math/BezierFitter.kt`
   - `src/main/kotlin/me/nobaboy/nobaaddons/utils/math/Matrix.kt`

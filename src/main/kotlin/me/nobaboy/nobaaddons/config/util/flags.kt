@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.config.util
 
 import dev.isxander.yacl3.api.OptionFlag
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.TextUtils.bold
-import me.nobaboy.nobaaddons.utils.TextUtils.red
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.bold
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.red
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.client.gui.screen.ConfirmScreen
 import net.minecraft.client.gui.screen.Screen

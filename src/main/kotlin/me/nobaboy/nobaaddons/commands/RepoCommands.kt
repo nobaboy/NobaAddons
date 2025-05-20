@@ -3,10 +3,10 @@ package me.nobaboy.nobaaddons.commands
 import dev.celestialfault.commander.annotations.Command
 import dev.celestialfault.commander.annotations.Group
 import me.nobaboy.nobaaddons.repo.RepoManager
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.TextUtils.openUrl
-import me.nobaboy.nobaaddons.utils.TextUtils.underline
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.openUrl
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.underline
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.minecraft.util.Formatting
 

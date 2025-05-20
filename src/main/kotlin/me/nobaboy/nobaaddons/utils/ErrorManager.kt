@@ -2,11 +2,14 @@ package me.nobaboy.nobaaddons.utils
 
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
-import me.nobaboy.nobaaddons.utils.TextUtils.red
-import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
-import me.nobaboy.nobaaddons.utils.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.red
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.runCommand
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.collections.TimedCache
+import me.nobaboy.nobaaddons.utils.collections.TimedSet
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import net.minecraft.text.Text
 import net.minecraft.util.math.MathHelper
 import java.util.LinkedList

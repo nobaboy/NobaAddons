@@ -3,9 +3,9 @@ package me.nobaboy.nobaaddons.api.skyblock.events.hoppity
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.isSeason
 import me.nobaboy.nobaaddons.core.SkyBlockIsland
-import me.nobaboy.nobaaddons.utils.InventoryUtils
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.SkyBlockSeason
+import me.nobaboy.nobaaddons.utils.mc.InventoryUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockSeason
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 
 object HoppityAPI {

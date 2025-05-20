@@ -1,19 +1,21 @@
 package me.nobaboy.nobaaddons.features.visuals
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.utils.CommonPatterns
-import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
-import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
 import me.nobaboy.nobaaddons.utils.RegexUtils.onPartialMatch
-import me.nobaboy.nobaaddons.utils.Timestamp
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.toNobaVec
 import me.nobaboy.nobaaddons.utils.tr
@@ -53,7 +55,7 @@ object TemporaryWaypoints {
 			val info = groups["info"]?.value?.take(32) ?: ""
 
 			val text = "$username$info"
-			waypoints.add(Waypoint(location, text, Timestamp.now(), config.expirationTime.seconds))
+			waypoints.add(Waypoint(location, text, Instant.now, config.expirationTime.seconds))
 			ChatUtils.addMessage(tr("nobaaddons.uiAndVisuals.temporaryWaypoints.fromChat", "Temporary Waypoint added at x: $x, y: $y, z: $z from $username"))
 		}
 	}
@@ -94,10 +96,10 @@ object TemporaryWaypoints {
 	}
 
 	fun addWaypoint(x: Double, y: Double, z: Double, name: String) {
-		waypoints.add(Waypoint(NobaVec(x, y, z), name, Timestamp.now(), null))
+		waypoints.add(Waypoint(NobaVec(x, y, z), name, Instant.now, null))
 	}
 
-	data class Waypoint(val location: NobaVec, val text: String, val timestamp: Timestamp, val duration: Duration?) {
+	private data class Waypoint(val location: NobaVec, val text: String, val timestamp: Instant, val duration: Duration?) {
 		val expired: Boolean
 			get() = duration != null && timestamp.elapsedSince() >= duration
 	}

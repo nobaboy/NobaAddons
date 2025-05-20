@@ -1,9 +1,11 @@
 package me.nobaboy.nobaaddons.utils.render
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
@@ -40,7 +42,7 @@ object TitleManager {
 		id: String,
 		subtext: Text?,
 	) {
-		val title = Title(text, color, scale, offset, duration, Timestamp.now(), subtext)
+		val title = Title(text, color, scale, offset, duration, Instant.now, subtext)
 		titles[id] = title
 	}
 
@@ -50,7 +52,7 @@ object TitleManager {
 		val scale: Float,
 		val offset: Int,
 		val duration: Duration,
-		val timestamp: Timestamp,
+		val timestamp: Instant,
 		val subtext: Text?,
 	) {
 		val expired: Boolean get() = timestamp.elapsedSince() >= duration

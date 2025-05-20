@@ -3,7 +3,7 @@ package me.nobaboy.nobaaddons.features.keybinds.impl
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import me.nobaboy.nobaaddons.utils.CooldownManager
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import org.lwjgl.glfw.GLFW
 import kotlin.time.Duration.Companion.milliseconds
 

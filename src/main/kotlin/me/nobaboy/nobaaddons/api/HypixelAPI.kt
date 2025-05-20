@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.api
 
 import me.nobaboy.nobaaddons.events.impl.HypixelEvents
-import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.annotations.ApiModule
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import net.hypixel.data.type.ServerType
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.handler.ClientboundPacketHandler

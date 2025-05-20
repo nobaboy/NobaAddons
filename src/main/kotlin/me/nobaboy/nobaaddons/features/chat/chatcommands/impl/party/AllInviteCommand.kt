@@ -1,7 +1,7 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 import kotlin.time.Duration.Companion.seconds
 

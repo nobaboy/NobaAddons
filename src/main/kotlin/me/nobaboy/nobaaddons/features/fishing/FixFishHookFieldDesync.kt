@@ -1,9 +1,9 @@
 package me.nobaboy.nobaaddons.features.fishing
 
 import me.nobaboy.nobaaddons.config.NobaConfig
-import me.nobaboy.nobaaddons.utils.EntityUtils
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.EntityUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.minecraft.entity.projectile.FishingBobberEntity

@@ -7,7 +7,7 @@ import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.api.HypixelAPI
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.utils.ErrorManager
-import me.nobaboy.nobaaddons.utils.MCUtils
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import java.util.Collections

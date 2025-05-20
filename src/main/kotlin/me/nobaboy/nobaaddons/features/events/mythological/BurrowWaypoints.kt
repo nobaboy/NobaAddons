@@ -1,19 +1,21 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.BurrowAPI
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.NumberUtils.addSeparators
-import me.nobaboy.nobaaddons.utils.TextUtils.aqua
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.Timestamp
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.aqua
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
 import me.nobaboy.nobaaddons.utils.tr
@@ -31,7 +33,7 @@ object BurrowWaypoints {
 	private var guessLocation: NobaVec? = null
 
 	private var nearestWarp: NearestWarp? = null
-	private var lastWarpSuggestTime = Timestamp.distantPast()
+	private var lastWarpSuggestTime = Instant.DISTANT_PAST
 
 	private val isInquisitorSpawned: Boolean
 		get() = InquisitorWaypoints.inquisitors.isNotEmpty()
@@ -198,7 +200,7 @@ object BurrowWaypoints {
 
 		val targetLocation = getTargetLocation() ?: return
 		nearestWarp = BurrowWarpLocations.getNearestWarp(targetLocation) ?: return
-		lastWarpSuggestTime = Timestamp.now()
+		lastWarpSuggestTime = Instant.now
 
 		RenderUtils.drawTitle(tr("nobaaddons.events.mythological.warpToPoint", "Warp to ${nearestWarp!!.warpPoint}"), NobaColor.GRAY, 2f, 30, 1.seconds)
 	}

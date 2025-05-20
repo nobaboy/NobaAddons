@@ -1,7 +1,8 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.hypixel
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.utils.NumberUtils.ordinalSuffix
-import java.time.Instant
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 
 /**
  * This is taken and adapted from SkyHanni, which is licensed under the LGPL-2.1.
@@ -19,7 +20,8 @@ data class SkyBlockTime(
 	val monthName get() = getMonthName(month)
 	val dayName get() = "$day${day.ordinalSuffix()}"
 
-	fun toInstant(): Instant? = Instant.ofEpochMilli(toMillis())
+	fun toInstantOrNull(): Instant? = Instant.fromEpochMilliseconds(toMillis())
+	fun toInstant(): Instant = toInstantOrNull() ?: Instant.DISTANT_PAST
 
 	fun toMillis(): Long = getSkyBlockTimeMillis(year, month, day, hour, minute, second) + SKYBLOCK_EPOCH_START_MILLIS
 
@@ -29,19 +31,19 @@ data class SkyBlockTime(
 		// SkyBlock Time Constants
 		const val SKYBLOCK_YEAR_MILLIS = 124 * 60 * 60 * 1000L
 		const val SKYBLOCK_SEASON_MILLIS = SKYBLOCK_YEAR_MILLIS / 4
-		private const val SKYBLOCK_MONTH_MILLIS = SKYBLOCK_YEAR_MILLIS / 12
+		const val SKYBLOCK_MONTH_MILLIS = SKYBLOCK_YEAR_MILLIS / 12
 		const val SKYBLOCK_DAY_MILLIS = SKYBLOCK_MONTH_MILLIS / 31
 		const val SKYBLOCK_HOUR_MILLIS = SKYBLOCK_DAY_MILLIS / 24
-		private const val SKYBLOCK_MINUTE_MILLIS = SKYBLOCK_HOUR_MILLIS / 60
-		private const val SKYBLOCK_SECOND_MILLIS = SKYBLOCK_MINUTE_MILLIS / 60
+		const val SKYBLOCK_MINUTE_MILLIS = SKYBLOCK_HOUR_MILLIS / 60
+		const val SKYBLOCK_SECOND_MILLIS = SKYBLOCK_MINUTE_MILLIS / 60
 
 		fun fromInstant(instant: Instant): SkyBlockTime =
-			calculateSkyBlockTime(instant.toEpochMilli() - SKYBLOCK_EPOCH_START_MILLIS)
+			calculateSkyBlockTime(instant.toEpochMilliseconds() - SKYBLOCK_EPOCH_START_MILLIS)
 
 		fun fromYear(year: Int): SkyBlockTime =
-			fromInstant(Instant.ofEpochMilli(SKYBLOCK_EPOCH_START_MILLIS + (SKYBLOCK_YEAR_MILLIS * year)))
+			fromInstant(Instant.fromEpochMilliseconds(SKYBLOCK_EPOCH_START_MILLIS + (SKYBLOCK_YEAR_MILLIS * year)))
 
-		fun now(): SkyBlockTime = fromInstant(Instant.now())
+		fun now(): SkyBlockTime = fromInstant(Instant.now)
 
 		private fun calculateSkyBlockTime(milliseconds: Long): SkyBlockTime {
 			var remainingMillis = milliseconds

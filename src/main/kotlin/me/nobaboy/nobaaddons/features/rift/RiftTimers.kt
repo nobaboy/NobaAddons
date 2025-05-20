@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.rift
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -13,19 +14,23 @@ import me.nobaboy.nobaaddons.utils.CommonPatterns
 import me.nobaboy.nobaaddons.utils.RegexUtils.firstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.indexOfFirstFullMatch
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
-import me.nobaboy.nobaaddons.utils.TextUtils.gray
-import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
-import me.nobaboy.nobaaddons.utils.TextUtils.yellow
-import me.nobaboy.nobaaddons.utils.Timestamp
-import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
-import me.nobaboy.nobaaddons.utils.Timestamp.Companion.toShortString
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.TimeUtils.asInstantOrNull
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.isFuture
+import me.nobaboy.nobaaddons.utils.TimeUtils.isPast
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
+import me.nobaboy.nobaaddons.utils.TimeUtils.toShortString
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkGray
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.gray
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
@@ -68,7 +73,7 @@ object RiftTimers {
 			"Dimensional Infusion", "Fast Travel" -> updateFreeInfusions(event)
 			"Split or Steal" -> {
 				if(!SkyBlockIsland.RIFT.inIsland()) return
-				data.nextSplitSteal = Timestamp.now() + 2.hours
+				data.nextSplitSteal = Instant.now + 2.hours
 				notifiedSplitStealCooldown = false
 			}
 		}
@@ -79,11 +84,11 @@ object RiftTimers {
 		if(string == "INFUSED! Used one of your free Rift charges!") {
 			data.freeInfusions -= 1
 			if(data.nextFreeInfusion == null) {
-				data.nextFreeInfusion = Timestamp.now() + 4.hours
+				data.nextFreeInfusion = Instant.now + 4.hours
 			}
 		} else if(string.startsWith("SPLIT! You need to wait")) {
 			val match = SPLIT_STEAL_COOLDOWN_REGEX.matchEntire(string) ?: return
-			data.nextSplitSteal = match.groups["time"]!!.value.asTimestamp() ?: return
+			data.nextSplitSteal = match.groups["time"]!!.value.asInstantOrNull() ?: return
 			notifiedSplitStealCooldown = false
 		}
 	}
@@ -149,7 +154,7 @@ object RiftTimers {
 		val infusionCount = lore.firstFullMatch(FREE_INFUSIONS_REGEX)?.groups["count"]?.value?.toInt() ?: return
 		data.freeInfusions = infusionCount
 		data.nextFreeInfusion = if(infusionCount < 3) {
-			lore.firstFullMatch(NEXT_FREE_INFUSION_REGEX)?.groups["time"]?.value?.asTimestamp()
+			lore.firstFullMatch(NEXT_FREE_INFUSION_REGEX)?.groups["time"]?.value?.asInstantOrNull()
 		} else {
 			null
 		}

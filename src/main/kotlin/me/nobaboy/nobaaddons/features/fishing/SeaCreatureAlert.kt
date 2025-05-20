@@ -5,8 +5,8 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.fishing.SeaCreature
 import me.nobaboy.nobaaddons.events.impl.skyblock.FishingEvents
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.TextUtils.bold
-import me.nobaboy.nobaaddons.utils.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.bold
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module

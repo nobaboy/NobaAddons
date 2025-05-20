@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.events.mythological
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.events.mythological.DianaAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.events.EventDispatcher.Companion.registerIf
@@ -9,7 +10,8 @@ import me.nobaboy.nobaaddons.events.impl.interact.ItemUseEvent
 import me.nobaboy.nobaaddons.events.impl.render.ParticleEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
 import me.nobaboy.nobaaddons.utils.math.ParticlePathFitter
 import me.owdding.ktmodules.Module
@@ -22,7 +24,7 @@ object GriffinBurrowGuess {
 	private val enabled: Boolean get() = config.burrowGuess && DianaAPI.isActive
 
 	private val particlePath = ParticlePathFitter(3)
-	private var lastAbilityUse = Timestamp.distantPast()
+	private var lastAbilityUse = Instant.DISTANT_PAST
 
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
@@ -53,7 +55,7 @@ object GriffinBurrowGuess {
 		if(event.itemInHand.skyBlockId != DianaAPI.SPADE) return
 
 		particlePath.reset()
-		lastAbilityUse = Timestamp.now()
+		lastAbilityUse = Instant.now
 	}
 
 	private fun reset() {

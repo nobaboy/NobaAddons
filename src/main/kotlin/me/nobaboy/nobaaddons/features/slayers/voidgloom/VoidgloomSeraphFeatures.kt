@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.slayers.voidgloom
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
 import me.nobaboy.nobaaddons.api.skyblock.SlayerAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
@@ -11,14 +12,15 @@ import me.nobaboy.nobaaddons.events.impl.client.WorldEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SlayerEvents
 import me.nobaboy.nobaaddons.repo.Repo.skullFromRepo
-import me.nobaboy.nobaaddons.utils.EntityUtils
-import me.nobaboy.nobaaddons.utils.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
+import me.nobaboy.nobaaddons.utils.TimeUtils.timeRemaining
 import me.nobaboy.nobaaddons.utils.getNobaVec
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.getSkullTexture
+import me.nobaboy.nobaaddons.utils.mc.EntityUtils
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils.distanceToPlayer
 import me.nobaboy.nobaaddons.utils.render.EntityOverlay.highlight
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.sound.SoundUtils
@@ -46,7 +48,7 @@ object VoidgloomSeraphFeatures {
 
 	private var brokenHeartRadiation: BrokenHeartRadiation? = null
 
-	private val yangGlyphs = mutableMapOf<NobaVec, Timestamp>()
+	private val yangGlyphs = mutableMapOf<NobaVec, Instant>()
 	private val flyingYangGlyphs = mutableSetOf<ArmorStandEntity>()
 	private val inBeaconPhase: Boolean get() = yangGlyphs.isNotEmpty() || flyingYangGlyphs.isNotEmpty()
 
@@ -118,7 +120,7 @@ object VoidgloomSeraphFeatures {
 
 				val armorStand = flyingYangGlyphs.firstOrNull { it.getNobaVec().distance(location) < 3 } ?: return
 				flyingYangGlyphs.remove(armorStand)
-				yangGlyphs[location] = Timestamp.now() + 5.seconds
+				yangGlyphs[location] = Instant.now + 5.seconds
 
 				if(config.yangGlyphAlert) {
 					RenderUtils.drawTitle(tr("nobaaddons.slayers.yangGlyph.placed", "Yang Glyph!"), config.yangGlyphAlertColor, duration = 1.5.seconds)
@@ -190,7 +192,7 @@ object VoidgloomSeraphFeatures {
 
 	data class BrokenHeartRadiation(
 		val entity: LivingEntity,
-		val timestamp: Timestamp = Timestamp.now() + 8.seconds,
+		val timestamp: Instant = Instant.now + 8.seconds,
 	) {
 		val isValid: Boolean
 			get() = timestamp.timeRemaining() > 0.seconds && (entity.vehicle != null || timestamp.timeRemaining() > 5.seconds)

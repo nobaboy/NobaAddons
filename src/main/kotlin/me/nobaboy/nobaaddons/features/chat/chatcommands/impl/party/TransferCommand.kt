@@ -1,8 +1,8 @@
 package me.nobaboy.nobaaddons.features.chat.chatcommands.impl.party
 
 import me.nobaboy.nobaaddons.features.chat.chatcommands.ChatContext
-import me.nobaboy.nobaaddons.utils.MCUtils
-import me.nobaboy.nobaaddons.utils.chat.HypixelCommands
+import me.nobaboy.nobaaddons.utils.hypixel.HypixelCommands
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket
 
 class TransferCommand : AbstractPartyChatCommand() {

@@ -6,7 +6,7 @@ import me.nobaboy.nobaaddons.ui.ElementAlignment
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
 import me.nobaboy.nobaaddons.ui.data.GenericTextElement
-import me.nobaboy.nobaaddons.utils.TextUtils.toText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.toText
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import net.minecraft.util.math.ColorHelper.channelFromFloat

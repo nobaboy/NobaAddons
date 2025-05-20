@@ -17,12 +17,12 @@ import me.nobaboy.nobaaddons.utils.RegexUtils.forEachFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFirstFullMatch
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.ScoreboardUtils
-import me.nobaboy.nobaaddons.utils.SkyBlockSeason
-import me.nobaboy.nobaaddons.utils.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.annotations.ApiModule
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockSeason
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
+import me.nobaboy.nobaaddons.utils.mc.ScoreboardUtils
 import net.hypixel.data.type.GameType
 import java.util.UUID
 import kotlin.uuid.ExperimentalUuidApi

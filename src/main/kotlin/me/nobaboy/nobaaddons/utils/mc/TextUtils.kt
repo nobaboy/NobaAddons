@@ -1,9 +1,10 @@
-package me.nobaboy.nobaaddons.utils
+package me.nobaboy.nobaaddons.utils.mc
 
 //? if >=1.21.5 {
 /*import java.net.URI
 *///?}
 
+import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.annotations.UntranslatedMessage
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
@@ -116,8 +117,3 @@ object TextUtils {
 	operator fun MutableText.plus(other: Text): MutableText = this.append(other)
 	operator fun MutableText.plus(other: String): MutableText = this.append(other)
 }
-
-fun tr(key: String, default: String): MutableText = error("Compiler plugin did not run")
-
-@Suppress("unused") // uses of tr are replaced with this method at compile time
-fun trResolved(key: String, vararg args: Any): MutableText = Text.stringifiedTranslatable(key, *args)

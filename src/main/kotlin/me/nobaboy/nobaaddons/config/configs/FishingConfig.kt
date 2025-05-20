@@ -4,7 +4,7 @@ import dev.celestialfault.histoire.Object
 import me.nobaboy.nobaaddons.core.Rarity
 import me.nobaboy.nobaaddons.core.fishing.TrophyFishRarity
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.enums.AnnounceChannel
+import me.nobaboy.nobaaddons.utils.hypixel.AnnounceChannel
 import me.nobaboy.nobaaddons.utils.sound.NotificationSound
 
 class FishingConfig {

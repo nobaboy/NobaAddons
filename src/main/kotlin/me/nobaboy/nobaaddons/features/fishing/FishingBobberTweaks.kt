@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.features.fishing
 
+import kotlinx.datetime.toKotlinInstant
 import me.nobaboy.nobaaddons.api.skyblock.PetAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI.inIsland
@@ -8,10 +9,10 @@ import me.nobaboy.nobaaddons.core.SkyBlockIsland
 import me.nobaboy.nobaaddons.ducks.FishingBobberTimerDuck
 import me.nobaboy.nobaaddons.events.impl.client.EntityEvents
 import me.nobaboy.nobaaddons.events.impl.render.EntityNametagRenderEvents
-import me.nobaboy.nobaaddons.utils.MCUtils
 import me.nobaboy.nobaaddons.utils.NobaColor
 import me.nobaboy.nobaaddons.utils.NumberUtils.roundTo
-import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.mc.MCUtils
 import me.owdding.ktmodules.Module
 import net.minecraft.entity.projectile.FishingBobberEntity
 import net.minecraft.text.Text
@@ -61,7 +62,7 @@ object FishingBobberTweaks {
 		if(!entity.isOurs) return
 
 		val time = (entity as FishingBobberTimerDuck).`nobaaddons$spawnedAt`() ?: return
-		val seconds = time.asTimestamp().elapsedSince().toDouble(DurationUnit.SECONDS)
+		val seconds = time.toKotlinInstant().elapsedSince().toDouble(DurationUnit.SECONDS)
 
 		val slugTime = PetAPI.currentPet?.takeIf { it.id == "SLUG" }?.let {
 			20.0 - it.level * 0.1

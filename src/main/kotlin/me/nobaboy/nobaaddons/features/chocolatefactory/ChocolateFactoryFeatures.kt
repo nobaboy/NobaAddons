@@ -11,10 +11,10 @@ import me.nobaboy.nobaaddons.events.impl.interact.BlockInteractionEvent
 import me.nobaboy.nobaaddons.events.impl.interact.GenericInteractEvent
 import me.nobaboy.nobaaddons.events.impl.interact.ItemUseEvent
 import me.nobaboy.nobaaddons.utils.NobaColor
-import me.nobaboy.nobaaddons.utils.TextUtils.hoverText
-import me.nobaboy.nobaaddons.utils.TextUtils.yellow
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.skyBlockId
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.hoverText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.yellow
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.render.RenderUtils
 import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module

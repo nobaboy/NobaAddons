@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.api.skyblock
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.NobaAddons
 import me.nobaboy.nobaaddons.core.mayor.Mayor
 import me.nobaboy.nobaaddons.core.mayor.MayorPerk
@@ -8,19 +9,20 @@ import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
 import me.nobaboy.nobaaddons.events.impl.client.InventoryEvents
 import me.nobaboy.nobaaddons.events.impl.client.TickEvents
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.CollectionUtils.nextAfter
 import me.nobaboy.nobaaddons.utils.HTTPUtils
 import me.nobaboy.nobaaddons.utils.RegexUtils.getGroupFromFullMatch
-import me.nobaboy.nobaaddons.utils.SkyBlockTime
-import me.nobaboy.nobaaddons.utils.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.StringUtils.cleanFormatting
-import me.nobaboy.nobaaddons.utils.TextUtils.runCommand
-import me.nobaboy.nobaaddons.utils.Timestamp
-import me.nobaboy.nobaaddons.utils.Timestamp.Companion.asTimestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.isFuture
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.annotations.ApiModule
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.collections.CollectionUtils.nextAfter
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime
+import me.nobaboy.nobaaddons.utils.hypixel.SkyBlockTime.Companion.SKYBLOCK_YEAR_MILLIS
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.lore
 import me.nobaboy.nobaaddons.utils.items.ItemUtils.stringLines
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.runCommand
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
@@ -42,7 +44,7 @@ object MayorAPI {
 	var suppressAutoUpdate: Boolean = false
 		set(value) {
 			field = value
-			lastUpdate = Timestamp.distantPast()
+			lastUpdate = Instant.DISTANT_PAST
 		}
 
 	var currentMayor: ActiveMayor = Mayor.UNKNOWN.withNone()
@@ -50,13 +52,13 @@ object MayorAPI {
 	var currentMinister: ActiveMayor = Mayor.UNKNOWN.withNone()
 		internal set
 
-	var jerryMayor: Pair<ActiveMayor, Timestamp> = Mayor.UNKNOWN.withNone() to Timestamp.distantPast()
+	var jerryMayor: Pair<ActiveMayor, Instant> = Mayor.UNKNOWN.withNone() to Instant.DISTANT_PAST
 		internal set
 
 	private var lastMayor: ActiveMayor? = null
-	private var nextMayorTimestamp = Timestamp.distantPast()
+	private var nextMayorTimestamp = Instant.DISTANT_PAST
 
-	private var lastUpdate = Timestamp.distantPast()
+	private var lastUpdate = Instant.DISTANT_PAST
 	private val shouldUpdate: Boolean get() = !suppressAutoUpdate && lastUpdate.elapsedSince() > 20.minutes
 
 	fun Mayor.isElected(): Boolean = currentMayor.mayor == this
@@ -75,13 +77,13 @@ object MayorAPI {
 		if(!SkyBlockAPI.inSkyBlock) return
 
 		if(shouldUpdate) NobaAddons.runAsync { getCurrentMayor() }
-		nextMayorTimestamp = SkyBlockTime(SkyBlockTime.now().getElectionYear() + 1, ELECTION_END_MONTH, ELECTION_END_DAY).asTimestamp()
+		nextMayorTimestamp = SkyBlockTime(SkyBlockTime.now().getElectionYear() + 1, ELECTION_END_MONTH, ELECTION_END_DAY).toInstant()
 
 		if(!Mayor.JERRY.isElected()) return
 		if(jerryMayor.first.mayor == Mayor.UNKNOWN) return
 		if(jerryMayor.second.isFuture()) return
 
-		jerryMayor = Mayor.UNKNOWN.withNone() to Timestamp.distantPast()
+		jerryMayor = Mayor.UNKNOWN.withNone() to Instant.DISTANT_PAST
 		ChatUtils.addMessage(tr("nobaaddons.mayorApi.jerryMayorExpired", "The Perkpocalypse Mayor has expired! Click here to get the new mayor.").runCommand("/calendar"))
 	}
 
@@ -118,7 +120,7 @@ object MayorAPI {
 	}
 
 	private suspend fun getCurrentMayor() {
-		lastUpdate = Timestamp.now()
+		lastUpdate = Instant.now
 
 		val election = HTTPUtils.fetchJson<Election>(ELECTION_API_URL).await()
 		val mayor = election.mayor

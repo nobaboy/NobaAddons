@@ -4,8 +4,8 @@ import me.nobaboy.nobaaddons.api.skyblock.SkyBlockAPI
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.fishing.SeaCreature
 import me.nobaboy.nobaaddons.events.impl.skyblock.FishingEvents
-import me.nobaboy.nobaaddons.utils.LocationUtils
 import me.nobaboy.nobaaddons.utils.StringUtils
+import me.nobaboy.nobaaddons.utils.mc.LocationUtils
 import me.owdding.ktmodules.Module
 
 @Module

@@ -3,8 +3,8 @@ package me.nobaboy.nobaaddons.commands
 import com.mojang.brigadier.CommandDispatcher
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import me.nobaboy.nobaaddons.commands.impl.Context
-import me.nobaboy.nobaaddons.utils.TextUtils.darkGray
-import me.nobaboy.nobaaddons.utils.chat.ChatUtils
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.darkGray
+import me.nobaboy.nobaaddons.utils.mc.chat.ChatUtils
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource

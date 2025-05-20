@@ -5,10 +5,10 @@ import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.config.UISettings
 import me.nobaboy.nobaaddons.ui.TextHudElement
 import me.nobaboy.nobaaddons.ui.UIManager
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.green
-import me.nobaboy.nobaaddons.utils.TextUtils.literal
-import me.nobaboy.nobaaddons.utils.TextUtils.red
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.green
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.literal
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.red
 import me.nobaboy.nobaaddons.utils.tr
 import me.owdding.ktmodules.Module
 import net.minecraft.client.gui.DrawContext

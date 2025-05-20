@@ -3,9 +3,9 @@ package me.nobaboy.nobaaddons.config.categories
 import dev.isxander.yacl3.api.ConfigCategory
 import me.nobaboy.nobaaddons.config.util.*
 import me.nobaboy.nobaaddons.utils.CommonText
-import me.nobaboy.nobaaddons.utils.TextUtils.buildLiteral
-import me.nobaboy.nobaaddons.utils.TextUtils.buildText
-import me.nobaboy.nobaaddons.utils.TextUtils.red
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildLiteral
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.buildText
+import me.nobaboy.nobaaddons.utils.mc.TextUtils.red
 import me.nobaboy.nobaaddons.utils.tr
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.Text

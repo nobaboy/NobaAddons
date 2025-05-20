@@ -1,5 +1,6 @@
 package me.nobaboy.nobaaddons.api.skyblock.events.mythological
 
+import kotlinx.datetime.Instant
 import me.nobaboy.nobaaddons.config.NobaConfig
 import me.nobaboy.nobaaddons.core.events.MythologicalMobs
 import me.nobaboy.nobaaddons.events.impl.chat.ChatMessageEvents
@@ -9,13 +10,14 @@ import me.nobaboy.nobaaddons.events.impl.skyblock.MythologicalEvents
 import me.nobaboy.nobaaddons.events.impl.skyblock.SkyBlockEvents
 import me.nobaboy.nobaaddons.features.events.mythological.BurrowType
 import me.nobaboy.nobaaddons.repo.Repo.fromRepo
-import me.nobaboy.nobaaddons.utils.BlockUtils.getBlockAt
 import me.nobaboy.nobaaddons.utils.NobaVec
 import me.nobaboy.nobaaddons.utils.RegexUtils.onFullMatch
 import me.nobaboy.nobaaddons.utils.Scheduler
-import me.nobaboy.nobaaddons.utils.TimedSet
-import me.nobaboy.nobaaddons.utils.Timestamp
+import me.nobaboy.nobaaddons.utils.TimeUtils.elapsedSince
+import me.nobaboy.nobaaddons.utils.TimeUtils.now
 import me.nobaboy.nobaaddons.utils.annotations.ApiModule
+import me.nobaboy.nobaaddons.utils.collections.TimedSet
+import me.nobaboy.nobaaddons.utils.mc.BlockUtils.getBlockAt
 import net.minecraft.block.Blocks
 import net.minecraft.particle.ParticleTypes
 import kotlin.time.Duration.Companion.minutes
@@ -38,7 +40,7 @@ object BurrowAPI {
 	private var fakeBurrow: NobaVec? = null
 	var mobBurrow: NobaVec? = null
 
-	private var lastBurrowChatMessage = Timestamp.distantPast()
+	private var lastBurrowChatMessage = Instant.DISTANT_PAST
 
 	init {
 		SkyBlockEvents.ISLAND_CHANGE.register { reset() }
@@ -95,17 +97,17 @@ object BurrowAPI {
 
 		val message = event.cleaned
 
-		if(message == DEFEAT_MOBS_MESSAGE) lastBurrowChatMessage = Timestamp.now()
+		if(message == DEFEAT_MOBS_MESSAGE) lastBurrowChatMessage = Instant.now
 
 		DIG_BURROW_PATTERN.onFullMatch(message) {
-			lastBurrowChatMessage = Timestamp.now()
+			lastBurrowChatMessage = Instant.now
 			if(lastDugBurrow?.let { tryDigBurrow(it) } != true) return
 			fakeBurrow = lastDugBurrow
 			return
 		}
 
 		DIG_MOB_PATTERN.onFullMatch(message) {
-			lastBurrowChatMessage = Timestamp.now()
+			lastBurrowChatMessage = Instant.now
 			mobBurrow = lastDugBurrow
 
 			val mob = MythologicalMobs.getByName(groups["mob"]?.value ?: return) ?: return
